@@ -131,11 +131,16 @@ const RestTime = ({
     FinishTryOutLate(sessionAnswer);
   }, 500);
 
+  console;
+
   useEffect(() => {
     const endDate = new Date(tryoutData.endDate).getTime();
     const currentDate = new Date().getTime();
 
-    if (currentDate >= endDate) {
+    if (
+      currentDate >= endDate &&
+      tryoutData.id === 'cmkqjyg2w01iykuctdm6v3awh'
+    ) {
       FinishDebounced();
     }
   }, [tryoutData, currentIndexSession, sessionData]);

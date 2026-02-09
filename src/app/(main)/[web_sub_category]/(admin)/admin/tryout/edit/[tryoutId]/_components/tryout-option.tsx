@@ -1,6 +1,7 @@
 'use client';
 
 import { useEditTryoutContext } from '@/app/(main)/[web_sub_category]/(admin)/admin/tryout/_component/provider-edit-tryout';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { InputImage } from '@/components/ui/input-image';
 import {
   Select,
@@ -22,7 +23,7 @@ import {
 } from '@/styles/icon';
 import { storage } from '@/supabaseClient';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import ModalDeleteTryout from './modal-delete-tryout';
 // import Image from 'next/image';
 // import { env } from '@/env.mjs';
@@ -452,19 +453,32 @@ const TryoutOption = () => {
         </div>
       </div>
       <div className="my-4 h-px w-full bg-main-gray-disabled/60" />
-      <button
-        type="button"
-        className={cn(
-          'flex w-full shrink-0 cursor-pointer items-center justify-center rounded-[.8rem] bg-red-100 py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100',
-          loadingDeleteTryout && 'cursor-default md:hover:bg-red-100',
-        )}
-        onClick={() => {
-          localStorage.removeItem(`temporary-edit-tryout-${tryout?.id}`);
-          window.location.reload();
-        }}
-      >
-        Reset Temporary Data
-      </button>
+      <div className="grid grid-cols-2 w-full gap-4">
+        <DialogKunciJawaban>
+          <button
+            type="button"
+            className={cn(
+              'flex w-full shrink-0 cursor-pointer items-center justify-center rounded-[.8rem] bg-red-100 py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100',
+            )}
+          >
+            Lihat Kunci Jawaban
+          </button>
+        </DialogKunciJawaban>
+
+        <button
+          type="button"
+          className={cn(
+            'flex w-full shrink-0 cursor-pointer items-center justify-center rounded-[.8rem] bg-red-100 py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100',
+            loadingDeleteTryout && 'cursor-default md:hover:bg-red-100',
+          )}
+          onClick={() => {
+            localStorage.removeItem(`temporary-edit-tryout-${tryout?.id}`);
+            window.location.reload();
+          }}
+        >
+          Reset Temporary Data
+        </button>
+      </div>
       <div className="grid w-full grid-cols-2 gap-4">
         <div
           className={cn(
@@ -541,119 +555,99 @@ const TryoutOption = () => {
 
 export default TryoutOption;
 
-// const UploadImage = ({ file, setFile, heading, inputId, fileName }: any) => {
-//   const [previewHover, setPreviewHover] = useState<boolean>(false);
-//   const [previewImage, setPreviewImage] = useState<string>('');
+const DialogKunciJawaban = ({ children }: { children: ReactNode }) => {
+  const { sessions } = useEditTryoutContext();
 
-//   useEffect(() => {
-//     setPreviewImage('');
-//     if (file) {
-//       const reader = new FileReader();
+  const data = sessions.map((session, index) => {
+    const Questions = session.Questions;
+    return {
+      number: index + 1,
+      title: session.name,
+      questions: Questions.map((question) => {
+        return {
+          ...question,
+          number: question.number,
+          answerKey: (() => {
+            const assestmentType = session.assessmentType || '';
+            const Answers = question.Answers;
+            let CorrectIndex = -1;
+            Answers.forEach((answer, index) => {
+              if (isCorrectAnswer(answer.value, assestmentType)) {
+                CorrectIndex = index;
+              }
+            });
+            const option = ['A', 'B', 'C', 'D', 'E'];
+            return CorrectIndex >= 0 ? option[CorrectIndex] : '-';
+          })(),
+        };
+      }),
+    };
+  });
 
-//       reader.onloadend = () => {
-//         const result = reader.result as string;
-//         setPreviewImage(result);
-//       };
+  return (
+    <Dialog>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <h2 className="text-xl font-semibold">Kunci Jawaban</h2>
+            <p className="text-sm text-gray-500">
+              Daftar lengkap jawaban yang benar untuk semua sesi
+            </p>
+          </div>
 
-//       reader.readAsDataURL(file);
-//     } else {
-//       setPreviewImage(`${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/tryout/${fileName}`);
-//     }
-//   }, [file, fileName]);
+          {data.map((session) => (
+            <div
+              key={session.number}
+              className="flex flex-col gap-4 border-t pt-4"
+            >
+              <div className="flex flex-col gap-2">
+                <h3 className="font-semibold text-lg">
+                  Sesi {session.number}: {session.title}
+                </h3>
+                <p className="text-sm text-gray-600">
+                  {session.questions.length} soal
+                </p>
+              </div>
 
-//   return (
-//     <div className="relative">
-//       <p className="font-medium text-[.9rem] mb-[.5rem]">{heading}</p>
-//       <div className="absolute -bottom-4 left-4">
-//         <input
-//           id={`${inputId}`}
-//           type="file"
-//           onChange={(e: any) => {
-//             setFile(e.target.files[0]);
-//           }}
-//           className="border-transparent p-0 w-0 h-0 bg-transparent text-transparent"
-//         />
-//         <input
-//           type="text"
-//           value={fileName}
-//           className="border-transparent p-0 w-1 h-1 bg-transparent text-transparent outline-none"
-//           required
-//         />
-//         <div className="absolute top-0 left-0 w-full h-full bg-workspace" />
-//       </div>
-//       <div className="border-2 border-main-gray-input border-dashed rounded-3xl overflow-hidden p-4 flex flex-col gap-4 relative">
-//         {!previewImage ? (
-//           <>
-//             <div className={`relative ${previewHover ? 'z-4' : 'z-6'}`}>
-//               <Image
-//                 src={previewImage}
-//                 alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
-//                 layout="responsive"
-//                 width={500}
-//                 height={300}
-//                 onMouseOver={() => {
-//                   if (previewImage) {
-//                     setPreviewHover(true);
-//                   }
-//                 }}
-//               />
-//             </div>
-//             <div className="absolute top-0 left-0 w-full h-full bg-[#ffffffc4] flex justify-center items-center z-5 p-4">
-//               <div
-//                 className="w-full h-full flex justify-center items-center"
-//                 onClick={() => {
-//                   document.getElementById(`${inputId}`)?.click();
-//                 }}
-//                 onMouseLeave={() => {
-//                   if (previewImage) {
-//                     setPreviewHover(false);
-//                   }
-//                 }}
-//               >
-//                 <div className="flex flex-col items-center text-center text-main-gray-text">
-//                   <i className="bx bx-upload text-[1.5rem]" />
-//                   <p>Ganti Thumbnail</p>
-//                 </div>
-//               </div>
-//             </div>
-//           </>
-//         ) : (
-//           <>
-//             <div className={`relative ${previewHover ? 'z-4' : 'z-6'}`}>
-//               <Image
-//                 src={previewImage}
-//                 alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
-//                 layout="responsive"
-//                 width={500}
-//                 height={300}
-//                 onMouseOver={() => {
-//                   if (previewImage) {
-//                     setPreviewHover(true);
-//                   }
-//                 }}
-//               />
-//             </div>
-//             <div className="absolute top-0 left-0 w-full h-full bg-[#ffffffc4] flex justify-center items-center z-5 p-4">
-//               <div
-//                 className="w-full h-full flex justify-center items-center"
-//                 onClick={() => {
-//                   document.getElementById(`${inputId}`)?.click();
-//                 }}
-//                 onMouseLeave={() => {
-//                   if (previewImage) {
-//                     setPreviewHover(false);
-//                   }
-//                 }}
-//               >
-//                 <div className="flex flex-col items-center text-center text-main-gray-text">
-//                   <i className="bx bx-upload text-[1.5rem]" />
-//                   <p>Ganti Thumbnail</p>
-//                 </div>
-//               </div>
-//             </div>
-//           </>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
+              <div className="grid grid-cols-5 gap-2">
+                {session.questions.map((question) => (
+                  <div
+                    key={question.number}
+                    className="flex gap-2 rounded-lg bg-gray-50 p-3 border border-gray-200"
+                  >
+                    <p className="text-xs font-medium text-gray-600">
+                      {question.number}.
+                    </p>
+                    <div className="text-xs font-bold text-blue-600">
+                      {question.answerKey}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+function isCorrectAnswer(value: number, assessmentType: string): boolean {
+  switch (assessmentType) {
+    case 'IRT':
+      return value === 5;
+    case '+4/-1/0':
+      return value === 4;
+    case '+5/0':
+      return value === 5;
+    case '+1/0':
+      return value === 1;
+    case '1-5':
+      return value > 3;
+    case '0-100':
+      return value > 0;
+    default:
+      return value > 0;
+  }
+}

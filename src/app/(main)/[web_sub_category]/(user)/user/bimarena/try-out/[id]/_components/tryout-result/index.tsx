@@ -526,7 +526,7 @@ export default function TryoutResult({
                 </div>
               </button>
 
-              {false && (
+              {mode === 'try-out' && (
                 <button
                   onClick={() => setTabs('analisis')}
                   className={`px-4 md:px-6 py-2 md:py-2.5 rounded-3xl text-xs md:text-sm font-black whitespace-nowrap transition-all duration-200 ${

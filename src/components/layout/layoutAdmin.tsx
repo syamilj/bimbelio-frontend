@@ -52,7 +52,7 @@ export default function LayoutAdmin({ children }: LayoutAdminProps) {
             <Navbar />
 
             {/* Main Content */}
-            <main className="pt-[72px] md:pt-[80px] p-4 md:p-6">
+            <main className="pt-[72px] md:pt-[100px] py-6 pl-12 pr-6 ">
               <div className="mx-auto max-w-screen-2xl">{children}</div>
             </main>
           </SidebarInset>

@@ -15,9 +15,10 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { format } from 'date-fns';
+import { id as localeId } from 'date-fns/locale';
 import {
   Award,
   BarChart3,
@@ -30,9 +31,7 @@ import {
   TrendingUp,
   Trophy,
 } from 'lucide-react';
-import { format } from 'date-fns';
-import { id as localeId } from 'date-fns/locale';
-import { useMemo, useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Area,
   AreaChart,
@@ -99,9 +98,10 @@ function TryoutQuickStats({
       ? Math.round(summary.AverageScore / summary.TotalTryout)
       : 0;
   const avgSubtestCount = summary?.AverageSubtestCount || 1;
-  const avgScore = isSNBT && avgSubtestCount > 1
-    ? Math.round(rawAvgScore / avgSubtestCount)
-    : rawAvgScore;
+  const avgScore =
+    isSNBT && avgSubtestCount > 1
+      ? Math.round(rawAvgScore / avgSubtestCount)
+      : rawAvgScore;
 
   const statCards = [
     {
@@ -156,13 +156,22 @@ function TryoutQuickStats({
         {/* Desktop */}
         <div className="hidden md:grid grid-cols-4 gap-3">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-32 rounded-3xl" />
+            <Skeleton
+              key={i}
+              className="h-32 rounded-3xl"
+            />
           ))}
         </div>
         {/* Mobile */}
-        <div className="md:hidden flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory" style={{ scrollbarWidth: 'none' }}>
+        <div
+          className="md:hidden flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory"
+          style={{ scrollbarWidth: 'none' }}
+        >
           {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-28 w-40 flex-shrink-0 rounded-3xl snap-start" />
+            <Skeleton
+              key={i}
+              className="h-28 w-40 flex-shrink-0 rounded-3xl snap-start"
+            />
           ))}
         </div>
       </div>
@@ -183,7 +192,9 @@ function TryoutQuickStats({
               {/* Decorative Glow */}
               <div className="absolute -bottom-6 -right-6 w-20 h-20 rounded-full opacity-10 group-hover:opacity-20 transition-opacity bg-current blur-[20px]" />
               {/* Icon */}
-              <div className={`relative z-10 w-10 h-10 rounded-3xl ${stat.iconBg} flex items-center justify-center mb-3 shadow-sm group-hover:scale-110 transition-transform`}>
+              <div
+                className={`relative z-10 w-10 h-10 rounded-3xl ${stat.iconBg} flex items-center justify-center mb-3 shadow-sm group-hover:scale-110 transition-transform`}
+              >
                 <Icon className="w-5 h-5 text-white" />
               </div>
               {/* Value */}
@@ -193,11 +204,17 @@ function TryoutQuickStats({
                     {stat.value}
                   </span>
                   {stat.unit && (
-                    <span className="text-xs font-semibold text-slate-500">{stat.unit}</span>
+                    <span className="text-xs font-semibold text-slate-500">
+                      {stat.unit}
+                    </span>
                   )}
                 </div>
-                <p className="text-[10px] font-bold text-slate-600 uppercase tracking-wide">{stat.title}</p>
-                <p className="text-xs text-slate-500 font-medium">{stat.subtitle}</p>
+                <p className="text-[10px] font-bold text-slate-600 uppercase tracking-wide">
+                  {stat.title}
+                </p>
+                <p className="text-xs text-slate-500 font-medium">
+                  {stat.subtitle}
+                </p>
               </div>
             </div>
           );
@@ -205,7 +222,10 @@ function TryoutQuickStats({
       </div>
 
       {/* Mobile: Horizontal Scroll */}
-      <div className="md:hidden flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory" style={{ scrollbarWidth: 'none' }}>
+      <div
+        className="md:hidden flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory"
+        style={{ scrollbarWidth: 'none' }}
+      >
         {statCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
@@ -213,16 +233,28 @@ function TryoutQuickStats({
               key={index}
               className={`relative overflow-hidden rounded-3xl p-4 bg-gradient-to-br ${stat.bg} border border-white/50 shadow-sm flex-shrink-0 w-40 snap-start`}
             >
-              <div className={`w-10 h-10 rounded-3xl ${stat.iconBg} flex items-center justify-center mb-3 shadow-sm`}>
+              <div
+                className={`w-10 h-10 rounded-3xl ${stat.iconBg} flex items-center justify-center mb-3 shadow-sm`}
+              >
                 <Icon className="w-5 h-5 text-white" />
               </div>
               <div className="space-y-1">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-2xl font-black text-slate-800">{stat.value}</span>
-                  {stat.unit && <span className="text-xs font-semibold text-slate-500">{stat.unit}</span>}
+                  <span className="text-2xl font-black text-slate-800">
+                    {stat.value}
+                  </span>
+                  {stat.unit && (
+                    <span className="text-xs font-semibold text-slate-500">
+                      {stat.unit}
+                    </span>
+                  )}
                 </div>
-                <p className="text-[10px] font-bold text-slate-600 uppercase tracking-wide">{stat.title}</p>
-                <p className="text-xs text-slate-500 font-medium">{stat.subtitle}</p>
+                <p className="text-[10px] font-bold text-slate-600 uppercase tracking-wide">
+                  {stat.title}
+                </p>
+                <p className="text-xs text-slate-500 font-medium">
+                  {stat.subtitle}
+                </p>
               </div>
             </div>
           );
@@ -242,7 +274,9 @@ function TryoutMiniLeaderboard({
 }) {
   const { data: session } = useSession();
   const [leaderboard, setLeaderboard] = useState<LeaderboardItem[]>([]);
-  const [tryoutList, setTryoutList] = useState<{ id: string; title: string }[]>([]);
+  const [tryoutList, setTryoutList] = useState<{ id: string; title: string }[]>(
+    [],
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -303,7 +337,10 @@ function TryoutMiniLeaderboard({
             >
               <div
                 className="w-7 h-7 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: index < 3 ? `${mainColor}15` : `${mainColor}08` }}
+                style={{
+                  backgroundColor:
+                    index < 3 ? `${mainColor}15` : `${mainColor}08`,
+                }}
               >
                 <Icon className={`w-3.5 h-3.5 ${color}`} />
               </div>
@@ -314,7 +351,8 @@ function TryoutMiniLeaderboard({
                 {(() => {
                   const score = player.totalScore || 0;
                   const sc = player.subtestCount || 1;
-                  const displayScore = isSNBT && sc > 1 ? Math.round(score / sc) : score;
+                  const displayScore =
+                    isSNBT && sc > 1 ? Math.round(score / sc) : score;
                   return displayScore.toLocaleString('id-ID');
                 })()}
               </span>
@@ -348,7 +386,8 @@ function TryoutProgressChart({
     if (!isSNBT) return progressData;
     return progressData.map((p) => ({
       ...p,
-      score: p.subtestCount > 1 ? Math.round(p.score / p.subtestCount) : p.score,
+      score:
+        p.subtestCount > 1 ? Math.round(p.score / p.subtestCount) : p.score,
     }));
   }, [progressData, isSNBT]);
 
@@ -363,7 +402,8 @@ function TryoutProgressChart({
     const trend = latest - prev;
     const totalBenar = adjustedData.reduce((a, b) => a + b.benar, 0);
     const totalSoal = adjustedData.reduce((a, b) => a + b.totalQuestions, 0);
-    const accuracy = totalSoal > 0 ? Math.round((totalBenar / totalSoal) * 100) : 0;
+    const accuracy =
+      totalSoal > 0 ? Math.round((totalBenar / totalSoal) * 100) : 0;
     return { max, min, avg, latest, trend, count: scores.length, accuracy };
   }, [adjustedData]);
 
@@ -379,9 +419,12 @@ function TryoutProgressChart({
           <div className="w-16 h-16 rounded-3xl bg-slate-100 flex items-center justify-center mb-4">
             <BarChart3 className="w-8 h-8 text-slate-400" />
           </div>
-          <h3 className="text-base font-bold text-slate-700 mb-1">Belum Ada Data Progress</h3>
+          <h3 className="text-base font-bold text-slate-700 mb-1">
+            Belum Ada Data Progress
+          </h3>
           <p className="text-sm text-slate-400 max-w-xs">
-            Selesaikan try out pertamamu untuk melihat grafik perkembangan skor kamu di sini
+            Selesaikan try out pertamamu untuk melihat grafik perkembangan skor
+            kamu di sini
           </p>
         </CardContent>
       </Card>
@@ -441,26 +484,39 @@ function TryoutProgressChart({
 
         {/* Score summary badges */}
         {stats && (
-          <div className="flex gap-2 mt-3 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+          <div
+            className="flex gap-2 mt-3 overflow-x-auto pb-1"
+            style={{ scrollbarWidth: 'none' }}
+          >
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 flex-shrink-0">
               <TrendingUp className="w-3 h-3 text-emerald-500" />
-              <span className="text-[10px] font-bold text-emerald-700">Tertinggi: {stats.max}</span>
+              <span className="text-[10px] font-bold text-emerald-700">
+                Tertinggi: {stats.max}
+              </span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 flex-shrink-0">
               <BarChart3 className="w-3 h-3 text-blue-500" />
-              <span className="text-[10px] font-bold text-blue-700">Rata-rata: {stats.avg}</span>
+              <span className="text-[10px] font-bold text-blue-700">
+                Rata-rata: {stats.avg}
+              </span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-violet-50 border border-violet-100 flex-shrink-0">
               <Target className="w-3 h-3 text-violet-500" />
-              <span className="text-[10px] font-bold text-violet-700">Akurasi: {stats.accuracy}%</span>
+              <span className="text-[10px] font-bold text-violet-700">
+                Akurasi: {stats.accuracy}%
+              </span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-100 flex-shrink-0">
               <Star className="w-3 h-3 text-amber-500" />
-              <span className="text-[10px] font-bold text-amber-700">Terakhir: {stats.latest}</span>
+              <span className="text-[10px] font-bold text-amber-700">
+                Terakhir: {stats.latest}
+              </span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 border border-red-100 flex-shrink-0">
               <TrendingDown className="w-3 h-3 text-red-400" />
-              <span className="text-[10px] font-bold text-red-600">Terendah: {stats.min}</span>
+              <span className="text-[10px] font-bold text-red-600">
+                Terendah: {stats.min}
+              </span>
             </div>
           </div>
         )}
@@ -480,18 +536,38 @@ function TryoutProgressChart({
           }}
           className="h-[240px] md:h-[280px] w-full"
         >
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer
+            width="100%"
+            height="100%"
+          >
             <AreaChart
               data={chartData}
               margin={{ top: 20, right: 35, left: -10, bottom: 10 }}
             >
               <defs>
-                <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={mainColor} stopOpacity={0.3} />
-                  <stop offset="95%" stopColor={mainColor} stopOpacity={0} />
+                <linearGradient
+                  id="colorScore"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop
+                    offset="5%"
+                    stopColor={mainColor}
+                    stopOpacity={0.3}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor={mainColor}
+                    stopOpacity={0}
+                  />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="#E5E7EB"
+              />
               <XAxis
                 dataKey="shortName"
                 tick={{ fontSize: 10, fill: '#6B7280' }}
@@ -522,31 +598,45 @@ function TryoutProgressChart({
                 content={
                   <ChartTooltipContent
                     labelFormatter={(_, payload) => {
-                      const p = payload?.[0]?.payload as ProgressItem & { shortName: string };
+                      const p = payload?.[0]?.payload as ProgressItem & {
+                        shortName: string;
+                      };
                       return p?.name || '';
                     }}
                     formatter={(value, name) => {
                       if (name === 'score') {
                         return (
                           <>
-                            <div className="h-2.5 w-2.5 shrink-0 rounded-[2px]" style={{ backgroundColor: mainColor }} />
+                            <div
+                              className="h-2.5 w-2.5 shrink-0 rounded-[2px]"
+                              style={{ backgroundColor: mainColor }}
+                            />
                             <span className="text-muted-foreground">Skor</span>
-                            <span className="ml-auto font-mono font-medium tabular-nums">{value}</span>
+                            <span className="ml-auto font-mono font-medium tabular-nums">
+                              {value}
+                            </span>
                           </>
                         );
                       }
                       if (name === 'benar') {
-                        const p = (arguments[2] as { payload: ProgressItem })?.payload;
+                        const p = (arguments[2] as { payload: ProgressItem })
+                          ?.payload;
                         return (
                           <>
                             <div className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-emerald-500" />
                             <span className="text-muted-foreground">B/S/K</span>
                             <span className="ml-auto font-mono font-medium tabular-nums">
-                              <span className="text-emerald-600">{p?.benar ?? value}</span>
+                              <span className="text-emerald-600">
+                                {p?.benar ?? value}
+                              </span>
                               <span className="text-muted-foreground">/</span>
-                              <span className="text-red-500">{p?.salah ?? 0}</span>
+                              <span className="text-red-500">
+                                {p?.salah ?? 0}
+                              </span>
                               <span className="text-muted-foreground">/</span>
-                              <span className="text-gray-400">{p?.kosong ?? 0}</span>
+                              <span className="text-gray-400">
+                                {p?.kosong ?? 0}
+                              </span>
                             </span>
                           </>
                         );
@@ -564,7 +654,12 @@ function TryoutProgressChart({
                 strokeWidth={3}
                 fill="url(#colorScore)"
                 dot={{ fill: mainColor, r: 4, strokeWidth: 2, stroke: '#fff' }}
-                activeDot={{ r: 6, fill: mainColor, stroke: '#fff', strokeWidth: 2 }}
+                activeDot={{
+                  r: 6,
+                  fill: mainColor,
+                  stroke: '#fff',
+                  strokeWidth: 2,
+                }}
               >
                 <LabelList
                   position="top"
@@ -580,7 +675,12 @@ function TryoutProgressChart({
                 strokeWidth={2}
                 strokeDasharray="5 3"
                 dot={{ fill: '#10B981', r: 3, strokeWidth: 2, stroke: '#fff' }}
-                activeDot={{ r: 5, fill: '#10B981', stroke: '#fff', strokeWidth: 2 }}
+                activeDot={{
+                  r: 5,
+                  fill: '#10B981',
+                  stroke: '#fff',
+                  strokeWidth: 2,
+                }}
               >
                 <LabelList
                   position="bottom"
@@ -594,150 +694,150 @@ function TryoutProgressChart({
         </ChartContainer>
 
         {scoreHistory.length > 0 && (
-                      <div className="space-y-2 mt-4">
-                        <h3 className="text-sm font-bold text-slate-700">
-                          Riwayat Skor & Peringkat
-                        </h3>
-                        <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide">
-                          {scoreHistory
-                            .slice(-5)
-                            .reverse()
-                            .map((item: ScoreHistoryItem, index: number) => {
-                              const rankPercentile =
-                                item.totalParticipants > 0
-                                  ? Math.round(
-                                      ((item.totalParticipants - item.rank + 1) /
-                                        item.totalParticipants) *
-                                        100,
-                                    )
-                                  : 0;
+          <div className="space-y-2 mt-4">
+            <h3 className="text-sm font-bold text-slate-700">
+              Riwayat Skor & Peringkat
+            </h3>
+            <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide">
+              {scoreHistory
+                .slice(-5)
+                .reverse()
+                .map((item: ScoreHistoryItem, index: number) => {
+                  const rankPercentile =
+                    item.totalParticipants > 0
+                      ? Math.round(
+                          ((item.totalParticipants - item.rank + 1) /
+                            item.totalParticipants) *
+                            100,
+                        )
+                      : 0;
 
-                              return (
-                                <div
-                                  key={index}
-                                  className="flex-shrink-0 w-[320px] p-2.5 rounded-3xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all"
-                                >
-                                  {/* Header: Title and Date */}
-                                  <div className="flex items-start justify-between mb-2">
-                                    <div className="flex-1 min-w-0">
-                                      <p className="font-bold text-sm text-slate-800 truncate">
-                                        {item.tryoutTitle}
-                                      </p>
-                                      <p className="text-xs text-slate-500">
-                                        {format(new Date(item.date), 'dd MMM yyyy', {
-                                          locale: localeId,
-                                        })}
-                                      </p>
-                                    </div>
-                                  </div>
-
-                                  {/* Score and Ranking Row */}
-                                  <div className="flex items-center gap-3">
-                                    {/* Score */}
-                                    <div className="flex items-center gap-2 flex-1">
-                                      <div
-                                        className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-                                        style={{ backgroundColor: `${mainColor}15` }}
-                                      >
-                                        <Target
-                                          className="w-5 h-5"
-                                          style={{ color: mainColor }}
-                                        />
-                                      </div>
-                                      <div>
-                                        <div className="text-xs text-slate-500 font-medium">
-                                          Skor
-                                        </div>
-                                        <div
-                                          className="text-lg font-black"
-                                          style={{ color: mainColor }}
-                                        >
-                                          {Math.round(item.score)}
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    {/* Ranking */}
-                                    <div className="flex items-center gap-2 flex-1">
-                                      <div
-                                        className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-                                          item.rank <= 3 ? 'bg-yellow-100' : 'bg-blue-50'
-                                        }`}
-                                      >
-                                        <Trophy
-                                          className={`w-5 h-5 ${
-                                            item.rank <= 3
-                                              ? 'text-yellow-600'
-                                              : 'text-blue-600'
-                                          }`}
-                                        />
-                                      </div>
-                                      <div>
-                                        <div className="text-xs text-slate-500 font-medium">
-                                          Peringkat
-                                        </div>
-                                        <div className="flex items-center gap-1">
-                                          <span
-                                            className={`text-lg font-black ${
-                                              item.rank <= 3
-                                                ? 'text-yellow-600'
-                                                : 'text-blue-600'
-                                            }`}
-                                          >
-                                            #{item.rank}
-                                          </span>
-                                          <span className="text-xs text-slate-500">
-                                            / {item.totalParticipants}
-                                          </span>
-                                          {item.rankChange !== 0 && (
-                                            <span
-                                              className={`text-xs font-bold ml-1 ${
-                                                item.rankChange > 0
-                                                  ? 'text-emerald-600'
-                                                  : 'text-red-600'
-                                              }`}
-                                            >
-                                              {item.rankChange > 0 ? '↑' : '↓'}
-                                              {Math.abs(item.rankChange)}
-                                            </span>
-                                          )}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  {/* Ranking Progress Bar */}
-                                  <div className="mt-3 space-y-1">
-                                    <div className="flex items-center justify-between text-xs">
-                                      <span className="text-slate-500">
-                                        Top {rankPercentile}%
-                                      </span>
-                                      <span className="text-slate-600 font-bold">
-                                        {item.totalParticipants - item.rank} peserta
-                                        dibawah Anda
-                                      </span>
-                                    </div>
-                                    <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
-                                      <div
-                                        className="h-full rounded-full transition-all duration-300"
-                                        style={{
-                                          width: `${rankPercentile}%`,
-                                          backgroundColor:
-                                            item.rankChange > 0
-                                              ? '#10b981'
-                                              : item.rankChange < 0
-                                                ? '#ef4444'
-                                                : mainColor,
-                                        }}
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                              );
+                  return (
+                    <div
+                      key={index}
+                      className="flex-shrink-0 w-[320px] p-2.5 rounded-3xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all"
+                    >
+                      {/* Header: Title and Date */}
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex-1 min-w-0">
+                          <p className="font-bold text-sm text-slate-800 truncate">
+                            {item.tryoutTitle}
+                          </p>
+                          <p className="text-xs text-slate-500">
+                            {format(new Date(item.date), 'dd MMM yyyy', {
+                              locale: localeId,
                             })}
+                          </p>
                         </div>
                       </div>
-                    )}
+
+                      {/* Score and Ranking Row */}
+                      <div className="flex items-center gap-3">
+                        {/* Score */}
+                        <div className="flex items-center gap-2 flex-1">
+                          <div
+                            className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                            style={{ backgroundColor: `${mainColor}15` }}
+                          >
+                            <Target
+                              className="w-5 h-5"
+                              style={{ color: mainColor }}
+                            />
+                          </div>
+                          <div>
+                            <div className="text-xs text-slate-500 font-medium">
+                              Skor
+                            </div>
+                            <div
+                              className="text-lg font-black"
+                              style={{ color: mainColor }}
+                            >
+                              {Math.round(item.score)}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Ranking */}
+                        <div className="flex items-center gap-2 flex-1">
+                          <div
+                            className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                              item.rank <= 3 ? 'bg-yellow-100' : 'bg-blue-50'
+                            }`}
+                          >
+                            <Trophy
+                              className={`w-5 h-5 ${
+                                item.rank <= 3
+                                  ? 'text-yellow-600'
+                                  : 'text-blue-600'
+                              }`}
+                            />
+                          </div>
+                          <div>
+                            <div className="text-xs text-slate-500 font-medium">
+                              Peringkat
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <span
+                                className={`text-lg font-black ${
+                                  item.rank <= 3
+                                    ? 'text-yellow-600'
+                                    : 'text-blue-600'
+                                }`}
+                              >
+                                #{item.rank}
+                              </span>
+                              <span className="text-xs text-slate-500">
+                                / {item.totalParticipants}
+                              </span>
+                              {item.rankChange !== 0 && (
+                                <span
+                                  className={`text-xs font-bold ml-1 ${
+                                    item.rankChange > 0
+                                      ? 'text-emerald-600'
+                                      : 'text-red-600'
+                                  }`}
+                                >
+                                  {item.rankChange > 0 ? '↑' : '↓'}
+                                  {Math.abs(item.rankChange)}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Ranking Progress Bar */}
+                      <div className="mt-3 space-y-1">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-slate-500">
+                            Top {rankPercentile}%
+                          </span>
+                          <span className="text-slate-600 font-bold">
+                            {item.totalParticipants - item.rank} peserta dibawah
+                            Anda
+                          </span>
+                        </div>
+                        <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-300"
+                            style={{
+                              width: `${rankPercentile}%`,
+                              backgroundColor:
+                                item.rankChange > 0
+                                  ? '#10b981'
+                                  : item.rankChange < 0
+                                    ? '#ef4444'
+                                    : mainColor,
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
@@ -750,7 +850,8 @@ const SummaryTryout = () => {
 
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
-  const isSNBT = websiteSubCategory?.name?.toUpperCase().includes('SNBT') || false;
+  const isSNBT =
+    websiteSubCategory?.name?.toUpperCase().includes('SNBT') || false;
 
   const [summary, setSummary] = useState<SummaryData>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -761,7 +862,9 @@ const SummaryTryout = () => {
   const adjustedProgressStats = useMemo(() => {
     if (!tryoutProgress?.length) return null;
     const scores = tryoutProgress.map((p) =>
-      isSNBT && p.subtestCount > 1 ? Math.round(p.score / p.subtestCount) : p.score,
+      isSNBT && p.subtestCount > 1
+        ? Math.round(p.score / p.subtestCount)
+        : p.score,
     );
     const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
     const latest = scores[scores.length - 1];
@@ -781,23 +884,32 @@ const SummaryTryout = () => {
     getGeneral(`/report/getReportData?userId=${session.user.id}`, {
       setData: (reportData: any) => {
         const history = reportData?.tryoutHistory?.history || [];
-        const filtered = history.filter((item: any) => item.show && item.totalScore > 0);
-        const mapped: ScoreHistoryItem[] = filtered.map((item: any, index: number, arr: any[]) => {
-          let score = item.totalScore || 0;
-          if (isSNBT && item.TryoutSessionResult?.length > 0) {
-            const subtestScores = item.TryoutSessionResult.map((s: any) => s.totalScore || 0);
-            score = Math.round(subtestScores.reduce((a: number, b: number) => a + b, 0) / subtestScores.length);
-          }
-          const prevRank = index > 0 ? arr[index - 1].rank : item.rank;
-          return {
-            date: item.startTryout || item.createdAt,
-            score,
-            tryoutTitle: item.Tryout?.title || 'Try Out',
-            rank: item.rank || 0,
-            totalParticipants: item.totalParticipants || 0,
-            rankChange: index > 0 ? prevRank - item.rank : 0,
-          };
-        });
+        const filtered = history.filter(
+          (item: any) => item.show && item.totalScore > 0,
+        );
+        const mapped: ScoreHistoryItem[] = filtered.map(
+          (item: any, index: number, arr: any[]) => {
+            let score = item.totalScore || 0;
+            if (isSNBT && item.TryoutSessionResult?.length > 0) {
+              const subtestScores = item.TryoutSessionResult.map(
+                (s: any) => s.totalScore || 0,
+              );
+              score = Math.round(
+                subtestScores.reduce((a: number, b: number) => a + b, 0) /
+                  subtestScores.length,
+              );
+            }
+            const prevRank = index > 0 ? arr[index - 1].rank : item.rank;
+            return {
+              date: item.startTryout || item.createdAt,
+              score,
+              tryoutTitle: item.Tryout?.title || 'Try Out',
+              rank: item.rank || 0,
+              totalParticipants: item.totalParticipants || 0,
+              rankChange: index > 0 ? prevRank - item.rank : 0,
+            };
+          },
+        );
         setScoreHistory(mapped);
       },
     });
@@ -810,7 +922,9 @@ const SummaryTryout = () => {
         {/* Top accent bar */}
         <div
           className="absolute top-0 left-0 right-0 h-1"
-          style={{ background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})` }}
+          style={{
+            background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
+          }}
         />
 
         <div className="relative z-10 p-5 md:p-6 pt-4">
@@ -819,7 +933,10 @@ const SummaryTryout = () => {
             <div className="flex items-center gap-2">
               <div
                 className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border"
-                style={{ backgroundColor: `${mainColor}10`, borderColor: `${mainColor}30` }}
+                style={{
+                  backgroundColor: `${mainColor}10`,
+                  borderColor: `${mainColor}30`,
+                }}
               >
                 <span className="relative flex h-2 w-2">
                   <span
@@ -831,14 +948,20 @@ const SummaryTryout = () => {
                     style={{ backgroundColor: mainColor }}
                   />
                 </span>
-                <span className="text-[10px] md:text-xs font-bold" style={{ color: mainColor }}>
+                <span
+                  className="text-[10px] md:text-xs font-bold"
+                  style={{ color: mainColor }}
+                >
                   BimArena
                 </span>
               </div>
               {websiteSubCategory?.name && (
                 <div
                   className="flex items-center gap-1 px-2.5 py-1 rounded-full border"
-                  style={{ backgroundColor: `${mainColor}08`, borderColor: `${mainColor}20` }}
+                  style={{
+                    backgroundColor: `${mainColor}08`,
+                    borderColor: `${mainColor}20`,
+                  }}
                 >
                   <span className="text-[10px] md:text-xs font-bold text-slate-600">
                     {websiteSubCategory.name}
@@ -849,9 +972,15 @@ const SummaryTryout = () => {
             {isSNBT && (
               <div
                 className="px-2 py-0.5 rounded-full border"
-                style={{ backgroundColor: `${mainColor}10`, borderColor: `${mainColor}25` }}
+                style={{
+                  backgroundColor: `${mainColor}10`,
+                  borderColor: `${mainColor}25`,
+                }}
               >
-                <span className="text-[9px] font-black tracking-wider" style={{ color: mainColor }}>
+                <span
+                  className="text-[9px] font-black tracking-wider"
+                  style={{ color: mainColor }}
+                >
                   SNBT MODE
                 </span>
               </div>
@@ -871,7 +1000,10 @@ const SummaryTryout = () => {
             <div className="grid grid-cols-3 gap-2">
               <div
                 className="rounded-3xl border p-3 text-center"
-                style={{ backgroundColor: `${mainColor}08`, borderColor: `${mainColor}15` }}
+                style={{
+                  backgroundColor: `${mainColor}08`,
+                  borderColor: `${mainColor}15`,
+                }}
               >
                 <p className="text-xl md:text-2xl font-black text-slate-800 leading-none">
                   {summary.TryoutResult || 0}
@@ -882,7 +1014,10 @@ const SummaryTryout = () => {
               </div>
               <div
                 className="rounded-3xl border p-3 text-center"
-                style={{ backgroundColor: `${mainColor}08`, borderColor: `${mainColor}15` }}
+                style={{
+                  backgroundColor: `${mainColor}08`,
+                  borderColor: `${mainColor}15`,
+                }}
               >
                 <p className="text-xl md:text-2xl font-black text-slate-800 leading-none">
                   {summary.LastRanking ? `#${summary.LastRanking}` : '-'}
@@ -893,16 +1028,23 @@ const SummaryTryout = () => {
               </div>
               <div
                 className="rounded-3xl border p-3 text-center"
-                style={{ backgroundColor: `${mainColor}08`, borderColor: `${mainColor}15` }}
+                style={{
+                  backgroundColor: `${mainColor}08`,
+                  borderColor: `${mainColor}15`,
+                }}
               >
                 <p className="text-xl md:text-2xl font-black text-slate-800 leading-none">
-                  {adjustedProgressStats?.avg ?? (() => {
-                    const raw = summary.TotalTryout > 0
-                      ? Math.round(summary.AverageScore / summary.TotalTryout)
-                      : 0;
-                    const sc = summary.AverageSubtestCount || 1;
-                    return isSNBT && sc > 1 ? Math.round(raw / sc) : raw;
-                  })()}
+                  {adjustedProgressStats?.avg ??
+                    (() => {
+                      const raw =
+                        summary.TotalTryout > 0
+                          ? Math.round(
+                              summary.AverageScore / summary.TotalTryout,
+                            )
+                          : 0;
+                      const sc = summary.AverageSubtestCount || 1;
+                      return isSNBT && sc > 1 ? Math.round(raw / sc) : raw;
+                    })()}
                 </p>
                 <p className="text-[9px] md:text-[10px] font-bold uppercase mt-1 tracking-wide text-slate-400">
                   {isSNBT ? 'Avg/Subtes' : 'Rata-rata'}
@@ -912,7 +1054,10 @@ const SummaryTryout = () => {
           ) : (
             <div className="grid grid-cols-3 gap-2">
               {Array.from({ length: 3 }).map((_, i) => (
-                <Skeleton key={i} className="h-[68px] rounded-3xl bg-slate-100" />
+                <Skeleton
+                  key={i}
+                  className="h-[68px] rounded-3xl bg-slate-100"
+                />
               ))}
             </div>
           )}
@@ -920,7 +1065,12 @@ const SummaryTryout = () => {
       </div>
 
       {/* Quick Stats Cards - BimBoard style */}
-      <TryoutQuickStats summary={summary} isLoading={isLoading} mainColor={mainColor} isSNBT={isSNBT} />
+      <TryoutQuickStats
+        summary={summary}
+        isLoading={isLoading}
+        mainColor={mainColor}
+        isSNBT={isSNBT}
+      />
 
       {/* Progress Chart + Mini Leaderboard */}
       <div
@@ -938,7 +1088,10 @@ const SummaryTryout = () => {
           />
         </div>
         <div className="min-w-[85vw] md:min-w-0 md:col-span-1 flex-shrink-0">
-          <TryoutMiniLeaderboard mainColor={mainColor} isSNBT={isSNBT} />
+          <TryoutMiniLeaderboard
+            mainColor={mainColor}
+            isSNBT={isSNBT}
+          />
         </div>
       </div>
     </div>

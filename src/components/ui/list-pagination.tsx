@@ -68,14 +68,15 @@ export default function ListPagination({
         type="number"
         placeholder="10"
         className="w-[80px]"
-        value={pageSize}
+        // value={pageSize}
+        defaultValue={pageSize}
         max={100}
         onChange={(e) => {
           const rawValue = e.target.value;
           const value = parseInt(rawValue);
           if (rawValue.length === 0) {
             if (onSizeChange) {
-              onSizeChange(1);
+              // onSizeChange(0);
               if (onPageChange) onPageChange(1);
             }
             return;
@@ -90,16 +91,24 @@ export default function ListPagination({
         <PaginationContent>
           <PaginationItem
             onClick={() => handleChange('prev')}
-            className="cursor-pointer"
+            className={cn(
+              'cursor-pointer',
+              page === 1 && 'pointer-events-none opacity-50',
+            )}
           >
             <PaginationPrevious />
           </PaginationItem>
           <PaginationItem>
-            <PaginationLink className="cursor-pointer">{page}</PaginationLink>
+            <PaginationLink className="cursor-pointer">
+              {page}/{totalPage}
+            </PaginationLink>
           </PaginationItem>
           <PaginationItem
             onClick={() => handleChange('next')}
-            className="cursor-pointer"
+            className={cn(
+              'cursor-pointer',
+              page === totalPage && 'pointer-events-none opacity-50',
+            )}
           >
             <PaginationNext />
           </PaginationItem>

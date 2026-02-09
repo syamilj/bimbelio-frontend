@@ -98,6 +98,8 @@ const Tryout: React.FC<Props> = ({
     return sessionAnswer[index].answer !== '';
   };
 
+  console.log({ sessionData });
+
   const getDuration = () => {
     if (!sessionData.TryoutSessionParticipant?.startSession) return 0;
 

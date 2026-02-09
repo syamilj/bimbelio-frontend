@@ -114,6 +114,9 @@ export default function ProviderWebsiteCategory({
     }
   }, [web_sub_category, webCategoryData]);
 
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
   const Context = {
     id: websiteSubCategory?.id,
     websiteSubCategory,
@@ -128,6 +131,8 @@ export default function ProviderWebsiteCategory({
       isCore: websiteSubCategoryType === 'CORE',
       isGeneral: websiteSubCategoryType === 'GENERAL',
     },
+    mainColor,
+    secondaryColor,
   };
 
   // if (isLoading && pathname !== '/') {
@@ -217,6 +222,8 @@ interface WebsiteSubCategoryContextType {
     isGeneral: boolean;
   };
   sharingWebSubIds: string[];
+  mainColor: string;
+  secondaryColor: string;
 }
 
 const WebsiteSubCategoryContext = createContext<

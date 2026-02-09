@@ -119,7 +119,11 @@ export function AnalisisTab({
     const data = selectedData;
     // if (!data) return null;
 
-    if (selectedUniversity.length === 0 || selectedMajor.length === 0)
+    if (
+      selectedUniversity.length === 0 ||
+      selectedMajor.length === 0 ||
+      selectedData === null
+    )
       return null;
 
     const univTotalApplicants = data?.univTotalAplicants;
@@ -155,7 +159,7 @@ export function AnalisisTab({
       );
 
     return (
-      <div className="flex flex-col gap-20">
+      <div className="flex flex-col gap-20 mt-8">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Card className="border-none bg-workspace">
             <CardHeader className="flex items-center justify-between md:flex-row">
@@ -181,7 +185,7 @@ export function AnalisisTab({
                 <div>
                   <div className="mb-2 flex items-center justify-between">
                     <span className="text-sm font-semibold">
-                      Skor Kamu: {unlockTryout ? userScore : '-'}
+                      Skor Kamu: {unlockTryout ? userScore.toFixed(2) : '-'}
                     </span>
                     <span className="text-sm font-semibold">
                       Passing Grade: {unlockTryout ? passingMajor : '-'}
@@ -247,7 +251,7 @@ export function AnalisisTab({
                 <div>
                   <div className="mb-2 flex items-center justify-between">
                     <span className="text-sm font-semibold">
-                      Skor Kamu: {unlockTryout ? userScore : '-'}
+                      Skor Kamu: {unlockTryout ? userScore.toFixed(2) : '-'}
                     </span>
                     <span className="text-sm font-semibold">
                       Passing Grade: {unlockTryout ? passingMajor : '-'}
@@ -649,8 +653,12 @@ export function AnalisisTab({
 
                                 <div className="space-y-4">
                                   <div className="flex justify-between text-sm font-medium">
-                                    <span>Skor Kamu: {userScore}</span>
-                                    <span>Passing Grade: {passingUniv}</span>
+                                    <span>
+                                      Skor Kamu: {userScore.toFixed(2)}
+                                    </span>
+                                    <span>
+                                      Passing Grade: {passingUniv.toFixed(2)}
+                                    </span>
                                   </div>
                                   <Progress
                                     value={(userScore / passingUniv) * 100}
@@ -708,8 +716,12 @@ export function AnalisisTab({
 
                                 <div className="space-y-4">
                                   <div className="flex justify-between text-sm font-medium">
-                                    <span>Skor Kamu: {userScore}</span>
-                                    <span>Passing Grade: {passingMajor}</span>
+                                    <span>
+                                      Skor Kamu: {userScore.toFixed(2)}
+                                    </span>
+                                    <span>
+                                      Passing Grade: {passingMajor.toFixed(2)}
+                                    </span>
                                   </div>
                                   <Progress
                                     value={(userScore / passingMajor) * 100}
@@ -797,8 +809,10 @@ export function AnalisisTab({
                           <CardContent>
                             <div className="space-y-4">
                               <div className="flex justify-between text-sm font-medium">
-                                <span>Skor Kamu: {userScore}</span>
-                                <span>Passing Grade: {item.averageScore}</span>
+                                <span>Skor Kamu: {userScore.toFixed(2)}</span>
+                                <span>
+                                  Passing Grade: {item.averageScore.toFixed(2)}
+                                </span>
                               </div>
                               <Progress
                                 value={(userScore / item.averageScore) * 100}

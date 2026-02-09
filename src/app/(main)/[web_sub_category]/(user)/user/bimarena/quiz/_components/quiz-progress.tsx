@@ -160,7 +160,7 @@ export function QuizProgress() {
   // Enhanced radar data with comparison to all students average (0-100 scale)
   const enhancedRadarData = chart.radarChartData || [];
 
-  console.log({ radarChartConfig, enhancedRadarData });
+  console.log({ radarChartConfig, enhancedRadarData, lineChartData });
 
   // Top 10 comparison data (0-100 scale) - from quiz-dummy.ts
   // const top10Comparison = useMemo(() => {
@@ -253,7 +253,7 @@ export function QuizProgress() {
                 <div className="filter-chips flex gap-1.5 md:gap-2 mb-3 md:mb-4 min-w-max md:min-w-0 md:flex-wrap">
                   {SubCategory.map((sub, index) => (
                     <button
-                      key={`${sub.id}-${index}`}
+                      key={index}
                       onClick={() => toggleSubtest(sub.code)}
                       className={cn(
                         'px-2 md:px-3 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold transition-all border flex-shrink-0',
