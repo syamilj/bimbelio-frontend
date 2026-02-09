@@ -152,7 +152,7 @@ export const SelectUser = () => {
                         )}
                         <Link
                           id={user.id}
-                          href={`/${website_sub_category_id_params}/admin/learning-analytics/${user.id}?email=${user.email}`}
+                          href={`/${website_sub_category_id_params}/admin/learning-analytics/user/${user.id}?email=${user.email}`}
                         />
                         <div className="flex flex-col">
                           <span className="font-medium">{user.name}</span>

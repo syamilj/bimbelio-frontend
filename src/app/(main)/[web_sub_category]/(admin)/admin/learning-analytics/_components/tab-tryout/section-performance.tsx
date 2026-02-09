@@ -1,7 +1,8 @@
 'use client';
 
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { Badge } from '@/components/ui/badge';
+import { BookOpen, ChevronDown, ChevronUp, Trophy } from 'lucide-react';
+import { useMemo, useState } from 'react';
+
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -10,11 +11,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+
+// import AbsoluteLoader from '@/components/ui/loading/absolute-loader';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Badge } from '@/components/ui/badge';
 import {
-  ChartConfig,
   ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
@@ -29,79 +31,36 @@ import {
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FetchReturnType, useGet } from '@/lib/fetch-helper/useGet';
-import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
-import { BookOpen, ChevronDown, ChevronUp, Target, Trophy } from 'lucide-react';
-import { useParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  Line,
-  LineChart,
-  XAxis,
-  YAxis,
-} from 'recharts';
-import { SectionTitle } from './section-title';
+import { Area, AreaChart, CartesianGrid, Line, XAxis, YAxis } from 'recharts';
 
-const ColorList = [
-  '#0091FF',
-  '#22c55e',
-  '#eab308',
-  '#ef4444',
-  '#6366f1',
-  '#a855f7',
-  '#f97316',
-];
-
-export const TryoutAnalyticsTable = () => {
-  const { id } = useParams<{ id: string | undefined }>();
-
+export const SectionPerformance = () => {
   const fetchingData = useGet<DataType>(
-    '/learningAnalytics/getUserAnalyticsTryout',
-    {
-      params: {
-        userId: id ? id : undefined,
-      },
-      useEffectDependencies: [id],
-    },
+    '/learningAnalytics/getAnalyticsTryout',
+    {},
   );
 
-  const {
-    data: TryoutData,
-    isLoading: TryoutDataIsLoading,
-    error: TryoutDataError,
-  } = fetchingData;
-
-  if (TryoutDataIsLoading) return <LoadingPage />;
-  if (!TryoutData) return null;
+  const { error: TryoutDataError } = fetchingData;
 
   if (TryoutDataError) {
     return <div>Error: {TryoutDataError.message}</div>;
   }
 
   return (
-    <div>
-      <SectionTitle
-        icon={Target}
-        title="BimArena - Tryout"
-      />
-      <Tabs defaultValue="all">
-        <TabsList>
-          <TabsTrigger value="all">Semua</TabsTrigger>
-          <TabsTrigger value="subcategory">Per Subtest</TabsTrigger>
-        </TabsList>
-        <TabsContent value="all">
-          <ByAllTab fetchingData={fetchingData} />
-        </TabsContent>
+    <Tabs defaultValue="all">
+      <TabsList>
+        <TabsTrigger value="all">Semua</TabsTrigger>
+        <TabsTrigger value="subcategory">Per Subtest</TabsTrigger>
+      </TabsList>
+      <TabsContent value="subcategory">
+        <BySubCategoryTab fetchingData={fetchingData} />
+      </TabsContent>
 
-        <TabsContent value="subcategory">
-          <BySubCategoryTab fetchingData={fetchingData} />
-        </TabsContent>
-      </Tabs>
-    </div>
+      <TabsContent value="all">
+        <ByAllTab fetchingData={fetchingData} />
+      </TabsContent>
+    </Tabs>
   );
 };
 
@@ -113,16 +72,19 @@ const ByAllTab = ({
   const { mainColor, secondaryColor } = useWebsiteSubCategory();
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const { data: TryoutData } = fetchingData;
+  const {
+    data: TryoutData,
+    isLoading: TryoutDataIsLoading,
+    error: TryoutDataError,
+  } = fetchingData;
 
   const performanceAll = TryoutData?.overall.scoreHistory;
 
   const chartData = useMemo(() => {
     return performanceAll?.map((item, index) => ({
       index: index + 1,
-      name: `Tryout-${index + 1}`,
+      name: `TO ${index + 1}`,
       score: item.score,
-      rank: item.rank,
       title: item.tryoutTitle,
       date: item.date,
       // Calculate trend line (simple linear regression)
@@ -137,12 +99,19 @@ const ByAllTab = ({
     }));
   }, [performanceAll]);
 
+  if (TryoutDataIsLoading)
+    return <Skeleton className="w-full h-[1200px] md:h-[670px]" />;
+
   if (!TryoutData || !performanceAll) return null;
+
+  if (TryoutDataError) {
+    return <div>Error: {TryoutDataError.message}</div>;
+  }
 
   const INITIAL_ROWS = 5;
   const performanceAllStats = TryoutData.overall.stats;
 
-  const chartConfigAll = {
+  const chartConfig = {
     score: {
       label: 'Skor',
       color: mainColor,
@@ -194,6 +163,7 @@ const ByAllTab = ({
       <CardContent className="p-6">
         {performanceAll.length > 0 ? (
           <div className="space-y-6">
+            {/* Stats Summary */}
             <div className="grid grid-cols-3 gap-3">
               <div className="p-4 rounded-3xl border-2 border-emerald-100 bg-emerald-50">
                 <div className="text-xs font-bold text-emerald-600 uppercase tracking-wide mb-1">
@@ -221,12 +191,14 @@ const ByAllTab = ({
                 </div>
               </div>
             </div>
+
+            {/* Score Line Chart with Trend */}
             <div className="space-y-2">
               <h3 className="text-sm font-bold text-slate-700">
                 Grafik Skor & Trend
               </h3>
               <ChartContainer
-                config={chartConfigAll}
+                config={chartConfig}
                 className="h-[250px] w-full"
               >
                 <AreaChart
@@ -272,6 +244,7 @@ const ByAllTab = ({
                   />
                   <ChartTooltip content={<ChartTooltipContent />} />
 
+                  {/* Trend Line (dashed) */}
                   <Line
                     type="monotone"
                     dataKey="trend"
@@ -282,6 +255,7 @@ const ByAllTab = ({
                     name="Trend"
                   />
 
+                  {/* Score Area */}
                   <Area
                     type="monotone"
                     dataKey="score"
@@ -294,6 +268,7 @@ const ByAllTab = ({
               </ChartContainer>
             </div>
 
+            {/* Combined Score & Ranking History */}
             <div className="space-y-2">
               <h3 className="text-sm font-bold text-slate-700">
                 Riwayat Skor & Peringkat
@@ -314,28 +289,10 @@ const ByAllTab = ({
                       <TableHead className="font-bold text-gray-800 text-center py-3">
                         Skor
                       </TableHead>
-                      <TableHead className="font-bold text-gray-800 text-center py-3">
-                        Peringkat
-                      </TableHead>
-                      <TableHead className="font-bold text-gray-800 text-center py-3">
-                        Perubahan
-                      </TableHead>
-                      <TableHead className="font-bold text-gray-800 text-center py-3">
-                        Percentile
-                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {[...displayedData].reverse().map((item, index) => {
-                      const rankPercentile =
-                        item.totalParticipants > 0
-                          ? Math.round(
-                              ((item.totalParticipants - item.rank + 1) /
-                                item.totalParticipants) *
-                                100,
-                            )
-                          : 0;
-
                       return (
                         <TableRow
                           key={index}
@@ -361,64 +318,6 @@ const ByAllTab = ({
                               }}
                             >
                               {Math.round(item.score)}
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-center py-4">
-                            <div className="flex items-center justify-center gap-1">
-                              <Trophy
-                                className={`w-4 h-4 ${
-                                  item.rank <= 3
-                                    ? 'text-yellow-600'
-                                    : 'text-blue-600'
-                                }`}
-                              />
-                              <span
-                                className={`font-bold ${
-                                  item.rank <= 3
-                                    ? 'text-yellow-600'
-                                    : 'text-blue-600'
-                                }`}
-                              >
-                                #{item.rank}
-                              </span>
-                              <span className="text-xs text-gray-500">
-                                / {item.totalParticipants}
-                              </span>
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-center py-4">
-                            {item.rankChange !== 0 && (
-                              <span
-                                className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold ${
-                                  item.rankChange > 0
-                                    ? 'bg-emerald-100 text-emerald-600'
-                                    : 'bg-red-100 text-red-600'
-                                }`}
-                              >
-                                {item.rankChange > 0 ? '↑' : '↓'}
-                                {Math.abs(item.rankChange)}
-                              </span>
-                            )}
-                          </TableCell>
-                          <TableCell className="text-center py-4">
-                            <div className="flex flex-col items-center gap-2">
-                              <span className="text-sm font-bold">
-                                Top {rankPercentile}%
-                              </span>
-                              <div className="w-24 bg-slate-200 rounded-full h-2 overflow-hidden">
-                                <div
-                                  className="h-full rounded-full transition-all duration-300"
-                                  style={{
-                                    width: `${rankPercentile}%`,
-                                    backgroundColor:
-                                      item.rankChange > 0
-                                        ? '#10b981'
-                                        : item.rankChange < 0
-                                          ? '#ef4444'
-                                          : mainColor,
-                                  }}
-                                />
-                              </div>
                             </div>
                           </TableCell>
                         </TableRow>
@@ -452,7 +351,15 @@ const ByAllTab = ({
           </div>
         ) : (
           <div className="text-center py-8">
-            <p className="text-sm text-gray-500">Data belum ada</p>
+            {/* <div className="w-32 h-32 mx-auto mb-3">
+                    <EmptyStateIllustrations.NoPerformance />
+                  </div>
+                  <h3 className="text-lg font-black text-slate-800 mb-2">
+                    {searchQuery ? "Tidak ada hasil" : "Belum Ada Data Performa"}
+                  </h3>
+                  <p className="text-sm text-slate-500 mb-4">
+                    {searchQuery ? "Coba kata kunci lain" : <>Selesaikan <BimArena /> untuk melihat grafik performa</>}
+                  </p> */}
           </div>
         )}
       </CardContent>
@@ -466,7 +373,6 @@ const BySubCategoryTab = ({
   fetchingData: FetchReturnType<DataType, any>;
 }) => {
   const { mainColor, secondaryColor } = useWebsiteSubCategory();
-
   const [isExpanded, setIsExpanded] = useState(false);
 
   const {
@@ -475,59 +381,18 @@ const BySubCategoryTab = ({
     error: TryoutDataError,
   } = fetchingData;
 
-  const performanceAll = TryoutData?.overall.scoreHistory;
-  const performanceBySubCategory = TryoutData?.bySubCategory;
+  if (TryoutDataIsLoading)
+    return <Skeleton className="w-full h-[1200px] md:h-[670px]" />;
 
-  const SubCategory = useMemo(
-    () =>
-      performanceBySubCategory?.subCategories.map((sub, index) => ({
-        ...sub,
-        color: ColorList[index % ColorList.length],
-      })),
-    [performanceBySubCategory?.subCategories],
-  );
-  const [selectedSubtests, setSelectedSubtests] = useState<string[]>([]);
+  if (!TryoutData) return null;
 
-  useEffect(() => {
-    if (SubCategory) {
-      setSelectedSubtests(SubCategory.map((sub) => sub.id));
-    }
-  }, [SubCategory]);
-
-  const chartConfigBySub: ChartConfig = useMemo(() => {
-    const config: ChartConfig = {};
-
-    performanceBySubCategory?.subCategories.forEach((sub, index) => {
-      config[sub.id] = {
-        label: sub.initial,
-        color: ColorList[index % ColorList.length],
-      };
-    });
-
-    // config['userAvg'] = {
-    //   label: 'Kamu',
-    //   color: '#000000',
-    // };
-
-    // config['allStudentsAvg'] = {
-    //   label: 'Semua Siswa',
-    //   color: '#94a3b8',
-    // };
-
-    return config;
-  }, [performanceBySubCategory?.subCategories]);
-
-  if (
-    !TryoutData ||
-    !performanceAll ||
-    !performanceBySubCategory ||
-    !SubCategory
-  )
-    return null;
+  if (TryoutDataError) {
+    return <div>Error: {TryoutDataError.message}</div>;
+  }
 
   const INITIAL_ROWS = 5;
 
-  const lineChartData = performanceBySubCategory.chartData;
+  const performanceBySubCategory = TryoutData.bySubCategory;
 
   const getScoreBadgeColor = (score: number) => {
     if (score >= 80) return { bg: 'bg-emerald-100', text: 'text-emerald-700' };
@@ -575,99 +440,16 @@ const BySubCategoryTab = ({
       </CardHeader>
 
       <CardContent className="p-6">
-        <div className="relative">
-          <div
-            className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-2 md:pb-0"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            <style>{`.filter-chips::-webkit-scrollbar { display: none; }`}</style>
-            <div className="filter-chips flex gap-1.5 md:gap-2 mb-3 md:mb-4 min-w-max md:min-w-0 md:flex-wrap">
-              {SubCategory.map((sub, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    setSelectedSubtests((prev) =>
-                      prev.includes(sub.id)
-                        ? prev.filter((c) => c !== sub.id)
-                        : [...prev, sub.id],
-                    );
-                  }}
-                  className={cn(
-                    'px-2 md:px-3 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold transition-all border flex-shrink-0',
-                    selectedSubtests.includes(sub.id)
-                      ? 'text-white border-transparent'
-                      : 'bg-white text-slate-400 border-slate-200 hover:border-slate-300',
-                  )}
-                  style={
-                    selectedSubtests.includes(sub.id)
-                      ? { backgroundColor: sub.color }
-                      : {}
-                  }
-                >
-                  {sub.initial}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-        <ChartContainer
-          config={chartConfigBySub}
-          className="h-[280px] md:h-[350px] w-full"
-        >
-          <LineChart
-            data={lineChartData}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-          >
-            <CartesianGrid
-              strokeDasharray="3 3"
-              stroke="#e2e8f0"
-            />
-            <XAxis
-              dataKey="tryout"
-              tick={{ fontSize: 12, fill: '#64748b', fontWeight: 600 }}
-              tickLine={false}
-              axisLine={{ stroke: '#e2e8f0' }}
-            />
-            <YAxis
-              domain={[0, 1000]}
-              tick={{ fontSize: 11, fill: '#64748b' }}
-              tickLine={false}
-              axisLine={{ stroke: '#e2e8f0' }}
-            />
-            <ChartTooltip content={<ChartTooltipContent />} />
-            <ChartLegend content={<ChartLegendContent />} />
-
-            {SubCategory.filter((sub) => {
-              return selectedSubtests.includes(sub.id);
-              // return true;
-            }).map((sub, index) => (
-              <Line
-                key={index}
-                type="monotone"
-                dataKey={sub.id}
-                stroke={sub.color}
-                strokeWidth={2}
-                dot={{ r: 4, fill: sub.color }}
-                activeDot={{ r: 6 }}
-                connectNulls
-              />
-            ))}
-          </LineChart>
-        </ChartContainer>
         <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
           <p className="text-sm text-blue-700 mb-2">
             <span className="font-semibold">Keterangan Inisial:</span>
           </p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-            {SubCategory.map((subCat) => (
+            {performanceBySubCategory.subCategories.map((subCat) => (
               <div
                 key={subCat.id}
                 className="text-xs"
               >
-                <span
-                  className="inline-block w-3 h-3 mr-2 rounded-full"
-                  style={{ backgroundColor: subCat.color }}
-                ></span>
                 <span className="font-semibold">{subCat.initial}</span> ={' '}
                 {subCat.name}
               </div>
@@ -678,9 +460,6 @@ const BySubCategoryTab = ({
           <Table>
             <TableHeader>
               <TableRow style={{ backgroundColor: `${mainColor}08` }}>
-                <TableHead className="font-bold text-gray-800 py-3">
-                  To
-                </TableHead>
                 <TableHead className="font-bold text-gray-800 py-3">
                   Tryout
                 </TableHead>
@@ -709,14 +488,11 @@ const BySubCategoryTab = ({
                   </TableCell>
                 </TableRow>
               ) : (
-                [...displayedData].reverse().map((tryout, index) => (
+                displayedData.map((tryout) => (
                   <TableRow
                     key={tryout.id}
                     className="hover:bg-gray-50 transition-colors"
                   >
-                    <TableCell className="font-semibold text-gray-900 py-4 whitespace-nowrap">
-                      TO {displayedData.length - index}
-                    </TableCell>
                     <TableCell className="font-semibold text-gray-900 py-4 whitespace-nowrap">
                       {tryout.title}
                     </TableCell>
@@ -775,18 +551,6 @@ const BySubCategoryTab = ({
   );
 };
 
-const LoadingPage = () => {
-  return (
-    <div>
-      <SectionTitle
-        icon={BookOpen}
-        title="BimArena - Tryout"
-      />
-      <Skeleton className="w-full h-[1200px] md:h-[670px]" />
-    </div>
-  );
-};
-
 type DataType = {
   overall: {
     stats: {
@@ -799,7 +563,7 @@ type DataType = {
       date: Date;
       score: number;
       tryoutTitle: string;
-      rank: number;
+      // rank: number;
       totalParticipants: number;
       rankChange: number;
     }[];
@@ -824,6 +588,5 @@ type DataType = {
         averageScore: number;
       }[];
     }[];
-    chartData: Record<string, string | number>[];
   };
 };

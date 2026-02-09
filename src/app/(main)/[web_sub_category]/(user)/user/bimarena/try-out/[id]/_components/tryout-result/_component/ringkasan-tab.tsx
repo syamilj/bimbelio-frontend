@@ -47,7 +47,7 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
     {
       title: 'Skor Total',
       value: userScore.toFixed(1),
-      description: 'Rata rata skor keseluruhan',
+      description: 'Skor keseluruhan',
       icon: Star,
       gradient: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
       bgColor: `${mainColor}10`,

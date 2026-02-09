@@ -123,7 +123,7 @@ type SuccessType<Data = any> = {
   data?: Data;
 };
 
-type FetchReturnType<Data, ErrorData> = {
+export type FetchReturnType<Data, ErrorData> = {
   data: Data | null;
   isLoading: boolean;
   error: ErrorType<ErrorData> | null;

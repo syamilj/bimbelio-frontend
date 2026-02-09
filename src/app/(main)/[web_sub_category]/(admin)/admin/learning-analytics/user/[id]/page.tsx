@@ -1,7 +1,7 @@
 'use client';
 
 import BimInsight from '@/app/(main)/[web_sub_category]/(user)/user/biminsight2/page';
-import { SelectUser } from '../_components/select-user';
+import { SelectUser } from '../../_components/select-user';
 
 export default function LearningAnalyticsAdmin() {
   return (

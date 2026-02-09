@@ -2,10 +2,10 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useState } from 'react';
-import LiveClassAnalyticsAdmin from '../_components/1-live-class-analytics-admin';
-import TryoutAnalyticsAdmin from '../_components/2-tryout-analytics-admin';
-import QuizAnalyticsAdmin from '../_components/3-quiz-analytics-admin';
 import { SelectUser } from '../_components/select-user';
+import LiveClassAnalyticsAdmin from '../_components/tab-live-class';
+import QuizAnalyticsAdmin from '../_components/tab-quiz';
+import TryoutAnalyticsAdmin from '../_components/tab-tryout';
 
 export default function LearningAnalyticsAdmin() {
   const [tabValue, setTabValue] = useState<string>('tryout');
