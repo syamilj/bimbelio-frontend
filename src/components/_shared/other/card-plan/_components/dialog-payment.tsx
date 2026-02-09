@@ -3,7 +3,6 @@
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -33,20 +32,14 @@ import {
   Clock,
   Coins,
   CreditCard,
-  Gift,
   Loader2,
   Phone,
-  Shield,
   ShoppingBag,
-  Star,
   Tag,
-  Truck,
-  Users,
   Zap,
 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { ReactNode, useState } from 'react';
-import { CardPlan } from '..';
 import { PlanDataType } from '../_provider/types';
 
 const formatPrice = (price: number) => {
@@ -363,9 +356,8 @@ export function DialogPayment({
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
-        // classOverlay="z-[9999999999999999]"
-        classOverlay={classOverlay}
-        className="md:max-w-7xl w-[95vw] max-h-[95vh] p-0 bg-gradient-to-br from-white via-gray-50 to-blue-50/30"
+        classOverlay={cn('!bg-slate-900/20 backdrop-blur-sm', classOverlay)}
+        className="md:max-w-xl w-[95vw] max-h-[90vh] p-0 rounded-3xl border-2 border-slate-200 bg-white shadow-2xl overflow-hidden"
       >
         {/* Compact Header */}
         <HeaderSection />
@@ -382,46 +374,36 @@ export function DialogPayment({
         {paymentMethod !== null && (
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col lg:grid lg:grid-cols-5 gap-4 p-4 max-h-[75vh] overflow-y-auto"
+            className="p-4 sm:p-6 space-y-4 max-h-[75vh] overflow-y-auto"
           >
-            {/* Product Summary - Compact Left Column (40%) */}
-            <CardPreview
-              plan={plan}
+            {/* Customer Information */}
+            <FormUserInformation
+              handlePhoneChange={handlePhoneChange}
+              telp={telp}
+            />
+
+            {/* Voucher Section */}
+            <FormVoucher
+              applyVoucherCode={applyVoucherCode}
               discountPrice={discountPrice}
+              error={error}
+              isLoading={isLoading}
+              plan={plan}
+              setDiscountPrice={setDiscountPrice}
+              setVoucherCode={setVoucherCode}
+              voucherCode={voucherCode}
               paymentMethod={paymentMethod}
             />
 
-            {/* Checkout Form - Right Columns (60%) */}
-            <div className="lg:col-span-3 space-y-4 order-1 lg:order-2">
-              {/* Customer Information - Compact */}
-              <FormUserInformation
-                handlePhoneChange={handlePhoneChange}
-                telp={telp}
-              />
-
-              {/* Voucher Section - Compact */}
-              <FormVoucher
-                applyVoucherCode={applyVoucherCode}
-                discountPrice={discountPrice}
-                error={error}
-                isLoading={isLoading}
-                plan={plan}
-                setDiscountPrice={setDiscountPrice}
-                setVoucherCode={setVoucherCode}
-                voucherCode={voucherCode}
-                paymentMethod={paymentMethod}
-              />
-
-              {/* Order Summary & Payment - Compact */}
-              <FormCheckoutSummary
-                discountPrice={discountPrice}
-                getDiscountPercentage={getDiscountPercentage}
-                loading={loading}
-                plan={plan}
-                telp={telp}
-                paymentMethod={paymentMethod}
-              />
-            </div>
+            {/* Order Summary & Payment */}
+            <FormCheckoutSummary
+              discountPrice={discountPrice}
+              getDiscountPercentage={getDiscountPercentage}
+              loading={loading}
+              plan={plan}
+              telp={telp}
+              paymentMethod={paymentMethod}
+            />
           </form>
         )}
       </DialogContent>
@@ -455,172 +437,139 @@ const PaymentMethodSelection = ({
     plan.price;
 
   return (
-    <div className="p-6 max-h-[75vh] overflow-y-auto">
-      <div className="mb-6">
-        <h2 className="text-xl font-bold text-gray-800 mb-2">
+    <div className="p-4 sm:p-6 max-h-[80vh] overflow-y-auto">
+      <div className="mb-4">
+        <h2 className="text-sm font-bold text-slate-900">
           Pilih Metode Pembayaran
         </h2>
-        <p className="text-sm text-gray-600">
-          Pilih cara pembayaran yang paling sesuai untuk Anda
+        <p className="text-xs text-slate-500 mt-0.5">
+          Pilih cara pembayaran yang sesuai untuk Anda
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="space-y-3">
         {/* Option 1: Full Payment */}
         <button
           onClick={() => setPaymentMethod('FULL_PAYMENT')}
-          className="group relative p-6 rounded-3xl border-2 border-gray-200 hover:border-blue-400 bg-white hover:bg-blue-50 transition-all duration-300 text-left"
+          className="group w-full p-4 rounded-3xl border-2 border-slate-200 hover:border-blue-400 hover:bg-blue-50/50 bg-white transition-all text-left flex items-center gap-4 cursor-pointer active:scale-[0.98]"
         >
-          <div className="flex items-start gap-4">
-            <div
-              className="p-3 rounded-3xl"
-              style={{ backgroundColor: `${mainColor}15` }}
-            >
-              <CreditCard
-                size={24}
-                style={{ color: mainColor }}
-              />
-            </div>
-            <div className="flex-1">
-              <h3 className="font-bold text-gray-800 mb-1">Bayar Penuh</h3>
-              <p className="text-sm text-gray-600 mb-4">
-                Selesaikan pembayaran sekarang dengan sekali transaksi
-              </p>
-              <div className="flex items-baseline gap-2">
-                <span
-                  className="text-2xl font-black"
-                  style={{ color: mainColor }}
-                >
-                  {formatPrice(discountPrice || plan.price)}
-                </span>
-                {(discountPrice ||
-                  (plan.originalPrice && plan.originalPrice > plan.price)) && (
-                  <span className="text-sm text-gray-500 line-through">
-                    {formatPrice(plan.originalPrice || plan.price)}
-                  </span>
-                )}
-              </div>
-            </div>
+          <div
+            className="w-12 h-12 rounded-3xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"
+            style={{ backgroundColor: `${mainColor}15` }}
+          >
+            <CreditCard
+              size={22}
+              style={{ color: mainColor }}
+            />
           </div>
-
-          {/* Hover indicator */}
-          <div className="absolute top-3 right-3 w-5 h-5 rounded-full border-2 border-gray-300 group-hover:border-blue-400 group-hover:bg-blue-400 transition-all" />
+          <div className="flex-1 min-w-0">
+            <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
+              Bayar Penuh
+            </h3>
+            <p className="text-xs text-slate-500">
+              Sekali bayar, langsung akses
+            </p>
+          </div>
+          <div className="text-right flex-shrink-0">
+            <span
+              className="text-base font-bold"
+              style={{ color: mainColor }}
+            >
+              {formatPrice(discountPrice || plan.price)}
+            </span>
+            {plan.originalPrice && plan.originalPrice > plan.price && (
+              <p className="text-[10px] text-slate-400 line-through">
+                {formatPrice(plan.originalPrice)}
+              </p>
+            )}
+          </div>
+          <ArrowRight
+            size={18}
+            className="text-slate-300 group-hover:text-blue-500 group-hover:translate-x-1 transition-all"
+          />
         </button>
 
         {/* Option 2: Installment Payment */}
         <button
           onClick={() => setPaymentMethod('INSTALLMENT')}
-          className="group relative p-6 rounded-3xl border-2 border-gray-200 hover:border-green-400 bg-white hover:bg-green-50 transition-all duration-300 text-left"
+          className="group w-full p-4 rounded-3xl border-2 border-slate-200 hover:border-emerald-400 hover:bg-emerald-50/50 bg-white transition-all text-left cursor-pointer active:scale-[0.98]"
         >
-          <div className="flex items-start gap-4">
-            <div className="p-3 rounded-3xl bg-green-100">
+          <div className="flex items-center gap-4 mb-3">
+            <div className="w-12 h-12 rounded-3xl flex items-center justify-center flex-shrink-0 bg-emerald-100 group-hover:scale-110 transition-transform">
               <Coins
-                size={24}
-                className="text-green-600"
+                size={22}
+                className="text-emerald-600"
               />
             </div>
-            <div className="flex-1">
-              <h3 className="font-bold text-gray-800 mb-1">
-                Cicilan Tanpa Bunga
-              </h3>
-              <p className="text-sm text-gray-600 mb-4">
-                Bayar dengan {plan.PlanInstallmentConfig?.totalInstallments}x
-                cicilan
-              </p>
-
-              {plan.PlanInstallmentConfig?.gracePeriodDays && (
-                <div className="ml-0 flex items-center gap-1 text-blue-600 bg-blue-50 p-1.5 rounded mb-4">
-                  <span className="text-xs">📅</span>
-                  <span className="font-semibold text-xs">
-                    Masa tenggang: {plan.PlanInstallmentConfig.gracePeriodDays}{' '}
-                    hari
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                  Cicilan {plan.PlanInstallmentConfig?.totalInstallments}x
+                </h3>
+                {plan.PlanInstallmentConfig?.gracePeriodDays && (
+                  <span className="text-[10px] font-medium text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
+                    Tenggang {plan.PlanInstallmentConfig.gracePeriodDays} hari
                   </span>
-                </div>
-              )}
-
-              {/* Installment breakdown preview */}
-              <div className="space-y-2 mb-3 max-h-40 overflow-y-auto pr-2">
-                {plan.PlanInstallmentConfig?.PlanInstallmentSchedule.map(
-                  (schedule, idx) => (
-                    <div
-                      key={schedule.id}
-                      className="text-xs"
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium text-gray-700">
-                          Cicilan #{schedule.installmentNumber}:
-                        </span>
-                        <span className="text-green-600 font-bold">
-                          {formatPrice(schedule.amount)}
-                        </span>
-                      </div>
-
-                      {/* Due date info */}
-                      {idx === 0 && (
-                        <span className="ml-0 mt-0.5 text-gray-500 text-xs">
-                          Pembayaran pertama
-                        </span>
-                      )}
-                      {idx > 0 && (
-                        <div className="ml-0 mt-0.5 text-gray-500 text-xs">
-                          {schedule.daysAfterFirstPayment} hari setelah
-                          pembayaran pertama
-                        </div>
-                      )}
-
-                      {/* Late Fee Info */}
-                      {schedule.lateFeeType !== 'NONE' && (
-                        <div className="ml-0 mt-1 flex items-center gap-1 text-orange-600">
-                          <span className="text-xs">
-                            ⚠️ Denda jika terlambat bayar:
-                          </span>
-                          <span className="font-semibold">
-                            {schedule.lateFeeType === 'PERCENTAGE'
-                              ? `${schedule.lateFeeAmount}%`
-                              : formatPrice(schedule.lateFeeAmount || 0)}
-                          </span>
-                          {schedule.lateFeeType === 'PERCENTAGE' && (
-                            <span className="text-gray-500 text-xs">
-                              (~
-                              {formatPrice(
-                                (schedule.amount *
-                                  (schedule.lateFeeAmount || 0)) /
-                                  100,
-                              )}
-                              )
-                            </span>
-                          )}
-                        </div>
-                      )}
-
-                      {/* Masa Tenggang Info - untuk cicilan pertama */}
-                    </div>
-                  ),
                 )}
               </div>
-
-              <div className="flex items-baseline gap-2 pt-2 border-t border-green-100">
-                <span className="text-lg font-bold text-green-600">
-                  Mulai dari {formatPrice(firstInstallmentPrice)}
-                </span>
-              </div>
+              <p className="text-xs text-slate-500">
+                Tanpa bunga, bayar bertahap
+              </p>
             </div>
+            <div className="text-right flex-shrink-0">
+              <span className="text-base font-bold text-emerald-600">
+                {formatPrice(firstInstallmentPrice)}
+              </span>
+              <p className="text-[10px] text-slate-500">/cicilan pertama</p>
+            </div>
+            <ArrowRight
+              size={18}
+              className="text-slate-300 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all"
+            />
           </div>
 
-          {/* Hover indicator */}
-          <div className="absolute top-3 right-3 w-5 h-5 rounded-full border-2 border-gray-300 group-hover:border-green-400 group-hover:bg-green-400 transition-all" />
+          {/* Installment breakdown with due dates */}
+          <div className="space-y-2 p-3 bg-slate-50 rounded-3xl">
+            {plan.PlanInstallmentConfig?.PlanInstallmentSchedule.map(
+              (schedule) => (
+                <div
+                  key={schedule.id}
+                  className="flex items-center justify-between py-1.5 border-b border-slate-100 last:border-0"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center">
+                      <span className="text-[10px] font-bold text-emerald-600">
+                        {schedule.installmentNumber}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-slate-700">
+                        Cicilan {schedule.installmentNumber}
+                      </p>
+                      <p className="text-[10px] text-slate-400 flex items-center gap-1">
+                        <Clock size={8} />
+                        {schedule.installmentNumber === 1
+                          ? 'Bayar sekarang'
+                          : `Hari ke-${schedule.daysAfterFirstPayment}`}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-sm font-bold text-emerald-600">
+                    {formatPrice(schedule.amount)}
+                  </span>
+                </div>
+              ),
+            )}
+          </div>
         </button>
       </div>
 
-      {/* Info section */}
-      <div className="mt-6">
-        <div className="p-4 bg-blue-50 border border-blue-200 rounded-3xl">
-          <p className="text-sm text-blue-700">
-            <span className="font-semibold">💡 Tips:</span> Pilih cicilan jika
-            ingin membagi pembayaran, atau pilih bayar penuh untuk transaksi
-            cepat.
-          </p>
-        </div>
+      {/* Tips */}
+      <div className="mt-4 p-2.5 bg-amber-50 border border-amber-200 rounded-3xl">
+        <p className="text-[10px] text-amber-700">
+          <span className="font-semibold">💡 Tips:</span> Cicilan tanpa bunga,
+          bisa diangsur sesuai jadwal!
+        </p>
       </div>
     </div>
   );
@@ -628,88 +577,56 @@ const PaymentMethodSelection = ({
 
 const HeaderSection = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
-
-  // Get dynamic colors from the selected category
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   return (
-    <div
-      className="relative p-4 border-b"
-      style={{
-        background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}04)`,
-      }}
-    >
-      <DialogHeader className="text-center">
-        <div className="flex items-center justify-center gap-2 mb-1">
-          <div
-            className="p-1.5 rounded-3xl"
-            style={{ backgroundColor: `${mainColor}15` }}
-          >
-            <ShoppingBag
-              size={18}
-              style={{ color: mainColor }}
-            />
+    <div className="relative">
+      {/* Top gradient bar */}
+      <div
+        className="h-1"
+        style={{
+          background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
+        }}
+      />
+      <div className="px-4 py-4 sm:px-6 sm:py-5 border-b border-slate-100">
+        <DialogHeader>
+          <div className="flex items-center gap-3">
+            <div
+              className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
+              style={{ backgroundColor: `${mainColor}15` }}
+            >
+              <ShoppingBag
+                size={18}
+                style={{ color: mainColor }}
+              />
+            </div>
+            <div className="flex-1 min-w-0">
+              <DialogTitle className="text-base font-bold text-slate-900">
+                Checkout
+              </DialogTitle>
+              <DialogDescription className="text-xs text-slate-500">
+                Selesaikan pembelian untuk akses premium
+              </DialogDescription>
+            </div>
+            <div className="hidden sm:flex items-center gap-2">
+              <div className="flex items-center gap-1 text-[10px] text-slate-500 bg-slate-50 px-2 py-1 rounded-full">
+                <CheckCircle2
+                  size={10}
+                  className="text-emerald-500"
+                />
+                <span>Aman</span>
+              </div>
+              <div className="flex items-center gap-1 text-[10px] text-slate-500 bg-slate-50 px-2 py-1 rounded-full">
+                <Zap
+                  size={10}
+                  style={{ color: mainColor }}
+                />
+                <span>Instan</span>
+              </div>
+            </div>
           </div>
-          <DialogTitle className="text-xl font-bold text-gray-800">
-            Checkout
-          </DialogTitle>
-        </div>
-        <DialogDescription className="text-sm text-gray-600 text-center">
-          Selesaikan pembelian untuk akses instant ke konten premium
-        </DialogDescription>
-
-        {/* Compact Trust Badges */}
-        <div className="flex items-center justify-center gap-6 mt-3">
-          <div className="flex items-center gap-1 text-xs text-gray-600">
-            <Shield
-              size={12}
-              className="text-green-500"
-            />
-            <span>Pembayaran Aman</span>
-          </div>
-          <div className="flex items-center gap-1 text-xs text-gray-600">
-            <Truck
-              size={12}
-              className="text-blue-500"
-            />
-            <span>Akses Instan</span>
-          </div>
-        </div>
-      </DialogHeader>
-    </div>
-  );
-};
-
-const CardPreview = ({
-  plan,
-  discountPrice,
-  paymentMethod,
-}: {
-  plan: PlanDataType;
-  discountPrice: number | null;
-  paymentMethod: 'FULL_PAYMENT' | 'INSTALLMENT';
-}) => {
-  const { websiteSubCategory } = useWebsiteSubCategory();
-
-  // Get dynamic colors from the selected category
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  return (
-    <div className="lg:col-span-2 order-2 lg:order-1">
-      <div className="bg-gray-50 rounded-3xl border p-4">
-        <h3 className="font-semibold text-gray-800 text-sm mb-3 flex items-center gap-2">
-          <Star
-            size={14}
-            style={{ color: mainColor }}
-          />
-          Ringkasan Pesanan
-        </h3>
-        <CardPlan
-          plan={plan}
-          discount={discountPrice || undefined}
-          viewOnly
-          paymentMethod={paymentMethod}
-        />
+        </DialogHeader>
       </div>
     </div>
   );
@@ -722,85 +639,54 @@ const FormUserInformation = ({
   telp: string;
   handlePhoneChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
-  const { websiteSubCategory } = useWebsiteSubCategory();
+  const isValid = telp.startsWith('+62') && telp.length >= 12;
 
-  // Get dynamic colors from the selected category
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
   return (
-    <div className="bg-white rounded-3xl border">
-      <div
-        className="p-3 border-b"
-        style={{ backgroundColor: `${mainColor}05` }}
-      >
-        <h3 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
-          <div
-            className="p-1 rounded"
-            style={{ backgroundColor: `${mainColor}20` }}
-          >
-            <Users
-              size={14}
-              style={{ color: mainColor }}
-            />
-          </div>
-          Informasi Kontak
-        </h3>
-      </div>
-
-      <div className="p-4">
-        <div className="space-y-3">
-          <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-            <Phone
-              size={12}
-              className="text-gray-500"
-            />
-            Nomor Telepon
-            <Badge
-              variant="destructive"
-              className="text-xs px-1 py-0 text-white"
-            >
-              Required
-            </Badge>
-          </Label>
-          <div className="relative">
-            <Input
-              type="tel"
-              placeholder="+62851 1234 5678"
-              value={telp}
-              onChange={handlePhoneChange}
-              className="h-12 text-sm border border-gray-200 focus:border-blue-500 rounded-3xl pl-10 pr-4 transition-all duration-200"
-              required
-            />
-            <Phone
-              size={16}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            />
-            {/* Phone number indicator */}
-            {telp && (
-              <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                {telp.startsWith('+62') && telp.length >= 12 ? (
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                ) : (
-                  <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-                )}
-              </div>
+    <div className="p-4 bg-slate-50 rounded-3xl border border-slate-200">
+      <Label className="text-xs font-semibold text-slate-700 flex items-center gap-2 mb-2">
+        <Phone
+          size={12}
+          className="text-slate-500"
+        />
+        Nomor WhatsApp
+        <span className="text-[10px] px-1.5 py-0.5 bg-red-500 text-white rounded-full">
+          Wajib
+        </span>
+      </Label>
+      <div className="relative">
+        <Input
+          type="tel"
+          placeholder="+62812 3456 7890"
+          value={telp}
+          onChange={handlePhoneChange}
+          className={cn(
+            'h-10 text-sm rounded-3xl pl-9 pr-10 border-2',
+            isValid
+              ? 'border-emerald-300 bg-emerald-50/50'
+              : 'border-slate-200 bg-white',
+          )}
+          required
+        />
+        <Phone
+          size={14}
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+        />
+        {telp && (
+          <div className="absolute right-3 top-1/2 -translate-y-1/2">
+            {isValid ? (
+              <CheckCircle2
+                size={16}
+                className="text-emerald-500"
+              />
+            ) : (
+              <div className="w-2 h-2 bg-amber-400 rounded-full" />
             )}
           </div>
-          <div className="flex items-start gap-2 p-3 bg-blue-50 rounded-3xl text-xs text-blue-700">
-            <Shield
-              size={12}
-              className="text-blue-600 mt-0.5 flex-shrink-0"
-            />
-            <div>
-              <p className="font-medium mb-1">Format otomatis tersedia</p>
-              <ul className="space-y-0.5 text-blue-600">
-                <li>• Ketik: 08123456789 → +6281234567890</li>
-                <li>• Ketik: 81234567890 → +6281234567890</li>
-                <li>• Data aman dengan enkripsi SSL</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
+      <p className="text-[10px] text-slate-500 mt-1.5">
+        Format: 08xxx atau +62xxx • Enkripsi SSL
+      </p>
     </div>
   );
 };
@@ -826,108 +712,74 @@ const FormVoucher = ({
   plan: PlanDataType;
   paymentMethod: 'FULL_PAYMENT' | 'INSTALLMENT';
 }) => {
-  const { websiteSubCategory } = useWebsiteSubCategory();
-
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
-
   const firstInstallmentPrice =
     plan.PlanInstallmentConfig?.PlanInstallmentSchedule[0].amount || null;
 
   return (
-    <div className="bg-white rounded-3xl border">
-      <div
-        className="p-3 border-b"
-        style={{ backgroundColor: `${secondaryColor}05` }}
-      >
-        <h3 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
-          <div className="p-1 rounded bg-green-200">
-            <Tag
-              size={14}
-              className="text-green-700"
-            />
-          </div>
-          Kode Promo & Voucher
-        </h3>
-      </div>
-
-      <div className="p-4">
-        <div className="flex flex-col gap-2">
-          <div className="flex gap-2">
-            <div className="relative flex-1">
-              <Input
-                type="text"
-                placeholder="Masukkan kode voucher atau promo"
-                value={voucherCode}
-                disabled={!!discountPrice}
-                onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
-                className="h-10 text-sm border border-gray-200 focus:border-green-500 rounded-3xl pl-8"
-              />
-              <Tag
-                size={14}
-                className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-gray-400"
-              />
-            </div>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className={cn(
-                'h-10 px-4 border rounded-3xl text-sm font-medium',
-                discountPrice
-                  ? 'border-red-200 text-red-600 hover:bg-red-50'
-                  : 'border-green-200 text-green-600 hover:bg-green-50',
-              )}
-              onClick={() => {
-                if (!discountPrice) {
-                  applyVoucherCode(plan.id);
-                } else {
-                  setDiscountPrice(null);
-                  setVoucherCode('');
-                }
-              }}
-              disabled={isLoading || (!voucherCode.trim() && !discountPrice)}
-            >
-              {isLoading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : discountPrice ? (
-                'Hapus'
-              ) : (
-                'Terapkan'
-              )}
-            </Button>
-          </div>
-          {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-3xl">
-              <p className="text-sm text-red-600 font-medium">
-                ⚠️ {error.message}
-              </p>
-            </div>
-          )}
+    <div className="p-3 bg-slate-50 rounded-3xl border border-slate-200">
+      <div className="flex gap-2">
+        <div className="relative flex-1">
+          <Input
+            type="text"
+            placeholder="Kode voucher (opsional)"
+            value={voucherCode}
+            disabled={!!discountPrice}
+            onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
+            className="h-9 text-sm border border-slate-200 rounded-3xl pl-8 bg-white"
+          />
+          <Tag
+            size={12}
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
+          />
         </div>
-
-        {/* Voucher Success State - Compact */}
-        {discountPrice && (
-          <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-3xl">
-            <div className="flex items-center gap-2">
-              <CheckCircle2
-                size={16}
-                className="text-green-600"
-              />
-              <div>
-                <p className="text-sm font-medium text-green-800">
-                  Voucher berhasil diterapkan!
-                </p>
-                <p className="text-xs text-green-700">
-                  Kamu hemat{' '}
-                  {paymentMethod === 'INSTALLMENT' && firstInstallmentPrice
-                    ? formatPrice(firstInstallmentPrice - discountPrice)
-                    : formatPrice(plan.price - discountPrice)}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className={cn(
+            'h-9 px-3 rounded-3xl text-xs font-semibold',
+            discountPrice
+              ? 'border-red-200 text-red-600 hover:bg-red-50'
+              : 'border-emerald-200 text-emerald-600 hover:bg-emerald-50',
+          )}
+          onClick={() => {
+            if (!discountPrice) {
+              applyVoucherCode(plan.id);
+            } else {
+              setDiscountPrice(null);
+              setVoucherCode('');
+            }
+          }}
+          disabled={isLoading || (!voucherCode.trim() && !discountPrice)}
+        >
+          {isLoading ? (
+            <Loader2 className="w-3 h-3 animate-spin" />
+          ) : discountPrice ? (
+            'Hapus'
+          ) : (
+            'Cek'
+          )}
+        </Button>
       </div>
+
+      {error && (
+        <p className="text-[10px] text-red-600 mt-1.5">⚠️ {error.message}</p>
+      )}
+
+      {discountPrice && (
+        <div className="flex items-center gap-2 mt-2 p-2 bg-emerald-100 rounded-3xl">
+          <CheckCircle2
+            size={14}
+            className="text-emerald-600"
+          />
+          <span className="text-xs font-medium text-emerald-700">
+            Hemat{' '}
+            {paymentMethod === 'INSTALLMENT' && firstInstallmentPrice
+              ? formatPrice(firstInstallmentPrice - discountPrice)
+              : formatPrice(plan.price - discountPrice)}
+          </span>
+        </div>
+      )}
     </div>
   );
 };
@@ -948,162 +800,84 @@ const FormCheckoutSummary = ({
   paymentMethod: 'FULL_PAYMENT' | 'INSTALLMENT' | null;
 }) => {
   const { websiteSubCategory } = useWebsiteSubCategory();
-
-  // Get dynamic colors from the selected category
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const installmentPrice =
     plan.PlanInstallmentConfig?.PlanInstallmentSchedule[0].amount || 0;
 
+  const isValid = telp.startsWith('+62') && telp.length >= 12;
+  const finalPrice =
+    paymentMethod === 'FULL_PAYMENT'
+      ? discountPrice || plan.price
+      : discountPrice || installmentPrice;
+
   return (
-    <div className="bg-white rounded-3xl border">
-      <div
-        className="p-3 border-b"
+    <div className="space-y-3">
+      {/* Price Summary */}
+      <div className="p-4 bg-white rounded-3xl border-2 border-slate-200">
+        <div className="flex justify-between items-center mb-2">
+          <span className="text-xs text-slate-500">
+            {paymentMethod === 'INSTALLMENT'
+              ? 'Cicilan pertama'
+              : 'Total bayar'}
+          </span>
+          {(discountPrice ||
+            (plan.originalPrice && plan.originalPrice > plan.price)) && (
+            <span className="text-[10px] text-slate-400 line-through">
+              {formatPrice(
+                paymentMethod === 'FULL_PAYMENT'
+                  ? plan.originalPrice || plan.price
+                  : installmentPrice,
+              )}
+            </span>
+          )}
+        </div>
+        <div className="flex items-baseline gap-2">
+          <span
+            className="text-2xl font-bold"
+            style={{ color: mainColor }}
+          >
+            {formatPrice(finalPrice)}
+          </span>
+          {discountPrice && (
+            <span className="text-xs font-medium text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">
+              Hemat{' '}
+              {formatPrice(
+                paymentMethod === 'FULL_PAYMENT'
+                  ? plan.price - discountPrice
+                  : installmentPrice - discountPrice,
+              )}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Payment Button */}
+      <Button
+        type="submit"
+        className="w-full h-12 text-sm font-bold text-white border-0 rounded-3xl shadow-lg"
+        disabled={loading || !isValid}
         style={{
-          backgroundColor: `${mainColor}08`,
+          background:
+            loading || !isValid
+              ? '#cbd5e1'
+              : `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
         }}
       >
-        <h3 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
-          <div
-            className="p-1 rounded"
-            style={{ backgroundColor: `${mainColor}20` }}
-          >
-            <CreditCard
-              size={14}
-              style={{ color: mainColor }}
-            />
-          </div>
-          Ringkasan Pembayaran
-        </h3>
-      </div>
-
-      <div className="p-4 space-y-4">
-        {/* Price Breakdown - Compact */}
-        <div className="space-y-2">
-          <div className="flex justify-between items-center text-sm">
-            <span className="text-gray-600">Harga paket</span>
-            {paymentMethod === 'FULL_PAYMENT' && (
-              <span className="font-medium">{formatPrice(plan.price)}</span>
-            )}
-            {paymentMethod === 'INSTALLMENT' &&
-              plan.PlanInstallmentConfig?.PlanInstallmentSchedule && (
-                <span className="font-medium">
-                  {formatPrice(installmentPrice)}
-                </span>
-              )}
-          </div>
-
-          {discountPrice && (
-            <div className="flex justify-between items-center text-sm">
-              <span className="text-green-600 flex items-center gap-1">
-                <Gift size={12} />
-                Diskon voucher
-              </span>
-              <span className="font-medium text-green-600">
-                -
-                {paymentMethod === 'FULL_PAYMENT'
-                  ? formatPrice(plan.price - discountPrice)
-                  : formatPrice(installmentPrice - discountPrice)}
-              </span>
-            </div>
-          )}
-
-          {plan.originalPrice && plan.originalPrice > plan.price && (
-            <div className="flex justify-between items-center text-sm">
-              <span className="text-orange-600 flex items-center gap-1">
-                <Zap size={12} />
-                Diskon ({getDiscountPercentage()}%)
-              </span>
-              <span className="font-medium text-orange-600">
-                -{formatPrice(plan.originalPrice - plan.price)}
-              </span>
-            </div>
-          )}
-
-          <div className="flex justify-between items-center pt-2 border-t border-gray-200">
-            <span className="font-bold text-gray-800">Total</span>
-            <div className="text-right">
-              <span
-                className="text-lg font-black"
-                style={{ color: mainColor }}
-              >
-                {paymentMethod === 'FULL_PAYMENT'
-                  ? formatPrice(discountPrice || plan.price)
-                  : formatPrice(discountPrice || installmentPrice)}
-              </span>
-              {(discountPrice ||
-                (plan.originalPrice && plan.originalPrice > plan.price)) && (
-                <p className="text-xs text-gray-500 line-through">
-                  {formatPrice(plan.originalPrice || plan.price)}
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Compact Benefits */}
-        <div className="p-3 bg-gray-50 rounded-3xl text-center">
-          <Clock
-            size={16}
-            className="mx-auto mb-1 text-blue-500"
-          />
-          <p className="text-xs font-medium text-gray-700">Akses Instan</p>
-          <p className="text-xs text-gray-500">Setelah pembayaran</p>
-        </div>
-
-        {/* Payment Button - Compact but Prominent */}
-        <Button
-          type="submit"
-          className="w-full h-12 text-sm font-bold shadow-lg hover:shadow-xl transition-all duration-300 text-white border-0 relative overflow-hidden group"
-          disabled={
-            loading ||
-            telp.length === 0 ||
-            !telp.startsWith('+62') ||
-            telp.length < 12
-          }
-          style={{
-            background: loading
-              ? '#gray-400'
-              : `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-          }}
-        >
-          <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-          {loading ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin mr-2" />
-              Memproses...
-            </>
-          ) : (
-            <>
-              <CreditCard className="h-4 w-4 mr-2" />
-              Bayar{' '}
-              {paymentMethod === 'FULL_PAYMENT'
-                ? formatPrice(discountPrice || plan.price)
-                : formatPrice(discountPrice || installmentPrice)}
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </>
-          )}
-        </Button>
-
-        {/* Security Note - Compact */}
-        <div className="text-center pt-2 border-t border-gray-100">
-          <p className="text-xs text-gray-500">
-            Dengan melanjutkan, Kamu menyetujui{' '}
-            <a
-              href="#"
-              className="text-blue-600 hover:underline"
-            >
-              Syarat & Ketentuan
-            </a>{' '}
-            kami
-          </p>
-          <div className="flex items-center justify-center gap-1 mt-1 text-xs text-gray-400">
-            <Shield size={10} />
-            <span>Pembayaran dienkripsi SSL 256-bit</span>
-          </div>
-        </div>
-      </div>
+        {loading ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+            Memproses...
+          </>
+        ) : (
+          <>
+            <CreditCard className="h-4 w-4 mr-2" />
+            Bayar Sekarang
+            <ArrowRight className="h-4 w-4 ml-2" />
+          </>
+        )}
+      </Button>
     </div>
   );
 };

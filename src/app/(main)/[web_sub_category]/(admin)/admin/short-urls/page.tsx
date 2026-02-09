@@ -1,10 +1,18 @@
-"use client";
+'use client';
 
-import { useSession } from "@/components/provider/provider-session-auth";
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import ListPagination from '@/components/ui/list-pagination';
 import {
   Table,
   TableBody,
@@ -12,38 +20,45 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/table';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { fetchAllShortUrls, deleteShortUrl, type ShortUrl } from "@/lib/api/short-url";
-import { Copy, Edit, ExternalLink, MoreVertical, Plus, QrCode, Search, TrendingUp } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import ListPagination from "@/components/ui/list-pagination";
-import { QrCodeDialog } from "./_components/QrCodeDialog";
+  deleteShortUrl,
+  fetchAllShortUrls,
+  type ShortUrl,
+} from '@/lib/api/short-url';
+import {
+  Copy,
+  Edit,
+  ExternalLink,
+  MoreVertical,
+  Plus,
+  QrCode,
+  Search,
+  TrendingUp,
+} from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { QrCodeDialog } from './_components/QrCodeDialog';
 
 export default function ShortUrlsPage() {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const router = useRouter();
 
-  const mainColor = websiteSubCategory?.main_color || "#0091FF";
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
   const [shortUrls, setShortUrls] = useState<ShortUrl[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const take = 20;
   const [qrDialogOpen, setQrDialogOpen] = useState(false);
-  const [selectedShortUrl, setSelectedShortUrl] = useState<ShortUrl | null>(null);
+  const [selectedShortUrl, setSelectedShortUrl] = useState<ShortUrl | null>(
+    null,
+  );
 
   const loadShortUrls = async () => {
     try {
@@ -57,8 +72,8 @@ export default function ShortUrlsPage() {
       setShortUrls(response.data || []);
       setTotalPages(response.total_pages || 1);
     } catch (error) {
-      console.error("Failed to load short URLs:", error);
-      toast.error("Gagal memuat short URLs");
+      console.error('Failed to load short URLs:', error);
+      toast.error('Gagal memuat short URLs');
     } finally {
       setLoading(false);
     }
@@ -72,27 +87,30 @@ export default function ShortUrlsPage() {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || window.location.origin;
     const fullUrl = `${baseUrl}/l/${code}`;
     navigator.clipboard.writeText(fullUrl);
-    toast.success("URL copied to clipboard!");
+    toast.success('URL copied to clipboard!');
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this short URL?")) return;
+    if (!confirm('Are you sure you want to delete this short URL?')) return;
 
     try {
       await deleteShortUrl(id);
-      toast.success("Short URL deleted successfully");
+      toast.success('Short URL deleted successfully');
       loadShortUrls();
     } catch (error) {
-      console.error("Failed to delete:", error);
-      toast.error("Failed to delete short URL");
+      console.error('Failed to delete:', error);
+      toast.error('Failed to delete short URL');
     }
   };
 
   const getDestinationDisplay = (url: ShortUrl) => {
-    if (url.destinationType === "LINK_PAGE" && url.LinkPage) {
+    if (url.destinationType === 'LINK_PAGE' && url.LinkPage) {
       return (
         <div className="flex items-center gap-2">
-          <Badge variant="outline" style={{ borderColor: mainColor, color: mainColor }}>
+          <Badge
+            variant="outline"
+            style={{ borderColor: mainColor, color: mainColor }}
+          >
             Link Page
           </Badge>
           <span className="text-sm text-gray-600">{url.LinkPage.title}</span>
@@ -112,10 +130,15 @@ export default function ShortUrlsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Short URLs</h1>
-          <p className="text-gray-600 mt-1">Manage your short links and track clicks</p>
+          <p className="text-gray-600 mt-1">
+            Manage your short links and track clicks
+          </p>
         </div>
         <Link href={`/${websiteSubCategory?.id}/admin/short-urls/create`}>
-          <Button style={{ backgroundColor: mainColor }} className="gap-2">
+          <Button
+            style={{ backgroundColor: mainColor }}
+            className="gap-2"
+          >
             <Plus className="w-4 h-4" />
             Create Short URL
           </Button>
@@ -126,7 +149,9 @@ export default function ShortUrlsPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-600">Total Short URLs</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-600">
+              Total Short URLs
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{shortUrls.length}</div>
@@ -134,21 +159,29 @@ export default function ShortUrlsPage() {
         </Card>
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-600">Total Clicks</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-600">
+              Total Clicks
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {shortUrls.reduce((acc, url) => acc + url.totalClicks, 0).toLocaleString()}
+              {shortUrls
+                .reduce((acc, url) => acc + url.totalClicks, 0)
+                .toLocaleString()}
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-600">Unique Visitors</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-600">
+              Unique Visitors
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {shortUrls.reduce((acc, url) => acc + url.totalUniqueIps, 0).toLocaleString()}
+              {shortUrls
+                .reduce((acc, url) => acc + url.totalUniqueIps, 0)
+                .toLocaleString()}
             </div>
           </CardContent>
         </Card>
@@ -208,14 +241,18 @@ export default function ShortUrlsPage() {
                         </Button>
                       </div>
                       {url.title && (
-                        <div className="text-sm text-gray-600 mt-1">{url.title}</div>
+                        <div className="text-sm text-gray-600 mt-1">
+                          {url.title}
+                        </div>
                       )}
                     </TableCell>
                     <TableCell>{getDestinationDisplay(url)}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <TrendingUp className="w-4 h-4 text-gray-400" />
-                        <span className="font-medium">{url.totalClicks.toLocaleString()}</span>
+                        <span className="font-medium">
+                          {url.totalClicks.toLocaleString()}
+                        </span>
                         <span className="text-sm text-gray-500">
                           ({url.totalUniqueIps} unique)
                         </span>
@@ -223,11 +260,17 @@ export default function ShortUrlsPage() {
                     </TableCell>
                     <TableCell>
                       {url.isActive ? (
-                        <Badge variant="outline" className="border-green-500 text-green-600">
+                        <Badge
+                          variant="outline"
+                          className="border-green-500 text-green-600"
+                        >
                           Active
                         </Badge>
                       ) : (
-                        <Badge variant="outline" className="border-gray-400 text-gray-600">
+                        <Badge
+                          variant="outline"
+                          className="border-gray-400 text-gray-600"
+                        >
                           Inactive
                         </Badge>
                       )}
@@ -238,7 +281,11 @@ export default function ShortUrlsPage() {
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                          >
                             <MoreVertical className="w-4 h-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -246,7 +293,7 @@ export default function ShortUrlsPage() {
                           <DropdownMenuItem
                             onClick={() =>
                               router.push(
-                                `/${websiteSubCategory?.id}/admin/short-urls/${url.id}/analytics`
+                                `/${websiteSubCategory?.id}/admin/short-urls/${url.id}/analytics`,
                               )
                             }
                           >
@@ -256,7 +303,7 @@ export default function ShortUrlsPage() {
                           <DropdownMenuItem
                             onClick={() =>
                               router.push(
-                                `/${websiteSubCategory?.id}/admin/short-urls/edit/${url.id}`
+                                `/${websiteSubCategory?.id}/admin/short-urls/edit/${url.id}`,
                               )
                             }
                           >
@@ -272,12 +319,16 @@ export default function ShortUrlsPage() {
                             <QrCode className="w-4 h-4 mr-2" />
                             QR Code
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleCopyUrl(url.code)}>
+                          <DropdownMenuItem
+                            onClick={() => handleCopyUrl(url.code)}
+                          >
                             <Copy className="w-4 h-4 mr-2" />
                             Copy URL
                           </DropdownMenuItem>
                           <DropdownMenuItem
-                            onClick={() => window.open(`/l/${url.code}`, "_blank")}
+                            onClick={() =>
+                              window.open(`/l/${url.code}`, '_blank')
+                            }
                           >
                             <ExternalLink className="w-4 h-4 mr-2" />
                             Open Link

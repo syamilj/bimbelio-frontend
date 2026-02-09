@@ -49,6 +49,7 @@ type FormDataType = {
   liveClass: boolean;
   liveClassesPerWeek: string;
   privateTalk: boolean;
+  recommended: boolean;
   duration?: string;
   timelineStart?: string;
   timelineEnd?: string;
@@ -167,6 +168,7 @@ export default function Provider({ children }: Props) {
       privateTalk: false,
       liveClass: false,
       liveClassesPerWeek: '',
+      recommended: false,
       duration: '',
       durationLimit: '',
       status: '',
@@ -197,6 +199,7 @@ export default function Provider({ children }: Props) {
   const status = formData.watch('status');
   const image = formData.watch('image');
   const previewImage = formData.watch('previewImage');
+  const recommended = formData.watch('recommended');
 
   const {
     alertInstallmentLimitation,
@@ -219,6 +222,7 @@ export default function Provider({ children }: Props) {
     privateTalk,
     liveClass,
     liveClassesPerWeek,
+    recommended,
     duration,
     timelineStart,
     timelineEnd,
@@ -405,6 +409,7 @@ type ProviderType = {
       privateTalk: boolean;
       liveClass: boolean;
       liveClassesPerWeek: string;
+      recommended: boolean;
       duration?: string;
       timelineStart?: string;
       timelineEnd?: string;

@@ -1,18 +1,16 @@
 'use client';
 
 import { DialogPayment } from '@/components/_shared/other/card-plan/_components/dialog-payment';
-import { SparklesText } from '@/components/magicui/sparkles-text';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { formatDateRange } from '@/lib/utils/date';
-import { motion } from 'framer-motion';
 import {
+  ArrowRight,
+  Calendar,
   Crown,
   MessageCircle,
-  Play,
   Star,
   TrendingUp,
   Users,
@@ -35,6 +33,23 @@ export default function Hero({
     ? Math.round(((plan.originalPrice - plan.price) / plan.originalPrice) * 100)
     : 0;
 
+  // Get access duration text
+  const getAccessDuration = () => {
+    if (plan.PlanSubscription?.expireDays) {
+      return `${plan.PlanSubscription.expireDays} hari akses`;
+    }
+    if (plan.PlanSubscription && plan.PlanSubscription.PlanFeature.length > 0) {
+      return formatDateRange(
+        plan.PlanSubscription.PlanFeature[0].validFrom,
+        plan.PlanSubscription.PlanFeature[0].validUntil,
+      );
+    }
+    return formatDateRange(
+      plan.PlanLimitation.validFrom,
+      plan.PlanLimitation.validUntil,
+    );
+  };
+
   // Handle consultation dialog open
   const handleConsultationClick = () => {
     try {
@@ -47,148 +62,190 @@ export default function Hero({
           page_path: '/plan-detail-contact-modal',
         },
       });
-
-      console.log('📊 Pixel tracked: Contact dialog opened from plan detail');
     } catch (error) {
       console.warn('Pixel tracking error:', error);
     }
-
     setIsConsultationDialogOpen(true);
   };
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="relative"
-    >
-      {/* Compact Hero Card */}
-      <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm overflow-hidden">
-        <CardContent className="p-6 lg:p-8">
-          <div className="grid lg:grid-cols-3 gap-8 items-center">
-            {/* Content - 2/3 width */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Compact badges */}
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="flex items-center gap-2 flex-wrap"
-              >
-                <Badge
-                  className="px-3 py-1 text-xs font-bold text-white border-none flex items-center gap-1"
-                  style={{ backgroundColor: mainColor }}
-                >
-                  <Crown className="w-3 h-3" />
-                  Blueprint Plan
-                </Badge>
-                {discountPercentage > 0 && (
-                  <Badge className="bg-red-500 text-white px-2 py-1 text-xs animate-pulse">
-                    <TrendingUp className="w-3 h-3 mr-1" />
-                    {discountPercentage}% OFF
+    <div className="w-full">
+      {/* Mobile-First Hero Container */}
+      <div className="rounded-3xl overflow-hidden border-2 border-slate-200 bg-white shadow-sm">
+        {/* Top Gradient Bar */}
+        <div
+          className="h-1.5 sm:h-2"
+          style={{
+            background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
+          }}
+        />
+
+        <div className="p-4 sm:p-6 lg:p-8">
+          {/* Mobile: Image first, then content */}
+          {/* Desktop: Content left, Image right */}
+          <div className="flex flex-col lg:flex-row lg:items-start gap-5 lg:gap-8">
+            {/* Image - Mobile: Top, Desktop: Right */}
+            <div className="w-full lg:w-2/5 lg:order-2">
+              <div className="relative">
+                <div className="rounded-3xl overflow-hidden border-2 border-slate-200 bg-gradient-to-br from-slate-50 to-white aspect-[4/5]">
+                  {plan.image ? (
+                    <Image
+                      src={plan.image}
+                      alt={plan.name}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div
+                      className="w-full h-full flex items-center justify-center"
+                      style={{ backgroundColor: `${mainColor}10` }}
+                    >
+                      <div className="text-center space-y-2">
+                        <div
+                          className="w-14 h-14 sm:w-20 sm:h-20 mx-auto rounded-3xl flex items-center justify-center"
+                          style={{ backgroundColor: `${mainColor}20` }}
+                        >
+                          <Crown
+                            className="w-7 h-7 sm:w-10 sm:h-10"
+                            style={{ color: mainColor }}
+                          />
+                        </div>
+                        <p
+                          className="text-xs sm:text-sm font-bold"
+                          style={{ color: mainColor }}
+                        >
+                          Premium Plan
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Floating Recommended Badge */}
+                {plan.recommended && (
+                  <div
+                    className="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 w-10 h-10 sm:w-12 sm:h-12 rounded-3xl flex items-center justify-center text-white shadow-lg border-2 sm:border-4 border-white"
+                    style={{
+                      background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                    }}
+                  >
+                    <Star className="w-5 h-5 sm:w-6 sm:h-6 fill-current" />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Content - Mobile: Below image, Desktop: Left */}
+            <div className="w-full lg:w-3/5 lg:order-1 space-y-4 sm:space-y-5">
+              {/* Badges - Horizontal scroll on mobile */}
+              <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
+                {plan.recommended && (
+                  <Badge
+                    className="px-3 py-1 sm:px-4 sm:py-1.5 text-[10px] sm:text-xs font-bold text-white border-none flex items-center gap-1 sm:gap-1.5 rounded-3xl shadow-md whitespace-nowrap flex-shrink-0"
+                    style={{
+                      background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                    }}
+                  >
+                    <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current" />
+                    RECOMMENDED
                   </Badge>
                 )}
-              </motion.div>
+                <Badge className="px-3 py-1 sm:px-4 sm:py-1.5 text-[10px] sm:text-xs font-semibold bg-slate-100 text-slate-700 border-none rounded-3xl flex items-center gap-1 sm:gap-1.5 whitespace-nowrap flex-shrink-0">
+                  <Crown className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                  Plan
+                </Badge>
+                {discountPercentage > 0 && (
+                  <Badge className="px-3 py-1 sm:px-4 sm:py-1.5 text-[10px] sm:text-xs font-bold bg-gradient-to-r from-red-500 to-orange-500 text-white border-none rounded-3xl flex items-center gap-1 sm:gap-1.5 shadow-md whitespace-nowrap flex-shrink-0">
+                    <TrendingUp className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                    HEMAT {discountPercentage}%
+                  </Badge>
+                )}
+              </div>
 
-              {/* Compact title */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="space-y-3"
-              >
-                <h1 className="text-2xl lg:text-3xl font-black leading-tight text-gray-900">
-                  <SparklesText sparklesCount={4}>
-                    <span
-                      className="bg-clip-text text-transparent"
-                      style={{
-                        background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                      }}
-                    >
-                      {plan.name}
-                    </span>
-                  </SparklesText>
+              {/* Title */}
+              <div className="space-y-1.5">
+                <h1 className="text-lg sm:text-xl lg:text-2xl font-bold leading-tight text-slate-900 tracking-tight">
+                  {plan.name}
                 </h1>
-                <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                   <span
                     className="font-bold"
                     style={{ color: mainColor }}
                   >
                     Goal kita jelas:
                   </span>{' '}
-                  Blueprint personal untuk naik 200+ poin dalam waktu terukur.
+                  Nilai untuk naik{' '}
+                  <span className="font-bold text-slate-900">200+ poin</span>{' '}
+                  dalam waktu terukur.
                 </p>
-              </motion.div>
+              </div>
 
-              {/* Compact pricing and CTA */}
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="flex items-center gap-4 flex-wrap"
-              >
-                <div className="flex items-baseline gap-2">
-                  <span className="text-2xl lg:text-3xl font-black text-gray-900">
-                    {formatPrice(plan.price)}
-                  </span>
-                  {plan.originalPrice && (
-                    <span className="text-sm text-gray-400 line-through">
-                      {formatPrice(plan.originalPrice)}
-                    </span>
-                  )}
-                </div>
-                <div className="text-xs text-gray-500">
-                  {plan.PlanSubscription?.expireDays
-                    ? `${plan.PlanSubscription?.expireDays} hari akses`
-                    : plan.PlanSubscription &&
-                        plan.PlanSubscription.PlanFeature.length > 0
-                      ? formatDateRange(
-                          plan.PlanSubscription.PlanFeature[0].validFrom,
-                          plan.PlanSubscription.PlanFeature[0].validUntil,
-                        )
-                      : formatDateRange(
-                          plan.PlanLimitation.validFrom,
-                          plan.PlanLimitation.validUntil,
-                        )}
-                </div>
-              </motion.div>
-
-              {plan.maxUsers && (
-                <div className="w-fit mb-4 p-3 rounded-3xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-amber-100 rounded-3xl">
-                      <Users className="w-4 h-4 text-amber-600" />
+              {/* Pricing - Compact on mobile */}
+              <div className="rounded-3xl p-3 sm:p-4 bg-slate-50 border border-slate-200">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="flex items-baseline gap-2 flex-wrap">
+                      <span
+                        className="text-xl sm:text-2xl font-bold"
+                        style={{ color: mainColor }}
+                      >
+                        {formatPrice(plan.price)}
+                      </span>
+                      {plan.originalPrice && (
+                        <span className="text-sm sm:text-base text-slate-400 line-through">
+                          {formatPrice(plan.originalPrice)}
+                        </span>
+                      )}
                     </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-semibold text-amber-800">
+                    <div className="flex items-center gap-1.5 mt-1">
+                      <Calendar
+                        className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"
+                        style={{ color: mainColor }}
+                      />
+                      <span className="text-xs sm:text-sm text-slate-600 truncate">
+                        {getAccessDuration()}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Kuota Terbatas - Simplified for mobile */}
+              {plan.maxUsers && (
+                <div className="rounded-3xl p-3 sm:p-4 bg-amber-50 border border-amber-200">
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-3xl bg-amber-100 flex items-center justify-center">
+                      <Users className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs sm:text-sm font-bold text-amber-900">
                         Kuota Terbatas
                       </p>
-                      <p className="text-xs text-amber-700">
-                        {plan.totalUsers || 0} / {plan.maxUsers} pengguna aktif
-                      </p>
+                      <div className="mt-1 flex items-center gap-2">
+                        <div className="flex-1 h-1.5 sm:h-2 bg-amber-200 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-amber-500 rounded-full"
+                            style={{
+                              width: `${Math.min(((plan.totalUsers || 0) / plan.maxUsers) * 100, 100)}%`,
+                            }}
+                          />
+                        </div>
+                        <span className="text-[10px] sm:text-xs font-bold text-amber-700 whitespace-nowrap">
+                          {plan.totalUsers || 0}/{plan.maxUsers}
+                        </span>
+                      </div>
                     </div>
-                    <Badge className="bg-amber-500 text-white text-xs font-bold px-2 py-1 ml-8">
-                      LIMITED
-                    </Badge>
                   </div>
                 </div>
               )}
 
-              {/* Compact CTA buttons */}
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="flex flex-col sm:flex-row gap-3"
-              >
+              {/* CTA Buttons - Stack on mobile */}
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-1">
                 {plan.maxUsers && plan.totalUsers >= plan.maxUsers ? (
                   <Button
-                    className="px-6 py-2 rounded-3xl font-bold text-white hover:scale-105 transition-all duration-300 text-sm cursor-not-allowed"
-                    style={{
-                      background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                    }}
+                    disabled
+                    className="w-full sm:w-auto h-11 sm:h-12 px-6 rounded-3xl font-bold text-white text-sm opacity-60"
+                    style={{ backgroundColor: mainColor }}
                   >
                     <Users className="w-4 h-4 mr-2" />
                     Kuota Penuh
@@ -196,20 +253,20 @@ export default function Hero({
                 ) : (
                   <DialogPayment plan={plan}>
                     <Button
-                      className="px-6 py-2 rounded-3xl font-bold text-white hover:scale-105 transition-all duration-300 text-sm"
+                      className="w-full sm:w-auto h-11 sm:h-12 px-6 rounded-3xl font-bold text-white text-sm shadow-md"
                       style={{
                         background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                       }}
                     >
-                      <Play className="w-4 h-4 mr-2" />
-                      Mulai Sekarang
+                      Daftar Sekarang
+                      <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </DialogPayment>
                 )}
                 <Button
                   variant="outline"
                   onClick={handleConsultationClick}
-                  className="px-6 py-2 rounded-3xl font-semibold text-sm hover:scale-105 transition-all duration-300"
+                  className="w-full sm:w-auto h-11 sm:h-12 px-6 rounded-3xl font-semibold text-sm border-2 bg-white"
                   style={{
                     borderColor: mainColor,
                     color: mainColor,
@@ -218,43 +275,11 @@ export default function Hero({
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Konsultasi
                 </Button>
-              </motion.div>
-            </div>
-
-            {/* Compact image - 1/3 width */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="relative"
-            >
-              <div className="relative rounded-3xl overflow-hidden shadow-lg bg-white/20 backdrop-blur-sm">
-                {plan.image && (
-                  <Image
-                    src={plan.image || '/placeholder.svg'}
-                    alt={plan.name}
-                    width={300}
-                    height={200}
-                    className="w-full h-auto rounded-3xl"
-                  />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent rounded-3xl" />
               </div>
-
-              {/* Small floating badge */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: 0.6 }}
-                className="absolute -top-2 -right-2 w-10 h-10 rounded-full flex items-center justify-center text-white shadow-md"
-                style={{ backgroundColor: mainColor }}
-              >
-                <Star className="w-5 h-5" />
-              </motion.div>
-            </motion.div>
+            </div>
           </div>
-        </CardContent>
-      </Card>
-    </motion.div>
+        </div>
+      </div>
+    </div>
   );
 }

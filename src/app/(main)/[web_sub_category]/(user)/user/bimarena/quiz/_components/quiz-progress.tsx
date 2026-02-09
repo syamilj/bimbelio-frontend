@@ -233,7 +233,7 @@ export function QuizProgress() {
                   className="w-4 h-4 md:w-5 md:h-5"
                   style={{ color: mainColor }}
                 />
-                Trend Skor (Quiz 1-5)
+                Trend Skor
               </h3>
               <div className="hidden md:flex items-center gap-2">
                 <Filter className="w-4 h-4 text-slate-400" />

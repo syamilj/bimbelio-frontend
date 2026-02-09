@@ -2,7 +2,11 @@
 
 export const DecorativePatterns = {
   // Gradient Mesh Background
-  GradientMesh: ({ colors = ["#0091FF", "#5aa4dd"] }: { colors?: string[] }) => (
+  GradientMesh: ({
+    colors = ['#0091FF', '#5aa4dd'],
+  }: {
+    colors?: string[];
+  }) => (
     <div className="absolute inset-0 opacity-5 overflow-hidden">
       <div
         className="absolute -top-20 -right-20 w-96 h-96 rounded-full blur-3xl"
@@ -28,7 +32,10 @@ export const DecorativePatterns = {
   // Dot Pattern
   DotPattern: () => (
     <div className="absolute inset-0 opacity-[0.03]">
-      <svg width="100%" height="100%">
+      <svg
+        width="100%"
+        height="100%"
+      >
         <pattern
           id="dot-pattern"
           x="0"
@@ -37,9 +44,18 @@ export const DecorativePatterns = {
           height="24"
           patternUnits="userSpaceOnUse"
         >
-          <circle cx="2" cy="2" r="1.5" fill="currentColor" />
+          <circle
+            cx="2"
+            cy="2"
+            r="1.5"
+            fill="currentColor"
+          />
         </pattern>
-        <rect width="100%" height="100%" fill="url(#dot-pattern)" />
+        <rect
+          width="100%"
+          height="100%"
+          fill="url(#dot-pattern)"
+        />
       </svg>
     </div>
   ),
@@ -47,7 +63,10 @@ export const DecorativePatterns = {
   // Grid Pattern
   GridPattern: () => (
     <div className="absolute inset-0 opacity-[0.02]">
-      <svg width="100%" height="100%">
+      <svg
+        width="100%"
+        height="100%"
+      >
         <pattern
           id="grid-pattern"
           x="0"
@@ -63,13 +82,17 @@ export const DecorativePatterns = {
             strokeWidth="1"
           />
         </pattern>
-        <rect width="100%" height="100%" fill="url(#grid-pattern)" />
+        <rect
+          width="100%"
+          height="100%"
+          fill="url(#grid-pattern)"
+        />
       </svg>
     </div>
   ),
 
   // Wave Pattern
-  WavePattern: ({ color = "#0091FF" }: { color?: string }) => (
+  WavePattern: ({ color = '#0091FF' }: { color?: string }) => (
     <div className="absolute bottom-0 left-0 right-0 opacity-5">
       <svg
         viewBox="0 0 1200 120"
@@ -85,22 +108,22 @@ export const DecorativePatterns = {
   ),
 
   // Floating Shapes
-  FloatingShapes: ({ color = "#0091FF" }: { color?: string }) => (
+  FloatingShapes: ({ color = '#0091FF' }: { color?: string }) => (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {/* Circle */}
       <div
         className="absolute top-10 right-10 w-32 h-32 rounded-full opacity-5 animate-float"
-        style={{ backgroundColor: color, animationDelay: "0s" }}
+        style={{ backgroundColor: color, animationDelay: '0s' }}
       />
       {/* Square */}
       <div
         className="absolute bottom-20 left-10 w-24 h-24 rounded-3xl opacity-5 animate-float"
-        style={{ backgroundColor: color, animationDelay: "2s" }}
+        style={{ backgroundColor: color, animationDelay: '2s' }}
       />
       {/* Triangle */}
       <div
         className="absolute top-1/2 right-1/4 w-0 h-0 border-l-[40px] border-r-[40px] border-b-[60px] border-transparent opacity-5 animate-float"
-        style={{ borderBottomColor: color, animationDelay: "4s" }}
+        style={{ borderBottomColor: color, animationDelay: '4s' }}
       />
     </div>
   ),
@@ -111,19 +134,19 @@ export const DecorativePatterns = {
       <div className="absolute top-10 left-10 w-2 h-2 bg-yellow-400 rounded-full animate-twinkle" />
       <div
         className="absolute top-20 right-20 w-1.5 h-1.5 bg-purple-400 rounded-full animate-twinkle"
-        style={{ animationDelay: "1s" }}
+        style={{ animationDelay: '1s' }}
       />
       <div
         className="absolute bottom-20 left-1/4 w-2 h-2 bg-blue-400 rounded-full animate-twinkle"
-        style={{ animationDelay: "2s" }}
+        style={{ animationDelay: '2s' }}
       />
       <div
         className="absolute bottom-32 right-1/3 w-1 h-1 bg-pink-400 rounded-full animate-twinkle"
-        style={{ animationDelay: "3s" }}
+        style={{ animationDelay: '3s' }}
       />
       <div
         className="absolute top-1/3 left-1/2 w-1.5 h-1.5 bg-emerald-400 rounded-full animate-twinkle"
-        style={{ animationDelay: "4s" }}
+        style={{ animationDelay: '4s' }}
       />
     </div>
   ),
@@ -132,7 +155,14 @@ export const DecorativePatterns = {
   Confetti: () => (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {[...Array(15)].map((_, i) => {
-        const colors = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#FFA07A", "#98D8C8", "#F7DC6F"];
+        const colors = [
+          '#FF6B6B',
+          '#4ECDC4',
+          '#45B7D1',
+          '#FFA07A',
+          '#98D8C8',
+          '#F7DC6F',
+        ];
         const color = colors[i % colors.length];
         const left = Math.random() * 100;
         const animationDelay = Math.random() * 3;

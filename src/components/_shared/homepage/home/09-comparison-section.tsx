@@ -364,7 +364,9 @@ export default function ComparisonSection() {
                       }}
                     >
                       <div className="flex flex-col items-center gap-2">
-                        <span><Bimbelio /></span>
+                        <span>
+                          <Bimbelio />
+                        </span>
                         <span className="bg-yellow-400 text-white text-xs font-black px-3 py-1 rounded-full">
                           PILIHAN TERBAIK
                         </span>

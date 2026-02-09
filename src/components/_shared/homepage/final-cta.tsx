@@ -14,7 +14,6 @@ import {
   CheckCircle,
   Clock,
   Sparkles,
-  Star,
   Target,
   TrendingUp,
   Trophy,
@@ -313,7 +312,6 @@ const FinalCTA = () => {
                 <span>Lihat Demo</span>
               </motion.button>
             </div>
-
           </motion.div>
 
           {/* Right Content - Achievement Cards */}

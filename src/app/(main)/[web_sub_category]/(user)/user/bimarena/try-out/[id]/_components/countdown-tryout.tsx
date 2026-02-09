@@ -71,22 +71,22 @@ const CountDownTryout = ({
 
   useEffect(() => {
     if (timeLeft <= 0) {
-      FinishTryOutLate({
-        sessionId,
-        answer: sessionAnswer,
-        userId: session?.user.id || '',
-      });
+      // FinishTryOutLate({
+      //   sessionId,
+      //   answer: sessionAnswer,
+      //   userId: session?.user.id || '',
+      // });
       return;
     }
 
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
-          FinishTryOutLate({
-            sessionId,
-            answer: sessionAnswer,
-            userId: session?.user.id || '',
-          });
+          // FinishTryOutLate({
+          //   sessionId,
+          //   answer: sessionAnswer,
+          //   userId: session?.user.id || '',
+          // });
           return 0;
         }
         return prev - 1;
@@ -126,7 +126,7 @@ const CountDownTryout = ({
       style={{
         backgroundColor: getTimerBg(),
         color: getTimerColor(),
-        border: `2px solid ${getTimerColor()}20`,
+        border: `1px solid ${getTimerColor()}20`,
       }}
     >
       {/* Icon */}

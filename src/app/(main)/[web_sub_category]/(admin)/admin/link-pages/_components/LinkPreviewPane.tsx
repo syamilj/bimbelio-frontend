@@ -1,26 +1,28 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { memo, useMemo } from "react";
-import { Inter, Playfair_Display } from 'next/font/google';
 import {
   ExternalLink,
   Facebook,
   Globe,
   Instagram,
   Linkedin,
-  Lock,
   MessageCircle,
   Music4,
   Twitter,
   Youtube,
 } from 'lucide-react';
+import { Inter, Playfair_Display } from 'next/font/google';
+import Image from 'next/image';
+import { memo, useMemo } from 'react';
 
-import { LinkButton, LinkPageDetail } from "@/types/link";
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
+import { LinkButton, LinkPageDetail } from '@/types/link';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
+});
 
 interface LinkPreviewPaneProps {
   page?: LinkPageDetail | null;
@@ -40,48 +42,50 @@ const socialIconMap: Record<string, any> = {
   custom: ExternalLink,
 };
 
-const phoneChrome = "relative mx-auto flex w-full max-w-sm flex-col rounded-[32px] border border-white/10 bg-white/5 p-4 shadow-2xl ring-1 ring-black/5 backdrop-blur";
+const phoneChrome =
+  'relative mx-auto flex w-full max-w-sm flex-col rounded-[32px] border border-white/10 bg-white/5 p-4 shadow-2xl ring-1 ring-black/5 backdrop-blur';
 
 const halftone = `radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px)`;
 
-const resolveBackground = (page?: LinkPageDetail | null): React.CSSProperties => {
+const resolveBackground = (
+  page?: LinkPageDetail | null,
+): React.CSSProperties => {
   if (!page) {
     return {
-      backgroundColor: "#101828",
+      backgroundColor: '#101828',
       backgroundImage: halftone,
-      backgroundSize: "18px 18px",
+      backgroundSize: '18px 18px',
     };
   }
 
-  if (page.backgroundType === "IMAGE" && page.backgroundImage) {
+  if (page.backgroundType === 'IMAGE' && page.backgroundImage) {
     return {
       backgroundImage: `linear-gradient(180deg, rgba(5,5,5,0.75), rgba(5,5,5,0.4)), url(${page.backgroundImage})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
     };
   }
 
-  if (page.backgroundType === "COLOR") {
+  if (page.backgroundType === 'COLOR') {
     return {
-      backgroundColor: page.backgroundColor || "#101828",
+      backgroundColor: page.backgroundColor || '#101828',
       backgroundImage: halftone,
-      backgroundSize: "18px 18px",
+      backgroundSize: '18px 18px',
     };
   }
 
-  if (page.backgroundType === "GRADIENT") {
+  if (page.backgroundType === 'GRADIENT') {
     return {
-      backgroundImage:
-        page.backgroundColor
-          ? `radial-gradient(circle at top, ${page.backgroundColor}, rgba(3,7,18,0.9))`
-          : "linear-gradient(120deg, #4338CA, #2563EB)",
+      backgroundImage: page.backgroundColor
+        ? `radial-gradient(circle at top, ${page.backgroundColor}, rgba(3,7,18,0.9))`
+        : 'linear-gradient(120deg, #4338CA, #2563EB)',
     };
   }
 
   return {
-    backgroundColor: page.backgroundColor || "#101828",
+    backgroundColor: page.backgroundColor || '#101828',
     backgroundImage: halftone,
-    backgroundSize: "18px 18px",
+    backgroundSize: '18px 18px',
   };
 };
 
@@ -91,7 +95,7 @@ const groupBySection = (buttons: LinkButton[]) => {
   const order: string[] = [];
 
   sorted.forEach((btn) => {
-    const label = btn.sectionLabel?.trim() || "";
+    const label = btn.sectionLabel?.trim() || '';
     if (!map.has(label)) {
       map.set(label, []);
       order.push(label);
@@ -100,13 +104,17 @@ const groupBySection = (buttons: LinkButton[]) => {
   });
 
   return order.map((label) => ({
-    key: label || "default",
+    key: label || 'default',
     label: label || null,
     buttons: map.get(label)!,
   }));
 };
 
-const ButtonPreview = memo(function ButtonPreview({ button }: { button: LinkButton }) {
+const ButtonPreview = memo(function ButtonPreview({
+  button,
+}: {
+  button: LinkButton;
+}) {
   const type = button.type || 'PRIMARY';
   const baseColor = button.color || '#ffffff';
   const baseTextColor = button.textColor || '#000000';
@@ -124,9 +132,9 @@ const ButtonPreview = memo(function ButtonPreview({ button }: { button: LinkButt
     shadow = 'none';
   } else if (type === 'SECONDARY') {
     if (!button.color) {
-       finalBg = 'rgba(255, 255, 255, 0.15)';
-       finalTxt = '#ffffff';
-       borderStyle = '1px solid rgba(255, 255, 255, 0.2)';
+      finalBg = 'rgba(255, 255, 255, 0.15)';
+      finalTxt = '#ffffff';
+      borderStyle = '1px solid rgba(255, 255, 255, 0.2)';
     }
   } else if (type === 'TEXT') {
     finalBg = 'transparent';
@@ -135,8 +143,8 @@ const ButtonPreview = memo(function ButtonPreview({ button }: { button: LinkButt
   }
 
   if (type === 'PRIMARY' && !button.color) {
-     finalBg = 'rgba(255, 255, 255, 0.95)';
-     finalTxt = '#000000';
+    finalBg = 'rgba(255, 255, 255, 0.95)';
+    finalTxt = '#000000';
   }
 
   return (
@@ -153,18 +161,18 @@ const ButtonPreview = memo(function ButtonPreview({ button }: { button: LinkButt
       <div className="relative flex w-full items-center justify-center">
         {(button.thumbnail || button.icon) && (
           <div className="absolute left-0 flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-black/5 object-cover">
-             {button.thumbnail ? (
-               <Image
-                 src={button.thumbnail}
-                 alt=""
-                 width={32}
-                 height={32}
-                 sizes="32px"
-                 className="h-full w-full object-cover"
-               />
-             ) : (
-               <span className="text-lg">⭐️</span>
-             )}
+            {button.thumbnail ? (
+              <Image
+                src={button.thumbnail}
+                alt=""
+                width={32}
+                height={32}
+                sizes="32px"
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <span className="text-lg">⭐️</span>
+            )}
           </div>
         )}
 
@@ -183,31 +191,50 @@ const ButtonPreview = memo(function ButtonPreview({ button }: { button: LinkButt
   );
 });
 
-export const LinkPreviewPane = memo(function LinkPreviewPane({ page, buttons, className }: LinkPreviewPaneProps) {
+export const LinkPreviewPane = memo(function LinkPreviewPane({
+  page,
+  buttons,
+  className,
+}: LinkPreviewPaneProps) {
   const groups = useMemo(() => groupBySection(buttons), [buttons]);
-  const socialEntries = Object.entries(page?.socialLinks || {}).filter(([, url]) => Boolean(url));
+  const socialEntries = Object.entries(page?.socialLinks || {}).filter(
+    ([, url]) => Boolean(url),
+  );
   const style = useMemo(() => resolveBackground(page), [page]);
 
   return (
-    <div className={cn("space-y-4", className)}>
+    <div className={cn('space-y-4', className)}>
       <div className="text-sm text-muted-foreground">
         <p className="font-medium">Live Preview</p>
         <p>Simulates how visitors see your link page.</p>
       </div>
       <div className="rounded-[40px] border border-muted-foreground/20 bg-muted/20 p-4">
         <div className={phoneChrome}>
-          <div className={cn("rounded-[26px] border border-white/10 bg-gradient-to-b from-black/60 to-black/20 p-4 text-white h-[600px] overflow-y-auto no-scrollbar", inter.variable, playfair.variable, "font-sans")} style={style}>
+          <div
+            className={cn(
+              'rounded-[26px] border border-white/10 bg-gradient-to-b from-black/60 to-black/20 p-4 text-white h-[600px] overflow-y-auto no-scrollbar',
+              inter.variable,
+              playfair.variable,
+              'font-sans',
+            )}
+            style={style}
+          >
             <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-black/0 via-black/5 to-black/20" />
 
             <div className="relative z-10 flex flex-col items-center text-center pt-8">
               {page?.profileImage && (
                 <div className="group relative mb-5 h-24 w-24 overflow-hidden rounded-full shadow-2xl ring-4 ring-white/20">
-                  <Image src={page.profileImage} alt={page.title} fill className="object-cover" />
+                  <Image
+                    src={page.profileImage}
+                    alt={page.title}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
               )}
 
               <h1 className="text-xl font-bold tracking-tight text-white drop-shadow-md font-serif">
-                {page?.title || "Your Link Page"}
+                {page?.title || 'Your Link Page'}
               </h1>
 
               {page?.description && (
@@ -241,7 +268,10 @@ export const LinkPreviewPane = memo(function LinkPreviewPane({ page, buttons, cl
                 </div>
               ) : (
                 groups.map((group) => (
-                  <div key={group.key} className="space-y-3">
+                  <div
+                    key={group.key}
+                    className="space-y-3"
+                  >
                     {group.label && (
                       <div className="px-1 pb-1 text-center">
                         <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-white/60 drop-shadow-sm">
@@ -251,7 +281,10 @@ export const LinkPreviewPane = memo(function LinkPreviewPane({ page, buttons, cl
                     )}
                     <div className="space-y-3">
                       {group.buttons.map((btn) => (
-                        <ButtonPreview key={btn.id} button={btn} />
+                        <ButtonPreview
+                          key={btn.id}
+                          button={btn}
+                        />
                       ))}
                     </div>
                   </div>
@@ -262,7 +295,9 @@ export const LinkPreviewPane = memo(function LinkPreviewPane({ page, buttons, cl
             <footer className="relative z-10 mt-8 flex flex-col items-center gap-4 text-center pb-4">
               <div className="h-px w-12 bg-white/20" />
               <div className="text-[10px] font-medium text-white/50">
-                <p>© {new Date().getFullYear()} {page?.title}</p>
+                <p>
+                  © {new Date().getFullYear()} {page?.title}
+                </p>
               </div>
             </footer>
           </div>
@@ -271,4 +306,3 @@ export const LinkPreviewPane = memo(function LinkPreviewPane({ page, buttons, cl
     </div>
   );
 });
-

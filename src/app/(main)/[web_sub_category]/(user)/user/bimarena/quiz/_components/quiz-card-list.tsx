@@ -136,7 +136,6 @@ export function QuizCardList() {
             </div>
           </div>
           {/* Scroll fade indicator */}
-          <div className="absolute right-0 top-0 bottom-1 w-6 bg-gradient-to-l from-white to-transparent pointer-events-none md:hidden" />
         </div>
       </div>
 
@@ -303,8 +302,7 @@ export function QuizCardList() {
                                       /
                                     </span>
                                     <span className="text-gray-500">
-                                      {quiz.TryoutSession.NotAnswersCount ||
-                                        0}
+                                      {quiz.TryoutSession.NotAnswersCount || 0}
                                     </span>
                                   </p>
                                 </div>
@@ -391,8 +389,6 @@ export function QuizCardList() {
                   })}
                 </div>
               </div>
-              {/* Scroll fade indicator */}
-              <div className="absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none md:hidden" />
             </div>
           </div>
         ))}

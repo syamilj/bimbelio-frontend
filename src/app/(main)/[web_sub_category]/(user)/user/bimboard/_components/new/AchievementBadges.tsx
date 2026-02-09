@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { format } from 'date-fns';
+import { id } from 'date-fns/locale';
 import {
-  Star,
-  Flame,
-  Trophy,
-  Target,
   Award,
+  CheckCircle2,
+  Flame,
   Lock,
-  CheckCircle2
-} from "lucide-react";
-import { format } from "date-fns";
-import { id } from "date-fns/locale";
-import { EmptyStateIllustrations } from "./EmptyStateIllustrations";
-import { DecorativePatterns } from "./DecorativePatterns";
+  Star,
+  Target,
+  Trophy,
+} from 'lucide-react';
+import { DecorativePatterns } from './DecorativePatterns';
+import { EmptyStateIllustrations } from './EmptyStateIllustrations';
 
 interface AchievementBadgesProps {
   achievements: Array<{
@@ -28,19 +28,21 @@ interface AchievementBadgesProps {
   }>;
 }
 
-export default function AchievementBadges({ achievements }: AchievementBadgesProps) {
+export default function AchievementBadges({
+  achievements,
+}: AchievementBadgesProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || "#0091FF";
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
   const getIcon = (iconName: string) => {
     switch (iconName) {
-      case "star":
+      case 'star':
         return Star;
-      case "flame":
+      case 'flame':
         return Flame;
-      case "trophy":
+      case 'trophy':
         return Trophy;
-      case "target":
+      case 'target':
         return Target;
       default:
         return Award;
@@ -49,20 +51,23 @@ export default function AchievementBadges({ achievements }: AchievementBadgesPro
 
   const getColor = (iconName: string) => {
     switch (iconName) {
-      case "star":
-        return { bg: "from-amber-400 to-yellow-500", text: "text-amber-500" };
-      case "flame":
-        return { bg: "from-orange-400 to-red-500", text: "text-orange-500" };
-      case "trophy":
-        return { bg: "from-purple-400 to-pink-500", text: "text-purple-500" };
-      case "target":
-        return { bg: "from-blue-400 to-indigo-500", text: "text-blue-500" };
+      case 'star':
+        return { bg: 'from-amber-400 to-yellow-500', text: 'text-amber-500' };
+      case 'flame':
+        return { bg: 'from-orange-400 to-red-500', text: 'text-orange-500' };
+      case 'trophy':
+        return { bg: 'from-purple-400 to-pink-500', text: 'text-purple-500' };
+      case 'target':
+        return { bg: 'from-blue-400 to-indigo-500', text: 'text-blue-500' };
       default:
-        return { bg: "from-emerald-400 to-green-500", text: "text-emerald-500" };
+        return {
+          bg: 'from-emerald-400 to-green-500',
+          text: 'text-emerald-500',
+        };
     }
   };
 
-  const unlockedCount = achievements.filter(a => a.isUnlocked).length;
+  const unlockedCount = achievements.filter((a) => a.isUnlocked).length;
 
   // Empty State
   if (achievements.length === 0 || unlockedCount === 0) {
@@ -75,7 +80,8 @@ export default function AchievementBadges({ achievements }: AchievementBadgesPro
             Belum Ada Pencapaian 🏆
           </h3>
           <p className="mt-2 text-sm text-center text-slate-500 max-w-sm">
-            Mulai belajar dan selesaikan tryout untuk membuka pencapaian pertamamu!
+            Mulai belajar dan selesaikan tryout untuk membuka pencapaian
+            pertamamu!
           </p>
         </div>
       </div>
@@ -99,15 +105,16 @@ export default function AchievementBadges({ achievements }: AchievementBadgesPro
         {achievements.map((achievement) => {
           const Icon = getIcon(achievement.icon);
           const colors = getColor(achievement.icon);
-          const progressPercent = (achievement.progress / achievement.target) * 100;
+          const progressPercent =
+            (achievement.progress / achievement.target) * 100;
 
           return (
             <div
               key={achievement.id}
               className={`relative overflow-hidden rounded-3xl p-4 border-2 transition-all ${
                 achievement.isUnlocked
-                  ? "border-slate-200 bg-gradient-to-br from-slate-50 to-white"
-                  : "border-slate-100 bg-white"
+                  ? 'border-slate-200 bg-gradient-to-br from-slate-50 to-white'
+                  : 'border-slate-100 bg-white'
               }`}
             >
               {/* Background Pattern for Unlocked */}
@@ -126,7 +133,7 @@ export default function AchievementBadges({ achievements }: AchievementBadgesPro
                     className={`w-12 h-12 rounded-3xl flex items-center justify-center ${
                       achievement.isUnlocked
                         ? `bg-gradient-to-br ${colors.bg} shadow-lg`
-                        : "bg-slate-100"
+                        : 'bg-slate-100'
                     }`}
                   >
                     {achievement.isUnlocked ? (
@@ -148,7 +155,9 @@ export default function AchievementBadges({ achievements }: AchievementBadgesPro
                 <div className="flex-1 min-w-0">
                   <h3
                     className={`font-black text-sm mb-1 ${
-                      achievement.isUnlocked ? "text-slate-800" : "text-slate-500"
+                      achievement.isUnlocked
+                        ? 'text-slate-800'
+                        : 'text-slate-500'
                     }`}
                   >
                     {achievement.title}
@@ -175,7 +184,10 @@ export default function AchievementBadges({ achievements }: AchievementBadgesPro
                   {/* Unlocked Date */}
                   {achievement.isUnlocked && achievement.unlockedAt && (
                     <p className="text-xs text-slate-400 font-medium">
-                      Dibuka {format(new Date(achievement.unlockedAt), "dd MMM yyyy", { locale: id })}
+                      Dibuka{' '}
+                      {format(new Date(achievement.unlockedAt), 'dd MMM yyyy', {
+                        locale: id,
+                      })}
                     </p>
                   )}
                 </div>

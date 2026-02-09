@@ -20,8 +20,7 @@ export default function Certificate({
     day: 'numeric',
   });
 
-  const aspectClass =
-    aspectRatio === '9-16' ? 'aspect-9/16' : 'aspect-video';
+  const aspectClass = aspectRatio === '9-16' ? 'aspect-9/16' : 'aspect-video';
 
   return (
     <div

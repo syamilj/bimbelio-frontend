@@ -204,10 +204,9 @@ const EvaluationSection = ({ mainColor }: { mainColor: string }) => (
   <div className="space-y-8">
     <div className="text-center">
       <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
-        <Bimbelio className="text-main-default" />{' '}
-        menggunakan GPT-4o yang menunjukkan performa unggul dalam berbagai hasil
-        ujian, memastikan hasil belajar yang optimal untuk persiapan PTN dan
-        Kedinasan kamu.
+        <Bimbelio className="text-main-default" /> menggunakan GPT-4o yang
+        menunjukkan performa unggul dalam berbagai hasil ujian, memastikan hasil
+        belajar yang optimal untuk persiapan PTN dan Kedinasan kamu.
       </p>
     </div>
 
@@ -224,9 +223,9 @@ const AIModelSection = ({ mainColor }: { mainColor: string }) => (
   <div className="space-y-8">
     <div className="text-center">
       <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
-        <Bimbelio className="text-main-default" />{' '}
-        menggunakan GPT-4o yang terbukti memiliki tingkat akurasi tertinggi
-        dibandingkan model AI lainnya dalam berbagai benchmark evaluasi.
+        <Bimbelio className="text-main-default" /> menggunakan GPT-4o yang
+        terbukti memiliki tingkat akurasi tertinggi dibandingkan model AI
+        lainnya dalam berbagai benchmark evaluasi.
       </p>
     </div>
 
@@ -261,7 +260,9 @@ const ComparisonSection = ({ data }: { data: any[] }) => (
                 <div className="w-12 h-12 mx-auto mb-3 rounded-3xl bg-white/20 flex items-center justify-center">
                   <Star className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-bold"><Bimbelio /></h3>
+                <h3 className="text-xl font-bold">
+                  <Bimbelio />
+                </h3>
                 <p className="text-sm opacity-90">AI-Powered Learning</p>
               </div>
             </div>

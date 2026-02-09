@@ -3,6 +3,13 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
   Table,
   TableBody,
   TableCell,
@@ -17,6 +24,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import {
   Plan,
   PlanBenefit,
@@ -24,14 +32,6 @@ import {
   PlanLimitation,
   PlanSubscription,
 } from '@/types/database';
-import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Copy, Edit, Info, Trash2, User } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -82,14 +82,16 @@ export function PlanDataTable({ plans, getData, type }: PlanDataTableProps) {
   const router = useRouter();
   if (plans.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center p-8 text-center border rounded-lg bg-gray-50/50 dashed border-gray-200">
-        <p className="text-muted-foreground">No plans found in this category.</p>
+      <div className="flex flex-col items-center justify-center p-8 text-center border rounded-3xl bg-gray-50/50 dashed border-gray-200">
+        <p className="text-muted-foreground">
+          No plans found in this category.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-3xl border">
       <Table>
         <TableHeader>
           <TableRow>
@@ -106,7 +108,14 @@ export function PlanDataTable({ plans, getData, type }: PlanDataTableProps) {
             <TableRow key={plan.id}>
               <TableCell>
                 <div className="flex flex-col gap-1">
-                  <span className="font-semibold">{plan.name}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold">{plan.name}</span>
+                    {plan.recommended && (
+                      <Badge className="bg-blue-500 text-white text-[10px] px-1.5 py-0">
+                        Recommended
+                      </Badge>
+                    )}
+                  </div>
                   <code className="text-xs text-muted-foreground bg-gray-100 px-1 py-0.5 rounded w-fit">
                     {plan.slug}
                   </code>
@@ -126,7 +135,7 @@ export function PlanDataTable({ plans, getData, type }: PlanDataTableProps) {
                         {Math.round(
                           ((plan.originalPrice - plan.price) /
                             plan.originalPrice) *
-                            100
+                            100,
                         )}
                         % OFF
                       </span>
@@ -164,23 +173,30 @@ export function PlanDataTable({ plans, getData, type }: PlanDataTableProps) {
                   {plan._count?.Subscription !== undefined && (
                     <div className="flex items-center gap-2 text-sm text-gray-600">
                       <User className="w-4 h-4 text-purple-600" />
-                      <span className="font-medium text-gray-900">{plan._count.Subscription}</span> Users
+                      <span className="font-medium text-gray-900">
+                        {plan._count.Subscription}
+                      </span>{' '}
+                      Users
                     </div>
                   )}
 
                   {/* Max Users */}
                   {plan.maxUsers && (
                     <div className="text-xs text-gray-500">
-                      Limit: <span className="font-medium">{plan.maxUsers}</span> users
+                      Limit:{' '}
+                      <span className="font-medium">{plan.maxUsers}</span> users
                     </div>
                   )}
                 </div>
               </TableCell>
               <TableCell>
                 <div className="flex flex-wrap gap-2 max-w-[250px]">
-                   {/* Tier */}
-                   {plan.PlanSubscription?.tier && (
-                    <Badge variant="outline" className="border-orange-200 text-orange-700 bg-orange-50">
+                  {/* Tier */}
+                  {plan.PlanSubscription?.tier && (
+                    <Badge
+                      variant="outline"
+                      className="border-orange-200 text-orange-700 bg-orange-50"
+                    >
                       Tier {plan.PlanSubscription.tier}
                     </Badge>
                   )}
@@ -191,9 +207,13 @@ export function PlanDataTable({ plans, getData, type }: PlanDataTableProps) {
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <Badge variant="outline" className="cursor-help gap-1 hover:bg-gray-100">
+                            <Badge
+                              variant="outline"
+                              className="cursor-help gap-1 hover:bg-gray-100"
+                            >
                               <Info className="w-3 h-3" />
-                              {plan.PlanSubscription.PlanFeature.length} Features
+                              {plan.PlanSubscription.PlanFeature.length}{' '}
+                              Features
                             </Badge>
                           </TooltipTrigger>
                           <TooltipContent className="max-w-[300px]">
@@ -209,22 +229,25 @@ export function PlanDataTable({ plans, getData, type }: PlanDataTableProps) {
 
                   {/* Benefits Count */}
                   {plan.PlanBenefit && plan.PlanBenefit.length > 0 && (
-                     <TooltipProvider>
-                     <Tooltip>
-                       <TooltipTrigger asChild>
-                         <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 cursor-help gap-1 hover:bg-blue-100">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Badge
+                            variant="outline"
+                            className="bg-blue-50 text-blue-700 border-blue-200 cursor-help gap-1 hover:bg-blue-100"
+                          >
                             {plan.PlanBenefit.length} Benefits
-                         </Badge>
-                       </TooltipTrigger>
-                       <TooltipContent className="max-w-[300px]">
-                         <ul className="list-disc pl-4 text-xs space-y-1">
-                           {plan.PlanBenefit.map((benefit) => (
-                             <li key={benefit.id}>{benefit.title}</li>
-                           ))}
-                         </ul>
-                       </TooltipContent>
-                     </Tooltip>
-                   </TooltipProvider>
+                          </Badge>
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-[300px]">
+                          <ul className="list-disc pl-4 text-xs space-y-1">
+                            {plan.PlanBenefit.map((benefit) => (
+                              <li key={benefit.id}>{benefit.title}</li>
+                            ))}
+                          </ul>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   )}
 
                   {/* Limitations Count */}
@@ -232,7 +255,10 @@ export function PlanDataTable({ plans, getData, type }: PlanDataTableProps) {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Badge variant="secondary" className="cursor-help gap-1 hover:bg-gray-200">
+                          <Badge
+                            variant="secondary"
+                            className="cursor-help gap-1 hover:bg-gray-200"
+                          >
                             Limits
                           </Badge>
                         </TooltipTrigger>
@@ -246,11 +272,13 @@ export function PlanDataTable({ plans, getData, type }: PlanDataTableProps) {
                               Tryout: plan.PlanLimitation.tryout,
                             })
                               .filter(
-                                ([_, value]) => value !== null && value !== undefined
+                                ([_, value]) =>
+                                  value !== null && value !== undefined,
                               )
                               .map(([key, value]) => (
                                 <div key={key}>
-                                  <span className="font-medium">{key}:</span> {value}
+                                  <span className="font-medium">{key}:</span>{' '}
+                                  {value}
                                 </div>
                               ))}
                           </div>
@@ -281,30 +309,35 @@ export function PlanDataTable({ plans, getData, type }: PlanDataTableProps) {
                     size="icon"
                     title="Duplicate Plan"
                     onClick={async () => {
-                  try {
-                    await mutateGeneral(`/plan/editPlan/duplicate/${plan.id}`, {
-                      type: 'post',
-                      payload: {},
-                      onSuccess: (data: any) => {
-                        const newPlan = data.data; // adjust based on response structure
-                        if (newPlan && newPlan.id) {
-                          router.push(
-                            `/${website_sub_category_id}/admin/plan/${newPlan.id}`
-                          );
-                        } else {
-                          getData();
-                        }
-                      },
-                    });
-                  } catch (e) {
-                    console.error('Failed to duplicate:', e);
-                  }
-                }}
+                      try {
+                        await mutateGeneral(
+                          `/plan/editPlan/duplicate/${plan.id}`,
+                          {
+                            type: 'post',
+                            payload: {},
+                            onSuccess: (data: any) => {
+                              const newPlan = data.data; // adjust based on response structure
+                              if (newPlan && newPlan.id) {
+                                router.push(
+                                  `/${website_sub_category_id}/admin/plan/${newPlan.id}`,
+                                );
+                              } else {
+                                getData();
+                              }
+                            },
+                          },
+                        );
+                      } catch (e) {
+                        console.error('Failed to duplicate:', e);
+                      }
+                    }}
                     className="h-8 w-8 text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50"
                   >
                     <Copy className="h-4 w-4" />
                   </Button>
-                  <Link href={`/${website_sub_category_id}/admin/plan/${plan.id}`}>
+                  <Link
+                    href={`/${website_sub_category_id}/admin/plan/${plan.id}`}
+                  >
                     <Button
                       variant="ghost"
                       size="icon"

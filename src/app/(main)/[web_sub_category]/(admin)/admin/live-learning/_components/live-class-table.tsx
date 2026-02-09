@@ -219,7 +219,7 @@ export function LiveClassTable({
                         colSpan={7}
                         className="h-[48.5px]"
                       >
-                        <Skeleton className="w-full h-full rounded-md" />
+                        <Skeleton className="w-full h-full rounded-3xl" />
                       </TableCell>
                     </TableRow>
                   ))
@@ -262,7 +262,7 @@ export function LiveClassTable({
                       <TableCell>
                         <Badge
                           variant="outline"
-                          className="rounded-lg"
+                          className="rounded-3xl"
                         >
                           {liveClass.Category.name}
                         </Badge>
@@ -305,7 +305,7 @@ export function LiveClassTable({
                       <TableCell>
                         <Badge
                           className={cn(
-                            `rounded-lg`,
+                            `rounded-3xl`,
                             liveClass.type === 'LIVECLASS' &&
                               'bg-green-100 text-green-800',
                             liveClass.type === 'LIVESTREAM' &&
@@ -323,7 +323,7 @@ export function LiveClassTable({
                       </TableCell>
                       <TableCell>
                         <Badge
-                          className={`rounded-lg ${getStatusColor(liveClass?.status)}`}
+                          className={`rounded-3xl ${getStatusColor(liveClass?.status)}`}
                         >
                           {liveClass?.status}
                         </Badge>

@@ -1,53 +1,47 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { BimBrand } from "@/components/ui/bim-brand";
-import {
-  Trophy,
-  Medal,
-  BookOpen,
-  MonitorPlay,
-  Bot,
-} from "lucide-react";
-import Link from "next/link";
-import { website_sub_category_id } from "@/hooks/use-web-sub-category-id";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { BimBrand } from '@/components/ui/bim-brand';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import { BookOpen, Bot, Medal, MonitorPlay, Trophy } from 'lucide-react';
+import Link from 'next/link';
 
 export default function BimQuickAccessMenu() {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || "#0091FF";
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
   const quickActions = [
     {
-      suffix: "Course",
+      suffix: 'Course',
       icon: BookOpen,
       href: `/${website_sub_category_id}/user/bimcourse`,
-      gradient: "from-emerald-500 to-emerald-600",
+      gradient: 'from-emerald-500 to-emerald-600',
     },
     {
-      suffix: "Live",
+      suffix: 'Live',
       icon: MonitorPlay,
       href: `/${website_sub_category_id}/user/bimlive`,
-      gradient: "from-purple-500 to-purple-600",
+      gradient: 'from-purple-500 to-purple-600',
     },
     {
-      suffix: "Arena",
-      label: "Try Out",
+      suffix: 'Arena',
+      label: 'Try Out',
       icon: Medal,
       href: `/${website_sub_category_id}/user/bimarena/try-out`,
-      gradient: "from-blue-500 to-blue-600",
+      gradient: 'from-blue-500 to-blue-600',
     },
     {
-      suffix: "Arena",
-      label: "Peringkat",
+      suffix: 'Arena',
+      label: 'Peringkat',
       icon: Trophy,
       href: `/${website_sub_category_id}/user/bimarena/leaderboard`,
-      gradient: "from-yellow-500 to-amber-600",
+      gradient: 'from-yellow-500 to-amber-600',
     },
     {
-      suffix: "Bot",
+      suffix: 'Bot',
       icon: Bot,
       href: `/${website_sub_category_id}/user/bimbot`,
-      gradient: "from-violet-500 to-violet-600",
+      gradient: 'from-violet-500 to-violet-600',
     },
   ];
 
@@ -74,7 +68,8 @@ export default function BimQuickAccessMenu() {
 
               {/* Title */}
               <span className="font-bold text-sm text-slate-700 group-hover:text-slate-900 transition-colors">
-                <BimBrand suffix={action.suffix} />{action.label ? ` - ${action.label}` : ''}
+                <BimBrand suffix={action.suffix} />
+                {action.label ? ` - ${action.label}` : ''}
               </span>
             </Link>
           );
@@ -97,7 +92,8 @@ export default function BimQuickAccessMenu() {
                 <Icon className="w-4 h-4 text-white" />
               </div>
               <span className="font-bold text-sm text-slate-700 whitespace-nowrap">
-                <BimBrand suffix={action.suffix} />{action.label ? ` - ${action.label}` : ''}
+                <BimBrand suffix={action.suffix} />
+                {action.label ? ` - ${action.label}` : ''}
               </span>
             </Link>
           );

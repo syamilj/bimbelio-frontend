@@ -31,11 +31,15 @@ export const HighlighBlock = createReactBlockSpec(
 
                 // Strategy 2: Direct DOM scroll after small delay
                 setTimeout(() => {
-                  const visionOnElement = document.querySelector('#VisionOn') as HTMLElement;
+                  const visionOnElement = document.querySelector(
+                    '#VisionOn',
+                  ) as HTMLElement;
                   const vision = visionOnElement?.style.display !== 'none';
                   const containerId = vision ? 'VisionOn' : 'VisionOff';
 
-                  const pdfContainer = document.querySelector(`#${containerId} .PdfHighlighter`);
+                  const pdfContainer = document.querySelector(
+                    `#${containerId} .PdfHighlighter`,
+                  );
 
                   if (pdfContainer) {
                     // Try multiple selectors for the highlight
@@ -44,12 +48,14 @@ export const HighlighBlock = createReactBlockSpec(
                       `#${containerId} .Highlight[data-id="${highlightId}"]`,
                       `#${containerId} .TextHighlight[data-id="${highlightId}"]`,
                       `[data-id="${highlightId}"]`,
-                      `#${highlightId}`
+                      `#${highlightId}`,
                     ];
 
                     let highlightElement: HTMLElement | null = null;
                     for (const selector of selectors) {
-                      const el = document.querySelector(selector) as HTMLElement;
+                      const el = document.querySelector(
+                        selector,
+                      ) as HTMLElement;
                       if (el && el.offsetParent !== null) {
                         highlightElement = el;
                         break;
@@ -57,13 +63,18 @@ export const HighlighBlock = createReactBlockSpec(
                     }
 
                     if (highlightElement) {
-                      const containerRect = pdfContainer.getBoundingClientRect();
-                      const highlightRect = highlightElement.getBoundingClientRect();
-                      const scrollTop = pdfContainer.scrollTop + (highlightRect.top - containerRect.top) - 100;
+                      const containerRect =
+                        pdfContainer.getBoundingClientRect();
+                      const highlightRect =
+                        highlightElement.getBoundingClientRect();
+                      const scrollTop =
+                        pdfContainer.scrollTop +
+                        (highlightRect.top - containerRect.top) -
+                        100;
 
                       pdfContainer.scrollTo({
                         top: Math.max(0, scrollTop),
-                        behavior: 'smooth'
+                        behavior: 'smooth',
                       });
 
                       // Visual feedback

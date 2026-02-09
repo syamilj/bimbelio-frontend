@@ -16,7 +16,7 @@ import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
-import { cn, getDateString, getDateStringShort } from '@/lib/utils';
+import { cn, getDateStringShort } from '@/lib/utils';
 import { IconTailedArrowUp45 } from '@/styles/icon';
 import type {
   TryoutRegistration,
@@ -25,11 +25,11 @@ import type {
 import {
   Award,
   BookOpen,
-  Calendar,
   CheckCircle,
   Clock,
   Eye,
   Gift,
+  Layers,
   Play,
   Star,
   Tag,
@@ -361,7 +361,7 @@ export default function CardTryOut({
           return (
             <Card
               key={i}
-              className="group relative overflow-hidden border-2 border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01] bg-white rounded-3xl min-w-[85%] sm:min-w-[350px] md:min-w-[320px] snap-center"
+              className="group relative overflow-hidden border-2 border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01] bg-white rounded-3xl min-w-[85%] sm:min-w-[350px] md:min-w-0 snap-center"
             >
               {/* Status Badge */}
               <div className="absolute top-4 right-4 z-20">
@@ -390,7 +390,10 @@ export default function CardTryOut({
 
               <CardContent className="p-0">
                 {/* Hero Image Section - 4:5 Aspect Ratio & No Text Overlay */}
-                <div className="relative w-full aspect-[4/5] h-auto overflow-hidden cursor-pointer" onClick={() => setShowDetail(item)}>
+                <div
+                  className="relative w-full aspect-[4/5] h-auto overflow-hidden cursor-pointer"
+                  onClick={() => setShowDetail(item)}
+                >
                   {item.image ? (
                     <Image
                       src={`${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/tryout/${item.image}`}
@@ -416,7 +419,10 @@ export default function CardTryOut({
                 <div className="p-4 lg:p-6 space-y-4">
                   {/* Title Section (Moved here) */}
                   <div>
-                    <h3 className="font-bold leading-tight text-gray-900 line-clamp-2" title={item.title}>
+                    <h3
+                      className="font-bold leading-tight text-gray-900 line-clamp-2"
+                      title={item.title}
+                    >
                       {item.title}
                     </h3>
                     <p className="text-xs lg:text-sm text-gray-500 mt-1">
@@ -460,27 +466,57 @@ export default function CardTryOut({
                         Mulai
                       </div>
                       <div className="text-xs font-bold text-orange-700 text-center leading-tight whitespace-nowrap">
-                        {getDateStringShort(item.startDate).split(' ').slice(0, 2).join(' ')}
+                        {getDateStringShort(item.startDate)
+                          .split(' ')
+                          .slice(0, 2)
+                          .join(' ')}
                       </div>
                     </div>
 
-                    {/* Tanggal Selesai */}
-                    <div className="flex flex-col items-center justify-center py-2 px-1 rounded-3xl border bg-pink-50/50 border-pink-100 h-full">
-                      <div className="text-[10px] text-pink-600 font-medium mb-1">
-                        Bahas
+                    {/* Subtes Count */}
+                    <div className="flex flex-col items-center justify-center py-2 px-1 rounded-3xl border bg-purple-50/50 border-purple-100 h-full">
+                      <Layers className="w-3.5 h-3.5 text-purple-600 mb-1" />
+                      <div className="text-xs font-bold text-purple-700 leading-none">
+                        {item.TryoutSession.length}
                       </div>
-                      <div className="text-xs font-bold text-pink-700 text-center leading-tight whitespace-nowrap">
-                        {getDateStringShort(item.endDate).split(' ').slice(0, 2).join(' ')}
+                      <div className="text-[10px] text-purple-600 font-medium mt-0.5">
+                        Subtes
                       </div>
                     </div>
                   </div>
 
-                  {/* Tags */}
-                  <div className="flex justify-center">
-                    <Badge className="flex items-center gap-1 text-xs bg-gray-50 text-gray-700 border-gray-200 font-medium">
-                      <Tag className="w-3 h-3" />
-                      {item.WebsiteSubCategory?.name}
-                    </Badge>
+                  {/* Subtest Categories */}
+                  <div className="flex flex-wrap justify-center gap-1">
+                    {(() => {
+                      const categories = [...new Set(
+                        item.TryoutSession.map((s) => s.TryoutCategory?.name).filter(Boolean)
+                      )];
+                      return categories.length > 0 ? (
+                        categories.slice(0, 3).map((cat, idx) => (
+                          <Badge
+                            key={idx}
+                            className="text-[10px] bg-slate-50 text-slate-600 border-slate-200 font-medium px-2 py-0.5"
+                          >
+                            {cat}
+                          </Badge>
+                        ))
+                      ) : (
+                        <Badge className="flex items-center gap-1 text-xs bg-gray-50 text-gray-700 border-gray-200 font-medium">
+                          <Tag className="w-3 h-3" />
+                          {item.WebsiteSubCategory?.name}
+                        </Badge>
+                      );
+                    })()}
+                    {(() => {
+                      const categories = [...new Set(
+                        item.TryoutSession.map((s) => s.TryoutCategory?.name).filter(Boolean)
+                      )];
+                      return categories.length > 3 ? (
+                        <Badge className="text-[10px] bg-slate-100 text-slate-500 border-slate-200 font-medium px-2 py-0.5">
+                          +{categories.length - 3}
+                        </Badge>
+                      ) : null;
+                    })()}
                   </div>
                 </div>
               </CardContent>

@@ -322,9 +322,7 @@ export default function ReactMarkdownChatAI({
                 className="w-full text-left p-3 bg-white border border-blue-200 rounded-3xl hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 text-gray-700 text-sm leading-relaxed shadow-sm hover:shadow-md"
                 onClick={() => handleSaranClick(q)}
               >
-                <span className="font-medium text-blue-600 mr-2">
-                  {i + 1}.
-                </span>
+                <span className="font-medium text-blue-600 mr-2">{i + 1}.</span>
                 <span className="inline prose prose-sm max-w-none dark:prose-invert">
                   <ReactMarkdown
                     remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}

@@ -44,7 +44,9 @@ export default function DocumentSearch() {
     if (search && search.trim().length > 0) {
       const fullName = session?.user?.name || '';
       const [firstName, ...restNameParts] = fullName.split(' ').filter(Boolean);
-      const lastName = restNameParts.length ? restNameParts.join(' ') : undefined;
+      const lastName = restNameParts.length
+        ? restNameParts.join(' ')
+        : undefined;
 
       trackUnifiedEvent({
         eventName: 'Search',

@@ -100,11 +100,41 @@ export const SAMPLE_USER_SCORES: Record<string, number[]> = {
  * Score is total (sum of all quiz scores)
  */
 export const TOP_5_PLAYERS = [
-  { rank: 1, name: 'Budi Santoso', score: 3150, iconType: 'Crown' as const, color: 'text-amber-500' },
-  { rank: 2, name: 'Siti Nurhaliza', score: 3050, iconType: 'Medal' as const, color: 'text-slate-400' },
-  { rank: 3, name: 'Ahmad Rizky', score: 2980, iconType: 'Award' as const, color: 'text-orange-500' },
-  { rank: 4, name: 'Dewi Lestari', score: 2920, iconType: 'Star' as const, color: 'text-slate-400' },
-  { rank: 5, name: 'Reza Pratama', score: 2870, iconType: 'Star' as const, color: 'text-slate-400' },
+  {
+    rank: 1,
+    name: 'Budi Santoso',
+    score: 3150,
+    iconType: 'Crown' as const,
+    color: 'text-amber-500',
+  },
+  {
+    rank: 2,
+    name: 'Siti Nurhaliza',
+    score: 3050,
+    iconType: 'Medal' as const,
+    color: 'text-slate-400',
+  },
+  {
+    rank: 3,
+    name: 'Ahmad Rizky',
+    score: 2980,
+    iconType: 'Award' as const,
+    color: 'text-orange-500',
+  },
+  {
+    rank: 4,
+    name: 'Dewi Lestari',
+    score: 2920,
+    iconType: 'Star' as const,
+    color: 'text-slate-400',
+  },
+  {
+    rank: 5,
+    name: 'Reza Pratama',
+    score: 2870,
+    iconType: 'Star' as const,
+    color: 'text-slate-400',
+  },
 ];
 
 // ============ PERFORMANCE LEVELS ============
@@ -123,9 +153,11 @@ export const PERFORMANCE_LEVELS = {
  * Get performance level based on score (0-100)
  */
 export const getPerformanceLevel = (score: number) => {
-  if (score >= PERFORMANCE_LEVELS.excellent.min) return PERFORMANCE_LEVELS.excellent;
+  if (score >= PERFORMANCE_LEVELS.excellent.min)
+    return PERFORMANCE_LEVELS.excellent;
   if (score >= PERFORMANCE_LEVELS.good.min) return PERFORMANCE_LEVELS.good;
-  if (score >= PERFORMANCE_LEVELS.average.min) return PERFORMANCE_LEVELS.average;
+  if (score >= PERFORMANCE_LEVELS.average.min)
+    return PERFORMANCE_LEVELS.average;
   return PERFORMANCE_LEVELS.needsWork;
 };
 
@@ -136,12 +168,35 @@ export const getPerformanceLevel = (score: number) => {
  * - minAvgScore: minimum average quiz score (0-100) needed for good chance
  * - passingUtbkScore: estimated UTBK score threshold (200-800)
  */
-export const UNIVERSITY_THRESHOLDS: Record<string, { minAvgScore: number; passingUtbkScore: number; competitionRatio: number }> = {
-  'Universitas Indonesia - Kedokteran': { minAvgScore: 88, passingUtbkScore: 720, competitionRatio: 45 },
-  'Institut Teknologi Bandung - Teknik Informatika': { minAvgScore: 82, passingUtbkScore: 680, competitionRatio: 28 },
-  'Universitas Gadjah Mada - Ilmu Hukum': { minAvgScore: 75, passingUtbkScore: 640, competitionRatio: 22 },
-  'Universitas Padjadjaran - Psikologi': { minAvgScore: 72, passingUtbkScore: 620, competitionRatio: 18 },
-  'Universitas Brawijaya - Akuntansi': { minAvgScore: 68, passingUtbkScore: 580, competitionRatio: 15 },
+export const UNIVERSITY_THRESHOLDS: Record<
+  string,
+  { minAvgScore: number; passingUtbkScore: number; competitionRatio: number }
+> = {
+  'Universitas Indonesia - Kedokteran': {
+    minAvgScore: 88,
+    passingUtbkScore: 720,
+    competitionRatio: 45,
+  },
+  'Institut Teknologi Bandung - Teknik Informatika': {
+    minAvgScore: 82,
+    passingUtbkScore: 680,
+    competitionRatio: 28,
+  },
+  'Universitas Gadjah Mada - Ilmu Hukum': {
+    minAvgScore: 75,
+    passingUtbkScore: 640,
+    competitionRatio: 22,
+  },
+  'Universitas Padjadjaran - Psikologi': {
+    minAvgScore: 72,
+    passingUtbkScore: 620,
+    competitionRatio: 18,
+  },
+  'Universitas Brawijaya - Akuntansi': {
+    minAvgScore: 68,
+    passingUtbkScore: 580,
+    competitionRatio: 15,
+  },
 };
 
 /**
@@ -154,7 +209,7 @@ export const UNIVERSITY_THRESHOLDS: Record<string, { minAvgScore: number; passin
 export const calculatePassingProbability = (
   userAvgScore: number,
   minAvgScore: number,
-  competitionRatio: number
+  competitionRatio: number,
 ): number => {
   const scoreDiff = userAvgScore - minAvgScore;
   let probability = 50 + scoreDiff * 2;
@@ -175,14 +230,16 @@ export const convertToUtbkScore = (avgScore: number): number => {
 /**
  * Calculate user average per quiz (across all subjects)
  */
-export const getUserAvgPerQuiz = (scores: Record<string, number[]>): number[] => {
+export const getUserAvgPerQuiz = (
+  scores: Record<string, number[]>,
+): number[] => {
   const quizCount = 5;
   const result: number[] = [];
 
   for (let i = 0; i < quizCount; i++) {
     let total = 0;
     let count = 0;
-    Object.values(scores).forEach(subjectScores => {
+    Object.values(scores).forEach((subjectScores) => {
       if (subjectScores[i] !== undefined) {
         total += subjectScores[i];
         count++;
@@ -197,7 +254,9 @@ export const getUserAvgPerQuiz = (scores: Record<string, number[]>): number[] =>
 /**
  * Calculate user average per subject
  */
-export const getUserAvgPerSubject = (scores: Record<string, number[]>): Record<string, number> => {
+export const getUserAvgPerSubject = (
+  scores: Record<string, number[]>,
+): Record<string, number> => {
   const result: Record<string, number> = {};
 
   Object.entries(scores).forEach(([code, subjectScores]) => {
@@ -215,8 +274,8 @@ export const getOverallAverage = (scores: Record<string, number[]>): number => {
   let total = 0;
   let count = 0;
 
-  Object.values(scores).forEach(subjectScores => {
-    subjectScores.forEach(score => {
+  Object.values(scores).forEach((subjectScores) => {
+    subjectScores.forEach((score) => {
       total += score;
       count++;
     });
@@ -231,8 +290,8 @@ export const getOverallAverage = (scores: Record<string, number[]>): number => {
 export const getTotalScore = (scores: Record<string, number[]>): number => {
   let total = 0;
 
-  Object.values(scores).forEach(subjectScores => {
-    subjectScores.forEach(score => {
+  Object.values(scores).forEach((subjectScores) => {
+    subjectScores.forEach((score) => {
       total += score;
     });
   });
@@ -244,7 +303,8 @@ export const getTotalScore = (scores: Record<string, number[]>): number => {
 export const SAMPLE_USER_AVG_PER_QUIZ = getUserAvgPerQuiz(SAMPLE_USER_SCORES);
 // Result: [75, 78, 82, 84, 85]
 
-export const SAMPLE_USER_AVG_PER_SUBJECT = getUserAvgPerSubject(SAMPLE_USER_SCORES);
+export const SAMPLE_USER_AVG_PER_SUBJECT =
+  getUserAvgPerSubject(SAMPLE_USER_SCORES);
 // Result: { PU: 85, PPU: 80, PBM: 76, PK: 66, LBI: 78, LBE: 92, PM: 89 }
 
 export const SAMPLE_USER_OVERALL_AVG = getOverallAverage(SAMPLE_USER_SCORES);
@@ -253,7 +313,9 @@ export const SAMPLE_USER_OVERALL_AVG = getOverallAverage(SAMPLE_USER_SCORES);
 export const SAMPLE_USER_TOTAL_SCORE = getTotalScore(SAMPLE_USER_SCORES);
 // Result: ~2788 (35 quizzes)
 
-export const SAMPLE_USER_UTBK_SCORE = convertToUtbkScore(SAMPLE_USER_OVERALL_AVG);
+export const SAMPLE_USER_UTBK_SCORE = convertToUtbkScore(
+  SAMPLE_USER_OVERALL_AVG,
+);
 // Result: ~680
 
 // ============ QUIZ CARD DATA ============
@@ -290,12 +352,14 @@ export const DEFAULT_COUNTDOWN = {
 /**
  * Format number with locale
  */
-export const formatNumber = (num: number): string => num.toLocaleString('id-ID');
+export const formatNumber = (num: number): string =>
+  num.toLocaleString('id-ID');
 
 /**
  * Format currency (Rupiah)
  */
-export const formatCurrency = (num: number): string => `Rp ${num.toLocaleString('id-ID')}`;
+export const formatCurrency = (num: number): string =>
+  `Rp ${num.toLocaleString('id-ID')}`;
 
 /**
  * Format percentage
@@ -332,7 +396,10 @@ export const LIVE_ONLINE_FLUCTUATION = 7;
  * @param total Total items
  * @returns Percentage 0-100
  */
-export const calculateCompletionPercentage = (completed: number, total: number): number => {
+export const calculateCompletionPercentage = (
+  completed: number,
+  total: number,
+): number => {
   if (total === 0) return 0;
   return Math.round((completed / total) * 100);
 };
@@ -352,7 +419,10 @@ export const calculateNationalPercentile = (accuracy: number): number => {
  * @param totalParticipants Total participants
  * @returns Number of beaten participants
  */
-export const calculateBeatenCount = (userRank: number, totalParticipants: number = TOTAL_PARTICIPANTS): number => {
+export const calculateBeatenCount = (
+  userRank: number,
+  totalParticipants: number = TOTAL_PARTICIPANTS,
+): number => {
   return totalParticipants - userRank;
 };
 
@@ -362,7 +432,10 @@ export const calculateBeatenCount = (userRank: number, totalParticipants: number
  * @param totalParticipants Total participants
  * @returns Percentage string with 1 decimal
  */
-export const calculateBeatenPercentage = (beatenCount: number, totalParticipants: number = TOTAL_PARTICIPANTS): string => {
+export const calculateBeatenPercentage = (
+  beatenCount: number,
+  totalParticipants: number = TOTAL_PARTICIPANTS,
+): string => {
   return ((beatenCount / totalParticipants) * 100).toFixed(1);
 };
 
@@ -375,10 +448,11 @@ export const calculateBeatenPercentage = (beatenCount: number, totalParticipants
 export const buildTop10Comparison = (
   subjectPerformance: { subject: string; score: number }[],
   userAvgScore: number,
-  subCategories: { code: string; color: string }[]
+  subCategories: { code: string; color: string }[],
 ) => {
-  const perSubject = subCategories.map(sub => {
-    const userScore = subjectPerformance.find(sp => sp.subject === sub.code)?.score || 0;
+  const perSubject = subCategories.map((sub) => {
+    const userScore =
+      subjectPerformance.find((sp) => sp.subject === sub.code)?.score || 0;
     return {
       code: sub.code,
       userScore,
@@ -387,13 +461,16 @@ export const buildTop10Comparison = (
     };
   });
 
-  const userBestSubject = subjectPerformance.reduce((best, curr) =>
-    curr.score > best.score ? curr : best, subjectPerformance[0]);
+  const userBestSubject = subjectPerformance.reduce(
+    (best, curr) => (curr.score > best.score ? curr : best),
+    subjectPerformance[0],
+  );
 
   // Find top 10 best subject
   const top10BestSubject = Object.entries(TOP_10_AVG_BY_SUBJECT).reduce(
-    (best, [subject, score]) => score > best.score ? { subject, score } : best,
-    { subject: 'PM', score: 0 }
+    (best, [subject, score]) =>
+      score > best.score ? { subject, score } : best,
+    { subject: 'PM', score: 0 },
   );
 
   return {
@@ -411,9 +488,9 @@ export const buildTop10Comparison = (
  * @param subjectPerformance Array of subject performance data
  */
 export const buildEnhancedRadarData = (
-  subjectPerformance: { subject: string; score: number }[]
+  subjectPerformance: { subject: string; score: number }[],
 ) => {
-  return subjectPerformance.map(sp => ({
+  return subjectPerformance.map((sp) => ({
     subject: sp.subject,
     userScore: sp.score,
     avgScore: ALL_STUDENTS_AVG_BY_SUBJECT[sp.subject] || 70,
@@ -427,8 +504,11 @@ export const buildEnhancedRadarData = (
  * @param quizCount Number of quizzes
  */
 export const buildLineChartData = (
-  quizzes: { code: string; quizzes: { isDone: boolean; score?: number | null }[] }[],
-  quizCount: number = 5
+  quizzes: {
+    code: string;
+    quizzes: { isDone: boolean; score?: number | null }[];
+  }[],
+  quizCount: number = 5,
 ) => {
   const data = [];
 
@@ -440,7 +520,7 @@ export const buildLineChartData = (
     let quizTotalScore = 0;
     let quizScoreCount = 0;
 
-    quizzes.forEach(cat => {
+    quizzes.forEach((cat) => {
       const quiz = cat.quizzes[i];
       if (quiz?.isDone && quiz.score != null) {
         quizData[cat.code] = quiz.score;
@@ -449,9 +529,8 @@ export const buildLineChartData = (
       }
     });
 
-    quizData['userAvg'] = quizScoreCount > 0
-      ? Math.round(quizTotalScore / quizScoreCount)
-      : 0;
+    quizData['userAvg'] =
+      quizScoreCount > 0 ? Math.round(quizTotalScore / quizScoreCount) : 0;
 
     quizData['allStudentsAvg'] = ALL_STUDENTS_AVG_PER_QUIZ[i];
 
@@ -468,10 +547,14 @@ export const buildLineChartData = (
  * @param min Minimum value
  * @param max Maximum value
  */
-export const getDeterministicValue = (id: string, min: number, max: number): number => {
+export const getDeterministicValue = (
+  id: string,
+  min: number,
+  max: number,
+): number => {
   let hash = 0;
   for (let i = 0; i < id.length; i++) {
-    hash = ((hash << 5) - hash) + id.charCodeAt(i);
+    hash = (hash << 5) - hash + id.charCodeAt(i);
     hash |= 0;
   }
   return min + Math.abs(hash % (max - min + 1));
@@ -485,7 +568,7 @@ export const getDeterministicValue = (id: string, min: number, max: number): num
 export const isQuizHot = (quizId: string): boolean => {
   let hash = 0;
   for (let i = 0; i < quizId.length; i++) {
-    hash = ((hash << 5) - hash) + quizId.charCodeAt(i);
+    hash = (hash << 5) - hash + quizId.charCodeAt(i);
     hash |= 0;
   }
   return Math.abs(hash % 10) > 6;
@@ -496,7 +579,11 @@ export const isQuizHot = (quizId: string): boolean => {
  * @param currentOnline Current online count
  * @returns New online count with small fluctuation
  */
-export const calculateLiveOnlineFluctuation = (currentOnline: number): number => {
-  const fluctuation = Math.floor(Math.random() * LIVE_ONLINE_FLUCTUATION) - Math.floor(LIVE_ONLINE_FLUCTUATION / 2);
+export const calculateLiveOnlineFluctuation = (
+  currentOnline: number,
+): number => {
+  const fluctuation =
+    Math.floor(Math.random() * LIVE_ONLINE_FLUCTUATION) -
+    Math.floor(LIVE_ONLINE_FLUCTUATION / 2);
   return currentOnline + fluctuation;
 };

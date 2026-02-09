@@ -100,7 +100,11 @@ const LayersSection: React.FC = () => {
       id: 2,
       layer: 'LAYER 3',
       title: 'BIMBOT AI',
-      titleElement: <><BimBot className="uppercase" /> AI</>,
+      titleElement: (
+        <>
+          <BimBot className="uppercase" /> AI
+        </>
+      ),
       icon: <Sparkles className="w-6 h-6" />,
       description: 'Support instant 24/7 tanpa batas waktu',
       features: [

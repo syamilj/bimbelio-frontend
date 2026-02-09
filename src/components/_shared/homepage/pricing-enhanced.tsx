@@ -33,10 +33,7 @@ const PricingEnhanced = () => {
         'Materi Dasar',
         'Community Support',
       ],
-      limitations: [
-        'Analisis Terbatas',
-        'Fitur Premium Terkunci',
-      ],
+      limitations: ['Analisis Terbatas', 'Fitur Premium Terkunci'],
       cta: 'Mulai Gratis',
       popular: false,
       icon: <Sparkles className="w-6 h-6" />,
@@ -142,7 +139,8 @@ const PricingEnhanced = () => {
             </AnimatedGradientText>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Mulai dengan paket gratis atau upgrade ke premium untuk akses penuh ke semua fitur AI terdepan
+            Mulai dengan paket gratis atau upgrade ke premium untuk akses penuh
+            ke semua fitur AI terdepan
           </p>
         </motion.div>
 
@@ -245,7 +243,9 @@ const PricingEnhanced = () => {
                       </div>
                       <div className="text-4xl font-black">
                         {plan.price}
-                        <span className="text-lg font-normal">{plan.period}</span>
+                        <span className="text-lg font-normal">
+                          {plan.period}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -268,7 +268,9 @@ const PricingEnhanced = () => {
                             style={{ color: mainColor }}
                           />
                         </div>
-                        <span className="text-gray-700 font-medium">{feature}</span>
+                        <span className="text-gray-700 font-medium">
+                          {feature}
+                        </span>
                       </div>
                     ))}
 
@@ -298,9 +300,7 @@ const PricingEnhanced = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className={`w-full py-4 rounded-3xl font-bold text-lg shadow-lg transition-all duration-300 ${
-                          plan.popular
-                            ? 'text-white shadow-xl'
-                            : 'text-white'
+                          plan.popular ? 'text-white shadow-xl' : 'text-white'
                         }`}
                         style={{
                           background: plan.popular
@@ -316,9 +316,7 @@ const PricingEnhanced = () => {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       className={`w-full py-4 rounded-3xl font-bold text-lg shadow-lg transition-all duration-300 ${
-                        plan.popular
-                          ? 'text-white shadow-xl'
-                          : 'text-white'
+                        plan.popular ? 'text-white shadow-xl' : 'text-white'
                       }`}
                       style={{
                         background: plan.popular
@@ -340,7 +338,9 @@ const PricingEnhanced = () => {
                             className="w-4 h-4 fill-yellow-400 text-yellow-400"
                           />
                         ))}
-                        <span className="text-sm text-gray-600 ml-2">4.9/5 rating</span>
+                        <span className="text-sm text-gray-600 ml-2">
+                          4.9/5 rating
+                        </span>
                       </div>
                       <p className="text-xs text-gray-500">
                         Dipercaya oleh 15,000+ siswa
@@ -379,16 +379,12 @@ const PricingEnhanced = () => {
                   className="w-14 h-14 mx-auto rounded-3xl flex items-center justify-center shadow-lg"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
-                  <div style={{ color: mainColor }}>
-                    {feature.icon}
-                  </div>
+                  <div style={{ color: mainColor }}>{feature.icon}</div>
                 </div>
                 <h4 className="text-xl font-bold text-gray-900">
                   {feature.title}
                 </h4>
-                <p className="text-gray-600">
-                  {feature.description}
-                </p>
+                <p className="text-gray-600">{feature.description}</p>
               </motion.div>
             ))}
           </div>

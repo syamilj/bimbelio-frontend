@@ -69,7 +69,11 @@ export default function CalendarPage() {
             </div>
 
             <h1 className="mb-4 text-4xl md:text-5xl font-black text-gray-900">
-              Jadwal Event <Bimbelio className="inline" style={{ color: mainColor }} />
+              Jadwal Event{' '}
+              <Bimbelio
+                className="inline"
+                style={{ color: mainColor }}
+              />
             </h1>
 
             <p className="mx-auto max-w-2xl text-lg text-gray-600">

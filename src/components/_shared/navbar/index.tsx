@@ -56,7 +56,11 @@ import { PlanDataType } from '../other/card-plan/_provider/types';
 const renderLabel = (label: string): React.ReactNode => {
   // Check for "Bimbot" patterns
   if (label === 'Bimbot AI') {
-    return <><BimBot /> AI</>;
+    return (
+      <>
+        <BimBot /> AI
+      </>
+    );
   }
   return label;
 };
@@ -1122,7 +1126,9 @@ const DesktopNav: React.FC<{
                                                     <div className="flex-1 min-w-0">
                                                       <div className="flex items-center gap-2 mb-0.5">
                                                         <span className="font-bold text-sm">
-                                                          {renderLabel(subItem.label)}
+                                                          {renderLabel(
+                                                            subItem.label,
+                                                          )}
                                                         </span>
                                                         {/* Badge */}
                                                         {subItem.badge &&
@@ -1212,7 +1218,9 @@ const DesktopNav: React.FC<{
                                           href={item.href}
                                         ></Link>
                                         <div className="font-bold flex items-center justify-between">
-                                          <span>{renderLabel(subItem.label)}</span>
+                                          <span>
+                                            {renderLabel(subItem.label)}
+                                          </span>
                                           <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                                         </div>
                                         {subItem.description && (

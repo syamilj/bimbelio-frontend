@@ -281,8 +281,9 @@ export const DialogOnBoarding = ({
                   Kelola Subscription
                 </p>
                 <p className="text-xs text-gray-600 mt-1">
-                  Klik &quot;Kelola Subscription&quot; untuk melihat detail subscription
-                  aktif, yang pending, dan upgrade/beli subscription baru
+                  Klik &quot;Kelola Subscription&quot; untuk melihat detail
+                  subscription aktif, yang pending, dan upgrade/beli
+                  subscription baru
                 </p>
               </div>
             </div>

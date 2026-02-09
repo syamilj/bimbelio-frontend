@@ -3,6 +3,7 @@
 import { useChatContext } from '@/app/(main)/[web_sub_category]/(user)/user/bimbot/[historyId]/provider';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { BimBot } from '@/components/ui/bim-brand';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -15,7 +16,6 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { BimBot } from '@/components/ui/bim-brand';
 
 export default function SidebarChat() {
   const { data: session } = useSession();

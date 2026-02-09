@@ -362,9 +362,7 @@ const EnhancedPricing = () => {
                           // Handle auth
                           return;
                         }
-                        router.push(
-                          `${website_sub_category_id}/user/bimboard`,
-                        );
+                        router.push(`${website_sub_category_id}/user/bimboard`);
                       }}
                     >
                       {plan.cta}

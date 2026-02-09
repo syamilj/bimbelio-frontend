@@ -157,6 +157,7 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
         liveClassesPerWeek,
         image,
         status,
+        recommended,
         durationLimit,
         timelineLimitEnd,
         timelineLimitStart,
@@ -183,6 +184,7 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
           setValue('name', planData.name);
           setValue('description', planData.description);
           setValue('price', planData.price.toString());
+          setValue('recommended', planData.recommended || false);
           if (planData.roleDiscord) {
             setValue('roleDiscord', planData.roleDiscord);
           }
@@ -517,6 +519,7 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
           originalPrice:
             originalPrice.length > 0 ? parseFloat(originalPrice) : 0,
           status,
+          recommended,
           image: imageUrl,
           roleDiscord,
           planLimitation: activeTab.limit
@@ -647,6 +650,7 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
           originalPrice:
             originalPrice.length > 0 ? parseFloat(originalPrice) : 0,
           status,
+          recommended,
           image: imageUrl,
           planLimitation: activeTab.limit
             ? {
@@ -671,7 +675,7 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
                 validUntil:
                   timelineLimitEnd && new Date(timelineLimitEnd).toISOString(),
               }
-            : undefined,
+            : null,
           planSubscription: activeTab.feature
             ? {
                 tier,
@@ -755,8 +759,11 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
                     };
                   }),
               }
-            : undefined,
+            : null,
         };
+
+        console.log('DEBUG_FRONTEND: Payload before mutate:', payload);
+        console.log('DEBUG_FRONTEND: activeTab:', activeTab);
 
         await mutateGeneral('/plan/editPlan', {
           payload,
@@ -888,6 +895,24 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
                   <SelectItem value="COMING_SOON">Coming Soon</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+            <div className="flex items-center justify-between p-3 rounded-3xl border border-slate-200 bg-slate-50/50">
+              <div className="flex-1">
+                <Label
+                  htmlFor="recommended"
+                  className="font-medium text-slate-900"
+                >
+                  Recommended
+                </Label>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Plan ini akan ditampilkan lebih prioritas di halaman pricing
+                </p>
+              </div>
+              <Switch
+                id="recommended"
+                checked={recommended}
+                onCheckedChange={(value) => setValue('recommended', value)}
+              />
             </div>
           </div>
         </div>
@@ -1796,7 +1821,7 @@ const SectionFeature = () => {
                       className="relative group"
                     >
                       <div
-                        className="absolute bg-red-100 right-0 bottom-[0] rounded-lg hidden items-center justify-center p-1 group-hover:flex cursor-pointer hover:bg-red-200 duration-300 z-10"
+                        className="absolute bg-red-100 right-0 bottom-[0] rounded-3xl hidden items-center justify-center p-1 group-hover:flex cursor-pointer hover:bg-red-200 duration-300 z-10"
                         onClick={() => {
                           setLiveClassIds((prev) =>
                             prev.filter(
@@ -1882,7 +1907,7 @@ const SectionFeature = () => {
                         <div
                           key={category.id}
                           className={
-                            'flex items-center p-3 rounded-lg border transition-all duration-200 gap-2'
+                            'flex items-center p-3 rounded-3xl border transition-all duration-200 gap-2'
                           }
                         >
                           <Checkbox
@@ -2029,7 +2054,7 @@ const SectionFeature = () => {
                         {volumes.map((volume) => (
                           <div
                             key={volume.value}
-                            className="flex justify-between p-3 rounded-lg w-full"
+                            className="flex justify-between p-3 rounded-3xl w-full"
                             style={{
                               background: `${mainColor}10`,
                               borderLeft: `4px solid ${mainColor}`,
@@ -2059,7 +2084,7 @@ const SectionFeature = () => {
                         ))}
                         {quizVolumeIds.length === 0 && (
                           <div
-                            className="flex justify-between p-3 rounded-lg w-full bg-gray-100 border-l-4 border-gray-600"
+                            className="flex justify-between p-3 rounded-3xl w-full bg-gray-100 border-l-4 border-gray-600"
                             // style={{
                             //   background: `${mainColor}10`,
                             //   borderLeft: `4px solid ${mainColor}`,
@@ -2144,7 +2169,7 @@ const SectionBenefits = () => {
       {benefitRows.map((row, index) => (
         <div
           key={row.id}
-          className="border rounded-lg p-4 bg-gray-50"
+          className="border rounded-3xl p-4 bg-gray-50"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -2368,7 +2393,7 @@ const SectionInstallment = () => {
   return (
     <div className="space-y-6">
       {/* Toggle Cicilan */}
-      <div className="flex items-center justify-between p-4 border rounded-lg bg-white">
+      <div className="flex items-center justify-between p-4 border rounded-3xl bg-white">
         <div>
           <Label className="text-base font-medium">Aktifkan Cicilan</Label>
           <p className="text-sm text-gray-500">
@@ -2385,7 +2410,7 @@ const SectionInstallment = () => {
       {isInstallmentEnabled && (
         <div className="space-y-6">
           {/* Konfigurasi Utama */}
-          <div className="border rounded-lg p-4 bg-white">
+          <div className="border rounded-3xl p-4 bg-white">
             <h3 className="text-lg font-semibold mb-4">Konfigurasi Cicilan</h3>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
@@ -2467,7 +2492,7 @@ const SectionInstallment = () => {
           </div>
 
           {/* Jadwal Cicilan */}
-          <div className="border rounded-lg p-4 bg-white">
+          <div className="border rounded-3xl p-4 bg-white">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold">Jadwal Cicilan</h3>
               <Button
@@ -2486,7 +2511,7 @@ const SectionInstallment = () => {
               {config.InstallmentSchedules.map((schedule, index) => (
                 <div
                   key={schedule.id}
-                  className="border rounded-lg p-4 bg-gray-50"
+                  className="border rounded-3xl p-4 bg-gray-50"
                 >
                   <div className="flex items-center justify-between mb-3">
                     <span className="font-medium text-sm bg-blue-100 text-blue-700 px-2 py-1 rounded">
@@ -2811,7 +2836,7 @@ const SectionInstallment = () => {
           </div>
 
           {/* Ringkasan */}
-          <div className="border rounded-lg p-4 bg-blue-50">
+          <div className="border rounded-3xl p-4 bg-blue-50">
             <h4 className="font-medium text-blue-700 mb-3 flex items-center gap-2">
               <FileTextIcon className="w-4 h-4" />
               Ringkasan Cicilan
@@ -2944,7 +2969,7 @@ const SectionInstallment = () => {
 
             {/* Warning jika tidak match */}
             {alertAmount && (
-              <div className="mt-3 p-3 bg-red-50 border border-red-300 rounded-lg">
+              <div className="mt-3 p-3 bg-red-50 border border-red-300 rounded-3xl">
                 <div className="flex items-start gap-2">
                   <AlertCircleIcon className="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0" />
                   <div>
@@ -2973,7 +2998,7 @@ const SectionInstallment = () => {
 
             {/* Warning jika limitasi tidak cocok */}
             {alertLimitation && (
-              <div className="mt-3 p-3 bg-yellow-50 border border-yellow-300 rounded-lg">
+              <div className="mt-3 p-3 bg-yellow-50 border border-yellow-300 rounded-3xl">
                 <div className="flex items-start gap-2">
                   <AlertCircleIcon className="w-4 h-4 text-yellow-600 mt-0.5 flex-shrink-0" />
                   <div>

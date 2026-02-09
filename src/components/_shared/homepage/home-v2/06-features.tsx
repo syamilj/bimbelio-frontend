@@ -1,7 +1,12 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { BimArena, BimBot, BimInsight, BimLive } from '@/components/ui/bim-brand';
+import {
+  BimArena,
+  BimBot,
+  BimInsight,
+  BimLive,
+} from '@/components/ui/bim-brand';
 import {
   BarChart3,
   CheckCircle2,
@@ -33,7 +38,8 @@ const FeaturesSection: React.FC = () => {
       badge: 'AI-Powered',
       title: 'BimBot',
       titleElement: <BimBot />,
-      description: 'Tanya soal kapan aja, jawaban instant dengan penjelasan detail step-by-step.',
+      description:
+        'Tanya soal kapan aja, jawaban instant dengan penjelasan detail step-by-step.',
       features: [
         'Instant response dalam hitungan detik',
         'Penjelasan step-by-step lengkap',
@@ -47,7 +53,8 @@ const FeaturesSection: React.FC = () => {
       badge: 'Adaptive Testing',
       title: 'BimArena',
       titleElement: <BimArena />,
-      description: 'Try out adaptif yang akurat prediksi skor real UTBK dengan sistem IRT.',
+      description:
+        'Try out adaptif yang akurat prediksi skor real UTBK dengan sistem IRT.',
       features: [
         'IRT-based scoring akurat',
         'Adaptive difficulty real-time',
@@ -61,7 +68,8 @@ const FeaturesSection: React.FC = () => {
       badge: 'Interactive',
       title: 'BimLive',
       titleElement: <BimLive />,
-      description: '198+ sesi live class interaktif bareng tutor alumni PTN top.',
+      description:
+        '198+ sesi live class interaktif bareng tutor alumni PTN top.',
       features: [
         'Live interaction dengan tutor',
         'Q&A session setiap kelas',
@@ -87,7 +95,10 @@ const FeaturesSection: React.FC = () => {
   ];
 
   return (
-    <section id="features" className="py-16 md:py-24 px-5 bg-white">
+    <section
+      id="features"
+      className="py-16 md:py-24 px-5 bg-white"
+    >
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-10 md:mb-14">
@@ -100,12 +111,12 @@ const FeaturesSection: React.FC = () => {
           </span>
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-            Tools yang Kamu{' '}
-            <span style={{ color: mainColor }}>Butuhkan</span>
+            Tools yang Kamu <span style={{ color: mainColor }}>Butuhkan</span>
           </h2>
 
           <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
-            Semua fitur yang kamu perlukan untuk persiapan PTN — dalam satu platform terintegrasi.
+            Semua fitur yang kamu perlukan untuk persiapan PTN — dalam satu
+            platform terintegrasi.
           </p>
         </div>
 
@@ -148,14 +159,19 @@ const FeaturesSection: React.FC = () => {
                       <h3 className="text-lg font-bold text-gray-900">
                         {feature.titleElement ?? feature.title}
                       </h3>
-                      <p className="text-sm text-gray-600">{feature.description}</p>
+                      <p className="text-sm text-gray-600">
+                        {feature.description}
+                      </p>
                     </div>
                   </div>
 
                   {/* Features List */}
                   <div className="space-y-2 pl-13">
                     {feature.features.map((item, idx) => (
-                      <div key={idx} className="flex items-start gap-2">
+                      <div
+                        key={idx}
+                        className="flex items-start gap-2"
+                      >
                         <CheckCircle2
                           className="w-4 h-4 flex-shrink-0 mt-0.5"
                           style={{ color: mainColor }}

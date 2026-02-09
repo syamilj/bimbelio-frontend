@@ -126,7 +126,7 @@ const PricingSection: React.FC = () => {
                 key={plan.id}
                 className={cn(
                   'min-w-[85%] sm:min-w-[350px] md:min-w-0 snap-center',
-                  index === 1 ? 'md:scale-105 md:z-10 relative' : ''
+                  index === 1 ? 'md:scale-105 md:z-10 relative' : '',
                 )}
               >
                 <CardPlan plan={plan} />

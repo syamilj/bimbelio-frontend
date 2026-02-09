@@ -30,6 +30,8 @@ export const QuizProvider = ({ children }: { children: React.ReactNode }) => {
 
   const useUserProgress = initiateUserProgress({ volumeId: selectedVolumeId });
 
+  console.log('featureQuiz', featureQuiz);
+
   const isLocked =
     featureQuiz !== 'ALLOW' &&
     !(!!featureQuiz && featureQuiz.includes(selectedVolumeId || ''));

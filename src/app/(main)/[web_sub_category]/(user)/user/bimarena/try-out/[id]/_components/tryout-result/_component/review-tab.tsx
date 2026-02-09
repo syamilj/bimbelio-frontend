@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { cn, getInitials } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import {
   TryoutAnswer,
   TryoutQuestion,
@@ -22,7 +22,6 @@ import {
   TryoutSessionParticipant,
   TryoutUserAnswer,
 } from '@/types/database';
-import { motion } from 'framer-motion';
 import {
   BookOpen,
   BotIcon,
@@ -217,68 +216,64 @@ export function ReviewTab({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Enhanced Compact Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-3xl p-6 shadow-lg border-2 border-gray-100"
-      >
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-          <div className="flex items-center gap-4">
+      <div className="bg-white rounded-3xl p-4 md:p-6 shadow-sm border border-slate-200">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 md:gap-4">
+          <div className="flex items-center gap-2 md:gap-3">
             <div
-              className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-sm"
+              className="w-10 h-10 md:w-12 md:h-12 rounded-3xl flex items-center justify-center shadow-sm flex-shrink-0"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <FileText
-                className="w-6 h-6"
+                className="w-5 h-5 md:w-6 md:h-6"
                 style={{ color: mainColor }}
               />
             </div>
             <div>
               <h1
-                className="text-xl font-bold"
+                className="text-base md:text-xl font-black"
                 style={{ color: mainColor }}
               >
                 Review Soal
               </h1>
-              <p className="text-sm text-gray-600">
+              <p className="text-xs md:text-sm text-slate-600 font-medium">
                 Soal {userAnswerIndex + 1} dari {TotalQuestion} •{' '}
                 {correctAnswer()} benar
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 w-full lg:w-auto">
+          <div className="flex items-center gap-2 md:gap-3 w-full lg:w-auto">
             {/* View Toggle */}
-            <div className="flex bg-gray-100 rounded-3xl p-1">
+            <div className="flex bg-slate-100 rounded-3xl p-1">
               <Button
                 variant={activeView === 'question' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setActiveView('question')}
-                className="rounded-3xl px-3 py-2 h-8"
+                className="rounded-3xl px-3 py-1.5 h-8 text-xs font-black"
                 style={{
                   backgroundColor:
                     activeView === 'question' ? mainColor : 'transparent',
                   color: activeView === 'question' ? 'white' : 'inherit',
                 }}
               >
-                <FileText className="w-4 h-4 mr-1" />
-                <span className="hidden sm:inline">Soal</span>
+                <FileText className="w-3.5 h-3.5 mr-1.5" />
+                <span>Soal</span>
               </Button>
               <Button
                 variant={activeView === 'grid' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setActiveView('grid')}
-                className="rounded-3xl px-3 py-2 h-8"
+                className="rounded-3xl px-3 py-1.5 h-8 text-xs font-black"
                 style={{
                   backgroundColor:
                     activeView === 'grid' ? mainColor : 'transparent',
                   color: activeView === 'grid' ? 'white' : 'inherit',
                 }}
               >
-                <Grid3X3 className="w-4 h-4 mr-1" />
-                <span className="hidden sm:inline">Grid</span>
+                <Grid3X3 className="w-3.5 h-3.5 mr-1.5" />
+                <span>Navigasi</span>
               </Button>
             </div>
 
@@ -294,7 +289,7 @@ export function ReviewTab({
                 }
               }}
             >
-              <SelectTrigger className="w-40 h-10 rounded-3xl border-2 border-gray-200 bg-white shadow-sm">
+              <SelectTrigger className="w-auto min-w-[120px] max-w-[180px] h-8 rounded-3xl border border-slate-200 bg-white shadow-sm text-xs font-black">
                 <SelectValue placeholder="Pilih Subtes" />
               </SelectTrigger>
               <SelectContent>
@@ -304,8 +299,9 @@ export function ReviewTab({
                       key={subtest.id}
                       value={`${index}`}
                     >
-                      {getInitials(subtest.TryoutCategory || '')} -{' '}
-                      {subtest.TryoutSubCategory || 'Subkategori'}
+                      {subtest.TryoutSubCategory ||
+                        subtest.name ||
+                        'Subkategori'}
                     </SelectItem>
                   ))
                 ) : (
@@ -316,44 +312,50 @@ export function ReviewTab({
           </div>
         </div>
 
-        {/* Quick Stats Bar */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6 pt-4 border-t border-gray-100">
-          <div className="text-center">
-            <div
-              className="text-2xl font-bold"
-              style={{ color: mainColor }}
-            >
-              {getTotalScore().toFixed(0)}
+        {/* Quick Stats Bar - Horizontal Scroll on Mobile - More Compact */}
+        <div className="overflow-x-auto no-scrollbar mt-4 md:mt-6 pt-3 md:pt-4 border-t border-slate-200">
+          <div className="flex lg:grid lg:grid-cols-4 gap-3 md:gap-4 min-w-max lg:min-w-0">
+            <div className="text-center min-w-[100px] md:min-w-[120px] lg:min-w-0">
+              <div
+                className="text-xl md:text-2xl font-black leading-none"
+                style={{ color: mainColor }}
+              >
+                {getTotalScore().toFixed(0)}
+              </div>
+              <div className="text-[10px] md:text-xs text-slate-600 font-medium mt-1">
+                Skor Total
+              </div>
             </div>
-            <div className="text-xs text-gray-600">Skor Total</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-green-600">
-              {accuracy.toFixed(1)}%
+            <div className="text-center min-w-[100px] md:min-w-[120px] lg:min-w-0">
+              <div className="text-xl md:text-2xl font-black text-green-600 leading-none">
+                {accuracy.toFixed(1)}%
+              </div>
+              <div className="text-[10px] md:text-xs text-slate-600 font-medium mt-1">
+                Akurasi
+              </div>
             </div>
-            <div className="text-xs text-gray-600">Akurasi</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600">
-              {correctAnswer()}
+            <div className="text-center min-w-[100px] md:min-w-[120px] lg:min-w-0">
+              <div className="text-xl md:text-2xl font-black text-blue-600 leading-none">
+                {correctAnswer()}
+              </div>
+              <div className="text-[10px] md:text-xs text-slate-600 font-medium mt-1">
+                Benar
+              </div>
             </div>
-            <div className="text-xs text-gray-600">Benar</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-red-600">
-              {TotalQuestion - correctAnswer()}
+            <div className="text-center min-w-[100px] md:min-w-[120px] lg:min-w-0">
+              <div className="text-xl md:text-2xl font-black text-red-600 leading-none">
+                {TotalQuestion - correctAnswer()}
+              </div>
+              <div className="text-[10px] md:text-xs text-slate-600 font-medium mt-1">
+                Salah
+              </div>
             </div>
-            <div className="text-xs text-gray-600">Salah</div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Main Content */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-      >
+      <div>
         {activeView === 'question' ? (
           <QuestionView
             UserAnswers={UserAnswers}
@@ -377,7 +379,7 @@ export function ReviewTab({
             mainColor={mainColor}
           />
         )}
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -409,57 +411,61 @@ const QuestionView = ({
   const router = useRouter();
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6">
       {/* Main Question Area */}
       <div className="lg:col-span-3">
-        <Card className="border-2 border-gray-100 rounded-3xl shadow-lg overflow-hidden">
+        <Card className="border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
           <CardHeader
-            className="border-b"
+            className="border-b py-3 md:py-4"
             style={{ backgroundColor: `${mainColor}03` }}
           >
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-xl font-bold flex items-center gap-3">
+            <div className="flex items-center justify-between gap-2">
+              <CardTitle className="text-base md:text-xl font-black flex items-center gap-2 md:gap-3">
                 <div
-                  className="w-10 h-10 rounded-3xl flex items-center justify-center text-white font-bold"
+                  className="w-8 h-8 md:w-10 md:h-10 rounded-3xl flex items-center justify-center text-white font-black text-sm md:text-base flex-shrink-0"
                   style={{ backgroundColor: mainColor }}
                 >
                   {safeUserAnswerIndex + 1}
                 </div>
-                Soal {UserAnswers?.TryoutQuestion.number || 'N/A'}
+                <span className="text-sm md:text-xl">
+                  Soal {UserAnswers?.TryoutQuestion.number || 'N/A'}
+                </span>
               </CardTitle>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 md:gap-2">
                 {getIsCorrect(safeUserAnswerIndex) === true ? (
-                  <Badge className="bg-green-100 text-green-700 border-green-200">
-                    <CheckCircle2 className="w-4 h-4 mr-1" />
-                    Benar
+                  <Badge className="bg-green-100 text-green-700 border-green-200 text-[10px] md:text-xs px-2 py-0.5">
+                    <CheckCircle2 className="w-3 h-3 md:w-4 md:h-4 mr-0.5 md:mr-1" />
+                    <span className="hidden sm:inline">Benar</span>
+                    <span className="sm:hidden">✓</span>
                   </Badge>
                 ) : getIsCorrect(safeUserAnswerIndex) === false ? (
-                  <Badge className="bg-red-100 text-red-700 border-red-200">
-                    <XCircle className="w-4 h-4 mr-1" />
-                    Salah
+                  <Badge className="bg-red-100 text-red-700 border-red-200 text-[10px] md:text-xs px-2 py-0.5">
+                    <XCircle className="w-3 h-3 md:w-4 md:h-4 mr-0.5 md:mr-1" />
+                    <span className="hidden sm:inline">Salah</span>
+                    <span className="sm:hidden">✗</span>
                   </Badge>
                 ) : (
-                  <Badge className="bg-gray-100 text-gray-700 border-gray-200">
-                    Tidak Dijawab
+                  <Badge className="bg-slate-100 text-slate-700 border-slate-200 text-[10px] md:text-xs px-2 py-0.5">
+                    Kosong
                   </Badge>
                 )}
               </div>
             </div>
           </CardHeader>
 
-          <CardContent className="p-6">
+          <CardContent className="p-4 md:p-6">
             {UserAnswers ? (
-              <div className="space-y-6">
+              <div className="space-y-4 md:space-y-6">
                 {/* Question Content */}
-                <div className="space-y-4">
+                <div className="space-y-3 md:space-y-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-gray-900">
+                    <h3 className="text-sm md:text-lg font-black text-slate-900">
                       Pertanyaan
                     </h3>
                     {UserAnswers.difficultyQuestion && (
                       <Badge
                         className={cn(
-                          'text-sm px-3 py-1',
+                          'text-[10px] md:text-sm px-2 md:px-3 py-0.5 md:py-1',
                           UserAnswers.difficultyQuestion?.value === 1 &&
                             'bg-green-100 text-green-700 border-green-200',
                           UserAnswers.difficultyQuestion?.value === 2 &&
@@ -476,7 +482,7 @@ const QuestionView = ({
                       </Badge>
                     )}
                   </div>
-                  <div className="p-6 bg-gray-50 rounded-3xl">
+                  <div className="p-4 md:p-6 bg-slate-50 rounded-3xl">
                     <BlocknoteEditor
                       value={
                         UserAnswers.TryoutQuestion.question ||
@@ -487,18 +493,18 @@ const QuestionView = ({
                   </div>
                 </div>
 
-                {/* Answer Comparison */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Answer Comparison - Stack on Mobile */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   {/* Your Answer */}
-                  <div className="space-y-3">
-                    <h3 className="text-base font-semibold flex items-center gap-2">
-                      <div className="w-6 h-6 bg-blue-100 rounded-3xl flex items-center justify-center">
-                        <User className="w-4 h-4 text-blue-600" />
+                  <div className="space-y-2 md:space-y-3">
+                    <h3 className="text-sm md:text-base font-black flex items-center gap-1.5 md:gap-2">
+                      <div className="w-5 h-5 md:w-6 md:h-6 bg-blue-100 rounded-3xl flex items-center justify-center">
+                        <User className="w-3 h-3 md:w-4 md:h-4 text-blue-600" />
                       </div>
                       Jawaban Kamu
                     </h3>
                     <div
-                      className="p-4 rounded-3xl border-2 min-h-[100px]"
+                      className="p-3 md:p-4 rounded-3xl border min-h-[80px] md:min-h-[100px]"
                       style={{
                         backgroundColor:
                           getIsCorrect(safeUserAnswerIndex) === true
@@ -524,14 +530,14 @@ const QuestionView = ({
                   </div>
 
                   {/* Correct Answer */}
-                  <div className="space-y-3">
-                    <h3 className="text-base font-semibold flex items-center gap-2">
-                      <div className="w-6 h-6 bg-green-100 rounded-3xl flex items-center justify-center">
-                        <CheckCircle2 className="w-4 h-4 text-green-600" />
+                  <div className="space-y-2 md:space-y-3">
+                    <h3 className="text-sm md:text-base font-black flex items-center gap-1.5 md:gap-2">
+                      <div className="w-5 h-5 md:w-6 md:h-6 bg-green-100 rounded-3xl flex items-center justify-center">
+                        <CheckCircle2 className="w-3 h-3 md:w-4 md:h-4 text-green-600" />
                       </div>
                       Jawaban Benar
                     </h3>
-                    <div className="p-4 bg-green-50 rounded-3xl border-2 border-green-200 min-h-[100px]">
+                    <div className="p-3 md:p-4 bg-green-50 rounded-3xl border border-green-200 min-h-[80px] md:min-h-[100px]">
                       <BlocknoteEditor
                         value={getCorrectAnswer()}
                         viewOnly
@@ -541,21 +547,21 @@ const QuestionView = ({
                 </div>
 
                 {/* Explanation */}
-                <div className="space-y-3">
-                  <h3 className="text-base font-semibold flex items-center gap-2">
+                <div className="space-y-2 md:space-y-3">
+                  <h3 className="text-sm md:text-base font-black flex items-center gap-1.5 md:gap-2">
                     <div
-                      className="w-6 h-6 rounded-3xl flex items-center justify-center"
+                      className="w-5 h-5 md:w-6 md:h-6 rounded-3xl flex items-center justify-center"
                       style={{ backgroundColor: `${mainColor}15` }}
                     >
                       <Lightbulb
-                        className="w-4 h-4"
+                        className="w-3 h-3 md:w-4 md:h-4"
                         style={{ color: mainColor }}
                       />
                     </div>
                     Pembahasan
                   </h3>
                   <div
-                    className="p-6 rounded-3xl border-2"
+                    className="p-4 md:p-6 rounded-3xl border"
                     style={{
                       backgroundColor: `${mainColor}05`,
                       borderColor: `${mainColor}20`,
@@ -572,39 +578,54 @@ const QuestionView = ({
                 </div>
               </div>
             ) : (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                  <FileText className="w-8 h-8 text-gray-400" />
+              <div className="text-center py-8 md:py-12">
+                <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 bg-slate-100 rounded-full flex items-center justify-center">
+                  <FileText className="w-6 h-6 md:w-8 md:h-8 text-slate-400" />
                 </div>
-                <p className="text-gray-500 font-medium">
+                <p className="text-sm md:text-base text-slate-500 font-medium">
                   Tidak ada jawaban untuk ditampilkan
                 </p>
               </div>
             )}
           </CardContent>
 
-          {/* Enhanced Navigation Footer */}
-          <div className="border-t bg-gray-50 p-4">
-            <div className="flex items-center justify-between">
+          {/* Enhanced Navigation Footer - Sticky on Mobile */}
+          <div className="border-t bg-slate-50 p-3 md:p-4 sticky bottom-0 z-10 lg:static">
+            <div className="flex items-center justify-between gap-2">
               <Button
                 variant="outline"
                 onClick={() =>
                   setUserAnswerIndex((prev: number) => Math.max(0, prev - 1))
                 }
                 disabled={userAnswerIndex === 0}
-                className="flex items-center gap-2 rounded-3xl border-2 h-11"
+                className="flex items-center gap-1.5 md:gap-2 rounded-3xl border h-9 md:h-11 text-xs md:text-sm px-3 md:px-4"
               >
-                <ChevronLeft className="w-4 h-4" />
-                Sebelumnya
+                <ChevronLeft className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                <span className="hidden sm:inline">Sebelumnya</span>
+                <span className="sm:hidden">Prev</span>
               </Button>
 
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600">
+              {/* Mobile AI Button - More Prominent */}
+              <TryoutAI
+                participantId={participantId}
+                number={userAnswerIndex + 1}
+              >
+                <Button
+                  className="lg:hidden flex items-center gap-1.5 h-9 px-3 rounded-3xl shadow-md text-white text-xs font-semibold"
+                  style={{ backgroundColor: mainColor }}
+                >
+                  <BotIcon className="w-4 h-4" />
+                  <span>BimBot AI</span>
+                </Button>
+              </TryoutAI>
+
+              <div className="hidden sm:flex items-center gap-1.5 md:gap-2">
+                <span className="text-xs md:text-sm text-slate-600 font-black whitespace-nowrap">
                   {userAnswerIndex + 1} / {totalQuestions}
                 </span>
                 <Progress
                   value={((userAnswerIndex + 1) / totalQuestions) * 100}
-                  className="w-20 h-2"
+                  className="w-16 md:w-20 h-1.5 md:h-2"
                   style={{ backgroundColor: '#f3f4f6' }}
                 />
               </div>
@@ -617,18 +638,19 @@ const QuestionView = ({
                   )
                 }
                 disabled={userAnswerIndex === totalQuestions - 1}
-                className="flex items-center gap-2 rounded-3xl border-2 h-11"
+                className="flex items-center gap-1.5 md:gap-2 rounded-3xl border h-9 md:h-11 text-xs md:text-sm px-3 md:px-4"
               >
-                Selanjutnya
-                <ChevronRight className="w-4 h-4" />
+                <span className="hidden sm:inline">Selanjutnya</span>
+                <span className="sm:hidden">Next</span>
+                <ChevronRight className="w-3.5 h-3.5 md:w-4 md:h-4" />
               </Button>
             </div>
           </div>
         </Card>
       </div>
 
-      {/* Compact Sidebar */}
-      <div className="lg:col-span-1">
+      {/* Compact Sidebar - Hidden on Mobile */}
+      <div className="hidden lg:block lg:col-span-1">
         <CompactNavigation
           participantId={participantId}
           sessionResult={sessionResult}
@@ -656,33 +678,31 @@ const GridView = ({
     : 0;
 
   return (
-    <Card className="border-2 border-gray-100 rounded-3xl shadow-lg overflow-hidden">
+    <Card className="border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
       <CardHeader
-        className="border-b"
+        className="border-b py-3 md:py-4"
         style={{ backgroundColor: `${mainColor}03` }}
       >
-        <CardTitle className="text-xl font-bold flex items-center gap-3">
+        <CardTitle className="text-base md:text-xl font-black flex items-center gap-2 md:gap-3">
           <Grid3X3
-            className="w-6 h-6"
+            className="w-5 h-5 md:w-6 md:h-6"
             style={{ color: mainColor }}
           />
           Grid Navigasi Soal
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-6">
-        <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-3 mb-6">
+      <CardContent className="p-4 md:p-6">
+        <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-2 md:gap-3 mb-4 md:mb-6">
           {Array.from({ length: totalQuestions }).map((_, index) => {
             const isCorrect = getIsCorrect(index);
             return (
-              <motion.button
+              <button
                 key={index}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
                 className={cn(
-                  'aspect-square rounded-3xl font-bold text-sm transition-all duration-200 border-2 flex items-center justify-center relative',
+                  'aspect-square rounded-3xl font-black text-xs md:text-sm transition-all duration-200 border flex items-center justify-center relative hover:scale-105 active:scale-95',
                   userAnswerIndex === index
-                    ? 'border-transparent text-white shadow-lg'
-                    : 'border-gray-200 hover:border-gray-300 text-gray-600',
+                    ? 'border-transparent text-white shadow-sm'
+                    : 'border-slate-200 hover:border-slate-300 text-slate-600',
                   isCorrect === true &&
                     userAnswerIndex !== index &&
                     'bg-green-100 text-green-700 border-green-200 hover:bg-green-200',
@@ -691,7 +711,7 @@ const GridView = ({
                     'bg-red-100 text-red-700 border-red-200 hover:bg-red-200',
                   isCorrect === null &&
                     userAnswerIndex !== index &&
-                    'bg-gray-50 hover:bg-gray-100',
+                    'bg-slate-50 hover:bg-slate-100',
                 )}
                 style={{
                   backgroundColor:
@@ -703,42 +723,48 @@ const GridView = ({
                 }}
               >
                 {index + 1}
-                {/* Status Indicator */}
-                <div className="absolute -top-1 -right-1">
+                {/* Status Indicator - Smaller on Mobile */}
+                <div className="absolute -top-0.5 md:-top-1 -right-0.5 md:-right-1">
                   {isCorrect === true && (
-                    <div className="w-3 h-3 bg-green-500 rounded-full border border-white" />
+                    <div className="w-2 h-2 md:w-3 md:h-3 bg-green-500 rounded-full border border-white" />
                   )}
                   {isCorrect === false && (
-                    <div className="w-3 h-3 bg-red-500 rounded-full border border-white" />
+                    <div className="w-2 h-2 md:w-3 md:h-3 bg-red-500 rounded-full border border-white" />
                   )}
                   {isCorrect === null && (
-                    <div className="w-3 h-3 bg-gray-400 rounded-full border border-white" />
+                    <div className="w-2 h-2 md:w-3 md:h-3 bg-slate-400 rounded-full border border-white" />
                   )}
                 </div>
-              </motion.button>
+              </button>
             );
           })}
         </div>
 
-        {/* Grid Legend */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-          <div className="flex items-center justify-center gap-2">
-            <div className="w-6 h-6 bg-green-100 border-2 border-green-200 rounded-3xl flex items-center justify-center">
-              <CheckCircle2 className="w-4 h-4 text-green-600" />
+        {/* Grid Legend - More Compact */}
+        <div className="grid grid-cols-3 gap-2 md:gap-4 text-center">
+          <div className="flex items-center justify-center gap-1.5 md:gap-2">
+            <div className="w-5 h-5 md:w-6 md:h-6 bg-green-100 border border-green-200 rounded-3xl flex items-center justify-center flex-shrink-0">
+              <CheckCircle2 className="w-3 h-3 md:w-4 md:h-4 text-green-600" />
             </div>
-            <span className="text-sm text-gray-600">Benar</span>
+            <span className="text-xs md:text-sm text-slate-600 font-medium">
+              Benar
+            </span>
           </div>
-          <div className="flex items-center justify-center gap-2">
-            <div className="w-6 h-6 bg-red-100 border-2 border-red-200 rounded-3xl flex items-center justify-center">
-              <XCircle className="w-4 h-4 text-red-600" />
+          <div className="flex items-center justify-center gap-1.5 md:gap-2">
+            <div className="w-5 h-5 md:w-6 md:h-6 bg-red-100 border border-red-200 rounded-3xl flex items-center justify-center flex-shrink-0">
+              <XCircle className="w-3 h-3 md:w-4 md:h-4 text-red-600" />
             </div>
-            <span className="text-sm text-gray-600">Salah</span>
+            <span className="text-xs md:text-sm text-slate-600 font-medium">
+              Salah
+            </span>
           </div>
-          <div className="flex items-center justify-center gap-2">
-            <div className="w-6 h-6 bg-gray-100 border-2 border-gray-200 rounded-3xl flex items-center justify-center">
-              <span className="text-gray-400 text-xs">?</span>
+          <div className="flex items-center justify-center gap-1.5 md:gap-2">
+            <div className="w-5 h-5 md:w-6 md:h-6 bg-slate-100 border border-slate-200 rounded-3xl flex items-center justify-center flex-shrink-0">
+              <span className="text-slate-400 text-xs">?</span>
             </div>
-            <span className="text-sm text-gray-600">Kosong</span>
+            <span className="text-xs md:text-sm text-slate-600 font-medium">
+              Kosong
+            </span>
           </div>
         </div>
       </CardContent>
@@ -810,57 +836,63 @@ const CompactNavigation = ({
   const questionNumber = userAnswerIndex + 1;
 
   return (
-    <div className="space-y-4">
-      {/* Enhanced Navigation Header with Stats */}
-      <Card className="border-2 border-gray-100 rounded-3xl shadow-lg overflow-hidden">
+    <div className="space-y-3">
+      {/* Enhanced Navigation Header with Stats - More Compact */}
+      <Card className="border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
         <CardHeader
-          className="border-b py-3"
+          className="border-b py-2"
           style={{ backgroundColor: `${mainColor}05` }}
         >
-          <CardTitle className="text-base font-bold flex items-center gap-2">
+          <CardTitle className="text-sm font-black flex items-center gap-1.5">
             <Trophy
               className="w-4 h-4"
               style={{ color: mainColor }}
             />
             Navigasi Soal
           </CardTitle>
-          <div className="grid grid-cols-3 gap-2 mt-3">
+          <div className="grid grid-cols-3 gap-2 mt-2">
             <div className="text-center">
-              <div className="text-lg font-bold text-green-600">
+              <div className="text-base font-black text-green-600 leading-none">
                 {stats.correct}
               </div>
-              <div className="text-xs text-gray-600">Benar</div>
+              <div className="text-[10px] text-slate-600 font-medium mt-0.5">
+                Benar
+              </div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-red-600">
+              <div className="text-base font-black text-red-600 leading-none">
                 {stats.wrong}
               </div>
-              <div className="text-xs text-gray-600">Salah</div>
+              <div className="text-[10px] text-slate-600 font-medium mt-0.5">
+                Salah
+              </div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-gray-600">
+              <div className="text-base font-black text-slate-600 leading-none">
                 {stats.unanswered}
               </div>
-              <div className="text-xs text-gray-600">Kosong</div>
+              <div className="text-[10px] text-slate-600 font-medium mt-0.5">
+                Kosong
+              </div>
             </div>
           </div>
         </CardHeader>
-        <CardContent className="p-4">
-          {/* Page Navigation */}
+        <CardContent className="p-3">
+          {/* Page Navigation - More Compact */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-3">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
                 disabled={currentPage === 0}
-                className="h-8 px-3 rounded-3xl"
+                className="h-7 px-2 rounded-3xl"
               >
                 <ChevronLeft className="w-3 h-3" />
               </Button>
 
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-600">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] text-slate-600 font-medium">
                   {currentPage * questionsPerPage + 1}-
                   {Math.min(
                     (currentPage + 1) * questionsPerPage,
@@ -877,27 +909,25 @@ const CompactNavigation = ({
                   setCurrentPage(Math.min(totalPages - 1, currentPage + 1))
                 }
                 disabled={currentPage === totalPages - 1}
-                className="h-8 px-3 rounded-3xl"
+                className="h-7 px-2 rounded-3xl"
               >
                 <ChevronRight className="w-3 h-3" />
               </Button>
             </div>
           )}
 
-          {/* Question Grid - Responsive */}
-          <div className="grid grid-cols-5 gap-2 mb-4">
+          {/* Question Grid - More Compact */}
+          <div className="grid grid-cols-5 gap-1.5 mb-3">
             {getCurrentPageQuestions().map((index) => {
               const isCorrect = getIsCorrect(index);
               return (
-                <motion.button
+                <button
                   key={index}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                   className={cn(
-                    'aspect-square rounded-3xl font-bold text-xs transition-all duration-200 border flex items-center justify-center relative',
+                    'aspect-square rounded-3xl font-black text-xs transition-all duration-200 border flex items-center justify-center relative hover:scale-105 active:scale-95',
                     userAnswerIndex === index
-                      ? 'border-transparent text-white shadow-lg'
-                      : 'border-gray-200 hover:border-gray-300 text-gray-600',
+                      ? 'border-transparent text-white shadow-sm'
+                      : 'border-slate-200 hover:border-slate-300 text-slate-600',
                     isCorrect === true &&
                       userAnswerIndex !== index &&
                       'bg-green-100 text-green-700 border-green-200',
@@ -906,7 +936,7 @@ const CompactNavigation = ({
                       'bg-red-100 text-red-700 border-red-200',
                     isCorrect === null &&
                       userAnswerIndex !== index &&
-                      'bg-gray-50',
+                      'bg-slate-50',
                   )}
                   style={{
                     backgroundColor:
@@ -926,11 +956,11 @@ const CompactNavigation = ({
                         <div className="w-2 h-2 bg-red-500 rounded-full border border-white" />
                       )}
                       {isCorrect === null && (
-                        <div className="w-2 h-2 bg-gray-400 rounded-full border border-white" />
+                        <div className="w-2 h-2 bg-slate-400 rounded-full border border-white" />
                       )}
                     </div>
                   )}
-                </motion.button>
+                </button>
               );
             })}
           </div>
@@ -946,7 +976,7 @@ const CompactNavigation = ({
                     'w-2 h-2 rounded-full transition-all duration-200',
                     currentPage === pageIndex
                       ? 'w-4'
-                      : 'bg-gray-300 hover:bg-gray-400',
+                      : 'bg-slate-300 hover:bg-slate-400',
                   )}
                   style={{
                     backgroundColor:

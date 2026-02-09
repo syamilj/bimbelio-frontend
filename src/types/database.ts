@@ -2,7 +2,7 @@ export type Pivot_Plan_QuizVolume = {
   id: string;
   planFeatureId: string;
   quizVolumeId: string;
-}
+};
 export type TryoutResult = {
   id: string;
   website_sub_category_id: string;
@@ -11,7 +11,7 @@ export type TryoutResult = {
   totalScore: number;
   startTryout: Date;
   endTryout: Date;
-}
+};
 
 export type QuizVolume = {
   number: number;
@@ -23,9 +23,9 @@ export type QuizVolume = {
   status: QuizVolumeStatusEnum;
   createdAt: string;
   updatedAt: string;
-}
+};
 
-export type QuizVolumeStatusEnum = "PUBLIC" | "PRIVATE" | "DRAFT"
+export type QuizVolumeStatusEnum = 'PUBLIC' | 'PRIVATE' | 'DRAFT';
 
 export type TryoutCoupon = {
   code: string;
@@ -462,7 +462,12 @@ export type TryoutSessionResult = {
   theta: number | null;
 };
 
-export type TypeCourseEnum = 'VIDEO' | 'DOCUMENT' | 'TRYOUT' | 'MATERI' | 'PROGRESS_TEST';
+export type TypeCourseEnum =
+  | 'VIDEO'
+  | 'DOCUMENT'
+  | 'TRYOUT'
+  | 'MATERI'
+  | 'PROGRESS_TEST';
 
 export type BlogPost = {
   website_sub_category_id: string;
@@ -574,7 +579,7 @@ export type Tryout = {
   image: string | null;
   instagram: string | null;
   tiktok: string | null;
-  quizOrder: number | null
+  quizOrder: number | null;
 };
 
 export type TryoutRegistration = {
@@ -804,7 +809,12 @@ export type WebsiteSubCategory = {
 
 export type WebsiteSubCategoryTypeEnum = 'CORE' | 'GENERAL';
 
-export type FeatureTypeEnum = 'DOCUMENT' | 'COURSE' | 'LIVECLASS' | 'PRIVATE' | "QUIZ";
+export type FeatureTypeEnum =
+  | 'DOCUMENT'
+  | 'COURSE'
+  | 'LIVECLASS'
+  | 'PRIVATE'
+  | 'QUIZ';
 
 export type SubscriptionPending = {
   id: string;
@@ -888,6 +898,7 @@ export type Plan = {
   originalPrice: number | null;
   price: number;
   status: PlanStatusEnum;
+  recommended: boolean;
   maxUsers: number | null;
   createdAt: Date;
   updatedAt: Date;

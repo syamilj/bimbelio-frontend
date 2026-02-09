@@ -1,5 +1,5 @@
-import { MetadataRoute } from 'next';
 import { env } from '@/env.mjs';
+import { MetadataRoute } from 'next';
 
 const BASE_URL = 'https://www.bimbelio.com'; // Should ideally come from env but hardcoded for now based on existing sitemap
 const API_URL = env.NEXT_PUBLIC_API_URL.replace(/\/$/, '');

@@ -165,7 +165,7 @@ export function LoadingSkeleton() {
                 </CardContent>
               </Card>
 
-              {/* Live Classes Overview Skeleton */}
+              {/* BimLivees Overview Skeleton */}
               <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
                 <CardHeader className="pb-6">
                   <div className="flex items-center gap-3">

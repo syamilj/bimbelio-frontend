@@ -11,7 +11,6 @@ import { cn, getDateString, getHours } from '@/lib/utils';
 import { formatIDR } from '@/lib/utils/currency';
 import { formatDateRange } from '@/lib/utils/date';
 import {
-  BookCheck,
   Calendar,
   Check,
   Clock,
@@ -46,8 +45,6 @@ export default function SubscriptionPage() {
         return <GraduationCap className="w-3 h-3" />;
       case 'LIVECLASS':
         return <Video className="w-3 h-3" />;
-      case 'QUIZ':
-        return <BookCheck className="w-3 h-3" />;
       default:
         return <Check className="w-3 h-3" />;
     }
@@ -98,7 +95,7 @@ export default function SubscriptionPage() {
             <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-100">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg font-bold flex items-center gap-2">
-                  <div className="p-2 bg-main rounded-lg">
+                  <div className="p-2 bg-main rounded-3xl">
                     <Zap className="w-5 h-5 text-white" />
                   </div>
                   Subscription Aktif
@@ -170,7 +167,7 @@ export default function SubscriptionPage() {
                               {sub.SubscriptionFeature.map((feature) => (
                                 <div
                                   key={feature.id}
-                                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200"
+                                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-3xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200"
                                 >
                                   {getFeatureIcon(feature.type)}
                                   <span className="text-xs font-medium text-blue-700">
@@ -178,7 +175,6 @@ export default function SubscriptionPage() {
                                     {feature.type === 'COURSE' && 'Course'}
                                     {feature.type === 'LIVECLASS' &&
                                       'Live Class'}
-                                    {feature.type === 'QUIZ' && 'Quiz'}
                                   </span>
                                 </div>
                               ))}
@@ -200,7 +196,7 @@ export default function SubscriptionPage() {
                                   <div
                                     key={installment.id}
                                     className={cn(
-                                      'flex items-center justify-between p-2.5 rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200',
+                                      'flex items-center justify-between p-2.5 rounded-3xl bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200',
                                       installment.isPaid &&
                                         'bg-gradient-to-r from-green-50 to-emerald-50 border-green-400',
                                     )}
@@ -262,7 +258,7 @@ export default function SubscriptionPage() {
                           </div>
                         )}
                       {/* Expiry Info */}
-                      <div className="flex items-center gap-2 p-2 bg-orange-50 border border-orange-200 rounded-lg mb-3">
+                      <div className="flex items-center gap-2 p-2 bg-orange-50 border border-orange-200 rounded-3xl mb-3">
                         <Clock className="w-4 h-4 text-orange-600" />
                         <div className="flex-1">
                           <p className="text-xs font-medium text-gray-700">
@@ -345,7 +341,7 @@ export default function SubscriptionPage() {
             <CardHeader className="bg-gradient-to-r from-orange-50 to-yellow-50 border-b border-orange-100">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg font-bold flex items-center gap-2">
-                  <div className="p-2 bg-orange-500 rounded-lg">
+                  <div className="p-2 bg-orange-500 rounded-3xl">
                     <Clock className="w-5 h-5 text-white" />
                   </div>
                   Subscription Pending
@@ -403,7 +399,7 @@ export default function SubscriptionPage() {
                             (feature) => (
                               <div
                                 key={feature.id}
-                                className="p-2.5 rounded-lg bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200"
+                                className="p-2.5 rounded-3xl bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200"
                               >
                                 <div className="flex items-center gap-2 mb-2">
                                   {getFeatureIcon(feature.type)}
@@ -430,13 +426,13 @@ export default function SubscriptionPage() {
 
                     {/* Pending Limitation (Coin) */}
                     {subPending.SubscriptionPendingLimitation && (
-                      <div className="p-3 rounded-lg bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200">
+                      <div className="p-3 rounded-3xl bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200">
                         <p className="text-xs font-semibold text-gray-700 mb-2 flex items-center gap-1">
                           <Coins className="w-3 h-3 text-purple-600" />
                           Coin yang Akan Diterima:
                         </p>
                         <div className="grid grid-cols-2 gap-2 mb-2">
-                          <div className="flex items-center gap-1.5 p-2 bg-white rounded-md">
+                          <div className="flex items-center gap-1.5 p-2 bg-white rounded-3xl">
                             <MessageSquare className="w-3.5 h-3.5 text-blue-600" />
                             <div>
                               <p className="text-[10px] text-gray-600">Chat</p>
@@ -445,7 +441,7 @@ export default function SubscriptionPage() {
                               </p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-1.5 p-2 bg-white rounded-md">
+                          <div className="flex items-center gap-1.5 p-2 bg-white rounded-3xl">
                             <FileText className="w-3.5 h-3.5 text-green-600" />
                             <div>
                               <p className="text-[10px] text-gray-600">Notes</p>
@@ -454,7 +450,7 @@ export default function SubscriptionPage() {
                               </p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-1.5 p-2 bg-white rounded-md">
+                          <div className="flex items-center gap-1.5 p-2 bg-white rounded-3xl">
                             <Video className="w-3.5 h-3.5 text-purple-600" />
                             <div>
                               <p className="text-[10px] text-gray-600">
@@ -468,7 +464,7 @@ export default function SubscriptionPage() {
                               </p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-1.5 p-2 bg-white rounded-md">
+                          <div className="flex items-center gap-1.5 p-2 bg-white rounded-3xl">
                             <GraduationCap className="w-3.5 h-3.5 text-orange-600" />
                             <div>
                               <p className="text-[10px] text-gray-600">Quiz</p>
@@ -477,7 +473,7 @@ export default function SubscriptionPage() {
                               </p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-1.5 p-2 bg-white rounded-md col-span-2">
+                          <div className="flex items-center gap-1.5 p-2 bg-white rounded-3xl col-span-2">
                             <Star className="w-3.5 h-3.5 text-yellow-600" />
                             <div>
                               <p className="text-[10px] text-gray-600">

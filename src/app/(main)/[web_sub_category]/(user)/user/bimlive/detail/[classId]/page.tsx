@@ -214,9 +214,7 @@ export default function LiveClassStudentDetail() {
                   variant="ghost"
                   onClick={() => {
                     if (liveLearningId && liveLearningId?.length > 0) {
-                      router.push(
-                        `/${website_sub_category_id}/user/bimlive`,
-                      );
+                      router.push(`/${website_sub_category_id}/user/bimlive`);
                     } else {
                       router.back();
                     }

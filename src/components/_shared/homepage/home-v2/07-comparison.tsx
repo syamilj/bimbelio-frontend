@@ -15,21 +15,63 @@ const ComparisonSection: React.FC = () => {
 
   const liveclassComparison = [
     { aspek: 'Kapasitas', liveclass: 'Max 50 siswa', livestream: 'Unlimited' },
-    { aspek: 'Total sesi', liveclass: '198+ sesi live', livestream: '198+ sesi live' },
-    { aspek: 'Konseling', liveclass: 'Tutor alumni PTN', livestream: 'Grup diskusi' },
-    { aspek: 'Tryout', liveclass: 'IRT + analisis personal', livestream: 'IRT standar' },
+    {
+      aspek: 'Total sesi',
+      liveclass: '198+ sesi live',
+      livestream: '198+ sesi live',
+    },
+    {
+      aspek: 'Konseling',
+      liveclass: 'Tutor alumni PTN',
+      livestream: 'Grup diskusi',
+    },
+    {
+      aspek: 'Tryout',
+      liveclass: 'IRT + analisis personal',
+      livestream: 'IRT standar',
+    },
     { aspek: 'Support', liveclass: 'Priority fast', livestream: 'Standard' },
     { aspek: 'Harga', liveclass: 'Rp1.499k', livestream: 'Rp799k' },
     { aspek: 'Cicilan', liveclass: '3× Rp499k', livestream: '3× Rp266k' },
   ];
 
   const bimbelioComparison = [
-    { aspek: 'Live class', bimbelio: true, videoOnDemand: false, bimbelOffline: true },
-    { aspek: 'AI Mentor 24/7', bimbelio: true, videoOnDemand: false, bimbelOffline: false },
-    { aspek: 'TO IRT-based', bimbelio: true, videoOnDemand: false, bimbelOffline: 'Terbatas' },
-    { aspek: 'Progress track', bimbelio: true, videoOnDemand: 'Manual', bimbelOffline: 'Terbatas' },
-    { aspek: 'Harga', bimbelio: '799k-1.4jt', videoOnDemand: '200-500k', bimbelOffline: '4-30 jt' },
-    { aspek: 'Fleksibilitas', bimbelio: true, videoOnDemand: true, bimbelOffline: false },
+    {
+      aspek: 'Live class',
+      bimbelio: true,
+      videoOnDemand: false,
+      bimbelOffline: true,
+    },
+    {
+      aspek: 'AI Mentor 24/7',
+      bimbelio: true,
+      videoOnDemand: false,
+      bimbelOffline: false,
+    },
+    {
+      aspek: 'TO IRT-based',
+      bimbelio: true,
+      videoOnDemand: false,
+      bimbelOffline: 'Terbatas',
+    },
+    {
+      aspek: 'Progress track',
+      bimbelio: true,
+      videoOnDemand: 'Manual',
+      bimbelOffline: 'Terbatas',
+    },
+    {
+      aspek: 'Harga',
+      bimbelio: '799k-1.4jt',
+      videoOnDemand: '200-500k',
+      bimbelOffline: '4-30 jt',
+    },
+    {
+      aspek: 'Fleksibilitas',
+      bimbelio: true,
+      videoOnDemand: true,
+      bimbelOffline: false,
+    },
   ];
 
   const renderCell = (value: boolean | string) => {
@@ -44,7 +86,10 @@ const ComparisonSection: React.FC = () => {
   };
 
   return (
-    <section id="comparison" className="py-16 md:py-20 px-4 bg-white">
+    <section
+      id="comparison"
+      className="py-16 md:py-20 px-4 bg-white"
+    >
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
@@ -167,4 +212,3 @@ const ComparisonSection: React.FC = () => {
 };
 
 export default ComparisonSection;
-

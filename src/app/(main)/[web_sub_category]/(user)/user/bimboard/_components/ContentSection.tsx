@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   BookOpen,
   ChevronRight,
@@ -10,10 +10,10 @@ import {
   PlayCircle,
   Sparkles,
   Video,
-} from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+} from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
 interface ContentItem {
   id: string;
@@ -29,9 +29,9 @@ interface ContentSectionProps {
 }
 
 function isValidImageUrl(url?: string): boolean {
-  if (!url || url.trim() === "") return false;
+  if (!url || url.trim() === '') return false;
   try {
-    if (url.startsWith("/")) return true;
+    if (url.startsWith('/')) return true;
     new URL(url);
     return true;
   } catch {
@@ -61,15 +61,26 @@ function ContentRow({
   if (items.length === 0) return null;
 
   // Card sizes based on isWide prop - Materi much wider
-  const cardWidth = isFullWide ? "w-64 md:w-72" : isWide ? "w-44 md:w-48" : "w-28 md:w-32";
-  const imageHeight = isFullWide ? "h-52 md:h-56" : isWide ? "h-52 md:h-56" : "h-36 md:h-40";
+  const cardWidth = isFullWide
+    ? 'w-64 md:w-72'
+    : isWide
+      ? 'w-44 md:w-48'
+      : 'w-28 md:w-32';
+  const imageHeight = isFullWide
+    ? 'h-52 md:h-56'
+    : isWide
+      ? 'h-52 md:h-56'
+      : 'h-36 md:h-40';
 
   return (
     <div className="w-full min-w-0 overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-1.5">
-          <Icon className="w-4 h-4" style={{ color: mainColor }} />
+          <Icon
+            className="w-4 h-4"
+            style={{ color: mainColor }}
+          />
           <h3 className="text-sm font-medium text-gray-900">{title}</h3>
           <Badge
             className="text-[10px] px-1.5 py-0"
@@ -91,55 +102,71 @@ function ContentRow({
       </div>
 
       {/* Cards - Horizontal Scroll */}
-      <div style={{ maxWidth: '100%', overflow: 'hidden' }}>
-        <div className="overflow-x-auto scrollbar-hidden" style={{ maxWidth: '100%' }}>
-          <div className="flex gap-3 pb-2">
-          {items.map((item) => (
-            <Link key={item.id} href={href} className="flex-shrink-0 group">
-              <div className={`${cardWidth} bg-white rounded-3xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-all`}>
-                {/* Image Container - Fixed height */}
-                <div className={`relative bg-gray-100 ${imageHeight}`}>
-                  {isValidImageUrl(item.src) ? (
-                    <Image
-                      src={item.src}
-                      alt={item.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  ) : (
-                    <div
-                      className="w-full h-full flex items-center justify-center"
-                      style={{ backgroundColor: `${mainColor}10` }}
-                    >
-                      <Icon
-                        className="w-8 h-8 opacity-30"
-                        style={{ color: mainColor }}
-                      />
-                    </div>
-                  )}
+      <div className="w-full relative">
+        <div
+          className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-4 snap-x snap-mandatory"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          <style>{`.content-scroll::-webkit-scrollbar { display: none; }`}</style>
 
-                  {/* Video play icon */}
-                  {(showPlayIcon || item.hasVideo) && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                        <PlayCircle
-                          className="w-6 h-6"
+          <div className="content-scroll flex gap-4 min-w-max md:min-w-0">
+            {items.map((item) => (
+              <Link
+                key={item.id}
+                href={href}
+                className="flex-shrink-0 group snap-start"
+              >
+                <div
+                  className={`${cardWidth} bg-white rounded-[1.5rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1`}
+                >
+                  {/* Image Container - Fixed height */}
+                  <div
+                    className={`relative bg-gray-50 ${imageHeight} overflow-hidden`}
+                  >
+                    {isValidImageUrl(item.src) ? (
+                      <Image
+                        src={item.src}
+                        alt={item.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div
+                        className="w-full h-full flex items-center justify-center opacity-10"
+                        style={{ backgroundColor: mainColor }}
+                      >
+                        <Icon
+                          className="w-8 h-8 opacity-50"
                           style={{ color: mainColor }}
                         />
                       </div>
-                    </div>
-                  )}
-                </div>
+                    )}
 
-                {/* Title - Outside image, fixed 2 lines height */}
-                <div className="p-2">
-                  <h4 className="font-medium text-gray-900 text-xs leading-tight line-clamp-2 h-8">
-                    {item.title}
-                  </h4>
+                    {/* Gradient Overlay for Text Readability if needed */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                    {/* Video play icon */}
+                    {(showPlayIcon || item.hasVideo) && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                          <PlayCircle
+                            className="w-5 h-5 ml-0.5"
+                            style={{ color: mainColor }}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Title */}
+                  <div className="p-3">
+                    <h4 className="font-bold text-slate-800 text-xs leading-5 line-clamp-2 h-10 group-hover:text-primary transition-colors">
+                      {item.title}
+                    </h4>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
           </div>
         </div>
       </div>
@@ -154,11 +181,12 @@ export default function ContentSection({
 }: ContentSectionProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const params = useParams();
-  const mainColor = websiteSubCategory?.main_color || "#0091FF";
-  const webSubId = (params?.web_sub_category as string) || "snbt";
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const webSubId = (params?.web_sub_category as string) || 'snbt';
 
   // Check if we have any content
-  const hasContent = tryouts.length > 0 || materials.length > 0 || recordings.length > 0;
+  const hasContent =
+    tryouts.length > 0 || materials.length > 0 || recordings.length > 0;
 
   if (!hasContent) {
     return null;
@@ -168,7 +196,10 @@ export default function ContentSection({
     <div className="w-full min-w-0 overflow-hidden space-y-4">
       {/* Main Header */}
       <div className="flex items-center gap-1.5">
-        <Sparkles className="w-4 h-4" style={{ color: mainColor }} />
+        <Sparkles
+          className="w-4 h-4"
+          style={{ color: mainColor }}
+        />
         <h2 className="font-semibold text-sm text-gray-900">Konten Terbaru</h2>
       </div>
 

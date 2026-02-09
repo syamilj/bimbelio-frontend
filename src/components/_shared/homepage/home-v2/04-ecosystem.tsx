@@ -39,7 +39,8 @@ const EcosystemSection: React.FC = () => {
       id: 'biminsight',
       name: <BimInsight />,
       tagline: 'Peta Strategi Lolos',
-      description: 'Analisis kelemahan dan rekomendasi materi personal berbasis data.',
+      description:
+        'Analisis kelemahan dan rekomendasi materi personal berbasis data.',
       icon: BarChart3,
       color: '#0091FF',
     },
@@ -47,7 +48,8 @@ const EcosystemSection: React.FC = () => {
       id: 'bimlive',
       name: <BimLive />,
       tagline: 'Kelas Live Interaktif',
-      description: 'Live class 2 arah dengan Master Tutor. Tanya langsung, paham seketika.',
+      description:
+        'Live class 2 arah dengan Master Tutor. Tanya langsung, paham seketika.',
       icon: Video,
       color: '#8B5CF6',
     },
@@ -55,7 +57,8 @@ const EcosystemSection: React.FC = () => {
       id: 'bimcourse',
       name: <BimCourse />,
       tagline: 'Video Materi 4K',
-      description: '5000+ video animasi berkualitas. Konsep rumit jadi gampang nempel.',
+      description:
+        '5000+ video animasi berkualitas. Konsep rumit jadi gampang nempel.',
       icon: BookOpen,
       color: '#10B981',
     },
@@ -63,7 +66,8 @@ const EcosystemSection: React.FC = () => {
       id: 'bimarena',
       name: <BimArena />,
       tagline: 'Try Out IRT Akurat',
-      description: 'Simulasi ujian 100% mirip asli dengan scoring IRT nasional.',
+      description:
+        'Simulasi ujian 100% mirip asli dengan scoring IRT nasional.',
       icon: Target,
       color: '#F59E0B',
     },
@@ -71,7 +75,8 @@ const EcosystemSection: React.FC = () => {
       id: 'bimbot',
       name: <BimBot />,
       tagline: 'AI Mentor 24/7',
-      description: 'Stuck jam 2 pagi? Foto soal, dapat penjelasan step-by-step instan.',
+      description:
+        'Stuck jam 2 pagi? Foto soal, dapat penjelasan step-by-step instan.',
       icon: Bot,
       color: '#EC4899',
     },
@@ -79,19 +84,25 @@ const EcosystemSection: React.FC = () => {
       id: 'bimcircle',
       name: <BimCircle />,
       tagline: 'Komunitas Pejuang',
-      description: 'Circle siswa ambis se-Indonesia. Sharing tips, catatan, dan motivasi.',
+      description:
+        'Circle siswa ambis se-Indonesia. Sharing tips, catatan, dan motivasi.',
       icon: Users,
       color: '#14B8A6',
     },
   ];
 
   return (
-    <section id="ecosystem" className="py-16 md:py-24 px-5 bg-white relative overflow-hidden">
+    <section
+      id="ecosystem"
+      className="py-16 md:py-24 px-5 bg-white relative overflow-hidden"
+    >
       {/* Background Decoration */}
       <div className="absolute inset-0 pointer-events-none">
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-[0.03]"
-          style={{ background: `radial-gradient(circle, ${mainColor} 0%, transparent 70%)` }}
+          style={{
+            background: `radial-gradient(circle, ${mainColor} 0%, transparent 70%)`,
+          }}
         />
       </div>
 
@@ -102,8 +113,7 @@ const EcosystemSection: React.FC = () => {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold tracking-wide mb-4"
             style={{ backgroundColor: `${mainColor}10`, color: mainColor }}
           >
-            <Zap className="w-3.5 h-3.5" />
-            6 SENJATA RAHASIA
+            <Zap className="w-3.5 h-3.5" />6 SENJATA RAHASIA
           </span>
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
@@ -112,7 +122,8 @@ const EcosystemSection: React.FC = () => {
           </h2>
 
           <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
-            Bukan sekadar bimbel. Semua tools yang kamu butuhkan untuk persiapan maksimal — dalam satu platform.
+            Bukan sekadar bimbel. Semua tools yang kamu butuhkan untuk persiapan
+            maksimal — dalam satu platform.
           </p>
         </div>
 
@@ -180,7 +191,8 @@ const EcosystemSection: React.FC = () => {
               Siap Akses Semua Fitur?
             </h3>
             <p className="text-white/80 text-sm mb-6 max-w-md mx-auto">
-              Daftar sekarang dan langsung explore semua tools untuk persiapan PTN impianmu.
+              Daftar sekarang dan langsung explore semua tools untuk persiapan
+              PTN impianmu.
             </p>
 
             <Link

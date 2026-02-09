@@ -31,7 +31,6 @@ export default function LeftComponent() {
 
   const isUpcoming = CourseData?.status === 'UPCOMING';
 
-
   return (
     <ResizablePanel
       defaultSize={50}

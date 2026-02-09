@@ -39,7 +39,9 @@ const LoadingChat = () => {
           {/* Message Header */}
           <div className="flex items-center gap-2 mb-2">
             <div className="flex items-center gap-2">
-              <span className="font-semibold text-sm"><BimBot /> AI</span>
+              <span className="font-semibold text-sm">
+                <BimBot /> AI
+              </span>
               <div
                 className="px-2 py-0.5 rounded-full text-xs font-bold text-white shadow-sm"
                 style={{ backgroundColor: mainColor }}

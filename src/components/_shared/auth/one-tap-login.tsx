@@ -3,8 +3,8 @@
 import { useSession } from '@/components/provider/provider-session-auth';
 import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { responseError } from '@/lib/response';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { GoogleOAuthProvider, useGoogleOneTapLogin } from '@react-oauth/google';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -41,7 +41,9 @@ const HandleLogin = () => {
         const [firstName, ...restNameParts] = fullName
           .split(' ')
           .filter(Boolean);
-        const lastName = restNameParts.length ? restNameParts.join(' ') : undefined;
+        const lastName = restNameParts.length
+          ? restNameParts.join(' ')
+          : undefined;
 
         trackUnifiedEvent({
           eventName: 'CompleteRegistration',

@@ -1,7 +1,7 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { HelpCircle, Plus, Minus } from 'lucide-react';
+import { HelpCircle, Minus, Plus } from 'lucide-react';
 import { useState } from 'react';
 
 interface FAQItem {
@@ -62,7 +62,10 @@ const FAQSection: React.FC = () => {
   };
 
   return (
-    <section id="faq" className="py-16 md:py-20 px-4 bg-white">
+    <section
+      id="faq"
+      className="py-16 md:py-20 px-4 bg-white"
+    >
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
@@ -75,12 +78,13 @@ const FAQSection: React.FC = () => {
           </span>
 
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Jawaban Buat <span style={{ color: mainColor }}>"Tapi Kalo..."</span> Kamu
+            Jawaban Buat{' '}
+            <span style={{ color: mainColor }}>"Tapi Kalo..."</span> Kamu
           </h2>
 
           <p className="text-gray-600 max-w-xl mx-auto">
-            Kamu mungkin masih mikir "tapi kalo nggak cocok gimana?" atau
-            "kalo stuck gimana?". Cek dulu jawabannya di sini.
+            Kamu mungkin masih mikir "tapi kalo nggak cocok gimana?" atau "kalo
+            stuck gimana?". Cek dulu jawabannya di sini.
           </p>
         </div>
 

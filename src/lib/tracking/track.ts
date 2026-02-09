@@ -1,8 +1,8 @@
 'use client';
 
-import { trackServerEvent, type TrackingPlatform } from './server-events';
 import { createEventId } from './event-id';
 import { normalizeTikTokCustomData } from './normalize-tiktok';
+import { trackServerEvent, type TrackingPlatform } from './server-events';
 
 export type UnifiedTrackInput = {
   eventName: string;
@@ -21,7 +21,11 @@ export type UnifiedTrackInput = {
   customData?: Record<string, any>;
 };
 
-function trackBrowserMeta(eventName: string, customData: Record<string, any>, eventId: string) {
+function trackBrowserMeta(
+  eventName: string,
+  customData: Record<string, any>,
+  eventId: string,
+) {
   if (typeof window === 'undefined') return;
   const fbq = (window as any).fbq;
   if (!fbq) return;
@@ -31,7 +35,11 @@ function trackBrowserMeta(eventName: string, customData: Record<string, any>, ev
   fbq('track', eventName, customData || {}, { eventID: eventId });
 }
 
-function trackBrowserTikTok(eventName: string, customData: Record<string, any>, eventId: string) {
+function trackBrowserTikTok(
+  eventName: string,
+  customData: Record<string, any>,
+  eventId: string,
+) {
   if (typeof window === 'undefined') return;
   const ttq = (window as any).ttq;
   if (!ttq) return;

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { Clock, TrendingUp, Trophy, Target } from "lucide-react";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Clock, Target, TrendingUp, Trophy } from 'lucide-react';
 
 interface StatsCardsProps {
   studyHours: number;
@@ -21,88 +21,119 @@ export default function StatsCards({
   lastTryoutTitle,
 }: StatsCardsProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || "#0091FF";
+  // const mainColor = websiteSubCategory?.main_color || "#0091FF";
 
   return (
     <div className="w-full">
-      {/* Main Stats - 2x2 Grid on Mobile, 4 cols on Desktop */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
-        {/* Jam Belajar */}
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-3 md:p-4 border border-blue-100">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-3xl bg-blue-500 flex items-center justify-center">
-              <Clock className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-xs text-blue-600 font-medium">Jam Belajar</span>
-          </div>
-          <div className="flex items-baseline gap-1">
-            <span className="text-2xl md:text-3xl font-black text-blue-700">
-              {Math.floor(studyHours)}
-            </span>
-            <span className="text-sm text-blue-500 font-medium">jam</span>
-          </div>
-        </div>
+      <div className="flex items-center justify-between mb-4 px-1">
+        <h3 className="font-black text-lg text-slate-800">Statistik Belajar</h3>
+      </div>
 
-        {/* Nilai Total */}
-        <div className="bg-gradient-to-br from-amber-50 to-orange-100 rounded-3xl p-3 md:p-4 border border-amber-100">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-3xl bg-amber-500 flex items-center justify-center">
-              <TrendingUp className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-xs text-amber-600 font-medium">Nilai Total</span>
-          </div>
-          <div className="flex items-baseline gap-1">
-            <span className="text-2xl md:text-3xl font-black text-amber-700">
-              {totalScore.toLocaleString()}
-            </span>
-          </div>
-        </div>
+      <div
+        className="w-full overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-4"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        <style>{`.stats-scroll::-webkit-scrollbar { display: none; }`}</style>
 
-        {/* Peringkat */}
-        <div
-          className="rounded-3xl p-3 md:p-4 border"
-          style={{
-            background: `linear-gradient(135deg, ${mainColor}10, ${mainColor}20)`,
-            borderColor: `${mainColor}30`
-          }}
-        >
-          <div className="flex items-center gap-2 mb-2">
-            <div
-              className="w-8 h-8 rounded-3xl flex items-center justify-center"
-              style={{ backgroundColor: mainColor }}
-            >
-              <Trophy className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-xs font-medium" style={{ color: mainColor }}>Peringkat</span>
-          </div>
-          <div className="flex items-baseline gap-1">
-            <span className="text-2xl md:text-3xl font-black" style={{ color: mainColor }}>
-              #{rank || "-"}
-            </span>
-            <span className="text-xs font-medium opacity-70" style={{ color: mainColor }}>
-              / {rankFrom}
-            </span>
-          </div>
-          {lastTryoutTitle && (
-            <p className="text-[10px] mt-1 truncate opacity-60" style={{ color: mainColor }}>
-              {lastTryoutTitle}
-            </p>
-          )}
-        </div>
+        <div className="stats-scroll flex gap-3 md:gap-4 w-max md:w-full md:grid md:grid-cols-4 md:min-w-0">
+          {/* Jam Belajar - Blue */}
+          <div className="w-[220px] md:w-auto h-[180px] md:h-auto rounded-[2rem] p-6 bg-[#e0f2fe] flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300">
+            <div>
+              <div className="w-10 h-10 rounded-full bg-[#3b82f6] flex items-center justify-center mb-4 shadow-sm text-white">
+                <Clock className="w-5 h-5" />
+              </div>
 
-        {/* TO Selesai */}
-        <div className="bg-gradient-to-br from-emerald-50 to-green-100 rounded-3xl p-3 md:p-4 border border-emerald-100">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-3xl bg-emerald-500 flex items-center justify-center">
-              <Target className="w-4 h-4 text-white" />
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-black text-slate-900 tracking-tighter">
+                  {Math.floor(studyHours)}
+                </span>
+                <span className="text-sm font-bold text-slate-500">jam</span>
+              </div>
             </div>
-            <span className="text-xs text-emerald-600 font-medium">TO Selesai</span>
+
+            <div>
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">
+                JAM BELAJAR
+              </p>
+              <p className="text-[10px] font-medium text-slate-400">
+                +0j minggu ini
+              </p>
+            </div>
           </div>
-          <div className="flex items-baseline gap-1">
-            <span className="text-2xl md:text-3xl font-black text-emerald-700">
-              {tryoutsCompleted}
-            </span>
-            <span className="text-sm text-emerald-500 font-medium">tryout</span>
+
+          {/* BimArena Selesai - Green */}
+          <div className="w-[220px] md:w-auto h-[180px] md:h-auto rounded-[2rem] p-6 bg-[#dcfce7] flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300">
+            <div>
+              <div className="w-10 h-10 rounded-full bg-[#10b981] flex items-center justify-center mb-4 shadow-sm text-white">
+                <Target className="w-5 h-5" />
+              </div>
+
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-black text-slate-900 tracking-tighter">
+                  {tryoutsCompleted}
+                </span>
+                <span className="text-sm font-bold text-slate-500">tryout</span>
+              </div>
+            </div>
+
+            <div>
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">
+                BIMARENA SELESAI
+              </p>
+              <p className="text-[10px] font-medium text-slate-400">
+                Peringkat #{rank || '-'}
+              </p>
+            </div>
+          </div>
+
+          {/* Rata-rata Skor - Purple */}
+          <div className="w-[220px] md:w-auto h-[180px] md:h-auto rounded-[2rem] p-6 bg-[#f3e8ff] flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300">
+            <div>
+              <div className="w-10 h-10 rounded-full bg-[#a855f7] flex items-center justify-center mb-4 shadow-sm text-white">
+                <TrendingUp className="w-5 h-5" />
+              </div>
+
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-black text-slate-900 tracking-tighter">
+                  {totalScore > 0
+                    ? (totalScore / (tryoutsCompleted || 1)).toFixed(0)
+                    : 0}
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">
+                RATA-RATA SKOR
+              </p>
+              <p className="text-[10px] font-medium text-slate-400">
+                Belum ada data
+              </p>
+            </div>
+          </div>
+
+          {/* Peringkat - Pink */}
+          <div className="w-[220px] md:w-auto h-[180px] md:h-auto rounded-[2rem] p-6 bg-[#fae8ff] flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300">
+            <div>
+              <div className="w-10 h-10 rounded-full bg-[#ec4899] flex items-center justify-center mb-4 shadow-sm text-white">
+                <Trophy className="w-5 h-5" />
+              </div>
+
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-black text-slate-900 tracking-tighter">
+                  {rank || '-'}
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">
+                PERINGKAT
+              </p>
+              <p className="text-[10px] font-medium text-slate-400">
+                dari {rankFrom} siswa
+              </p>
+            </div>
           </div>
         </div>
       </div>

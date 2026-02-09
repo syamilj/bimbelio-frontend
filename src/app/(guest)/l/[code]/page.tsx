@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Loader2, ExternalLink, AlertCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { AlertCircle, ExternalLink, Loader2 } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function ShortUrlRedirect() {
   const params = useParams();
@@ -13,7 +13,8 @@ export default function ShortUrlRedirect() {
 
   useEffect(() => {
     // Redirect immediately to backend endpoint which handles analytics and redirect
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+    const backendUrl =
+      process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
     const redirectUrl = `${backendUrl}/l/${code}`;
 
     // Immediate redirect
@@ -29,9 +30,7 @@ export default function ShortUrlRedirect() {
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Link Not Found</h1>
           <p className="text-gray-600">{error}</p>
-          <Button onClick={() => window.location.href = "/"}>
-            Go Home
-          </Button>
+          <Button onClick={() => (window.location.href = '/')}>Go Home</Button>
         </Card>
       </div>
     );

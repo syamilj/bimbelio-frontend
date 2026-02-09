@@ -292,14 +292,14 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
         <div className="flex items-center gap-4 mb-8">
           <Link
             href="../quiz-volume"
-            className="p-2 rounded-lg hover:bg-slate-200 transition-colors"
+            className="p-2 rounded-3xl hover:bg-slate-200 transition-colors"
           >
             <ChevronLeft className="w-6 h-6 text-slate-700" />
           </Link>
           <div>
             <div className="flex items-center gap-3">
               <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-lg"
+                className="w-12 h-12 rounded-3xl flex items-center justify-center text-white shadow-lg"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
@@ -608,7 +608,7 @@ const TryoutItem = ({
         {tryouts.map((tryout, index) => (
           <div
             key={tryout.id}
-            className="flex justify-between p-3 rounded-lg w-full"
+            className="flex justify-between p-3 rounded-3xl w-full"
             style={{
               background: `${mainColor}10`,
               borderLeft: `4px solid ${mainColor}`,
@@ -694,7 +694,7 @@ const TryoutItem = ({
         ))}
         {tryouts.length === 0 && (
           <div
-            className="flex justify-between p-3 rounded-lg w-full bg-gray-100 border-l-4 border-gray-600"
+            className="flex justify-between p-3 rounded-3xl w-full bg-gray-100 border-l-4 border-gray-600"
             // style={{
             //   background: `${mainColor}10`,
             //   borderLeft: `4px solid ${mainColor}`,

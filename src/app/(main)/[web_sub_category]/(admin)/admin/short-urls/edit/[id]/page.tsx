@@ -1,27 +1,37 @@
-"use client";
+'use client';
 
-import { useSession } from "@/components/provider/provider-session-auth";
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
-import { updateShortUrl, type UpdateShortUrlPayload, type ShortUrl } from "@/lib/api/short-url";
-import { fetchAllLinkPages } from "@/lib/api/link-pages";
-import axiosInstanceWithToken from "@/lib/axios/axiosInstanceWithToken";
-import { ArrowLeft, Link2, Save } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+} from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
+import { fetchAllLinkPages } from '@/lib/api/link-pages';
+import {
+  updateShortUrl,
+  type ShortUrl,
+  type UpdateShortUrlPayload,
+} from '@/lib/api/short-url';
+import axiosInstanceWithToken from '@/lib/axios/axiosInstanceWithToken';
+import { ArrowLeft, Link2, Save } from 'lucide-react';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 export default function EditShortUrlPage() {
   const params = useParams();
@@ -29,14 +39,16 @@ export default function EditShortUrlPage() {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const router = useRouter();
 
-  const mainColor = websiteSubCategory?.main_color || "#0091FF";
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const shortUrlId = params.id as string;
 
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
   const [linkPages, setLinkPages] = useState<any[]>([]);
   const [originalData, setOriginalData] = useState<ShortUrl | null>(null);
-  const [formData, setFormData] = useState<Omit<UpdateShortUrlPayload, 'id'>>({});
+  const [formData, setFormData] = useState<Omit<UpdateShortUrlPayload, 'id'>>(
+    {},
+  );
 
   useEffect(() => {
     const loadData = async () => {
@@ -44,15 +56,20 @@ export default function EditShortUrlPage() {
         setLoadingData(true);
 
         // Load short URL data
-        const { data } = await axiosInstanceWithToken.get(`/l/admin/getAllShortUrls`, {
-          params: {
-            website_sub_category_id: websiteSubCategory?.id,
+        const { data } = await axiosInstanceWithToken.get(
+          `/l/admin/getAllShortUrls`,
+          {
+            params: {
+              website_sub_category_id: websiteSubCategory?.id,
+            },
           },
-        });
+        );
 
-        const shortUrl = data.data.find((url: ShortUrl) => url.id === shortUrlId);
+        const shortUrl = data.data.find(
+          (url: ShortUrl) => url.id === shortUrlId,
+        );
         if (!shortUrl) {
-          toast.error("Short URL not found");
+          toast.error('Short URL not found');
           router.push(`/${websiteSubCategory?.id}/admin/short-urls`);
           return;
         }
@@ -72,7 +89,9 @@ export default function EditShortUrlPage() {
           utmCampaign: shortUrl.utmCampaign || undefined,
           utmContent: shortUrl.utmContent || undefined,
           utmTerm: shortUrl.utmTerm || undefined,
-          expireAt: shortUrl.expireAt ? new Date(shortUrl.expireAt).toISOString().slice(0, 16) : undefined,
+          expireAt: shortUrl.expireAt
+            ? new Date(shortUrl.expireAt).toISOString().slice(0, 16)
+            : undefined,
           maxClicks: shortUrl.maxClicks || undefined,
           isActive: shortUrl.isActive,
         });
@@ -83,8 +102,8 @@ export default function EditShortUrlPage() {
         });
         setLinkPages(response.data || []);
       } catch (error: any) {
-        console.error("Failed to load data:", error);
-        toast.error("Failed to load short URL data");
+        console.error('Failed to load data:', error);
+        toast.error('Failed to load short URL data');
         router.push(`/${websiteSubCategory?.id}/admin/short-urls`);
       } finally {
         setLoadingData(false);
@@ -99,13 +118,13 @@ export default function EditShortUrlPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (formData.destinationType === "DIRECT" && !formData.destinationUrl) {
-      toast.error("Destination URL is required for DIRECT type");
+    if (formData.destinationType === 'DIRECT' && !formData.destinationUrl) {
+      toast.error('Destination URL is required for DIRECT type');
       return;
     }
 
-    if (formData.destinationType === "LINK_PAGE" && !formData.linkPageId) {
-      toast.error("Link Page is required for LINK_PAGE type");
+    if (formData.destinationType === 'LINK_PAGE' && !formData.linkPageId) {
+      toast.error('Link Page is required for LINK_PAGE type');
       return;
     }
 
@@ -116,11 +135,13 @@ export default function EditShortUrlPage() {
         ...formData,
       });
 
-      toast.success("Short URL updated successfully!");
+      toast.success('Short URL updated successfully!');
       router.push(`/${websiteSubCategory?.id}/admin/short-urls`);
     } catch (error: any) {
-      console.error("Failed to update short URL:", error);
-      toast.error(error?.response?.data?.message || "Failed to update short URL");
+      console.error('Failed to update short URL:', error);
+      toast.error(
+        error?.response?.data?.message || 'Failed to update short URL',
+      );
     } finally {
       setLoading(false);
     }
@@ -151,21 +172,31 @@ export default function EditShortUrlPage() {
             className="w-12 h-12 rounded-3xl flex items-center justify-center"
             style={{ backgroundColor: `${mainColor}20` }}
           >
-            <Link2 className="w-6 h-6" style={{ color: mainColor }} />
+            <Link2
+              className="w-6 h-6"
+              style={{ color: mainColor }}
+            />
           </div>
           <div>
             <h1 className="text-3xl font-bold">Edit Short URL</h1>
-            <p className="text-gray-600 mt-1">Update your short link settings</p>
+            <p className="text-gray-600 mt-1">
+              Update your short link settings
+            </p>
           </div>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6"
+      >
         {/* Basic Info */}
         <Card>
           <CardHeader>
             <CardTitle>Basic Information</CardTitle>
-            <CardDescription>Essential details for your short URL</CardDescription>
+            <CardDescription>
+              Essential details for your short URL
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -173,14 +204,20 @@ export default function EditShortUrlPage() {
               <Input
                 id="code"
                 placeholder="my-link"
-                value={formData.code || ""}
+                value={formData.code || ''}
                 onChange={(e) =>
-                  setFormData({ ...formData, code: e.target.value.toLowerCase().replace(/[^a-z0-9-_]/g, "") })
+                  setFormData({
+                    ...formData,
+                    code: e.target.value
+                      .toLowerCase()
+                      .replace(/[^a-z0-9-_]/g, ''),
+                  })
                 }
                 required
               />
               <p className="text-sm text-gray-500">
-                Only lowercase letters, numbers, hyphens, and underscores allowed
+                Only lowercase letters, numbers, hyphens, and underscores
+                allowed
               </p>
             </div>
 
@@ -189,8 +226,10 @@ export default function EditShortUrlPage() {
               <Input
                 id="title"
                 placeholder="E.g., Black Friday Campaign"
-                value={formData.title || ""}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                value={formData.title || ''}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
               />
             </div>
 
@@ -199,8 +238,10 @@ export default function EditShortUrlPage() {
               <Textarea
                 id="description"
                 placeholder="Internal notes about this link..."
-                value={formData.description || ""}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                value={formData.description || ''}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
                 rows={3}
               />
             </div>
@@ -215,7 +256,9 @@ export default function EditShortUrlPage() {
               <Switch
                 id="isActive"
                 checked={formData.isActive ?? true}
-                onCheckedChange={(checked) => setFormData({ ...formData, isActive: checked })}
+                onCheckedChange={(checked) =>
+                  setFormData({ ...formData, isActive: checked })
+                }
               />
             </div>
           </CardContent>
@@ -225,7 +268,9 @@ export default function EditShortUrlPage() {
         <Card>
           <CardHeader>
             <CardTitle>Destination</CardTitle>
-            <CardDescription>Where should this short URL redirect to?</CardDescription>
+            <CardDescription>
+              Where should this short URL redirect to?
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -236,8 +281,10 @@ export default function EditShortUrlPage() {
                   setFormData({
                     ...formData,
                     destinationType: value,
-                    destinationUrl: value === "DIRECT" ? formData.destinationUrl : undefined,
-                    linkPageId: value === "LINK_PAGE" ? formData.linkPageId : undefined
+                    destinationUrl:
+                      value === 'DIRECT' ? formData.destinationUrl : undefined,
+                    linkPageId:
+                      value === 'LINK_PAGE' ? formData.linkPageId : undefined,
                   })
                 }
               >
@@ -246,38 +293,47 @@ export default function EditShortUrlPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="DIRECT">Direct URL</SelectItem>
-                  <SelectItem value="LINK_PAGE">Link Page (Link-in-Bio)</SelectItem>
+                  <SelectItem value="LINK_PAGE">
+                    Link Page (Link-in-Bio)
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            {formData.destinationType === "DIRECT" && (
+            {formData.destinationType === 'DIRECT' && (
               <div className="space-y-2">
                 <Label htmlFor="destinationUrl">Destination URL *</Label>
                 <Input
                   id="destinationUrl"
                   type="url"
                   placeholder="https://example.com/page"
-                  value={formData.destinationUrl || ""}
-                  onChange={(e) => setFormData({ ...formData, destinationUrl: e.target.value })}
+                  value={formData.destinationUrl || ''}
+                  onChange={(e) =>
+                    setFormData({ ...formData, destinationUrl: e.target.value })
+                  }
                   required
                 />
               </div>
             )}
 
-            {formData.destinationType === "LINK_PAGE" && (
+            {formData.destinationType === 'LINK_PAGE' && (
               <div className="space-y-2">
                 <Label htmlFor="linkPageId">Select Link Page *</Label>
                 <Select
                   value={formData.linkPageId}
-                  onValueChange={(value) => setFormData({ ...formData, linkPageId: value })}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, linkPageId: value })
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Choose a link page..." />
                   </SelectTrigger>
                   <SelectContent>
                     {linkPages.map((page) => (
-                      <SelectItem key={page.id} value={page.id}>
+                      <SelectItem
+                        key={page.id}
+                        value={page.id}
+                      >
                         {page.title} ({page.slug})
                       </SelectItem>
                     ))}
@@ -297,7 +353,9 @@ export default function EditShortUrlPage() {
         <Card>
           <CardHeader>
             <CardTitle>UTM Parameters (Optional)</CardTitle>
-            <CardDescription>Track campaign performance with UTM tags</CardDescription>
+            <CardDescription>
+              Track campaign performance with UTM tags
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -306,8 +364,10 @@ export default function EditShortUrlPage() {
                 <Input
                   id="utmSource"
                   placeholder="facebook"
-                  value={formData.utmSource || ""}
-                  onChange={(e) => setFormData({ ...formData, utmSource: e.target.value })}
+                  value={formData.utmSource || ''}
+                  onChange={(e) =>
+                    setFormData({ ...formData, utmSource: e.target.value })
+                  }
                 />
               </div>
               <div className="space-y-2">
@@ -315,8 +375,10 @@ export default function EditShortUrlPage() {
                 <Input
                   id="utmMedium"
                   placeholder="social"
-                  value={formData.utmMedium || ""}
-                  onChange={(e) => setFormData({ ...formData, utmMedium: e.target.value })}
+                  value={formData.utmMedium || ''}
+                  onChange={(e) =>
+                    setFormData({ ...formData, utmMedium: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -326,8 +388,10 @@ export default function EditShortUrlPage() {
               <Input
                 id="utmCampaign"
                 placeholder="spring_sale_2025"
-                value={formData.utmCampaign || ""}
-                onChange={(e) => setFormData({ ...formData, utmCampaign: e.target.value })}
+                value={formData.utmCampaign || ''}
+                onChange={(e) =>
+                  setFormData({ ...formData, utmCampaign: e.target.value })
+                }
               />
             </div>
 
@@ -337,8 +401,10 @@ export default function EditShortUrlPage() {
                 <Input
                   id="utmContent"
                   placeholder="banner_ad"
-                  value={formData.utmContent || ""}
-                  onChange={(e) => setFormData({ ...formData, utmContent: e.target.value })}
+                  value={formData.utmContent || ''}
+                  onChange={(e) =>
+                    setFormData({ ...formData, utmContent: e.target.value })
+                  }
                 />
               </div>
               <div className="space-y-2">
@@ -346,8 +412,10 @@ export default function EditShortUrlPage() {
                 <Input
                   id="utmTerm"
                   placeholder="running+shoes"
-                  value={formData.utmTerm || ""}
-                  onChange={(e) => setFormData({ ...formData, utmTerm: e.target.value })}
+                  value={formData.utmTerm || ''}
+                  onChange={(e) =>
+                    setFormData({ ...formData, utmTerm: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -366,10 +434,14 @@ export default function EditShortUrlPage() {
                 <Input
                   id="expireAt"
                   type="datetime-local"
-                  value={formData.expireAt || ""}
-                  onChange={(e) => setFormData({ ...formData, expireAt: e.target.value })}
+                  value={formData.expireAt || ''}
+                  onChange={(e) =>
+                    setFormData({ ...formData, expireAt: e.target.value })
+                  }
                 />
-                <p className="text-sm text-gray-500">Link will auto-deactivate after this date</p>
+                <p className="text-sm text-gray-500">
+                  Link will auto-deactivate after this date
+                </p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="maxClicks">Max Clicks</Label>
@@ -377,12 +449,19 @@ export default function EditShortUrlPage() {
                   id="maxClicks"
                   type="number"
                   placeholder="Leave empty for unlimited"
-                  value={formData.maxClicks || ""}
+                  value={formData.maxClicks || ''}
                   onChange={(e) =>
-                    setFormData({ ...formData, maxClicks: e.target.value ? Number(e.target.value) : undefined })
+                    setFormData({
+                      ...formData,
+                      maxClicks: e.target.value
+                        ? Number(e.target.value)
+                        : undefined,
+                    })
                   }
                 />
-                <p className="text-sm text-gray-500">Auto-deactivate after X clicks</p>
+                <p className="text-sm text-gray-500">
+                  Auto-deactivate after X clicks
+                </p>
               </div>
             </div>
           </CardContent>
@@ -398,11 +477,15 @@ export default function EditShortUrlPage() {
             <CardContent>
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
-                  <div className="text-2xl font-bold">{originalData.totalClicks}</div>
+                  <div className="text-2xl font-bold">
+                    {originalData.totalClicks}
+                  </div>
                   <div className="text-sm text-gray-500">Total Clicks</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold">{originalData.totalUniqueIps}</div>
+                  <div className="text-2xl font-bold">
+                    {originalData.totalUniqueIps}
+                  </div>
                   <div className="text-sm text-gray-500">Unique Visitors</div>
                 </div>
                 <div>
@@ -418,7 +501,11 @@ export default function EditShortUrlPage() {
 
         {/* Actions */}
         <div className="flex justify-end gap-4">
-          <Button type="button" variant="outline" onClick={() => router.back()}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => router.back()}
+          >
             Cancel
           </Button>
           <Button

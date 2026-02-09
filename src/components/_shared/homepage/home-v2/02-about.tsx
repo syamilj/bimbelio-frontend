@@ -8,7 +8,10 @@ const AboutSection: React.FC = () => {
   const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
 
   return (
-    <section id="about" className="py-16 md:py-20 px-4 bg-white">
+    <section
+      id="about"
+      className="py-16 md:py-20 px-4 bg-white"
+    >
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
@@ -21,13 +24,14 @@ const AboutSection: React.FC = () => {
           </span>
 
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Mau PTN atau Kedinasan, <span style={{ color: mainColor }}>Sama-Sama Berat</span>
+            Mau PTN atau Kedinasan,{' '}
+            <span style={{ color: mainColor }}>Sama-Sama Berat</span>
           </h2>
 
           <p className="text-gray-600 max-w-2xl mx-auto">
-            SNBT, Ujian Mandiri UI/UGM/ITB, sampai SKD Kedinasan — semuanya butuh
-            persiapan serius. Belajar sendiri cuma bikin makin overwhelmed. Tenang,
-            itu yang kami rasain dulu juga.
+            SNBT, Ujian Mandiri UI/UGM/ITB, sampai SKD Kedinasan — semuanya
+            butuh persiapan serius. Belajar sendiri cuma bikin makin
+            overwhelmed. Tenang, itu yang kami rasain dulu juga.
           </p>
         </div>
 
@@ -64,15 +68,19 @@ const AboutSection: React.FC = () => {
                 <h3 className="text-lg font-bold text-gray-900">
                   Dulu Kita Juga Begitu
                 </h3>
-                <p className="text-sm font-medium" style={{ color: mainColor }}>
+                <p
+                  className="text-sm font-medium"
+                  style={{ color: mainColor }}
+                >
                   Sekarang Giliran Bantu Kamu
                 </p>
               </div>
             </div>
             <p className="text-gray-600 text-sm leading-relaxed">
               Tim kami UI, UGM, ITB, STAN, dan kampus top lainnya. Kami pernah
-              merasakan kebingungan yang sama — mau SNBT, Mandiri, atau Kedinasan.
-              Pengalaman itu yang bikin kami tahu persis apa yang kamu butuhkan.
+              merasakan kebingungan yang sama — mau SNBT, Mandiri, atau
+              Kedinasan. Pengalaman itu yang bikin kami tahu persis apa yang
+              kamu butuhkan.
             </p>
           </div>
 
@@ -86,24 +94,27 @@ const AboutSection: React.FC = () => {
                 <Target className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-gray-900">Satu Akun, Semua Jalur</h3>
-                <p className="text-sm font-medium" style={{ color: mainColor }}>
+                <h3 className="text-lg font-bold text-gray-900">
+                  Satu Akun, Semua Jalur
+                </h3>
+                <p
+                  className="text-sm font-medium"
+                  style={{ color: mainColor }}
+                >
                   SNBT + Mandiri + Kedinasan
                 </p>
               </div>
             </div>
             <p className="text-gray-600 text-sm leading-relaxed">
-              Nggak perlu daftar banyak bimbel. Di Bimbelio, satu akun bisa akses
-              persiapan SNBT, Ujian Mandiri (UI, UGM, ITB, dll), sampai SKD Kedinasan
-              (STAN, STIS, IPDN). Semua jalur, satu platform.
+              Nggak perlu daftar banyak bimbel. Di Bimbelio, satu akun bisa
+              akses persiapan SNBT, Ujian Mandiri (UI, UGM, ITB, dll), sampai
+              SKD Kedinasan (STAN, STIS, IPDN). Semua jalur, satu platform.
             </p>
           </div>
         </div>
 
         {/* What Makes Us Different */}
-        <div
-          className="bg-white rounded-3xl p-6 md:p-8 border-2 border-gray-100 shadow-sm hover:border-gray-200 transition-colors"
-        >
+        <div className="bg-white rounded-3xl p-6 md:p-8 border-2 border-gray-100 shadow-sm hover:border-gray-200 transition-colors">
           <div className="flex items-start gap-4 mb-6">
             <div
               className="w-14 h-14 rounded-3xl flex items-center justify-center flex-shrink-0 text-white"
@@ -117,7 +128,8 @@ const AboutSection: React.FC = () => {
               </h3>
               <p className="text-gray-600">
                 SNBT, Seleksi Mandiri, sampai Kedinasan —{' '}
-                <span className="font-semibold">semuanya ada di sini</span>, dengan:
+                <span className="font-semibold">semuanya ada di sini</span>,
+                dengan:
               </p>
             </div>
           </div>
@@ -129,10 +141,15 @@ const AboutSection: React.FC = () => {
                 className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
-                <Lightbulb className="w-5 h-5" style={{ color: mainColor }} />
+                <Lightbulb
+                  className="w-5 h-5"
+                  style={{ color: mainColor }}
+                />
               </div>
               <div>
-                <p className="text-sm font-semibold text-gray-900">AI-Powered Learning</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  AI-Powered Learning
+                </p>
                 <p className="text-xs text-gray-600">
                   Analisis kemampuan real-time & rekomendasi personal
                 </p>
@@ -144,10 +161,15 @@ const AboutSection: React.FC = () => {
                 className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
-                <Users className="w-5 h-5" style={{ color: mainColor }} />
+                <Users
+                  className="w-5 h-5"
+                  style={{ color: mainColor }}
+                />
               </div>
               <div>
-                <p className="text-sm font-semibold text-gray-900">3-Layer Support</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  3-Layer Support
+                </p>
                 <p className="text-xs text-gray-600">
                   Tutor expert + Mentor strategis + AI 24/7
                 </p>
@@ -159,10 +181,15 @@ const AboutSection: React.FC = () => {
                 className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
-                <Target className="w-5 h-5" style={{ color: mainColor }} />
+                <Target
+                  className="w-5 h-5"
+                  style={{ color: mainColor }}
+                />
               </div>
               <div>
-                <p className="text-sm font-semibold text-gray-900">IRT-Based Testing</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  IRT-Based Testing
+                </p>
                 <p className="text-xs text-gray-600">
                   Try Out adaptif yang akurat prediksi skor real
                 </p>
@@ -174,10 +201,15 @@ const AboutSection: React.FC = () => {
                 className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
-                <Heart className="w-5 h-5" style={{ color: mainColor }} />
+                <Heart
+                  className="w-5 h-5"
+                  style={{ color: mainColor }}
+                />
               </div>
               <div>
-                <p className="text-sm font-semibold text-gray-900">All-in-One Platform</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  All-in-One Platform
+                </p>
                 <p className="text-xs text-gray-600">
                   Live class, chat AI, notes, TO, mentor — semua di 1 tempat
                 </p>

@@ -2,9 +2,7 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import BlocknoteEditor from '@/components/ui/blocknote-editor';
-import { Card, CardContent } from '@/components/ui/card';
-import { motion } from 'framer-motion';
-import { FileText, HelpCircle } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 
 interface QuestionBubbleProps {
   question?: string;
@@ -24,86 +22,67 @@ const QuestionBubble = ({
 
   if (!question) {
     return (
-      <Card className="border-2 border-gray-200 rounded-3xl">
-        <CardContent className="p-6 md:p-8">
-          <div className="flex items-center justify-center h-32 text-gray-400">
-            <div className="text-center">
-              <HelpCircle className="w-12 h-12 mx-auto mb-3 opacity-50" />
-              <p className="text-sm">Pertanyaan tidak tersedia</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex items-center justify-center h-32 text-slate-400 p-6">
+        <div className="text-center">
+          <HelpCircle className="w-12 h-12 mx-auto mb-3 opacity-50" />
+          <p className="text-sm">Pertanyaan tidak tersedia</p>
+        </div>
+      </div>
     );
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={className}
-    >
-      <Card
-        className="border-2 rounded-3xl md:rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-        style={{ borderColor: `${mainColor}20` }}
+    <div className={className}>
+      <div
+        className="prose prose-sm md:prose-base max-w-none"
+        style={
+          {
+            '--tw-prose-headings': '#0f172a',
+            '--tw-prose-body': '#334155',
+            '--tw-prose-bold': mainColor,
+            '--tw-prose-links': mainColor,
+          } as React.CSSProperties
+        }
       >
-        <div
-          className="h-1 w-full"
-          style={{ backgroundColor: mainColor }}
+        <BlocknoteEditor
+          value={question}
+          viewOnly
+          className="question-content"
         />
-
-        <CardContent className="p-4 md:p-8">
-          <div className="space-y-4">
-            {/* Header */}
-            <div className="flex items-center gap-3 mb-6">
-              <div
-                className="w-10 h-10 md:w-12 md:h-12 rounded-3xl flex items-center justify-center shadow-sm"
-                style={{ backgroundColor: `${mainColor}15` }}
-              >
-                <FileText
-                  className="w-5 h-5 md:w-6 md:h-6"
-                  style={{ color: mainColor }}
-                />
-              </div>
-              <div>
-                <h3 className="text-lg md:text-xl font-bold text-gray-900">
-                  {questionNumber ? `Soal ${questionNumber}` : 'Pertanyaan'}
-                </h3>
-                <p className="text-sm text-gray-600">
-                  Baca pertanyaan dengan teliti
-                </p>
-              </div>
-            </div>
-
-            {/* Question Content */}
-            <div
-              className="prose prose-sm md:prose-base max-w-none"
-              style={
-                {
-                  '--tw-prose-headings': '#1f2937',
-                  '--tw-prose-body': '#374151',
-                  '--tw-prose-bold': mainColor,
-                  '--tw-prose-links': mainColor,
-                } as React.CSSProperties
-              }
-            >
-              <BlocknoteEditor
-                value={question}
-                viewOnly
-                className="question-content"
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      </div>
 
       <style
         jsx
         global
       >{`
         .question-content {
-          font-size: 16px;
-          line-height: 1.7;
+          font-size: 15px;
+          line-height: 1.65;
+        }
+
+        .option-text {
+          font-size: 14px !important;
+          line-height: 1.5 !important;
+        }
+
+        .option-text p {
+          font-size: 14px !important;
+          margin-bottom: 0 !important;
+        }
+
+        @media (min-width: 768px) {
+          .question-content {
+            font-size: 16px;
+            line-height: 1.7;
+          }
+
+          .option-text {
+            font-size: 15px !important;
+          }
+
+          .option-text p {
+            font-size: 15px !important;
+          }
         }
 
         .question-content p {
@@ -167,22 +146,16 @@ const QuestionBubble = ({
           padding: 1rem;
         }
 
-        @media (max-width: 768px) {
-          .question-content {
-            font-size: 14px;
-          }
+        .question-content table {
+          font-size: 13px;
+        }
 
-          .question-content table {
-            font-size: 12px;
-          }
-
-          .question-content th,
-          .question-content td {
-            padding: 8px;
-          }
+        .question-content th,
+        .question-content td {
+          padding: 10px;
         }
       `}</style>
-    </motion.div>
+    </div>
   );
 };
 

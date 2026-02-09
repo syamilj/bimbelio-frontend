@@ -1,6 +1,7 @@
 # BimBoard Dashboard - Complete Redesign
 
 ## 🎨 Overview
+
 Complete redesign of the Bimbelio student dashboard with modern UI/UX, engaging visuals, and comprehensive features. Built with Next.js 16, React 19, and Tailwind CSS v4.
 
 ---
@@ -8,6 +9,7 @@ Complete redesign of the Bimbelio student dashboard with modern UI/UX, engaging 
 ## ✨ Key Features
 
 ### 1. **HeroWelcome** - Personalized Hero Section
+
 - Dynamic greeting based on time of day
 - User avatar with tier badges (Premium/Free) and streak counter
 - Quick stats pills showing rank, study hours, and subscription status
@@ -15,22 +17,26 @@ Complete redesign of the Bimbelio student dashboard with modern UI/UX, engaging 
 - **Visuals**: Gradient mesh background, dot patterns, sparkles (for premium users)
 
 ### 2. **QuickAccessMenu** - 6 Quick Actions
+
 - Try Out, Kursus, Live Class, Materi, Peringkat, AI Tutor
 - Gradient icon backgrounds with hover animations
 - Responsive grid layout (3 cols mobile → 6 cols desktop)
 
 ### 3. **QuickStatsOverview** - Key Metrics at a Glance
+
 - 6 stat cards with gradient backgrounds
 - Metrics: Study Hours, Tryouts Completed, Average Score, Active Courses, Rank, Achievements
 - **Visuals**: Decorative glowing backgrounds, hover effects, scale animations
 
 ### 4. **LearningProgress** - Split View Progress Tracking
+
 - Tabbed interface: Courses vs Tryouts
 - **Courses Tab**: Thumbnails, progress bars with percentages, category labels
 - **Tryouts Tab**: Status badges (Completed/In Progress/Not Started), score display
 - **Empty States**: Custom SVG illustrations (NoCourses, NoTryouts) with CTA buttons
 
 ### 5. **PerformanceChart** - Score Visualization
+
 - Interactive bar chart for tryout scores over time
 - Hover tooltips with detailed info
 - Stats summary: Average, Highest, Lowest scores
@@ -38,11 +44,13 @@ Complete redesign of the Bimbelio student dashboard with modern UI/UX, engaging 
 - **Empty State**: NoPerformance illustration
 
 ### 6. **RecommendedContent** - AI-Powered Suggestions
+
 - 3 tabs: Courses, Tryouts, Documents
 - Card grid with thumbnails, premium badges, progress indicators
 - **Empty States**: Custom illustrations for each tab (NoCourses, NoTryouts, NoDocuments)
 
 ### 7. **AchievementBadges** - Gamification System
+
 - Unlocked/locked achievement states
 - Progress bars for in-progress achievements
 - Dynamic gradient colors per achievement type
@@ -51,12 +59,14 @@ Complete redesign of the Bimbelio student dashboard with modern UI/UX, engaging 
 - **Empty State**: NoAchievements illustration
 
 ### 8. **UpcomingSchedule** - Event Calendar
+
 - Tabbed view: Tryouts vs Live Classes
 - Compact cards with date/time, duration, instructor info
 - Premium badges for paid content
 - **Empty States**: NoSchedule and NoLiveClass illustrations
 
 ### 9. **RecentActivity** - Timeline Feed
+
 - Type-based icons and color coding (Tryout/Course/Document/LiveClass)
 - Relative timestamps ("2 hours ago")
 - Scrollable container with max height
@@ -67,7 +77,9 @@ Complete redesign of the Bimbelio student dashboard with modern UI/UX, engaging 
 ## 🎨 Visual Enhancements
 
 ### Custom SVG Illustrations (EmptyStateIllustrations.tsx)
+
 8 unique illustrations for empty states:
+
 - **NoTryouts**: Target with arrow and stars (purple theme)
 - **NoCourses**: Book with bookmark (green theme)
 - **NoDocuments**: Document stack with fold (amber theme)
@@ -80,7 +92,9 @@ Complete redesign of the Bimbelio student dashboard with modern UI/UX, engaging 
 Each illustration is 200x200 SVG with themed colors and animated elements.
 
 ### Decorative Patterns (DecorativePatterns.tsx)
+
 7 reusable background patterns:
+
 1. **GradientMesh**: Radial gradient bubbles with blur
 2. **DotPattern**: Subtle dot grid
 3. **GridPattern**: Fine grid lines
@@ -90,6 +104,7 @@ Each illustration is 200x200 SVG with themed colors and animated elements.
 7. **Confetti**: Celebration animation (achievement completion)
 
 ### Custom CSS Animations (globals.css)
+
 - **float**: Smooth up/down floating (6s infinite)
 - **twinkle**: Opacity pulse for sparkles (3s infinite)
 - **confetti-fall**: Falling with rotation (3s linear)
@@ -181,6 +196,7 @@ Components:
 ## 🎨 Color Theming
 
 Dynamic theming based on `websiteSubCategory.main_color` and `secondary_color`:
+
 - Hero section gradients
 - Stat card highlights
 - Premium badges

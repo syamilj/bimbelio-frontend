@@ -2,7 +2,7 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Bimbelio } from '@/components/ui/bim-brand';
-import { ArrowRight, MessageCircle, Rocket, Shield, Star } from 'lucide-react';
+import { ArrowRight, MessageCircle, Rocket } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -48,12 +48,14 @@ const CTASection: React.FC = () => {
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
             Siap Lolos PTN Impian
             <br />
-            <span className="text-white/80">Bareng <Bimbelio className="text-white" />?</span>
+            <span className="text-white/80">
+              Bareng <Bimbelio className="text-white" />?
+            </span>
           </h2>
 
           <p className="text-white/90 text-base md:text-lg max-w-2xl mx-auto">
-            Ribuan siswa sudah membuktikan. Sekarang giliran kamu.
-            Daftar sekarang dan mulai persiapanmu hari ini.
+            Ribuan siswa sudah membuktikan. Sekarang giliran kamu. Daftar
+            sekarang dan mulai persiapanmu hari ini.
           </p>
         </div>
 

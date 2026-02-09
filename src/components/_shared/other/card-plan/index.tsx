@@ -5,23 +5,24 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
 import {
   Coins,
-  Crown,
   Eye,
   Gift,
   Heart,
   ImageIcon,
+  Info,
   Shield,
   ShoppingCart,
-  SparkleIcon,
   Sparkles,
-  Star,
-  TrendingUp,
   Users,
   Zap,
 } from 'lucide-react';
@@ -104,9 +105,7 @@ export function CardPlan({
   const isPopular =
     plan.name.toLowerCase().includes('popular') ||
     plan.name.toLowerCase().includes('terpopuler');
-  const isRecommended =
-    plan.name.toLowerCase().includes('recommended') ||
-    plan.name.toLowerCase().includes('direkomendasikan');
+  const isRecommended = plan.recommended || false;
   const isBestSeller = plan.name.toLowerCase().includes('bestseller');
   const isLimitedTime = !!plan.originalPrice && plan.originalPrice > plan.price;
 
@@ -178,49 +177,41 @@ export function CardPlan({
 
   return (
     <ProviderContext.Provider value={Context}>
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        whileHover={{ scale: 1.02, y: -4 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
+      <div
         className={cn(
-          'w-full max-w-md group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl border-0 transition-all duration-500 touch-pan-y',
-          isRecommended && 'ring-2 ring-offset-4',
+          'w-full max-w-md group relative overflow-hidden bg-white rounded-3xl border-2 transition-all duration-200 touch-pan-y shadow-sm hover:shadow-lg',
+          isRecommended && 'ring-2 ring-offset-2',
         )}
         style={{
-          borderColor: isRecommended ? mainColor : undefined,
-          boxShadow: isPopular
-            ? `0 8px 32px ${mainColor}30`
-            : `0 4px 24px ${mainColor}15`,
-          touchAction: 'pan-y',
+          borderColor: isRecommended ? mainColor : '#e2e8f0',
+          ...(isRecommended && ({ '--tw-ring-color': mainColor } as any)),
         }}
       >
-        {/* Header Section - Homepage Style */}
-        <HeaderSection />
+        {/* Image Section - 4:5 Ratio, No Overlay */}
+        <HeroImageSection />
 
-        <div className="px-6 pb-6">
-          {/* Marketplace-Style Pricing Section */}
+        {/* Card Content */}
+        <div className="p-5">
+          {/* Product Title & Quick Info */}
+          <ProductHeader />
+
+          {/* Pricing Section - Prominent */}
           <PricingSection />
 
-          <MaxUsersInfo />
+          {/* Key Features Preview */}
+          <QuickFeatures />
 
-          {/* Informasi Cicilan */}
-          <InstallmentInfo />
-
-          {/* Enhanced Tabs - Marketplace Style */}
-          <TabsSection />
-
-          {/* Marketplace-Style CTA Section */}
+          {/* CTA Buttons */}
           <ButtonSection />
         </div>
-      </motion.div>
+      </div>
     </ProviderContext.Provider>
   );
 }
 
-const HeaderSection = () => {
-  const { websiteSubCategory, webCategoryData } = useWebsiteSubCategory();
+// New Hero Image Section - 4:5 Ratio, Clean, No Overlay
+const HeroImageSection = () => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const {
     useData: { plan },
     useViewData: {
@@ -229,7 +220,6 @@ const HeaderSection = () => {
       isRecommended,
       isLimitedTime,
       getDiscountPercentage,
-      platfroms,
       isWishlisted,
       setIsWishlisted,
     },
@@ -239,261 +229,207 @@ const HeaderSection = () => {
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   return (
-    <div className="relative p-6 bg-gradient-to-br from-white/90 to-white/80 backdrop-blur-sm">
-      {/* Top Badges Row */}
-      <div className="absolute top-3 left-3 right-3 flex justify-between items-start z-20">
+    <div className="relative w-full aspect-[4/5] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Main Image - Full Display, No Overlay */}
+      {plan.image ? (
+        <Image
+          src={plan.image}
+          alt={plan.name}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 400px"
+          priority
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+            const fallback =
+              e.currentTarget.parentElement?.querySelector('.fallback-icon');
+            if (fallback) {
+              (fallback as HTMLElement).style.display = 'flex';
+            }
+          }}
+        />
+      ) : null}
+
+      {/* Fallback */}
+      <div
+        className={`fallback-icon absolute inset-0 flex flex-col items-center justify-center ${plan.image ? 'hidden' : 'flex'}`}
+        style={{
+          background: `linear-gradient(135deg, ${mainColor}15, ${secondaryColor}10)`,
+        }}
+      >
+        <ImageIcon
+          size={48}
+          style={{ color: `${mainColor}60` }}
+          className="mb-2"
+        />
+        <span
+          className="text-sm font-medium"
+          style={{ color: `${mainColor}60` }}
+        >
+          {plan.name}
+        </span>
+      </div>
+
+      {/* Top Badges - Minimal & Clean */}
+      <div className="absolute top-3 left-3 right-3 flex justify-between items-start z-10">
         {/* Left badges */}
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1.5">
           {isBestSeller && (
-            <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg border-0 font-bold text-xs">
-              <SparkleIcon
-                size={10}
-                className="mr-1"
-              />
-              BESTSELLER
+            <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-md border-0 font-semibold text-[10px] px-2 py-0.5 rounded-3xl">
+              ⭐ TERLARIS
             </Badge>
           )}
           {isPopular && (
-            <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg border-0">
-              <TrendingUp
-                size={10}
-                className="mr-1"
-              />
-              TRENDING
+            <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md border-0 font-semibold text-[10px] px-2 py-0.5 rounded-3xl">
+              🔥 TRENDING
             </Badge>
           )}
-        </div>
-
-        {/* Right badges */}
-        <div className="flex flex-col gap-1 items-end">
           {isRecommended && (
             <Badge
-              className="text-white shadow-lg border-0 font-bold"
+              className="text-white shadow-md border-0 font-semibold text-[10px] px-2 py-0.5 rounded-3xl"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
             >
-              <Crown
-                size={10}
-                className="mr-1"
-              />
-              PILIHAN EDITOR
+              👑 TERBAIK
             </Badge>
           )}
-
-          {/* Wishlist Button */}
-          <button
-            onClick={() => setIsWishlisted(!isWishlisted)}
-            className="p-2 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:scale-110 transition-all duration-200"
-          >
-            <Heart
-              size={14}
-              className={cn(
-                'transition-colors duration-200',
-                isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-400',
-              )}
-            />
-          </button>
         </div>
+
+        {/* Wishlist Button */}
+        <button
+          onClick={() => setIsWishlisted(!isWishlisted)}
+          className="p-1.5 rounded-full bg-white/95 backdrop-blur-sm shadow-md hover:scale-110 transition-all duration-200"
+        >
+          <Heart
+            size={16}
+            className={cn(
+              'transition-colors duration-200',
+              isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-500',
+            )}
+          />
+        </button>
       </div>
 
-      {/* Discount Flash Badge */}
+      {/* Discount Badge - Bottom Left */}
       {isLimitedTime && getDiscountPercentage() > 0 && (
-        <div className="absolute top-16 left-3 z-20">
-          <div className="relative">
-            <Badge className="bg-red-500 text-white shadow-xl border-0 font-bold text-sm px-3 py-1 animate-pulse">
-              <Zap
-                size={12}
-                className="mr-1"
-              />
-              HEMAT {getDiscountPercentage()}%
-            </Badge>
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full animate-ping" />
-          </div>
+        <div className="absolute bottom-3 left-3 z-10">
+          <Badge className="bg-red-500 text-white shadow-lg border-0 font-bold text-sm px-3 py-1 rounded-3xl">
+            <Zap
+              size={12}
+              className="mr-1"
+            />
+            {getDiscountPercentage()}% OFF
+          </Badge>
         </div>
       )}
 
-      {/* Enhanced Hero Image Section */}
-      <div className="relative mt-12 mb-4">
-        <div className="relative w-full h-52 rounded-3xl overflow-hidden border border-gray-200 bg-gradient-to-br from-gray-100 to-gray-200 group-hover:shadow-xl transition-all duration-500">
-          {plan.image ? (
-            <Image
-              src={plan.image}
-              alt={plan.name}
-              fill
-              className="object-cover object-top transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
-              sizes="(max-width: 768px) 100vw, 400px"
-              priority
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-                const fallback =
-                  e.currentTarget.parentElement?.querySelector(
-                    '.fallback-icon',
-                  );
-                if (fallback) {
-                  (fallback as HTMLElement).style.display = 'flex';
-                }
-              }}
-            />
-          ) : null}
-
-          {/* Enhanced Fallback */}
-          <div
-            className={`fallback-icon absolute inset-0 flex flex-col items-center justify-center ${plan.image ? 'hidden' : 'flex'}`}
-            style={{
-              background: `linear-gradient(135deg, ${mainColor}20, ${secondaryColor}15)`,
-            }}
-          >
-            <ImageIcon
-              size={40}
-              style={{ color: `${mainColor}80` }}
-              className="mb-2"
-            />
-            <span
-              className="text-sm font-medium"
-              style={{ color: `${mainColor}70` }}
-            >
-              Product Preview
-            </span>
-          </div>
-
-          {/* Marketplace Overlay Effects */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
-
-          {/* Quick Stats Overlay */}
-          {/* <div className="absolute bottom-3 left-3 right-3 flex justify-between items-end opacity-0 group-hover:opacity-100 transition-all duration-500">
-                <div className="flex gap-2">
-                  <div className="px-2 py-1 rounded-3xl text-xs font-medium backdrop-blur-sm bg-white/90 text-gray-800">
-                    ⭐ {marketplaceData.rating}
-                  </div>
-                  <div className="px-2 py-1 rounded-3xl text-xs font-medium backdrop-blur-sm bg-white/90 text-gray-800">
-                    👥 {marketplaceData.studentCount.toLocaleString()}
-                  </div>
-                </div>
-              </div> */}
-
-          {/* Live indicator for time-sensitive offers */}
-          {isLimitedTime && (
-            <div className="absolute top-3 right-3">
-              <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-red-500/90 backdrop-blur-sm text-white text-xs font-medium">
-                <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                LIMITED
-              </div>
-            </div>
-          )}
-          {plan.PlanInstallmentConfig && (
-            <div className="absolute top-3 right-3">
-              <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-red-500/90 backdrop-blur-sm text-white text-xs font-medium">
-                <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                Bisa Cicilan
-              </div>
-            </div>
-          )}
+      {/* Installment Badge - Bottom Right */}
+      {plan.PlanInstallmentConfig && (
+        <div className="absolute bottom-3 right-3 z-10">
+          <Badge className="bg-blue-500 text-white shadow-lg border-0 font-semibold text-xs px-2.5 py-1 flex items-center gap-1 rounded-3xl">
+            <Coins size={12} />
+            Bisa Cicil
+          </Badge>
         </div>
+      )}
 
-        {/* Category & Platform Tags */}
-        <div className="flex items-center justify-between mt-3">
-          <div className="flex items-center gap-2">
-            {platfroms.length === 0 &&
-              plan.PlanSubscription?.WebsiteSubCategory && (
-                <Badge
-                  variant="outline"
-                  className="text-xs font-medium border-2"
-                  style={{
-                    borderColor: `${mainColor}30`,
-                    color: mainColor,
-                    backgroundColor: `${mainColor}05`,
-                  }}
-                >
-                  {plan.PlanSubscription?.WebsiteSubCategory?.name || 'Paket'}
-                </Badge>
-              )}
-            {platfroms.length > 0 &&
-              platfroms.slice(0, 2).map((platform) => (
-                <Badge
-                  key={platform}
-                  variant="outline"
-                  className="text-xs font-medium border-2 whitespace-nowrap"
-                  style={{
-                    borderColor: `${mainColor}30`,
-                    color: mainColor,
-                    backgroundColor: `${mainColor}05`,
-                  }}
-                >
-                  {platform}
-                </Badge>
-              ))}
-            {platfroms.length > 2 && (
-              <Badge
-                variant="outline"
-                className="text-xs font-medium border-2 whitespace-nowrap"
-                style={{
-                  borderColor: `${mainColor}30`,
-                  color: mainColor,
-                  backgroundColor: `${mainColor}05`,
-                }}
-              >
-                +{platfroms.length - 2}
-              </Badge>
-            )}
-            <Badge
-              variant="outline"
-              className="text-xs text-gray-600 border-gray-300"
-            >
-              {plan.PlanSubscription?.tier
-                ? plan.PlanSubscription?.tier
-                : plan.PlanLimitation
-                  ? 'Koin'
-                  : 'Standar'}
-            </Badge>
-          </div>
+      {/* Max Users Warning - Bottom Center */}
+      {plan.maxUsers && plan.totalUsers >= plan.maxUsers * 0.8 && (
+        <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 z-10">
+          <Badge className="bg-orange-500 text-white shadow-lg border-0 font-semibold text-xs px-2.5 py-1 flex items-center gap-1 rounded-3xl">
+            <Users size={12} />
+            Hampir Penuh
+          </Badge>
         </div>
-      </div>
-
-      {/* Product Title & Rating */}
-      <div className="space-y-3">
-        <h3 className="text-xl font-black leading-tight text-gray-900 line-clamp-2 group-hover:text-gray-700 transition-colors">
-          {plan.name}
-        </h3>
-
-        {/* Enhanced Description */}
-        <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">
-          {plan.description}
-        </p>
-
-        {/* Key Features Preview - Marketplace Style */}
-        <div className="flex flex-wrap gap-1.5">
-          {plan.PlanSubscription?.PlanFeature?.slice(0, 3).map((feature) => (
-            <Badge
-              key={feature.id}
-              variant="secondary"
-              className="text-xs font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
-            >
-              {feature.type === 'COURSE'
-                ? '📚'
-                : feature.type === 'DOCUMENT'
-                  ? '📄'
-                  : '🎥'}{' '}
-              {feature.type === 'COURSE'
-                ? 'Video Course'
-                : feature.type === 'DOCUMENT'
-                  ? 'Materials'
-                  : 'Live Class'}
-            </Badge>
-          ))}
-          {(plan.PlanSubscription?.PlanFeature?.length || 0) > 3 && (
-            <Badge
-              variant="secondary"
-              className="text-xs font-medium bg-gray-100 text-gray-600"
-            >
-              +{(plan.PlanSubscription?.PlanFeature?.length || 0) - 3} lainnya
-            </Badge>
-          )}
-        </div>
-      </div>
+      )}
     </div>
   );
 };
+
+// Product Header - Title & Category
+const ProductHeader = () => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  const {
+    useData: { plan },
+    useViewData: { platfroms },
+  } = useProvider();
+
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+
+  return (
+    <div className="mb-3">
+      {/* Category Tags */}
+      <div className="flex items-center gap-1.5 mb-2">
+        {platfroms.length === 0 &&
+          plan.PlanSubscription?.WebsiteSubCategory && (
+            <Badge
+              variant="outline"
+              className="text-[10px] font-medium border px-1.5 py-0"
+              style={{
+                borderColor: `${mainColor}40`,
+                color: mainColor,
+                backgroundColor: `${mainColor}05`,
+              }}
+            >
+              {plan.PlanSubscription?.WebsiteSubCategory?.name || 'Paket'}
+            </Badge>
+          )}
+        {platfroms.length > 0 &&
+          platfroms.slice(0, 2).map((platform) => (
+            <Badge
+              key={platform}
+              variant="outline"
+              className="text-[10px] font-medium border px-1.5 py-0"
+              style={{
+                borderColor: `${mainColor}40`,
+                color: mainColor,
+                backgroundColor: `${mainColor}05`,
+              }}
+            >
+              {platform}
+            </Badge>
+          ))}
+        {platfroms.length > 2 && (
+          <Badge
+            variant="outline"
+            className="text-[10px] font-medium border px-1.5 py-0"
+            style={{
+              borderColor: `${mainColor}40`,
+              color: mainColor,
+              backgroundColor: `${mainColor}05`,
+            }}
+          >
+            +{platfroms.length - 2}
+          </Badge>
+        )}
+        <Badge
+          variant="outline"
+          className="text-[10px] text-gray-600 border-gray-300 px-1.5 py-0"
+        >
+          {plan.PlanSubscription?.tier
+            ? plan.PlanSubscription?.tier
+            : plan.PlanLimitation
+              ? 'Koin'
+              : 'Standar'}
+        </Badge>
+      </div>
+
+      {/* Title */}
+      <h3 className="text-base font-bold leading-tight text-gray-900 line-clamp-2 mb-1">
+        {plan.name}
+      </h3>
+
+      {/* Description - Shorter */}
+      {plan.description && (
+        <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
+          {plan.description}
+        </p>
+      )}
+    </div>
+  );
+};
+
 const PricingSection = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const {
@@ -508,141 +444,278 @@ const PricingSection = () => {
 
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
-  // Hitung harga cicilan pertama jika ada installment config
+  // Check if plan has installment
+  const hasInstallment = !!plan.PlanInstallmentConfig;
   const firstInstallmentPrice =
-    plan.PlanInstallmentConfig?.PlanInstallmentSchedule[0]?.amount ||
-    plan.price;
-  const displayPrice =
-    plan.PlanInstallmentConfig && paymentMethod === 'INSTALLMENT'
-      ? firstInstallmentPrice
-      : plan.price;
-  const originalDisplayPrice =
-    plan.PlanInstallmentConfig && paymentMethod === 'INSTALLMENT'
-      ? plan.originalPrice || plan.price
-      : plan.originalPrice;
+    plan.PlanInstallmentConfig?.PlanInstallmentSchedule[0]?.amount || 0;
+  const fullPrice = discount || plan.price;
+
+  // Calculate total installment price from all schedules
+  const totalInstallmentPrice =
+    plan.PlanInstallmentConfig?.PlanInstallmentSchedule.reduce(
+      (sum, schedule) => sum + schedule.amount,
+      0,
+    ) ||
+    plan.PlanInstallmentConfig?.totalAmount ||
+    0;
 
   return (
-    <div className="mb-6 p-4 rounded-3xl border-2 border-dashed border-gray-200 bg-gradient-to-br from-green-50 to-emerald-50">
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-gray-700">
-            {plan.PlanInstallmentConfig ? 'Cicilan Pertama' : 'Harga Terbaik'}
-          </span>
-          {isLimitedTime && (
-            <div className="flex items-center gap-1 text-red-600">
-              <Zap size={12} />
-              <span className="text-xs font-bold">PROMO TERBATAS</span>
-            </div>
-          )}
-        </div>
-
-        {/* Price Display - Enhanced */}
-        <div className="flex items-end justify-between relative">
-          <div className="flex items-baseline gap-3">
-            {/* Current/Discounted Price */}
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                {discount && (
-                  <div
-                    className="text-3xl font-black"
-                    style={{ color: mainColor }}
-                  >
-                    {formatPrice(discount)}
-                  </div>
-                )}
-                <div
-                  className={cn(
-                    'text-3xl font-black',
-                    discount &&
-                      'text-lg text-gray-500 line-through font-semibold',
-                  )}
+    <div className="mb-3">
+      {/* Price Display */}
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex-1">
+          {hasInstallment ? (
+            // Cicilan: tampilkan harga cicilan pertama saja
+            <>
+              <div className="flex items-baseline gap-2">
+                <span
+                  className="text-2xl font-black"
                   style={{ color: mainColor }}
                 >
-                  {formatPrice(displayPrice)}
-                </div>
-              </div>
-              {plan.PlanBenefit.length > 0 &&
-                plan.PlanSubscription?.expireDays && (
-                  <div className="text-xs text-gray-500 mt-1">
-                    {plan.PlanInstallmentConfig ? (
-                      <>
-                        Total Rp{' '}
-                        {formatPrice(plan.PlanInstallmentConfig.totalAmount)}{' '}
-                        dalam {plan.PlanInstallmentConfig.totalInstallments}x
-                        cicilan
-                      </>
-                    ) : (
-                      <>
-                        ~
-                        {formatPrice(
-                          Math.floor(
-                            (discount || plan.price) /
-                              (plan.PlanSubscription?.expireDays || 1),
+                  {formatPrice(firstInstallmentPrice)}
+                </span>
+                <span className="text-sm text-gray-500 font-medium">
+                  /cicilan
+                </span>
+                {/* Tooltip untuk detail cicilan */}
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button
+                      type="button"
+                      className="ml-1 p-1 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
+                    >
+                      <Info
+                        size={14}
+                        className="text-gray-400 hover:text-gray-600"
+                      />
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    className="w-72 p-4 rounded-3xl"
+                    align="start"
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 pb-2 border-b">
+                        <Coins
+                          className="w-4 h-4"
+                          style={{ color: mainColor }}
+                        />
+                        <h4 className="font-bold text-sm">Detail Cicilan</h4>
+                      </div>
+                      <div className="space-y-2">
+                        {plan.PlanInstallmentConfig?.PlanInstallmentSchedule.map(
+                          (schedule, index) => (
+                            <div
+                              key={schedule.id}
+                              className="flex justify-between items-center text-xs"
+                            >
+                              <span className="text-gray-600">
+                                Cicilan #{schedule.installmentNumber}
+                                {index === 0 && ' (Pertama)'}
+                              </span>
+                              <span className="font-semibold">
+                                {formatPrice(schedule.amount)}
+                              </span>
+                            </div>
                           ),
-                        )}{' '}
-                        per hari
-                      </>
-                    )}
-                  </div>
-                )}
-            </div>
-
-            {/* Original Price */}
-            {((plan.originalPrice && plan.originalPrice > plan.price) ||
-              discount ||
-              plan.PlanInstallmentConfig) && (
-              <div className="flex flex-col items-end">
-                {originalDisplayPrice && (
-                  <span className="text-lg text-gray-500 line-through font-semibold">
-                    {formatPrice(originalDisplayPrice)}
-                  </span>
-                )}
-
-                <div className="flex items-center gap-1 text-green-600">
-                  <span className="text-xs font-bold">
-                    {plan.PlanInstallmentConfig ? (
-                      <>
-                        Cicilan {plan.PlanInstallmentConfig.totalInstallments}x
-                      </>
-                    ) : (
-                      <>
-                        Hemat{' '}
-                        {formatPrice(
-                          (plan.originalPrice || plan.price) -
-                            (discount || plan.price),
                         )}
-                      </>
-                    )}
-                  </span>
-                </div>
+                      </div>
+                      <div className="pt-2 border-t flex justify-between items-center">
+                        <span className="text-sm font-bold">Total</span>
+                        <span
+                          className="text-base font-black"
+                          style={{ color: mainColor }}
+                        >
+                          {formatPrice(totalInstallmentPrice)}
+                        </span>
+                      </div>
+                      {plan.PlanInstallmentConfig?.gracePeriodDays &&
+                        plan.PlanInstallmentConfig.gracePeriodDays > 0 && (
+                          <div className="text-[10px] text-gray-500 pt-2 border-t">
+                            Masa tenggang:{' '}
+                            {plan.PlanInstallmentConfig.gracePeriodDays} hari
+                          </div>
+                        )}
+                    </div>
+                  </PopoverContent>
+                </Popover>
               </div>
-            )}
-          </div>
-
-          {/* Savings Badge */}
-          {getDiscountPercentage() > 0 && !plan.PlanInstallmentConfig && (
-            <div className="text-right absolute right-[-1rem] top-[calc(100%+10px)]">
-              <Badge className="bg-red-500 text-white font-bold text-sm">
-                -{getDiscountPercentage()}%
-              </Badge>
-            </div>
-          )}
-
-          {/* Installment Badge */}
-          {plan.PlanInstallmentConfig && (
-            <div className="text-right absolute right-[-1rem] top-[calc(100%+10px)]">
-              <Badge className="bg-blue-500 text-white font-bold text-sm flex items-center gap-1">
-                <Coins size={12} />
-                Cicilan
-              </Badge>
-            </div>
+              {/* Tampilkan harga total yang dicoret */}
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="text-sm text-gray-500 line-through font-medium">
+                  {formatPrice(totalInstallmentPrice)}
+                </span>
+                <span className="text-[10px] text-gray-600">
+                  ({plan.PlanInstallmentConfig?.totalInstallments}x cicilan)
+                </span>
+              </div>
+            </>
+          ) : (
+            // Full payment: tampilkan harga normal
+            <>
+              <div className="flex items-baseline gap-2">
+                <span
+                  className="text-2xl font-black"
+                  style={{ color: mainColor }}
+                >
+                  {formatPrice(fullPrice)}
+                </span>
+                {/* Original Price if there's discount */}
+                {((plan.originalPrice && plan.originalPrice > plan.price) ||
+                  discount) && (
+                  <span className="text-sm text-gray-500 line-through font-medium">
+                    {formatPrice(plan.originalPrice || plan.price)}
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="text-[10px] text-gray-600">
+                  {plan.PlanSubscription?.expireDays
+                    ? `~${formatPrice(Math.floor(fullPrice / (plan.PlanSubscription?.expireDays || 1)))} per hari`
+                    : 'Harga spesial'}
+                </span>
+              </div>
+            </>
           )}
         </div>
+
+        {/* Discount Badge */}
+        {getDiscountPercentage() > 0 && !hasInstallment && (
+          <Badge className="bg-red-500 text-white font-bold text-xs px-2 py-0.5 rounded-3xl">
+            -{getDiscountPercentage()}%
+          </Badge>
+        )}
+      </div>
+
+      {/* Key Info Pills */}
+      <div className="flex flex-wrap gap-1.5">
+        {/* Max Users Warning */}
+        {plan.maxUsers && (
+          <div className="flex items-center gap-1 px-2 py-0.5 rounded-3xl bg-amber-50 border border-amber-200">
+            <Users
+              size={10}
+              className="text-amber-600"
+            />
+            <span className="text-[10px] font-medium text-amber-700">
+              {plan.totalUsers || 0}/{plan.maxUsers} slot
+            </span>
+          </div>
+        )}
+
+        {/* Installment Available */}
+        {plan.PlanInstallmentConfig && (
+          <div className="flex items-center gap-1 px-2 py-0.5 rounded-3xl bg-blue-50 border border-blue-200">
+            <Coins
+              size={10}
+              className="text-blue-600"
+            />
+            <span className="text-[10px] font-medium text-blue-700">
+              Cicilan {plan.PlanInstallmentConfig.totalInstallments}x
+            </span>
+          </div>
+        )}
+
+        {/* Limited Time */}
+        {isLimitedTime && (
+          <div className="flex items-center gap-1 px-2 py-0.5 rounded-3xl bg-red-50 border border-red-200">
+            <Zap
+              size={10}
+              className="text-red-600"
+            />
+            <span className="text-[10px] font-medium text-red-700">
+              Promo Terbatas
+            </span>
+          </div>
+        )}
+
+        {/* Timeline/Duration */}
+        {plan.timeline && (
+          <div className="flex items-center gap-1 px-2 py-0.5 rounded-3xl bg-green-50 border border-green-200">
+            <Shield
+              size={10}
+              className="text-green-600"
+            />
+            <span className="text-[10px] font-medium text-green-700">
+              {plan.timeline}
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
+// Quick Features Preview - Compact
+const QuickFeatures = () => {
+  const {
+    useData: { plan },
+  } = useProvider();
+
+  const features = plan.PlanSubscription?.PlanFeature || [];
+  const benefits = plan.PlanBenefit || [];
+
+  if (features.length === 0 && benefits.length === 0) return null;
+
+  return (
+    <div className="mb-3 pb-3 border-b border-gray-100">
+      {/* Features */}
+      {features.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mb-2">
+          {features.slice(0, 3).map((feature) => (
+            <div
+              key={feature.id}
+              className="flex items-center gap-1 text-xs text-gray-700"
+            >
+              <span>
+                {feature.type === 'COURSE'
+                  ? '📚'
+                  : feature.type === 'DOCUMENT'
+                    ? '📄'
+                    : '🎥'}
+              </span>
+              <span className="font-medium">
+                {feature.type === 'COURSE'
+                  ? 'Video Course'
+                  : feature.type === 'DOCUMENT'
+                    ? 'Materi'
+                    : 'Live Class'}
+              </span>
+            </div>
+          ))}
+          {features.length > 3 && (
+            <span className="text-xs text-gray-500">
+              +{features.length - 3} fitur
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* Top Benefits */}
+      {benefits.length > 0 && (
+        <div className="space-y-1">
+          {benefits.slice(0, 2).map((benefit) => (
+            <div
+              key={benefit.id}
+              className="flex items-start gap-1.5"
+            >
+              <span className="text-green-500 mt-0.5">✓</span>
+              <span className="text-xs text-gray-700 line-clamp-1">
+                {benefit.title}
+              </span>
+            </div>
+          ))}
+          {benefits.length > 2 && (
+            <span className="text-xs text-gray-500 ml-5">
+              +{benefits.length - 2} benefit lainnya
+            </span>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Old components below are kept for backward compatibility but not used in main render
 const MaxUsersInfo = () => {
   const {
     useData: { plan },
@@ -842,6 +915,7 @@ const TabsSection = () => {
 const ButtonSection = () => {
   const { setTransactionPopUp } = useAppContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
+  const { data: session } = useSession();
   const {
     useData: { plan },
     useViewData: { viewOnly, classOverlay, buttonRef },
@@ -851,23 +925,23 @@ const ButtonSection = () => {
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   return (
-    <div className="mt-6 space-y-3">
+    <div className="space-y-2">
       {/* Primary CTA */}
       {!viewOnly && (
         <>
           {plan.maxUsers && plan.totalUsers >= plan.maxUsers ? (
             <Button
               ref={buttonRef}
-              className="w-full h-14 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-white border-0 relative overflow-hidden group cursor-not-allowed"
+              className="w-full h-11 text-sm font-bold shadow-md transition-all duration-300 text-white border-0 cursor-not-allowed opacity-60 rounded-3xl"
               size="lg"
+              disabled
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
             >
-              <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
               <Users
-                size={20}
-                className="mr-3"
+                size={16}
+                className="mr-2"
               />
               <span>Kuota Penuh</span>
             </Button>
@@ -878,26 +952,22 @@ const ButtonSection = () => {
             >
               <Button
                 ref={buttonRef}
-                className="w-full h-14 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-white border-0 relative overflow-hidden group"
+                className="w-full h-11 text-sm font-bold shadow-md hover:shadow-lg transition-all duration-300 text-white border-0 rounded-3xl"
                 size="lg"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
                 onClick={() => {
-                  // ✅ ADDTOCART TRACKING - Track saat user klik "Beli Sekarang"
                   try {
+                    // Tracking logic here if needed
                   } catch (pixelError) {
-                    console.warn(
-                      'Pixel tracking error on add to cart:',
-                      pixelError,
-                    );
+                    console.warn('Pixel tracking error:', pixelError);
                   }
                 }}
               >
-                <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 <ShoppingCart
-                  size={20}
-                  className="mr-3"
+                  size={16}
+                  className="mr-2"
                 />
                 <span>Beli Sekarang</span>
               </Button>
@@ -906,13 +976,13 @@ const ButtonSection = () => {
         </>
       )}
 
-      {/* Secondary CTA */}
+      {/* Secondary CTA - Detail Button */}
       {!viewOnly && (
         <Link href={`/price/${plan.slug}`}>
           <Button
             variant="outline"
             size="lg"
-            className="w-full border-2 hover:shadow-lg font-semibold transition-all duration-300 group bg-white h-12"
+            className="w-full border h-10 font-semibold transition-all duration-300 group bg-white text-sm rounded-3xl"
             style={{
               borderColor: `${mainColor}40`,
               color: mainColor,
@@ -926,7 +996,6 @@ const ButtonSection = () => {
               e.currentTarget.style.borderColor = `${mainColor}40`;
             }}
             onClick={() => {
-              // ✅ VIEWCONTENT TRACKING - Track saat user melihat detail produk
               trackUnifiedEvent({
                 eventName: 'ViewContent',
                 customData: {
@@ -942,12 +1011,11 @@ const ButtonSection = () => {
               setTransactionPopUp(false);
             }}
           >
-            <Eye className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
-            <span>Detail</span>
+            <Eye className="mr-2 h-4 w-4" />
+            <span>Lihat Detail</span>
           </Button>
         </Link>
       )}
-
     </div>
   );
 };

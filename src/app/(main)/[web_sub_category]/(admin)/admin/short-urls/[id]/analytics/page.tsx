@@ -1,15 +1,21 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 import {
   Table,
   TableBody,
@@ -17,24 +23,28 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { fetchShortUrlAnalytics, exportShortUrlAnalytics, type ShortUrlAnalytics } from "@/lib/api/short-url";
-import { ArrowLeft, Download, RefreshCw } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+} from '@/components/ui/table';
+import {
+  exportShortUrlAnalytics,
+  fetchShortUrlAnalytics,
+  type ShortUrlAnalytics,
+} from '@/lib/api/short-url';
+import { ArrowLeft, Download, RefreshCw } from 'lucide-react';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 export default function ShortUrlAnalyticsPage() {
   const params = useParams();
   const router = useRouter();
   const { websiteSubCategory } = useWebsiteSubCategory();
 
-  const mainColor = websiteSubCategory?.main_color || "#0091FF";
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const shortUrlId = params.id as string;
 
   const [analytics, setAnalytics] = useState<ShortUrlAnalytics | null>(null);
   const [loading, setLoading] = useState(true);
-  const [dateRange, setDateRange] = useState<string>("30");
+  const [dateRange, setDateRange] = useState<string>('30');
   const [exporting, setExporting] = useState(false);
 
   const loadAnalytics = async () => {
@@ -50,8 +60,8 @@ export default function ShortUrlAnalyticsPage() {
       });
       setAnalytics(data);
     } catch (error) {
-      console.error("Failed to load analytics:", error);
-      toast.error("Failed to load analytics data");
+      console.error('Failed to load analytics:', error);
+      toast.error('Failed to load analytics data');
     } finally {
       setLoading(false);
     }
@@ -68,17 +78,17 @@ export default function ShortUrlAnalyticsPage() {
       setExporting(true);
       const blob = await exportShortUrlAnalytics(shortUrlId);
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
+      const a = document.createElement('a');
       a.href = url;
-      a.download = `short-url-analytics-${shortUrlId}-${new Date().toISOString().split("T")[0]}.csv`;
+      a.download = `short-url-analytics-${shortUrlId}-${new Date().toISOString().split('T')[0]}.csv`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
-      toast.success("Analytics exported successfully!");
+      toast.success('Analytics exported successfully!');
     } catch (error) {
-      console.error("Failed to export analytics:", error);
-      toast.error("Failed to export analytics");
+      console.error('Failed to export analytics:', error);
+      toast.error('Failed to export analytics');
     } finally {
       setExporting(false);
     }
@@ -87,7 +97,9 @@ export default function ShortUrlAnalyticsPage() {
   if (loading) {
     return (
       <div className="container mx-auto p-6">
-        <div className="text-center py-20 text-gray-500">Loading analytics...</div>
+        <div className="text-center py-20 text-gray-500">
+          Loading analytics...
+        </div>
       </div>
     );
   }
@@ -95,7 +107,9 @@ export default function ShortUrlAnalyticsPage() {
   if (!analytics) {
     return (
       <div className="container mx-auto p-6">
-        <div className="text-center py-20 text-gray-500">No analytics data available</div>
+        <div className="text-center py-20 text-gray-500">
+          No analytics data available
+        </div>
       </div>
     );
   }
@@ -105,17 +119,26 @@ export default function ShortUrlAnalyticsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" onClick={() => router.back()} className="gap-2">
+          <Button
+            variant="ghost"
+            onClick={() => router.back()}
+            className="gap-2"
+          >
             <ArrowLeft className="w-4 h-4" />
             Back
           </Button>
           <div>
             <h1 className="text-3xl font-bold">Short URL Analytics</h1>
-            <p className="text-gray-600 mt-1">Track performance and visitor insights</p>
+            <p className="text-gray-600 mt-1">
+              Track performance and visitor insights
+            </p>
           </div>
         </div>
         <div className="flex gap-2">
-          <Select value={dateRange} onValueChange={setDateRange}>
+          <Select
+            value={dateRange}
+            onValueChange={setDateRange}
+          >
             <SelectTrigger className="w-[180px]">
               <SelectValue />
             </SelectTrigger>
@@ -125,7 +148,11 @@ export default function ShortUrlAnalyticsPage() {
               <SelectItem value="90">Last 90 days</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" onClick={loadAnalytics} className="gap-2">
+          <Button
+            variant="outline"
+            onClick={loadAnalytics}
+            className="gap-2"
+          >
             <RefreshCw className="w-4 h-4" />
             Refresh
           </Button>
@@ -136,7 +163,7 @@ export default function ShortUrlAnalyticsPage() {
             className="gap-2"
           >
             <Download className="w-4 h-4" />
-            {exporting ? "Exporting..." : "Export CSV"}
+            {exporting ? 'Exporting...' : 'Export CSV'}
           </Button>
         </div>
       </div>
@@ -145,26 +172,38 @@ export default function ShortUrlAnalyticsPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-600">Total Clicks</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-600">
+              Total Clicks
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{analytics.summary.totalClicks.toLocaleString()}</div>
+            <div className="text-2xl font-bold">
+              {analytics.summary.totalClicks.toLocaleString()}
+            </div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-600">Unique Visitors</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-600">
+              Unique Visitors
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{analytics.summary.uniqueVisitors.toLocaleString()}</div>
+            <div className="text-2xl font-bold">
+              {analytics.summary.uniqueVisitors.toLocaleString()}
+            </div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-600">Avg Clicks/Day</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-600">
+              Avg Clicks/Day
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{parseFloat(analytics.summary.averageClicksPerDay).toFixed(1)}</div>
+            <div className="text-2xl font-bold">
+              {parseFloat(analytics.summary.averageClicksPerDay).toFixed(1)}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -180,8 +219,13 @@ export default function ShortUrlAnalyticsPage() {
             {analytics.technology.devices.length > 0 ? (
               <div className="space-y-2">
                 {analytics.technology.devices.map((item, index) => (
-                  <div key={index} className="flex items-center justify-between">
-                    <span className="text-sm text-gray-700">{item.device || "Unknown"}</span>
+                  <div
+                    key={index}
+                    className="flex items-center justify-between"
+                  >
+                    <span className="text-sm text-gray-700">
+                      {item.device || 'Unknown'}
+                    </span>
                     <span className="text-sm font-medium">{item._count}</span>
                   </div>
                 ))}
@@ -201,8 +245,13 @@ export default function ShortUrlAnalyticsPage() {
             {analytics.technology.browsers.length > 0 ? (
               <div className="space-y-2">
                 {analytics.technology.browsers.map((item, index) => (
-                  <div key={index} className="flex items-center justify-between">
-                    <span className="text-sm text-gray-700">{item.browser || "Unknown"}</span>
+                  <div
+                    key={index}
+                    className="flex items-center justify-between"
+                  >
+                    <span className="text-sm text-gray-700">
+                      {item.browser || 'Unknown'}
+                    </span>
                     <span className="text-sm font-medium">{item._count}</span>
                   </div>
                 ))}
@@ -222,8 +271,13 @@ export default function ShortUrlAnalyticsPage() {
             {analytics.technology.operatingSystems.length > 0 ? (
               <div className="space-y-2">
                 {analytics.technology.operatingSystems.map((item, index) => (
-                  <div key={index} className="flex items-center justify-between">
-                    <span className="text-sm text-gray-700">{item.os || "Unknown"}</span>
+                  <div
+                    key={index}
+                    className="flex items-center justify-between"
+                  >
+                    <span className="text-sm text-gray-700">
+                      {item.os || 'Unknown'}
+                    </span>
                     <span className="text-sm font-medium">{item._count}</span>
                   </div>
                 ))}
@@ -241,7 +295,9 @@ export default function ShortUrlAnalyticsPage() {
         <Card>
           <CardHeader>
             <CardTitle>Top Countries</CardTitle>
-            <CardDescription>Geographic distribution of visitors</CardDescription>
+            <CardDescription>
+              Geographic distribution of visitors
+            </CardDescription>
           </CardHeader>
           <CardContent>
             {analytics.geographic.countries.length > 0 ? (
@@ -255,14 +311,20 @@ export default function ShortUrlAnalyticsPage() {
                 <TableBody>
                   {analytics.geographic.countries.map((country, index) => (
                     <TableRow key={index}>
-                      <TableCell className="font-medium">{country.country || "Unknown"}</TableCell>
-                      <TableCell className="text-right">{country._count}</TableCell>
+                      <TableCell className="font-medium">
+                        {country.country || 'Unknown'}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {country._count}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             ) : (
-              <div className="text-center py-10 text-gray-500">No country data</div>
+              <div className="text-center py-10 text-gray-500">
+                No country data
+              </div>
             )}
           </CardContent>
         </Card>
@@ -287,9 +349,12 @@ export default function ShortUrlAnalyticsPage() {
                     <TableRow key={index}>
                       <TableCell className="font-medium text-sm">
                         {ref.referer ? (
-                          <span className="break-all">{ref.referer.substring(0, 50)}{ref.referer.length > 50 ? "..." : ""}</span>
+                          <span className="break-all">
+                            {ref.referer.substring(0, 50)}
+                            {ref.referer.length > 50 ? '...' : ''}
+                          </span>
                         ) : (
-                          "Direct / Unknown"
+                          'Direct / Unknown'
                         )}
                       </TableCell>
                       <TableCell className="text-right">{ref._count}</TableCell>
@@ -298,7 +363,9 @@ export default function ShortUrlAnalyticsPage() {
                 </TableBody>
               </Table>
             ) : (
-              <div className="text-center py-10 text-gray-500">No referrer data</div>
+              <div className="text-center py-10 text-gray-500">
+                No referrer data
+              </div>
             )}
           </CardContent>
         </Card>
@@ -326,14 +393,20 @@ export default function ShortUrlAnalyticsPage() {
                     <TableCell className="text-sm">
                       {new Date(click.createdAt).toLocaleString()}
                     </TableCell>
-                    <TableCell className="text-sm">{click.country || "Unknown"}</TableCell>
-                    <TableCell className="text-sm">{click.device || "Unknown"}</TableCell>
+                    <TableCell className="text-sm">
+                      {click.country || 'Unknown'}
+                    </TableCell>
+                    <TableCell className="text-sm">
+                      {click.device || 'Unknown'}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           ) : (
-            <div className="text-center py-10 text-gray-500">No recent activity</div>
+            <div className="text-center py-10 text-gray-500">
+              No recent activity
+            </div>
           )}
         </CardContent>
       </Card>

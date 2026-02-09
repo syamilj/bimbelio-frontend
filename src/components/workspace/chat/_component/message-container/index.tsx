@@ -1,5 +1,5 @@
-import { IconTailedArrowNext } from '@/styles/icon';
-import { useRef, useState } from 'react';
+import { ChevronDown } from 'lucide-react';
+import { useCallback, useRef, useState } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { VariableSizeList as List } from 'react-window';
 import { useProvider } from '../../provider';
@@ -30,14 +30,16 @@ export default function MessageContainer() {
     return baseHeight;
   };
 
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     if (listRef.current && messageData.length > 0) {
       // Single smooth scroll without multiple calls
       requestAnimationFrame(() => {
-        listRef.current.scrollToItem(messageData.length - 1, 'end');
+        if (listRef.current) {
+          listRef.current.scrollToItem(messageData.length - 1, 'end');
+        }
       });
     }
-  };
+  }, [messageData.length]);
 
   const handleScroll = ({ scrollOffset, scrollHeight, clientHeight }: any) => {
     const scrollPercentage =
@@ -50,27 +52,25 @@ export default function MessageContainer() {
   };
 
   return (
-    <div className="absolute left-0 top-0 h-full w-full z-0">
+    <div className="relative h-full w-full">
       {showButtonScroll && (
-        <div
+        <button
           id="scrollBottom"
-          className="fixed bottom-[200px] right-4 z-9999 cursor-pointer duration-200 md:hover:scale-105"
+          className="absolute bottom-3 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-full shadow-md cursor-pointer transition-all duration-200 hover:shadow-lg hover:border-slate-300 active:scale-95"
           onClick={() => {
             scrollToBottom();
             setShowButtonScroll(false);
           }}
         >
-          <IconTailedArrowNext
-            w={25}
-            className="rotate-90 rounded-full bg-main p-[.3rem] text-white"
-          />
-        </div>
+          <ChevronDown className="w-4 h-4 text-slate-600" />
+          <span className="text-xs font-medium text-slate-600">Pesan baru</span>
+        </button>
       )}
       <AutoSizer>
         {({ height, width }) => (
           <List
-            className="List messageContainer relative"
-            height={height - 180}
+            className="List messageContainer"
+            height={height}
             itemCount={messageData.length}
             itemSize={getRowHeight}
             ref={listRef}

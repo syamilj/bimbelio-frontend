@@ -1,37 +1,46 @@
-"use client";
+'use client';
 
-import { useSession } from "@/components/provider/provider-session-auth";
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { createShortUrl, type CreateShortUrlPayload } from "@/lib/api/short-url";
-import { fetchAllLinkPages } from "@/lib/api/link-pages";
-import { ArrowLeft, Link2, Sparkles } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { fetchAllLinkPages } from '@/lib/api/link-pages';
+import {
+  createShortUrl,
+  type CreateShortUrlPayload,
+} from '@/lib/api/short-url';
+import { ArrowLeft, Link2, Sparkles } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 export default function CreateShortUrlPage() {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const router = useRouter();
 
-  const mainColor = websiteSubCategory?.main_color || "#0091FF";
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
   const [loading, setLoading] = useState(false);
   const [linkPages, setLinkPages] = useState<any[]>([]);
   const [formData, setFormData] = useState<CreateShortUrlPayload>({
-    destinationType: "DIRECT",
+    destinationType: 'DIRECT',
     website_sub_category_id: websiteSubCategory?.id,
   });
 
@@ -44,7 +53,7 @@ export default function CreateShortUrlPage() {
         });
         setLinkPages(response.data || []);
       } catch (error) {
-        console.error("Failed to load link pages:", error);
+        console.error('Failed to load link pages:', error);
       }
     };
     loadLinkPages();
@@ -53,13 +62,13 @@ export default function CreateShortUrlPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (formData.destinationType === "DIRECT" && !formData.destinationUrl) {
-      toast.error("Destination URL is required for DIRECT type");
+    if (formData.destinationType === 'DIRECT' && !formData.destinationUrl) {
+      toast.error('Destination URL is required for DIRECT type');
       return;
     }
 
-    if (formData.destinationType === "LINK_PAGE" && !formData.linkPageId) {
-      toast.error("Link Page is required for LINK_PAGE type");
+    if (formData.destinationType === 'LINK_PAGE' && !formData.linkPageId) {
+      toast.error('Link Page is required for LINK_PAGE type');
       return;
     }
 
@@ -70,11 +79,13 @@ export default function CreateShortUrlPage() {
         website_sub_category_id: websiteSubCategory?.id,
       });
 
-      toast.success("Short URL created successfully!");
+      toast.success('Short URL created successfully!');
       router.push(`/${websiteSubCategory?.id}/admin/short-urls`);
     } catch (error: any) {
-      console.error("Failed to create short URL:", error);
-      toast.error(error?.response?.data?.message || "Failed to create short URL");
+      console.error('Failed to create short URL:', error);
+      toast.error(
+        error?.response?.data?.message || 'Failed to create short URL',
+      );
     } finally {
       setLoading(false);
     }
@@ -97,21 +108,31 @@ export default function CreateShortUrlPage() {
             className="w-12 h-12 rounded-3xl flex items-center justify-center"
             style={{ backgroundColor: `${mainColor}20` }}
           >
-            <Link2 className="w-6 h-6" style={{ color: mainColor }} />
+            <Link2
+              className="w-6 h-6"
+              style={{ color: mainColor }}
+            />
           </div>
           <div>
             <h1 className="text-3xl font-bold">Create Short URL</h1>
-            <p className="text-gray-600 mt-1">Create a new short link to track clicks and traffic</p>
+            <p className="text-gray-600 mt-1">
+              Create a new short link to track clicks and traffic
+            </p>
           </div>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6"
+      >
         {/* Basic Info */}
         <Card>
           <CardHeader>
             <CardTitle>Basic Information</CardTitle>
-            <CardDescription>Essential details for your short URL</CardDescription>
+            <CardDescription>
+              Essential details for your short URL
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -119,13 +140,19 @@ export default function CreateShortUrlPage() {
               <Input
                 id="code"
                 placeholder="my-link (leave empty for auto-generate)"
-                value={formData.code || ""}
+                value={formData.code || ''}
                 onChange={(e) =>
-                  setFormData({ ...formData, code: e.target.value.toLowerCase().replace(/[^a-z0-9-_]/g, "") })
+                  setFormData({
+                    ...formData,
+                    code: e.target.value
+                      .toLowerCase()
+                      .replace(/[^a-z0-9-_]/g, ''),
+                  })
                 }
               />
               <p className="text-sm text-gray-500">
-                Only lowercase letters, numbers, hyphens, and underscores allowed
+                Only lowercase letters, numbers, hyphens, and underscores
+                allowed
               </p>
             </div>
 
@@ -134,8 +161,10 @@ export default function CreateShortUrlPage() {
               <Input
                 id="title"
                 placeholder="E.g., Black Friday Campaign"
-                value={formData.title || ""}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                value={formData.title || ''}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
               />
             </div>
 
@@ -144,8 +173,10 @@ export default function CreateShortUrlPage() {
               <Textarea
                 id="description"
                 placeholder="Internal notes about this link..."
-                value={formData.description || ""}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                value={formData.description || ''}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
                 rows={3}
               />
             </div>
@@ -156,7 +187,9 @@ export default function CreateShortUrlPage() {
         <Card>
           <CardHeader>
             <CardTitle>Destination</CardTitle>
-            <CardDescription>Where should this short URL redirect to?</CardDescription>
+            <CardDescription>
+              Where should this short URL redirect to?
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -164,7 +197,12 @@ export default function CreateShortUrlPage() {
               <Select
                 value={formData.destinationType}
                 onValueChange={(value: any) =>
-                  setFormData({ ...formData, destinationType: value, destinationUrl: undefined, linkPageId: undefined })
+                  setFormData({
+                    ...formData,
+                    destinationType: value,
+                    destinationUrl: undefined,
+                    linkPageId: undefined,
+                  })
                 }
               >
                 <SelectTrigger>
@@ -172,38 +210,47 @@ export default function CreateShortUrlPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="DIRECT">Direct URL</SelectItem>
-                  <SelectItem value="LINK_PAGE">Link Page (Link-in-Bio)</SelectItem>
+                  <SelectItem value="LINK_PAGE">
+                    Link Page (Link-in-Bio)
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            {formData.destinationType === "DIRECT" && (
+            {formData.destinationType === 'DIRECT' && (
               <div className="space-y-2">
                 <Label htmlFor="destinationUrl">Destination URL *</Label>
                 <Input
                   id="destinationUrl"
                   type="url"
                   placeholder="https://example.com/page"
-                  value={formData.destinationUrl || ""}
-                  onChange={(e) => setFormData({ ...formData, destinationUrl: e.target.value })}
+                  value={formData.destinationUrl || ''}
+                  onChange={(e) =>
+                    setFormData({ ...formData, destinationUrl: e.target.value })
+                  }
                   required
                 />
               </div>
             )}
 
-            {formData.destinationType === "LINK_PAGE" && (
+            {formData.destinationType === 'LINK_PAGE' && (
               <div className="space-y-2">
                 <Label htmlFor="linkPageId">Select Link Page *</Label>
                 <Select
                   value={formData.linkPageId}
-                  onValueChange={(value) => setFormData({ ...formData, linkPageId: value })}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, linkPageId: value })
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Choose a link page..." />
                   </SelectTrigger>
                   <SelectContent>
                     {linkPages.map((page) => (
-                      <SelectItem key={page.id} value={page.id}>
+                      <SelectItem
+                        key={page.id}
+                        value={page.id}
+                      >
                         {page.title} ({page.slug})
                       </SelectItem>
                     ))}
@@ -223,7 +270,9 @@ export default function CreateShortUrlPage() {
         <Card>
           <CardHeader>
             <CardTitle>UTM Parameters (Optional)</CardTitle>
-            <CardDescription>Track campaign performance with UTM tags</CardDescription>
+            <CardDescription>
+              Track campaign performance with UTM tags
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -232,8 +281,10 @@ export default function CreateShortUrlPage() {
                 <Input
                   id="utmSource"
                   placeholder="facebook"
-                  value={formData.utmSource || ""}
-                  onChange={(e) => setFormData({ ...formData, utmSource: e.target.value })}
+                  value={formData.utmSource || ''}
+                  onChange={(e) =>
+                    setFormData({ ...formData, utmSource: e.target.value })
+                  }
                 />
               </div>
               <div className="space-y-2">
@@ -241,8 +292,10 @@ export default function CreateShortUrlPage() {
                 <Input
                   id="utmMedium"
                   placeholder="social"
-                  value={formData.utmMedium || ""}
-                  onChange={(e) => setFormData({ ...formData, utmMedium: e.target.value })}
+                  value={formData.utmMedium || ''}
+                  onChange={(e) =>
+                    setFormData({ ...formData, utmMedium: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -252,8 +305,10 @@ export default function CreateShortUrlPage() {
               <Input
                 id="utmCampaign"
                 placeholder="spring_sale_2025"
-                value={formData.utmCampaign || ""}
-                onChange={(e) => setFormData({ ...formData, utmCampaign: e.target.value })}
+                value={formData.utmCampaign || ''}
+                onChange={(e) =>
+                  setFormData({ ...formData, utmCampaign: e.target.value })
+                }
               />
             </div>
 
@@ -263,8 +318,10 @@ export default function CreateShortUrlPage() {
                 <Input
                   id="utmContent"
                   placeholder="banner_ad"
-                  value={formData.utmContent || ""}
-                  onChange={(e) => setFormData({ ...formData, utmContent: e.target.value })}
+                  value={formData.utmContent || ''}
+                  onChange={(e) =>
+                    setFormData({ ...formData, utmContent: e.target.value })
+                  }
                 />
               </div>
               <div className="space-y-2">
@@ -272,8 +329,10 @@ export default function CreateShortUrlPage() {
                 <Input
                   id="utmTerm"
                   placeholder="running+shoes"
-                  value={formData.utmTerm || ""}
-                  onChange={(e) => setFormData({ ...formData, utmTerm: e.target.value })}
+                  value={formData.utmTerm || ''}
+                  onChange={(e) =>
+                    setFormData({ ...formData, utmTerm: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -292,10 +351,14 @@ export default function CreateShortUrlPage() {
                 <Input
                   id="expireAt"
                   type="datetime-local"
-                  value={formData.expireAt || ""}
-                  onChange={(e) => setFormData({ ...formData, expireAt: e.target.value })}
+                  value={formData.expireAt || ''}
+                  onChange={(e) =>
+                    setFormData({ ...formData, expireAt: e.target.value })
+                  }
                 />
-                <p className="text-sm text-gray-500">Link will auto-deactivate after this date</p>
+                <p className="text-sm text-gray-500">
+                  Link will auto-deactivate after this date
+                </p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="maxClicks">Max Clicks</Label>
@@ -303,12 +366,19 @@ export default function CreateShortUrlPage() {
                   id="maxClicks"
                   type="number"
                   placeholder="Leave empty for unlimited"
-                  value={formData.maxClicks || ""}
+                  value={formData.maxClicks || ''}
                   onChange={(e) =>
-                    setFormData({ ...formData, maxClicks: e.target.value ? Number(e.target.value) : undefined })
+                    setFormData({
+                      ...formData,
+                      maxClicks: e.target.value
+                        ? Number(e.target.value)
+                        : undefined,
+                    })
                   }
                 />
-                <p className="text-sm text-gray-500">Auto-deactivate after X clicks</p>
+                <p className="text-sm text-gray-500">
+                  Auto-deactivate after X clicks
+                </p>
               </div>
             </div>
           </CardContent>
@@ -316,7 +386,11 @@ export default function CreateShortUrlPage() {
 
         {/* Actions */}
         <div className="flex justify-end gap-4">
-          <Button type="button" variant="outline" onClick={() => router.back()}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => router.back()}
+          >
             Cancel
           </Button>
           <Button

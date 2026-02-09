@@ -1,19 +1,40 @@
-"use client";
+'use client';
 
-import { useEffect, useMemo, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, LayoutDashboard, Rows3, Loader2, ChevronUp, ChevronDown } from "lucide-react";
+import {
+  ArrowLeft,
+  ChevronDown,
+  ChevronUp,
+  LayoutDashboard,
+  Loader2,
+  Rows3,
+} from 'lucide-react';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 
-import { LinkButton, LinkPageDetail } from "@/types/link";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { toaster } from "@/components/ui/toaster";
-import { deleteLinkButton, fetchLinkPage, reorderLinkButtons, trackTestConversion, updateLinkButton, createLinkButton, CreateLinkButtonPayload } from "@/lib/api/link-pages";
-import { LinkShareCard } from "../../_components/LinkShareCard";
-import { ButtonFormDialog } from "../../_components/ButtonFormDialog";
-import { LinkButtonCard } from "../../_components/LinkButtonCard";
-import { LinkPreviewPane } from "../../_components/LinkPreviewPane";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { toaster } from '@/components/ui/toaster';
+import {
+  createLinkButton,
+  CreateLinkButtonPayload,
+  deleteLinkButton,
+  fetchLinkPage,
+  reorderLinkButtons,
+  trackTestConversion,
+  updateLinkButton,
+} from '@/lib/api/link-pages';
+import { LinkButton, LinkPageDetail } from '@/types/link';
+import { ButtonFormDialog } from '../../_components/ButtonFormDialog';
+import { LinkButtonCard } from '../../_components/LinkButtonCard';
+import { LinkPreviewPane } from '../../_components/LinkPreviewPane';
+import { LinkShareCard } from '../../_components/LinkShareCard';
 
 export default function LinkPageButtons() {
   const params = useParams();
@@ -53,9 +74,10 @@ export default function LinkPageButtons() {
       setOrderDirty(false);
     } catch (error: any) {
       toaster({
-        title: "Error",
-        description: error.response?.data?.message || "Failed to load link page",
-        condition: "warning",
+        title: 'Error',
+        description:
+          error.response?.data?.message || 'Failed to load link page',
+        condition: 'warning',
       });
     } finally {
       setLoading(false);
@@ -75,7 +97,7 @@ export default function LinkPageButtons() {
     const order: string[] = [];
 
     sorted.forEach((btn) => {
-      const label = btn.sectionLabel?.trim() || "";
+      const label = btn.sectionLabel?.trim() || '';
       if (!map.has(label)) {
         map.set(label, []);
         order.push(label);
@@ -89,14 +111,17 @@ export default function LinkPageButtons() {
     }));
   }, [buttons]);
 
-  const handleMoveSection = (index: number, direction: "up" | "down") => {
-    if (direction === "up" && index === 0) return;
-    if (direction === "down" && index === groupedSections.length - 1) return;
+  const handleMoveSection = (index: number, direction: 'up' | 'down') => {
+    if (direction === 'up' && index === 0) return;
+    if (direction === 'down' && index === groupedSections.length - 1) return;
 
     const newSections = [...groupedSections];
-    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
 
-    [newSections[index], newSections[targetIndex]] = [newSections[targetIndex], newSections[index]];
+    [newSections[index], newSections[targetIndex]] = [
+      newSections[targetIndex],
+      newSections[index],
+    ];
 
     // Flatten and reassign order
     const newButtons: LinkButton[] = [];
@@ -111,18 +136,20 @@ export default function LinkPageButtons() {
     setOrderDirty(true);
   };
 
-  const handleMoveButton = (btnId: string, direction: "up" | "down") => {
-    const sectionIndex = groupedSections.findIndex((s) => s.buttons.some((b) => b.id === btnId));
+  const handleMoveButton = (btnId: string, direction: 'up' | 'down') => {
+    const sectionIndex = groupedSections.findIndex((s) =>
+      s.buttons.some((b) => b.id === btnId),
+    );
     if (sectionIndex === -1) return;
 
     const section = groupedSections[sectionIndex];
     const btnIndex = section.buttons.findIndex((b) => b.id === btnId);
 
-    if (direction === "up" && btnIndex === 0) return;
-    if (direction === "down" && btnIndex === section.buttons.length - 1) return;
+    if (direction === 'up' && btnIndex === 0) return;
+    if (direction === 'down' && btnIndex === section.buttons.length - 1) return;
 
     const newSectionButtons = [...section.buttons];
-    const targetIndex = direction === "up" ? btnIndex - 1 : btnIndex + 1;
+    const targetIndex = direction === 'up' ? btnIndex - 1 : btnIndex + 1;
     [newSectionButtons[btnIndex], newSectionButtons[targetIndex]] = [
       newSectionButtons[targetIndex],
       newSectionButtons[btnIndex],
@@ -146,15 +173,19 @@ export default function LinkPageButtons() {
       setSavingOrder(true);
       await reorderLinkButtons(
         linkPageId,
-        buttons.map((btn, index) => ({ id: btn.id, order: index }))
+        buttons.map((btn, index) => ({ id: btn.id, order: index })),
       );
-      toaster({ title: "Order saved", description: "Button order updated", condition: "success" });
+      toaster({
+        title: 'Order saved',
+        description: 'Button order updated',
+        condition: 'success',
+      });
       fetchData();
     } catch (error: any) {
       toaster({
-        title: "Error",
-        description: error.response?.data?.message || "Failed to save order",
-        condition: "warning",
+        title: 'Error',
+        description: error.response?.data?.message || 'Failed to save order',
+        condition: 'warning',
       });
     } finally {
       setSavingOrder(false);
@@ -165,13 +196,17 @@ export default function LinkPageButtons() {
     if (!confirm(`Delete button "${button.title}"?`)) return;
     try {
       await deleteLinkButton(button.id);
-      toaster({ title: "Deleted", description: "Button removed", condition: "success" });
+      toaster({
+        title: 'Deleted',
+        description: 'Button removed',
+        condition: 'success',
+      });
       fetchData();
     } catch (error: any) {
       toaster({
-        title: "Error",
-        description: error.response?.data?.message || "Failed to delete button",
-        condition: "warning",
+        title: 'Error',
+        description: error.response?.data?.message || 'Failed to delete button',
+        condition: 'warning',
       });
     }
   };
@@ -179,12 +214,16 @@ export default function LinkPageButtons() {
   const handleToggleActive = async (button: LinkButton, nextValue: boolean) => {
     try {
       await updateLinkButton(button.id, { isActive: nextValue });
-      setButtons((prev) => prev.map((b) => (b.id === button.id ? { ...b, isActive: nextValue } : b)));
+      setButtons((prev) =>
+        prev.map((b) =>
+          b.id === button.id ? { ...b, isActive: nextValue } : b,
+        ),
+      );
     } catch (error: any) {
       toaster({
-        title: "Error",
-        description: error.response?.data?.message || "Failed to update status",
-        condition: "warning",
+        title: 'Error',
+        description: error.response?.data?.message || 'Failed to update status',
+        condition: 'warning',
       });
     }
   };
@@ -217,19 +256,27 @@ export default function LinkPageButtons() {
         price: button.price || undefined,
         scheduleStart: button.scheduleStart || undefined,
         scheduleEnd: button.scheduleEnd || undefined,
-          blockedCountries: button.blockedCountries || undefined,
+        blockedCountries: button.blockedCountries || undefined,
         abVariant: button.abVariant || undefined,
       };
-      if (Object.values(advancedPayload).some((value) => value !== undefined && value !== null && value !== "")) {
+      if (
+        Object.values(advancedPayload).some(
+          (value) => value !== undefined && value !== null && value !== '',
+        )
+      ) {
         await updateLinkButton(created.id, advancedPayload);
       }
-      toaster({ title: "Duplicated", description: "Button copied", condition: "success" });
+      toaster({
+        title: 'Duplicated',
+        description: 'Button copied',
+        condition: 'success',
+      });
       fetchData();
     } catch (error: any) {
       toaster({
-        title: "Error",
-        description: error.response?.data?.message || "Failed to duplicate",
-        condition: "warning",
+        title: 'Error',
+        description: error.response?.data?.message || 'Failed to duplicate',
+        condition: 'warning',
       });
     } finally {
       setDuplicateId(null);
@@ -240,12 +287,17 @@ export default function LinkPageButtons() {
     try {
       setTestingPixel(true);
       await trackTestConversion(linkPageId);
-      toaster({ title: "Pixel test sent", description: "Check your Events Manager", condition: "success" });
+      toaster({
+        title: 'Pixel test sent',
+        description: 'Check your Events Manager',
+        condition: 'success',
+      });
     } catch (error: any) {
       toaster({
-        title: "Error",
-        description: error.response?.data?.message || "Failed to send test conversion",
-        condition: "warning",
+        title: 'Error',
+        description:
+          error.response?.data?.message || 'Failed to send test conversion',
+        condition: 'warning',
       });
     } finally {
       setTestingPixel(false);
@@ -256,15 +308,25 @@ export default function LinkPageButtons() {
 
   const headerActions = (
     <div className="flex flex-wrap gap-2">
-      <Button variant="outline" onClick={() => router.push(`/${webSubCategory}/admin/link-pages/${linkPageId}/analytics`)}>
+      <Button
+        variant="outline"
+        onClick={() =>
+          router.push(
+            `/${webSubCategory}/admin/link-pages/${linkPageId}/analytics`,
+          )
+        }
+      >
         <LayoutDashboard className="mr-2 h-4 w-4" /> Analytics
       </Button>
-      <Button variant="outline" onClick={() => router.push(`/${webSubCategory}/admin/link-pages/edit/${linkPageId}`)}>
+      <Button
+        variant="outline"
+        onClick={() =>
+          router.push(`/${webSubCategory}/admin/link-pages/edit/${linkPageId}`)
+        }
+      >
         <Rows3 className="mr-2 h-4 w-4" /> Edit Page
       </Button>
-      <Button onClick={() => setDialogOpen(true)}>
-        Add Button
-      </Button>
+      <Button onClick={() => setDialogOpen(true)}>Add Button</Button>
     </div>
   );
 
@@ -272,13 +334,18 @@ export default function LinkPageButtons() {
     <div className="container mx-auto space-y-6 py-8">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-3">
-          <Button variant="outline" size="icon" onClick={() => router.push(`/${webSubCategory}/admin/link-pages`)}>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => router.push(`/${webSubCategory}/admin/link-pages`)}
+          >
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
             <h1 className="text-3xl font-bold">Button Manager</h1>
             <p className="text-muted-foreground">
-              Create, reorder, and optimize buttons for {pageData?.title || "this page"}.
+              Create, reorder, and optimize buttons for{' '}
+              {pageData?.title || 'this page'}.
             </p>
           </div>
         </div>
@@ -293,20 +360,28 @@ export default function LinkPageButtons() {
             <Card>
               <CardHeader>
                 <CardTitle>Performance Snapshot</CardTitle>
-                <CardDescription>Monitor total engagement for this Link-in-Bio.</CardDescription>
+                <CardDescription>
+                  Monitor total engagement for this Link-in-Bio.
+                </CardDescription>
               </CardHeader>
               <CardContent className="grid gap-4 md:grid-cols-4">
                 <div>
                   <p className="text-sm text-muted-foreground">Views</p>
-                  <p className="text-2xl font-semibold">{pageData.totalViews ?? 0}</p>
+                  <p className="text-2xl font-semibold">
+                    {pageData.totalViews ?? 0}
+                  </p>
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Clicks</p>
-                  <p className="text-2xl font-semibold">{pageData.totalClicks ?? 0}</p>
+                  <p className="text-2xl font-semibold">
+                    {pageData.totalClicks ?? 0}
+                  </p>
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Conversions</p>
-                  <p className="text-2xl font-semibold">{pageData.conversionCount ?? 0}</p>
+                  <p className="text-2xl font-semibold">
+                    {pageData.conversionCount ?? 0}
+                  </p>
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Buttons</p>
@@ -315,16 +390,25 @@ export default function LinkPageButtons() {
               </CardContent>
             </Card>
 
-            <LinkShareCard linkPage={pageData} sendingTest={testingPixel} onSendTest={handleTestConversion} />
+            <LinkShareCard
+              linkPage={pageData}
+              sendingTest={testingPixel}
+              onSendTest={handleTestConversion}
+            />
 
             <Card>
               <CardHeader className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div>
                   <CardTitle>Buttons</CardTitle>
-                  <CardDescription>Drag order via controls and publish instantly.</CardDescription>
+                  <CardDescription>
+                    Drag order via controls and publish instantly.
+                  </CardDescription>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="outline" onClick={() => setDialogOpen(true)}>
+                  <Button
+                    variant="outline"
+                    onClick={() => setDialogOpen(true)}
+                  >
                     Create Button
                   </Button>
                   <Button
@@ -333,7 +417,9 @@ export default function LinkPageButtons() {
                     onClick={handleSaveOrder}
                     className="gap-2"
                   >
-                    {savingOrder && <Loader2 className="h-4 w-4 animate-spin" />}
+                    {savingOrder && (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    )}
                     Save Order
                   </Button>
                 </div>
@@ -341,14 +427,18 @@ export default function LinkPageButtons() {
               <CardContent className="space-y-6">
                 {buttons.length === 0 ? (
                   <div className="rounded-3xl border border-dashed p-8 text-center text-muted-foreground">
-                    No buttons yet. Create your first CTA to start driving clicks.
+                    No buttons yet. Create your first CTA to start driving
+                    clicks.
                   </div>
                 ) : (
                   groupedSections.map((group, groupIndex) => (
-                    <div key={group.label || "default"} className="space-y-3">
+                    <div
+                      key={group.label || 'default'}
+                      className="space-y-3"
+                    >
                       <div className="flex items-center justify-between gap-2 pb-2 border-b">
                         <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                          {group.label || "Uncategorized"}
+                          {group.label || 'Uncategorized'}
                         </h3>
                         <div className="flex gap-1">
                           <Button
@@ -356,7 +446,7 @@ export default function LinkPageButtons() {
                             size="icon"
                             className="h-6 w-6"
                             disabled={groupIndex === 0}
-                            onClick={() => handleMoveSection(groupIndex, "up")}
+                            onClick={() => handleMoveSection(groupIndex, 'up')}
                           >
                             <ChevronUp className="h-4 w-4" />
                           </Button>
@@ -365,7 +455,9 @@ export default function LinkPageButtons() {
                             size="icon"
                             className="h-6 w-6"
                             disabled={groupIndex === groupedSections.length - 1}
-                            onClick={() => handleMoveSection(groupIndex, "down")}
+                            onClick={() =>
+                              handleMoveSection(groupIndex, 'down')
+                            }
                           >
                             <ChevronDown className="h-4 w-4" />
                           </Button>
@@ -385,8 +477,10 @@ export default function LinkPageButtons() {
                             }}
                             onDelete={handleDelete}
                             onDuplicate={handleDuplicate}
-                            onMoveUp={() => handleMoveButton(button.id, "up")}
-                            onMoveDown={() => handleMoveButton(button.id, "down")}
+                            onMoveUp={() => handleMoveButton(button.id, 'up')}
+                            onMoveDown={() =>
+                              handleMoveButton(button.id, 'down')
+                            }
                             onToggleActive={handleToggleActive}
                             duplicating={duplicateId === button.id}
                           />
@@ -400,7 +494,10 @@ export default function LinkPageButtons() {
           </div>
 
           <aside className="space-y-6 lg:sticky lg:top-24">
-            <LinkPreviewPane page={pageData} buttons={buttons} />
+            <LinkPreviewPane
+              page={pageData}
+              buttons={buttons}
+            />
           </aside>
         </div>
       ) : (
@@ -416,7 +513,7 @@ export default function LinkPageButtons() {
             setDialogOpen(false);
             setEditingButton(null);
           }}
-          mode={editingButton ? "edit" : "create"}
+          mode={editingButton ? 'edit' : 'create'}
           linkPageId={linkPageId}
           button={editingButton}
           nextOrder={nextOrder}

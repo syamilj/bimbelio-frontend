@@ -299,8 +299,10 @@ export default function UserManagementDashboard() {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="mb-6 text-2xl font-bold">User Management</h1>
+    <div>
+      <h1 className="mb-4 md:mb-6 text-xl md:text-2xl font-bold">
+        User Management
+      </h1>
 
       <Tabs
         defaultValue="overview"
@@ -313,7 +315,7 @@ export default function UserManagementDashboard() {
         </TabsList>
 
         <TabsContent value="overview">
-          <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Admin</CardTitle>
@@ -437,9 +439,9 @@ export default function UserManagementDashboard() {
           </Card>
 
           {/* Search and Filter */}
-          <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <form
-              className="flex items-center space-x-2"
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full lg:w-auto"
               onSubmit={(e) => {
                 e.preventDefault();
                 const Form = new FormData(e.currentTarget);
@@ -455,25 +457,26 @@ export default function UserManagementDashboard() {
                     setSearchTerm('');
                   }
                 }}
-                className="max-w-sm"
+                className="w-full sm:max-w-sm"
               />
               <Button
                 variant="outline"
                 // onClick={() => setSearchTerm('')}
                 type="submit"
+                className="w-full sm:w-auto"
               >
                 <Search className="mr-2 h-4 w-4" />
                 Search
               </Button>
             </form>
 
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 w-full lg:w-auto">
               {/* Export Buttons */}
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
                 <Button
                   onClick={exportToExcel}
                   disabled={isExporting === 'EXCEL'}
-                  className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto"
                 >
                   {isExporting === 'EXCEL' ? (
                     <>
@@ -491,7 +494,7 @@ export default function UserManagementDashboard() {
                   onClick={exportToCSV}
                   disabled={isExporting === 'CSV'}
                   variant="outline"
-                  className="border-2 border-blue-500 text-blue-600 hover:bg-blue-50 hover:border-blue-600 transition-all duration-300"
+                  className="border-2 border-blue-500 text-blue-600 hover:bg-blue-50 hover:border-blue-600 transition-all duration-300 w-full sm:w-auto"
                 >
                   {isExporting === 'CSV' ? (
                     <>
@@ -508,7 +511,7 @@ export default function UserManagementDashboard() {
               </div>
 
               {/* Filter and Sort Section */}
-              <div className="flex space-x-2">
+              <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                 {/* Role Filter */}
                 <Select
                   value={roleFilter}
@@ -521,7 +524,7 @@ export default function UserManagementDashboard() {
                     setPage(1);
                   }}
                 >
-                  <SelectTrigger className="flex h-10 w-[180px] items-center justify-between rounded-3xl border border-gray-300 px-3">
+                  <SelectTrigger className="flex h-10 w-full sm:w-[180px] items-center justify-between rounded-3xl border border-gray-300 px-3">
                     <div className="flex items-center">
                       <Filter className="mr-2 h-4 w-4 text-muted-foreground" />
                       <SelectValue placeholder="All Roles" />
@@ -541,7 +544,7 @@ export default function UserManagementDashboard() {
                     setPage(1);
                   }}
                 >
-                  <SelectTrigger className="flex h-10 w-[180px] items-center justify-between rounded-3xl border border-gray-300 px-3">
+                  <SelectTrigger className="flex h-10 w-full sm:w-[180px] items-center justify-between rounded-3xl border border-gray-300 px-3">
                     <div className="flex items-center">
                       <Filter className="mr-2 h-4 w-4 text-muted-foreground" />
                       <SelectValue placeholder="All Roles" />
@@ -559,7 +562,7 @@ export default function UserManagementDashboard() {
                   value={sortOption}
                   onValueChange={(value: any) => setSortOption(value)}
                 >
-                  <SelectTrigger className="flex h-10 w-[180px] items-center justify-between rounded-3xl border border-gray-300 px-3">
+                  <SelectTrigger className="flex h-10 w-full sm:w-[180px] items-center justify-between rounded-3xl border border-gray-300 px-3">
                     <div className="flex items-center">
                       {sortOption === 'LATEST' ? (
                         <SortDesc className="mr-2 h-4 w-4 text-muted-foreground" />
@@ -580,92 +583,96 @@ export default function UserManagementDashboard() {
 
           {/* User Table */}
           <div className="overflow-hidden rounded-3xl bg-white shadow">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>No.</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>School</TableHead>
-                  <TableHead>City</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Subscription</TableHead>
-                  <TableHead>Count</TableHead>
-                  <TableHead>Telp</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>WhatsApp</TableHead>
-                  {sessionRole === 'SUPER_ADMIN' && (
-                    <TableHead>Actions</TableHead>
-                  )}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {usersData?.map((user, uIndex) => (
-                  <TableRow key={user.id}>
-                    <TableCell>{page * take - take + uIndex + 1}</TableCell>
-                    <TableCell className="font-medium">{user.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>
-                      {formatSchoolName(user.UserTryout?.schoolOrigin)}
-                    </TableCell>
-                    <TableCell>{user.UserTryout?.kabupaten || '-'}</TableCell>
-                    <TableCell>{user.Role}</TableCell>
-                    <TableCell>
-                      <DialogDetailSubscription subData={user.Subscription}>
-                        <Badge
-                          variant={
-                            user.Subscription.length > 0 ? 'default' : 'outline'
-                          }
-                          className="cursor-pointer"
-                        >
-                          {user.Subscription.length > 0
-                            ? `${user.Subscription.length} Active`
-                            : 'Free Tier'}
-                        </Badge>
-                      </DialogDetailSubscription>
-                    </TableCell>
-                    <TableCell>
-                      {user.Role === 'PREMIUM'
-                        ? 'Unlimited'
-                        : user.TryoutUnlock.length}
-                    </TableCell>
-                    <TableCell>{user.UserTryout?.phone || '-'}</TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={user.UserTryout ? 'outline' : 'destructive'}
-                        className={cn(!user.UserTryout && 'text-white')}
-                      >
-                        {user.UserTryout ? 'Verified' : 'Unverified'}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      {user.UserTryout?.phone && (
-                        <a
-                          href={getWhatsAppLink(user.UserTryout?.phone)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center text-blue-600 hover:text-blue-800"
-                        >
-                          <MessageCircle className="mr-1 h-4 w-4" />
-                          Invite
-                        </a>
-                      )}
-                    </TableCell>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>No.</TableHead>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>School</TableHead>
+                    <TableHead>City</TableHead>
+                    <TableHead>Role</TableHead>
+                    <TableHead>Subscription</TableHead>
+                    <TableHead>Count</TableHead>
+                    <TableHead>Telp</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>WhatsApp</TableHead>
                     {sessionRole === 'SUPER_ADMIN' && (
-                      <TableCell>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                        >
-                          <Edit className="mr-1 h-4 w-4" />
-                          Edit
-                        </Button>
-                      </TableCell>
+                      <TableHead>Actions</TableHead>
                     )}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {usersData?.map((user, uIndex) => (
+                    <TableRow key={user.id}>
+                      <TableCell>{page * take - take + uIndex + 1}</TableCell>
+                      <TableCell className="font-medium">{user.name}</TableCell>
+                      <TableCell>{user.email}</TableCell>
+                      <TableCell>
+                        {formatSchoolName(user.UserTryout?.schoolOrigin)}
+                      </TableCell>
+                      <TableCell>{user.UserTryout?.kabupaten || '-'}</TableCell>
+                      <TableCell>{user.Role}</TableCell>
+                      <TableCell>
+                        <DialogDetailSubscription subData={user.Subscription}>
+                          <Badge
+                            variant={
+                              user.Subscription.length > 0
+                                ? 'default'
+                                : 'outline'
+                            }
+                            className="cursor-pointer"
+                          >
+                            {user.Subscription.length > 0
+                              ? `${user.Subscription.length} Active`
+                              : 'Free Tier'}
+                          </Badge>
+                        </DialogDetailSubscription>
+                      </TableCell>
+                      <TableCell>
+                        {user.Role === 'PREMIUM'
+                          ? 'Unlimited'
+                          : user.TryoutUnlock.length}
+                      </TableCell>
+                      <TableCell>{user.UserTryout?.phone || '-'}</TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={user.UserTryout ? 'outline' : 'destructive'}
+                          className={cn(!user.UserTryout && 'text-white')}
+                        >
+                          {user.UserTryout ? 'Verified' : 'Unverified'}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        {user.UserTryout?.phone && (
+                          <a
+                            href={getWhatsAppLink(user.UserTryout?.phone)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center text-blue-600 hover:text-blue-800"
+                          >
+                            <MessageCircle className="mr-1 h-4 w-4" />
+                            Invite
+                          </a>
+                        )}
+                      </TableCell>
+                      {sessionRole === 'SUPER_ADMIN' && (
+                        <TableCell>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                          >
+                            <Edit className="mr-1 h-4 w-4" />
+                            Edit
+                          </Button>
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
             <ListPagination
               className="px-4"
               onSizeChange={(size) => {
@@ -811,78 +818,82 @@ export default function UserManagementDashboard() {
               <CardDescription>User distribution by province</CardDescription>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Province</TableHead>
-                    <TableHead>Total Users</TableHead>
-                    <TableHead>Premium Users</TableHead>
-                    <TableHead>Tryout Users</TableHead>
-                    <TableHead>Conversion Rate</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {regionalData?.map((province, index) => (
-                    <Fragment key={index}>
-                      <TableRow
-                        key={province.region}
-                        className="cursor-pointer"
-                        onClick={() =>
-                          setExpandedProvinces((prev) =>
-                            prev.includes(province.region)
-                              ? prev.filter((p) => p !== province.region)
-                              : [...prev, province.region],
-                          )
-                        }
-                      >
-                        <TableCell className="font-medium">
-                          {expandedProvinces.includes(province.region) ? (
-                            <ChevronDown className="inline mr-2 h-4 w-4" />
-                          ) : (
-                            <ChevronRight className="inline mr-2 h-4 w-4" />
-                          )}
-                          {province.region}
-                        </TableCell>
-                        <TableCell>{province.total}</TableCell>
-                        <TableCell>{province.premium}</TableCell>
-                        <TableCell>{province.tryout}</TableCell>
-                        <TableCell>
-                          {province.total > 0
-                            ? (
-                                ((province.premium + province.tryout) /
-                                  province.total) *
-                                100
-                              ).toFixed(1)
-                            : '0.0'}
-                          %
-                        </TableCell>
-                      </TableRow>
-                      {expandedProvinces.includes(province.region) &&
-                        province.cities?.map((city) => (
-                          <TableRow
-                            key={`${province.region}-${city.name}`}
-                            className="bg-muted/50"
-                          >
-                            <TableCell className="pl-8">{city.name}</TableCell>
-                            <TableCell>{city.total}</TableCell>
-                            <TableCell>{city.premium}</TableCell>
-                            <TableCell>{city.tryout}</TableCell>
-                            <TableCell>
-                              {city.total > 0
-                                ? (
-                                    ((city.premium + city.tryout) /
-                                      city.total) *
-                                    100
-                                  ).toFixed(1)
-                                : '0.0'}
-                              %
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </Fragment>
-                  ))}
-                </TableBody>
-              </Table>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Province</TableHead>
+                      <TableHead>Total Users</TableHead>
+                      <TableHead>Premium Users</TableHead>
+                      <TableHead>Tryout Users</TableHead>
+                      <TableHead>Conversion Rate</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {regionalData?.map((province, index) => (
+                      <Fragment key={index}>
+                        <TableRow
+                          key={province.region}
+                          className="cursor-pointer"
+                          onClick={() =>
+                            setExpandedProvinces((prev) =>
+                              prev.includes(province.region)
+                                ? prev.filter((p) => p !== province.region)
+                                : [...prev, province.region],
+                            )
+                          }
+                        >
+                          <TableCell className="font-medium">
+                            {expandedProvinces.includes(province.region) ? (
+                              <ChevronDown className="inline mr-2 h-4 w-4" />
+                            ) : (
+                              <ChevronRight className="inline mr-2 h-4 w-4" />
+                            )}
+                            {province.region}
+                          </TableCell>
+                          <TableCell>{province.total}</TableCell>
+                          <TableCell>{province.premium}</TableCell>
+                          <TableCell>{province.tryout}</TableCell>
+                          <TableCell>
+                            {province.total > 0
+                              ? (
+                                  ((province.premium + province.tryout) /
+                                    province.total) *
+                                  100
+                                ).toFixed(1)
+                              : '0.0'}
+                            %
+                          </TableCell>
+                        </TableRow>
+                        {expandedProvinces.includes(province.region) &&
+                          province.cities?.map((city) => (
+                            <TableRow
+                              key={`${province.region}-${city.name}`}
+                              className="bg-muted/50"
+                            >
+                              <TableCell className="pl-8">
+                                {city.name}
+                              </TableCell>
+                              <TableCell>{city.total}</TableCell>
+                              <TableCell>{city.premium}</TableCell>
+                              <TableCell>{city.tryout}</TableCell>
+                              <TableCell>
+                                {city.total > 0
+                                  ? (
+                                      ((city.premium + city.tryout) /
+                                        city.total) *
+                                      100
+                                    ).toFixed(1)
+                                  : '0.0'}
+                                %
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </Fragment>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

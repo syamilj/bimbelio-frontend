@@ -29,6 +29,10 @@ export interface RankingTryoutProps {
     univChoice: string | undefined;
     univStudyChoice: string | undefined;
     image: string | null;
+    benar: number;
+    salah: number;
+    kosong: number;
+    totalQuestions: number;
     // categoryResult: {
     //   category: string;
     //   totalScore: number;

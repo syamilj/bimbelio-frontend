@@ -90,29 +90,29 @@ const MainContent = () => {
   const pathnameArray = pathname?.split('/');
   const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
 
+  // Load previous messages once
   useEffect(() => {
-    if (prevChatMessages && prevChatMessages?.length > 0 && !firstMessage) {
+    if (prevChatMessages && prevChatMessages.length > 0 && !firstMessage) {
       setMessageData([GreetingMessage, ...prevChatMessages]);
     }
-  }, [prevChatMessages, firstMessage, setMessageData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prevChatMessages?.length, firstMessage]);
 
+  // Handle new messages from streaming
   useEffect(() => {
-    if (isLoadingMessages && messages.length > 0) {
-      if (prevChatMessages) {
-        const data = [GreetingMessage, ...prevChatMessages, ...messages];
-        setMessageData(data);
-      }
+    if (isLoadingMessages && messages.length > 0 && prevChatMessages) {
+      setMessageData([GreetingMessage, ...prevChatMessages, ...messages]);
     }
-  }, [messages, isLoadingMessages, prevChatMessages, setMessageData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages.length, isLoadingMessages]);
 
+  // Handle edited messages
   useEffect(() => {
-    if (isLoadingMessagesEdit && messageEdit.length > 0) {
-      if (prevChatMessages) {
-        const data = [GreetingMessage, ...prevChatMessages, ...messageEdit];
-        setMessageData(data);
-      }
+    if (isLoadingMessagesEdit && messageEdit.length > 0 && prevChatMessages) {
+      setMessageData([GreetingMessage, ...prevChatMessages, ...messageEdit]);
     }
-  }, [messageEdit, isLoadingMessagesEdit, prevChatMessages, setMessageData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messageEdit.length, isLoadingMessagesEdit]);
 
   const isVectorised = userDocData?.isVectorised || false;
 
@@ -145,11 +145,11 @@ const MainContent = () => {
   }
 
   return (
-    <div className="absolute left-0 top-0 flex h-full w-full flex-col gap-2 overflow-hidden md:relative md:left-[unset] md:top-[unset]">
+    <div className="flex h-full w-full flex-col overflow-hidden bg-slate-50/50">
       <FormMessageEdit />
       <div
         id="chatAI"
-        className="mt-[calc(60px+5px)] flex flex-1 flex-col gap-12 overflow-hidden px-4 pb-4 md:mt-[unset]"
+        className="flex flex-1 flex-col overflow-hidden"
       >
         {isMessages ? (
           <MessageContainer />
