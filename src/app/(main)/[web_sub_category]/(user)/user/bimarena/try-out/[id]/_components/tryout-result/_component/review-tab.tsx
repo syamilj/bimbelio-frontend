@@ -113,6 +113,12 @@ export function ReviewTab({
   const AssessmentType = sessionResult?.TryoutSession.assessmentType || '';
   const TotalQuestion = sessionResult?.TryoutUserAnswer.length || 0;
 
+  const notAnswered =
+    sessionResult?.TryoutUserAnswer.reduce((acc, answer) => {
+      if (!answer.TryoutAnswers) return acc + 1;
+      return acc;
+    }, 0) || 0;
+
   const getCorrectAnswer = () => {
     if (!UserAnswers) return '....';
     if (AssessmentType !== '+4/-1/0') {
@@ -314,7 +320,7 @@ export function ReviewTab({
 
         {/* Quick Stats Bar - Horizontal Scroll on Mobile - More Compact */}
         <div className="overflow-x-auto no-scrollbar mt-4 md:mt-6 pt-3 md:pt-4 border-t border-slate-200">
-          <div className="flex lg:grid lg:grid-cols-4 gap-3 md:gap-4 min-w-max lg:min-w-0">
+          <div className="flex lg:grid lg:grid-cols-5 gap-3 md:gap-4 min-w-max lg:min-w-0">
             <div className="text-center min-w-[100px] md:min-w-[120px] lg:min-w-0">
               <div
                 className="text-xl md:text-2xl font-black leading-none"
@@ -344,10 +350,18 @@ export function ReviewTab({
             </div>
             <div className="text-center min-w-[100px] md:min-w-[120px] lg:min-w-0">
               <div className="text-xl md:text-2xl font-black text-red-600 leading-none">
-                {TotalQuestion - correctAnswer()}
+                {TotalQuestion - correctAnswer() - notAnswered}
               </div>
               <div className="text-[10px] md:text-xs text-slate-600 font-medium mt-1">
                 Salah
+              </div>
+            </div>
+            <div className="text-center min-w-[100px] md:min-w-[120px] lg:min-w-0">
+              <div className="text-xl md:text-2xl font-black text-gray-600 leading-none">
+                {notAnswered}
+              </div>
+              <div className="text-[10px] md:text-xs text-slate-600 font-medium mt-1">
+                Kosong
               </div>
             </div>
           </div>
