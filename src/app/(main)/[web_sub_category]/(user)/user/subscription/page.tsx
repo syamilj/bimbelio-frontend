@@ -4,6 +4,7 @@ import { DialogJoinDiscord } from '@/components/_shared/dialog/dialog-join-disco
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { EmptyState, GradientButton, GradientCTACard, PageShell } from '@/components/ds';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -59,33 +60,16 @@ export default function SubscriptionPage() {
     userSession.user.subsPendingList.length > 0;
 
   return (
-    <div className="space-y-4 px-4 md:px-0">
+    <PageShell className="py-8 space-y-4">
       {/* Hero Section with User Tier */}
       {userTier && userTier !== 'USER' && (
-        <div className="relative overflow-hidden rounded-3xl p-6 shadow-xl bg-gradient-to-br from-amber-500 via-orange-500 to-red-600">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full blur-3xl -ml-12 -mb-12"></div>
-
-          <div className="relative z-10 flex items-center gap-4">
-            <div className="p-3 bg-white/20 backdrop-blur-sm rounded-3xl">
-              <Crown className="w-8 h-8 text-white" />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <Star className="w-4 h-4 text-yellow-300" />
-                <span className="text-xs font-semibold text-white/90 uppercase tracking-wider">
-                  Status Member
-                </span>
-              </div>
-              <h2 className="text-2xl font-bold text-white">
-                {userTier} Member
-              </h2>
-              <p className="text-white/80 text-sm mt-1">
-                Akses unlimited ke semua fitur premium
-              </p>
-            </div>
-          </div>
-        </div>
+        <GradientCTACard
+          icon={Crown}
+          variant="premium"
+          title={`${userTier} Member`}
+          description="Akses unlimited ke semua fitur premium"
+          className="shadow-xl"
+        />
       )}
 
       <div className="space-y-4">
@@ -319,20 +303,12 @@ export default function SubscriptionPage() {
             </CardContent>
           </Card>
         ) : (
-          <Card className="border-2 border-dashed border-gray-300">
-            <CardContent className="flex flex-col items-center justify-center py-12">
-              <div className="p-4 bg-gray-100 rounded-full mb-4">
-                <Sparkles className="w-8 h-8 text-gray-400" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-700 mb-2">
-                Belum Ada Subscription
-              </h3>
-              <p className="text-sm text-gray-500 text-center mb-4 max-w-xs">
-                Upgrade ke premium untuk akses unlimited semua fitur
-                pembelajaran
-              </p>
-            </CardContent>
-          </Card>
+          <EmptyState
+            icon={Sparkles}
+            color="purple"
+            title="Belum Ada Subscription"
+            description="Upgrade ke premium untuk akses unlimited semua fitur pembelajaran"
+          />
         )}
 
         {/* Subscription Pending */}
@@ -508,17 +484,15 @@ export default function SubscriptionPage() {
 
       {/* CTA Button */}
       <div className="pt-2">
-        <Button
-          className="w-full items-center gap-2 rounded-3xl text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 h-12 text-sm font-semibold"
-          style={{
-            background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 100%)`,
-          }}
+        <GradientButton
+          className="w-full"
+          size="md"
           onClick={() => setTransactionPopUp(true)}
         >
           <Sparkles className="w-5 h-5" />
           <span>Beli Subscription Premium</span>
-        </Button>
+        </GradientButton>
       </div>
-    </div>
+    </PageShell>
   );
 }

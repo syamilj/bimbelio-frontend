@@ -2,62 +2,38 @@
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { Skeleton } from '@/components/ui/skeleton';
+import { CardGrid, EmptyState, SkeletonGrid } from '@/components/ds';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import type { Category, Subcategory } from '@/types/database';
-import { History, RotateCcw } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { History, RotateCcw, SearchX } from 'lucide-react';
+import { useMemo } from 'react';
 import Card from '../../_components/card';
-import CardNotFound from '../../_components/card-not-found';
+
+type DocWithRelations = Document & { category: Category; subCategory: Subcategory };
+type HistoryData = {
+  today: { document: DocWithRelations }[];
+  yesterday: { document: DocWithRelations }[];
+};
 
 export default function Riwayat() {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const [riwayat, setRiwayat] = useState<any>([]);
 
-  const [datas, setDatas] = useState<{
-    today: {
-      document: Document & {
-        category: Category;
-        subCategory: Subcategory;
-      };
-    }[];
-    yesterday: {
-      document: Document & {
-        category: Category;
-        subCategory: Subcategory;
-      };
-    }[];
-  }>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  // Get dynamic colors
-  // const mainColor = websiteSubCategory?.main_color || '#0091FF';
-
-  useEffect(() => {
-    getGeneral('/document/getHistoryByUser', {
+  const { data: datas, isLoading } = useGet<HistoryData>(
+    '/document/getHistoryByUser',
+    {
       params: { userId: session?.user.id },
-      setData: setDatas,
-      setLoading: setIsLoading,
-    });
-  }, [session?.user.id]);
+      enabled: !!session?.user.id,
+      useEffectDependencies: [session?.user.id],
+    },
+  );
 
-  useEffect(() => {
-    if (datas) {
-      const today = datas?.today.map((item) => {
-        return {
-          ...item.document,
-        };
-      });
-      const yesterday = datas?.yesterday.map((item) => {
-        return {
-          ...item.document,
-        };
-      });
-      const riwayatData = [...today, ...yesterday];
-      setRiwayat([...riwayatData]);
-    }
+  const riwayat = useMemo(() => {
+    if (!datas) return [];
+    const today = datas.today.map((item) => item.document);
+    const yesterday = datas.yesterday.map((item) => item.document);
+    return [...today, ...yesterday];
   }, [datas]);
 
   return (
@@ -85,30 +61,26 @@ export default function Riwayat() {
 
       {/* Content */}
       {!isLoading && riwayat?.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <CardGrid cols={{ sm: 2, lg: 3, xl: 4 }} scrollOnMobile={false} className="gap-6">
           <Card
             data={riwayat}
             href={`${website_sub_category_id}/user/workspace`}
             noCategory={true}
           />
-        </div>
+        </CardGrid>
       )}
 
       {!isLoading && riwayat?.length === 0 && (
-        <div className="flex justify-center">
-          <CardNotFound />
-        </div>
+        <EmptyState
+          icon={SearchX}
+          color="purple"
+          title="Belum ada riwayat"
+          description="Mulai pelajari materi untuk melihat riwayat terakhir di sini"
+        />
       )}
 
       {isLoading && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {Array.from({ length: 8 }).map((_: any, i: number) => (
-            <Skeleton
-              key={i}
-              className="h-[200px] rounded-3xl"
-            />
-          ))}
-        </div>
+        <SkeletonGrid count={8} cardHeight="h-[200px]" cols={{ sm: 2, lg: 3, xl: 4 }} scrollOnMobile={false} />
       )}
     </div>
   );

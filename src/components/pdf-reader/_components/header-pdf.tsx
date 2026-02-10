@@ -4,7 +4,7 @@ import SubmitCourse from '@/app/(main)/[web_sub_category]/(user)/user/bimcourse/
 import { useAppContext } from '@/components/provider/provider-app';
 import { buttonVariants } from '@/components/ui/button';
 import { ToolTip } from '@/components/ui/tooltip';
-import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
 import {
   IconCheckList,
@@ -19,7 +19,7 @@ import {
 import { ChevronLeftIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useMedia } from 'use-media';
 import { useProvider } from '../_provider';
 
@@ -73,16 +73,14 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
   //   { refetchOnWindowFocus: false },
   // );
 
-  const [totalPage, setTotalPage] = useState<number>(1);
-  useEffect(() => {
-    if (!docId) return;
-    getGeneral('/document/getDocumentTotalPage', {
-      setData: setTotalPage,
-      params: {
-        docId,
-      },
-    });
-  }, [docId]);
+  const { data: totalPage } = useGet<number>(
+    '/document/getDocumentTotalPage',
+    {
+      enabled: !!docId,
+      useEffectDependencies: [docId],
+      params: { docId },
+    },
+  );
 
   const handleZoom = (parameter: 'plus' | 'min' | 'reset') => {
     const zoom = zoomValue === 'page-width' ? 1.0 : parseFloat(zoomValue);

@@ -5,13 +5,13 @@ import CardTryOut, {
 } from '@/app/(main)/[web_sub_category]/(user)/user/bimarena/try-out/_components/ui/card-tryout';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
 import { WebsiteSubCategory } from '@/types/database';
 import { ArrowRight, Target } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { autoScroll } from '../autoscroll';
 
 const TryoutSection: React.FC = () => {
@@ -23,24 +23,11 @@ const TryoutSection: React.FC = () => {
 
   const ref = useRef(null);
 
-  const [cards, setCards] = useState<
+  const { data: cards, isLoading, refetch: refetchCards } = useGet<
     (CardTryoutProps & { WebsiteSubCategory: WebsiteSubCategory })[]
-  >([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  const getData = async () => {
-    await getGeneral(
-      `/tryout/getTryOutCardUpcoming2?userId=${session?.user.id}&take=5`,
-      {
-        setData: setCards,
-        setLoading: setIsLoading,
-      },
-    );
-  };
-
-  useEffect(() => {
-    getData();
-  }, [session]);
+  >(`/tryout/getTryOutCardUpcoming2?userId=${session?.user.id}&take=5`, {
+    useEffectDependencies: [session?.user?.id],
+  });
 
   useEffect(() => {
     if (href && href?.length > 0) {
@@ -60,7 +47,7 @@ const TryoutSection: React.FC = () => {
       id="tryout"
       className={cn(
         'py-16 md:py-24 relative overflow-hidden',
-        !isLoading && cards.length === 0 && 'hidden',
+        !isLoading && (cards?.length ?? 0) === 0 && 'hidden',
       )}
     >
       {/* Background */}
@@ -96,9 +83,9 @@ const TryoutSection: React.FC = () => {
         <div
           className={cn(
             'flex overflow-x-auto touch-pan-y gap-5 mb-8 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0',
-            cards.length === 1 && !isLoading
+            (cards?.length ?? 0) === 1 && !isLoading
               ? 'justify-center md:max-w-md md:mx-auto'
-              : cards.length === 2 && !isLoading
+              : (cards?.length ?? 0) === 2 && !isLoading
                 ? 'justify-center md:max-w-2xl md:mx-auto'
                 : '',
           )}
@@ -134,9 +121,9 @@ const TryoutSection: React.FC = () => {
             ))
           ) : (
             <CardTryOut
-              data={cards}
+              data={cards ?? []}
               userTryOutId={session?.user.id || ''}
-              refresh={getData}
+              refresh={refetchCards}
               reloadHref={true}
             />
           )}

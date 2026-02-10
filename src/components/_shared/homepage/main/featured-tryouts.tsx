@@ -5,50 +5,34 @@ import { useGuest } from '@/components/layout/layoutGuest';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { env } from '@/env.mjs';
-import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { getDateString } from '@/lib/utils';
 import { WebsiteSubCategory } from '@/types/database';
 import { motion } from 'framer-motion';
 import { Award, BookOpen, Calendar, Clock, Users } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 interface TryoutData extends CardTryoutProps {
   WebsiteSubCategory: WebsiteSubCategory;
 }
 
 export default function FeaturedTryouts() {
-  const [tryouts, setTryouts] = useState<TryoutData[]>([]);
-  const [loading, setLoading] = useState(true);
   const { websiteSubCategory } = useWebsiteSubCategory();
   const { data: session } = useSession();
 
   const mainColor = websiteSubCategory?.main_color || '#3b82f6';
   const secondaryColor = websiteSubCategory?.secondary_color || '#1e40af';
 
-  useEffect(() => {
-    const fetchTryouts = async () => {
-      try {
-        setLoading(true);
-        await getGeneral(
-          `/tryout/getTryOutCardUpcoming2?userId=${session?.user.id}`,
-          {
-            setData: (data: TryoutData[]) => {
-              // Ambil 3 tryout pertama
-              setTryouts(data?.slice(0, 3) || []);
-            },
-            setLoading,
-          },
-        );
-      } catch (error) {
-        console.error('Error fetching tryouts:', error);
-        setLoading(false);
-      }
-    };
+  const { data: rawTryouts, isLoading: loading } = useGet<TryoutData[]>(
+    `/tryout/getTryOutCardUpcoming2?userId=${session?.user.id}`,
+    {
+      useEffectDependencies: [session?.user?.id],
+    },
+  );
 
-    fetchTryouts();
-  }, [session]);
+  const tryouts = useMemo(() => (rawTryouts ?? []).slice(0, 3), [rawTryouts]);
 
   if (loading) {
     return (

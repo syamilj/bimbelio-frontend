@@ -7,6 +7,7 @@ import { TopWinners } from '@/app/(main)/[web_sub_category]/(user)/user/bimarena
 import { TryOutSelector } from '@/app/(main)/[web_sub_category]/(user)/user/bimarena/leaderboard/_components/tryout-selector';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { PageShell, SectionHeader } from '@/components/ds';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { Trophy } from 'lucide-react';
@@ -81,8 +82,6 @@ export default function LeaderboardClient() {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const [selectedTryOut, setSelectedTryOut] = useState<string>('');
 
-  // Get dynamic colors from the selected category
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
   // const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   // const { data: RankingTryout, isLoading: RankingTryoutIsLoading } =
@@ -142,29 +141,16 @@ export default function LeaderboardClient() {
         RankingTryoutIsLoading,
       }}
     >
-      <div className="min-h-screen bg-white">
-        <div className="max-w-7xl mx-auto px-4 py-8">
+      <PageShell bgClassName="bg-white" className="py-8">
           {/* Header Section */}
           <div className="mb-8">
-            <div className="flex items-center gap-4 mb-6">
-              <div
-                className="w-14 h-14 rounded-3xl flex items-center justify-center shadow-sm"
-                style={{ backgroundColor: mainColor }}
-              >
-                <Trophy className="w-7 h-7 text-white" />
-              </div>
-              <div>
-                <h1
-                  className="text-3xl font-black mb-1"
-                  style={{ color: mainColor }}
-                >
-                  Peringkat Try-Out
-                </h1>
-                <p className="text-gray-600 text-sm font-medium">
-                  Lihat peringkat dan performa terbaik dari semua peserta
-                </p>
-              </div>
-            </div>
+            <SectionHeader
+              icon={Trophy}
+              iconColor="amber"
+              title="Peringkat Try-Out"
+              subtitle="Lihat peringkat dan performa terbaik dari semua peserta"
+              size="lg"
+            />
           </div>
 
           {/* Main Content */}
@@ -185,8 +171,7 @@ export default function LeaderboardClient() {
             {/* Table Section */}
             <RankingTable />
           </div>
-        </div>
-      </div>
+      </PageShell>
     </LeaderboardContext.Provider>
   );
 }

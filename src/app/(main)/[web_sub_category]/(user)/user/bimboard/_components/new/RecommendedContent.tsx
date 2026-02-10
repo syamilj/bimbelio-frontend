@@ -1,6 +1,7 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { ContentCard } from '@/components/ds';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import {
   BookOpen,
@@ -13,7 +14,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { EmptyStateIllustrations } from './EmptyStateIllustrations';
+import { EmptyState } from '@/components/ds';
 
 interface RecommendedContentProps {
   courses: Array<{
@@ -54,7 +55,7 @@ export default function RecommendedContent({
   >('courses');
 
   return (
-    <div className="w-full bg-white rounded-3xl border-2 border-slate-100 p-5 md:p-6 shadow-sm">
+    <ContentCard borderVariant="default" padding="md" className="w-full">
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-2">
           <Sparkles
@@ -179,13 +180,8 @@ export default function RecommendedContent({
               </Link>
             ))
           ) : (
-            <div className="col-span-2 lg:col-span-4 text-center py-12">
-              <div className="w-40 h-40 mx-auto mb-3">
-                <EmptyStateIllustrations.NoCourses />
-              </div>
-              <p className="text-sm font-bold text-slate-700">
-                Belum ada rekomendasi kursus
-              </p>
+            <div className="col-span-2 lg:col-span-4">
+              <EmptyState icon={BookOpen} color="blue" title="Belum ada rekomendasi kursus" className="py-8" />
             </div>
           ))}
 
@@ -238,13 +234,8 @@ export default function RecommendedContent({
               </Link>
             ))
           ) : (
-            <div className="col-span-2 lg:col-span-4 text-center py-12">
-              <div className="w-40 h-40 mx-auto mb-3">
-                <EmptyStateIllustrations.NoTryouts />
-              </div>
-              <p className="text-sm font-bold text-slate-700">
-                Belum ada rekomendasi tryout
-              </p>
+            <div className="col-span-2 lg:col-span-4">
+              <EmptyState icon={Target} color="purple" title="Belum ada rekomendasi tryout" className="py-8" />
             </div>
           ))}
 
@@ -290,16 +281,11 @@ export default function RecommendedContent({
               </Link>
             ))
           ) : (
-            <div className="col-span-2 lg:col-span-4 text-center py-12">
-              <div className="w-40 h-40 mx-auto mb-3">
-                <EmptyStateIllustrations.NoDocuments />
-              </div>
-              <p className="text-sm font-bold text-slate-700">
-                Belum ada rekomendasi materi
-              </p>
+            <div className="col-span-2 lg:col-span-4">
+              <EmptyState icon={FileText} color="amber" title="Belum ada rekomendasi materi" className="py-8" />
             </div>
           ))}
       </div>
-    </div>
+    </ContentCard>
   );
 }

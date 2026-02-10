@@ -4,6 +4,7 @@ import { RegistrationUserTryout } from '@/components/_shared/account/registratio
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { PageShell } from '@/components/ds';
 import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
@@ -225,7 +226,7 @@ const Content = () => {
         setTryoutAccount({ userTryOutId });
       }}
     >
-      <div className="min-h-screen bg-slate-50/50 pb-12">
+      <PageShell noPadding>
         <DialogRecomendation
           openExternal={open}
           setOpenExternal={setOpen}
@@ -319,7 +320,7 @@ const Content = () => {
             </div>
           </div>
         )}
-      </div>
+      </PageShell>
     </RegistrationUserTryout>
   );
 };

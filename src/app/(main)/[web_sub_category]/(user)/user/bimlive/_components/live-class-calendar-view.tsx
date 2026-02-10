@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getStatusColor } from '@/lib/utils/live-class';
 import { CalendarIcon, Clock, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { LiveLearningDataType } from '../main-page';
+import type { LiveLearningDataType } from './live-class-types';
 
 interface CalendarViewProps {
   liveClass: any[];

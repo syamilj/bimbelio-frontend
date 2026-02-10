@@ -6,16 +6,16 @@ import { Input } from '@/components/ui/input';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import {
   BookOpen,
-  CheckCircle,
-  Clock,
   MonitorPlay,
   Search,
   Target,
 } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { EmptyStateIllustrations } from './EmptyStateIllustrations';
+import { EmptyState, ContentCard } from '@/components/ds';
+import { CourseProgressCard } from './CourseProgressCard';
+import { LiveClassProgressCard } from './LiveClassProgressCard';
+import { TryoutProgressCard } from './TryoutProgressCard';
 
 interface BimLearningProgressProps {
   courses: Array<{
@@ -95,31 +95,8 @@ export default function BimLearningProgress({
       return true;
     });
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return (
-          <span className="px-2 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">
-            Selesai
-          </span>
-        );
-      case 'in-progress':
-        return (
-          <span className="px-2 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700 border border-blue-200">
-            Sedang Berjalan
-          </span>
-        );
-      default:
-        return (
-          <span className="px-2 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
-            Belum Mulai
-          </span>
-        );
-    }
-  };
-
   return (
-    <div className="w-full bg-white rounded-3xl border-2 border-slate-100 p-6 shadow-sm">
+    <ContentCard borderVariant="default" padding="lg" className="w-full">
       {/* Header with Tabs */}
       <div className="flex flex-col gap-4 mb-6">
         <h2 className="text-lg font-black text-slate-800">Progress Belajar</h2>
@@ -214,93 +191,12 @@ export default function BimLearningProgress({
           liveClasses && liveClasses.length > 0 ? (
             <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
               {liveClasses.map((liveClass) => (
-                <Link
+                <LiveClassProgressCard
                   key={liveClass.id}
-                  href={`/${website_sub_category_id}/user/bimlive/${liveClass.id}`}
-                  className="group relative rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 bg-slate-900 border border-slate-100 flex-shrink-0 w-[280px] md:w-auto aspect-[4/5]"
-                >
-                  {/* Full Background Image */}
-                  {liveClass.thumbnail ? (
-                    <Image
-                      src={liveClass.thumbnail}
-                      alt={liveClass.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div
-                      className="w-full h-full flex items-center justify-center opacity-20"
-                      style={{ backgroundColor: mainColor }}
-                    >
-                      <MonitorPlay className="w-16 h-16 text-white" />
-                    </div>
-                  )}
-
-                  {/* Dark Gradient Overlay for Text Readability */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-
-                  {/* Top Badges */}
-                  <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 items-end">
-                    {liveClass.isPremium && (
-                      <div className="px-2 py-0.5 rounded-3xl bg-amber-400 text-white text-[10px] font-bold shadow-sm">
-                        PRO
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="absolute top-3 left-3 z-10">
-                    <div className="bg-rose-500 text-white text-[10px] px-2 py-0.5 font-bold rounded-3xl animate-pulse shadow-sm">
-                      LIVE
-                    </div>
-                  </div>
-
-                  {/* Content Overlay at Bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 p-5 z-20">
-                    {/* Instructor Info */}
-                    <div className="flex items-center gap-2 mb-2">
-                      {liveClass.instructorAvatar ? (
-                        <Image
-                          src={liveClass.instructorAvatar}
-                          alt={liveClass.instructorName}
-                          width={24}
-                          height={24}
-                          className="w-6 h-6 rounded-full object-cover border border-white/30"
-                        />
-                      ) : (
-                        <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30">
-                          <span className="text-[10px] font-bold text-white uppercase">
-                            {liveClass.instructorName.charAt(0)}
-                          </span>
-                        </div>
-                      )}
-                      <span className="text-xs font-bold text-white shadow-black drop-shadow-md truncate">
-                        {liveClass.instructorName}
-                      </span>
-                    </div>
-
-                    <h3 className="font-extrabold text-white text-lg line-clamp-2 leading-tight mb-2 drop-shadow-md group-hover:text-blue-200 transition-colors">
-                      {liveClass.title}
-                    </h3>
-
-                    {/* Schedule & Duration */}
-                    <div className="flex items-center gap-3 text-xs text-white/80 font-medium">
-                      <div className="flex items-center gap-1.5 bg-white/10 px-2 py-1 rounded-full backdrop-blur-sm">
-                        <Clock className="w-3 h-3" />
-                        <span>
-                          {new Date(liveClass.scheduleTime).toLocaleDateString(
-                            'id-ID',
-                            {
-                              day: 'numeric',
-                              month: 'short',
-                              hour: '2-digit',
-                              minute: '2-digit',
-                            },
-                          )}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
+                  liveClass={liveClass}
+                  webSubCategoryId={website_sub_category_id || ''}
+                  mainColor={mainColor}
+                />
               ))}
             </div>
           ) : (
@@ -317,295 +213,66 @@ export default function BimLearningProgress({
         ) : activeTab === 'courses' ? (
           filteredCourses.length > 0 ? (
             <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
-              {filteredCourses.map((course) => {
-                const getStatusBadge = () => {
-                  if (course.progress === 0) {
-                    return (
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700 border border-blue-200">
-                        <Clock className="w-3 h-3" />
-                        Belum Dimulai
-                      </span>
-                    );
-                  } else if (course.progress === 100) {
-                    return (
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">
-                        <CheckCircle className="w-3 h-3" />
-                        Selesai
-                      </span>
-                    );
-                  } else {
-                    return (
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold bg-orange-100 text-orange-700 border border-orange-200">
-                        <Target className="w-3 h-3" />
-                        Berlangsung
-                      </span>
-                    );
-                  }
-                };
-
-                return (
-                  <Link
-                    key={course.id}
-                    href={`/${website_sub_category_id}/user/bimcourse/${course.id}`}
-                    className="group relative bg-white rounded-3xl border-2 border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all overflow-hidden flex-shrink-0 w-[280px] md:w-auto"
-                  >
-                    {/* Progress Ring - Top Right */}
-                    <div className="absolute -top-2 -right-2 z-10">
-                      <div className="relative w-14 h-14">
-                        <div className="absolute inset-0 bg-white rounded-full shadow-md" />
-                        <svg
-                          className="w-14 h-14 transform -rotate-90 relative z-10"
-                          viewBox="0 0 36 36"
-                        >
-                          <path
-                            className="text-slate-200"
-                            stroke="currentColor"
-                            strokeWidth="3"
-                            fill="transparent"
-                            strokeDasharray="100, 100"
-                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                          />
-                          <path
-                            stroke={mainColor}
-                            strokeWidth="3"
-                            fill="transparent"
-                            strokeDasharray={`${course.progress}, 100`}
-                            strokeLinecap="round"
-                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                          />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span
-                            className="text-[10px] font-black"
-                            style={{ color: mainColor }}
-                          >
-                            {course.progress}%
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Thumbnail */}
-                    <div className="relative h-36 overflow-hidden bg-slate-100">
-                      {course.thumbnail ? (
-                        <Image
-                          src={course.thumbnail}
-                          alt={course.name}
-                          fill
-                          className="object-cover group-hover:scale-110 transition-transform duration-500"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        />
-                      ) : (
-                        <div
-                          className="w-full h-full flex items-center justify-center"
-                          style={{
-                            background: `linear-gradient(135deg, ${mainColor}, ${mainColor}80)`,
-                          }}
-                        >
-                          <BookOpen className="w-12 h-12 text-white opacity-50" />
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-4 space-y-3">
-                      {/* Status Badge */}
-                      <div>{getStatusBadge()}</div>
-
-                      {/* Title & Category */}
-                      <div>
-                        <h3 className="font-bold text-sm text-slate-800 line-clamp-2 group-hover:text-blue-600 transition-colors mb-1">
-                          {course.name}
-                        </h3>
-                        <p className="text-xs text-slate-500 font-medium">
-                          {course.category}
-                        </p>
-                      </div>
-
-                      {/* Progress Info */}
-                      <div className="flex items-center gap-2 text-xs text-slate-600">
-                        <Clock className="w-3.5 h-3.5 opacity-70" />
-                        <span className="font-bold">
-                          {course.completedChapters}/{course.totalChapters} Bab
-                          Selesai
-                        </span>
-                      </div>
-
-                      {/* Progress Bar */}
-                      <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                        <div
-                          className="h-full rounded-full transition-all"
-                          style={{
-                            width: `${course.progress}%`,
-                            backgroundColor: mainColor,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
+              {filteredCourses.map((course) => (
+                <CourseProgressCard
+                  key={course.id}
+                  course={course}
+                  webSubCategoryId={website_sub_category_id || ''}
+                  mainColor={mainColor}
+                />
+              ))}
             </div>
           ) : (
             <div className="text-center py-8">
-              <div className="w-32 h-32 mx-auto mb-3">
-                <EmptyStateIllustrations.NoCourses />
-              </div>
-              <h3 className="text-lg font-black text-slate-800 mb-2">
-                {searchQuery ? (
-                  'Tidak ada hasil'
-                ) : (
-                  <>
-                    Belum Ada <BimCourse />
-                  </>
-                )}
-              </h3>
-              <p className="text-sm text-slate-500 mb-4">
-                {searchQuery ? (
-                  'Coba kata kunci lain'
-                ) : (
-                  <>
-                    Jelajahi <BimCourse /> yang tersedia dan mulai belajar
-                  </>
-                )}
-              </p>
-              {!searchQuery && (
-                <Link
-                  href={`/${website_sub_category_id}/user/bimcourse`}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm text-white shadow-md hover:shadow-lg transition-all hover:scale-105"
-                  style={{ backgroundColor: mainColor }}
-                >
-                  Jelajahi <BimCourse />
-                </Link>
-              )}
+              <EmptyState
+                icon={BookOpen}
+                color="blue"
+                title={searchQuery ? 'Tidak ada hasil' : 'Belum Ada Kursus'}
+                description={searchQuery ? 'Coba kata kunci lain' : 'Jelajahi kursus yang tersedia dan mulai belajar'}
+                action={
+                  !searchQuery ? (
+                    <Link
+                      href={`/${website_sub_category_id}/user/bimcourse`}
+                      className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm text-white shadow-md hover:shadow-lg transition-all hover:scale-105"
+                      style={{ backgroundColor: mainColor }}
+                    >
+                      Jelajahi <BimCourse />
+                    </Link>
+                  ) : undefined
+                }
+              />
             </div>
           )
         ) : filteredTryouts.length > 0 ? (
           <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
-            {filteredTryouts.map((tryout) => {
-              const getStatusBadge = () => {
-                switch (tryout.status) {
-                  case 'completed':
-                    return (
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">
-                        <CheckCircle className="w-3 h-3" />
-                        Selesai
-                      </span>
-                    );
-                  case 'in-progress':
-                    return (
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700 border border-blue-200">
-                        <Clock className="w-3 h-3" />
-                        Berlangsung
-                      </span>
-                    );
-                  default:
-                    return (
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
-                        <Target className="w-3 h-3" />
-                        Belum Mulai
-                      </span>
-                    );
-                }
-              };
-
-              return (
-                <Link
-                  key={tryout.id}
-                  href={`/${website_sub_category_id}/user/bimarena/try-out/${tryout.id}`}
-                  className="group relative rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 bg-slate-900 border border-slate-100 flex-shrink-0 w-[280px] md:w-auto aspect-[4/5]"
-                >
-                  {/* Full Background Image */}
-                  {tryout.thumbnail ? (
-                    <Image
-                      src={tryout.thumbnail}
-                      alt={tryout.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                  ) : (
-                    <div
-                      className="w-full h-full flex items-center justify-center opacity-20"
-                      style={{ backgroundColor: mainColor }}
-                    >
-                      <Target className="w-16 h-16 text-white" />
-                    </div>
-                  )}
-
-                  {/* Dark Gradient Overlay for Text Readability */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-
-                  {/* Top Badges */}
-                  <div className="absolute top-3 left-3 flex gap-2 z-10">
-                    {getStatusBadge()}
-                  </div>
-
-                  {/* Score Badge - Top Right (if completed) */}
-                  {tryout.score && tryout.score > 0 && (
-                    <div className="absolute top-3 right-3 z-10">
-                      <div className="bg-white/90 backdrop-blur-sm rounded-full shadow-sm px-2.5 py-1 flex items-center gap-1 border border-white/50">
-                        <Target
-                          className="w-3.5 h-3.5"
-                          style={{ color: mainColor }}
-                        />
-                        <span
-                          className="text-xs font-black"
-                          style={{ color: mainColor }}
-                        >
-                          {tryout.score}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Content Overlay at Bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 p-5 z-20">
-                    {/* Title */}
-                    <h3 className="font-extrabold text-white text-lg line-clamp-3 leading-tight mb-3 drop-shadow-md group-hover:text-blue-200 transition-colors">
-                      {tryout.title}
-                    </h3>
-
-                    {/* Subtitle/Hint */}
-                    <p className="text-white/80 text-xs font-medium line-clamp-1 mb-1">
-                      {tryout.totalQuestions} Soal •{' '}
-                      {tryout.status === 'completed'
-                        ? 'Selesai'
-                        : tryout.status === 'in-progress'
-                          ? 'Lanjutkan'
-                          : 'Belum Mulai'}
-                    </p>
-                  </div>
-                </Link>
-              );
-            })}
+            {filteredTryouts.map((tryout) => (
+              <TryoutProgressCard
+                key={tryout.id}
+                tryout={tryout}
+                webSubCategoryId={website_sub_category_id || ''}
+                mainColor={mainColor}
+              />
+            ))}
           </div>
         ) : (
           <div className="text-center py-8">
-            <div className="w-32 h-32 mx-auto mb-3">
-              <EmptyStateIllustrations.NoTryouts />
-            </div>
-            <h3 className="text-lg font-black text-slate-800 mb-2">
-              {searchQuery ? 'Tidak ada hasil' : 'Belum Ada Try Out'}
-            </h3>
-            <p className="text-sm text-slate-500 mb-4">
-              {searchQuery ? (
-                'Coba kata kunci lain'
-              ) : (
-                <>
-                  Mulai <BimArena /> untuk meningkatkan kemampuanmu
-                </>
-              )}
-            </p>
-            {!searchQuery && (
-              <Link
-                href={`/${website_sub_category_id}/user/bimarena/try-out`}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm text-white shadow-md hover:shadow-lg transition-all hover:scale-105"
-                style={{ backgroundColor: mainColor }}
-              >
-                Mulai <BimArena />
-              </Link>
-            )}
+            <EmptyState
+              icon={Target}
+              color="purple"
+              title={searchQuery ? 'Tidak ada hasil' : 'Belum Ada Try Out'}
+              description={searchQuery ? 'Coba kata kunci lain' : 'Mulai try out untuk meningkatkan kemampuanmu'}
+              action={
+                !searchQuery ? (
+                  <Link
+                    href={`/${website_sub_category_id}/user/bimarena/try-out`}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm text-white shadow-md hover:shadow-lg transition-all hover:scale-105"
+                    style={{ backgroundColor: mainColor }}
+                  >
+                    Mulai <BimArena />
+                  </Link>
+                ) : undefined
+              }
+            />
           </div>
         )}
       </div>
@@ -624,6 +291,6 @@ export default function BimLearningProgress({
           </Link>
         </div>
       )}
-    </div>
+    </ContentCard>
   );
 }

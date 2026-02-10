@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { type Dispatch, type SetStateAction } from 'react';
-import CardNotFound from '../../../../_components/card-not-found';
+import { EmptyState } from '@/components/ds';
 import CardTryOut from './card-tryout';
 
 type Props = {
@@ -285,7 +285,12 @@ export default function DialogRecomendation({
 
           {!isLoading && data?.length === 0 && (
             <div className="py-12">
-              <CardNotFound title="Belum ada try out tersedia" />
+              <EmptyState
+                icon={Rocket}
+                color="blue"
+                title="Belum ada try out tersedia"
+                description="Try out rekomendasi untukmu akan muncul di sini"
+              />
             </div>
           )}
 

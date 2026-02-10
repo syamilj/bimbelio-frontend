@@ -12,8 +12,8 @@ import {
   Target,
   Trophy,
 } from 'lucide-react';
+import { EmptyState, ContentCard } from '@/components/ds';
 import { DecorativePatterns } from './DecorativePatterns';
-import { EmptyStateIllustrations } from './EmptyStateIllustrations';
 
 interface AchievementBadgesProps {
   achievements: Array<{
@@ -72,24 +72,17 @@ export default function AchievementBadges({
   // Empty State
   if (achievements.length === 0 || unlockedCount === 0) {
     return (
-      <div className="relative w-full bg-white rounded-3xl border-2 border-slate-100 p-6 shadow-sm overflow-hidden">
+      <ContentCard borderVariant="default" padding="lg" className="relative w-full">
         <DecorativePatterns.DotPattern />
-        <div className="relative z-10 flex flex-col items-center justify-center py-8">
-          <EmptyStateIllustrations.NoAchievements />
-          <h3 className="mt-4 text-lg font-black text-slate-800">
-            Belum Ada Pencapaian 🏆
-          </h3>
-          <p className="mt-2 text-sm text-center text-slate-500 max-w-sm">
-            Mulai belajar dan selesaikan tryout untuk membuka pencapaian
-            pertamamu!
-          </p>
+        <div className="relative z-10">
+          <EmptyState icon={Trophy} color="amber" title="Belum Ada Pencapaian 🏆" description="Mulai belajar dan selesaikan tryout untuk membuka pencapaian pertamamu!" className="py-8" />
         </div>
-      </div>
+      </ContentCard>
     );
   }
 
   return (
-    <div className="relative w-full bg-white rounded-3xl border-2 border-slate-100 p-5 shadow-sm overflow-hidden">
+    <ContentCard borderVariant="default" padding="md" className="relative w-full">
       <DecorativePatterns.GridPattern />
       {unlockedCount === achievements.length && <DecorativePatterns.Confetti />}
       <div className="flex items-center justify-between mb-4">
@@ -205,6 +198,6 @@ export default function AchievementBadges({
           </p>
         </div>
       )}
-    </div>
+    </ContentCard>
   );
 }

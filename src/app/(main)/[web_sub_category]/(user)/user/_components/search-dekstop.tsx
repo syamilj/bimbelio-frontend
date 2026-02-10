@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
 import { Category } from '@/types/database';
 import { Filter, Search, Sparkles } from 'lucide-react';
@@ -32,15 +32,9 @@ const SearchDeskstop = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
-  const [category, setCategory] = useState<
+  const { data: category } = useGet<
     Omit<Category, 'to' | 'website_sub_category_id'>[]
-  >([]);
-
-  const fetchCategory = async () => {
-    await getGeneral('/category/getAllCategories', {
-      setData: setCategory,
-    });
-  };
+  >('/category/getAllCategories');
 
   // Sinkronisasi categoryId dengan URL - simplified logic
   useEffect(() => {
@@ -55,10 +49,6 @@ const SearchDeskstop = () => {
       setCategoryId('');
     }
   }, [pathname]);
-
-  useEffect(() => {
-    fetchCategory();
-  }, []);
 
   const handleSearch = async () => {
     if (!searchValue.trim()) return;

@@ -2,6 +2,7 @@
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { EmptyState, PageShell, SectionHeader, HeroSummaryCard } from '@/components/ds';
 import { BimBot } from '@/components/ui/bim-brand';
 import { Button } from '@/components/ui/button';
 import {
@@ -183,37 +184,32 @@ export default function AIChatPage() {
   }, [session]);
 
   return (
-    <div className="min-h-screen">
-      <div className="container mx-auto max-w-7xl px-4 py-8">
+    <PageShell className="py-8">
         {/* Header Section - Match Dashboard Style */}
         <section className="mb-12">
           <div className="grid gap-6 grid-cols-1 md:grid-cols-3 mb-8">
             {/* Welcome Card */}
-            <div className="md:col-span-2 bg-white border-2 border-gray-100 rounded-3xl p-8 shadow-sm hover:shadow-md transition-all">
-              <div className="flex items-start justify-between mb-6">
-                <div>
-                  <p className="text-gray-600 text-sm font-medium mb-2">
-                    Selamat Datang di
-                  </p>
-                  <h1
-                    className="text-3xl md:text-4xl font-black"
-                    style={{ color: mainColor }}
-                  >
-                    <BimBot /> AI Assistant
-                  </h1>
-                </div>
+            <HeroSummaryCard
+              accentBar={false}
+              className="md:col-span-2 p-8"
+              titleStyle={{ color: mainColor }}
+              badge={
+                <p className="text-gray-600 text-sm font-medium">
+                  Selamat Datang di
+                </p>
+              }
+              title={<><BimBot /> AI Assistant</>}
+              subtitle="Tanyakan apapun tentang materi pembelajaran. Aku siap membantu Kamu belajar lebih efektif!"
+              trailing={
                 <div
                   className="w-16 h-16 rounded-3xl flex items-center justify-center text-white"
                   style={{ backgroundColor: mainColor }}
                 >
                   <Bot className="w-8 h-8" />
                 </div>
-              </div>
-              <p className="text-gray-600 text-base mb-6">
-                Tanyakan apapun tentang materi pembelajaran. Aku siap membantu
-                Kamu belajar lebih efektif!
-              </p>
-              <div className="flex flex-wrap gap-3">
+              }
+            >
+              <div className="mt-6 flex flex-wrap gap-3">
                 <div className="bg-blue-50 text-blue-700 border border-blue-200 font-medium px-4 py-2 rounded-full text-sm">
                   <Sparkles className="w-3 h-3 inline mr-2" />
                   AI Powered
@@ -222,7 +218,7 @@ export default function AIChatPage() {
                   24/7 Available
                 </div>
               </div>
-            </div>
+            </HeroSummaryCard>
 
             {/* Quick Stats Card */}
             <div className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 rounded-3xl p-8 shadow-sm">
@@ -312,15 +308,12 @@ export default function AIChatPage() {
 
         {/* Suggested Topics */}
         <section className="mb-12">
-          <div className="flex items-center gap-3 mb-6">
-            <div
-              className="w-10 h-10 rounded-3xl flex items-center justify-center"
-              style={{ backgroundColor: mainColor }}
-            >
-              <Sparkles className="w-5 h-5 text-white" />
-            </div>
-            <h2 className="text-2xl font-black text-gray-900">Topik Populer</h2>
-          </div>
+          <SectionHeader
+              icon={Sparkles}
+              iconColor="purple"
+              title="Topik Populer"
+              size="lg"
+            />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {placeholders.slice(0, 6).map((topic, index) => (
@@ -473,16 +466,16 @@ export default function AIChatPage() {
                     </Link>
                   ))
                 ) : (
-                  <div className="text-center py-8 text-gray-500">
-                    <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                    <p>Belum ada riwayat percakapan</p>
-                  </div>
+                  <EmptyState
+                    icon={MessageSquare}
+                    color="blue"
+                    title="Belum ada riwayat percakapan"
+                  />
                 )}
               </div>
             </ScrollArea>
           </DialogContent>
         </Dialog>
-      </div>
-    </div>
+    </PageShell>
   );
 }

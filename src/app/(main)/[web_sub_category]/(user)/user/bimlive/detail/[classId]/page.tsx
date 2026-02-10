@@ -2,6 +2,7 @@
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { PageShell } from '@/components/ds';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -175,30 +176,25 @@ export default function LiveClassStudentDetail() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white">
-        <div className="container mx-auto max-w-7xl px-4 py-6">
+      <PageShell bgClassName="bg-white" className="py-6">
           <LoadingSkeleton
             mainColor={mainColor}
             secondaryColor={secondaryColor}
           />
-        </div>
-      </div>
+        </PageShell>
     );
   }
 
   if (error || !liveClass) {
     return (
-      <div className="min-h-screen bg-white">
-        <div className="container mx-auto max-w-7xl px-4 py-6">
+      <PageShell bgClassName="bg-white" className="py-6">
           <ErrorState onBack={() => router.back()} />
-        </div>
-      </div>
+        </PageShell>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="container mx-auto max-w-7xl px-4 py-6">
+    <PageShell bgClassName="bg-white" className="py-6">
         {/* ENHANCED HEADER - LEADERBOARD PATTERN */}
         <Card className="bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden mb-8">
           <CardHeader
@@ -768,8 +764,7 @@ export default function LiveClassStudentDetail() {
             <LiveClassRatingsDisplay liveClassId={classId} />
           </div>
         </div>
-      </div>
-    </div>
+      </PageShell>
   );
 }
 

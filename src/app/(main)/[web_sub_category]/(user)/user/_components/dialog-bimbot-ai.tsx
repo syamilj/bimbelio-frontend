@@ -6,7 +6,8 @@ import { Input } from '@/components/ui/input';
 import Chat from '@/components/workspace/chat';
 import { MessageDataType } from '@/components/workspace/chat/provider';
 import { env } from '@/env.mjs';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { ChatHistory } from '@/types/database';
 import { motion } from 'framer-motion';
 import { BotMessageSquare, Loader2, Plus, SendIcon } from 'lucide-react';
@@ -78,36 +79,20 @@ function ChatContent() {
 
   const [historyId, setHistoryId] = useState<undefined | string>();
 
-  const [prevChatMessages, setPrevChatMessages] = useState<MessageDataType[]>(
-    [],
+  const {
+    data: prevChatMessages,
+    isLoading: isLoadingPrevMessage,
+    error: messageErrorObj,
+    refetch: refetchMessages,
+  } = useGet<MessageDataType[]>(
+    `/chat/getAllMessageByHistoryId?historyId=${historyId}`,
+    {
+      enabled: !!historyId,
+      useEffectDependencies: [historyId],
+    },
   );
-  const [isLoadingPrevMessage, setIsLoadingPrevMessage] =
-    useState<boolean>(true);
-  const [messageError, setMessageError] = useState<string | null>(null);
 
-  const getMessages = async () => {
-    console.log({ historyId });
-    if (!historyId) return;
-    const res = await getGeneral(
-      `/chat/getAllMessageByHistoryId?historyId=${historyId}`,
-      {
-        setData: setPrevChatMessages,
-        setLoading: setIsLoadingPrevMessage,
-        onError({ message }) {
-          setMessageError(message);
-        },
-      },
-    );
-    console.log({ res });
-    if (res?.data?.length === 0) {
-      console.log({ res: 'masuk' });
-      setPrevChatMessages([]);
-    }
-  };
-
-  useEffect(() => {
-    getMessages();
-  }, [historyId]);
+  const messageError = messageErrorObj?.message ?? null;
 
   if (messageError) {
     return (
@@ -135,10 +120,10 @@ function ChatContent() {
         apiChat={`${env.NEXT_PUBLIC_API_URL}/ai/chatTutor?website_sub_category_id=${websiteSubCategory?.id}`}
         body={{ historyId, userId: session?.user.id }}
         messages={{
-          prevChatMessages,
+          prevChatMessages: prevChatMessages ?? [],
           isLoadingPrevMessage,
         }}
-        fetchMessages={getMessages}
+        fetchMessages={refetchMessages}
       />
     </div>
   );
@@ -152,24 +137,23 @@ const HeaderChat = ({
   setHistoryId: Dispatch<React.SetStateAction<string | undefined>>;
 }) => {
   const { data: session } = useSession();
-  const [chatHistory, setChatHistory] = useState<ChatHistory[]>([]);
   const [newChatInput, setNewChatInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [showNewChatInput, setShowNewChatInput] = useState(false);
 
   const { websiteSubCategory } = useWebsiteSubCategory();
-
-  // Get dynamic colors from the selected category
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
-  useEffect(() => {
-    getGeneral(`/chat/getAllHistoryByUserId?userId=${session?.user.id}`, {
-      setData: setChatHistory,
-    });
-  }, [session]);
+  const { data: chatHistory, refetch: refetchHistory } = useGet<ChatHistory[]>(
+    `/chat/getAllHistoryByUserId?userId=${session?.user.id}`,
+    {
+      enabled: !!session?.user?.id,
+      useEffectDependencies: [session?.user?.id],
+    },
+  );
 
   useEffect(() => {
-    if (chatHistory.length > 0) {
+    if (chatHistory && chatHistory.length > 0) {
       setHistoryId(chatHistory[0].id);
     }
   }, [chatHistory]);
@@ -192,9 +176,7 @@ const HeaderChat = ({
         sendData = data;
         if (data?.id) {
           setHistoryId(data?.id);
-          getGeneral(`/chat/getAllHistoryByUserId?userId=${session?.user.id}`, {
-            setData: setChatHistory,
-          });
+          refetchHistory();
         }
         setLoading(false);
       },
@@ -217,7 +199,7 @@ const HeaderChat = ({
     <div className="flex items-center gap-1 p-2 overflow-x-hidden overflow-y-hidden absolute left-6 right-10 top-6 z-[10] bg-white">
       {/* Chat history tabs */}
       <div className="flex items-center gap-1 flex-1 min-w-0 overflow-x-auto">
-        {chatHistory.map((history, index) => (
+        {(chatHistory ?? []).map((history, index) => (
           <button
             key={history.id}
             onClick={() => setHistoryId(history.id)}

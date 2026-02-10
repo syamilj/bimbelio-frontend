@@ -1,6 +1,7 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { PageShell, SectionHeader } from '@/components/ds';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -47,8 +48,7 @@ export default function UTBKSIMAKPredictor() {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-gray-50">
-        <div className="flex flex-col gap-4 mx-auto px-4 py-8">
+      <PageShell bgClassName="bg-gray-50" className="flex flex-col gap-4 py-8">
           <div className="text-center mb-12">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-main rounded-3xl mb-6">
               <Calculator className="w-8 h-8 text-white" />
@@ -118,7 +118,12 @@ export default function UTBKSIMAKPredictor() {
               historyIsLoading === false && history?.length === 0 && 'hidden',
             )}
           >
-            <h1 className="text-[1.4rem] font-semibold">Riwayat</h1>
+            <SectionHeader
+              icon={BookOpen}
+              iconColor="blue"
+              title="Riwayat"
+              size="lg"
+            />
             <div className="grid grid-cols-1 gap-4 md2:grid-cols-3 xxxl:grid-cols-4">
               {history?.map((hItem, hIndex) => (
                 <Card
@@ -260,8 +265,7 @@ export default function UTBKSIMAKPredictor() {
               <ExampleResult />
             </CardContent>
           </Card>
-        </div>
-      </div>
+      </PageShell>
     </TooltipProvider>
   );
 }

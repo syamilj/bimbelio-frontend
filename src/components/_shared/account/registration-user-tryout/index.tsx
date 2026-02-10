@@ -1,8 +1,8 @@
 import { useSession } from '@/components/provider/provider-session-auth';
-import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { GenderEnum } from '@/types/database';
 import { useRouter } from 'next/navigation';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import RegistrationTryOut from './registration-try-out';
 
 export const RegistrationUserTryout = ({
@@ -15,7 +15,6 @@ export const RegistrationUserTryout = ({
   const Router = useRouter();
   const { data: session } = useSession();
   const [step, setStep] = useState<number>(1);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [isHideGeneralSection, setIsHideGeneralSection] =
     useState<boolean>(false);
@@ -24,10 +23,11 @@ export const RegistrationUserTryout = ({
   const [univOption, setUnivOption] = useState<string | undefined>();
   const [isRegistered, setIsRegistered] = useState<boolean>(false);
 
-  const fetchUserTryout = async () => {
-    getGeneral(`/user/getUserTryOut?userId=${session?.user.id}`, {
-      // setData: setTryoutAccount,
-      setLoading: setIsLoading,
+  const { isLoading, refetch: refetchUserTryout } = useGet(
+    `/user/getUserTryOut?userId=${session?.user.id}`,
+    {
+      enabled: !!session?.user?.id,
+      useEffectDependencies: [session?.user?.id],
       toast: {
         hideError: true,
       },
@@ -50,12 +50,8 @@ export const RegistrationUserTryout = ({
         if (getData.hideTargetValue) setIsHideTargetValue(true);
         if (getData.universityOption) setUnivOption(getData.universityOption);
       },
-    });
-  };
-
-  useEffect(() => {
-    fetchUserTryout();
-  }, []);
+    },
+  );
 
   if (isLoading) return null;
 
@@ -91,7 +87,7 @@ export const RegistrationUserTryout = ({
         </div>
       ) : (
         <RegistrationTryOut
-          getUserTryout={fetchUserTryout}
+          getUserTryout={refetchUserTryout}
           isHideGeneralSection={isHideGeneralSection}
           isHideTargetValue={isHideTargetValue}
           univOption={univOption}

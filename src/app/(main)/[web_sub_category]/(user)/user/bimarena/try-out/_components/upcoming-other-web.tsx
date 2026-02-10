@@ -1,4 +1,3 @@
-import CardNotFound from '@/app/(main)/[web_sub_category]/(user)/user/_components/card-not-found';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';

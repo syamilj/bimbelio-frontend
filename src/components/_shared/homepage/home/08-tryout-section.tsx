@@ -7,7 +7,7 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Badge } from '@/components/ui/badge';
 import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
 import { WebsiteSubCategory } from '@/types/database';
 import {
@@ -43,19 +43,17 @@ const TryoutSection: React.FC = () => {
   >([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const getData = async () => {
-    await getGeneral(
-      `/tryout/getTryOutCardUpcoming2?userId=${session?.user.id}`,
-      {
-        setData: setCards,
-        setLoading: setIsLoading,
-      },
-    );
-  };
-
-  useEffect(() => {
-    getData();
-  }, [session]);
+  const { refetch: getData } = useGet<
+    (CardTryoutProps & { WebsiteSubCategory: WebsiteSubCategory })[]
+  >(`/tryout/getTryOutCardUpcoming2?userId=${session?.user.id}`, {
+    useEffectDependencies: [session?.user?.id],
+    onSuccess({ data }) {
+      setCards(data ?? []);
+    },
+    onFinished() {
+      setIsLoading(false);
+    },
+  });
 
   useEffect(() => {
     if (href && href?.length > 0) {

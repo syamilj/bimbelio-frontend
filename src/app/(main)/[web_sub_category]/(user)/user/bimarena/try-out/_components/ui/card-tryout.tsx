@@ -40,6 +40,7 @@ import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, type ReactNode } from 'react';
 import RegistrationProofModal from './registration-proof-modal';
+import { TryoutDetailModal } from './TryoutDetailModal';
 
 interface ProofItem {
   id: string;
@@ -602,77 +603,16 @@ export default function CardTryOut({
 
       {/* Enhanced Modal */}
       {showDetail && (
-        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div
-            className="absolute inset-0"
-            onClick={() => setShowDetail(null)}
-          />
-          <div
-            id="register-tryout-modal"
-            className="relative w-[calc(100%-2rem)] max-w-[600px] max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl"
-          >
-            <div className="p-6 lg:p-8">
-              {!showDetail.isRegistered ? (
-                <>
-                  {/* Registration Modal Component */}
-                  <RegistrationProofModal
-                    showDetail={showDetail}
-                    setShowDetail={setShowDetail}
-                    onRegistrationComplete={handleRegistration}
-                    isLoading={isLoading}
-                    setIsLoading={setIsLoading}
-                  />
-                </>
-              ) : (
-                /* Registered State */
-                <div className="text-center space-y-6">
-                  <div
-                    className="w-16 h-16 mx-auto rounded-3xl flex items-center justify-center shadow-lg"
-                    style={{
-                      background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                    }}
-                  >
-                    <CheckCircle className="w-8 h-8 text-white" />
-                  </div>
-
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                      Sudah Terdaftar!
-                    </h2>
-                    <p className="text-gray-600">
-                      Kamu sudah terdaftar untuk try out ini
-                    </p>
-                  </div>
-
-                  <Link
-                    href={
-                      isTesting
-                        ? `/${showDetail.WebsiteSubCategory?.id || website_sub_category_id}/admin/tryout/testing/try-out/${showDetail.id}`
-                        : `/${showDetail.WebsiteSubCategory?.id || website_sub_category_id}/user/bimarena/try-out/${showDetail.id}`
-                    }
-                    className="inline-flex items-center gap-2 w-full h-12 justify-center rounded-3xl text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-                    style={{
-                      background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                    }}
-                  >
-                    {showDetail.isDone && showDetail.isJoin ? (
-                      <>
-                        <Eye className="w-4 h-4" />
-                        <span>Lihat Hasil</span>
-                      </>
-                    ) : (
-                      <>
-                        <Play className="w-4 h-4" />
-                        <span>Mulai Try Out</span>
-                      </>
-                    )}
-                    <IconTailedArrowUp45 w={16} />
-                  </Link>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+        <TryoutDetailModal
+          showDetail={showDetail}
+          setShowDetail={setShowDetail}
+          handleRegistration={handleRegistration}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          mainColor={mainColor}
+          secondaryColor={secondaryColor}
+          isTesting={isTesting}
+        />
       )}
     </>
   );

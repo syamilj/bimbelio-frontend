@@ -1,12 +1,13 @@
 import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/bimarena/try-out/_components/ui/card-tryout';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn, getDateTryoutString, getHours } from '@/lib/utils';
 import { IconCrown, IconX } from '@/styles/icon';
 import { Pricing, Tryout } from '@/types/database';
 import { Loader2 } from 'lucide-react';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { toaster } from '../../../ui/toaster';
 
 export const PaymentTryout = ({
@@ -32,15 +33,9 @@ export const PaymentTryout = ({
   //     },
   //   );
 
-  const [pricing, setPricing] = useState<Pricing>();
-  const [pricingIsLoading, setPricingIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    getGeneral(`/pricing/getPricingBySlug?slug=tryout_unlock`, {
-      setData: setPricing,
-      setLoading: setPricingIsLoading,
-    });
-  }, []);
+  const { data: pricing, isLoading: pricingIsLoading } = useGet<Pricing>(
+    `/pricing/getPricingBySlug?slug=tryout_unlock`,
+  );
 
   // const addPayment = api.payment.buyTryoutPremium.useMutation();
 

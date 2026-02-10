@@ -1,34 +1,21 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { Skeleton } from '@/components/ui/skeleton';
+import { CardGrid, EmptyState, SkeletonGrid } from '@/components/ds';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import type { Category, Subcategory } from '@/types/database';
-import { Clock, Zap } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Clock, SearchX, Zap } from 'lucide-react';
 import Card from '../../_components/card';
-import CardNotFound from '../../_components/card-not-found';
+
+type DocWithRelations = Document & { category: Category; subCategory: Subcategory };
 
 export default function Terbaru() {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const [datas, setDatas] = useState<
-    (Document & {
-      category: Category;
-      subCategory: Subcategory;
-    })[]
-  >([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { data: datas, isLoading } = useGet<DocWithRelations[]>('/document/getDocumentTerbaru');
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-
-  useEffect(() => {
-    getGeneral('/document/getDocumentTerbaru', {
-      setData: setDatas,
-      setLoading: setIsLoading,
-    });
-  }, []);
 
   return (
     <div className="space-y-6">
@@ -64,31 +51,27 @@ export default function Terbaru() {
       </div>
 
       {/* Content */}
-      {!isLoading && datas?.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {!isLoading && datas && datas.length > 0 && (
+        <CardGrid cols={{ sm: 2, lg: 3, xl: 4 }} scrollOnMobile={false} className="gap-6">
           <Card
             data={datas}
             href={`${website_sub_category_id}/user/workspace`}
             noCategory={true}
           />
-        </div>
+        </CardGrid>
       )}
 
-      {!isLoading && datas?.length === 0 && (
-        <div className="flex justify-center">
-          <CardNotFound />
-        </div>
+      {!isLoading && (!datas || datas.length === 0) && (
+        <EmptyState
+          icon={SearchX}
+          color="blue"
+          title="Belum ada materi terbaru"
+          description="Materi baru akan muncul di sini saat ditambahkan"
+        />
       )}
 
       {isLoading && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {Array.from({ length: 8 }).map((_: any, i: number) => (
-            <Skeleton
-              key={i}
-              className="h-[200px] rounded-3xl"
-            />
-          ))}
-        </div>
+        <SkeletonGrid count={8} cardHeight="h-[200px]" cols={{ sm: 2, lg: 3, xl: 4 }} scrollOnMobile={false} />
       )}
     </div>
   );

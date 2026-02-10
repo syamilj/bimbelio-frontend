@@ -1,10 +1,9 @@
 'use client';
 
 import { useSession } from '@/components/provider/provider-session-auth';
-import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { PageShell } from '@/components/ds';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
-import type { Category } from '@/types/database';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import SearchDeskstop from '../../_components/search-dekstop';
 import Free from './free';
 import Riwayat from './riwayat';
@@ -13,19 +12,6 @@ import Trending from './trending';
 
 export default function ExploreClient() {
   const { data: session } = useSession();
-  const [_category, setCategory] = useState<
-    Omit<Category, 'to' | 'website_sub_category_id'>[]
-  >([]);
-
-  const fetchCategory = async () => {
-    await getGeneral('/category/getAllCategories', {
-      setData: setCategory,
-    });
-  };
-
-  useEffect(() => {
-    fetchCategory();
-  }, []);
 
   useEffect(() => {
     const fullName = session?.user?.name || '';
@@ -53,38 +39,36 @@ export default function ExploreClient() {
   }, [session]);
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-12">
-        {/* Search Section */}
-        <div className="hidden w-full justify-center md:flex">
-          <div className="w-full max-w-2xl">
-            <SearchDeskstop />
-          </div>
-        </div>
-
-        {/* Main Content Grid */}
-        <div className="space-y-12">
-          {/* Free Section */}
-          <section>
-            <Free />
-          </section>
-
-          {/* Latest Section */}
-          <section>
-            <Terbaru />
-          </section>
-
-          {/* Trending Section */}
-          <section>
-            <Trending />
-          </section>
-
-          {/* History Section */}
-          <section>
-            <Riwayat />
-          </section>
+    <PageShell className="py-8 space-y-12">
+      {/* Search Section */}
+      <div className="hidden w-full justify-center md:flex">
+        <div className="w-full max-w-2xl">
+          <SearchDeskstop />
         </div>
       </div>
-    </div>
+
+      {/* Main Content Grid */}
+      <div className="space-y-12">
+        {/* Free Section */}
+        <section>
+          <Free />
+        </section>
+
+        {/* Latest Section */}
+        <section>
+          <Terbaru />
+        </section>
+
+        {/* Trending Section */}
+        <section>
+          <Trending />
+        </section>
+
+        {/* History Section */}
+        <section>
+          <Riwayat />
+        </section>
+      </div>
+    </PageShell>
   );
 }

@@ -7,7 +7,7 @@ import { id } from 'date-fns/locale';
 import { Calendar, Clock, Crown, Target, Users, Video } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { EmptyStateIllustrations } from './EmptyStateIllustrations';
+import { EmptyState, ContentCard } from '@/components/ds';
 
 interface UpcomingScheduleProps {
   tryouts: Array<{
@@ -43,7 +43,7 @@ export default function UpcomingSchedule({
   );
 
   return (
-    <div className="w-full bg-white rounded-3xl border-2 border-slate-100 p-5 shadow-sm">
+    <ContentCard borderVariant="default" padding="md" className="w-full">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-black text-slate-800">
           📅 Jadwal Mendatang
@@ -113,17 +113,7 @@ export default function UpcomingSchedule({
               </Link>
             ))
           ) : (
-            <div className="text-center py-8">
-              <div className="w-32 h-32 mx-auto mb-3">
-                <EmptyStateIllustrations.NoSchedule />
-              </div>
-              <p className="text-sm font-bold text-slate-700 mb-1">
-                Tidak Ada Jadwal
-              </p>
-              <p className="text-xs text-slate-500">
-                Belum ada tryout yang dijadwalkan
-              </p>
-            </div>
+            <EmptyState icon={Calendar} color="blue" title="Tidak Ada Jadwal" description="Belum ada tryout yang dijadwalkan" className="py-6" />
           )
         ) : liveClasses.length > 0 ? (
           liveClasses.map((liveClass) => (
@@ -168,19 +158,9 @@ export default function UpcomingSchedule({
             </Link>
           ))
         ) : (
-          <div className="text-center py-8">
-            <div className="w-32 h-32 mx-auto mb-3">
-              <EmptyStateIllustrations.NoLiveClass />
-            </div>
-            <p className="text-sm font-bold text-slate-700 mb-1">
-              Tidak Ada Live Class
-            </p>
-            <p className="text-xs text-slate-500">
-              Belum ada kelas online yang dijadwalkan
-            </p>
-          </div>
+          <EmptyState icon={Video} color="purple" title="Tidak Ada Live Class" description="Belum ada kelas online yang dijadwalkan" className="py-6" />
         )}
       </div>
-    </div>
+    </ContentCard>
   );
 }

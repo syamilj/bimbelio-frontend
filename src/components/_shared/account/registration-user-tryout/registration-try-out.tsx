@@ -26,7 +26,8 @@ import {
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn, Provinces } from '@/lib/utils';
 import { Check, ChevronsUpDown, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -49,11 +50,11 @@ const RegistrationTryOut = ({
   const [UniversityOptions, setUniversityOptions] =
     useState<UniversityOptionsType>([]);
 
-  useEffect(() => {
-    getGeneral('/universitas', {
-      setData: setUniversityOptions,
-    });
-  }, []);
+  useGet<UniversityOptionsType>('/universitas', {
+    onSuccess({ data }) {
+      if (data) setUniversityOptions(data);
+    },
+  });
 
   const currentYear = new Date().getFullYear() + 1 + 4;
 

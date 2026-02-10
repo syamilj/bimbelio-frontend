@@ -1,6 +1,7 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { ContentCard } from '@/components/ds';
 import { formatDistanceToNow } from 'date-fns';
 import { id } from 'date-fns/locale';
 import {
@@ -11,7 +12,7 @@ import {
   Target,
   Video,
 } from 'lucide-react';
-import { EmptyStateIllustrations } from './EmptyStateIllustrations';
+import { EmptyState } from '@/components/ds';
 
 interface RecentActivityProps {
   activities: Array<{
@@ -59,7 +60,7 @@ export default function RecentActivity({ activities }: RecentActivityProps) {
   };
 
   return (
-    <div className="w-full bg-white rounded-3xl border-2 border-slate-100 p-5 shadow-sm">
+    <ContentCard borderVariant="default" padding="md" className="w-full">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-black text-slate-800">
           🕒 Aktivitas Terakhir
@@ -114,19 +115,9 @@ export default function RecentActivity({ activities }: RecentActivityProps) {
             );
           })
         ) : (
-          <div className="text-center py-8">
-            <div className="w-32 h-32 mx-auto mb-3">
-              <EmptyStateIllustrations.NoActivity />
-            </div>
-            <p className="text-sm font-bold text-slate-700 mb-1">
-              Belum Ada Aktivitas
-            </p>
-            <p className="text-xs text-slate-500">
-              Mulai belajar untuk melihat riwayat aktivitasmu
-            </p>
-          </div>
+          <EmptyState icon={Clock} color="blue" title="Belum Ada Aktivitas" description="Mulai belajar untuk melihat riwayat aktivitasmu" className="py-6" />
         )}
       </div>
-    </div>
+    </ContentCard>
   );
 }

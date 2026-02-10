@@ -1,11 +1,11 @@
 'use client';
 
-import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { Loader2 } from 'lucide-react';
+import { useGet } from '@/lib/fetch-helper/useGet';
+import { FileSearch, Loader2 } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { EmptyState } from '@/components/ds';
 import Card from '../../../_components/card';
-import CardNotFound from '../../../_components/card-not-found';
 
 export default function DocumentByCategory({
   subCategoryId,
@@ -18,12 +18,6 @@ export default function DocumentByCategory({
   const categoryId = params?.category as string | undefined;
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  const [documentByCategory, setDocumentByCategory] = useState<any>();
-  const [
-    documentByCategoryAndSubcategory,
-    setDocumentByCategoryAndSubcategory,
-  ] = useState<any>();
 
   // const { data: documentByCategory, isLoading } =
   //   api.document.getDocumentByCategoryId.useQuery(`${params?.category}`, {
@@ -40,18 +34,20 @@ export default function DocumentByCategory({
   //     { refetchOnWindowFocus: false },
   //   );
 
-  useEffect(() => {
-    // refetch();
-    if (!categoryId) return;
-    getGeneral('/document/getDocumentByCategoryAndSubId', {
-      setData: setDocsData,
-      setLoading: setIsLoading,
-      params: {
-        categoryId,
-        subCategoryId: subCategoryId.length > 0 ? subCategoryId : undefined,
-      },
-    });
-  }, [subCategoryId, categoryId]);
+  useGet('/document/getDocumentByCategoryAndSubId', {
+    enabled: !!categoryId,
+    params: {
+      categoryId,
+      subCategoryId: subCategoryId.length > 0 ? subCategoryId : undefined,
+    },
+    useEffectDependencies: [subCategoryId, categoryId],
+    onSuccess({ data }) {
+      setDocsData(data ?? []);
+    },
+    onFinished() {
+      setIsLoading(false);
+    },
+  });
 
   // useEffect(() => {
   //   if (!categoryId) return;
@@ -93,9 +89,12 @@ export default function DocumentByCategory({
           ) : (
             <>
               {docsData?.length === 0 && (
-                <div className="grid grid-cols-2 gap-4 md2:grid-cols-4">
-                  <CardNotFound title="Document Not Found" />
-                </div>
+                <EmptyState
+                  icon={FileSearch}
+                  color="blue"
+                  title="Document Not Found"
+                  description="Belum ada dokumen di kategori ini"
+                />
               )}
             </>
           )}

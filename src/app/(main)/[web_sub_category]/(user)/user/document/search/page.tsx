@@ -2,14 +2,14 @@
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { EmptyState } from '@/components/ds';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { Category, Subcategory } from '@/types/database';
-import { Loader2 } from 'lucide-react';
+import { FileSearch, Loader2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Card from '../../_components/card';
-import CardNotFound from '../../_components/card-not-found';
 import SearchDeskstop from '../../_components/search-dekstop';
 
 export default function DocumentSearch() {
@@ -23,21 +23,19 @@ export default function DocumentSearch() {
     (Document & { category: Category; subCategory: Subcategory })[]
   >([]);
 
-  const fetchSearchData = async () => {
-    if (!search && !categoryId) return;
-    await getGeneral('/document/searchDocs', {
-      params: {
-        search,
-        categoryId,
-      },
-      setLoading: setIsLoading,
-      setData: setSearchDatas,
-    });
-  };
-
-  useEffect(() => {
-    fetchSearchData();
-  }, [search, categoryId]);
+  const { refetch: fetchSearchData } = useGet<
+    (Document & { category: Category; subCategory: Subcategory })[]
+  >('/document/searchDocs', {
+    enabled: !!(search || categoryId),
+    params: { search, categoryId },
+    useEffectDependencies: [search, categoryId],
+    onSuccess({ data }) {
+      setSearchDatas(data ?? []);
+    },
+    onFinished() {
+      setIsLoading(false);
+    },
+  });
 
   useEffect(() => {
     // ✅ ENHANCED SEARCH EVENT - Track saat search berubah dengan data lengkap
@@ -94,9 +92,12 @@ export default function DocumentSearch() {
           ) : (
             <>
               {searchDatas?.length === 0 && (
-                <div className="grid grid-cols-2 gap-4 md2:grid-cols-4">
-                  <CardNotFound title="Document Not Found" />
-                </div>
+                <EmptyState
+                  icon={FileSearch}
+                  color="blue"
+                  title="Document Not Found"
+                  description="Coba kata kunci lain untuk menemukan dokumen yang kamu cari"
+                />
               )}
             </>
           )}
