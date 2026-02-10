@@ -8,7 +8,7 @@ import QuizAnalyticsAdmin from '../_components/tab-quiz';
 import TryoutAnalyticsAdmin from '../_components/tab-tryout';
 
 export default function LearningAnalyticsAdmin() {
-  const [tabValue, setTabValue] = useState<string>('tryout');
+  const [tabValue, setTabValue] = useState<string>('bimlive');
 
   return (
     <div className="mx-auto max-w-7xl">

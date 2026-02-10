@@ -514,138 +514,145 @@ const UserListSection = ({ liveClass }: { liveClass: DataType }) => {
         </div>
 
         {/* User Table */}
-        <div className="w-full overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow style={{ backgroundColor: `${mainColor}08` }}>
-                <TableHead className="font-bold text-gray-800 py-3">
-                  No
-                </TableHead>
-                <TableHead
-                  className="font-bold text-gray-800 py-3 cursor-pointer hover:opacity-70 transition-opacity"
-                  onClick={() => handleSort('name')}
-                >
-                  <div className="flex items-center gap-2">
-                    <span>User</span>
-                    {sortColumn === 'name' ? (
-                      sortDirection === 'asc' ? (
-                        <ArrowUp className="w-4 h-4 text-blue-600" />
-                      ) : (
-                        <ArrowDown className="w-4 h-4 text-blue-600" />
-                      )
+        <Table classNameWrapper="w-full overflow-x-auto overflow-y-auto max-h-[600px] static">
+          <TableHeader>
+            <TableRow
+              style={{ backgroundColor: `white` }}
+              className="sticky top-0 z-10"
+            >
+              <TableHead
+                className="sticky top-0 z-20 font-bold text-gray-800 py-3"
+                style={{ backgroundColor: `white` }}
+              >
+                No
+              </TableHead>
+              <TableHead
+                className="sticky top-0 z-20 font-bold text-gray-800 py-3 cursor-pointer hover:opacity-70 transition-opacity"
+                onClick={() => handleSort('name')}
+                style={{ backgroundColor: `white` }}
+              >
+                <div className="flex items-center gap-2">
+                  <span>User</span>
+                  {sortColumn === 'name' ? (
+                    sortDirection === 'asc' ? (
+                      <ArrowUp className="w-4 h-4 text-blue-600" />
                     ) : (
-                      <ArrowDown className="w-4 h-4 text-gray-400" />
-                    )}
-                  </div>
-                </TableHead>
-                <TableHead
-                  className="font-bold text-gray-800 py-3 cursor-pointer hover:opacity-70 transition-opacity"
-                  onClick={() => handleSort('email')}
-                >
-                  <div className="flex items-center gap-2">
-                    <span>Email</span>
-                    {sortColumn === 'email' ? (
-                      sortDirection === 'asc' ? (
-                        <ArrowUp className="w-4 h-4 text-blue-600" />
-                      ) : (
-                        <ArrowDown className="w-4 h-4 text-blue-600" />
-                      )
+                      <ArrowDown className="w-4 h-4 text-blue-600" />
+                    )
+                  ) : (
+                    <ArrowDown className="w-4 h-4 text-gray-400" />
+                  )}
+                </div>
+              </TableHead>
+              <TableHead
+                className="sticky top-0 z-20 font-bold text-gray-800 py-3 cursor-pointer hover:opacity-70 transition-opacity"
+                onClick={() => handleSort('email')}
+                style={{ backgroundColor: `white` }}
+              >
+                <div className="flex items-center gap-2">
+                  <span>Email</span>
+                  {sortColumn === 'email' ? (
+                    sortDirection === 'asc' ? (
+                      <ArrowUp className="w-4 h-4 text-blue-600" />
                     ) : (
-                      <ArrowDown className="w-4 h-4 text-gray-400" />
-                    )}
-                  </div>
-                </TableHead>
-                <TableHead
-                  className="font-bold text-gray-800 py-3 text-center cursor-pointer hover:opacity-70 transition-opacity"
-                  onClick={() => handleSort('status')}
-                >
-                  <div className="flex items-center justify-center gap-2">
-                    <span>Status</span>
-                    {sortColumn === 'status' ? (
-                      sortDirection === 'asc' ? (
-                        <ArrowUp className="w-4 h-4 text-blue-600" />
-                      ) : (
-                        <ArrowDown className="w-4 h-4 text-blue-600" />
-                      )
+                      <ArrowDown className="w-4 h-4 text-blue-600" />
+                    )
+                  ) : (
+                    <ArrowDown className="w-4 h-4 text-gray-400" />
+                  )}
+                </div>
+              </TableHead>
+              <TableHead
+                className="sticky top-0 z-20 font-bold text-gray-800 py-3 text-center cursor-pointer hover:opacity-70 transition-opacity"
+                onClick={() => handleSort('status')}
+                style={{ backgroundColor: `white` }}
+              >
+                <div className="flex items-center justify-center gap-2">
+                  <span>Status</span>
+                  {sortColumn === 'status' ? (
+                    sortDirection === 'asc' ? (
+                      <ArrowUp className="w-4 h-4 text-blue-600" />
                     ) : (
-                      <ArrowDown className="w-4 h-4 text-gray-400" />
-                    )}
-                  </div>
-                </TableHead>
-                <TableHead className="font-bold text-gray-800 py-3 text-center">
-                  Action
-                </TableHead>
+                      <ArrowDown className="w-4 h-4 text-blue-600" />
+                    )
+                  ) : (
+                    <ArrowDown className="w-4 h-4 text-gray-400" />
+                  )}
+                </div>
+              </TableHead>
+              <TableHead
+                className="sticky top-0 z-20 font-bold text-gray-800 py-3 text-center"
+                style={{ backgroundColor: `white` }}
+              >
+                Action
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredUsers.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={5}
+                  className="text-center py-8 text-gray-500"
+                >
+                  <p className="text-sm">Belum ada data</p>
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredUsers.length === 0 ? (
-                <TableRow>
-                  <TableCell
-                    colSpan={5}
-                    className="text-center py-8 text-gray-500"
-                  >
-                    <p className="text-sm">Belum ada data</p>
+            ) : (
+              filteredUsers.map((user, index) => (
+                <TableRow
+                  key={user.userId}
+                  className="hover:bg-gray-50 transition-colors"
+                >
+                  <TableCell className="font-medium text-gray-900 py-4">
+                    {index + 1}
+                  </TableCell>
+                  <TableCell className="py-4">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage
+                          src={user.image || ''}
+                          alt={user.name}
+                        />
+                        <AvatarFallback>
+                          {user.name.charAt(0).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-gray-900 truncate">
+                          {user.name}
+                        </p>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-gray-600 py-4">
+                    <p className="truncate text-sm">{user.email}</p>
+                    <p className="truncate text-xs text-gray-500">
+                      {user.phone}
+                    </p>
+                  </TableCell>
+                  <TableCell className="text-center py-4">
+                    {getStatusBadge(user.presenceStatus)}
+                  </TableCell>
+                  <TableCell className="text-center py-4">
+                    {user.phone && (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="gap-2 hover:bg-green-100"
+                        onClick={() => {
+                          window.open(`https://wa.me/${user.phone}`, '_blank');
+                        }}
+                      >
+                        <MessageCircle className="w-4 h-4 text-green-600" />
+                      </Button>
+                    )}
                   </TableCell>
                 </TableRow>
-              ) : (
-                filteredUsers.map((user, index) => (
-                  <TableRow
-                    key={user.userId}
-                    className="hover:bg-gray-50 transition-colors"
-                  >
-                    <TableCell className="font-medium text-gray-900 py-4">
-                      {index + 1}
-                    </TableCell>
-                    <TableCell className="py-4">
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10">
-                          <AvatarImage
-                            src={user.image || ''}
-                            alt={user.name}
-                          />
-                          <AvatarFallback>
-                            {user.name.charAt(0).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-gray-900 truncate">
-                            {user.name}
-                          </p>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-gray-600 py-4">
-                      <p className="truncate text-sm">{user.email}</p>
-                      <p className="truncate text-xs text-gray-500">
-                        {user.phone}
-                      </p>
-                    </TableCell>
-                    <TableCell className="text-center py-4">
-                      {getStatusBadge(user.presenceStatus)}
-                    </TableCell>
-                    <TableCell className="text-center py-4">
-                      {user.phone && (
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="gap-2 hover:bg-green-100"
-                          onClick={() => {
-                            window.open(
-                              `https://wa.me/${user.phone}`,
-                              '_blank',
-                            );
-                          }}
-                        >
-                          <MessageCircle className="w-4 h-4 text-green-600" />
-                        </Button>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </div>
+              ))
+            )}
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   );
