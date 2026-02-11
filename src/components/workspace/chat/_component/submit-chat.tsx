@@ -184,12 +184,12 @@ const SubmitChat = () => {
 
         {(session?.user.role === 'ADMIN' ||
           session?.user.role === 'SUPER_ADMIN') && (
-          <div className="mb-2 flex items-center gap-1 p-2 rounded-2xl bg-emerald-50 border border-emerald-100">
-            <div className="flex items-center gap-1 text-emerald-600 text-xs">
-              <IconUnlimited w={12} />
+          <div className="mb-2 flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/60">
+            <div className="flex items-center gap-1 text-slate-500 text-[11px]">
+              <IconUnlimited w={11} />
               <span>/</span>
-              <IconUnlimited w={12} />
-              <span className="font-medium ml-1">Admin - Unlimited</span>
+              <IconUnlimited w={11} />
+              <span className="font-medium ml-0.5 text-slate-600">Admin - Unlimited</span>
             </div>
           </div>
         )}
@@ -197,10 +197,10 @@ const SubmitChat = () => {
         {/* Chat Input — Gemini-style card */}
         <div
           className={cn(
-            'relative rounded-3xl border-2 transition-all duration-200',
+            'relative rounded-2xl border transition-all duration-200',
             isLimitReached
               ? 'bg-gray-50 border-gray-200 opacity-60'
-              : 'bg-white border-gray-100 hover:border-gray-200 focus-within:border-gray-300 focus-within:shadow-sm',
+              : 'bg-white border-slate-200 hover:border-slate-300 focus-within:border-slate-400 focus-within:shadow-sm',
           )}
         >
           <TextareaAutosize

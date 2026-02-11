@@ -175,43 +175,34 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
   }
 
   return (
-    <div className="absolute left-0 top-0 h-full w-full bg-bg-workspace md:relative">
+    <div className="absolute left-0 top-0 h-full w-full bg-slate-50/80 md:relative">
       {tab === 'chat' ? (
-        <OnBoarding
-          open={onBoarding.chat}
-          type="chat"
-        />
+        <OnBoarding open={onBoarding.chat} type="chat" />
       ) : tab === 'notes' ? (
-        <OnBoarding
-          open={onBoarding.notes}
-          type="notes"
-        />
+        <OnBoarding open={onBoarding.notes} type="notes" />
       ) : tab === 'quiz' ? (
-        <OnBoarding
-          open={onBoarding.quiz}
-          type="quiz"
-        />
+        <OnBoarding open={onBoarding.quiz} type="quiz" />
       ) : null}
+
+      {/* Reset Confirmation Modal */}
       {(isLoading ? true : isResetModalOpen) && (
-        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="flex w-[380px] flex-col items-center rounded-3xl bg-white p-8 text-center shadow-lg">
-            <div className="flex flex-col gap-4">
+        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="flex w-[380px] flex-col items-center rounded-2xl bg-white p-6 text-center shadow-xl border border-slate-200/50">
+            <div className="flex flex-col gap-3">
               {tab === 'chat' ? (
-                <p>
-                  Seluruh chat dalam material{' '}
-                  <span className="font-semibold">[nama material]</span> akan
-                  dihapus.
+                <p className="text-sm text-slate-600">
+                  Seluruh chat dalam material ini akan dihapus.
                 </p>
               ) : tab === 'quiz' ? (
-                <p> Quiz ini akan dihapus.</p>
+                <p className="text-sm text-slate-600">Quiz ini akan dihapus.</p>
               ) : null}
-              <p className="font-medium text-main-red">
+              <p className="font-semibold text-red-500 text-sm">
                 Apa kamu yakin ingin melanjutkan?
               </p>
             </div>
-            <div className="mt-4 flex gap-4">
+            <div className="mt-5 flex gap-3 w-full">
               <button
-                className="w-[156px] rounded-[.7rem] bg-red-100 py-2 text-[.85rem] font-medium text-main-red duration-200 hover:bg-red-200"
+                className="flex-1 rounded-xl bg-red-50 border border-red-200 py-2 text-sm font-medium text-red-600 hover:bg-red-100 transition-colors"
                 disabled={isLoading}
                 onClick={async () => {
                   if (tab === 'chat') {
@@ -223,19 +214,13 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
                 }}
               >
                 {isLoading ? (
-                  <Loader2 className="animate-spin w-4 h-4 text-main-red mx-auto" />
+                  <Loader2 className="animate-spin w-4 h-4 text-red-500 mx-auto" />
                 ) : (
-                  <>
-                    {tab === 'chat'
-                      ? 'Hapus Chat'
-                      : tab === 'quiz'
-                        ? 'Hapus Quiz'
-                        : null}
-                  </>
+                  tab === 'chat' ? 'Hapus Chat' : tab === 'quiz' ? 'Hapus Quiz' : null
                 )}
               </button>
               <button
-                className="w-[156px] rounded-[.7rem] py-2 text-[.85rem] font-medium text-main-gray-text duration-200 md:hover:text-main-gray-text2"
+                className="flex-1 rounded-xl border border-slate-200 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50 transition-colors"
                 disabled={isLoading}
                 onClick={() => {
                   setIsResetModalOpen(false);
@@ -248,62 +233,46 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
           </div>
         </div>
       )}
+
       <ReportBug
         setIsReportBugOpen={setIsReportBugOpen}
         isReportBugOpen={isReportBugOpen}
       />
+
       <Tabs
         value={activeIndex}
         onValueChange={(value) => {
           setActiveIndex(value);
           router.push(`${window.location.pathname}?tab=${value}`);
-          // push(
-          //   {
-          //     query: {
-          //       ...query,
-          //       tab: value,
-          //     },
-          //   },
-          //   undefined,
-          //   { shallow: true },
-          // );
         }}
         defaultValue="notes"
-        className="max-h-screen max-w-full overflow-hidden"
+        className="max-h-screen max-w-full overflow-hidden flex flex-col h-full"
       >
-        <div className="relative z-8 flex h-[60px] items-center justify-between border-b border-main-gray-input bg-bg-workspace px-4">
-          <TabsList className="h-full rounded-3xl bg-transparent">
+        {/* Tab Header */}
+        <div className="relative z-8 flex h-[52px] items-center justify-between border-b border-slate-200/80 bg-white px-3 shrink-0">
+          <TabsList className="h-full bg-transparent gap-1">
             {TABS.map((item) => (
-              <div
-                className="relative"
-                key={item.value}
-                onClick={() => {
-                  setHeaderTab(item.value);
-                }}
-              >
-                {onBoarding.notes && item.value === 'notes' ? (
-                  <div className="absolute right-3 top-1 z-10 h-2 w-2 rounded-[50%] bg-red-700" />
-                ) : onBoarding.chat && item.value === 'chat' ? (
-                  <div className="absolute right-3 top-1 z-10 h-2 w-2 rounded-[50%] bg-red-700" />
-                ) : onBoarding.quiz && item.value === 'quiz' ? (
-                  <div className="absolute right-3 top-1 z-10 h-2 w-2 rounded-[50%] bg-red-700" />
-                ) : null}
+              <div className="relative" key={item.value} onClick={() => setHeaderTab(item.value)}>
+                {((onBoarding.notes && item.value === 'notes') ||
+                  (onBoarding.chat && item.value === 'chat') ||
+                  (onBoarding.quiz && item.value === 'quiz')) && (
+                  <div className="absolute right-2 top-1.5 z-10 h-1.5 w-1.5 rounded-full bg-red-500" />
+                )}
                 <CustomTooltip content={item.tooltip}>
                   <TabsTrigger
                     value={item.value}
                     className={cn(
-                      'font-regular relative mr-[.5rem] flex items-center rounded-[.7rem] border border-main-gray-input2 bg-transparent px-3 py-[.5rem] text-[.95rem] capitalize text-main-gray-text data-[state=active]:border-main data-[state=active]:bg-main data-[state=active]:text-white  duration-300 hover:bg-main-gray-input2 gap-0 md:gap-[.5rem]',
-                      headerTab === item.value &&
-                        'gap-[.5rem] bg-main text-white hover:bg-main',
+                      'relative flex items-center gap-1.5 rounded-xl border border-transparent px-3 py-1.5 text-xs font-medium text-slate-500 transition-all duration-200',
+                      'data-[state=active]:border-slate-200 data-[state=active]:bg-white data-[state=active]:text-slate-800 data-[state=active]:shadow-sm',
+                      'hover:bg-slate-100/80',
+                      headerTab === item.value && 'gap-1.5 border-slate-200 bg-white text-slate-800 shadow-sm',
                     )}
                   >
                     {item.icon}
-                    <p
-                      className={cn(
-                        'overflow-hidden w-0 md:w-fit',
-                        headerTab === item.value && 'w-fit',
-                      )}
-                    >
+                    <p className={cn(
+                      'overflow-hidden w-0 md:w-fit transition-all',
+                      headerTab === item.value && 'w-fit',
+                    )}>
                       {item.title}
                     </p>
                   </TabsTrigger>
@@ -311,107 +280,88 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
               </div>
             ))}
           </TabsList>
+
+          {/* Toolbar Actions */}
           <div className="flex items-center gap-1">
-            {/* Konten lainnya */}
-            <ToolTip value={'Laporkan Bug'}>
-              <div
-                className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
+            <ToolTip value="Laporkan Bug">
+              <button
+                className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-slate-100 text-slate-400 transition-colors"
                 onClick={() => {
                   setIsReportBugOpen(true);
                   setShowSidebar(false);
                 }}
               >
-                <IconWarning w={isMobile ? 17 : 20} />
-              </div>
+                <IconWarning w={isMobile ? 15 : 16} />
+              </button>
             </ToolTip>
             {tab !== 'notes' && (
               <ToolTip value={tab === 'chat' ? 'Reset Message' : 'Reset Quiz'}>
-                <div
-                  className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
+                <button
+                  className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-slate-100 text-slate-400 transition-colors"
                   onClick={() => {
                     setIsResetModalOpen(true);
                     setShowSidebar(false);
                   }}
                 >
-                  <IconRegenerateMessage w={isMobile ? 17 : 20} />
-                </div>
+                  <IconRegenerateMessage w={isMobile ? 15 : 16} />
+                </button>
               </ToolTip>
             )}
             {mobileScreen === 'minimize' && (
-              <ToolTip
-                value="Fullscreen"
-                className=""
-              >
-                <div
-                  className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
+              <ToolTip value="Fullscreen">
+                <button
+                  className="w-7 h-7 rounded-lg flex items-center justify-center border border-slate-200 hover:bg-slate-50 text-slate-400 transition-colors"
                   onClick={() => {
-                    const chatAIContainer = document.querySelector(
-                      '.chatAIContainer',
-                    ) as HTMLDivElement;
-                    const DocumentContainer = document.querySelector(
-                      '.DocumentContainer',
-                    ) as HTMLDivElement;
+                    const chatAIContainer = document.querySelector('.chatAIContainer') as HTMLDivElement;
+                    const DocumentContainer = document.querySelector('.DocumentContainer') as HTMLDivElement;
                     DocumentContainer.setAttribute('data-panel-size', '0.0');
-                    DocumentContainer.style.cssText =
-                      'flex: 0 1 0px; overflow: hidden;';
+                    DocumentContainer.style.cssText = 'flex: 0 1 0px; overflow: hidden;';
                     chatAIContainer.setAttribute('data-panel-size', '100.0');
-                    chatAIContainer.style.cssText =
-                      'flex: 100.0 1 0px; overflow: hidden; position: relative;';
+                    chatAIContainer.style.cssText = 'flex: 100.0 1 0px; overflow: hidden; position: relative;';
                     setMobileScreen('fullscreen');
                   }}
                 >
-                  <IconFullscreen w={isMobile ? 15 : 20} />
-                </div>
+                  <IconFullscreen w={isMobile ? 13 : 14} />
+                </button>
               </ToolTip>
             )}
             {mobileScreen === 'fullscreen' && (
-              <ToolTip
-                value="Minimize"
-                className=""
-              >
-                <div
-                  className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
+              <ToolTip value="Minimize">
+                <button
+                  className="w-7 h-7 rounded-lg flex items-center justify-center border border-slate-200 hover:bg-slate-50 text-slate-400 transition-colors"
                   onClick={() => {
-                    const chatAIContainer = document.querySelector(
-                      '.chatAIContainer',
-                    ) as HTMLDivElement;
-                    const DocumentContainer = document.querySelector(
-                      '.DocumentContainer',
-                    ) as HTMLDivElement;
+                    const chatAIContainer = document.querySelector('.chatAIContainer') as HTMLDivElement;
+                    const DocumentContainer = document.querySelector('.DocumentContainer') as HTMLDivElement;
                     DocumentContainer.setAttribute('data-panel-size', '50.0');
-                    DocumentContainer.style.cssText =
-                      'flex: 50.0 1 0px; overflow: hidden;';
+                    DocumentContainer.style.cssText = 'flex: 50.0 1 0px; overflow: hidden;';
                     chatAIContainer.setAttribute('data-panel-size', '50.0');
-                    chatAIContainer.style.cssText =
-                      'flex: 50.0 1 0px; overflow: hidden; position: relative;';
+                    chatAIContainer.style.cssText = 'flex: 50.0 1 0px; overflow: hidden; position: relative;';
                     setMobileScreen('minimize');
                   }}
                 >
-                  <IconMinimizeScreen w={isMobile ? 15 : 20} />
-                </div>
+                  <IconMinimizeScreen w={isMobile ? 13 : 14} />
+                </button>
               </ToolTip>
             )}
           </div>
         </div>
 
+        {/* Tab Content */}
         {[
           {
             value: 'notes',
-            tw: 'flex-1 bg-bg-workspace px-0 pr-[.5rem] overflow-auto sm:shadow-lg  w-full absolute md:relative top-[60px] md:top-[unset] left-0 md:left-[unset] h-[calc(100%-60px)] md:h-[calc(100vh-3.5rem)]',
+            tw: 'flex-1 bg-white px-0 pr-1 overflow-auto w-full absolute md:relative top-[52px] md:top-[unset] left-0 md:left-[unset] h-[calc(100%-52px)] md:h-[calc(100vh-3.5rem)]',
             children: <NotesContent docId={docId} />,
           },
           {
             value: 'chat',
-            tw: 'flex flex-col p-2 pb-0 break-words bg-bg-workspace px-0 pr-[.5rem] sm:shadow-lg h-[calc(100vh-3.5rem)] w-full',
+            tw: 'flex flex-col p-2 pb-0 break-words bg-slate-50/50 px-0 pr-1 h-[calc(100vh-3.5rem)] w-full',
             children: <ChatContent />,
           },
           {
             value: 'quiz',
-            tw: ' break-words bg-bg-workspace sm:shadow-lg  h-[calc(100vh-3.5rem)] w-full ',
-            children: (
-              <Quiz />
-              // <></>
-            ),
+            tw: 'break-words bg-white h-[calc(100vh-3.5rem)] w-full',
+            children: <Quiz />,
           },
         ].map((item) => (
           <TabsContent

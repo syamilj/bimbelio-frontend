@@ -72,34 +72,15 @@ const SubmitCourse = () => {
       <Button
         onClick={handleSubmit}
         disabled={loading}
-        className="group relative rounded-3xl px-6 py-3 font-semibold text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+        size="sm"
+        className="rounded-lg px-3 py-1.5 text-xs font-medium text-white border-0 shadow-sm hover:shadow transition-all duration-200"
         style={{
           background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
         }}
       >
-        {/* Shimmer effect */}
-        <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -skew-x-12 group-hover:animate-shimmer" />
-
-        <div className="relative flex items-center gap-2">
-          <CheckCircle className="w-5 h-5" />
-          <span>Selesai</span>
-        </div>
+        <CheckCircle className="w-3.5 h-3.5 mr-1" />
+        Selesai
       </Button>
-
-      {/* Custom CSS for shimmer animation */}
-      <style jsx>{`
-        @keyframes shimmer {
-          0% {
-            transform: translateX(-100%) skewX(-12deg);
-          }
-          100% {
-            transform: translateX(200%) skewX(-12deg);
-          }
-        }
-        .animate-shimmer {
-          animation: shimmer 2s infinite;
-        }
-      `}</style>
     </>
   );
 };

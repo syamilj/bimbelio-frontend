@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/resizable';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
+import { cn } from '@/lib/utils';
 import {
   CourseProgress,
   TryoutAnswer,
@@ -165,7 +166,7 @@ const WorkspaceCourse = () => {
         autoSaveId="window-layout"
         direction={isMobile ? 'vertical' : 'horizontal'}
         onLayout={() => {}}
-        className="flex-col h-full bg-bg-workspace"
+        className="flex-col h-full bg-slate-50/50"
       >
         <LeftComponent />
         <ResizableHandleComponent />
@@ -191,14 +192,12 @@ const ResizableHandleComponent = () => {
   }
 
   return (
-    <div
-      className={`relative ${mobileScreen === 'minimize' ? 'flex' : 'h-0 w-0 overflow-hidden p-0'} items-center justify-center`}
-    >
-      <ResizableHandle
-        className="relative z-42 h-full w-[.5px] rounded-full bg-main-gray-input duration-300 after:w-px data-[panel-group-direction=vertical]:h-px"
-        withHandle
-      />
-      <div className="absolute z-41 ml-[-.2px] h-[6px] w-[100px] rounded-4xl bg-main-gray-input md:h-[100px] md:w-[6px]"></div>
-    </div>
+    <ResizableHandle
+      className={cn(
+        'relative z-42 w-[5px] bg-slate-200/80 transition-colors duration-200 data-[panel-group-direction=vertical]:h-[5px] data-[panel-group-direction=vertical]:w-full hover:bg-blue-400 active:bg-blue-500',
+        mobileScreen !== 'minimize' && 'h-0 w-0 overflow-hidden',
+      )}
+      withHandle
+    />
   );
 };

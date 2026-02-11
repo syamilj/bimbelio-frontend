@@ -80,16 +80,17 @@ const NavigationButtons = () => {
   useEffect(() => {
     if (chapters.length && currentIndex !== null && categoryId) {
       const allSubChapters = chapters.flatMap((ch) => ch.CourseSubChapter);
+      const currentTab = searchParams?.get('tab') || 'chat';
       if (currentIndex > 0) {
         setPrevLink(
-          `/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=${allSubChapters[currentIndex - 1].id}`,
+          `/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=${allSubChapters[currentIndex - 1].id}&tab=${currentTab}`,
         );
       } else {
         setPrevLink(undefined);
       }
       if (currentIndex < allSubChapters.length - 1) {
         setNextLink(
-          `/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=${allSubChapters[currentIndex + 1].id}`,
+          `/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=${allSubChapters[currentIndex + 1].id}&tab=${currentTab}`,
         );
       } else {
         const currentChapterIndex = chapters.findIndex((ch) =>
@@ -102,7 +103,7 @@ const NavigationButtons = () => {
           const nextChapter = chapters[currentChapterIndex + 1];
           if (nextChapter.CourseSubChapter.length > 0) {
             setNextLink(
-              `/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=${nextChapter.CourseSubChapter[0].id}`,
+              `/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=${nextChapter.CourseSubChapter[0].id}&tab=${currentTab}`,
             );
           } else {
             setNextLink(undefined);
@@ -134,6 +135,7 @@ const NavigationButtons = () => {
   // };
 
   if (sub === 'report') return null;
+  if (!prevLink && !nextLink) return null;
 
   return (
     <footer>
@@ -146,65 +148,52 @@ const NavigationButtons = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex w-fit justify-between items-center gap-4 bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg border border-gray-200 p-2"
+        className="flex w-fit justify-between items-center gap-2 bg-white/95 backdrop-blur-sm rounded-xl shadow-lg shadow-slate-200/50 border border-slate-200/60 p-1"
       >
-        {prevLink ? (
+        {prevLink && (
           <Link href={prevLink}>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 text-xs"
             >
-              <Button
-                variant="outline"
-                className="flex items-center gap-2 px-4 py-2 rounded-3xl border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Sebelumnya
-              </Button>
-            </motion.div>
+              <ArrowLeft className="w-3.5 h-3.5" />
+              Sebelumnya
+            </Button>
           </Link>
-        ) : (
-          <div className="w-[110px]" /> /* Placeholder to maintain spacing */
         )}
 
-        {nextLink ? (
+        {nextLink && (
           <Link href={nextLink}>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <Button
+              disabled={loading}
+              size="sm"
+              className={cn(
+                'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white border-0 font-medium shadow-sm hover:shadow-md transition-all duration-200 group text-xs',
+                loading && 'opacity-50 cursor-not-allowed',
+              )}
+              style={{
+                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              }}
             >
-              <Button
-                // onClick={handleNextClick}
-                disabled={loading}
-                className={cn(
-                  'flex items-center gap-2 px-4 py-2 rounded-3xl text-white border-0 font-semibold shadow-md hover:shadow-lg transition-all duration-300 group',
-                  loading && 'opacity-50 cursor-not-allowed',
-                )}
-                style={{
-                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                }}
-              >
-                {loading ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Menyimpan...
-                  </>
-                ) : isDone || submitted ? (
-                  <>
-                    Lanjutkan
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </>
-                ) : (
-                  <>
-                    Selanjutnya
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </>
-                )}
-              </Button>
-            </motion.div>
+              {loading ? (
+                <>
+                  <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Menyimpan...
+                </>
+              ) : isDone || submitted ? (
+                <>
+                  Lanjutkan
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                </>
+              ) : (
+                <>
+                  Selanjutnya
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                </>
+              )}
+            </Button>
           </Link>
-        ) : (
-          <div className="w-[110px]" /> /* Placeholder to maintain spacing */
         )}
       </motion.div>
     </footer>

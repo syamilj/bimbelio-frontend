@@ -164,10 +164,15 @@ function PdfReader({
   }, 500);
 
   useEffect(() => {
-    fetchPdf();
-  }, []);
-
-  console.log('PDF URL:', pdfUrl);
+    if (docUrl) {
+      // Revoke previous blob URL to prevent memory leaks
+      if (pdfUrl) {
+        URL.revokeObjectURL(pdfUrl);
+        setPdfUrl('');
+      }
+      fetchPdf();
+    }
+  }, [docUrl]);
 
   if (pdfUrl.length === 0) {
     return (

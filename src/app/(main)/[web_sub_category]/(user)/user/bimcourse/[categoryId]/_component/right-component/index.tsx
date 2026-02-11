@@ -93,21 +93,15 @@ export default function RightComponent() {
       ) : (
         <>
           <motion.div
-            className="fixed bottom-6 right-4 bg-main shadow-default p-2 rounded-full z-102"
+            className="fixed bottom-6 right-4 bg-blue-600 shadow-lg shadow-blue-600/25 p-3 rounded-2xl z-102 cursor-pointer"
             onClick={() => setShowAI((prev) => !prev)}
-            whileTap={{ scale: 1.2 }}
-            transition={{ type: 'spring', stiffness: 300 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
           >
-            {/* Icon */}
             <BotMessageSquare
-              className="text-white w-8 h-8 transform scale-x-[-1]"
-              strokeWidth={2.1}
+              className="text-white w-6 h-6 transform scale-x-[-1]"
+              strokeWidth={2}
             />
-
-            {/* Pangkat AI */}
-            <span className="absolute -top-1 left-[-4px] bg-red-500 rounded-full px-[0.35rem] py-1 text-white font-bold text-xs">
-              AI
-            </span>
           </motion.div>
           {userId ? (
             <Sidebar
@@ -170,7 +164,7 @@ const Sidebar = ({
   } = useAppContext();
 
   const isMobile = useMedia({ maxWidth: '768px' });
-  const [activeIndex, setActiveIndex] = useState(tab || 'notes');
+  const [activeIndex, setActiveIndex] = useState(tab || 'chat');
 
   const { mutate: deleteQuiz } = useMutation(
     '/quiz/deleteQuizCourse',
@@ -291,25 +285,25 @@ const Sidebar = ({
         />
       ) : null}
       {isResetModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="flex w-[380px] flex-col items-center rounded-3xl bg-white p-8 text-center shadow-lg">
-            <div className="flex flex-col gap-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="flex w-[380px] flex-col items-center rounded-2xl bg-white p-7 text-center shadow-xl">
+            <div className="flex flex-col gap-3">
               {tab === 'chat' ? (
-                <p>
+                <p className="text-sm text-slate-600">
                   Seluruh chat dalam material{' '}
-                  <span className="font-semibold">[nama material]</span> akan
+                  <span className="font-semibold text-slate-800">[nama material]</span> akan
                   dihapus.
                 </p>
               ) : tab === 'quiz' ? (
-                <p> Quiz ini akan dihapus.</p>
+                <p className="text-sm text-slate-600"> Quiz ini akan dihapus.</p>
               ) : null}
-              <p className="font-medium text-main-red">
+              <p className="text-sm font-medium text-red-500">
                 Apa kamu yakin ingin melanjutkan?
               </p>
             </div>
-            <div className="mt-4 flex gap-4">
+            <div className="mt-5 flex gap-3 w-full">
               <button
-                className="w-[156px] rounded-[.7rem] bg-red-100 py-2 text-[.85rem] font-medium text-main-red duration-200 hover:bg-red-200"
+                className="flex-1 rounded-xl bg-red-50 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-100"
                 onClick={async () => {
                   if (tab === 'chat') {
                     handleResetConfirmation();
@@ -326,7 +320,7 @@ const Sidebar = ({
                     : null}
               </button>
               <button
-                className="w-[156px] rounded-[.7rem] py-2 text-[.85rem] font-medium text-main-gray-text duration-200 md:hover:text-main-gray-text2"
+                className="flex-1 rounded-xl py-2.5 text-sm font-medium text-slate-500 transition-colors hover:bg-slate-100"
                 onClick={() => {
                   setIsResetModalOpen(false);
                   setShowSidebar(true);
@@ -358,11 +352,11 @@ const Sidebar = ({
           //   { shallow: true },
           // );
         }}
-        defaultValue="notes"
+        defaultValue="chat"
         className="max-h-screen max-w-full overflow-hidden"
       >
-        <div className="relative z-8 flex h-[60px] items-center justify-between border-b border-main-gray-input bg-white px-4">
-          <TabsList className="h-full rounded-3xl bg-transparent">
+        <div className="relative z-8 flex h-[52px] items-center justify-between border-b border-slate-200/60 bg-white px-3">
+          <TabsList className="h-full rounded-none bg-transparent gap-1.5">
             {TABS.filter((item) => {
               if (courseType === 'DOCUMENT') return true;
               else if (courseType === 'TRYOUT') return false;
@@ -385,19 +379,19 @@ const Sidebar = ({
                 }}
               >
                 {onBoarding.notes && item.value === 'notes' ? (
-                  <div className="absolute right-3 top-1 z-10 h-2 w-2 rounded-[50%] bg-red-700" />
+                  <div className="absolute right-2 top-0.5 z-10 h-1.5 w-1.5 rounded-full bg-red-500" />
                 ) : onBoarding.chat && item.value === 'chat' ? (
-                  <div className="absolute right-3 top-1 z-10 h-2 w-2 rounded-[50%] bg-red-700" />
+                  <div className="absolute right-2 top-0.5 z-10 h-1.5 w-1.5 rounded-full bg-red-500" />
                 ) : onBoarding.quiz && item.value === 'quiz' ? (
-                  <div className="absolute right-3 top-1 z-10 h-2 w-2 rounded-[50%] bg-red-700" />
+                  <div className="absolute right-2 top-0.5 z-10 h-1.5 w-1.5 rounded-full bg-red-500" />
                 ) : null}
                 <CustomTooltip content={item.tooltip}>
                   <TabsTrigger
                     value={item.value}
                     className={cn(
-                      `font-regular relative mr-[.5rem] flex items-center rounded-[.7rem] border border-main-gray-input2 bg-transparent px-3 py-[.5rem] text-[.95rem] capitalize text-main-gray-text data-[state=active]:border-main data-[state=active]:bg-main data-[state=active]:text-white gap-0 md:gap-[.5rem] duration-300 md:hover:bg-main-gray-input2`,
+                      'relative flex items-center rounded-xl border border-transparent bg-transparent px-3 py-1.5 text-sm font-medium text-slate-500 gap-0 md:gap-1.5 transition-all duration-200 hover:bg-slate-100 data-[state=active]:border-slate-200 data-[state=active]:bg-white data-[state=active]:text-slate-800 data-[state=active]:shadow-sm',
                       headerTab === item.value &&
-                        'gap-[.5rem] bg-gradient text-white hover:bg-main',
+                        'gap-1.5 border-slate-200 bg-white text-slate-800 shadow-sm',
                     )}
                   >
                     {item.icon}
@@ -415,28 +409,27 @@ const Sidebar = ({
             ))}
           </TabsList>
           <div className="flex items-center gap-1">
-            {/* Konten lainnya */}
             <ToolTip value={'Laporkan Bug'}>
               <div
-                className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
+                className="relative cursor-pointer rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
                 onClick={() => {
                   setIsReportBugOpen(true);
                   setShowSidebar(false);
                 }}
               >
-                <IconWarning w={isMobile ? 17 : 20} />
+                <IconWarning w={isMobile ? 16 : 18} />
               </div>
             </ToolTip>
             {tab !== 'notes' && (
               <ToolTip value={tab === 'chat' ? 'Reset Message' : 'Reset Quiz'}>
                 <div
-                  className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
+                  className="relative cursor-pointer rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
                   onClick={() => {
                     setIsResetModalOpen(true);
                     setShowSidebar(false);
                   }}
                 >
-                  <IconRegenerateMessage w={isMobile ? 17 : 20} />
+                  <IconRegenerateMessage w={isMobile ? 16 : 18} />
                 </div>
               </ToolTip>
             )}
@@ -446,7 +439,7 @@ const Sidebar = ({
                 className="hidden md:block"
               >
                 <div
-                  className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
+                  className="relative cursor-pointer rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
                   onClick={() => {
                     const chatAIContainer = document.querySelector(
                       '.chatAIContainer',
@@ -463,7 +456,7 @@ const Sidebar = ({
                     setMobileScreen('fullscreen');
                   }}
                 >
-                  <IconFullscreen w={isMobile ? 15 : 20} />
+                  <IconFullscreen w={isMobile ? 14 : 18} />
                 </div>
               </ToolTip>
             )}
@@ -473,7 +466,7 @@ const Sidebar = ({
                 className="hidden md:block"
               >
                 <div
-                  className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
+                  className="relative cursor-pointer rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
                   onClick={() => {
                     const chatAIContainer = document.querySelector(
                       '.chatAIContainer',
@@ -490,7 +483,7 @@ const Sidebar = ({
                     setMobileScreen('minimize');
                   }}
                 >
-                  <IconMinimizeScreen w={isMobile ? 15 : 20} />
+                  <IconMinimizeScreen w={isMobile ? 14 : 18} />
                 </div>
               </ToolTip>
             )}
@@ -500,14 +493,14 @@ const Sidebar = ({
               className="block md:hidden"
             >
               <div
-                className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
+                className="relative cursor-pointer rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
                 onClick={() => {
                   if (onClose) {
                     onClose();
                   }
                 }}
               >
-                <IconX2 w={15} />
+                <IconX2 w={14} />
               </div>
             </ToolTip>
           </div>
@@ -516,12 +509,12 @@ const Sidebar = ({
         {[
           {
             value: 'notes',
-            tw: 'flex-1 bg-white px-0 pr-[.5rem] overflow-auto sm:shadow-lg  w-full absolute md:relative top-[60px] md:top-[unset] left-0 md:left-[unset] h-[calc(100%-60px)] md:h-[calc(100vh-10rem)]',
+            tw: 'flex-1 bg-white px-0 pr-1 overflow-auto w-full absolute md:relative top-[52px] md:top-[unset] left-0 md:left-[unset] h-[calc(100%-52px)] md:h-[calc(100vh-10rem)]',
             children: <NotesContent docId={docId} />,
           },
           {
             value: 'chat',
-            tw: 'flex flex-col break-words bg-gray-50 sm:shadow-lg h-[calc(100vh-10rem)] w-full',
+            tw: 'flex flex-col break-words bg-slate-50/50 h-[calc(100vh-10rem)] w-full',
             children: (
               <ChatContent
                 docId={docId}
@@ -531,7 +524,7 @@ const Sidebar = ({
           },
           {
             value: 'quiz',
-            tw: ' break-words bg-white sm:shadow-lg  h-[calc(100vh-10rem)] w-full ',
+            tw: 'break-words bg-white h-[calc(100vh-10rem)] w-full',
             children: (
               // <Quiz docId={docId} />
 

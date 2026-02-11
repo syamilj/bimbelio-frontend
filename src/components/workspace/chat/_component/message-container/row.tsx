@@ -123,8 +123,15 @@ export default function Row({ message, index, isLast, isStreaming }: Props) {
   const handleContentClick = useCallback(
     (e: React.MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.tagName === 'CODE' && target.textContent?.startsWith('📄')) {
-        const pageNum = parseInt(target.textContent.replace(/[^0-9]/g, ''));
+      if (
+        target.tagName === 'CODE' &&
+        (target.classList.contains('page-badge') ||
+          target.textContent?.startsWith('📄'))
+      ) {
+        const pageNum = parseInt(
+          target.textContent?.replace(/[^0-9]/g, '') || '',
+        );
+
         if (!isNaN(pageNum)) {
           scrollToPdfPage?.(pageNum);
           onClickPageNumber?.();
