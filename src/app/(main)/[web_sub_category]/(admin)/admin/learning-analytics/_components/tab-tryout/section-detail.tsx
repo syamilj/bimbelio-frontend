@@ -577,154 +577,162 @@ const UserParticipants = ({
         </Button>
       </div>
 
-      <div className="w-full overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow style={{ backgroundColor: `${mainColor}08` }}>
-              <TableHead className="font-bold text-gray-800 py-3">No</TableHead>
+      <Table classNameWrapper="w-full overflow-x-auto overflow-y-auto max-h-[600px] static">
+        <TableHeader>
+          <TableRow
+            style={{ backgroundColor: `white` }}
+            className="sticky top-0 z-10"
+          >
+            <TableHead
+              className="sticky top-0 z-20 font-bold text-gray-800 py-3"
+              style={{ backgroundColor: `white` }}
+            >
+              No
+            </TableHead>
+            <TableHead
+              className="sticky top-0 z-20 font-bold text-gray-800 py-3 cursor-pointer hover:opacity-70 transition-opacity"
+              onClick={() => handleSort('name')}
+              style={{ backgroundColor: `white` }}
+            >
+              <div className="flex items-center gap-2">
+                <span>User</span>
+                {sortColumn === 'name' ? (
+                  sortDirection === 'asc' ? (
+                    <ArrowUp className="w-4 h-4 text-blue-600" />
+                  ) : (
+                    <ArrowDown className="w-4 h-4 text-blue-600" />
+                  )
+                ) : (
+                  <ArrowDown className="w-4 h-4 text-gray-400" />
+                )}
+              </div>
+            </TableHead>
+            <TableHead
+              className="sticky top-0 z-20 font-bold text-gray-800 py-3 text-center cursor-pointer hover:opacity-70 transition-opacity"
+              onClick={() => handleSort('finalScore')}
+              style={{ backgroundColor: `white` }}
+            >
+              <div className="flex items-center justify-center gap-2">
+                <span>Final Score</span>
+                {sortColumn === 'finalScore' ? (
+                  sortDirection === 'asc' ? (
+                    <ArrowUp className="w-4 h-4 text-blue-600" />
+                  ) : (
+                    <ArrowDown className="w-4 h-4 text-blue-600" />
+                  )
+                ) : (
+                  <ArrowDown className="w-4 h-4 text-gray-400" />
+                )}
+              </div>
+            </TableHead>
+            {allSubCategories.map((subCat) => (
               <TableHead
-                className="font-bold text-gray-800 py-3 cursor-pointer hover:opacity-70 transition-opacity"
-                onClick={() => handleSort('name')}
+                key={subCat.id}
+                className="sticky top-0 z-20 font-bold text-gray-800 py-3 text-center cursor-pointer hover:opacity-70 transition-opacity"
+                onClick={() => handleSort(subCat.id)}
+                title={subCat.name}
               >
-                <div className="flex items-center gap-2">
-                  <span>User</span>
-                  {sortColumn === 'name' ? (
+                <div className="flex items-center justify-center gap-1">
+                  <span>{subCat.initial}</span>
+                  {sortColumn === subCat.id ? (
                     sortDirection === 'asc' ? (
-                      <ArrowUp className="w-4 h-4 text-blue-600" />
+                      <ArrowUp className="w-3 h-3 text-blue-600" />
                     ) : (
-                      <ArrowDown className="w-4 h-4 text-blue-600" />
+                      <ArrowDown className="w-3 h-3 text-blue-600" />
                     )
                   ) : (
-                    <ArrowDown className="w-4 h-4 text-gray-400" />
+                    <ArrowDown className="w-3 h-3 text-gray-400" />
                   )}
                 </div>
               </TableHead>
-              <TableHead
-                className="font-bold text-gray-800 py-3 text-center cursor-pointer hover:opacity-70 transition-opacity"
-                onClick={() => handleSort('finalScore')}
+            ))}
+            <TableHead
+              className="sticky top-0 z-20 font-bold text-gray-800 py-3 text-center"
+              style={{ backgroundColor: `white` }}
+            >
+              Action
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {filteredResults.length === 0 ? (
+            <TableRow>
+              <TableCell
+                colSpan={3 + allSubCategories.length + 1}
+                className="text-center py-8 text-gray-500"
               >
-                <div className="flex items-center justify-center gap-2">
-                  <span>Final Score</span>
-                  {sortColumn === 'finalScore' ? (
-                    sortDirection === 'asc' ? (
-                      <ArrowUp className="w-4 h-4 text-blue-600" />
-                    ) : (
-                      <ArrowDown className="w-4 h-4 text-blue-600" />
-                    )
-                  ) : (
-                    <ArrowDown className="w-4 h-4 text-gray-400" />
-                  )}
-                </div>
-              </TableHead>
-              {allSubCategories.map((subCat) => (
-                <TableHead
-                  key={subCat.id}
-                  className="font-bold text-gray-800 py-3 text-center cursor-pointer hover:opacity-70 transition-opacity"
-                  onClick={() => handleSort(subCat.id)}
-                  title={subCat.name}
-                >
-                  <div className="flex items-center justify-center gap-1">
-                    <span>{subCat.initial}</span>
-                    {sortColumn === subCat.id ? (
-                      sortDirection === 'asc' ? (
-                        <ArrowUp className="w-3 h-3 text-blue-600" />
-                      ) : (
-                        <ArrowDown className="w-3 h-3 text-blue-600" />
-                      )
-                    ) : (
-                      <ArrowDown className="w-3 h-3 text-gray-400" />
-                    )}
-                  </div>
-                </TableHead>
-              ))}
-              <TableHead className="font-bold text-gray-800 py-3 text-center">
-                Action
-              </TableHead>
+                <p className="text-sm">Belum ada data</p>
+              </TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredResults.length === 0 ? (
-              <TableRow>
-                <TableCell
-                  colSpan={3 + allSubCategories.length + 1}
-                  className="text-center py-8 text-gray-500"
-                >
-                  <p className="text-sm">Belum ada data</p>
+          ) : (
+            filteredResults.map((result, index) => (
+              <TableRow
+                key={result.userId}
+                className="hover:bg-gray-50 transition-colors"
+              >
+                <TableCell className="font-medium text-gray-900 py-4">
+                  {index + 1}
+                </TableCell>
+                <TableCell className="py-4">
+                  <div className="flex items-start gap-3">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage
+                        src={result.image || ''}
+                        alt={result.name}
+                      />
+                      <AvatarFallback>
+                        {result.name.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-gray-900 truncate">
+                        {result.name}
+                      </p>
+                      <p className="text-xs text-gray-500 truncate">
+                        {result.email}
+                      </p>
+                      <p className="text-xs text-gray-500 truncate">
+                        {result.phone}
+                      </p>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell className="font-semibold text-gray-900 py-4 text-center">
+                  {result.totalScore.toFixed(2)}
+                </TableCell>
+                {allSubCategories.map((subCat) => {
+                  const subCatData = result.subCategories.find(
+                    (sc) => sc.id === subCat.id,
+                  );
+                  const score = subCatData?.totalScore || 0;
+                  return (
+                    <TableCell
+                      key={subCat.id}
+                      className="text-center py-4 font-medium text-gray-900"
+                    >
+                      {typeof score === 'number' ? score.toFixed(2) : '-'}
+                    </TableCell>
+                  );
+                })}
+                <TableCell className="text-center py-4">
+                  {result.phone && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="gap-2 hover:bg-green-100"
+                      onClick={() => {
+                        window.open(`https://wa.me/${result.phone}`, '_blank');
+                      }}
+                    >
+                      <MessageCircle className="w-4 h-4 text-green-600" />
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
-            ) : (
-              filteredResults.map((result, index) => (
-                <TableRow
-                  key={result.userId}
-                  className="hover:bg-gray-50 transition-colors"
-                >
-                  <TableCell className="font-medium text-gray-900 py-4">
-                    {index + 1}
-                  </TableCell>
-                  <TableCell className="py-4">
-                    <div className="flex items-start gap-3">
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage
-                          src={result.image || ''}
-                          alt={result.name}
-                        />
-                        <AvatarFallback>
-                          {result.name.charAt(0).toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-gray-900 truncate">
-                          {result.name}
-                        </p>
-                        <p className="text-xs text-gray-500 truncate">
-                          {result.email}
-                        </p>
-                        <p className="text-xs text-gray-500 truncate">
-                          {result.phone}
-                        </p>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="font-semibold text-gray-900 py-4 text-center">
-                    {result.totalScore.toFixed(2)}
-                  </TableCell>
-                  {allSubCategories.map((subCat) => {
-                    const subCatData = result.subCategories.find(
-                      (sc) => sc.id === subCat.id,
-                    );
-                    const score = subCatData?.totalScore || 0;
-                    return (
-                      <TableCell
-                        key={subCat.id}
-                        className="text-center py-4 font-medium text-gray-900"
-                      >
-                        {typeof score === 'number' ? score.toFixed(2) : '-'}
-                      </TableCell>
-                    );
-                  })}
-                  <TableCell className="text-center py-4">
-                    {result.phone && (
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="gap-2 hover:bg-green-100"
-                        onClick={() => {
-                          window.open(
-                            `https://wa.me/${result.phone}`,
-                            '_blank',
-                          );
-                        }}
-                      >
-                        <MessageCircle className="w-4 h-4 text-green-600" />
-                      </Button>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
+            ))
+          )}
+        </TableBody>
+      </Table>
     </TabsContent>
   );
 };
@@ -873,114 +881,122 @@ const UserRegistrations = ({
         </Button>
       </div>
 
-      <div className="w-full overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow style={{ backgroundColor: `${mainColor}08` }}>
-              <TableHead className="font-bold text-gray-800 py-3">No</TableHead>
-              <TableHead
-                className="font-bold text-gray-800 py-3 cursor-pointer hover:opacity-70 transition-opacity"
-                onClick={() => handleSort('name')}
-              >
-                <div className="flex items-center gap-2">
-                  <span>User</span>
-                  {sortColumn === 'name' ? (
-                    sortDirection === 'asc' ? (
-                      <ArrowUp className="w-4 h-4 text-blue-600" />
-                    ) : (
-                      <ArrowDown className="w-4 h-4 text-blue-600" />
-                    )
+      <Table classNameWrapper="w-full overflow-x-auto overflow-y-auto max-h-[600px] static">
+        <TableHeader>
+          <TableRow
+            style={{ backgroundColor: `white` }}
+            className="sticky top-0 z-10"
+          >
+            <TableHead className="sticky top-0 z-20 font-bold text-gray-800 py-3">
+              No
+            </TableHead>
+            <TableHead
+              className="sticky top-0 z-20 font-bold text-gray-800 py-3 cursor-pointer hover:opacity-70 transition-opacity"
+              onClick={() => handleSort('name')}
+              style={{ backgroundColor: `white` }}
+            >
+              <div className="flex items-center gap-2">
+                <span>User</span>
+                {sortColumn === 'name' ? (
+                  sortDirection === 'asc' ? (
+                    <ArrowUp className="w-4 h-4 text-blue-600" />
                   ) : (
-                    <ArrowDown className="w-4 h-4 text-gray-400" />
-                  )}
-                </div>
-              </TableHead>
-              <TableHead
-                className="font-bold text-gray-800 py-3 cursor-pointer hover:opacity-70 transition-opacity"
-                onClick={() => handleSort('email')}
-              >
-                <div className="flex items-center gap-2">
-                  <span>Email</span>
-                  {sortColumn === 'email' ? (
-                    sortDirection === 'asc' ? (
-                      <ArrowUp className="w-4 h-4 text-blue-600" />
-                    ) : (
-                      <ArrowDown className="w-4 h-4 text-blue-600" />
-                    )
+                    <ArrowDown className="w-4 h-4 text-blue-600" />
+                  )
+                ) : (
+                  <ArrowDown className="w-4 h-4 text-gray-400" />
+                )}
+              </div>
+            </TableHead>
+            <TableHead
+              className="sticky top-0 z-20 font-bold text-gray-800 py-3 cursor-pointer hover:opacity-70 transition-opacity"
+              onClick={() => handleSort('email')}
+              style={{ backgroundColor: `white` }}
+            >
+              <div className="flex items-center gap-2">
+                <span>Email</span>
+                {sortColumn === 'email' ? (
+                  sortDirection === 'asc' ? (
+                    <ArrowUp className="w-4 h-4 text-blue-600" />
                   ) : (
-                    <ArrowDown className="w-4 h-4 text-gray-400" />
-                  )}
-                </div>
-              </TableHead>
-              <TableHead className="font-bold text-gray-800 py-3 text-center">
-                Action
-              </TableHead>
+                    <ArrowDown className="w-4 h-4 text-blue-600" />
+                  )
+                ) : (
+                  <ArrowDown className="w-4 h-4 text-gray-400" />
+                )}
+              </div>
+            </TableHead>
+            <TableHead
+              className="sticky top-0 z-20 font-bold text-gray-800 py-3 text-center"
+              style={{ backgroundColor: `white` }}
+            >
+              Action
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {filteredRegistrations.length === 0 ? (
+            <TableRow>
+              <TableCell
+                colSpan={4}
+                className="text-center py-8 text-gray-500"
+              >
+                <p className="text-sm">Belum ada data</p>
+              </TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredRegistrations.length === 0 ? (
-              <TableRow>
-                <TableCell
-                  colSpan={4}
-                  className="text-center py-8 text-gray-500"
-                >
-                  <p className="text-sm">Belum ada data</p>
+          ) : (
+            filteredRegistrations.map((registration, index) => (
+              <TableRow
+                key={registration.userId}
+                className="hover:bg-gray-50 transition-colors"
+              >
+                <TableCell className="font-medium text-gray-900 py-4">
+                  {index + 1}
+                </TableCell>
+                <TableCell className="py-4">
+                  <div className="flex items-center gap-3">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage
+                        src={registration.image || ''}
+                        alt={registration.name}
+                      />
+                      <AvatarFallback>
+                        {registration.name.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-gray-900 truncate">
+                        {registration.name}
+                      </p>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell className="text-gray-600 py-4">
+                  <p>{registration.email}</p>
+                  <p>{registration.phone}</p>
+                </TableCell>
+                <TableCell className="text-center py-4">
+                  {registration.phone && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="gap-2 hover:bg-green-100"
+                      onClick={() => {
+                        window.open(
+                          `https://wa.me/${registration.phone}`,
+                          '_blank',
+                        );
+                      }}
+                    >
+                      <MessageCircle className="w-4 h-4 text-green-600" />
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
-            ) : (
-              filteredRegistrations.map((registration, index) => (
-                <TableRow
-                  key={registration.userId}
-                  className="hover:bg-gray-50 transition-colors"
-                >
-                  <TableCell className="font-medium text-gray-900 py-4">
-                    {index + 1}
-                  </TableCell>
-                  <TableCell className="py-4">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage
-                          src={registration.image || ''}
-                          alt={registration.name}
-                        />
-                        <AvatarFallback>
-                          {registration.name.charAt(0).toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-gray-900 truncate">
-                          {registration.name}
-                        </p>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-gray-600 py-4">
-                    <p>{registration.email}</p>
-                    <p>{registration.phone}</p>
-                  </TableCell>
-                  <TableCell className="text-center py-4">
-                    {registration.phone && (
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="gap-2 hover:bg-green-100"
-                        onClick={() => {
-                          window.open(
-                            `https://wa.me/${registration.phone}`,
-                            '_blank',
-                          );
-                        }}
-                      >
-                        <MessageCircle className="w-4 h-4 text-green-600" />
-                      </Button>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
+            ))
+          )}
+        </TableBody>
+      </Table>
     </TabsContent>
   );
 };

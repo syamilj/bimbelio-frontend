@@ -1,7 +1,14 @@
 'use client';
 
-import { BookOpen, ChevronDown, ChevronUp, Trophy } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import {
+  BookOpen,
+  ChevronDown,
+  ChevronUp,
+  Download,
+  Search,
+  Trophy,
+} from 'lucide-react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -20,6 +27,15 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
+import { DateRangePicker } from '@/components/ui/date-range-picker';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
@@ -30,15 +46,30 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { FetchReturnType, useGet } from '@/lib/fetch-helper/useGet';
+import { getDate, getDateStringShort } from '@/lib/utils';
 import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
+import ExcelJS from 'exceljs';
 import { Area, AreaChart, CartesianGrid, Line, XAxis, YAxis } from 'recharts';
 
 export const SectionPerformance = () => {
+  const [startDate, setStartDate] = useState<Date>(
+    new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+  );
+  const [endDate, setEndDate] = useState<Date>(new Date());
+
   const fetchingData = useGet<DataType>(
     '/learningAnalytics/getAnalyticsTryout',
-    {},
+    {
+      debounceTime: 300,
+      params: {
+        from: startDate,
+        to: endDate,
+      },
+      useEffectDependencies: [startDate, endDate],
+    },
   );
 
   const { error: TryoutDataError } = fetchingData;
@@ -48,26 +79,55 @@ export const SectionPerformance = () => {
   }
 
   return (
-    <Tabs defaultValue="all">
-      <TabsList>
-        <TabsTrigger value="all">Semua</TabsTrigger>
-        <TabsTrigger value="subcategory">Per Subtest</TabsTrigger>
-      </TabsList>
-      <TabsContent value="subcategory">
-        <BySubCategoryTab fetchingData={fetchingData} />
-      </TabsContent>
+    <div>
+      <Tabs defaultValue="all">
+        <TabsList>
+          <TabsTrigger value="all">Semua</TabsTrigger>
+          <TabsTrigger value="subcategory">Per Subtest</TabsTrigger>
+        </TabsList>
+        <TabsContent value="subcategory">
+          <BySubCategoryTab
+            fetchingData={fetchingData}
+            endDate={endDate}
+            setEndDate={setEndDate}
+            setStartDate={setStartDate}
+            startDate={startDate}
+          />
+        </TabsContent>
 
-      <TabsContent value="all">
-        <ByAllTab fetchingData={fetchingData} />
-      </TabsContent>
-    </Tabs>
+        <TabsContent value="all">
+          <ByAllTab
+            fetchingData={fetchingData}
+            endDate={endDate}
+            setEndDate={setEndDate}
+            setStartDate={setStartDate}
+            startDate={startDate}
+          />
+        </TabsContent>
+      </Tabs>
+      <Detail
+        fetchingData={fetchingData}
+        endDate={endDate}
+        setEndDate={setEndDate}
+        setStartDate={setStartDate}
+        startDate={startDate}
+      />
+    </div>
   );
 };
 
 const ByAllTab = ({
   fetchingData,
+  endDate,
+  startDate,
+  setEndDate,
+  setStartDate,
 }: {
   fetchingData: FetchReturnType<DataType, any>;
+  startDate: Date;
+  endDate: Date;
+  setStartDate: Dispatch<SetStateAction<Date>>;
+  setEndDate: Dispatch<SetStateAction<Date>>;
 }) => {
   const { mainColor, secondaryColor } = useWebsiteSubCategory();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -78,7 +138,7 @@ const ByAllTab = ({
     error: TryoutDataError,
   } = fetchingData;
 
-  const performanceAll = TryoutData?.overall.scoreHistory;
+  const performanceAll = TryoutData?.overall.summary.list;
 
   const chartData = useMemo(() => {
     return performanceAll?.map((item, index) => ({
@@ -109,7 +169,7 @@ const ByAllTab = ({
   }
 
   const INITIAL_ROWS = 5;
-  const performanceAllStats = TryoutData.overall.stats;
+  const performanceAllStats = TryoutData.overall.summary.stats;
 
   const chartConfig = {
     score: {
@@ -153,6 +213,27 @@ const ByAllTab = ({
           <CardDescription className="text-gray-600 mt-2">
             Skor total berdasarkan masing-masing tryout
           </CardDescription>
+        </div>
+        <div className="flex w-full justify-end">
+          <DateRangePicker
+            align="end"
+            initialDateFrom={startDate}
+            initialDateTo={endDate}
+            onUpdate={(value) => {
+              console.log({ value });
+              if (value.range.from) {
+                setStartDate(value.range.from);
+              }
+              if (value.range.to) {
+                setEndDate(value.range.to);
+              }
+            }}
+            className="w-fit border-2"
+            style={{
+              borderColor: `${mainColor}30`,
+              backgroundColor: `${mainColor}05`,
+            }}
+          />
         </div>
         <div
           className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
@@ -369,8 +450,16 @@ const ByAllTab = ({
 
 const BySubCategoryTab = ({
   fetchingData,
+  endDate,
+  startDate,
+  setEndDate,
+  setStartDate,
 }: {
   fetchingData: FetchReturnType<DataType, any>;
+  startDate: Date;
+  endDate: Date;
+  setStartDate: Dispatch<SetStateAction<Date>>;
+  setEndDate: Dispatch<SetStateAction<Date>>;
 }) => {
   const { mainColor, secondaryColor } = useWebsiteSubCategory();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -432,6 +521,27 @@ const BySubCategoryTab = ({
           <CardDescription className="text-gray-600 mt-2">
             Skor total berdasarkan masing-masing tryout dan subkategorinya
           </CardDescription>
+        </div>
+        <div className="flex w-full justify-end">
+          <DateRangePicker
+            align="end"
+            initialDateFrom={startDate}
+            initialDateTo={endDate}
+            onUpdate={(value) => {
+              console.log({ value });
+              if (value.range.from) {
+                setStartDate(value.range.from);
+              }
+              if (value.range.to) {
+                setEndDate(value.range.to);
+              }
+            }}
+            className="w-fit border-2"
+            style={{
+              borderColor: `${mainColor}30`,
+              backgroundColor: `${mainColor}05`,
+            }}
+          />
         </div>
         <div
           className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
@@ -551,22 +661,471 @@ const BySubCategoryTab = ({
   );
 };
 
+const Detail = ({
+  fetchingData,
+  endDate,
+  startDate,
+  setEndDate,
+  setStartDate,
+}: {
+  fetchingData: FetchReturnType<DataType, any>;
+  startDate: Date;
+  endDate: Date;
+  setStartDate: Dispatch<SetStateAction<Date>>;
+  setEndDate: Dispatch<SetStateAction<Date>>;
+}) => {
+  const { mainColor, secondaryColor } = useWebsiteSubCategory();
+  const [isExporting, setIsExporting] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('nama');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [selectedTryout, setSelectedTryout] = useState<string>('all');
+
+  const {
+    data: TryoutData,
+    isLoading: TryoutDataIsLoading,
+    error: TryoutDataError,
+  } = fetchingData;
+
+  if (TryoutDataIsLoading)
+    return <Skeleton className="w-full h-[800px] mt-6" />;
+
+  if (!TryoutData) return null;
+
+  if (TryoutDataError) {
+    return <div>Error: {TryoutDataError.message}</div>;
+  }
+
+  const listTryout = TryoutData.overall.detail.listTryout;
+  const listUsers = TryoutData.overall.detail.listUser;
+
+  const filteredListTryout = listTryout.filter((tryout) => {
+    if (selectedTryout === 'all') return true;
+    return tryout.id === selectedTryout;
+  });
+
+  const filteredListUsers = listUsers
+    .filter((user) => {
+      if (selectedTryout !== 'all') {
+        const hasTryout = user.Tryout.some((to) => to.id === selectedTryout);
+        if (!hasTryout) return false;
+      }
+
+      if (!searchTerm) return true;
+
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        user.User.name.toLowerCase().includes(searchLower) ||
+        user.User.email.toLowerCase().includes(searchLower) ||
+        user.User.phone?.includes(searchTerm) ||
+        false
+      );
+    })
+    .sort((a, b) => {
+      if (sortBy === 'nama') {
+        const comparison = a.User.name.localeCompare(b.User.name);
+        return sortDirection === 'asc' ? comparison : -comparison;
+      } else if (sortBy === 'email') {
+        const comparison = a.User.email.localeCompare(b.User.email);
+        return sortDirection === 'asc' ? comparison : -comparison;
+      } else if (sortBy === 'ratarata') {
+        const aAvg =
+          a.Tryout.length > 0
+            ? a.Tryout.reduce((sum, t) => sum + t.totalScore, 0) /
+              a.Tryout.length
+            : 0;
+        const bAvg =
+          b.Tryout.length > 0
+            ? b.Tryout.reduce((sum, t) => sum + t.totalScore, 0) /
+              b.Tryout.length
+            : 0;
+        const comparison = aAvg - bAvg;
+        return sortDirection === 'asc' ? comparison : -comparison;
+      } else if (sortBy === 'jumlahTryout') {
+        const aCount = a.Tryout.length;
+        const bCount = b.Tryout.length;
+        const comparison = aCount - bCount;
+        return sortDirection === 'asc' ? comparison : -comparison;
+      }
+      return 0;
+    });
+
+  const handleExportData = async () => {
+    try {
+      setIsExporting(true);
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet('Daftar Kehadiran');
+
+      // Create header columns
+      const headers = [
+        'No',
+        'Nama',
+        'Email',
+        'Telp',
+        'Subscription',
+        ...filteredListTryout.map(
+          (lc) => `${getDate(lc.startDate)} - ${lc.title}`,
+        ),
+      ];
+      worksheet.columns = headers.map((header) => ({
+        header,
+        key: header,
+      }));
+
+      // Add data rows
+      filteredListUsers.forEach((user, index) => {
+        const row: Record<string, any> = {
+          No: index + 1,
+          Nama: user.User.name,
+          Email: user.User.email,
+          Telp: user.User.phone || '-',
+          Subscription: user.User.Subscription.map((sub) => sub.planName).join(
+            ', ',
+          ),
+        };
+
+        // Add presence status for each live class
+        filteredListTryout.forEach((tryout) => {
+          const userData = user.Tryout.find((lc) => lc.id === tryout.id);
+          const score = !userData
+            ? '-'
+            : website_sub_category_id === 'snbt'
+              ? userData.averageScore.toFixed(2)
+              : userData.totalScore.toFixed(2);
+
+          row[`${getDate(tryout.startDate)} - ${tryout.title}`] = score;
+        });
+
+        worksheet.addRow(row);
+      });
+
+      // Generate file
+      const buffer = await workbook.csv.writeBuffer();
+      const blob = new Blob([buffer], {
+        type: 'text/csv;charset=utf-8;',
+      });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `Tryout-Analytics-${new Date().toISOString().split('T')[0]}.csv`;
+      link.click();
+      window.URL.revokeObjectURL(url);
+      setIsExporting(false);
+    } catch (error) {
+      console.error('Export failed:', error);
+      setIsExporting(false);
+    }
+  };
+
+  return (
+    <div className="mt-6">
+      <Card className="bg-white shadow-lg border-0 rounded-3xl overflow-hidden">
+        <CardHeader
+          className="pb-4 relative overflow-hidden"
+          style={{
+            background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
+          }}
+        >
+          <div className="relative z-10">
+            <CardTitle
+              className="text-lg font-bold"
+              style={{ color: mainColor }}
+            >
+              Detail Tryout ({getDateStringShort(startDate)} -{' '}
+              {getDateStringShort(endDate)})
+            </CardTitle>
+            <CardDescription className="text-gray-600 mt-1 text-xs">
+              Rincian data tryout peserta berdasarkan rentang tanggal
+            </CardDescription>
+          </div>
+          <div
+            className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
+            style={{ backgroundColor: mainColor }}
+          />
+        </CardHeader>
+
+        <CardContent className="p-6">
+          <div className="flex items-center w-full mb-4 gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Cari berdasarkan nama, email, atau telp..."
+                value={searchTerm}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value.startsWith('08')) {
+                    setSearchTerm(value.replace('08', '+628'));
+                  } else {
+                    setSearchTerm(value);
+                  }
+                }}
+                className="pl-10 rounded-3xl border-gray-200 focus:border-blue-500"
+              />
+            </div>
+            <Button
+              onClick={handleExportData}
+              disabled={isExporting}
+              className="gap-2"
+              style={{ backgroundColor: mainColor }}
+            >
+              {isExporting ? (
+                <>
+                  <div className="animate-spin inline-block">
+                    <Download className="w-4 h-4" />
+                  </div>
+                  Exporting...
+                </>
+              ) : (
+                <>
+                  <Download className="w-4 h-4" />
+                  Export CSV
+                </>
+              )}
+            </Button>
+          </div>
+
+          <div className="flex items-center w-full mb-6 gap-6">
+            {/* Urutkan Section */}
+            <div className="flex items-center gap-3">
+              <p className="font-semibold text-sm text-gray-700 whitespace-nowrap">
+                Urutkan:
+              </p>
+              <Select
+                value={sortBy}
+                onValueChange={setSortBy}
+              >
+                <SelectTrigger className="w-[150px] rounded-3xl border-gray-200 focus:border-blue-500">
+                  <SelectValue placeholder="Pilih" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="nama">Nama</SelectItem>
+                  <SelectItem value="email">Email</SelectItem>
+                  <SelectItem value="ratarata">
+                    Rata-rata Nilai Tryout
+                  </SelectItem>
+                  <SelectItem value="jumlahTryout">
+                    Jumlah Tryout Dikerjakan
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <Select
+                value={sortDirection}
+                onValueChange={(value) =>
+                  setSortDirection(value as 'asc' | 'desc')
+                }
+              >
+                <SelectTrigger className="w-[110px] rounded-3xl border-gray-200 focus:border-blue-500">
+                  <SelectValue placeholder="Urutan" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="asc">↑ A-Z</SelectItem>
+                  <SelectItem value="desc">↓ Z-A</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Divider */}
+            <div className="w-px h-8 bg-gray-300" />
+
+            {/* Filter Section */}
+            <div className="flex items-center gap-3">
+              <p className="font-semibold text-sm text-gray-700 whitespace-nowrap">
+                Filter:
+              </p>
+              <Select
+                value={selectedTryout}
+                onValueChange={setSelectedTryout}
+              >
+                <SelectTrigger className="w-[150px] rounded-3xl border-gray-200 focus:border-blue-500">
+                  <SelectValue placeholder="Pilih Tryout" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Semua Tryout</SelectItem>
+                  {listTryout.map((tryout) => (
+                    <SelectItem
+                      key={tryout.id}
+                      value={tryout.id}
+                    >
+                      {tryout.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="sticky top-0 z-20">
+                  <th className="sticky top-0 left-0 z-30 text-left p-3 text-sm font-bold text-gray-700 w-12 bg-white">
+                    <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gray-200" />
+                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gray-200" />
+                    No
+                  </th>
+                  <th className="sticky top-0 left-10 z-30 text-left p-3 text-sm font-bold text-gray-700 min-w-[200px] bg-white">
+                    <div className="absolute top-0 right-0 w-[1px] bottom-0 bg-gray-200" />
+                    <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gray-200" />
+                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gray-200" />
+                    Nama (Email)
+                  </th>
+                  <th className="sticky top-0 z-20 text-center text-sm font-bold text-gray-700 min-w-[150px] border-r bg-white p-0">
+                    <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gray-200" />
+                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gray-200" />
+                    Subscription
+                  </th>
+                  {filteredListTryout.map((liveClass) => (
+                    <th
+                      key={liveClass.id}
+                      className="sticky top-0 z-20 text-center text-sm font-bold text-gray-700 min-w-[150px] border-r bg-white p-0"
+                    >
+                      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gray-200" />
+                      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gray-200" />
+                      <div className="flex flex-col">
+                        <div className="text-xs text-gray-500 border-b p-1">
+                          {getDate(liveClass.startDate)}
+                        </div>
+                        <div className="text-xs mb-1 p-1">
+                          {liveClass.title}
+                        </div>
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {filteredListUsers.map((userItem, index) => {
+                  return (
+                    <tr
+                      key={userItem.User.id}
+                      className="border-b hover:bg-gray-50 transition-colors"
+                      style={{ borderColor: `${mainColor}10` }}
+                    >
+                      <td className="sticky left-0 z-10 p-3 text-sm text-gray-600 font-medium bg-white border-b">
+                        {index + 1}
+                      </td>
+                      <td className="sticky left-10 z-10 p-3 text-sm bg-white border-b">
+                        <div className="absolute top-0 right-0 w-[1px] bottom-0 bg-gray-200" />
+                        <div className="font-semibold text-gray-900">
+                          {userItem.User.name}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {userItem.User.email}
+                        </div>
+                        {userItem.User.phone && (
+                          <div className="text-xs text-gray-500">
+                            {userItem.User.phone}
+                          </div>
+                        )}
+                      </td>
+                      <td className="p-3 text-start border-r border-b text-[10px]">
+                        {userItem.User.Subscription.map((sub) => (
+                          <p>{sub.planName}</p>
+                        ))}
+                      </td>
+                      {filteredListTryout.map((tryout) => {
+                        const userData = userItem.Tryout.find(
+                          (to) => to.id === tryout.id,
+                        );
+                        if (userItem.User.email === 'farizmp2008@gmail.com') {
+                          console.log({
+                            id: tryout.id,
+                            data: userItem.Tryout,
+                          });
+                        }
+
+                        if (!userData) {
+                          return (
+                            <td
+                              key={tryout.id}
+                              className="p-3 text-center border-r border-b"
+                            >
+                              -
+                            </td>
+                          );
+                        }
+                        const score =
+                          website_sub_category_id === 'snbt'
+                            ? userData.averageScore
+                            : userData.totalScore;
+
+                        return (
+                          <td
+                            key={tryout.id}
+                            className="p-3 text-center border-r border-b"
+                          >
+                            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-blue-500 text-white">
+                              {score.toFixed(2)}
+                            </span>
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {(!listUsers ||
+            listUsers.length === 0 ||
+            filteredListUsers.length === 0) && (
+            <div className="text-center py-8">
+              <p className="text-sm text-gray-500">
+                {filteredListUsers.length === 0 && searchTerm
+                  ? 'Tidak ada hasil pencarian'
+                  : 'Belum ada data siswa'}
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
 type DataType = {
   overall: {
-    stats: {
-      avg: number;
-      highest: number;
-      lowest: number;
-      trend: number;
+    detail: {
+      listTryout: {
+        id: string;
+        title: string;
+        startDate: Date;
+        endDate: Date;
+      }[];
+      listUser: {
+        User: {
+          id: string;
+          email: string;
+          name: string;
+          phone: string | null;
+          Subscription: {
+            id: string;
+            planName: string;
+          }[];
+        };
+        Tryout: {
+          id: string;
+          title: string;
+          totalScore: number;
+          averageScore: number;
+          startDate: Date;
+        }[];
+      }[];
     };
-    scoreHistory: {
-      date: Date;
-      score: number;
-      tryoutTitle: string;
-      // rank: number;
-      totalParticipants: number;
-      rankChange: number;
-    }[];
+    summary: {
+      stats: {
+        avg: number;
+        highest: number;
+        lowest: number;
+        trend: number;
+      };
+      list: {
+        date: Date;
+        score: number;
+        tryoutTitle: string;
+        totalParticipants: number;
+      }[];
+    };
   };
   bySubCategory: {
     subCategories: {
