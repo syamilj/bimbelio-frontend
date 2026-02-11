@@ -1,6 +1,6 @@
 'use client';
 
-import { SectionTitle } from '@/app/(main)/[web_sub_category]/(user)/user/biminsight2/_components/section-title';
+import { SectionTitle } from '@/app/(main)/[web_sub_category]/(user)/user/biminsight/_components/section-title';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

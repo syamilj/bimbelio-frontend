@@ -1,4 +1,4 @@
-import { SectionTitle } from '@/app/(main)/[web_sub_category]/(user)/user/biminsight2/_components/section-title';
+import { SectionTitle } from '@/app/(main)/[web_sub_category]/(user)/user/biminsight/_components/section-title';
 import { Target } from 'lucide-react';
 import { useState } from 'react';
 import { SectionDetail } from './section-detail';

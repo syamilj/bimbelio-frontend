@@ -488,9 +488,13 @@ export default function CardTryOut({
                   {/* Subtest Categories */}
                   <div className="flex flex-wrap justify-center gap-1">
                     {(() => {
-                      const categories = [...new Set(
-                        item.TryoutSession.map((s) => s.TryoutCategory?.name).filter(Boolean)
-                      )];
+                      const categories = [
+                        ...new Set(
+                          item.TryoutSession.map(
+                            (s) => s.TryoutCategory?.name,
+                          ).filter(Boolean),
+                        ),
+                      ];
                       return categories.length > 0 ? (
                         categories.slice(0, 3).map((cat, idx) => (
                           <Badge
@@ -508,9 +512,13 @@ export default function CardTryOut({
                       );
                     })()}
                     {(() => {
-                      const categories = [...new Set(
-                        item.TryoutSession.map((s) => s.TryoutCategory?.name).filter(Boolean)
-                      )];
+                      const categories = [
+                        ...new Set(
+                          item.TryoutSession.map(
+                            (s) => s.TryoutCategory?.name,
+                          ).filter(Boolean),
+                        ),
+                      ];
                       return categories.length > 3 ? (
                         <Badge className="text-[10px] bg-slate-100 text-slate-500 border-slate-200 font-medium px-2 py-0.5">
                           +{categories.length - 3}
@@ -528,7 +536,7 @@ export default function CardTryOut({
                       <Button
                         className="w-full h-12 text-white font-semibold rounded-3xl shadow-md hover:shadow-lg transition-all duration-300 group"
                         style={{
-                          background: `linear-gradient(135deg, ${item.WebsiteSubCategory?.main_color || mainColor}, ${item.WebsiteSubCategory?.secondary_color || secondaryColor})`,
+                          background: `linear-gradient(135deg, ${item.WebsiteSubCategory?.main_color || mainColor}, ${item.WebsiteSubCategory?.secondary_color || secondaryColor}`,
                         }}
                         onClick={() => {
                           // Check if user is logged in first

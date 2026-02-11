@@ -105,6 +105,7 @@ type DataType = {
   gender: GenderEnum;
   age: number;
   phone: string;
+  phoneParent: string | null;
   kabupaten: string;
   provinsi: string;
   channel: string;
