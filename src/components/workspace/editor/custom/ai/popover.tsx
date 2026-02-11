@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { env } from '@/env.mjs';
 import { useBlockNoteEditor } from '@blocknote/react';
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
-import { useCompletion } from 'ai/react';
+import { useCompletion } from '@ai-sdk/react';
 import Cookies from 'js-cookie';
 import 'katex/dist/katex.min.css';
 import { ArrowRight } from 'lucide-react';

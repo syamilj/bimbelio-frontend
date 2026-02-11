@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import ReactMarkdown from '@/components/ui/react-markdown';
 import { Textarea } from '@/components/ui/textarea';
 import { IconSend, IconSuccess, IconX } from '@/styles/icon';
-import { RequestOptions } from 'ai';
+import { type CompletionRequestOptions } from 'ai';
 import 'katex/dist/katex.min.css';
 import { useState } from 'react';
 import { useProvider } from '../provider';
@@ -29,7 +29,7 @@ const IndividualQuizQuestion = ({
 }: {
   complete: (
     prompt: string,
-    options?: RequestOptions | undefined,
+    options?: CompletionRequestOptions | undefined,
   ) => Promise<string | null | undefined>;
   toggleAttempt: () => void;
   userResponse: string;

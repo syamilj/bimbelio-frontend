@@ -402,7 +402,7 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
           },
           {
             value: 'chat',
-            tw: ' p-2 pb-0 break-words bg-bg-workspace px-0 pr-[.5rem] sm:shadow-lg h-[calc(100vh-3.5rem)] w-full',
+            tw: 'flex flex-col p-2 pb-0 break-words bg-bg-workspace px-0 pr-[.5rem] sm:shadow-lg h-[calc(100vh-3.5rem)] w-full',
             children: <ChatContent />,
           },
           {

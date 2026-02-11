@@ -40,16 +40,18 @@ export default function ReactMarkdownChatAI({
   scrollToPdfPage,
   className,
 }: ReactMarkdownProps) {
+  // Enable $...$ for inline math (default in remark-math)
   const remarkMathOptions = {
-    singleDollarTextMath: false,
+    singleDollarTextMath: true,
   };
 
+  // Convert LaTeX \(...\) and \[...\] notation to $...$ and $$...$$ for remark-math
   const replaceLatexNotation = (content: string) => {
     return content
-      .replace(/\\\[/g, '$$$')
-      .replace(/\\\]/g, '$$$')
-      .replace(/\\\(/g, '$$$')
-      .replace(/\\\)/g, '$$$');
+      .replace(/\\\[/g, '$$$$')  // \[ → $$ (display math) — $$$$ produces $$ in replace
+      .replace(/\\\]/g, '$$$$')  // \] → $$ (display math)
+      .replace(/\\\(/g, '$$')    // \( → $  (inline math) — $$ produces $ in replace
+      .replace(/\\\)/g, '$$');   // \) → $  (inline math)
   };
 
   // Badge <PAGE#n> dan <PAGE#n-m> - Fixed to avoid nested elements
@@ -107,28 +109,22 @@ export default function ReactMarkdownChatAI({
   };
 
   const { useMessages, setFirstMessage, prevChatMessages } = useProvider();
-  const { handleInputChangeMessages } = useMessages || {};
+  const { appendMessages } = useMessages || {};
 
   const handleSaranClick = (q: string) => {
-    const inputChat = document.getElementById(
-      'inputChat',
-    ) as HTMLTextAreaElement;
-    if (inputChat && handleInputChangeMessages) {
-      inputChat.value = q;
-      handleInputChangeMessages({ target: { value: q } } as any);
-      if (
-        setFirstMessage &&
-        (!prevChatMessages || prevChatMessages.length === 0)
-      ) {
-        setFirstMessage(true);
-      }
-      setTimeout(() => {
-        const submit = document.getElementById(
-          'submitMessages',
-        ) as HTMLButtonElement;
-        if (submit) submit.click();
-      }, 80);
+    if (!appendMessages) return;
+    if (
+      setFirstMessage &&
+      (!prevChatMessages || prevChatMessages.length === 0)
+    ) {
+      setFirstMessage(true);
     }
+    appendMessages({
+      id: crypto.randomUUID(),
+      content: q,
+      role: 'user',
+      createdAt: new Date(),
+    });
   };
 
   const { main, saran } = extractSaranPertanyaan(replaceLatexNotation(value));

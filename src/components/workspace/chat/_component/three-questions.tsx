@@ -7,7 +7,7 @@ import { useProvider } from '../provider';
 
 export default function ThreeQuestions() {
   const {
-    useMessages: { handleInputChangeMessages },
+    useMessages: { appendMessages },
     setFirstMessage,
   } = useProvider();
 
@@ -67,21 +67,13 @@ export default function ThreeQuestions() {
         return;
       } else if (data && data.status) {
         try {
-          const submit = document.getElementById(
-            'submitMessages',
-          ) as HTMLButtonElement;
-          const e: any = {
-            target: {
-              value,
-            },
-          };
-          handleInputChangeMessages(e);
           setFirstMessage(true);
-          setTimeout(async () => {
-            if (submit) {
-              submit.click();
-            }
-          }, 50);
+          await appendMessages({
+            id: crypto.randomUUID(),
+            content: value,
+            role: 'user',
+            createdAt: new Date(),
+          });
         } catch (error) {
           error;
         }
@@ -96,54 +88,53 @@ export default function ThreeQuestions() {
     }
   };
 
+  const firstName = session?.user?.name?.split(' ')[0] || 'User';
+
   return (
-    <div className="flex h-full w-full items-center justify-center">
-      <div className="flex h-full w-full max-w-lg flex-col items-center justify-center gap-6 px-4">
-        {/* Header Section - Modern & Clean */}
-        <div className="text-center space-y-3">
+    <div className="flex h-full w-full items-center justify-center px-4">
+      <div className="flex w-full max-w-md flex-col items-center gap-5">
+        {/* Header */}
+        <div className="text-center space-y-2">
           <div
-            className="w-14 h-14 mx-auto rounded-3xl flex items-center justify-center shadow-lg"
+            className="w-10 h-10 mx-auto rounded-full flex items-center justify-center"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
           >
-            <Bot className="w-7 h-7 text-white" />
+            <Bot className="w-5 h-5 text-white" />
           </div>
 
-          <div className="space-y-1">
-            <h1 className="text-xl font-black text-slate-900">
-              Halo,{' '}
-              <span style={{ color: mainColor }}>{session?.user.name}</span>
+          <div className="space-y-0.5">
+            <h1 className="text-base font-bold text-gray-900">
+              Halo, {firstName}!
             </h1>
-            <p className="text-slate-500 text-sm font-medium">
-              Bagaimana kami dapat membantu Kamu hari ini?
+            <p className="text-gray-400 text-xs">
+              Ada yang bisa BimBot bantu?
             </p>
           </div>
         </div>
 
-        {/* Question Cards - Vertical Stack */}
-        <div className="flex flex-col gap-3 w-full">
+        {/* Question Cards — bimboard rounded-3xl style */}
+        <div className="flex flex-col gap-2 w-full">
           {ThirdQuestion.map((item, index) => {
             const IconComponent = item.icon;
             return (
               <button
                 key={index}
-                className="group relative overflow-hidden rounded-3xl bg-white p-4 text-left shadow-sm border border-slate-200 transition-all duration-200 hover:shadow-md hover:border-slate-300 active:scale-[0.98]"
+                className="group w-full text-left rounded-2xl bg-gray-50/80 hover:bg-gray-100/80 p-3 transition-all duration-150 active:scale-[0.98] cursor-pointer"
                 onClick={() => handleThreeQuestions(item.question)}
               >
-                {/* Content */}
-                <div className="flex items-start gap-3">
+                <div className="flex items-center gap-2.5">
                   <div
-                    className="w-9 h-9 rounded-3xl flex items-center justify-center flex-shrink-0"
+                    className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
                     style={{ backgroundColor: `${mainColor}12` }}
                   >
                     <IconComponent
-                      className="w-4 h-4"
+                      className="w-3.5 h-3.5"
                       style={{ color: mainColor }}
                     />
                   </div>
-
-                  <p className="text-slate-700 text-sm font-medium leading-relaxed flex-1 pt-1.5">
+                  <p className="text-gray-600 text-xs font-medium leading-snug flex-1">
                     {item.question}
                   </p>
                 </div>
@@ -152,16 +143,11 @@ export default function ThreeQuestions() {
           })}
         </div>
 
-        {/* Footer Text - Compact */}
-        <div className="text-center space-y-2">
-          <p className="text-slate-500 text-xs font-medium">
-            Atau ajukan pertanyaan khusus di kolom chat di bawah
-          </p>
-          <div className="flex items-center justify-center gap-1.5 text-xs text-slate-400">
-            <Sparkles className="w-3 h-3" />
-            <span>Powered by BimBot AI</span>
-          </div>
-        </div>
+        {/* Footer */}
+        <p className="text-gray-300 text-[10px] flex items-center gap-1">
+          <Sparkles className="w-2.5 h-2.5" />
+          Powered by BimBot AI
+        </p>
       </div>
     </div>
   );

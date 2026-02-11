@@ -13,7 +13,7 @@ import {
   IconTailedArrowNext,
   IconTailedArrowPrev,
 } from '@/styles/icon';
-import { useCompletion } from 'ai/react';
+import { useCompletion } from '@ai-sdk/react';
 import Cookies from 'js-cookie';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
