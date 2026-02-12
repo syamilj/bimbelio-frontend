@@ -7,6 +7,7 @@ import { BarChart3, BookOpen, Trophy } from 'lucide-react';
 import { useState } from 'react';
 
 // Components
+import { BetaBanner } from '../_components/beta-banner';
 import QuizOnboarding from '../_components/onboarding/quiz-onboarding';
 import { QuizCardList } from '../_components/quiz-card-list';
 import { QuizLeaderboard } from '../_components/quiz-leaderboard';
@@ -43,6 +44,9 @@ export function BimArenaQuizPageMain() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 md:px-6 space-y-6">
+        {/* Beta Banner */}
+        <BetaBanner />
+
         {/* Target University Banner */}
         {userTarget && <TargetUniversityBanner userTarget={userTarget} />}
 

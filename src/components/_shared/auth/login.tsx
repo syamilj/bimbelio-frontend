@@ -1,7 +1,7 @@
 'use client';
 
 import { useAppContext } from '@/components/provider/provider-app';
-import { Button } from '@/components/ui/button';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import LoadingPage from '@/components/ui/Loading-Page';
 import Logo from '@/components/ui/logo';
 import { env } from '@/env.mjs';
@@ -17,6 +17,9 @@ export const Login = () => {
   const {
     useAuth: { setShowAuth, showAuth },
   } = useAppContext();
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -102,64 +105,58 @@ export const Login = () => {
         )}
 
         {/* Main Modal */}
-        <div className="relative z-10 w-full max-w-md mx-4 bg-white rounded-3xl shadow-2xl overflow-hidden">
-          {/* Gradient Header Background */}
-          <div className="absolute top-0 left-0 right-0 h-3 bg-gradient-to-r from-main-default to-blue-600" />
-          {/* Close button - Floating */}
-          <Button
-            variant="ghost"
-            size="icon"
+        <div className="relative z-10 w-full max-w-sm mx-4 bg-white rounded-3xl overflow-hidden border border-slate-200">
+          {/* Close button */}
+          <button
             onClick={() => setShowAuth((prev) => ({ ...prev, open: false }))}
-            className="absolute top-6 right-4 w-9 h-9 rounded-full hover:bg-main-default/10 cursor-pointer z-[1] transition-all duration-200 hover:scale-110"
+            className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer z-[1] transition-colors"
           >
-            <X className="w-5 h-5 text-main-default" />
-          </Button>{' '}
-          <div className="space-y-4 mt-8 ml-4">
-            <Logo
-              className="text-2xl font-bold text-main-default"
-              // style={{ color: mainColor }}
-            />
-          </div>
+            <X className="w-4 h-4 text-slate-500" />
+          </button>
+
           {/* Header Section */}
-          <div className="pt-4 pb-4 px-6 text-center relative bg-gradient-to-b from-main-default/5 to-white">
-            <div className="space-y-3 mb-2">
-              <div>
-                <h1 className="text-2xl font-bold text-main-default mb-2">
-                  Selamat Datang Kembali!
-                </h1>
-                <p className="text-gray-500 text-sm leading-relaxed">
-                  Lanjutkan perjalanan belajar Kamu dengan akses ke ribuan
-                  materi berkualitas
-                </p>
-              </div>
-            </div>
+          <div className="pt-8 pb-4 px-6 text-center">
+            <Logo
+              className="text-xl font-bold mx-auto mb-4 block"
+              style={{ color: mainColor }}
+            />
+            <h1
+              className="text-xl font-black mb-1.5"
+              style={{ color: mainColor }}
+            >
+              Selamat Datang!
+            </h1>
+            <p className="text-slate-500 text-sm leading-relaxed">
+              Lanjutkan perjalanan belajar Kamu
+            </p>
           </div>
-          {/* Content */}
-          <div className="px-6 pb-8 space-y-6">
-            {/* Main Login Section */}
-            <div className="space-y-4">
-              {/* Google Login Button Container */}
-              <div className="flex justify-center">
-                <GoogleButton handleSubmit={handleSubmit} />
-              </div>
 
-              <p className="text-xs text-center text-gray-500 px-2">
-                Masuk aman dengan autentikasi Google
-              </p>
+          {/* Content */}
+          <div className="px-6 pb-6 space-y-5">
+            <div className="flex justify-center">
+              <GoogleButton handleSubmit={handleSubmit} />
             </div>
 
-            {/* Footer */}
-            <div className="space-y-4 pt-4 border-t border-main-default/10">
-              <p className="text-xs text-center text-gray-500 leading-relaxed px-2">
+            <p className="text-[11px] text-center text-slate-400">
+              Masuk aman dengan autentikasi Google
+            </p>
+
+            <div className="pt-3 border-t border-slate-100">
+              <p className="text-[11px] text-center text-slate-400 leading-relaxed">
                 Dengan melanjutkan, Kamu setuju dengan{' '}
-                <span className="text-main-default font-medium">
+                <span
+                  className="font-bold cursor-pointer hover:underline"
+                  style={{ color: mainColor }}
+                >
                   Ketentuan Layanan
                 </span>
                 {' dan '}
-                <span className="text-main-default font-medium">
+                <span
+                  className="font-bold cursor-pointer hover:underline"
+                  style={{ color: mainColor }}
+                >
                   Kebijakan Privasi
-                </span>{' '}
-                Bimbelio
+                </span>
               </p>
             </div>
           </div>
