@@ -133,6 +133,7 @@ function ChatContent() {
     if (res?.data?.length === 0) {
       setPrevChatMessages([]);
     }
+    return res;
   }, [historyId, websiteSubCategoryId]);
 
   // Clear previous messages immediately when switching chats

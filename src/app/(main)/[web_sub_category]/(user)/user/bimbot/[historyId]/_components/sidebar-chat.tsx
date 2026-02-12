@@ -23,7 +23,7 @@ export default function SidebarChat() {
   // const params = useParams();
   const router = useRouter();
   const pathname = usePathname();
-  const { isMinimized, setIsMinimized } = useChatContext();
+  const { isMinimized, setIsMinimized, historyVersion } = useChatContext();
 
   // Get dynamic colors from the selected category
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -38,6 +38,15 @@ export default function SidebarChat() {
       setData: setChatHistory,
     });
   }, [session]);
+
+  // Refetch chat history when historyVersion changes (e.g. AI-generated title)
+  useEffect(() => {
+    if (historyVersion > 0) {
+      getGeneral(`/chat/getAllHistoryByUserId?userId=${session?.user.id}`, {
+        setData: setChatHistory,
+      });
+    }
+  }, [historyVersion]);
 
   const createNewChat = async (payload: { title: string }) => {
     let sendData: any = null;
@@ -95,9 +104,12 @@ export default function SidebarChat() {
     e.preventDefault();
     setLoading(true);
     if (newChatInput.trim()) {
-      const res = await createNewChat({ title: newChatInput });
+      const userMessage = newChatInput;
+      const res = await createNewChat({ title: 'Chat Baru' });
       setNewChatInput('');
-      router.push(`/${website_sub_category_id}/user/bimbot/${res.id}`);
+      router.push(
+        `/${website_sub_category_id}/user/bimbot/${res.id}?new=${encodeURIComponent(userMessage)}`,
+      );
     } else {
       setLoading(false);
     }

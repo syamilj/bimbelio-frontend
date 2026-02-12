@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 export default function ChatContent({ historyId }: { historyId: string }) {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const { isMinimized, setIsMinimized } = useChatContext();
+  const { isMinimized, setIsMinimized, refreshHistory } = useChatContext();
 
   // Get dynamic colors from the selected category
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -25,13 +25,14 @@ export default function ChatContent({ historyId }: { historyId: string }) {
   const [messageError, setMessageError] = useState<string | null>(null);
 
   const getMessages = async () => {
-    await getGeneral(`/chat/getAllMessageByHistoryId?historyId=${historyId}`, {
+    const res = await getGeneral(`/chat/getAllMessageByHistoryId?historyId=${historyId}`, {
       setData: setPrevChatMessages,
       setLoading: setIsLoadingPrevMessage,
       onError({ message }) {
         setMessageError(message);
       },
     });
+    return res;
   };
 
   useEffect(() => {
@@ -70,6 +71,7 @@ export default function ChatContent({ historyId }: { historyId: string }) {
           isLoadingPrevMessage,
         }}
         fetchMessages={getMessages}
+        onChatFinish={refreshHistory}
       />
     </div>
   );

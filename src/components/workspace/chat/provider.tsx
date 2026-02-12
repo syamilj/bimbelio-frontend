@@ -170,23 +170,30 @@ export default function Provider({
     },
     onFinish: () => {
       setFirstMessage(false);
-      // Wait for backend to save, then silently clear streaming messages.
-      // We DON'T replace messageData here — instead, clear streaming messages
-      // so the unified effect picks up prevChatMessages naturally (via SWR revalidation).
-      // This avoids a scroll jump from atomically swapping all messages.
+      // Wait for backend to save, then atomically swap messages.
+      // Guard BEFORE fetching so intermediate renders (from setPrevChatMessages
+      // inside fetchMessages) don't cause scroll jumps via StickToBottom.
       const tryClearStreaming = (attempt: number) => {
+        manualTransitionRef.current = true;
         fetchMessagesRef.current().then((res) => {
           const savedMessages = Array.isArray(res?.data) ? res.data : [];
           if (savedMessages.length > 0) {
-            // Silently clear streaming messages; the unified effect will
-            // rebuild messageData from the now-updated prevChatMessages.
+            // Atomically set final data and clear streaming in one batch
+            setMessageData([GREETING_MESSAGE, ...savedMessages]);
             setMessages([]);
+            // Unguard after React processes the batched state updates
+            requestAnimationFrame(() => {
+              manualTransitionRef.current = false;
+            });
             return;
           }
-          // Retry once if save hasn't landed yet
+          // No saved messages yet — unguard and retry
+          manualTransitionRef.current = false;
           if (attempt < 2) {
             setTimeout(() => tryClearStreaming(attempt + 1), 1500);
           }
+        }).catch(() => {
+          manualTransitionRef.current = false;
         });
       };
       setTimeout(() => tryClearStreaming(0), 2000);
@@ -242,24 +249,37 @@ export default function Provider({
     },
     onFinish: () => {
       setTimeout(() => {
+        manualTransitionRef.current = true;
         fetchMessagesRef.current().then((res) => {
           const savedMessages = Array.isArray(res?.data) ? res.data : [];
           if (savedMessages.length > 0) {
-            manualTransitionRef.current = true;
             setMessageData([GREETING_MESSAGE, ...savedMessages]);
             setMessagesEdit([]);
+            requestAnimationFrame(() => {
+              manualTransitionRef.current = false;
+            });
             return;
           }
+          manualTransitionRef.current = false;
           setTimeout(() => {
+            manualTransitionRef.current = true;
             fetchMessagesRef.current().then((retryRes) => {
               const retrySaved = Array.isArray(retryRes?.data) ? retryRes.data : [];
               if (retrySaved.length > 0) {
-                manualTransitionRef.current = true;
                 setMessageData([GREETING_MESSAGE, ...retrySaved]);
                 setMessagesEdit([]);
+                requestAnimationFrame(() => {
+                  manualTransitionRef.current = false;
+                });
+              } else {
+                manualTransitionRef.current = false;
               }
+            }).catch(() => {
+              manualTransitionRef.current = false;
             });
           }, 1200);
+        }).catch(() => {
+          manualTransitionRef.current = false;
         });
       }, 2000);
     },
@@ -347,9 +367,10 @@ export default function Provider({
   // Single source of truth for messageData. Priority: edit > stream > saved > empty.
   // Lives in provider so onFinish can guard it via manualTransitionRef.
   useEffect(() => {
-    // Skip if onFinish just performed an atomic transition
+    // Skip if onFinish is performing an atomic transition.
+    // The ref is managed by onFinish: set to true before fetch starts,
+    // and cleared after .then() completes or on error.
     if (manualTransitionRef.current) {
-      manualTransitionRef.current = false;
       return;
     }
 
