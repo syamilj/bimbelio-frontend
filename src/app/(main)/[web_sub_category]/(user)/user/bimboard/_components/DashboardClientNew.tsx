@@ -275,8 +275,7 @@ export default function DashboardClientNew() {
           progress: Math.round(progress),
           totalChapters,
           completedChapters,
-          thumbnail:
-            getImageUrl(course.thumbnail || course.image, 'course') || null,
+          thumbnail: course.image,
           lastAccessed: course.updatedAt || course.createdAt,
         };
       });
@@ -438,8 +437,7 @@ export default function DashboardClientNew() {
           id: course.id,
           name: course.name,
           category: course.Category?.name || 'Umum',
-          thumbnail:
-            getImageUrl(course.thumbnail || course.image, 'course') || null,
+          thumbnail: course.image,
           progress: Math.round(progress),
           isLocked: false, // TODO: check lock status
           isPremium: course.accessType === 'PREMIUM',
@@ -649,6 +647,8 @@ export default function DashboardClientNew() {
       fetchDashboardData();
     }
   }, [session, fetchDashboardData]);
+
+  console.log({ data });
 
   if (loading) {
     return (

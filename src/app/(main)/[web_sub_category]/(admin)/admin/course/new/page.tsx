@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MultiSelectVisibleAt } from '@/components/ui/multi-select-visibleAt';
 import LoadingPageWithText, { Spinner } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
+import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
@@ -51,6 +52,8 @@ export interface SubChapterProps {
   document?: string;
   documentTitle?: string;
   materi?: string;
+  image?: string | null;
+  imageFile?: File | null;
   status?: 'DRAFT' | 'PUBLISH' | 'UPCOMING';
   publishedAt?: Date | string;
   Questions: QuestionProps[];
@@ -70,31 +73,30 @@ const Index = () => {
   const EditSubChapter =
     currentIndexEdit !== null ? subChapter[currentIndexEdit] : null;
   const [assessmentType, setAssesmentType] = useState<string>('+5/0');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { mutate: createCourse, isLoading } = useMutation(
-    '/course/createCourse',
-    'post',
-    {
-      onSuccess() {
-        toaster({
-          title: 'Berhasil!',
-          description: 'Kursus berhasil dibuat',
-          condition: 'success',
-          duration: 3000,
-        });
-        resetCourse({ deleteFile: false });
-        router.push(`/${website_sub_category_id}/admin/course`);
-      },
-      onError({ message }) {
-        toaster({
-          title: 'Gagal!',
-          description: message,
-          condition: 'warning',
-          duration: 3000,
-        });
-      },
+  const { mutate: createCourse } = useMutation('/course/createCourse', 'post', {
+    onSuccess() {
+      setIsLoading(false);
+      toaster({
+        title: 'Berhasil!',
+        description: 'Kursus berhasil dibuat',
+        condition: 'success',
+        duration: 3000,
+      });
+      resetCourse({ deleteFile: false });
+      router.push(`/${website_sub_category_id}/admin/course`);
     },
-  );
+    onError({ message }) {
+      setIsLoading(false);
+      toaster({
+        title: 'Gagal!',
+        description: message,
+        condition: 'warning',
+        duration: 3000,
+      });
+    },
+  });
 
   const { data: category, isLoading: isLoadingCategory } = useGet<Category[]>(
     '/category/getAllCategoryAdminCourse',
@@ -185,14 +187,18 @@ const Index = () => {
     return value;
   };
 
-  const handleSubmit = () => {
-    if (subChapter.length === 0)
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    if (subChapter.length === 0) {
       toaster({
         title: 'Error',
         description: 'Buat Minimal 1 Sub Chapter',
         condition: 'warning',
         duration: 3000,
       });
+      setIsLoading(false);
+      return;
+    }
     let checkTitleSubChapter = { value: false, message: '' };
     let checkSpendTimeSubChapter = { value: false, message: '' };
     let checkDescriptionSubChapter = { value: false, message: '' };
@@ -272,31 +278,85 @@ const Index = () => {
         }
       }
     });
-    if (showToast(checkTitleSubChapter)) return;
-    if (showToast(checkSpendTimeSubChapter)) return;
-    if (showToast(checkDescriptionSubChapter)) return;
-    if (showToast(checkTypeSubChapter)) return;
-    if (showToast(checkQuestion)) return;
-    if (showToast(checkAnswers)) return;
-    if (showToast(checkDocument)) return;
-    if (showToast(checkVideo)) return;
-    if (showToast(checkMateri)) return;
+    if (showToast(checkTitleSubChapter)) {
+      setIsLoading(false);
+      return;
+    }
+    if (showToast(checkSpendTimeSubChapter)) {
+      setIsLoading(false);
+      return;
+    }
+    if (showToast(checkDescriptionSubChapter)) {
+      setIsLoading(false);
+      return;
+    }
+    if (showToast(checkTypeSubChapter)) {
+      setIsLoading(false);
+      return;
+    }
+    if (showToast(checkQuestion)) {
+      setIsLoading(false);
+      return;
+    }
+    if (showToast(checkAnswers)) {
+      setIsLoading(false);
+      return;
+    }
+    if (showToast(checkDocument)) {
+      setIsLoading(false);
+      return;
+    }
+    if (showToast(checkVideo)) {
+      setIsLoading(false);
+      return;
+    }
+    if (showToast(checkMateri)) {
+      setIsLoading(false);
+      return;
+    }
 
     if (!chapter?.categoryId) {
+      setIsLoading(false);
       showToast({ value: true, message: 'Pilih Course Kategori' });
       return;
     }
     if (chapter.status === undefined) {
+      setIsLoading(false);
       showToast({ value: true, message: 'Pilih Course Status' });
       return;
     }
     if (!chapter?.title) {
+      setIsLoading(false);
       showToast({ value: true, message: 'Masukan Judul Course' });
       return;
     }
     if (!chapter?.number) {
+      setIsLoading(false);
       showToast({ value: true, message: 'Masukan Number Course' });
       return;
+    }
+
+    let subChapterData = subChapter;
+
+    for (const sub of subChapterData) {
+      if (sub.imageFile) {
+        const newFilename = `${crypto.randomUUID().slice(0, 8)}`;
+        const upload = await storage
+          .from('img')
+          .upload(`course/${newFilename}`, sub.imageFile);
+        if (upload?.error) {
+          toaster({
+            title: 'Error',
+            description:
+              upload?.error?.message ||
+              'Terjadi kesalahan saat mengupload gambar.',
+            condition: 'warning',
+          });
+          setIsLoading(false);
+          return;
+        }
+        sub.image = `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/course/${newFilename}`;
+      }
     }
 
     const CourseSubChapter = subChapter.map((sChapter) => {
@@ -312,6 +372,7 @@ const Index = () => {
         video: sChapter.video,
         materi: sChapter.materi,
         status: sChapter.status,
+        image: sChapter.image || null,
         publishedAt:
           sChapter.publishedAt && sChapter.status === 'PUBLISH'
             ? sChapter.publishedAt

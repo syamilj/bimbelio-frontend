@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { InputImage } from '@/components/ui/input-image';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -12,7 +13,7 @@ import {
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
-import { getDateForInputDateTime } from '@/lib/utils';
+import { cn, getDateForInputDateTime } from '@/lib/utils';
 import { storage } from '@/supabaseClient';
 import { Crown, FileText, Play, Video } from 'lucide-react';
 import React, { SetStateAction } from 'react';
@@ -170,88 +171,127 @@ const SubChapterHeading = ({
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="type">Tipe Materi *</Label>
-            <Select
-              value={EditSubChapter.type || ''}
-              onValueChange={(value) => {
-                handleChangeType(
-                  value as 'TRYOUT' | 'VIDEO' | 'DOCUMENT' | 'MATERI',
-                );
-              }}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Pilih tipe...">
-                  {EditSubChapter.type && (
-                    <div className="flex items-center gap-2">
-                      {getTypeIcon(EditSubChapter.type)}
-                      <span>{EditSubChapter.type}</span>
-                    </div>
-                  )}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="DOCUMENT">
-                  <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4" />
-                    Document
-                  </div>
-                </SelectItem>
-                <SelectItem value="MATERI">
-                  <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4" />
-                    Materi
-                  </div>
-                </SelectItem>
-                <SelectItem value="VIDEO">
-                  <div className="flex items-center gap-2">
-                    <Video className="h-4 w-4" />
-                    Video
-                  </div>
-                </SelectItem>
-                <SelectItem value="TRYOUT">
-                  <div className="flex items-center gap-2">
-                    <Play className="h-4 w-4" />
-                    Tryout
-                  </div>
-                </SelectItem>
-                <SelectItem value="PROGRESS_TEST">
-                  <div className="flex items-center gap-2">
-                    <Play className="h-4 w-4" />
-                    Uji Progress
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+        <div className="grid grid-cols-2">
+          {EditSubChapter.type === 'PROGRESS_TEST' && (
+            <div className="flex flex-col gap-2">
+              <Label>
+                Upload Thumbnail{' '}
+                <span className="text-gray-400 text-sm">(Optional)</span>
+              </Label>
 
-          <div>
-            <Label>Status Premium</Label>
-            <div className="flex items-center space-x-3 p-3 border border-gray-200 rounded-3xl">
-              <Switch
-                checked={EditSubChapter.premium}
-                onCheckedChange={(checked) => {
-                  setSubChapter((prev) =>
-                    prev.map((sChapter, index) => {
-                      if (index === currentIndexEdit) {
-                        return { ...sChapter, premium: checked };
-                      }
-                      return sChapter;
-                    }),
-                  );
+              <InputImage
+                preview={
+                  EditSubChapter.image ? EditSubChapter.image : undefined
+                }
+                imageFile={EditSubChapter.imageFile}
+                onChange={async (image) => {
+                  if (image) {
+                    setSubChapter((prev) =>
+                      prev.map((sChapter, index) => {
+                        if (index === currentIndexEdit) {
+                          return {
+                            ...sChapter,
+                            imageFile: image,
+                          };
+                        }
+                        return sChapter;
+                      }),
+                    );
+                  }
                 }}
               />
-              <div className="flex items-center gap-2">
-                <Crown className="h-4 w-4 text-yellow-500" />
-                <Label>Konten Premium</Label>
-              </div>
             </div>
-            <p className="text-xs text-gray-500 mt-1">
-              {EditSubChapter.premium
-                ? 'Hanya dapat diakses oleh pengguna premium'
-                : 'Dapat diakses oleh semua pengguna'}
-            </p>
+          )}
+
+          <div
+            className={cn(
+              EditSubChapter.type === 'PROGRESS_TEST'
+                ? 'grid grid-cols-1 gap-4'
+                : 'col-span-2 grid grid-cols-2 gap-4',
+            )}
+          >
+            <div>
+              <Label htmlFor="type">Tipe Materi *</Label>
+              <Select
+                value={EditSubChapter.type || ''}
+                onValueChange={(value) => {
+                  handleChangeType(
+                    value as 'TRYOUT' | 'VIDEO' | 'DOCUMENT' | 'MATERI',
+                  );
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Pilih tipe...">
+                    {EditSubChapter.type && (
+                      <div className="flex items-center gap-2">
+                        {getTypeIcon(EditSubChapter.type)}
+                        <span>{EditSubChapter.type}</span>
+                      </div>
+                    )}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="DOCUMENT">
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-4 w-4" />
+                      Document
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="MATERI">
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-4 w-4" />
+                      Materi
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="VIDEO">
+                    <div className="flex items-center gap-2">
+                      <Video className="h-4 w-4" />
+                      Video
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="TRYOUT">
+                    <div className="flex items-center gap-2">
+                      <Play className="h-4 w-4" />
+                      Tryout
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="PROGRESS_TEST">
+                    <div className="flex items-center gap-2">
+                      <Play className="h-4 w-4" />
+                      Uji Progress
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label>Status Premium</Label>
+              <div className="flex items-center space-x-3 p-3 border border-gray-200 rounded-3xl">
+                <Switch
+                  checked={EditSubChapter.premium}
+                  onCheckedChange={(checked) => {
+                    setSubChapter((prev) =>
+                      prev.map((sChapter, index) => {
+                        if (index === currentIndexEdit) {
+                          return { ...sChapter, premium: checked };
+                        }
+                        return sChapter;
+                      }),
+                    );
+                  }}
+                />
+                <div className="flex items-center gap-2">
+                  <Crown className="h-4 w-4 text-yellow-500" />
+                  <Label>Konten Premium</Label>
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">
+                {EditSubChapter.premium
+                  ? 'Hanya dapat diakses oleh pengguna premium'
+                  : 'Dapat diakses oleh semua pengguna'}
+              </p>
+            </div>
           </div>
         </div>
         {/* Status Setting */}

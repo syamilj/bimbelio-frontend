@@ -158,7 +158,6 @@ export default function BimLearningProgress({
             <BookOpen className="w-4 h-4" />
             <BimCourse />
           </button>
-
         </div>
       </div>
 
@@ -347,7 +346,7 @@ export default function BimLearningProgress({
                   <Link
                     key={course.id}
                     href={`/${website_sub_category_id}/user/bimcourse/${course.id}`}
-                    className="group relative bg-white rounded-3xl border-2 border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all overflow-hidden flex-shrink-0 w-[280px] md:w-auto"
+                    className="group relative bg-white rounded-3xl border-2 border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all overflow-hidden flex-shrink-0 w-[280px] md:w-auto h-fit"
                   >
                     {/* Progress Ring - Top Right */}
                     <div className="absolute -top-2 -right-2 z-10">
@@ -386,18 +385,18 @@ export default function BimLearningProgress({
                     </div>
 
                     {/* Thumbnail */}
-                    <div className="relative h-36 overflow-hidden bg-slate-100">
+                    <div className="relative w-full overflow-hidden bg-slate-100">
                       {course.thumbnail ? (
                         <Image
                           src={course.thumbnail}
                           alt={course.name}
-                          fill
-                          className="object-cover group-hover:scale-110 transition-transform duration-500"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          width={300}
+                          height={200}
+                          className="w-full h-auto object-contain group-hover:scale-110 transition-transform duration-500"
                         />
                       ) : (
                         <div
-                          className="w-full h-full flex items-center justify-center"
+                          className="w-full h-36 flex items-center justify-center"
                           style={{
                             background: `linear-gradient(135deg, ${mainColor}, ${mainColor}80)`,
                           }}

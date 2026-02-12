@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 type InputImageProps = {
   onChange?: (image: File | undefined) => void;
+  imageFile?: File | null;
   preview?: string;
   // showPreview?: boolean;
   placeholder?: string;
@@ -15,6 +16,7 @@ type InputImageProps = {
 export function InputImage({
   onChange,
   preview,
+  imageFile,
   // showPreview,
   placeholder,
   required,
@@ -30,8 +32,16 @@ export function InputImage({
   // }, [showPreview]);
 
   useEffect(() => {
-    if (preview) setPreviewImg(preview);
-  }, [preview]);
+    if (!preview && !imageFile) setPreviewImg(null);
+    if (imageFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const src = reader.result as string;
+        setPreviewImg(src);
+      };
+      reader.readAsDataURL(imageFile);
+    } else if (preview) setPreviewImg(preview);
+  }, [preview, imageFile]);
 
   return (
     <div

@@ -378,7 +378,7 @@ export default function CardTryOut({
                 {item.isCouponOnly ? (
                   <Badge className="bg-purple-50 text-purple-700 border-purple-200 font-bold flex items-center gap-1">
                     <Gift className="w-3 h-3" />
-                    <span className="text-xs">COUPON ONLY</span>
+                    <span className="text-xs">BimPartner</span>
                   </Badge>
                 ) : (
                   <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 font-bold flex items-center gap-1">
