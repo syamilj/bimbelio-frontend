@@ -614,7 +614,7 @@ const DialogKunciJawaban = ({ children }: { children: ReactNode }) => {
                 {session.questions.map((question) => (
                   <div
                     key={question.number}
-                    className="flex gap-2 rounded-lg bg-gray-50 p-3 border border-gray-200"
+                    className="flex gap-2 rounded-3xl bg-gray-50 p-3 border border-gray-200"
                   >
                     <p className="text-xs font-medium text-gray-600">
                       {question.number}.

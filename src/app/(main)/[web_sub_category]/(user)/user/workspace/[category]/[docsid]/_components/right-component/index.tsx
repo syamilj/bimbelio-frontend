@@ -187,7 +187,7 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
       {/* Reset Confirmation Modal */}
       {(isLoading ? true : isResetModalOpen) && (
         <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div className="flex w-[380px] flex-col items-center rounded-2xl bg-white p-6 text-center shadow-xl border border-slate-200/50">
+          <div className="flex w-[380px] flex-col items-center rounded-3xl bg-white p-6 text-center shadow-xl border border-slate-200/50">
             <div className="flex flex-col gap-3">
               {tab === 'chat' ? (
                 <p className="text-sm text-slate-600">
@@ -202,7 +202,7 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
             </div>
             <div className="mt-5 flex gap-3 w-full">
               <button
-                className="flex-1 rounded-xl bg-red-50 border border-red-200 py-2 text-sm font-medium text-red-600 hover:bg-red-100 transition-colors"
+                className="flex-1 rounded-3xl bg-red-50 border border-red-200 py-2 text-sm font-medium text-red-600 hover:bg-red-100 transition-colors"
                 disabled={isLoading}
                 onClick={async () => {
                   if (tab === 'chat') {
@@ -220,7 +220,7 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
                 )}
               </button>
               <button
-                className="flex-1 rounded-xl border border-slate-200 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50 transition-colors"
+                className="flex-1 rounded-3xl border border-slate-200 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50 transition-colors"
                 disabled={isLoading}
                 onClick={() => {
                   setIsResetModalOpen(false);
@@ -262,7 +262,7 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
                   <TabsTrigger
                     value={item.value}
                     className={cn(
-                      'relative flex items-center gap-1.5 rounded-xl border border-transparent px-3 py-1.5 text-xs font-medium text-slate-500 transition-all duration-200',
+                      'relative flex items-center gap-1.5 rounded-3xl border border-transparent px-3 py-1.5 text-xs font-medium text-slate-500 transition-all duration-200',
                       'data-[state=active]:border-slate-200 data-[state=active]:bg-white data-[state=active]:text-slate-800 data-[state=active]:shadow-sm',
                       'hover:bg-slate-100/80',
                       headerTab === item.value && 'gap-1.5 border-slate-200 bg-white text-slate-800 shadow-sm',
@@ -285,7 +285,7 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
           <div className="flex items-center gap-1">
             <ToolTip value="Laporkan Bug">
               <button
-                className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-slate-100 text-slate-400 transition-colors"
+                className="w-7 h-7 rounded-3xl flex items-center justify-center hover:bg-slate-100 text-slate-400 transition-colors"
                 onClick={() => {
                   setIsReportBugOpen(true);
                   setShowSidebar(false);
@@ -297,7 +297,7 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
             {tab !== 'notes' && (
               <ToolTip value={tab === 'chat' ? 'Reset Message' : 'Reset Quiz'}>
                 <button
-                  className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-slate-100 text-slate-400 transition-colors"
+                  className="w-7 h-7 rounded-3xl flex items-center justify-center hover:bg-slate-100 text-slate-400 transition-colors"
                   onClick={() => {
                     setIsResetModalOpen(true);
                     setShowSidebar(false);
@@ -310,7 +310,7 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
             {mobileScreen === 'minimize' && (
               <ToolTip value="Fullscreen">
                 <button
-                  className="w-7 h-7 rounded-lg flex items-center justify-center border border-slate-200 hover:bg-slate-50 text-slate-400 transition-colors"
+                  className="w-7 h-7 rounded-3xl flex items-center justify-center border border-slate-200 hover:bg-slate-50 text-slate-400 transition-colors"
                   onClick={() => {
                     const chatAIContainer = document.querySelector('.chatAIContainer') as HTMLDivElement;
                     const DocumentContainer = document.querySelector('.DocumentContainer') as HTMLDivElement;
@@ -328,7 +328,7 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
             {mobileScreen === 'fullscreen' && (
               <ToolTip value="Minimize">
                 <button
-                  className="w-7 h-7 rounded-lg flex items-center justify-center border border-slate-200 hover:bg-slate-50 text-slate-400 transition-colors"
+                  className="w-7 h-7 rounded-3xl flex items-center justify-center border border-slate-200 hover:bg-slate-50 text-slate-400 transition-colors"
                   onClick={() => {
                     const chatAIContainer = document.querySelector('.chatAIContainer') as HTMLDivElement;
                     const DocumentContainer = document.querySelector('.DocumentContainer') as HTMLDivElement;

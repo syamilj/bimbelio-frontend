@@ -654,7 +654,7 @@ const BySubCategoryTab = ({
             ))}
           </LineChart>
         </ChartContainer>
-        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-3xl">
           <p className="text-sm text-blue-700 mb-2">
             <span className="font-semibold">Keterangan Inisial:</span>
           </p>

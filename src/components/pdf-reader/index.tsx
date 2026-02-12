@@ -341,7 +341,7 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
           >
             <div className="p-3 pb-0">
               {doc.video?.url?.length > 0 && (
-                <div className="relative rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 bg-black">
+                <div className="relative rounded-3xl overflow-hidden shadow-sm border border-slate-200/80 bg-black">
                   <video
                     ref={videoRef}
                     controls
@@ -352,7 +352,7 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
               )}
               <div className="flex w-full items-center justify-end px-1 py-1">
                 <button
-                  className="rounded-md bg-slate-50 hover:bg-slate-100 px-2.5 py-0.5 text-[10px] text-slate-500 font-medium transition-colors border border-slate-200/60"
+                  className="rounded-3xl bg-slate-50 hover:bg-slate-100 px-2.5 py-0.5 text-[10px] text-slate-500 font-medium transition-colors border border-slate-200/60"
                   onClick={() => setHideVideo(true)}
                 >
                   Sembunyikan Video
@@ -379,7 +379,7 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
           />
           {hideVideo && doc?.video && (
             <button
-              className="absolute right-3 top-3 z-49 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 px-4 py-1.5 text-xs font-medium shadow-sm hover:shadow transition-all"
+              className="absolute right-3 top-3 z-49 rounded-3xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 px-4 py-1.5 text-xs font-medium shadow-sm hover:shadow transition-all"
               onClick={() => {
                 setHideVideo(false);
               }}

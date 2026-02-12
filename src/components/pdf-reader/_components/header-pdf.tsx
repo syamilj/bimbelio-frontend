@@ -105,7 +105,7 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
           href={'/explore'}
           className={cn(
             buttonVariants({ variant: 'ghost', size: 'sm' }),
-            'w-8 h-8 p-0 rounded-xl shrink-0',
+            'w-8 h-8 p-0 rounded-3xl shrink-0',
           )}
         >
           <ChevronLeftIcon className="h-4 w-4 text-slate-500" />
@@ -118,7 +118,7 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
       {/* Right: Controls */}
       <div className="flex items-center gap-1 md:gap-1.5 w-full md:w-auto justify-between md:justify-end">
         {/* Page Navigation */}
-        <div className="flex items-center gap-1.5 bg-slate-50 rounded-xl px-2 py-1 border border-slate-200/60">
+        <div className="flex items-center gap-1.5 bg-slate-50 rounded-3xl px-2 py-1 border border-slate-200/60">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -128,7 +128,7 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
             <input
               type="text"
               value={editPage ? currentPage : !editPage && currentPage}
-              className="w-[28px] text-center text-xs font-medium bg-white rounded-lg py-0.5 border border-slate-200 outline-none focus:border-blue-400 transition-colors"
+              className="w-[28px] text-center text-xs font-medium bg-white rounded-3xl py-0.5 border border-slate-200 outline-none focus:border-blue-400 transition-colors"
               onChange={(e: any) => {
                 if (
                   !isNaN(e.target.value) &&
@@ -149,7 +149,7 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
         <div className="flex items-center">
           <ToolTip value="Zoom out">
             <button
-              className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-slate-100 transition-colors"
+              className="w-7 h-7 rounded-3xl flex items-center justify-center hover:bg-slate-100 transition-colors"
               onClick={() => handleZoom('min')}
             >
               <IconMinus className="text-slate-400" w={12} />
@@ -157,7 +157,7 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
           </ToolTip>
           <ToolTip value="Reset zoom">
             <button
-              className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-slate-100 transition-colors"
+              className="w-7 h-7 rounded-3xl flex items-center justify-center hover:bg-slate-100 transition-colors"
               onClick={() => handleZoom('reset')}
             >
               <IconRegenerateMessage w={14} className="text-slate-400" />
@@ -165,7 +165,7 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
           </ToolTip>
           <ToolTip value="Zoom in">
             <button
-              className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-slate-100 transition-colors"
+              className="w-7 h-7 rounded-3xl flex items-center justify-center hover:bg-slate-100 transition-colors"
               onClick={() => handleZoom('plus')}
             >
               <IconPlus className="text-slate-400" w={12} />
@@ -177,7 +177,7 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
         <ToolTip value="Vision" className="hidden md:flex">
           <button
             className={cn(
-              'w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-200 border',
+              'w-7 h-7 rounded-3xl flex items-center justify-center transition-all duration-200 border',
               vision
                 ? 'bg-blue-500 text-white border-blue-500 hover:bg-blue-600'
                 : 'bg-white text-slate-400 border-slate-200 hover:bg-slate-50',
@@ -192,7 +192,7 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
         {mobileScreen === 'minimize' && (
           <ToolTip value="Fullscreen" className={cn(inCourse && 'hidden md:block')}>
             <button
-              className="w-7 h-7 rounded-lg flex items-center justify-center border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 transition-colors"
+              className="w-7 h-7 rounded-3xl flex items-center justify-center border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 transition-colors"
               onClick={() => {
                 const chatAIContainer = document.querySelector('.chatAIContainer') as HTMLDivElement;
                 const DocumentContainer = document.querySelector('.DocumentContainer') as HTMLDivElement;
@@ -212,7 +212,7 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
         {mobileScreen === 'fullscreen' && (
           <ToolTip value="Minimize" className={cn(inCourse && 'hidden md:block')}>
             <button
-              className="w-7 h-7 rounded-lg flex items-center justify-center border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 transition-colors"
+              className="w-7 h-7 rounded-3xl flex items-center justify-center border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 transition-colors"
               onClick={() => {
                 const chatAIContainer = document.querySelector('.chatAIContainer') as HTMLDivElement;
                 const DocumentContainer = document.querySelector('.DocumentContainer') as HTMLDivElement;
@@ -234,7 +234,7 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
           <SubmitCourse />
         )}
         {inCourse && sub && isCourseDone === true && (
-          <div className="flex items-center gap-1 rounded-md bg-emerald-500/10 px-2 py-0.5 text-[10px] text-emerald-600 font-medium">
+          <div className="flex items-center gap-1 rounded-3xl bg-emerald-500/10 px-2 py-0.5 text-[10px] text-emerald-600 font-medium">
             <IconCheckList className="text-emerald-500 w-2.5 h-2.5" />
             Selesai
           </div>

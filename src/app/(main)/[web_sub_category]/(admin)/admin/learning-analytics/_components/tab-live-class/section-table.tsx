@@ -199,7 +199,7 @@ export const SectionTable = ({
                       <TableCell>
                         <Badge
                           variant="outline"
-                          className="rounded-lg"
+                          className="rounded-3xl"
                         >
                           {liveclass.Category.name}
                         </Badge>
@@ -227,7 +227,7 @@ export const SectionTable = ({
                       <TableCell>
                         <Badge
                           className={cn(
-                            `rounded-lg`,
+                            `rounded-3xl`,
                             liveclass.type === 'LIVECLASS' &&
                               'bg-green-100 text-green-800',
                             liveclass.type === 'LIVESTREAM' &&
@@ -245,7 +245,7 @@ export const SectionTable = ({
                       </TableCell>
                       <TableCell>
                         <Badge
-                          className={`rounded-lg ${getStatusColor(liveclass?.status)}`}
+                          className={`rounded-3xl ${getStatusColor(liveclass?.status)}`}
                         >
                           {liveclass?.status}
                         </Badge>

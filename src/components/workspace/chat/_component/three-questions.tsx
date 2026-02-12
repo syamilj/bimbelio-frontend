@@ -121,7 +121,7 @@ export default function ThreeQuestions() {
             return (
               <button
                 key={index}
-                className="group w-full text-left rounded-2xl bg-gray-50/80 hover:bg-gray-100/80 p-3 transition-all duration-150 active:scale-[0.98] cursor-pointer"
+                className="group w-full text-left rounded-3xl bg-gray-50/80 hover:bg-gray-100/80 p-3 transition-all duration-150 active:scale-[0.98] cursor-pointer"
                 onClick={() => handleThreeQuestions(item.question)}
               >
                 <div className="flex items-center gap-2.5">

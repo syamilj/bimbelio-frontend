@@ -85,7 +85,7 @@ export const UserDataOverview = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center"
+                      className="w-10 h-10 rounded-3xl flex items-center justify-center"
                       style={{ backgroundColor: `${mainColor}15` }}
                     >
                       <Mail
@@ -101,7 +101,7 @@ export const UserDataOverview = () => {
 
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center"
+                      className="w-10 h-10 rounded-3xl flex items-center justify-center"
                       style={{ backgroundColor: `${mainColor}15` }}
                     >
                       <Phone
@@ -134,7 +134,7 @@ export const UserDataOverview = () => {
                 {/* University Choices */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div
-                    className="p-3 rounded-lg"
+                    className="p-3 rounded-3xl"
                     style={{ backgroundColor: `${mainColor}08` }}
                   >
                     <p className="text-xs text-gray-500 mb-1">Pilihan 1</p>
@@ -147,7 +147,7 @@ export const UserDataOverview = () => {
                   </div>
 
                   <div
-                    className="p-3 rounded-lg"
+                    className="p-3 rounded-3xl"
                     style={{ backgroundColor: `${secondaryColor}08` }}
                   >
                     <p className="text-xs text-gray-500 mb-1">Pilihan 2</p>
@@ -219,7 +219,7 @@ export const UserDataOverview = () => {
                 UserData.program.map((prog, idx) => (
                   <div
                     key={idx}
-                    className="p-3 rounded-lg"
+                    className="p-3 rounded-3xl"
                     style={{ backgroundColor: `${mainColor}08` }}
                   >
                     <p className="font-semibold text-sm">{prog.name}</p>
@@ -247,7 +247,7 @@ export const UserDataOverview = () => {
                 {UserData?.pendingProgram.map((prog, idx) => (
                   <div
                     key={idx}
-                    className="p-3 rounded-lg bg-yellow-50"
+                    className="p-3 rounded-3xl bg-yellow-50"
                   >
                     <p className="font-semibold text-sm">{prog.name}</p>
                   </div>
