@@ -43,7 +43,7 @@ export default function Result({ setAccuracy }: { setAccuracy: any }) {
       <h1 className="font-regular w-full text-center text-[2.5rem]">
         Hasil Akhir
       </h1>
-      <div className="flex flex-col items-center gap-[1rem] rounded-[1rem] bg-flascardResult py-[1rem]">
+      <div className="flex flex-col items-center gap-[1rem] rounded-3xl bg-flascardResult py-[1rem]">
         <IconAward
           w={60}
           className="text-main"
@@ -51,7 +51,7 @@ export default function Result({ setAccuracy }: { setAccuracy: any }) {
         <p className="font-medium">{quiz?.accuracy.toFixed(2)}% akurasi</p>
       </div>
       <div className="grid grid-cols-2 gap-[1rem]">
-        <div className="flex gap-[.5rem] rounded-[1rem] bg-flascardResult p-[1rem]">
+        <div className="flex gap-[.5rem] rounded-3xl bg-flascardResult p-[1rem]">
           <div className="">
             <IconCircleLoop className="mt-[.1rem] text-main" />
           </div>
@@ -62,7 +62,7 @@ export default function Result({ setAccuracy }: { setAccuracy: any }) {
             </p>
           </div>
         </div>
-        <div className="flex gap-[.5rem] rounded-[1rem] bg-flascardResult p-[1rem]">
+        <div className="flex gap-[.5rem] rounded-3xl bg-flascardResult p-[1rem]">
           <div className="">
             <IconTimer className="mt-[.1rem] text-main" />
           </div>
@@ -75,7 +75,7 @@ export default function Result({ setAccuracy }: { setAccuracy: any }) {
         </div>
       </div>
 
-      <div className="mt-[] flex flex-col rounded-[1rem]">
+      <div className="mt-[] flex flex-col rounded-3xl">
         {data.map((item: any, i: number) => (
           <div
             key={i}

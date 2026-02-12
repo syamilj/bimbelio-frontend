@@ -5,7 +5,7 @@ export function AINote({ props }: { props: any }) {
 
   return (
     <div
-      className="font-regular rounded-[.3rem] px-[12px] py-[6.6px] text-[.8rem] text-black hover:bg-[rgb(239,239,239)]"
+      className="font-regular rounded-3xl px-[12px] py-[6.6px] text-[.8rem] text-black hover:bg-[rgb(239,239,239)]"
       onClick={async () => {
         const blockDiv = document.querySelector(
           `div[data-id="${props.block.id}"]`,

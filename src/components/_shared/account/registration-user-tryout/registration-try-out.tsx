@@ -241,7 +241,7 @@ const RegistrationTryOut = ({
               >
                 <SelectTrigger
                   className={cn(
-                    `font-regular h-[unset] w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
+                    `font-regular h-[unset] w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
                     Gender === '' && 'text-main-gray-disabled',
                   )}
                 >
@@ -262,7 +262,7 @@ const RegistrationTryOut = ({
               <p className="absolute left-4 text-[.9rem]">+62</p>
               <input
                 type="number"
-                className="font-regular w-full rounded-[.5rem] border border-main-gray-input py-[.5rem] pl-16 pr-4 text-[.9rem] text-black outline-none focus:border-main"
+                className="font-regular w-full rounded-3xl border border-main-gray-input py-[.5rem] pl-16 pr-4 text-[.9rem] text-black outline-none focus:border-main"
                 placeholder={'No. Hp'}
                 onChange={(e) => {
                   setPhone(e.target.value);
@@ -305,7 +305,7 @@ const RegistrationTryOut = ({
             ) : (
               <Button
                 type="submit"
-                className="h-[calc(100%-1rem)] w-full rounded-[.8rem] bg-gradient px-8 text-white md:hover:opacity-85"
+                className="h-[calc(100%-1rem)] w-full rounded-3xl bg-gradient px-8 text-white md:hover:opacity-85"
               >
                 Selanjutnya
               </Button>
@@ -342,7 +342,7 @@ const RegistrationTryOut = ({
               >
                 <SelectTrigger
                   className={cn(
-                    `font-regular h-[unset] w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
+                    `font-regular h-[unset] w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
                     TipeSekolah === '' && 'text-main-gray-disabled',
                   )}
                 >
@@ -389,7 +389,7 @@ const RegistrationTryOut = ({
               >
                 <SelectTrigger
                   className={cn(
-                    `font-regular h-[unset] w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
+                    `font-regular h-[unset] w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
                     Jurusan === '' && 'text-main-gray-disabled',
                   )}
                 >
@@ -422,7 +422,7 @@ const RegistrationTryOut = ({
               >
                 <SelectTrigger
                   className={cn(
-                    `font-regular h-[unset] w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
+                    `font-regular h-[unset] w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
                     TahunLulus === 0 && 'text-main-gray-disabled',
                   )}
                 >
@@ -448,7 +448,7 @@ const RegistrationTryOut = ({
             ) : (
               <Button
                 type="submit"
-                className="h-[calc(100%-1rem)] w-full rounded-[.8rem] bg-gradient px-8 text-white md:hover:opacity-85"
+                className="h-[calc(100%-1rem)] w-full rounded-3xl bg-gradient px-8 text-white md:hover:opacity-85"
               >
                 Selanjutnya
               </Button>
@@ -553,7 +553,7 @@ const RegistrationTryOut = ({
               >
                 <SelectTrigger
                   className={cn(
-                    `font-regular h-[unset] w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
+                    `font-regular h-[unset] w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
                     Channel === '' && 'text-main-gray-disabled',
                   )}
                 >
@@ -579,7 +579,7 @@ const RegistrationTryOut = ({
             ) : (
               <Button
                 type="submit"
-                className="h-[calc(100%-1rem)] w-full rounded-[.8rem] bg-gradient px-8 text-white md:hover:opacity-85"
+                className="h-[calc(100%-1rem)] w-full rounded-3xl bg-gradient px-8 text-white md:hover:opacity-85"
               >
                 Submit
               </Button>
@@ -630,7 +630,7 @@ const InputText = ({
       </p>
       <input
         type="text"
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main"
+        className="font-regular w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main"
         placeholder={`${placeholder}`}
         onChange={(e) => {
           setValue(e.target.value);
@@ -692,7 +692,7 @@ const InputNumber = ({
       </p>
       <input
         type="number"
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main"
+        className="font-regular w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main"
         placeholder={`${placeholder}`}
         onChange={handleChange}
         value={value === 0 ? '' : value} // Menangani sebagai number
@@ -746,7 +746,7 @@ const ComboboxSelect = ({
             aria-expanded={open}
             disabled={disabled}
             className={cn(
-              'w-full justify-between rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-left text-[.9rem] font-normal',
+              'w-full justify-between rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-left text-[.9rem] font-normal',
               !value && 'text-main-gray-disabled',
               disabled && 'opacity-50 cursor-not-allowed',
             )}

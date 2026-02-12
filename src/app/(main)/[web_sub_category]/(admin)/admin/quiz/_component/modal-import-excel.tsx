@@ -369,7 +369,7 @@ const ModalImportCSV = ({
     >
       <DialogTrigger>
         <div
-          className="shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 px-4 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
+          className="shrink-0 cursor-pointer rounded-3xl bg-blue-100 px-4 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
           onClick={() => setOpen(true)}
         >
           Import CSV
@@ -425,7 +425,7 @@ const ModalImportCSV = ({
               />
               {file ? (
                 <button
-                  className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
+                  className="w-full shrink-0 cursor-pointer rounded-3xl bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
                   onClick={handleGenerate}
                   disabled={isLoading}
                 >
@@ -437,7 +437,7 @@ const ModalImportCSV = ({
                 </button>
               ) : (
                 <div
-                  className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
+                  className="w-full shrink-0 cursor-pointer rounded-3xl bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
                   onClick={() => {
                     document.getElementById('uploadCSV')?.click();
                   }}

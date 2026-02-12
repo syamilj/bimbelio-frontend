@@ -66,7 +66,7 @@ const ComboboxSelect2 = ({
             aria-expanded={open}
             disabled={disabled}
             className={cn(
-              'w-full justify-between rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-left text-[.9rem] font-normal',
+              'w-full justify-between rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-left text-[.9rem] font-normal',
               !value && 'text-main-gray-disabled',
               disabled && 'opacity-50 cursor-not-allowed',
               className,

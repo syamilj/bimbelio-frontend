@@ -37,7 +37,7 @@ export default function StatsCards({
 
         <div className="stats-scroll flex gap-3 md:gap-4 w-max md:w-full md:grid md:grid-cols-4 md:min-w-0">
           {/* Jam Belajar - Blue */}
-          <div className="w-[220px] md:w-auto h-[180px] md:h-auto rounded-[2rem] p-6 bg-[#e0f2fe] flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300">
+          <div className="w-[220px] md:w-auto h-[180px] md:h-auto rounded-3xl p-6 bg-[#e0f2fe] flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300">
             <div>
               <div className="w-10 h-10 rounded-full bg-[#3b82f6] flex items-center justify-center mb-4 shadow-sm text-white">
                 <Clock className="w-5 h-5" />
@@ -62,7 +62,7 @@ export default function StatsCards({
           </div>
 
           {/* BimArena Selesai - Green */}
-          <div className="w-[220px] md:w-auto h-[180px] md:h-auto rounded-[2rem] p-6 bg-[#dcfce7] flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300">
+          <div className="w-[220px] md:w-auto h-[180px] md:h-auto rounded-3xl p-6 bg-[#dcfce7] flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300">
             <div>
               <div className="w-10 h-10 rounded-full bg-[#10b981] flex items-center justify-center mb-4 shadow-sm text-white">
                 <Target className="w-5 h-5" />
@@ -87,7 +87,7 @@ export default function StatsCards({
           </div>
 
           {/* Rata-rata Skor - Purple */}
-          <div className="w-[220px] md:w-auto h-[180px] md:h-auto rounded-[2rem] p-6 bg-[#f3e8ff] flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300">
+          <div className="w-[220px] md:w-auto h-[180px] md:h-auto rounded-3xl p-6 bg-[#f3e8ff] flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300">
             <div>
               <div className="w-10 h-10 rounded-full bg-[#a855f7] flex items-center justify-center mb-4 shadow-sm text-white">
                 <TrendingUp className="w-5 h-5" />
@@ -113,7 +113,7 @@ export default function StatsCards({
           </div>
 
           {/* Peringkat - Pink */}
-          <div className="w-[220px] md:w-auto h-[180px] md:h-auto rounded-[2rem] p-6 bg-[#fae8ff] flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300">
+          <div className="w-[220px] md:w-auto h-[180px] md:h-auto rounded-3xl p-6 bg-[#fae8ff] flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300">
             <div>
               <div className="w-10 h-10 rounded-full bg-[#ec4899] flex items-center justify-center mb-4 shadow-sm text-white">
                 <Trophy className="w-5 h-5" />

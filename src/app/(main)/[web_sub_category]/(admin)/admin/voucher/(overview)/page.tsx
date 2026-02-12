@@ -462,7 +462,7 @@ const DialogImportVouchers = ({
             />
             {file ? (
               <button
-                className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
+                className="w-full shrink-0 cursor-pointer rounded-3xl bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
                 onClick={handleGenerate}
                 disabled={isLoading}
               >
@@ -474,7 +474,7 @@ const DialogImportVouchers = ({
               </button>
             ) : (
               <div
-                className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
+                className="w-full shrink-0 cursor-pointer rounded-3xl bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
                 onClick={() => {
                   document.getElementById('uploadCSV')?.click();
                 }}

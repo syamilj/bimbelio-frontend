@@ -116,7 +116,7 @@ const IndividualQuizReport = ({
         </div>
         {}
         {userResponse && !opsi && (
-          <div className="mx-[.5rem] mb-[.5rem] mt-[1rem] rounded-[.8rem] border border-main-gray-input bg-white px-[1rem] py-[.8rem]">
+          <div className="mx-[.5rem] mb-[.5rem] mt-[1rem] rounded-3xl border border-main-gray-input bg-white px-[1rem] py-[.8rem]">
             {userResponse}
           </div>
         )}
@@ -125,7 +125,7 @@ const IndividualQuizReport = ({
             {option.map((item: any, i: number) => {
               return (
                 <div
-                  className={`w-full rounded-[.7rem] p-4 text-[1rem] duration-300 ${StyleStream(item)}`}
+                  className={`w-full rounded-3xl p-4 text-[1rem] duration-300 ${StyleStream(item)}`}
                   key={i}
                 >
                   <div className="flex items-center gap-[0] text-sm font-semibold">

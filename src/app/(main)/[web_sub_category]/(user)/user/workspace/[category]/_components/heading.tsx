@@ -65,7 +65,7 @@ export default function HeadingBahanAjar({
           <TabsList className="flex w-fit gap-2 bg-transparent p-2">
             <TabsTrigger
               value=""
-              className="flex flex-1 items-center rounded-[.7rem] px-6 py-[.7rem] bg-white text-sm text-gray-500 data-[state=active]:bg-main data-[state=active]:text-white"
+              className="flex flex-1 items-center rounded-3xl px-6 py-[.7rem] bg-white text-sm text-gray-500 data-[state=active]:bg-main data-[state=active]:text-white"
             >
               Semua
             </TabsTrigger>
@@ -75,14 +75,14 @@ export default function HeadingBahanAjar({
                   .map((_, index) => (
                     <div
                       key={index}
-                      className="rounded-[.7rem] w-[100px] h-[36px] bg-gray-200 animate-pulse"
+                      className="rounded-3xl w-[100px] h-[36px] bg-gray-200 animate-pulse"
                     />
                   ))
               : subCategoryData?.map((item: any) => (
                   <TabsTrigger
                     key={item.id}
                     value={item.id}
-                    className="flex flex-1 items-center rounded-[.7rem] bg-white px-6 py-[.7rem] text-sm text-gray-500 data-[state=active]:bg-main data-[state=active]:text-white"
+                    className="flex flex-1 items-center rounded-3xl bg-white px-6 py-[.7rem] text-sm text-gray-500 data-[state=active]:bg-main data-[state=active]:text-white"
                   >
                     <span>{item.name}</span>
                   </TabsTrigger>

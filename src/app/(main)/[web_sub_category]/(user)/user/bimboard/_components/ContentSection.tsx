@@ -117,7 +117,7 @@ function ContentRow({
                 className="flex-shrink-0 group snap-start"
               >
                 <div
-                  className={`${cardWidth} bg-white rounded-[1.5rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1`}
+                  className={`${cardWidth} bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1`}
                 >
                   {/* Image Container - Fixed height */}
                   <div
