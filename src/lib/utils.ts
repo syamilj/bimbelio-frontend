@@ -438,8 +438,8 @@ export const formatDuration = (minutes: number) => {
 export const replaceLatexNotation = (content: string) => {
   if (content) {
     return content
-      .replace(/\\\[(.*?)\\\]/g, '$$$$ $1 $$$$') // Block math
-      .replace(/\\\((.*?)\\\)/g, '$ $1 $'); // Inline math
+      .replace(/\\\[([\s\S]*?)\\\]/g, '$$$$ $1 $$$$') // Block math (supports multiline/matrix)
+      .replace(/\\\(([\s\S]*?)\\\)/g, '$ $1 $'); // Inline math (supports multiline/matrix)
   }
   return '';
 };

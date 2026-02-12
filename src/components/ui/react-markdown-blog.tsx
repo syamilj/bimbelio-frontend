@@ -26,11 +26,10 @@ export default function ReactMarkdownBlog({
     singleDollarTextMath: false,
   };
   const replaceLatexNotation = (content: string) => {
+    if (!content) return '';
     return content
-      .replace(/\\\[/g, '$$$') // Replace \[ -> $$
-      .replace(/\\\]/g, '$$$') // Replace \] -> $$
-      .replace(/\\\(/g, '$$$') // Replace \( -> $$
-      .replace(/\\\)/g, '$$$'); // Replace \) -> $$
+      .replace(/\\\[([\s\S]*?)\\\]/g, '$$$$$$ $1 $$$$$$') // \[...\] → $$...$$ (display math)
+      .replace(/\\\(([\s\S]*?)\\\)/g, '$ $1 $'); // \(...\) → $...$ (inline math)
   };
 
   const [displayValue, setDisplayValue] = useState<string>('');

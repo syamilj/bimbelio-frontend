@@ -11,9 +11,9 @@ import {
   StyleSchemaFromSpecs,
 } from '@blocknote/core';
 import { createReactInlineContentSpec } from '@blocknote/react';
+import katex from 'katex';
 import 'katex/dist/katex.min.css';
-import { useEffect } from 'react';
-import LatexWrapper from 'react-latex-next';
+import { useEffect, useRef } from 'react';
 import { handleKeyDown, handlePaste } from './latex-helper';
 
 export default function Latex({
@@ -76,12 +76,43 @@ export const LaTeXInline = createReactInlineContentSpec(
   },
   {
     render: (props) => {
-      const { formula } = props.inlineContent.props;
+      const { formula, display } = props.inlineContent.props;
+      const latexRef = useRef<HTMLSpanElement>(null);
+
+      useEffect(() => {
+        if (!latexRef.current) return;
+        try {
+          // Strip $ delimiters if present (backward compat with stored formulas)
+          let raw = formula;
+          let isDisplay = display;
+          if (raw.startsWith('$$') && raw.endsWith('$$')) {
+            raw = raw.slice(2, -2);
+            isDisplay = true;
+          } else if (raw.startsWith('$') && raw.endsWith('$')) {
+            raw = raw.slice(1, -1);
+            isDisplay = false;
+          }
+
+          katex.render(raw, latexRef.current, {
+            throwOnError: false,
+            displayMode: isDisplay,
+          });
+        } catch {
+          // Show raw formula if rendering fails
+          if (latexRef.current) {
+            latexRef.current.textContent = formula;
+          }
+        }
+      }, [formula, display]);
 
       return (
         <span>
           <span className="hidden">$</span>
-          <LatexWrapper>{formula}</LatexWrapper>
+          <span
+            ref={latexRef}
+            className={`inline-block ${display ? 'w-full text-center my-2' : ''}`}
+            title={`LaTeX: ${formula}`}
+          />
           <span className="hidden">$</span>
         </span>
       );

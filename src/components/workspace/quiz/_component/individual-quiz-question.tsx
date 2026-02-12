@@ -111,11 +111,10 @@ const IndividualQuizQuestion = ({
   };
 
   const replaceLatexNotation = (content: any) => {
+    if (!content) return '';
     return content
-      .replace(/\\\[/g, '$$$') // Replace all occurrences of \[ with $$
-      .replace(/\\\]/g, '$$$') // Replace all occurrences of \] with $$
-      .replace(/\\\(/g, '$$$') // Replace all occurrences of \( with $$
-      .replace(/\\\)/g, '$$$'); // Replace all occurrences of \) with $$
+      .replace(/\\\[([\s\S]*?)\\\]/g, '$$$$$$ $1 $$$$$$') // \[...\] → $$...$$ (display math)
+      .replace(/\\\(([\s\S]*?)\\\)/g, '$ $1 $'); // \(...\) → $...$ (inline math)
   };
 
   const remarkMathOptions = {
