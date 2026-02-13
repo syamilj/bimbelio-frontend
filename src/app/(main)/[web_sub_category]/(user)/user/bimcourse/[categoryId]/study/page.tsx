@@ -171,7 +171,7 @@ const WorkspaceCourse = () => {
         <LeftComponent />
         <ResizableHandleComponent />
         <RightComponent />
-        <div className="fixed md:hidden items-center justify-center flex w-full bottom-6 md:left-2 z-100">
+        <div className="fixed bottom-4 left-1/2 z-100 flex w-full -translate-x-1/2 items-center justify-center px-3 md:hidden">
           <NavigationButtons />
         </div>
       </ResizablePanelGroup>

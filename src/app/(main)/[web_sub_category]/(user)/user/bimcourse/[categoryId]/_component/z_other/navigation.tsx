@@ -3,20 +3,19 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
-import LoadingPageWithText from '@/components/ui/spinner';
-import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
-import { useGet } from '@/lib/fetch-helper/useGet';
+import { Spinner } from '@/components/ui/spinner';
+import { toaster } from '@/components/ui/toaster';
+import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import Link from 'next/link';
-import { useParams, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 import { useProvider } from '../../_provider/provider';
 
 const NavigationButtons = () => {
   const {
-    useData: { CourseData },
+    useData: { CourseData, Course, CourseRefetch, CourseProgressRefetch },
   } = useProvider();
   const { websiteSubCategory } = useWebsiteSubCategory();
 
@@ -24,176 +23,155 @@ const NavigationButtons = () => {
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
-  const params = useParams();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
-  // const router = useRouter();
+  const router = useRouter();
 
   const isDone = CourseData && CourseData.CourseProgress?.length > 0;
-  const categoryId = params?.categoryId as string | undefined;
   const sub = searchParams?.get('sub');
 
-  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
-  const [chapters, setChapters] = useState<any[]>([]);
   const [prevLink, setPrevLink] = useState<string | undefined>(undefined);
   const [nextLink, setNextLink] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
-  const [submitted, setSubmitted] = useState<boolean>(false); // Status lokal submit
+  const [submitted, setSubmitted] = useState<boolean>(false);
 
-  // const { mutate: saveProgress } = useMutation(
-  //   '/course/saveProgressCourse',
-  //   'post',
-  //   {
-  //     onSuccess() {
-  //       // await trpc.course.getCourseUserByCategoryId.invalidate();
-  //       setLoading(false);
-  //       setSubmitted(true); // Tandai bahwa submit telah berhasil
-  //     },
-  //     onError() {
-  //       setLoading(false);
-  //     },
-  //   },
-  // );
+  const allSubChapters = useMemo(() => {
+    if (!Array.isArray(Course)) return [];
+    return Course.flatMap((chapter) => chapter.CourseSubChapter || []);
+  }, [Course]);
 
-  // const { data: courseChapters } = api.course.getCourseChapters.useQuery(
-  //   { categoryId: categoryId! },
-  //   { enabled: !!categoryId },
-  // );
-
-  const { data: courseChapters } = useGet('/course/getCourseChapters', {
-    params: { categoryId: categoryId! },
-    useEffectDependencies: [categoryId],
-  });
+  const { mutate: saveProgress } = useMutation(
+    '/course/saveProgressCourse',
+    'post',
+    {
+      toast: {
+        hideSuccess: true,
+      },
+      onSuccess: async () => {
+        await CourseRefetch();
+        await CourseProgressRefetch();
+        setSubmitted(true);
+      },
+    },
+  );
 
   useEffect(() => {
-    if (courseChapters) {
-      setChapters(courseChapters);
-      if (sub && Array.isArray(courseChapters)) {
-        const allSubChapters = courseChapters.flatMap(
-          (ch) => ch.CourseSubChapter,
-        );
-        const idx = allSubChapters.findIndex((sc) => sc.id === sub);
-        setCurrentIndex(idx);
-      }
+    if (!sub || allSubChapters.length === 0) {
+      setPrevLink(undefined);
+      setNextLink(undefined);
+      return;
     }
-  }, [courseChapters, sub]);
+
+    const currentIndex = allSubChapters.findIndex((item) => item.id === sub);
+    const currentTab = searchParams?.get('tab') || 'chat';
+
+    if (currentIndex === -1) {
+      setPrevLink(undefined);
+      setNextLink(undefined);
+      return;
+    }
+
+    setPrevLink(
+      currentIndex > 0
+        ? `${pathname}?sub=${allSubChapters[currentIndex - 1].id}&tab=${currentTab}`
+        : undefined,
+    );
+
+    setNextLink(
+      currentIndex < allSubChapters.length - 1
+        ? `${pathname}?sub=${allSubChapters[currentIndex + 1].id}&tab=${currentTab}`
+        : undefined,
+    );
+  }, [allSubChapters, pathname, searchParams, sub]);
+
+  const submitCurrentProgress = async () => {
+    if (!CourseData?.id) {
+      toaster({
+        title: 'Gagal',
+        description: 'Sub chapter tidak ditemukan.',
+        condition: 'warning',
+      });
+      return false;
+    }
+
+    const result = await saveProgress({ payload: { subCourseId: CourseData.id } });
+    if (!result || result.status >= 400) {
+      return false;
+    }
+    setSubmitted(true);
+    return true;
+  };
 
   useEffect(() => {
-    if (chapters.length && currentIndex !== null && categoryId) {
-      const allSubChapters = chapters.flatMap((ch) => ch.CourseSubChapter);
-      const currentTab = searchParams?.get('tab') || 'chat';
-      if (currentIndex > 0) {
-        setPrevLink(
-          `/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=${allSubChapters[currentIndex - 1].id}&tab=${currentTab}`,
-        );
-      } else {
-        setPrevLink(undefined);
-      }
-      if (currentIndex < allSubChapters.length - 1) {
-        setNextLink(
-          `/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=${allSubChapters[currentIndex + 1].id}&tab=${currentTab}`,
-        );
-      } else {
-        const currentChapterIndex = chapters.findIndex((ch) =>
-          ch.CourseSubChapter.some((sc: any) => sc.id === sub),
-        );
-        if (
-          currentChapterIndex !== -1 &&
-          currentChapterIndex < chapters.length - 1
-        ) {
-          const nextChapter = chapters[currentChapterIndex + 1];
-          if (nextChapter.CourseSubChapter.length > 0) {
-            setNextLink(
-              `/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=${nextChapter.CourseSubChapter[0].id}&tab=${currentTab}`,
-            );
-          } else {
-            setNextLink(undefined);
-          }
-        } else {
-          setNextLink(undefined);
-        }
-      }
-    }
-  }, [chapters, currentIndex, categoryId, sub]);
+    setSubmitted(false);
+  }, [sub]);
 
-  // const handleNextClick = async () => {
-  //   // Hanya melakukan submit jika progress belum selesai, belum submit sebelumnya, dan tidak sedang loading
-  //   if (!isDone && !submitted && !loading) {
-  //     setLoading(true);
-  //     if (CourseData?.id) {
-  //       await saveProgress({ payload: { subCourseId: CourseData?.id } });
-  //     } else {
-  //       toaster({
-  //         title: 'Sub Id Tidak ada',
-  //         condition: 'warning',
-  //       });
-  //       setLoading(false);
-  //     }
-  //   }
-  //   if (nextLink) {
-  //     router.push(nextLink);
-  //   }
-  // };
+  const handleNextClick = async () => {
+    if (!nextLink || loading) return;
+
+    if (!isDone && !submitted) {
+      setLoading(true);
+      const saved = await submitCurrentProgress();
+      setLoading(false);
+      if (!saved) return;
+    }
+
+    router.push(nextLink);
+  };
+
+  const handlePrevClick = () => {
+    if (!prevLink || loading) return;
+    router.push(prevLink);
+  };
 
   if (sub === 'report') return null;
   if (!prevLink && !nextLink) return null;
 
   return (
     <footer>
-      {loading && (
-        <LoadingPageWithText
-          loading={loading}
-          heading="Menyimpan Progress..."
-        />
-      )}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="flex w-fit justify-between items-center gap-2 bg-white/95 backdrop-blur-sm rounded-xl shadow-lg shadow-slate-200/50 border border-slate-200/60 p-1"
       >
         {prevLink && (
-          <Link href={prevLink}>
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 text-xs"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              Sebelumnya
-            </Button>
-          </Link>
+          <Button
+            onClick={handlePrevClick}
+            variant="outline"
+            size="sm"
+            disabled={loading}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 text-xs md:text-sm"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            Sebelumnya
+          </Button>
         )}
 
         {nextLink && (
-          <Link href={nextLink}>
-            <Button
-              disabled={loading}
-              size="sm"
-              className={cn(
-                'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white border-0 font-medium shadow-sm hover:shadow-md transition-all duration-200 group text-xs',
-                loading && 'opacity-50 cursor-not-allowed',
-              )}
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
-            >
-              {loading ? (
-                <>
-                  <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Menyimpan...
-                </>
-              ) : isDone || submitted ? (
-                <>
-                  Lanjutkan
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                </>
-              ) : (
-                <>
-                  Selanjutnya
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                </>
-              )}
-            </Button>
-          </Link>
+          <Button
+            onClick={handleNextClick}
+            disabled={loading}
+            size="sm"
+            className={cn(
+              'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white border-0 font-medium shadow-sm hover:shadow-md transition-all duration-200 group text-xs md:text-sm',
+              loading && 'opacity-50 cursor-not-allowed',
+            )}
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+            }}
+          >
+            {loading ? (
+              <>
+                <Spinner />
+                Menyimpan...
+              </>
+            ) : (
+              <>
+                Selanjutnya
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              </>
+            )}
+          </Button>
         )}
       </motion.div>
     </footer>

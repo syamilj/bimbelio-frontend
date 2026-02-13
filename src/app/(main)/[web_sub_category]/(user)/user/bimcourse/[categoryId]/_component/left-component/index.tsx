@@ -1,4 +1,3 @@
-import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { ResizablePanel } from '@/components/ui/resizable';
 import { cn } from '@/lib/utils';
@@ -19,10 +18,9 @@ export default function LeftComponent() {
   const {
     isLocked,
     useParams: { sub },
-    useData: { CourseData, Course },
+    useData: { CourseData },
     useDoc: { doc },
   } = useProvider();
-  const { mobileScreen } = useAppContext();
   const { data: session } = useSession();
   const userId = session?.user.id;
 
@@ -79,7 +77,7 @@ export default function LeftComponent() {
       </div>
 
       {!isLocked && !isNotYet && !isUpcoming && (
-        <div className="absolute items-center justify-center hidden md:flex w-full bottom-6 md:left-2 z-100">
+        <div className="absolute bottom-5 left-1/2 z-100 hidden -translate-x-1/2 items-center justify-center md:flex">
           <NavigationButtons />
         </div>
       )}
