@@ -43,7 +43,7 @@ export const SectionTitle = ({
       </div>
       <div className="relative z-10 flex items-center gap-4">
         <div
-          className="w-12 h-12 rounded-2xl flex items-center justify-center border shadow-lg"
+          className="w-12 h-12 rounded-3xl flex items-center justify-center border shadow-lg"
           style={{
             backgroundColor: `${mainColor}15`,
             borderColor: `${mainColor}30`,

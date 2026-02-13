@@ -359,7 +359,7 @@ export const LiveClassAnalytics = () => {
               {/* Summary Stats */}
               <div className="mt-8 grid grid-cols-2 gap-3">
                 <div
-                  className="text-center p-3 rounded-lg"
+                  className="text-center p-3 rounded-3xl"
                   style={{ backgroundColor: `${mainColor}08` }}
                 >
                   <p className="text-xs text-gray-500 mb-1">Total Undangan</p>
@@ -371,7 +371,7 @@ export const LiveClassAnalytics = () => {
                   </p>
                 </div>
                 <div
-                  className="text-center p-3 rounded-lg"
+                  className="text-center p-3 rounded-3xl"
                   style={{ backgroundColor: '#D1FAE5' }}
                 >
                   <p className="text-xs text-gray-500 mb-1">Hadir</p>
@@ -380,7 +380,7 @@ export const LiveClassAnalytics = () => {
                   </p>
                 </div>
                 <div
-                  className="text-center p-3 rounded-lg"
+                  className="text-center p-3 rounded-3xl"
                   style={{ backgroundColor: '#FEF3C7' }}
                 >
                   <p className="text-xs text-gray-500 mb-1">Terlambat</p>
@@ -389,7 +389,7 @@ export const LiveClassAnalytics = () => {
                   </p>
                 </div>
                 <div
-                  className="text-center p-3 rounded-lg"
+                  className="text-center p-3 rounded-3xl"
                   style={{ backgroundColor: '#FEE2E2' }}
                 >
                   <p className="text-xs text-gray-500 mb-1">Absen</p>
@@ -469,7 +469,7 @@ export const LiveClassAnalytics = () => {
                     return (
                       <div
                         key={item.id}
-                        className="p-3 rounded-lg border border-gray-200 hover:shadow-md transition-all"
+                        className="p-3 rounded-3xl border border-gray-200 hover:shadow-md transition-all"
                       >
                         {/* Title */}
                         <p className="font-semibold text-sm text-gray-900 truncate mb-2">

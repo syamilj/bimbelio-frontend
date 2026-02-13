@@ -7,7 +7,6 @@ import { StarIcon } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-const labels = ['Sangat Buruk', 'Buruk', 'Cukup', 'Baik', 'Sangat Baik'];
 const emojis = ['😞', '😕', '😐', '😊', '😍'];
 
 export default function EmojiRating() {
@@ -56,50 +55,44 @@ export default function EmojiRating() {
 
   if (isLoading) {
     return (
-      <div className="w-full text-center py-4">
-        <div className="text-gray-400">Loading...</div>
+      <div className="flex items-center gap-0.5">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <div key={star} className="p-0.5">
+            <StarIcon className="w-4 h-4 text-slate-200" />
+          </div>
+        ))}
       </div>
     );
   }
 
   return (
-    <div className="w-full">
-      {/* Simple Rating Stars for Popup */}
-      <div className="flex justify-center items-center space-x-1 mb-3">
+    <div className="flex items-center gap-1">
+      <div className="flex items-center gap-0.5">
         {[1, 2, 3, 4, 5].map((star) => (
           <button
             key={star}
             onClick={() => handleRating(star)}
-            className="focus:outline-none p-1 rounded transition-colors duration-200"
+            className="focus:outline-none p-0.5 rounded transition-colors duration-200"
             disabled={isSubmitted}
           >
             <StarIcon
               className={cn(
-                'w-6 h-6 transition-colors duration-200',
+                'w-4 h-4 transition-colors duration-200',
                 rating !== null && rating >= star
-                  ? 'text-yellow-400 fill-yellow-400'
-                  : 'text-gray-300 hover:text-yellow-300',
+                  ? 'text-amber-400 fill-amber-400'
+                  : 'text-slate-300 hover:text-amber-300',
               )}
             />
           </button>
         ))}
       </div>
 
-      {/* Simple Label */}
       {rating !== null && (
-        <div className="text-center">
-          <p className="text-sm text-gray-600 mb-2">{labels[rating - 1]}</p>
-          <div className="text-2xl mb-2">{emojis[rating - 1]}</div>
-        </div>
+        <span className="text-xs text-slate-500 ml-1">{emojis[rating - 1]}</span>
       )}
 
-      {/* Thank you message */}
       {isSubmitted && (
-        <div className="text-center">
-          <p className="text-xs text-green-600">
-            Terima kasih atas penilaian Kamu!
-          </p>
-        </div>
+        <span className="text-[10px] text-emerald-500 ml-1">Terima kasih!</span>
       )}
     </div>
   );

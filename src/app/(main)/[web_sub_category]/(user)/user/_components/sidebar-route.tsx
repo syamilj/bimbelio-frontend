@@ -6,6 +6,7 @@ import { BimBrand } from '@/components/ui/bim-brand';
 import {
   Tooltip,
   TooltipContent,
+  TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
@@ -17,6 +18,7 @@ import {
   ChevronDown,
   FileQuestion,
   Home, // Added for BimArena/TryOut
+  Info, // Added for Beta info
   Medal, // Added for BimLive
   MonitorPlay,
   Swords,
@@ -51,12 +53,22 @@ interface NavItem {
   isLocked?: boolean;
   isNew?: boolean;
   isAI?: boolean;
+  isBeta?: boolean;
   showForCategory?: string;
 }
 
 interface NavSection {
   title: string;
   items: NavItem[];
+}
+
+// Type for BimArena submenu items
+interface SubMenuItem {
+  name: string;
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+  isBeta?: boolean;
+  betaTooltip?: string;
 }
 
 // Clean navigation data organized by sections - COMPACT VERSION
@@ -314,11 +326,15 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                             }}
                           />
 
-                          {(item.isNew || item.isAI) && (
+                          {(item.isNew || item.isAI || item.isBeta) && (
                             <div
                               className={cn(
                                 'absolute top-2 right-2 w-1.5 h-1.5 rounded-full ring-1 ring-white',
-                                item.isAI ? 'bg-purple-500' : 'bg-emerald-500',
+                                item.isAI
+                                  ? 'bg-purple-500'
+                                  : item.isBeta
+                                    ? 'bg-sky-500'
+                                    : 'bg-emerald-500',
                               )}
                             />
                           )}
@@ -755,43 +771,84 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
 
                     {/* BimArena Submenu */}
                     {showBimArenaSub && isBimArena && (
-                      <div className="mt-1 ml-4 pl-3 border-l border-slate-200 space-y-1">
-                        {[
-                          {
-                            name: 'Peringkat',
-                            href: `/${webSubCategoryId}/user/bimarena/leaderboard`,
-                            icon: Trophy,
-                          },
-                          {
-                            name: 'Try Out',
-                            href: `/${webSubCategoryId}/user/bimarena/try-out`,
-                            icon: Medal,
-                          },
-                          {
-                            name: 'Quiz',
-                            href: `/${webSubCategoryId}/user/bimarena/quiz`,
-                            icon: Swords,
-                          },
-                        ].map((sub) => {
-                          const isSubActive = pathname?.includes(sub.href);
-                          return (
-                            <Link
-                              key={sub.name}
-                              href={sub.href}
-                              onClick={handleLinkClick}
-                              className={cn(
-                                'flex items-center gap-2 px-3 py-1.5 text-xs rounded-3xl transition-colors',
-                                isSubActive
-                                  ? 'text-slate-900 font-medium bg-slate-50'
-                                  : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50',
-                              )}
-                            >
-                              <sub.icon className="w-3.5 h-3.5 shrink-0 opacity-70" />
-                              <span>{sub.name}</span>
-                            </Link>
-                          );
-                        })}
-                      </div>
+                      <TooltipProvider>
+                        <div className="mt-1 ml-4 pl-3 border-l border-slate-200 space-y-1">
+                          {(
+                            [
+                              {
+                                name: 'Peringkat',
+                                href: `/${webSubCategoryId}/user/bimarena/leaderboard`,
+                                icon: Trophy,
+                                isBeta: false,
+                              },
+                              {
+                                name: 'Try Out',
+                                href: `/${webSubCategoryId}/user/bimarena/try-out`,
+                                icon: Medal,
+                                isBeta: false,
+                              },
+                              {
+                                name: 'Quiz',
+                                href: `/${webSubCategoryId}/user/bimarena/quiz`,
+                                icon: Swords,
+                                isBeta: true,
+                                betaTooltip:
+                                  'Beta: Fitur masih dalam tahap testing',
+                              },
+                            ] as SubMenuItem[]
+                          ).map((sub) => {
+                            const isSubActive = pathname?.includes(sub.href);
+                            return (
+                              <Link
+                                key={sub.name}
+                                href={sub.href}
+                                onClick={handleLinkClick}
+                                className={cn(
+                                  'flex items-center gap-2 px-3 py-1.5 text-xs rounded-3xl transition-colors relative',
+                                  isSubActive
+                                    ? 'text-slate-900 font-medium bg-slate-50'
+                                    : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50',
+                                )}
+                              >
+                                <sub.icon className="w-3.5 h-3.5 shrink-0 opacity-70" />
+                                <span className="flex-1">{sub.name}</span>
+
+                                {/* Beta Badge & Info Icon */}
+                                {sub.isBeta && (
+                                  <>
+                                    <span className="text-[10px] px-1.5 py-0.5 rounded-full font-bold uppercase bg-sky-100 text-sky-600 leading-none">
+                                      BETA
+                                    </span>
+                                    {sub.betaTooltip && (
+                                      <Tooltip delayDuration={0}>
+                                        <TooltipTrigger asChild>
+                                          <span
+                                            className="inline-flex cursor-help"
+                                            onClick={(e) => e.preventDefault()}
+                                          >
+                                            <Info className="w-3 h-3 shrink-0 text-sky-500 hover:text-sky-700 transition-colors" />
+                                          </span>
+                                        </TooltipTrigger>
+                                        <TooltipContent
+                                          side="right"
+                                          sideOffset={8}
+                                          className="max-w-[200px] bg-white text-slate-700 border border-slate-200 shadow-lg rounded-3xl px-3 py-2"
+                                        >
+                                          <p className="text-[11px] leading-relaxed">
+                                            {sub.betaTooltip}
+                                          </p>
+                                        </TooltipContent>
+                                      </Tooltip>
+                                    )}
+                                    {/* Blue dot indicator */}
+                                    <div className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-sky-500 ring-1 ring-white" />
+                                  </>
+                                )}
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </TooltipProvider>
                     )}
                   </div>
                 );

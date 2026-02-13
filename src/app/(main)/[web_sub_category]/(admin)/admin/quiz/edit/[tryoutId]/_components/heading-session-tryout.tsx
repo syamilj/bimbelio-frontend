@@ -326,7 +326,7 @@ const HeadingSessionTryout = () => {
       >
         <div className="flex items-center justify-between">
           <div className="flex gap-[.5rem]">
-            <div className="relative w-full overflow-visible rounded-[.8rem] border border-transparent bg-white duration-300 md:hover:shadow-default">
+            <div className="relative w-full overflow-visible rounded-3xl border border-transparent bg-white duration-300 md:hover:shadow-default">
               <input
                 type="text"
                 value={
@@ -347,7 +347,7 @@ const HeadingSessionTryout = () => {
                   value && onChangeCategory(value);
                 }}
               >
-                <SelectTrigger className="h-full w-full rounded-[.8rem] border-none bg-white shadow-none outline-none">
+                <SelectTrigger className="h-full w-full rounded-3xl border-none bg-white shadow-none outline-none">
                   <SelectValue placeholder="Tes" />
                 </SelectTrigger>
                 <SelectContent>
@@ -369,7 +369,7 @@ const HeadingSessionTryout = () => {
               </Select>
             </div>
             {EditSession.categoryId && EditSession.categoryId?.length > 0 && (
-              <div className="relative w-full overflow-visible rounded-[.8rem] border border-transparent bg-white duration-300 md:hover:shadow-default">
+              <div className="relative w-full overflow-visible rounded-3xl border border-transparent bg-white duration-300 md:hover:shadow-default">
                 <input
                   type="text"
                   value={
@@ -390,7 +390,7 @@ const HeadingSessionTryout = () => {
                     value && onChangeSubCategory(value);
                   }}
                 >
-                  <SelectTrigger className="h-full w-full rounded-[.8rem] border-none bg-white shadow-none outline-none">
+                  <SelectTrigger className="h-full w-full rounded-3xl border-none bg-white shadow-none outline-none">
                     <SelectValue placeholder="Sub Tes" />
                   </SelectTrigger>
                   <SelectContent>
@@ -417,13 +417,13 @@ const HeadingSessionTryout = () => {
             <input
               type="number"
               placeholder="Durasi waktu"
-              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] text-[.9rem] outline-none duration-100 focus:shadow-default md:hover:shadow-default"
+              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] text-[.9rem] outline-none duration-100 focus:shadow-default md:hover:shadow-default"
               required
               value={EditSession.duration === 0 ? '' : EditSession.duration}
               onChange={(e) => onChangeDuration(e)}
             />
 
-            <div className="w-full overflow-visible rounded-[.8rem] border border-transparent bg-white duration-300 md:hover:shadow-default">
+            <div className="w-full overflow-visible rounded-3xl border border-transparent bg-white duration-300 md:hover:shadow-default">
               <input
                 type="text"
                 defaultValue={assessmentType !== '' ? `${assessmentType}` : ''}
@@ -439,7 +439,7 @@ const HeadingSessionTryout = () => {
                   changeQuestionAssestmentType(value);
                 }}
               >
-                <SelectTrigger className="h-full w-full rounded-[.8rem] border-none bg-white shadow-none outline-none">
+                <SelectTrigger className="h-full w-full rounded-3xl border-none bg-white shadow-none outline-none">
                   <SelectValue placeholder="Kategori" />
                 </SelectTrigger>
                 <SelectContent>
@@ -459,7 +459,7 @@ const HeadingSessionTryout = () => {
               </Select>
             </div>
           </div>
-          {/* <div className="bg-red-100 md:hover:bg-red-200 md:active:bg-red-100 text-red-700 font-medium rounded-[.8rem] py-[.8rem] px-4 shrink-0 cursor-pointer duration-300 " onClick={deleteSession}>
+          {/* <div className="bg-red-100 md:hover:bg-red-200 md:active:bg-red-100 text-red-700 font-medium rounded-3xl py-[.8rem] px-4 shrink-0 cursor-pointer duration-300 " onClick={deleteSession}>
                     Hapus sesi
                 </div> */}
           {/* <ModalDeleteSession deleteSession={deleteSession} /> */}
@@ -470,7 +470,7 @@ const HeadingSessionTryout = () => {
             <input
               type="text"
               placeholder="Judul sesi...."
-              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
+              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
               required
               value={EditSession.name}
               onChange={(e) => {
@@ -486,7 +486,7 @@ const HeadingSessionTryout = () => {
             <input
               type="number"
               placeholder="Ambang batas...."
-              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
+              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
               value={
                 EditSession.thresholdValue === 0
                   ? ''
@@ -509,7 +509,7 @@ const HeadingSessionTryout = () => {
           <input
             type="text"
             placeholder="Document ID...."
-            className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
+            className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
             value={EditSession.documentId || ''}
             onChange={(e) => {
               setSessions((prev) => ({ ...prev, documentId: e.target.value }));
@@ -520,7 +520,7 @@ const HeadingSessionTryout = () => {
           <div className="flex w-full items-center justify-between">
             <p className="font-medium">Generate soal</p>
             <div
-              className="shrink-0 cursor-pointer rounded-[.4rem] bg-blue-100 px-4 py-[.2rem] text-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
+              className="shrink-0 cursor-pointer rounded-3xl bg-blue-100 px-4 py-[.2rem] text-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
               onClick={() => {
                 handleGenerate();
               }}
@@ -531,7 +531,7 @@ const HeadingSessionTryout = () => {
           <textarea
             id="context-for-generate-ai-edit"
             placeholder="Prompt generation"
-            className="w-full shrink-0 rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
+            className="w-full shrink-0 rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
           />
         </div>
       </div>

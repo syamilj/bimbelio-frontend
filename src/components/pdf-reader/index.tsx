@@ -4,7 +4,6 @@ import HeaderPdf from '@/components/pdf-reader/_components/header-pdf';
 import PdfReader from '@/components/pdf-reader/pdf-reader';
 import { useAppContext } from '@/components/provider/provider-app';
 import { toaster } from '@/components/ui/toaster';
-import { IconDislike, IconLike } from '@/styles/icon';
 
 import { env } from '@/env.mjs';
 import { useVideoHLS } from '@/hooks/use-hls-video';
@@ -322,8 +321,6 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
     }
   }, [window.PdfViewer]);
 
-  console.log({ videoUrl });
-
   if (!doc?.highlights) {
     return;
   }
@@ -331,59 +328,34 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
   return (
     <div
       id="DocViewer"
-      className="flex h-full flex-1 flex-col bg-linear-to-br from-slate-50 via-white to-blue-50"
+      className="flex h-full flex-1 flex-col bg-white"
     >
       <HeaderPdf
         doc={doc}
         isCourseDone={isCourseDone}
       />
-      <div className={`flex h-full flex-col ${!hideVideo && 'gap-[0]'}`}>
+      <div className="flex h-full flex-col">
         {doc?.video && (
           <div
-            className={
-              'relative h-fit w-full shrink-0 overflow-hidden bg-linear-to-r from-slate-100 to-slate-50 duration-300'
-            }
+            className={`relative w-full shrink-0 overflow-hidden transition-all duration-300 ease-in-out ${hideVideo ? 'h-0' : 'h-auto'}`}
           >
-            <div
-              className={`flex h-full w-full flex-col p-4 pb-0 ${hideVideo && 'mt-[-100%]'} duration-300 ease-in-out`}
-            >
+            <div className="p-3 pb-0">
               {doc.video?.url?.length > 0 && (
-                <div className="relative rounded-3xl overflow-hidden shadow-xl bg-black">
+                <div className="relative rounded-3xl overflow-hidden shadow-sm border border-slate-200/80 bg-black">
                   <video
                     ref={videoRef}
                     controls
                     controlsList="nodownload"
-                    className="h-fit w-full rounded-3xl bg-black"
-                  >
-                    {/* <source
-                      // src={videoUrl}
-                      src={`${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/document/${doc.video.url}`}
-                      type="video/mp4"
-                    />
-                    Your browser does not support the video tag. */}
-                  </video>
-                  {/* Video overlay for modern look */}
-                  <div className="absolute inset-0 bg-linear-to-t from-black/10 to-transparent pointer-events-none" />
+                    className="w-full bg-black"
+                  />
                 </div>
               )}
-              <div className="z-49 flex w-full shrink-0 justify-between px-4 py-4 text-slate-700">
-                <div className="flex items-center overflow-hidden rounded-3xl bg-white/70 backdrop-blur-sm shadow-sm border border-white/20">
-                  <ToolTip value="Like video">
-                    <div className="border-r border-slate-200/50 px-4 py-[.5rem] duration-200 hover:bg-white/80 transition-all">
-                      <IconLike className="text-slate-600 w-5 h-5" />
-                    </div>
-                  </ToolTip>
-                  <ToolTip value="Dislike video">
-                    <div className="px-4 py-[.5rem] duration-200 hover:bg-white/80 transition-all">
-                      <IconDislike className="text-slate-600 w-5 h-5" />
-                    </div>
-                  </ToolTip>
-                </div>
+              <div className="flex w-full items-center justify-end px-1 py-1">
                 <button
-                  className="rounded-3xl bg-white/70 backdrop-blur-sm border border-white/20 px-6 py-[.5rem] text-[.85rem] text-slate-700 font-medium duration-200 hover:bg-white hover:shadow-md transition-all"
+                  className="rounded-3xl bg-slate-50 hover:bg-slate-100 px-2.5 py-0.5 text-[10px] text-slate-500 font-medium transition-colors border border-slate-200/60"
                   onClick={() => setHideVideo(true)}
                 >
-                  Hide Video
+                  Sembunyikan Video
                 </button>
               </div>
             </div>
@@ -391,32 +363,30 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
         )}
         <div
           id="DocumentViewPdf"
-          className={`relative flex-1 w-full bg-white shadow-inner ${vision ? 'ring-2 ring-blue-500 ring-opacity-50' : ''} transition-all duration-300`}
+          className="relative flex-1 w-full bg-slate-50/50"
           style={{
-            height: 'calc(100vh - 120px)', // Ensure minimum height for mobile
+            height: 'calc(100vh - 120px)',
             minHeight: '500px',
           }}
         >
-          <div className="relative h-full w-full bg-linear-to-br from-slate-50/30 to-white">
-            <PdfReader
-              docId={id as string}
-              userId={userId as string}
-              deleteHighlight={deleteHighlight}
-              docUrl={url}
-              getHighlightById={getHighlightById}
-              addHighlight={addHighlight}
-            />
-            {hideVideo && doc?.video && (
-              <button
-                className="absolute right-4 top-4 z-49 rounded-3xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-[.5rem] text-[.85rem] font-medium duration-200 shadow-lg hover:shadow-xl transition-all"
-                onClick={() => {
-                  setHideVideo(false);
-                }}
-              >
-                Show Video
-              </button>
-            )}
-          </div>
+          <PdfReader
+            docId={id as string}
+            userId={userId as string}
+            deleteHighlight={deleteHighlight}
+            docUrl={url}
+            getHighlightById={getHighlightById}
+            addHighlight={addHighlight}
+          />
+          {hideVideo && doc?.video && (
+            <button
+              className="absolute right-3 top-3 z-49 rounded-3xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 px-4 py-1.5 text-xs font-medium shadow-sm hover:shadow transition-all"
+              onClick={() => {
+                setHideVideo(false);
+              }}
+            >
+              Tampilkan Video
+            </button>
+          )}
         </div>
       </div>
     </div>

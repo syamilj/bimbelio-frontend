@@ -24,6 +24,7 @@ export default function NotesContent({ docId }: Props) {
   const userId = session?.user.id;
 
   const [value, setValue] = useState<string>('');
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const { data: getNotesQuery } = useGet('/notes/getNotesForCourse', {
     params: { userId, courseCategoryId: categoryId },
@@ -45,11 +46,15 @@ export default function NotesContent({ docId }: Props) {
     if (getNotesQuery) {
       const HtmlContent = getNotesQuery.content;
       setValue(HtmlContent);
+      // Mark as initialized after a short delay to prevent onChange firing on initial load
+      setTimeout(() => setIsInitialized(true), 500);
+    } else {
+      setIsInitialized(true);
     }
   }, [getNotesQuery]);
 
   const { mutate } = useMutation('/notes/saveNoteForCourse', 'post', {
-    // toast: { hideSuccess: true },
+    toast: { hideSuccess: true },
   });
 
   const saveNoteMutation = useDebouncedCallback(
@@ -74,7 +79,7 @@ export default function NotesContent({ docId }: Props) {
       setEditor={setEditor}
       value={value}
       onChange={(editor) => {
-        if (value.length > 0) {
+        if (isInitialized && value.length > 0) {
           saveNoteMutation(editor);
         }
       }}

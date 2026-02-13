@@ -4,6 +4,10 @@ import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { LaTeXInline } from '@/components/ui/blocknote-editor/latex';
 import {
+  preprocessLatexInValue,
+  processAllLatex,
+} from '@/components/ui/blocknote-editor/latex-helper';
+import {
   BlockNoteEditor,
   BlockNoteSchema,
   BlockSchemaFromSpecs,
@@ -83,9 +87,15 @@ export default function Provider({ children, docId, editor, value }: Props) {
 
   const getValue = async (value: string) => {
     if (!editor) return;
-    const HtmlValue = await editor.tryParseHTMLToBlocks(value);
+    // Pre-process to consolidate multi-line LaTeX before BlockNote parsing
+    const processed = preprocessLatexInValue(value);
+    const HtmlValue = await editor.tryParseHTMLToBlocks(processed);
     const ids = editor.document.map((item) => item.id);
     editor.replaceBlocks(ids, HtmlValue);
+    // Multiple passes to ensure LaTeX is processed after ProseMirror settles
+    setTimeout(() => processAllLatex(editor as any), 50);
+    setTimeout(() => processAllLatex(editor as any), 200);
+    setTimeout(() => processAllLatex(editor as any), 500);
   };
 
   const Context = {

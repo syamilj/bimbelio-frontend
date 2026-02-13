@@ -60,16 +60,16 @@ const BlogAdmin = () => {
             <div className="flex items-center gap-4">
               <input
                 type="text"
-                className="w-[300px] rounded-[.8rem] border border-transparent px-4 py-[.5rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
+                className="w-[300px] rounded-3xl border border-transparent px-4 py-[.5rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
                 placeholder="Cari blog.."
               />
-              <div className="flex h-full items-center justify-center rounded-[.8rem] bg-white px-8 py-[.5rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:shadow-default">
+              <div className="flex h-full items-center justify-center rounded-3xl bg-white px-8 py-[.5rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:shadow-default">
                 Filter
               </div>
 
               <Link
                 href={`/${website_sub_category_id}/admin/blog/tag`}
-                className="flex cursor-pointer items-center justify-center rounded-[.8rem] bg-main px-4 py-[.6rem] text-white duration-300 md:hover:bg-main-hover"
+                className="flex cursor-pointer items-center justify-center rounded-3xl bg-main px-4 py-[.6rem] text-white duration-300 md:hover:bg-main-hover"
               >
                 Tambah tag
               </Link>
@@ -80,7 +80,7 @@ const BlogAdmin = () => {
               </div>
               <Link
                 href={`/${website_sub_category_id}/admin/blog/add`}
-                className="flex cursor-pointer items-center justify-center rounded-[.8rem] bg-main px-4 py-[.6rem] text-white duration-300 md:hover:bg-main-hover"
+                className="flex cursor-pointer items-center justify-center rounded-3xl bg-main px-4 py-[.6rem] text-white duration-300 md:hover:bg-main-hover"
               >
                 Tambah blog
               </Link>
@@ -90,7 +90,7 @@ const BlogAdmin = () => {
             id="table"
             className="w-full"
           >
-            <table className="w-full rounded-[.8rem]">
+            <table className="w-full rounded-3xl">
               <thead>
                 <tr>
                   <th className="rounded-tl-[.8rem] bg-white py-4 text-center">
@@ -137,12 +137,12 @@ const BlogAdmin = () => {
                       <div className="flex w-full items-center justify-center gap-[.5rem]">
                         <Link
                           href={`/${website_sub_category_id}/admin/blog/edit/${item.id}`}
-                          className="rounded-[.5rem] bg-main px-4 py-[.5rem] text-white duration-300 md:hover:bg-main-hover"
+                          className="rounded-3xl bg-main px-4 py-[.5rem] text-white duration-300 md:hover:bg-main-hover"
                         >
                           Edit
                         </Link>
                         <button
-                          className="rounded-[.5rem] bg-red-100 px-4 py-[.5rem] font-medium text-red-700 duration-300 md:hover:bg-red-200"
+                          className="rounded-3xl bg-red-100 px-4 py-[.5rem] font-medium text-red-700 duration-300 md:hover:bg-red-200"
                           onClick={() => {
                             setOpen(true);
                             setBlogId(item.id);
@@ -193,7 +193,7 @@ const ModalDeleteBlog = ({ onClick, open, setOpen, isLoading }: Props) => {
             {!isLoading ? (
               <div className="grid w-full grid-cols-2 gap-[.5rem] pt-8 text-[.9rem]">
                 <div
-                  className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-red-100 py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100"
+                  className="w-full shrink-0 cursor-pointer rounded-3xl bg-red-100 py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100"
                   onClick={() => {
                     onClick();
                     setOpen(false);
@@ -202,7 +202,7 @@ const ModalDeleteBlog = ({ onClick, open, setOpen, isLoading }: Props) => {
                   Hapus Blog
                 </div>
                 <div
-                  className="w-full shrink-0 cursor-pointer rounded-[.8rem] py-[.8rem] font-medium text-main-gray-text duration-300 md:hover:text-black"
+                  className="w-full shrink-0 cursor-pointer rounded-3xl py-[.8rem] font-medium text-main-gray-text duration-300 md:hover:text-black"
                   onClick={() => setOpen(false)}
                 >
                   Batalkan

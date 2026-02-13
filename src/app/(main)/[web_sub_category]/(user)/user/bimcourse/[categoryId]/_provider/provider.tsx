@@ -93,8 +93,6 @@ export default function Provider({ children }: Props) {
     },
   );
 
-  console.log({ CourseProgress });
-
   const { data: CourseAnalytics, isLoading: AnalyticsLoading } = useGet(
     '/course/getCourseAnalytics',
     {
@@ -262,15 +260,6 @@ export default function Provider({ children }: Props) {
     courseFeatures.includes(categoryId);
 
   const isLocked = (isPremium && !isAdmin && !isBuy) || false;
-
-  console.log({
-    isLocked,
-    isBuy,
-    isAdmin,
-    isPremium,
-    courseFeatures,
-    categoryId,
-  });
 
   const [isLoading, setIsLoading] = useState(false);
 

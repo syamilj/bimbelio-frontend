@@ -252,7 +252,7 @@ const EditBlogAdmin = () => {
                 value && setStatus(value as BlogStatusEnum)
               }
             >
-              <SelectTrigger className="font-regular h-[45px] w-full rounded-[.5rem] border border-main-gray-input px-4 text-black outline-none">
+              <SelectTrigger className="font-regular h-[45px] w-full rounded-3xl border border-main-gray-input px-4 text-black outline-none">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
@@ -270,7 +270,7 @@ const EditBlogAdmin = () => {
               value={isEditorPick ? 'true' : 'false'}
               onValueChange={(value) => setIsEditorPick(value === 'true')}
             >
-              <SelectTrigger className="font-regular h-[45px] w-full rounded-[.5rem] border border-main-gray-input px-4 text-black outline-none">
+              <SelectTrigger className="font-regular h-[45px] w-full rounded-3xl border border-main-gray-input px-4 text-black outline-none">
                 <SelectValue placeholder="Pilihan Editor" />
               </SelectTrigger>
               <SelectContent>
@@ -287,7 +287,7 @@ const EditBlogAdmin = () => {
               <p>Published Date </p>
               <input
                 type="datetime-local"
-                className="font-regular h-[45px] w-full rounded-[.5rem] border border-main-gray-input px-4 text-black outline-none"
+                className="font-regular h-[45px] w-full rounded-3xl border border-main-gray-input px-4 text-black outline-none"
                 onChange={(e) => setPublishedAt(e.target.value)}
                 value={publishedAt}
               />
@@ -301,7 +301,7 @@ const EditBlogAdmin = () => {
           <p>Tags (format : tags1, tags2, tags3)</p>
           {/* <input
             type="text"
-            className="border border-main-gray-input rounded-[.5rem] outline-none text-black py-[.5rem] px-4 w-full font-regular"
+            className="border border-main-gray-input rounded-3xl outline-none text-black py-[.5rem] px-4 w-full font-regular"
             placeholder={`Tags`}
             onChange={e => {
               const value = e.target.value.split(',').map(tag => tag.trim());
@@ -350,7 +350,7 @@ const EditBlogAdmin = () => {
                   </PopoverTrigger>
                   {showDeleteIndex === tagValIndex && (
                     <div
-                      className="absolute bottom-[0] right-0 cursor-pointer rounded-[.2rem] bg-red-100 px-[.5rem] py-[.1rem] text-[.75rem] text-red-800 duration-300 md:hover:bg-red-200"
+                      className="absolute bottom-[0] right-0 cursor-pointer rounded-3xl bg-red-100 px-[.5rem] py-[.1rem] text-[.75rem] text-red-800 duration-300 md:hover:bg-red-200"
                       onClick={() => {
                         setTagValue((prev) =>
                           prev.filter((_, i) => i !== tagValIndex),
@@ -409,7 +409,7 @@ const EditBlogAdmin = () => {
               </Popover>
             ))}
             <div
-              className="flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-[.8rem] bg-blue-100 font-medium text-blue-600 duration-300 md:hover:bg-blue-200 md:hover:shadow-default md:active:bg-blue-100"
+              className="flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-3xl bg-blue-100 font-medium text-blue-600 duration-300 md:hover:bg-blue-200 md:hover:shadow-default md:active:bg-blue-100"
               onClick={() => {
                 setTagValue((prev) => [...prev, { title: '', open: false }]);
               }}
@@ -429,12 +429,12 @@ const EditBlogAdmin = () => {
 
       <div className="h-[50px] w-full">
         {loading ? (
-          <div className="flex h-[50px] w-full items-center justify-center rounded-[.8rem] bg-main-hover">
+          <div className="flex h-[50px] w-full items-center justify-center rounded-3xl bg-main-hover">
             <Spinner />
           </div>
         ) : (
           <div
-            className="flex h-[50px] w-full cursor-pointer items-center justify-center rounded-[.8rem] bg-main text-white duration-300 md:hover:bg-main-hover"
+            className="flex h-[50px] w-full cursor-pointer items-center justify-center rounded-3xl bg-main text-white duration-300 md:hover:bg-main-hover"
             onClick={handleUpdate}
           >
             Update Blog
@@ -506,7 +506,7 @@ const UploadFile = ({
               </p>
             </div>
             <button
-              className="w-full rounded-[.5rem] border border-main-gray-input py-[.5rem] text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main-hover"
+              className="w-full rounded-3xl border border-main-gray-input py-[.5rem] text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main-hover"
               onClick={() => {
                 document.getElementById(`${inputId}`)?.click();
               }}
@@ -530,7 +530,7 @@ const UploadFile = ({
                   </p>
                 </div>
                 <button
-                  className="w-full rounded-[.5rem] border border-main-gray-input py-[.5rem] text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main-hover"
+                  className="w-full rounded-3xl border border-main-gray-input py-[.5rem] text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main-hover"
                   onClick={() => {
                     document.getElementById(`${inputId}`)?.click();
                   }}
@@ -600,7 +600,7 @@ const InputText = ({
       <p>{heading}</p>
       <input
         type="text"
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         placeholder={`${placeholder}`}
         onChange={(e) => setValue(e.target.value)}
         value={value}
@@ -627,7 +627,7 @@ const InputTextarea = ({
     >
       <p>{heading}</p>
       <textarea
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         placeholder={`${placeholder}`}
         onChange={(e) => setValue(e.target.value)}
         value={value}

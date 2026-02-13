@@ -168,7 +168,7 @@ export const UploadFile = ({
 
             <button
               type="button"
-              className="w-full rounded-[.5rem] border border-main-gray-input py-[.5rem] text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main-hover"
+              className="w-full rounded-3xl border border-main-gray-input py-[.5rem] text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main-hover"
               onClick={() => {
                 document.getElementById(inputId)?.click();
               }}
@@ -199,7 +199,7 @@ export const UploadFile = ({
 
                 <button
                   type="button"
-                  className="w-full rounded-[.5rem] border border-main-gray-input py-[.5rem] text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main-hover"
+                  className="w-full rounded-3xl border border-main-gray-input py-[.5rem] text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main-hover"
                   onClick={() => {
                     document.getElementById(inputId)?.click();
                   }}

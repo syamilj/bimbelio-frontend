@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { env } from '@/env.mjs';
 import { useBlockNoteEditor } from '@blocknote/react';
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
-import { useCompletion } from 'ai/react';
+import { useCompletion } from '@ai-sdk/react';
 import Cookies from 'js-cookie';
 import 'katex/dist/katex.min.css';
 import { ArrowRight } from 'lucide-react';
@@ -36,11 +36,10 @@ export type AiPopoverPropsRect = {
 } | null;
 
 const replaceLatexNotation = (content: any) => {
+  if (!content) return '';
   return content
-    .replace(/\\\[/g, '$$$') // Replace all occurrences of \[ with $$
-    .replace(/\\\]/g, '$$$') // Replace all occurrences of \] with $$
-    .replace(/\\\(/g, '$$$') // Replace all occurrences of \( with $$
-    .replace(/\\\)/g, '$$$'); // Replace all occurrences of \) with $$
+    .replace(/\\\[([\s\S]*?)\\\]/g, '$$$$$$ $1 $$$$$$') // \[...\] → $$...$$ (display math)
+    .replace(/\\\(([\s\S]*?)\\\)/g, '$ $1 $'); // \(...\) → $...$ (inline math)
 };
 
 const remarkMathOptions = {

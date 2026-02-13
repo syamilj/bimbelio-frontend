@@ -177,7 +177,7 @@ export default function Start() {
         {step.number === 1 ? (
           <div className="grid w-full grid-cols-2 gap-[1rem] font-medium text-main-gray-text">
             <div
-              className={`flex items-center gap-[.5rem] rounded-[1rem] bg-white p-[1.5rem] duration-200 ${!isGeneratingQuizObjective && !isGeneratingQuiz && 'cursor-pointer hover:shadow-xl'}`}
+              className={`flex items-center gap-[.5rem] rounded-3xl bg-white p-[1.5rem] duration-200 ${!isGeneratingQuizObjective && !isGeneratingQuiz && 'cursor-pointer hover:shadow-xl'}`}
               onClick={() => {
                 // generateObjective();
                 setStep({ number: 2, type: 'objective' });
@@ -195,7 +195,7 @@ export default function Start() {
               )}
             </div>
             <div
-              className={`flex items-center gap-[.5rem] rounded-[1rem] bg-white p-[1.5rem] duration-200 ${!isGeneratingQuiz && !isGeneratingQuizObjective && 'cursor-pointer hover:shadow-xl'}`}
+              className={`flex items-center gap-[.5rem] rounded-3xl bg-white p-[1.5rem] duration-200 ${!isGeneratingQuiz && !isGeneratingQuizObjective && 'cursor-pointer hover:shadow-xl'}`}
               onClick={() => {
                 // generateEssay();
                 setStep({ number: 2, type: 'essay' });
@@ -245,7 +245,7 @@ export default function Start() {
                     <p>Halaman awal</p>
                     <input
                       type="number"
-                      className="h-[50px] w-full rounded-[.8rem] border border-main-gray-input px-[1rem] text-[.9rem] outline-none duration-300 focus:shadow-cardSoft"
+                      className="h-[50px] w-full rounded-3xl border border-main-gray-input px-[1rem] text-[.9rem] outline-none duration-300 focus:shadow-cardSoft"
                       required
                       placeholder="1.."
                       onChange={(e) => {
@@ -265,7 +265,7 @@ export default function Start() {
                     <p>Halaman akhir</p>
                     <input
                       type="number"
-                      className="h-[50px] w-full rounded-[.8rem] border border-main-gray-input px-[1rem] text-[.9rem] outline-none duration-300 focus:shadow-cardSoft"
+                      className="h-[50px] w-full rounded-3xl border border-main-gray-input px-[1rem] text-[.9rem] outline-none duration-300 focus:shadow-cardSoft"
                       required
                       placeholder="1.."
                       onChange={(e) => {
@@ -279,7 +279,7 @@ export default function Start() {
                   </div>
                 </div>
                 <div className="ml-[.5rem] flex h-full shrink-0 items-end">
-                  <button className="h-[50px] rounded-[.8rem] bg-main px-[1rem] text-white duration-300 md:hover:bg-main-hover">
+                  <button className="h-[50px] rounded-3xl bg-main px-[1rem] text-white duration-300 md:hover:bg-main-hover">
                     <IconTailedArrowNext w={15} />
                   </button>
                 </div>

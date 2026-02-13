@@ -13,7 +13,7 @@ import {
   IconTailedArrowNext,
   IconTailedArrowPrev,
 } from '@/styles/icon';
-import { useCompletion } from 'ai/react';
+import { useCompletion } from '@ai-sdk/react';
 import Cookies from 'js-cookie';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -195,7 +195,7 @@ const IndividualQuiz = () => {
                 <p
                   key={i}
                   className={cn(
-                    `cursor-pointer rounded-[.3rem] px-[.5rem] text-[.9rem] duration-200 hover:bg-main-hover hover:text-white active:bg-white `,
+                    `cursor-pointer rounded-3xl px-[.5rem] text-[.9rem] duration-200 hover:bg-main-hover hover:text-white active:bg-white `,
                     i + 1 === current
                       ? 'bg-[#e7e7e7] text-main-gray-text'
                       : 'bg-white',
@@ -215,7 +215,7 @@ const IndividualQuiz = () => {
                 <p
                   key={i}
                   className={cn(
-                    `cursor-pointer rounded-[.3rem] px-[.5rem] text-[.9rem] duration-200 hover:bg-white hover:text-black active:bg-white`,
+                    `cursor-pointer rounded-3xl px-[.5rem] text-[.9rem] duration-200 hover:bg-white hover:text-black active:bg-white`,
                     i + 1 === current
                       ? 'bg-black text-white hover:bg-gray-400 hover:text-white'
                       : getCorrect(i) && getResponse(i)
@@ -351,7 +351,7 @@ const IndividualQuiz = () => {
           </Button>
         ) : !showResult && current === total ? (
           <button
-            className="flex items-center gap-[.5rem] rounded-[.8rem] bg-main px-[1rem] py-[.7rem] text-[.9rem] text-white duration-200 hover:bg-main-hover"
+            className="flex items-center gap-[.5rem] rounded-3xl bg-main px-[1rem] py-[.7rem] text-[.9rem] text-white duration-200 hover:bg-main-hover"
             onClick={() => setShowResult(true)}
           >
             Check Result
@@ -359,7 +359,7 @@ const IndividualQuiz = () => {
           </button>
         ) : (
           <button
-            className="flex items-center gap-[.5rem] rounded-[.8rem] bg-main px-[1rem] py-[.7rem] text-[.9rem] text-white duration-200 hover:bg-main-hover"
+            className="flex items-center gap-[.5rem] rounded-3xl bg-main px-[1rem] py-[.7rem] text-[.9rem] text-white duration-200 hover:bg-main-hover"
             onClick={() => handleFinishQuiz()}
           >
             Buat quiz baru

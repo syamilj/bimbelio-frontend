@@ -76,13 +76,13 @@ export const RegistrationUserTryout = ({
           </div>
           <div className="mt-4 flex gap-4">
             <button
-              className="w-[156px] rounded-[.8rem] py-[.8rem] text-[.85rem] font-medium text-main-gray-text duration-200 md:hover:text-main-gray-text2 cursor-pointer"
+              className="w-[156px] rounded-3xl py-[.8rem] text-[.85rem] font-medium text-main-gray-text duration-200 md:hover:text-main-gray-text2 cursor-pointer"
               onClick={() => Router.back()}
             >
               Kembali
             </button>
             <button
-              className="font-regular w-[156px] rounded-[.8rem] bg-main py-[.8rem] text-[.85rem] text-white duration-200 hover:bg-main/85 cursor-pointer"
+              className="font-regular w-[156px] rounded-3xl bg-main py-[.8rem] text-[.85rem] text-white duration-200 hover:bg-main/85 cursor-pointer"
               onClick={() => setStep(2)}
             >
               Verifikasi Akun

@@ -2,13 +2,13 @@ import '@blocknote/core/fonts/inter.css';
 import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
 import { useCreateBlockNote } from '@blocknote/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 import dynamic from 'next/dynamic';
 import { useDebouncedCallback } from 'use-debounce';
 import Latex, { schema } from './latex';
-import { processAllLatex } from './latex-helper';
+import { preprocessLatexInValue, processAllLatex, autoProcessLatex } from './latex-helper';
 import './style.css';
 
 async function uploadFile(file: File) {
@@ -32,7 +32,7 @@ function BlocknoteEditor({
   isMarkdown?: boolean;
   type?: 'BORDERED';
 }) {
-  const id = crypto.randomUUID();
+  const id = useRef(crypto.randomUUID()).current;
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const editor = useCreateBlockNote({
     schema,
@@ -42,17 +42,29 @@ function BlocknoteEditor({
   const getValue = async (value?: string) => {
     if (value === undefined) return;
     if (!isFocused) {
+      // Pre-process to consolidate multi-line LaTeX before BlockNote parsing
+      const processed = preprocessLatexInValue(value);
       let initialValue;
       if (isMarkdown) {
-        initialValue = await editor.tryParseMarkdownToBlocks(value);
+        initialValue = await editor.tryParseMarkdownToBlocks(processed);
       } else {
-        initialValue = await editor.tryParseHTMLToBlocks(value);
+        initialValue = await editor.tryParseHTMLToBlocks(processed);
       }
       const ids = editor.document.map((item) => item.id);
       editor.replaceBlocks(ids, initialValue);
-      processAllLatex(editor);
+      // Multiple passes to ensure LaTeX is processed after ProseMirror settles.
+      // Also handles cases where content takes longer to finalize.
+      setTimeout(() => processAllLatex(editor), 50);
+      setTimeout(() => processAllLatex(editor), 200);
+      setTimeout(() => processAllLatex(editor), 500);
     }
   };
+
+  // Debounced auto-detect for LaTeX conversion as a safety net.
+  // Catches any $...$ or $$...$$ that wasn't converted by keydown/paste handlers.
+  const debouncedAutoProcess = useDebouncedCallback(() => {
+    autoProcessLatex(editor);
+  }, 300);
 
   const handleOnChange = useDebouncedCallback(async () => {
     if (!onValueChange) return;
@@ -115,6 +127,7 @@ function BlocknoteEditor({
         theme={'light'}
         onChange={async () => {
           handleOnChange();
+          debouncedAutoProcess();
         }}
         editable={viewOnly ? false : true}
       />

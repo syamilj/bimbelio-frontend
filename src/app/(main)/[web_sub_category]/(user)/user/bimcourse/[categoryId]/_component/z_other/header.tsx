@@ -65,7 +65,7 @@ export default function HeaderCourse({
   const userCourseFeatures = session?.user.feature.course || false;
 
   const {
-    useParams: { sub, categoryId },
+    useParams: { sub, categoryId, tab },
     useData: { Course, setIndexChapter, CourseProgress, CourseData },
     useOther: { setShowList, showList },
   } = useProvider();
@@ -79,18 +79,18 @@ export default function HeaderCourse({
     return (
       <div className="flex flex-col">
         <div className="flex items-center justify-between p-4">
-          <h3 className="font-semibold">Daftar Isi</h3>
+          <h3 className="text-sm font-semibold text-slate-800">Daftar Isi</h3>
           <div
             onClick={() => {
               setShowList(false);
             }}
           >
             <IconX
-              className="text-main-gray-text cursor-pointer md:hover:text-main-gray-text2"
+              className="text-slate-400 cursor-pointer hover:text-slate-600 transition-colors"
               w={
                 typeof window !== 'undefined' && window.innerWidth < 769
-                  ? 20
-                  : 25
+                  ? 18
+                  : 20
               }
             />
           </div>
@@ -107,50 +107,22 @@ export default function HeaderCourse({
                 value="item-1"
                 className="border-none"
               >
-                <AccordionTrigger className="flex cursor-pointer items-start gap-[.5rem] rounded-[.5rem] px-4 py-[.5rem] text-start text-[1rem] font-semibold duration-300 md:md:hover:bg-surface-primary-light truncate">
+                <AccordionTrigger className="flex cursor-pointer items-start gap-2 rounded-xl px-4 py-2 text-start text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 truncate">
                   {chapter.title}
                 </AccordionTrigger>
                 <AccordionContent className="pb-0">
-                  <div className="ml-[.5rem] flex flex-col gap-[.5rem]">
+                  <div className="ml-1 flex flex-col gap-0.5">
                     {chapter.CourseSubChapter.map((sChapter, sIndex) => (
                       <div
                         key={sIndex}
-                        className="relative flex items-center"
+                        className="flex items-center"
                       >
-                        <div className="absolute right-4 z-2 flex items-center gap-2">
-                          {sChapter.status === 'UPCOMING' && (
-                            <Rocket className="w-4 h-4 text-purple-500" />
-                          )}
-                          {sChapter.publishedAt &&
-                            new Date(sChapter.publishedAt) > new Date() && (
-                              <CalendarClock className="w-4 h-4 text-orange-500" />
-                            )}
-                          {sChapter.premium && (
-                            <div
-                              className="flex items-center gap-1 bg-main text-xs text-white px-3 p-1 rounded-3xl cursor-pointer hover:bg-main/90"
-                              onClick={() => {
-                                if (isHide(sChapter.premium)) {
-                                  setTransactionPopUp(true);
-                                }
-                              }}
-                            >
-                              Premium{' '}
-                              {isHide(sChapter.premium) ? (
-                                <GemIcon className="w-4 h-4" />
-                              ) : (
-                                <GemIcon className="w-4 h-4" />
-                              )}
-                            </div>
-                          )}
-                        </div>
                         <Link
-                          href={`/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=${sChapter.id}`}
+                          href={`/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=${sChapter.id}&tab=${tab || 'chat'}`}
                           key={sIndex}
                           className={cn(
-                            'flex cursor-pointer items-center gap-2 rounded-3xl px-4 py-2 duration-300 md:hover:bg-surface-primary-light relative w-full',
-                            sChapter.id === sub && 'bg-main/10 text-main',
-                            // isHide(sChapter.premium) &&
-                            //   'pointer-events-none select-none md:hover:bg-transparent',
+                            'flex flex-1 min-w-0 cursor-pointer items-center gap-2 rounded-lg px-3 py-2 transition-colors hover:bg-slate-50 w-full',
+                            sChapter.id === sub && 'bg-blue-50 text-blue-600',
                           )}
                           onClick={() => {
                             setShowList(false);
@@ -159,58 +131,58 @@ export default function HeaderCourse({
                         >
                           {sChapter.CourseProgress.length > 0 ? (
                             <IconCheckList
-                              w={18}
-                              className="mt-[.2rem] text-green-500"
+                              w={16}
+                              className="shrink-0 text-green-500"
                             />
                           ) : sChapter.type === 'VIDEO' ? (
                             <IconPlay
-                              w={18}
+                              w={16}
                               className={cn(
-                                'mt-[.2rem]',
+                                'shrink-0',
                                 isHide(sChapter.premium) && 'opacity-50',
                               )}
                             />
                           ) : sChapter.type === 'DOCUMENT' ? (
                             <IconDocument
-                              w={18}
+                              w={16}
                               className={cn(
-                                'mt-[.2rem]',
+                                'shrink-0',
                                 isHide(sChapter.premium) && 'opacity-50',
                               )}
                             />
                           ) : sChapter.type === 'TRYOUT' ? (
                             <IconQuiz
-                              w={18}
+                              w={16}
                               className={cn(
-                                'mt-[.2rem]',
+                                'shrink-0',
                                 isHide(sChapter.premium) && 'opacity-50',
                               )}
                             />
                           ) : (
                             <IconDocument
-                              w={18}
+                              w={16}
                               className={cn(
-                                'mt-[.2rem]',
+                                'shrink-0',
                                 isHide(sChapter.premium) && 'opacity-50',
                               )}
                             />
                           )}
                           <div
                             className={cn(
-                              'flex flex-col gap-[.5rem] w-full',
+                              'flex flex-col gap-0.5 min-w-0 flex-1',
                               isHide(sChapter.premium) && 'opacity-50',
                             )}
                           >
-                            <div className="text-sm font-medium w-[200px] truncate">
+                            <div className="text-[12px] font-medium text-slate-700 truncate">
                               {sChapter.title}
                             </div>
                             <div
                               className={cn(
-                                'text-xs capitalize flex justify-start gap-1 items-center text-main-gray-text2',
-                                sChapter.id === sub && 'text-main',
+                                'text-[10px] capitalize flex items-center gap-1 text-slate-400',
+                                sChapter.id === sub && 'text-blue-500',
                               )}
                             >
-                              <div>
+                              <span>
                                 {sChapter.type === 'TRYOUT'
                                   ? 'QUIZ'
                                   : sChapter.type === 'DOCUMENT'
@@ -218,13 +190,35 @@ export default function HeaderCourse({
                                     : sChapter.type === 'MATERI'
                                       ? 'MATERI'
                                       : sChapter.type}{' '}
-                              </div>
-                              <div className={cn('flex items-center gap-1')}>
+                              </span>
+                              <span>
                                 - {sChapter.spendTime} Menit
-                              </div>
+                              </span>
                             </div>
                           </div>
                         </Link>
+                        <div className="shrink-0 flex items-center gap-1 mr-2">
+                          {sChapter.status === 'UPCOMING' && (
+                            <Rocket className="w-3 h-3 text-purple-500" />
+                          )}
+                          {sChapter.publishedAt &&
+                            new Date(sChapter.publishedAt) > new Date() && (
+                              <CalendarClock className="w-3 h-3 text-orange-500" />
+                            )}
+                          {sChapter.premium && (
+                            <div
+                              className="flex items-center gap-0.5 bg-blue-500/10 text-[10px] text-blue-600 px-1.5 py-0.5 rounded-md cursor-pointer hover:bg-blue-500/20 transition-colors font-medium"
+                              onClick={() => {
+                                if (isHide(sChapter.premium)) {
+                                  setTransactionPopUp(true);
+                                }
+                              }}
+                            >
+                              <GemIcon className="w-2.5 h-2.5" />
+                              Pro
+                            </div>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -235,7 +229,7 @@ export default function HeaderCourse({
           <Link
             href={`/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=report`}
             className={cn(
-              'flex cursor-pointer items-center gap-[.5rem] text-main rounded-[.5rem] px-4 py-[.5rem] text-start text-[1rem] font-semibold duration-300 md:md:hover:bg-surface-primary-light',
+              'flex cursor-pointer items-center gap-2 text-blue-600 rounded-xl px-4 py-2 text-start text-sm font-semibold transition-colors hover:bg-slate-50',
             )}
             onClick={() => {
               setShowList(false);
@@ -263,15 +257,15 @@ export default function HeaderCourse({
   ) {
     if (session?.user.role !== 'ADMIN') {
       return (
-        <p className="text-[.9rem] text-main-gray-text">
+        <p className="text-xs text-slate-500">
           {used}/{limit}
         </p>
       );
     }
     // Jika ADMIN => unlimited
     return (
-      <div className="flex items-center text-[.9rem] text-main-gray-text">
-        <IconUnlimited w={15} />/<IconUnlimited w={15} />
+      <div className="flex items-center text-xs text-slate-500">
+        <IconUnlimited w={13} />/<IconUnlimited w={13} />
       </div>
     );
   }
@@ -286,7 +280,7 @@ export default function HeaderCourse({
       )}
       <header
         className={cn(
-          'flex w-full items-center justify-between md:justify-center border-b py-4 px-4 bg-white md:bg-white z-100',
+          'flex w-full items-center justify-between md:justify-center border-b border-slate-200/60 py-3 px-4 bg-white z-100',
           className,
         )}
       >
@@ -296,7 +290,7 @@ export default function HeaderCourse({
         >
           <IconHamburger
             w={20}
-            className="text-main-gray-text"
+            className="text-slate-500"
           />
         </div>
         {/* <div
@@ -307,55 +301,55 @@ export default function HeaderCourse({
             <AnimatedGradientText>Limitasi</AnimatedGradientText>
           </p>
         </div> */}
-        <div className="flex items-center justify-center gap-4 md:hidden">
+        <div className="flex items-center justify-center gap-3 md:hidden">
           {/* Chat limit */}
-          <div className="flex items-center gap-[.5rem]">
+          <div className="flex items-center gap-1.5">
             <IconChat
-              w={18}
-              className="text-main-gray-text"
+              w={16}
+              className="text-slate-400"
             />
             {renderLimitInfo(
-              <IconChat w={18} />,
+              <IconChat w={16} />,
               userLimitation?.chat,
               userLimitation?.chatLimit,
             )}
           </div>
 
           {/* Notes limit */}
-          <div className="flex items-center gap-[.5rem]">
+          <div className="flex items-center gap-1.5">
             <IconPen
-              w={18}
-              className="text-main-gray-text"
+              w={16}
+              className="text-slate-400"
             />
             {renderLimitInfo(
-              <IconPen w={18} />,
+              <IconPen w={16} />,
               userLimitation?.notes,
               userLimitation?.notesLimit,
             )}
           </div>
 
           {/* Quiz limit */}
-          <div className="flex items-center gap-[.5rem]">
+          <div className="flex items-center gap-1.5">
             <IconTabsQuiz
-              w={18}
-              className="text-main-gray-text"
+              w={16}
+              className="text-slate-400"
             />
             {renderLimitInfo(
-              <IconTabsQuiz w={18} />,
+              <IconTabsQuiz w={16} />,
               userLimitation?.quiz,
               userLimitation?.quizLimit,
             )}
           </div>
 
           {/* Vision limit */}
-          <div className="flex items-center gap-[.5rem]">
+          <div className="flex items-center gap-1.5">
             <IconVision
               active
-              w={20}
-              className="text-main-gray-text"
+              w={18}
+              className="text-slate-400"
             />
             {renderLimitInfo(
-              <IconVision w={18} />,
+              <IconVision w={16} />,
               userLimitation?.vision,
               userLimitation?.visionLimit,
             )}
@@ -364,13 +358,12 @@ export default function HeaderCourse({
           {/* Role-based status or button */}
           {!userCourseFeatures ? (
             <ButtonPayment>
-              <IconCrown w={15} />
+              <IconCrown w={14} />
               <p className="font-regular hidden md:block">Upgrade</p>
             </ButtonPayment>
           ) : (
-            <div className="flex items-center rounded-3xl p-2 bg-main-yellow text-white">
-              <IconCrown className="text-white" />
-              {/* <p>Admin</p> */}
+            <div className="flex items-center rounded-xl p-1.5 bg-amber-400 text-white">
+              <IconCrown className="text-white" w={14} />
             </div>
           )}
         </div>
@@ -386,7 +379,7 @@ export default function HeaderCourse({
         <motion.div
           id="1"
           className={cn(
-            'bg-white py-0 px-4 rounded-[3rem] md:w-full max-w-[990px] justify-between items-center gap-4 left-2 right-2 sticky top-0 md:relative hidden md:flex ',
+            'bg-white py-0 px-3 rounded-2xl md:w-full max-w-[990px] justify-between items-center gap-3 left-2 right-2 sticky top-0 md:relative hidden md:flex',
             isMobile && 'pointer-events-none',
           )}
           initial={{ opacity: 0, x: 0 }}
@@ -395,36 +388,37 @@ export default function HeaderCourse({
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
           <div
-            className="hover:bg-gray-300 rounded-full p-1 cursor-pointer duration-300 relative"
+            className="hover:bg-slate-100 rounded-xl p-1.5 cursor-pointer transition-colors relative"
             onClick={() => {
               setShowList((prev) => !prev);
             }}
           >
             <List
-              className="text-main"
+              className="text-slate-600"
               strokeWidth={2}
+              size={20}
             />
           </div>
-          <div className="flex items-center justify-between px-4 w-full border-x-2 ">
-            <div className="flex items-center text-sm gap-4">
+          <div className="flex items-center justify-between px-4 w-full border-x border-slate-200/60">
+            <div className="flex items-center text-sm gap-3">
               <div className="hidden md:block">
-                <BookAIcon className="text-main" />
+                <BookAIcon className="text-slate-400" size={20} />
               </div>
               <div className="text-start text-nowrap">
-                <p>{sub === 'report' ? 'Report' : CourseData?.chapterTitle}</p>
-                <p className="text-main-gray-text">
+                <p className="text-sm font-medium text-slate-800">{sub === 'report' ? 'Report' : CourseData?.chapterTitle}</p>
+                <p className="text-xs text-slate-500">
                   {sub === 'report'
                     ? 'Report untuk course ini'
                     : CourseData?.title}
                 </p>
               </div>
             </div>
-            <div className="flex items-center text-sm">
+            <div className="flex items-center text-sm gap-2">
               <div className="text-end hidden md:block">
-                <p className="text-[#a8a8a8] font-normal">
-                  {CourseProgress?.percentageProgress?.toFixed(2)}%
+                <p className="text-xs text-slate-400 font-medium">
+                  {CourseProgress?.percentageProgress?.toFixed(0)}%
                 </p>
-                <p className="text-[#a8a8a8] font-normal">
+                <p className="text-xs text-slate-400">
                   {CourseProgress?.finishedSubChapter}/
                   {CourseProgress?.totalSubChapter} sub chapters
                 </p>
@@ -435,7 +429,7 @@ export default function HeaderCourse({
             </div>
           </div>
           <div
-            className="md:hover:bg-gray-300 active:bg-gray-300 md:active:bg-transparent rounded-full p-1 cursor-pointer duration-300 relative"
+            className="hover:bg-slate-100 rounded-xl p-1.5 cursor-pointer transition-colors relative"
             onClick={() => {
               const courseContainer = document.getElementById(
                 'container-course',
@@ -451,12 +445,12 @@ export default function HeaderCourse({
               }
             }}
           >
-            <CircleChevronUp className="text-main" />
+            <CircleChevronUp className="text-slate-400" size={20} />
           </div>
 
           <motion.div
             className={cn(
-              'absolute left-0 top-[calc(100%)] z-102 w-[400px] h-[700px] border border-main-gray-input bg-white p-2 shadow-xl duration-100 overflow-y-auto overflow-x-hidden rounded-3xl mt-2',
+              'absolute left-0 top-[calc(100%)] z-102 w-[400px] h-[700px] border border-slate-200 bg-white p-2 shadow-xl duration-100 overflow-y-auto overflow-x-hidden rounded-2xl mt-2',
               !showList && 'w-0 h-0 p-0',
             )}
           >
@@ -468,7 +462,7 @@ export default function HeaderCourse({
         <motion.div
           id="10"
           className={cn(
-            'bg-[#ffff] mr-4 ml-4 border p-2 rounded-[3rem] md:w-full max-w-[990px] justify-center items-center gap-4 px-4 sticky z-120 top-4 md:relative flex md:hidden mt-4',
+            'bg-white mr-4 ml-4 border border-slate-200/60 p-2 rounded-2xl md:w-full max-w-[990px] justify-center items-center gap-3 px-3 sticky z-120 top-4 md:relative flex md:hidden mt-4',
           )}
           initial={{ opacity: 0, x: 0 }}
           animate={{ opacity: 1, x: 0 }}
@@ -476,18 +470,18 @@ export default function HeaderCourse({
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
           <div
-            className="hover:bg-gray-300 rounded-full p-1 cursor-pointer duration-300 relative"
+            className="hover:bg-slate-100 rounded-xl p-1.5 cursor-pointer transition-colors relative"
             onClick={() => {
               setShowList((prev) => !prev);
             }}
           >
             <List
-              className="text-main"
+              className="text-slate-600"
               strokeWidth={2}
-              size={20}
+              size={18}
             />
           </div>
-          <div className="flex items-center justify-between px-4 w-full border-x-2">
+          <div className="flex items-center justify-between px-3 w-full border-x border-slate-200/60">
             <div className="flex items-center text-sm gap-4">
               <div className="hidden md:block">
                 <BookAIcon className="text-primary" />
@@ -533,7 +527,7 @@ export default function HeaderCourse({
             </div>
           </div>
           <div
-            className="md:hover:bg-gray-300 active:bg-gray-300 md:active:bg-transparent rounded-full p-1 cursor-pointer duration-300 relative"
+            className="hover:bg-slate-100 rounded-xl p-1.5 cursor-pointer transition-colors relative"
             onClick={() => {
               const courseContainer = document.getElementById(
                 'container-course',
@@ -554,12 +548,12 @@ export default function HeaderCourse({
               strokeWidth={1}
             /> */}
 
-            <CircleChevronUp className="text-main" />
+            <CircleChevronUp className="text-slate-400" size={18} />
           </div>
 
           <motion.div
             className={cn(
-              'absolute left-4 top-[calc(100%)] mt-2 z-102 w-[300px] h-[500px] border border-main-gray-input bg-white p-2 shadow-sm duration-100 overflow-y-auto overflow-x-hidden rounded-3xl',
+              'absolute left-4 top-[calc(100%)] mt-2 z-102 w-[300px] h-[500px] border border-slate-200 bg-white p-2 shadow-lg duration-100 overflow-y-auto overflow-x-hidden rounded-2xl',
               !showList && 'w-0 h-0 p-0',
             )}
           >

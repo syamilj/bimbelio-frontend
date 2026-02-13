@@ -101,7 +101,7 @@ const ReportBug = ({
                 Kategori kendala<span className="text-red-600">*</span>
               </p>
               <select
-                className="rounded-[.8rem] border border-main-gray-input px-4 py-[.8rem] text-main-gray-text outline-none"
+                className="rounded-3xl border border-main-gray-input px-4 py-[.8rem] text-main-gray-text outline-none"
                 required
                 onChange={(e) => setCategory(e.target.value)}
                 value={category}
@@ -119,7 +119,7 @@ const ReportBug = ({
               </p>
               <input
                 type="text"
-                className="rounded-[.8rem] border border-main-gray-input px-4 py-[.8rem] outline-none"
+                className="rounded-3xl border border-main-gray-input px-4 py-[.8rem] outline-none"
                 placeholder="Jelaskan kendala yang dialami..."
                 required
                 value={detail}
@@ -142,7 +142,7 @@ const ReportBug = ({
               {!loading ? (
                 <>
                   <div
-                    className="flex h-full w-full cursor-pointer items-center justify-center rounded-[.8rem] bg-transparent px-4 text-main-gray-text duration-300 md:hover:text-black"
+                    className="flex h-full w-full cursor-pointer items-center justify-center rounded-3xl bg-transparent px-4 text-main-gray-text duration-300 md:hover:text-black"
                     onClick={() => {
                       setIsReportBugOpen(false);
                     }}
@@ -151,7 +151,7 @@ const ReportBug = ({
                   </div>
                   <button
                     type="submit"
-                    className="h-full w-full rounded-[.8rem] bg-main px-4 text-white duration-300 hover:bg-main/85"
+                    className="h-full w-full rounded-3xl bg-main px-4 text-white duration-300 hover:bg-main/85"
                   >
                     Kirim laporan
                   </button>
@@ -213,7 +213,7 @@ const UploadImage = ({ file, setFile, inputId }: any) => {
               </p>
             </div>
             <div
-              className="w-full cursor-pointer rounded-[.5rem] border border-main-gray-input py-[.5rem] text-center text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main"
+              className="w-full cursor-pointer rounded-3xl border border-main-gray-input py-[.5rem] text-center text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main"
               onClick={() => {
                 document.getElementById(`${inputId}`)?.click();
               }}

@@ -140,9 +140,10 @@ export default function AIChatPage() {
     e.preventDefault();
     setLoading(true);
     if (newChatInput.trim()) {
-      const res = await createNewChat({ title: newChatInput.slice(0, 50) });
+      const userMessage = newChatInput;
+      const res = await createNewChat({ title: 'Chat Baru' });
       router.push(
-        `/${website_sub_category_id}/user/bimbot/${res.id}?new=${newChatInput}`,
+        `/${website_sub_category_id}/user/bimbot/${res.id}?new=${encodeURIComponent(userMessage)}`,
       );
     } else {
       setLoading(false);

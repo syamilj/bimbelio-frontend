@@ -1,8 +1,8 @@
+'use client';
+
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import axiosInstance from '@/lib/axios/axiosInstance';
@@ -17,7 +17,7 @@ import {
   Transaction,
 } from '@/types/database';
 import Cookies from 'js-cookie';
-import { Coins, Crown, History, Settings, User, X } from 'lucide-react';
+import { Coins, Crown, History, User, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { AccountTab } from './components/account-tab';
@@ -176,149 +176,105 @@ export default function AccountSetting() {
   }, []);
 
   const tabs = [
-    {
-      value: 'account',
-      label: 'Akun',
-      icon: <User className="w-4 h-4" />,
-    },
-    {
-      value: 'subscription',
-      label: 'Subscription',
-      icon: <Crown className="w-4 h-4" />,
-    },
-    {
-      value: 'installment',
-      label: 'Cicilan',
-      icon: <Coins className="w-4 h-4" />,
-    },
-    {
-      value: 'history',
-      label: 'Riwayat',
-      icon: <History className="w-4 h-4" />,
-    },
+    { value: 'account', label: 'Akun', icon: User },
+    { value: 'subscription', label: 'Subscription', icon: Crown },
+    { value: 'installment', label: 'Cicilan', icon: Coins },
+    { value: 'history', label: 'Riwayat', icon: History },
   ];
 
   return (
     <div
       className={cn(
-        'fixed inset-0 z-1000 flex items-center justify-center bg-black/50 backdrop-blur-sm',
+        'fixed inset-0 z-1000 flex items-center justify-center bg-black/40 backdrop-blur-sm',
         page === undefined && 'hidden',
       )}
     >
-      <div className="w-full max-w-4xl h-full max-h-[90vh] m-4 bg-white rounded-3xl shadow-2xl overflow-hidden border-2 border-gray-100">
-        {/* Header with Gradient */}
+      {/* Backdrop click to close */}
+      <div className="absolute inset-0" onClick={() => setPage(undefined)} />
+
+      <div className="relative w-full max-w-xl max-h-[80vh] m-4 bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-xl flex flex-col">
+        {/* Header */}
         <div
-          className="relative px-8 py-6 text-white overflow-hidden"
+          className="px-6 py-5 flex items-center justify-between shrink-0"
           style={{
             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
           }}
         >
-          <div className="relative z-10 flex items-center justify-between">
-            <div>
-              <h1 className="text-xl md:text-3xl font-black mb-2 flex items-center gap-3">
-                <div className="w-12 h-12 rounded-3xl bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/30">
-                  <Settings className="w-6 h-6" />
-                </div>
-                Pengaturan Profil
-              </h1>
-              <p className="text-white/90 font-medium">
-                Kelola akun dan preferensi Kamu
-              </p>
-            </div>
-            <Button
-              onClick={() => setPage(undefined)}
-              className="rounded-3xl bg-white/20 hover:bg-white/30 text-white border-2 border-white/30 shadow-sm hover:shadow-md"
-            >
-              <X className="w-5 h-5" />
-            </Button>
+          <div>
+            <h1 className="text-lg font-black text-white">Pengaturan Profil</h1>
+            <p className="text-xs text-white/60 mt-0.5">Kelola akun dan preferensi kamu</p>
+          </div>
+          <button
+            onClick={() => setPage(undefined)}
+            className="w-8 h-8 rounded-3xl bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors cursor-pointer"
+          >
+            <X className="w-4 h-4 text-white" />
+          </button>
+        </div>
+
+        {/* Custom Pill Tabs */}
+        <div className="px-5 py-3 bg-slate-50/80 border-b border-slate-100 shrink-0">
+          <div className="flex gap-1 p-1 bg-slate-100 rounded-3xl">
+            {tabs.map((tab) => {
+              const isActive = page === tab.value;
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.value}
+                  onClick={() => (setPage as any)(tab.value)}
+                  className={cn(
+                    'flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold rounded-3xl transition-all cursor-pointer',
+                    isActive ? 'text-white shadow-sm' : 'text-slate-400 hover:text-slate-600',
+                  )}
+                  style={isActive ? { backgroundColor: mainColor } : undefined}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  {tab.label}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Content */}
-        <div className="flex h-full flex-col overflow-hidden">
-          <Tabs
-            value={page}
-            onValueChange={setPage as any}
-            className="w-full flex flex-col flex-1 overflow-hidden"
-          >
-            {/* Tabs Navigation */}
-            <div className="border-b-2 border-gray-100 bg-gray-50/50">
-              <TabsList className="grid w-full grid-cols-4 bg-transparent p-0 h-auto">
-                {tabs.map((tab) => (
-                  <TabsTrigger
-                    key={tab.value}
-                    value={tab.value}
-                    className="flex items-center justify-center gap-2 px-6 py-4 text-sm font-bold transition-all duration-300 data-[state=active]:bg-white rounded-none border-b-2 cursor-pointer hover:bg-gray-100/50 relative text-gray-600"
-                    isActiveClassName="bg-main/20 text-main"
-                    style={{
-                      borderColor:
-                        page === tab.value ? mainColor : 'transparent',
-                      color: page === tab.value ? mainColor : undefined,
-                    }}
-                  >
-                    {tab.icon}
-                    <span>{tab.label}</span>
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </div>
-
-            {/* Tab Contents */}
-            <div className="flex-1 overflow-hidden">
-              <TabsContent
-                value="account"
-                className="mt-0 h-full overflow-y-auto"
-              >
-                <AccountTab
-                  session={session}
-                  profile={profile}
-                  setProfile={setProfile}
-                  preview={preview}
-                  profileImage={profileImage}
-                  loading={loading}
-                  handleChangeProfile={handleChangeProfile}
-                  mainColor={mainColor}
-                  secondaryColor={secondaryColor}
-                />
-              </TabsContent>
-
-              <TabsContent
-                value="subscription"
-                className="mt-0 h-full overflow-y-auto"
-              >
-                <SubscriptionTab
-                  data={data}
-                  handlePay={handlePay}
-                  setTransactionPopUp={setTransactionPopUp}
-                  mainColor={mainColor}
-                  secondaryColor={secondaryColor}
-                />
-              </TabsContent>
-
-              <TabsContent
-                value="installment"
-                className="mt-0 h-full overflow-y-auto"
-              >
-                <TabInstallment
-                  installment={paymentData?.installment || []}
-                  mainColor={mainColor}
-                  secondaryColor={secondaryColor}
-                />
-              </TabsContent>
-
-              <TabsContent
-                value="history"
-                className="mt-0 h-full overflow-y-auto"
-              >
-                <HistoryPaymentTab
-                  data={data.riwayat as any}
-                  mainColor={mainColor}
-                  secondaryColor={secondaryColor}
-                  refetch={refetch}
-                />
-              </TabsContent>
-            </div>
-          </Tabs>
+        {/* Tab Content */}
+        <div className="flex-1 overflow-y-auto">
+          {page === 'account' && (
+            <AccountTab
+              session={session}
+              profile={profile}
+              setProfile={setProfile}
+              preview={preview}
+              profileImage={profileImage}
+              loading={loading}
+              handleChangeProfile={handleChangeProfile}
+              mainColor={mainColor}
+              secondaryColor={secondaryColor}
+            />
+          )}
+          {page === 'subscription' && (
+            <SubscriptionTab
+              data={data}
+              handlePay={handlePay}
+              setTransactionPopUp={setTransactionPopUp}
+              mainColor={mainColor}
+              secondaryColor={secondaryColor}
+            />
+          )}
+          {page === 'installment' && (
+            <TabInstallment
+              installment={paymentData?.installment || []}
+              mainColor={mainColor}
+              secondaryColor={secondaryColor}
+            />
+          )}
+          {page === 'history' && (
+            <HistoryPaymentTab
+              data={data.riwayat as any}
+              mainColor={mainColor}
+              secondaryColor={secondaryColor}
+              refetch={refetch}
+            />
+          )}
         </div>
       </div>
     </div>

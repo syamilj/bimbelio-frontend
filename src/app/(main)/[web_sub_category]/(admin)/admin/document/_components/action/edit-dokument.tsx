@@ -305,7 +305,7 @@ export default function EditDocument() {
                 </p>
                 <input
                   type="text"
-                  className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
+                  className="font-regular w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
                   placeholder="Masukan judul dokumen"
                   onChange={(e) => setFileName(e.target.value)}
                   value={fileName}
@@ -320,7 +320,7 @@ export default function EditDocument() {
               <div className="flex w-full justify-between gap-4">
                 <div className="flex w-full justify-between gap-4">
                   <div
-                    className={`w-full cursor-pointer rounded-[.5rem] border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${!premium && 'border-main bg-main text-white'}`}
+                    className={`w-full cursor-pointer rounded-3xl border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${!premium && 'border-main bg-main text-white'}`}
                     onClick={() => setPremium(false)}
                   >
                     Free
@@ -328,7 +328,7 @@ export default function EditDocument() {
                 </div>
                 <div className="flex w-full justify-between gap-4">
                   <div
-                    className={`w-full cursor-pointer rounded-[.5rem] border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${premium && 'border-main bg-main text-white'}`}
+                    className={`w-full cursor-pointer rounded-3xl border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${premium && 'border-main bg-main text-white'}`}
                     onClick={() => setPremium(true)}
                   >
                     Premium
@@ -348,7 +348,7 @@ export default function EditDocument() {
                 {categoryAndSubCategory?.category.map((item: any, i: any) => (
                   <div
                     key={i}
-                    className={`w-fit shrink-0 cursor-pointer rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${category === item.id && 'border-main bg-main text-white'}`}
+                    className={`w-fit shrink-0 cursor-pointer rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${category === item.id && 'border-main bg-main text-white'}`}
                     onClick={() => {
                       setCategory(item.id);
                       setSubCategory('');
@@ -372,7 +372,7 @@ export default function EditDocument() {
                 {subCategoryData?.map((item: any, i: any) => (
                   <div
                     key={i}
-                    className={`w-fit shrink-0 cursor-pointer rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${subCategory === item.id && 'border-main bg-main text-white'}`}
+                    className={`w-fit shrink-0 cursor-pointer rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${subCategory === item.id && 'border-main bg-main text-white'}`}
                     onClick={() => setSubCategory(item.id)}
                   >
                     {item.name}
@@ -433,13 +433,13 @@ export default function EditDocument() {
 
             <div className="flex w-full justify-between gap-4">
               <div
-                className={`w-full cursor-pointer rounded-[.5rem] border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${option === 'doc' && 'border-main bg-main text-white'}`}
+                className={`w-full cursor-pointer rounded-3xl border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${option === 'doc' && 'border-main bg-main text-white'}`}
                 onClick={() => setOption('doc')}
               >
                 Dokumen
               </div>
               <div
-                className={`w-full cursor-pointer rounded-[.5rem] border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${option === 'video' && 'border-main bg-main text-white'}`}
+                className={`w-full cursor-pointer rounded-3xl border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${option === 'video' && 'border-main bg-main text-white'}`}
                 onClick={() => setOption('video')}
               >
                 Video
@@ -484,7 +484,7 @@ export default function EditDocument() {
                   </p>
                   <input
                     type="text"
-                    className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
+                    className="font-regular w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
                     placeholder="Masukan judul dokumen"
                     onChange={(e) => setVideoName(e.target.value)}
                     value={videoName}
@@ -497,7 +497,7 @@ export default function EditDocument() {
               className="mt-4 flex gap-4"
             >
               <button
-                className="w-full rounded-[.5rem] border border-main-gray-input py-[.6rem] text-main-gray-text duration-300 hover:border-transparent hover:bg-main-hover hover:text-white"
+                className="w-full rounded-3xl border border-main-gray-input py-[.6rem] text-main-gray-text duration-300 hover:border-transparent hover:bg-main-hover hover:text-white"
                 onClick={() => {
                   setShowEditDocument(false);
                   setEditData(null);
@@ -507,7 +507,7 @@ export default function EditDocument() {
               </button>
               <button
                 type="submit"
-                className="w-full rounded-[.5rem] border border-main bg-main py-[.6rem] text-white"
+                className="w-full rounded-3xl border border-main bg-main py-[.6rem] text-white"
                 onClick={() => {
                   EditDocument();
                 }}
@@ -683,7 +683,7 @@ const UploadFile = ({
               </p>
             </div>
             <button
-              className="w-full rounded-[.5rem] border border-main-gray-input py-[.5rem] text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main-hover"
+              className="w-full rounded-3xl border border-main-gray-input py-[.5rem] text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main-hover"
               onClick={() => {
                 document.getElementById(`${inputId}`)?.click();
               }}
@@ -705,7 +705,7 @@ const UploadFile = ({
                   </p>
                 </div>
                 <button
-                  className="w-full rounded-[.5rem] border border-main-gray-input py-[.5rem] text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main-hover"
+                  className="w-full rounded-3xl border border-main-gray-input py-[.5rem] text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main-hover"
                   onClick={() => {
                     document.getElementById(`${inputId}`)?.click();
                   }}
@@ -777,7 +777,7 @@ const InputText = ({
       </p>
       <input
         type="text"
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         placeholder={`${placeholder}`}
         onChange={(e) => setValue(e.target.value)}
         value={value}
@@ -835,13 +835,13 @@ const InputDateAndTime = ({
       </p>
       <input
         type="date"
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         onChange={(e) => setDate(e.target.value)}
         value={date ? date : ''}
       />
       <input
         type="time"
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         onChange={(e) => setTime(e.target.value)}
         value={time ? time : ''}
       />
@@ -869,7 +869,7 @@ const InputTextarea = ({
         {heading} <span className="text-main-gray-text">(Try-Out)</span>
       </p>
       <textarea
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         placeholder={`${placeholder}`}
         onChange={(e) => setValue(e.target.value)}
         value={value}

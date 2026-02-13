@@ -98,39 +98,37 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
   };
 
   return (
-    <div className="flex h-[60px] items-center justify-between border-main-gray-input bg-bg-workspace py-4 pl-4 pr-4 md:border-b md:bg-bg-workspace md:pl-0 relative z-99">
-      <div className="hidden items-center md:flex">
+    <div className="flex h-[48px] items-center justify-between border-b border-slate-200/60 bg-white px-3 py-1.5 relative z-99">
+      {/* Left: Back + Title */}
+      <div className="hidden items-center gap-1 md:flex min-w-0 flex-1">
         <Link
           href={'/explore'}
           className={cn(
             buttonVariants({ variant: 'ghost', size: 'sm' }),
-            'w-fit justify-start md:hover:scale-110',
+            'w-8 h-8 p-0 rounded-3xl shrink-0',
           )}
         >
-          <ChevronLeftIcon className="mr-2 h-4 w-4" />
+          <ChevronLeftIcon className="h-4 w-4 text-slate-500" />
         </Link>
-
-        <p className="line-clamp-1 text-[.9rem] font-semibold">
+        <p className="line-clamp-1 text-sm font-semibold text-slate-800">
           {doc?.title ?? id}
         </p>
       </div>
-      <div className="flex w-full items-center justify-between gap-6 text-[1.5rem] md:w-[unset] md:justify-start">
-        <div
-          id="Pages"
-          className="flex w-fit shrink-0 items-center gap-[.2rem] pr-4 text-[1rem] font-medium md:border-r"
-        >
+
+      {/* Right: Controls */}
+      <div className="flex items-center gap-1 md:gap-1.5 w-full md:w-auto justify-between md:justify-end">
+        {/* Page Navigation */}
+        <div className="flex items-center gap-1.5 bg-slate-50 rounded-3xl px-2 py-1 border border-slate-200/60">
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              scrollToPage(); // panggil scroll
+              scrollToPage();
             }}
           >
             <input
               type="text"
               value={editPage ? currentPage : !editPage && currentPage}
-              className={`font-regular w-[30px] whitespace-nowrap rounded-[.5rem] bg-bg-workspace py-[.3rem] text-center text-black outline-none ${
-                !editPage ? 'md:border' : 'border border-main'
-              }`}
+              className="w-[28px] text-center text-xs font-medium bg-white rounded-3xl py-0.5 border border-slate-200 outline-none focus:border-blue-400 transition-colors"
               onChange={(e: any) => {
                 if (
                   !isNaN(e.target.value) &&
@@ -140,193 +138,105 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
                   setCurrentPage(e.target.value);
                 }
               }}
-              onFocus={() => {
-                setEditPage(true);
-              }}
-              onBlur={() => {
-                scrollToPage();
-              }}
+              onFocus={() => setEditPage(true)}
+              onBlur={() => scrollToPage()}
             />
           </form>
-          <span className="font-regular"> /</span>
-          <p className="font-regular">{totalPage ? totalPage : '-'}</p>
+          <span className="text-xs text-slate-400 font-medium">/ {totalPage || '-'}</span>
         </div>
-        <div
-          id="Zoom"
-          className="flex items-center gap-[.2rem]"
-        >
+
+        {/* Zoom Controls */}
+        <div className="flex items-center">
           <ToolTip value="Zoom out">
-            <div
-              id="zoomMin"
-              className="h-fit w-fit rounded-[50%] p-[.4rem] duration-200 hover:bg-main-gray-input active:bg-main-gray-input2"
-              onClick={() => {
-                handleZoom('min');
-              }}
+            <button
+              className="w-7 h-7 rounded-3xl flex items-center justify-center hover:bg-slate-100 transition-colors"
+              onClick={() => handleZoom('min')}
             >
-              <IconMinus
-                className={'text-main-gray-text2'}
-                w={15}
-              />
-            </div>
+              <IconMinus className="text-slate-400" w={12} />
+            </button>
           </ToolTip>
           <ToolTip value="Reset zoom">
-            <div
-              onClick={() => {
-                handleZoom('reset');
-              }}
-              className="h-fit w-fit rounded-[50%] p-[.4rem] duration-200 hover:bg-main-gray-input active:bg-main-gray-input2"
+            <button
+              className="w-7 h-7 rounded-3xl flex items-center justify-center hover:bg-slate-100 transition-colors"
+              onClick={() => handleZoom('reset')}
             >
-              <IconRegenerateMessage
-                w={20}
-                className={'text-main-gray-text2'}
-              />
-            </div>
+              <IconRegenerateMessage w={14} className="text-slate-400" />
+            </button>
           </ToolTip>
           <ToolTip value="Zoom in">
-            <div
-              id="zoomPlus"
-              className={
-                'h-fit w-fit cursor-default rounded-[50%] p-[.4rem] duration-200 hover:bg-main-gray-input active:bg-main-gray-input2'
-              }
-              onClick={() => {
-                handleZoom('plus');
-              }}
+            <button
+              className="w-7 h-7 rounded-3xl flex items-center justify-center hover:bg-slate-100 transition-colors"
+              onClick={() => handleZoom('plus')}
             >
-              <IconPlus
-                className={'text-main-gray-text2'}
-                w={15}
-              />
-            </div>
+              <IconPlus className="text-slate-400" w={12} />
+            </button>
           </ToolTip>
         </div>
-        <ToolTip
-          value="Search PDF"
-          className="hidden"
-        >
-          <div className="relative z-110111">
-            <div onClick={() => setOnSearchPdf(!onSearchPdf)}>
-              <IconSearch
-                className={
-                  'shrink-0 text-main-gray-text2 duration-200 hover:text-main'
-                }
-              />
-            </div>
-            <form
-              className={`absolute right-full top-full z-110111 flex items-center ${
-                onSearchPdf ? 'w-[300px]' : 'w-0'
-              } duration-300`}
-              onSubmit={(e) => {
-                e.preventDefault();
-              }}
-            >
-              <input
-                type="text"
-                className={`w-full rounded-3xl ${
-                  onSearchPdf
-                    ? 'rounded-tr-none border-2 border-white py-[.5rem] pl-4 pr-10 shadow-default outline-none focus:border-2 focus:border-main'
-                    : 'p-0'
-                } duration-300`}
-                placeholder="Search..."
-                onChange={(e) => setSearchPdf(e.target.value)}
-                value={searchPdf}
-              />
-              <IconSearch
-                className={`absolute right-4 shrink-0 text-main-gray-text2 duration-200 hover:text-main ${
-                  !onSearchPdf && 'hidden'
-                }`}
-              />
-            </form>
-          </div>
-        </ToolTip>
-        <ToolTip
-          value="Vision"
-          className="hidden md:flex"
-        >
-          <div
-            className={`relative border border-main-gray-input2 ${
+
+        {/* Vision Toggle */}
+        <ToolTip value="Vision" className="hidden md:flex">
+          <button
+            className={cn(
+              'w-7 h-7 rounded-3xl flex items-center justify-center transition-all duration-200 border',
               vision
-                ? 'bg-main text-white md:hover:bg-main-hover'
-                : 'bg-transparent text-main-gray-text2 md:hover:bg-main-gray-input2'
-            }   capitalize text-[.95rem] font-regular px-[.5rem] py-[.5rem] rounded-[.7rem] duration-200 cursor-pointer`}
-            onClick={() => {
-              setVision(!vision);
-            }}
+                ? 'bg-blue-500 text-white border-blue-500 hover:bg-blue-600'
+                : 'bg-white text-slate-400 border-slate-200 hover:bg-slate-50',
+            )}
+            onClick={() => setVision(!vision)}
           >
-            <IconVision
-              active={vision}
-              w={20}
-            />
-          </div>
+            <IconVision active={vision} w={14} />
+          </button>
         </ToolTip>
 
+        {/* Fullscreen/Minimize */}
         {mobileScreen === 'minimize' && (
-          <ToolTip
-            value="Fullscreen"
-            className={cn(inCourse && 'hidden md:block')}
-          >
-            <div
-              className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
+          <ToolTip value="Fullscreen" className={cn(inCourse && 'hidden md:block')}>
+            <button
+              className="w-7 h-7 rounded-3xl flex items-center justify-center border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 transition-colors"
               onClick={() => {
-                const chatAIContainer = document.querySelector(
-                  '.chatAIContainer',
-                ) as HTMLDivElement;
-                const DocumentContainer = document.querySelector(
-                  '.DocumentContainer',
-                ) as HTMLDivElement;
+                const chatAIContainer = document.querySelector('.chatAIContainer') as HTMLDivElement;
+                const DocumentContainer = document.querySelector('.DocumentContainer') as HTMLDivElement;
                 if (chatAIContainer && DocumentContainer) {
                   chatAIContainer.setAttribute('data-panel-size', '0.0');
-                  chatAIContainer.style.cssText =
-                    'flex: 0 1 0px; overflow: hidden;';
+                  chatAIContainer.style.cssText = 'flex: 0 1 0px; overflow: hidden;';
                   DocumentContainer.setAttribute('data-panel-size', '100.0');
-                  DocumentContainer.style.cssText =
-                    'flex: 100.0 1 0px; overflow: hidden; position: relative;';
+                  DocumentContainer.style.cssText = 'flex: 100.0 1 0px; overflow: hidden; position: relative;';
                 }
                 setMobileScreen('fullscreen');
               }}
             >
-              <IconFullscreen w={isMobile ? 15 : 20} />
-            </div>
+              <IconFullscreen w={isMobile ? 13 : 14} />
+            </button>
           </ToolTip>
         )}
         {mobileScreen === 'fullscreen' && (
-          <ToolTip
-            value="Minimize"
-            className={cn(inCourse && 'hidden md:block')}
-          >
-            <div
-              className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
+          <ToolTip value="Minimize" className={cn(inCourse && 'hidden md:block')}>
+            <button
+              className="w-7 h-7 rounded-3xl flex items-center justify-center border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 transition-colors"
               onClick={() => {
-                const chatAIContainer = document.querySelector(
-                  '.chatAIContainer',
-                ) as HTMLDivElement;
-                const DocumentContainer = document.querySelector(
-                  '.DocumentContainer',
-                ) as HTMLDivElement;
+                const chatAIContainer = document.querySelector('.chatAIContainer') as HTMLDivElement;
+                const DocumentContainer = document.querySelector('.DocumentContainer') as HTMLDivElement;
                 if (chatAIContainer && DocumentContainer) {
                   DocumentContainer.setAttribute('data-panel-size', '50.0');
-                  DocumentContainer.style.cssText =
-                    'flex: 50.0 1 0px; overflow: hidden;';
+                  DocumentContainer.style.cssText = 'flex: 50.0 1 0px; overflow: hidden;';
                   chatAIContainer.setAttribute('data-panel-size', '50.0');
-                  chatAIContainer.style.cssText =
-                    'flex: 50.0 1 0px; overflow: hidden; position: relative;';
+                  chatAIContainer.style.cssText = 'flex: 50.0 1 0px; overflow: hidden; position: relative;';
                 }
                 setMobileScreen('minimize');
               }}
             >
-              <IconMinimizeScreen w={isMobile ? 15 : 20} />
-            </div>
+              <IconMinimizeScreen w={isMobile ? 13 : 14} />
+            </button>
           </ToolTip>
         )}
 
         {inCourse && sub && isCourseDone === false && (
-          <div className="flex">
-            <SubmitCourse />
-          </div>
+          <SubmitCourse />
         )}
         {inCourse && sub && isCourseDone === true && (
-          <div className="flex w-fit cursor-default items-center justify-center gap-[.5rem] rounded-[.8rem] bg-bg-workspace px-4 py-[.7rem] text-[.9rem] text-primary duration-300">
-            <p>Selesai</p>
-            <IconCheckList className="text-green-500" />
+          <div className="flex items-center gap-1 rounded-3xl bg-emerald-500/10 px-2 py-0.5 text-[10px] text-emerald-600 font-medium">
+            <IconCheckList className="text-emerald-500 w-2.5 h-2.5" />
+            Selesai
           </div>
         )}
       </div>

@@ -72,7 +72,7 @@ export const CalenderView = () => {
                 <TabsTrigger
                   key={value}
                   value={value}
-                  className="rounded-lg font-semibold transition-all duration-200 text-gray-700 data-[state=active]:text-white data-[state=active]:shadow-md bg-transparent"
+                  className="rounded-3xl font-semibold transition-all duration-200 text-gray-700 data-[state=active]:text-white data-[state=active]:shadow-md bg-transparent"
                   isActiveClassName="bg-main"
                 >
                   <span className="font-medium text-xs md:text-sm">

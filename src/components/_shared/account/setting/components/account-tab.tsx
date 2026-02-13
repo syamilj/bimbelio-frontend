@@ -1,8 +1,7 @@
 import male from '@/_assets/default-profile/male.png';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
-import { User } from 'lucide-react';
+import { Camera, Mail, User } from 'lucide-react';
 import Image from 'next/image';
 
 export const AccountTab = ({
@@ -16,14 +15,15 @@ export const AccountTab = ({
   mainColor,
   secondaryColor,
 }: any) => (
-  <div className="p-8 space-y-6 mb-50">
+  <div className="p-5 space-y-5 pb-20">
+    {/* Profile Card */}
     <div
-      className="rounded-3xl p-8 text-white overflow-hidden relative border-2 border-white/20 shadow-lg"
+      className="rounded-3xl p-6 text-white relative overflow-hidden"
       style={{
         background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
       }}
     >
-      <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-8">
+      <div className="relative z-10 flex items-center gap-5">
         <div className="relative">
           <input
             id="ubahFotoProfile"
@@ -36,59 +36,53 @@ export const AccountTab = ({
             }}
           />
           <div
-            className="w-24 h-24 rounded-3xl overflow-hidden border-4 border-white shadow-xl hover:shadow-2xl transition-all cursor-pointer"
+            className="w-20 h-20 rounded-3xl overflow-hidden border-2 border-white/30 cursor-pointer hover:opacity-90 transition-opacity shadow-lg"
             onClick={() => document.getElementById('ubahFotoProfile')?.click()}
           >
             <Image
               src={preview || profileImage || male}
               alt="Profile"
-              width={96}
-              height={96}
+              width={80}
+              height={80}
               className="w-full h-full object-cover"
             />
           </div>
           {profile && (
-            <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center bg-green-500 text-white text-sm font-bold shadow-lg">
+            <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center bg-emerald-500 text-white text-[10px] font-bold ring-2 ring-white">
               ✓
             </div>
           )}
         </div>
 
-        <div className="flex-1">
-          <h3 className="text-2xl font-black mb-2">{session?.user?.name}</h3>
-          <p className="text-white/90 mb-4 font-medium">
-            {session?.user.email}
-          </p>
-          <div className="flex gap-3 flex-wrap">
-            <Button
-              onClick={() =>
-                document.getElementById('ubahFotoProfile')?.click()
-              }
-              className="rounded-3xl text-white font-bold bg-white/20 hover:bg-white/30 border-2 border-white/30 backdrop-blur-sm transition-all shadow-sm hover:shadow-md"
+        <div className="flex-1 min-w-0">
+          <h3 className="text-xl font-black truncate">{session?.user?.name}</h3>
+          <p className="text-white/70 text-sm truncate mt-0.5">{session?.user.email}</p>
+          <div className="flex gap-2 mt-3 flex-wrap">
+            <button
+              onClick={() => document.getElementById('ubahFotoProfile')?.click()}
+              className="flex items-center gap-1.5 px-4 py-1.5 rounded-3xl text-xs font-bold bg-white/20 hover:bg-white/30 transition-colors cursor-pointer"
             >
-              <User className="w-4 h-4 mr-2" />
+              <Camera className="w-3.5 h-3.5" />
               Ubah Foto
-            </Button>
-
+            </button>
             {profile && !loading && (
               <>
-                <Button
+                <button
                   onClick={() => setProfile(undefined)}
-                  className="rounded-3xl bg-white/10 hover:bg-white/20 text-white border-2 border-white/20 backdrop-blur-sm font-bold transition-all shadow-sm"
+                  className="px-4 py-1.5 rounded-3xl text-xs font-bold bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
                 >
                   Batal
-                </Button>
-                <Button
+                </button>
+                <button
                   onClick={handleChangeProfile}
-                  className="rounded-3xl text-white font-bold bg-white/40 hover:bg-white/50 border-2 border-white/30 backdrop-blur-sm transition-all shadow-sm hover:shadow-md"
+                  className="px-4 py-1.5 rounded-3xl text-xs font-bold bg-white/40 hover:bg-white/50 transition-colors cursor-pointer"
                 >
                   Simpan
-                </Button>
+                </button>
               </>
             )}
-
             {loading && (
-              <div className="flex items-center px-4 bg-white/10 rounded-3xl backdrop-blur-sm border-2 border-white/20">
+              <div className="flex items-center px-4 bg-white/10 rounded-3xl">
                 <Spinner />
               </div>
             )}
@@ -97,36 +91,24 @@ export const AccountTab = ({
       </div>
     </div>
 
-    {/* Account Details Card */}
-    <Card className="border-2 border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-all">
-      <CardHeader className="pb-4">
-        <CardTitle
-          className="text-lg font-black flex items-center gap-2"
-          style={{ color: mainColor }}
-        >
-          <div
-            className="w-8 h-8 rounded-3xl flex items-center justify-center text-white"
-            style={{ backgroundColor: mainColor }}
-          >
-            <User className="w-4 h-4" />
-          </div>
+    {/* Info Cards */}
+    <div className="rounded-3xl border border-slate-200 overflow-hidden">
+      <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200">
+        <h3 className="text-sm font-black text-slate-700 flex items-center gap-2">
+          <User className="w-4 h-4" style={{ color: mainColor }} />
           Informasi Akun
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <p className="text-sm font-bold text-gray-500">Nama Lengkap</p>
-          <p className="text-lg font-black text-gray-900">
-            {session?.user?.name}
-          </p>
+        </h3>
+      </div>
+      <div className="divide-y divide-slate-100">
+        <div className="px-5 py-3.5">
+          <p className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: mainColor }}>Nama Lengkap</p>
+          <p className="text-sm font-bold text-slate-800">{session?.user?.name}</p>
         </div>
-        <div className="space-y-2">
-          <p className="text-sm font-bold text-gray-500">Email</p>
-          <p className="text-lg font-black text-gray-900">
-            {session?.user.email}
-          </p>
+        <div className="px-5 py-3.5">
+          <p className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: mainColor }}>Email</p>
+          <p className="text-sm font-bold text-slate-800">{session?.user.email}</p>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   </div>
 );

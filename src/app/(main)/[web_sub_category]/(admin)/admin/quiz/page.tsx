@@ -112,7 +112,7 @@ export default function QuizAdminPage() {
       <div className="flex flex-col gap-8">
         <Link
           href={`/${website_sub_category_id}/admin/tryout/testing/try-out`}
-          className="flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-yellow-400 px-4 py-[.6rem] text-white duration-300 md:hover:bg-yellow-300"
+          className="flex w-fit cursor-pointer items-center justify-center rounded-3xl bg-yellow-400 px-4 py-[.6rem] text-white duration-300 md:hover:bg-yellow-300"
         >
           Test Tryout
         </Link>
@@ -123,10 +123,10 @@ export default function QuizAdminPage() {
           <div className="flex items-center gap-4">
             <input
               type="text"
-              className="w-[300px] rounded-[.8rem] border border-transparent px-4 py-[.5rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
+              className="w-[300px] rounded-3xl border border-transparent px-4 py-[.5rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
               placeholder="Cari tryout.."
             />
-            <div className="flex h-full items-center justify-center rounded-[.8rem] bg-white px-8 py-[.5rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:shadow-default">
+            <div className="flex h-full items-center justify-center rounded-3xl bg-white px-8 py-[.5rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:shadow-default">
               Filter
             </div>
           </div>
@@ -136,7 +136,7 @@ export default function QuizAdminPage() {
             </div>
             <Link
               href={`/${website_sub_category_id}/admin/quiz/new`}
-              className="flex cursor-pointer items-center justify-center rounded-[.8rem] bg-main px-4 py-[.6rem] text-white duration-300 hover:bg-main/85"
+              className="flex cursor-pointer items-center justify-center rounded-3xl bg-main px-4 py-[.6rem] text-white duration-300 hover:bg-main/85"
             >
               Tambah try out
             </Link>
@@ -146,7 +146,7 @@ export default function QuizAdminPage() {
           id="table"
           className="w-full"
         >
-          <table className="w-full rounded-[.8rem]">
+          <table className="w-full rounded-3xl">
             <thead>
               <tr>
                 <th className="rounded-tl-[.8rem] bg-white py-4 text-center">
@@ -186,7 +186,7 @@ export default function QuizAdminPage() {
                       </td>
                       <td className="border-t bg-white px-[.5rem] py-4 text-start text-[.9rem] text-main-gray-text">
                         <button
-                          className="rounded-[.5rem] bg-main-gray-input px-[.5rem] py-[.2rem] duration-300 md:hover:bg-main-gray-input2 md:active:bg-main-gray-input"
+                          className="rounded-3xl bg-main-gray-input px-[.5rem] py-[.2rem] duration-300 md:hover:bg-main-gray-input2 md:active:bg-main-gray-input"
                           onClick={() => {
                             navigator.clipboard.writeText(`${item.id}`);
                             toaster({

@@ -211,7 +211,7 @@ export default function QuizVolumePage() {
 
       {/* Table Section */}
       <div className="max-w-7xl mx-auto px-4 md:px-6">
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
           <Card className="rounded-3xl overflow-hidden">
             <CardHeader
               className="pb-4 relative overflow-hidden"
@@ -299,7 +299,7 @@ export default function QuizVolumePage() {
                           <TableCell>
                             <button
                               onClick={() => toggleExpanded(volume.id)}
-                              className="inline-flex items-center justify-center p-1 rounded-md hover:bg-slate-200 transition-colors"
+                              className="inline-flex items-center justify-center p-1 rounded-3xl hover:bg-slate-200 transition-colors"
                             >
                               {expandedVolumes.has(volume.id) ? (
                                 <ChevronUp className="w-4 h-4" />
@@ -341,7 +341,7 @@ export default function QuizVolumePage() {
                             <div className="flex items-center justify-end gap-2">
                               <Link
                                 href={`./quiz-volume/${volume.id}`}
-                                className="p-2 rounded-lg hover:bg-blue-50 transition-colors"
+                                className="p-2 rounded-3xl hover:bg-blue-50 transition-colors"
                                 style={{ color: mainColor }}
                               >
                                 <Edit className="w-4 h-4" />
@@ -357,7 +357,7 @@ export default function QuizVolumePage() {
                                 description={`Are you sure you want to delete Volume ${volume.number} - "${volume.title}"? This action cannot be undone.`}
                                 type="delete"
                               >
-                                <button className="p-2 rounded-lg hover:bg-red-50 text-red-500 transition-colors">
+                                <button className="p-2 rounded-3xl hover:bg-red-50 text-red-500 transition-colors">
                                   <Trash2 className="w-4 h-4" />
                                 </button>
                               </ModalVerification>
@@ -378,7 +378,7 @@ export default function QuizVolumePage() {
                                     volume.TryoutCategory.map((category) => (
                                       <div
                                         key={category.id}
-                                        className="border border-slate-200 rounded-lg p-4 bg-white"
+                                        className="border border-slate-200 rounded-3xl p-4 bg-white"
                                       >
                                         <h4 className="font-bold text-slate-900 mb-3">
                                           {category.name}

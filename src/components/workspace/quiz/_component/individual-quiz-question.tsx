@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import ReactMarkdown from '@/components/ui/react-markdown';
 import { Textarea } from '@/components/ui/textarea';
 import { IconSend, IconSuccess, IconX } from '@/styles/icon';
-import { RequestOptions } from 'ai';
+import { type CompletionRequestOptions } from 'ai';
 import 'katex/dist/katex.min.css';
 import { useState } from 'react';
 import { useProvider } from '../provider';
@@ -29,7 +29,7 @@ const IndividualQuizQuestion = ({
 }: {
   complete: (
     prompt: string,
-    options?: RequestOptions | undefined,
+    options?: CompletionRequestOptions | undefined,
   ) => Promise<string | null | undefined>;
   toggleAttempt: () => void;
   userResponse: string;
@@ -111,11 +111,10 @@ const IndividualQuizQuestion = ({
   };
 
   const replaceLatexNotation = (content: any) => {
+    if (!content) return '';
     return content
-      .replace(/\\\[/g, '$$$') // Replace all occurrences of \[ with $$
-      .replace(/\\\]/g, '$$$') // Replace all occurrences of \] with $$
-      .replace(/\\\(/g, '$$$') // Replace all occurrences of \( with $$
-      .replace(/\\\)/g, '$$$'); // Replace all occurrences of \) with $$
+      .replace(/\\\[([\s\S]*?)\\\]/g, '$$$$$$ $1 $$$$$$') // \[...\] → $$...$$ (display math)
+      .replace(/\\\(([\s\S]*?)\\\)/g, '$ $1 $'); // \(...\) → $...$ (inline math)
   };
 
   const remarkMathOptions = {
@@ -137,7 +136,7 @@ const IndividualQuizQuestion = ({
                 <Textarea
                   value={userResponse}
                   onChange={(e) => setUserResponse(e.target.value)}
-                  className="h-24 w-full rounded-[1rem] border-2 border-main p-4 focus:border-main"
+                  className="h-24 w-full rounded-3xl border-2 border-main p-4 focus:border-main"
                   placeholder="Enter your answer..."
                 />
                 <Button
@@ -165,7 +164,7 @@ const IndividualQuizQuestion = ({
               {option.map((item: any, i: number) => {
                 return (
                   <div
-                    className={`w-full rounded-[.7rem] p-4 text-[1rem] duration-300 ${attempts[0]?.userResponse && Style(item)} ${!attempts[0]?.userResponse && choice.opsi == item.opsi ? 'bg-main text-white' : !attempts[0]?.userResponse && choice.opsi !== item.opsi ? 'bg-white text-black md:hover:bg-main-hover md:hover:text-white' : null} cursor-pointer`}
+                    className={`w-full rounded-3xl p-4 text-[1rem] duration-300 ${attempts[0]?.userResponse && Style(item)} ${!attempts[0]?.userResponse && choice.opsi == item.opsi ? 'bg-main text-white' : !attempts[0]?.userResponse && choice.opsi !== item.opsi ? 'bg-white text-black md:hover:bg-main-hover md:hover:text-white' : null} cursor-pointer`}
                     key={i}
                     onClick={() => {
                       // handleAnswer(item);
@@ -193,7 +192,7 @@ const IndividualQuizQuestion = ({
                     Kosongkan jawaban
                   </button>
                   <button
-                    className={`${choice.opsi === '' ? 'bg-main-gray-disabled text-white md:hover:bg-main-gray-disabled-hover' : 'bg-main text-white md:hover:bg-main-hover'} flex items-center gap-[.5rem] rounded-[.8rem] px-[1rem] py-[.8rem] text-[.9rem] duration-200`}
+                    className={`${choice.opsi === '' ? 'bg-main-gray-disabled text-white md:hover:bg-main-gray-disabled-hover' : 'bg-main text-white md:hover:bg-main-hover'} flex items-center gap-[.5rem] rounded-3xl px-[1rem] py-[.8rem] text-[.9rem] duration-200`}
                     onClick={() => {
                       handleAnswer(choice.data);
                     }}

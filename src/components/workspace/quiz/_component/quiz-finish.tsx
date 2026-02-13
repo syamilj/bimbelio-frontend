@@ -210,13 +210,13 @@ const QuizFinish = ({
       {finish.show && finish.done ? (
         <div className="fixed left-0 top-0 z-[9999999999] flex h-full w-full items-center justify-center bg-[#00000077]">
           {step === 1 ? (
-            <div className="flex flex-col gap-[1rem] rounded-[2rem] bg-white p-[2rem] text-center">
+            <div className="flex flex-col gap-[1rem] rounded-3xl bg-white p-[2rem] text-center">
               <p>
                 Kamu telah menyelesaikan seluruh soal. <br />
                 Apakah kamu ingin buat quiz baru?
               </p>
               <div className="flex items-center gap-[1rem]">
-                <button className="w-full cursor-default rounded-[1rem] bg-transparent py-[.7rem] text-main-gray-text hover:text-gray-800">
+                <button className="w-full cursor-default rounded-3xl bg-transparent py-[.7rem] text-main-gray-text hover:text-gray-800">
                   <p
                     className="cursor-pointer"
                     onClick={() => {
@@ -229,7 +229,7 @@ const QuizFinish = ({
                   </p>
                 </button>
                 <button
-                  className="w-full rounded-[1rem] bg-main py-[.7rem] text-white duration-200 hover:bg-main-hover active:bg-main"
+                  className="w-full rounded-3xl bg-main py-[.7rem] text-white duration-200 hover:bg-main-hover active:bg-main"
                   onClick={() => {
                     setStep(2);
                   }}
@@ -239,7 +239,7 @@ const QuizFinish = ({
               </div>
             </div>
           ) : step === 2 ? (
-            <div className="relative flex flex-col gap-[1rem] rounded-[2rem] bg-white p-[2rem] text-center">
+            <div className="relative flex flex-col gap-[1rem] rounded-3xl bg-white p-[2rem] text-center">
               <div
                 className="absolute right-4 top-3 cursor-pointer text-main-gray-text md:hover:text-main-gray-text2"
                 onClick={() => {
@@ -253,7 +253,7 @@ const QuizFinish = ({
               <p>Pilih jenis Quiz yang ingin di kerjakan</p>
               <div className="flex items-center gap-[1rem]">
                 <button
-                  className="w-full rounded-[1rem] bg-main px-[1rem] py-[.7rem] text-white duration-200 hover:bg-main-hover active:bg-main"
+                  className="w-full rounded-3xl bg-main px-[1rem] py-[.7rem] text-white duration-200 hover:bg-main-hover active:bg-main"
                   onClick={() => {
                     // handleGenerateNewQuiz('essay');
                     setStep(3);
@@ -263,7 +263,7 @@ const QuizFinish = ({
                   Essay
                 </button>
                 <button
-                  className="w-full rounded-[1rem] bg-main px-[1rem] py-[.7rem] text-white duration-200 hover:bg-main-hover active:bg-main"
+                  className="w-full rounded-3xl bg-main px-[1rem] py-[.7rem] text-white duration-200 hover:bg-main-hover active:bg-main"
                   onClick={() => {
                     // handleGenerateNewQuiz('objective');
                     setStep(3);
@@ -275,7 +275,7 @@ const QuizFinish = ({
               </div>
             </div>
           ) : step === 3 ? (
-            <div className="relative flex flex-col gap-[1rem] rounded-[2rem] bg-white p-[2rem] text-center">
+            <div className="relative flex flex-col gap-[1rem] rounded-3xl bg-white p-[2rem] text-center">
               <div
                 className="absolute right-4 top-3 cursor-pointer text-main-gray-text md:hover:text-main-gray-text2"
                 onClick={() => {
@@ -299,7 +299,7 @@ const QuizFinish = ({
                   <p>Halaman awal</p>
                   <input
                     type="number"
-                    className="h-[50px] w-full rounded-[.8rem] border border-main-gray-input px-[1rem] text-[.9rem] outline-none duration-300 focus:shadow-cardSoft"
+                    className="h-[50px] w-full rounded-3xl border border-main-gray-input px-[1rem] text-[.9rem] outline-none duration-300 focus:shadow-cardSoft"
                     required
                     placeholder="1.."
                     onChange={(e) => {
@@ -318,7 +318,7 @@ const QuizFinish = ({
                   <p>Halaman akhir</p>
                   <input
                     type="number"
-                    className="h-[50px] w-full rounded-[.8rem] border border-main-gray-input px-[1rem] text-[.9rem] outline-none duration-300 focus:shadow-cardSoft"
+                    className="h-[50px] w-full rounded-3xl border border-main-gray-input px-[1rem] text-[.9rem] outline-none duration-300 focus:shadow-cardSoft"
                     required
                     placeholder="3.."
                     onChange={(e) => {
@@ -332,7 +332,7 @@ const QuizFinish = ({
                 </div>
                 <div className="flex h-full w-full items-center justify-center">
                   <button
-                    className="w-full rounded-[.8rem] bg-main py-[.6rem] text-white duration-300 md:hover:bg-main-hover"
+                    className="w-full rounded-3xl bg-main py-[.6rem] text-white duration-300 md:hover:bg-main-hover"
                     onClick={() => {
                       if (pages.first > pages.last) {
                         setWarn('Tidak dapat lebih besar dari halaman akhir');
@@ -361,7 +361,7 @@ const QuizFinish = ({
       ) : finish.show && !finish.done ? (
         <div className="fixed left-0 top-0 z-[9999999999] flex h-full w-full items-center justify-center bg-[#00000077]">
           {step === 1 ? (
-            <div className="flex flex-col gap-[1rem] rounded-[2rem] bg-white p-[2rem]">
+            <div className="flex flex-col gap-[1rem] rounded-3xl bg-white p-[2rem]">
               <div className="flex flex-col gap-[1rem] text-center">
                 <p>
                   Kamu belum menyelesaikan seluruh soal <br /> quiz berikut:
@@ -377,7 +377,7 @@ const QuizFinish = ({
                 <p className="text-main-gray-text2">Tetap buat quiz baru?</p>
               </div>
               <div className="flex items-center gap-[1rem]">
-                <button className="w-full cursor-default rounded-[1rem] bg-transparent py-[.7rem] text-main-gray-text hover:text-gray-800">
+                <button className="w-full cursor-default rounded-3xl bg-transparent py-[.7rem] text-main-gray-text hover:text-gray-800">
                   <p
                     className="cursor-pointer"
                     onClick={() => {
@@ -388,7 +388,7 @@ const QuizFinish = ({
                   </p>
                 </button>
                 <button
-                  className="w-full rounded-[1rem] bg-main py-[.7rem] text-white duration-200 hover:bg-main-hover active:bg-main"
+                  className="w-full rounded-3xl bg-main py-[.7rem] text-white duration-200 hover:bg-main-hover active:bg-main"
                   onClick={() => {
                     setFinish({ show: false, done: false });
                     setShowSidebar(true);
@@ -400,7 +400,7 @@ const QuizFinish = ({
               </div>
             </div>
           ) : step === 2 ? (
-            <div className="relative flex flex-col gap-[1rem] rounded-[2rem] bg-white p-[2rem] text-center">
+            <div className="relative flex flex-col gap-[1rem] rounded-3xl bg-white p-[2rem] text-center">
               <div
                 className="absolute right-4 top-3 cursor-pointer text-main-gray-text md:hover:text-main-gray-text2"
                 onClick={() => {
@@ -414,7 +414,7 @@ const QuizFinish = ({
               <p>Pilih jenis Quiz yang ingin di kerjakan</p>
               <div className="flex items-center gap-[1rem]">
                 <button
-                  className="w-full rounded-[1rem] bg-main px-[1rem] py-[.7rem] text-white duration-200 hover:bg-main-hover active:bg-main"
+                  className="w-full rounded-3xl bg-main px-[1rem] py-[.7rem] text-white duration-200 hover:bg-main-hover active:bg-main"
                   onClick={() => {
                     // handleGenerateNewQuiz('essay');
                     setStep(3);
@@ -424,7 +424,7 @@ const QuizFinish = ({
                   Essay
                 </button>
                 <button
-                  className="w-full rounded-[1rem] bg-main px-[1rem] py-[.7rem] text-white duration-200 hover:bg-main-hover active:bg-main"
+                  className="w-full rounded-3xl bg-main px-[1rem] py-[.7rem] text-white duration-200 hover:bg-main-hover active:bg-main"
                   onClick={() => {
                     // handleGenerateNewQuiz('objective');
                     setStep(3);
@@ -436,7 +436,7 @@ const QuizFinish = ({
               </div>
             </div>
           ) : step === 3 ? (
-            <div className="relative flex flex-col gap-[1rem] rounded-[2rem] bg-white p-[2rem] text-center">
+            <div className="relative flex flex-col gap-[1rem] rounded-3xl bg-white p-[2rem] text-center">
               <div
                 className="absolute right-4 top-3 cursor-pointer text-main-gray-text md:hover:text-main-gray-text2"
                 onClick={() => {
@@ -460,7 +460,7 @@ const QuizFinish = ({
                   <p>Halaman awal</p>
                   <input
                     type="number"
-                    className="h-[50px] w-full rounded-[.8rem] border border-main-gray-input px-[1rem] text-[.9rem] outline-none duration-300 focus:shadow-cardSoft"
+                    className="h-[50px] w-full rounded-3xl border border-main-gray-input px-[1rem] text-[.9rem] outline-none duration-300 focus:shadow-cardSoft"
                     required
                     placeholder="1.."
                     onChange={(e) => {
@@ -479,7 +479,7 @@ const QuizFinish = ({
                   <p>Halaman akhir</p>
                   <input
                     type="number"
-                    className="h-[50px] w-full rounded-[.8rem] border border-main-gray-input px-[1rem] text-[.9rem] outline-none duration-300 focus:shadow-cardSoft"
+                    className="h-[50px] w-full rounded-3xl border border-main-gray-input px-[1rem] text-[.9rem] outline-none duration-300 focus:shadow-cardSoft"
                     required
                     placeholder="3.."
                     onChange={(e) => {
@@ -493,7 +493,7 @@ const QuizFinish = ({
                 </div>
                 <div className="flex h-full w-full items-center justify-center">
                   <button
-                    className="w-full rounded-[.8rem] bg-main py-[.6rem] text-white duration-300 md:hover:bg-main-hover"
+                    className="w-full rounded-3xl bg-main py-[.6rem] text-white duration-300 md:hover:bg-main-hover"
                     onClick={() => {
                       if (pages.first > pages.last) {
                         setWarn('Tidak dapat lebih besar dari halaman akhir');

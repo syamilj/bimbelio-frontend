@@ -36,7 +36,7 @@ export default function SubscriptionUpsell({
   return (
     <section className="w-full">
       <div
-        className="relative overflow-hidden rounded-[2rem] p-5 text-white shadow-lg"
+        className="relative overflow-hidden rounded-3xl p-5 text-white shadow-lg"
         style={{
           background: `linear-gradient(135deg, ${mainColor}, ${mainColor}cc)`,
         }}

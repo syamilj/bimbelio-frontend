@@ -108,7 +108,7 @@ export default function Table() {
   return (
     <>
       <div className="w-full">
-        <table className="w-full rounded-[.7rem] shadow-sm">
+        <table className="w-full rounded-3xl shadow-sm">
           <thead>
             <tr className="border-b border-main-gray-input">
               <th className="rounded-tl-[.7rem] bg-white p-[.7rem] text-center font-semibold">
@@ -167,7 +167,7 @@ export default function Table() {
                   <td className="bg-white p-[.5rem]">
                     <div className="flex items-center justify-center">
                       <button
-                        className="rounded-[.5rem] bg-main-gray-input px-[.5rem] py-[.2rem] duration-300 md:hover:bg-main-gray-input2 md:active:bg-main-gray-input"
+                        className="rounded-3xl bg-main-gray-input px-[.5rem] py-[.2rem] duration-300 md:hover:bg-main-gray-input2 md:active:bg-main-gray-input"
                         onClick={() => {
                           navigator.clipboard.writeText(`${item.id}`);
                           toaster({
@@ -341,7 +341,7 @@ export default function Table() {
       >
         <div className="flex items-center gap-4">
           {/* <p>Show</p>
-          <div className="bg-white rounded-[.5rem] px-4 py-[.5rem] text-main-gray-text flex items-center gap-[.5rem]">
+          <div className="bg-white rounded-3xl px-4 py-[.5rem] text-main-gray-text flex items-center gap-[.5rem]">
             10
             <i className="bx bx-chevron-down text-[1.5rem]" />
           </div> */}
@@ -374,13 +374,13 @@ export default function Table() {
             </p>
             <div className="flex w-full justify-center gap-[.5rem]">
               <button
-                className="rounded-[.3rem] bg-blue-600 px-4 py-[.2rem] text-white hover:bg-blue-500"
+                className="rounded-3xl bg-blue-600 px-4 py-[.2rem] text-white hover:bg-blue-500"
                 onClick={() => setDeleteConfirmation(false)}
               >
                 No
               </button>
               <button
-                className="rounded-[.3rem] bg-red-600 px-4 py-[.2rem] text-white hover:bg-red-500"
+                className="rounded-3xl bg-red-600 px-4 py-[.2rem] text-white hover:bg-red-500"
                 onClick={() => removeDocument()}
               >
                 Yes

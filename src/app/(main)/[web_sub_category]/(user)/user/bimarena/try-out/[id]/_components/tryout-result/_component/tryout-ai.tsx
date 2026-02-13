@@ -73,7 +73,7 @@ export const TryoutAI = ({
         </SheetHeader>
 
         {/* Chat Container */}
-        <div className="flex-1 relative overflow-hidden">
+        <div className="flex flex-1 flex-col relative overflow-hidden">
           <Chat
             apiChat={`${env.NEXT_PUBLIC_API_URL}/ai/chatTryout?website_sub_category_id=${websiteSubCategory?.id}`}
             body={{ participantId, userId: session?.user.id, number }}

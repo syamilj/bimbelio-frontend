@@ -264,7 +264,7 @@ export default function CreateCoupon() {
                       </PopoverTrigger>
                       {showDeleteIndex === tryoutIndex && (
                         <div
-                          className="absolute bottom-[0] right-0 cursor-pointer rounded-[.2rem] bg-red-100 px-[.5rem] py-[.1rem] text-[.75rem] text-red-800 duration-300 md:hover:bg-red-200"
+                          className="absolute bottom-[0] right-0 cursor-pointer rounded-3xl bg-red-100 px-[.5rem] py-[.1rem] text-[.75rem] text-red-800 duration-300 md:hover:bg-red-200"
                           onClick={() => {
                             setSelectedTryout((prev) =>
                               prev.filter((_, i) => i !== tryoutIndex),
@@ -330,7 +330,7 @@ export default function CreateCoupon() {
                   </Popover>
                 ))}
                 <div
-                  className="flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-[.8rem] bg-blue-100 font-medium text-blue-600 duration-300 md:hover:bg-blue-200 md:hover:shadow-default md:active:bg-blue-100"
+                  className="flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-3xl bg-blue-100 font-medium text-blue-600 duration-300 md:hover:bg-blue-200 md:hover:shadow-default md:active:bg-blue-100"
                   onClick={() => {
                     setSelectedTryout((prev) => [
                       ...prev,

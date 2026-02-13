@@ -442,7 +442,7 @@ const DocViewerPage = () => {
   }
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col bg-slate-50/50">
       {/* Main Content Area */}
       <div className="flex-1 min-h-0">
         <ResizablePanelGroup
@@ -455,9 +455,7 @@ const DocViewerPage = () => {
             defaultSize={50}
             minSize={30}
             className={cn(
-              `DocumentContainer relative`,
-              !isMobile && 'border-r border-gray-200',
-              isMobile && 'border-b border-gray-200',
+              'DocumentContainer relative bg-white',
             )}
           >
             <LeftComponent doc={doc} />
@@ -466,7 +464,7 @@ const DocViewerPage = () => {
           <ResizablePanel
             defaultSize={50}
             minSize={30}
-            className="chatAIContainer relative"
+            className="chatAIContainer relative bg-slate-50/80"
           >
             <RightComponent docId={docId} />
           </ResizablePanel>
@@ -479,15 +477,10 @@ const DocViewerPage = () => {
 export default DocViewerPage;
 
 const ResizableHandleComponent = () => {
-  const isMobile = useMedia({ maxWidth: '768px' });
-
   return (
-    <div className="relative flex items-center justify-center bg-gray-100 hover:bg-gray-200 transition-colors">
-      <ResizableHandle
-        className="relative z-42 h-full w-[4px] bg-gray-300 duration-300 data-[panel-group-direction=vertical]:h-[4px] data-[panel-group-direction=vertical]:w-full hover:bg-blue-400 active:bg-blue-500"
-        withHandle
-      />
-      <div className="absolute z-41 h-[40px] w-[12px] rounded-full bg-gray-400 md:h-[12px] md:w-[40px] opacity-0 group-hover:opacity-100 transition-opacity" />
-    </div>
+    <ResizableHandle
+      className="relative z-42 w-[5px] bg-slate-200/80 transition-colors duration-200 data-[panel-group-direction=vertical]:h-[5px] data-[panel-group-direction=vertical]:w-full hover:bg-blue-400 active:bg-blue-500"
+      withHandle
+    />
   );
 };

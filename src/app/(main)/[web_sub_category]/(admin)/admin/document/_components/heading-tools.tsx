@@ -122,7 +122,7 @@ export default function HeadingTools() {
             id="search-document"
             type="text"
             placeholder="Cari document...."
-            className="h-full w-full rounded-[.7rem] bg-white px-4 outline-none"
+            className="h-full w-full rounded-3xl bg-white px-4 outline-none"
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 handleSearch();
@@ -134,7 +134,7 @@ export default function HeadingTools() {
             <button
               type="button"
               onClick={handleClearSearch}
-              className="rounded-[.7rem] bg-gray-300 px-4 py-[.7rem] text-gray-700 font-medium duration-200 hover:bg-gray-400"
+              className="rounded-3xl bg-gray-300 px-4 py-[.7rem] text-gray-700 font-medium duration-200 hover:bg-gray-400"
             >
               <XIcon className="h-4 w-4" />
             </button>
@@ -142,7 +142,7 @@ export default function HeadingTools() {
           <button
             type="button"
             onClick={handleSearch}
-            className="rounded-[.7rem] bg-main px-4 py-[.7rem] text-white font-medium duration-200 hover:bg-main-hover flex items-center gap-2 whitespace-nowrap"
+            className="rounded-3xl bg-main px-4 py-[.7rem] text-white font-medium duration-200 hover:bg-main-hover flex items-center gap-2 whitespace-nowrap"
           >
             <SearchIcon className="h-4 w-4" />
           </button>
@@ -150,7 +150,7 @@ export default function HeadingTools() {
         <div className="relative">
           <div
             className={cn(
-              'font-regular relative z-2 flex cursor-pointer items-center rounded-[.7rem] bg-white px-4 py-[.5rem] text-main-gray-text2',
+              'font-regular relative z-2 flex cursor-pointer items-center rounded-3xl bg-white px-4 py-[.5rem] text-main-gray-text2',
               filterDocument?.filter &&
                 filterDocument?.filterValue !== '' &&
                 'bg-main text-white',
@@ -161,7 +161,7 @@ export default function HeadingTools() {
             {filterDocument?.filter ? 'Filtered' : 'Filter'}
           </div>
           {showFilter && (
-            <div className="absolute left-[0] top-[calc(100%+.5rem)] z-2 flex min-w-[280px] flex-col whitespace-nowrap rounded-[.5rem] bg-white p-[.5rem] text-[.8rem] text-main-gray-text shadow-cardSoft">
+            <div className="absolute left-[0] top-[calc(100%+.5rem)] z-2 flex min-w-[280px] flex-col whitespace-nowrap rounded-3xl bg-white p-[.5rem] text-[.8rem] text-main-gray-text shadow-cardSoft">
               <div className="flex items-center justify-between gap-[.5rem]">
                 <Select
                   value={filter?.filter}
@@ -170,7 +170,7 @@ export default function HeadingTools() {
                     setFilter({ type: 'option', filter: value, value: '' })
                   }
                 >
-                  <SelectTrigger className="h-[30px] rounded-[.4rem] py-0">
+                  <SelectTrigger className="h-[30px] rounded-3xl py-0">
                     <SelectValue placeholder="Filter" />
                   </SelectTrigger>
                   <SelectContent>
@@ -187,7 +187,7 @@ export default function HeadingTools() {
                     <input
                       type="text"
                       placeholder="Enter value"
-                      className="h-[30px] rounded-[.4rem] border px-[12px] outline-none"
+                      className="h-[30px] rounded-3xl border px-[12px] outline-none"
                     />
                   </div>
                 )}
@@ -205,7 +205,7 @@ export default function HeadingTools() {
                       })
                     }
                   >
-                    <SelectTrigger className="h-[30px] rounded-[.4rem] py-0">
+                    <SelectTrigger className="h-[30px] rounded-3xl py-0">
                       <SelectValue placeholder={`Pilih ${filter.filter}`} />
                     </SelectTrigger>
                     <SelectContent>
@@ -231,7 +231,7 @@ export default function HeadingTools() {
               <hr className="my-[.5rem]" />
               <div className="flex items-center justify-between gap-8">
                 <div
-                  className="flex cursor-pointer items-center justify-center gap-[.5rem] rounded-[.3rem] px-[.5rem] py-[.2rem] duration-300 active:bg-white md:hover:bg-main-gray-input"
+                  className="flex cursor-pointer items-center justify-center gap-[.5rem] rounded-3xl px-[.5rem] py-[.2rem] duration-300 active:bg-white md:hover:bg-main-gray-input"
                   onClick={() => {
                     setFilterDocument(null);
                   }}
@@ -241,7 +241,7 @@ export default function HeadingTools() {
                 </div>
                 <div
                   className={cn(
-                    'flex cursor-pointer items-center justify-center gap-[.5rem] rounded-[.3rem] border px-[.5rem] py-[.2rem] duration-300 active:bg-white md:hover:bg-main-gray-input',
+                    'flex cursor-pointer items-center justify-center gap-[.5rem] rounded-3xl border px-[.5rem] py-[.2rem] duration-300 active:bg-white md:hover:bg-main-gray-input',
                     !filter &&
                       'cursor-default bg-white text-main-gray-disabled md:hover:bg-white',
                     filter?.value === '' &&
@@ -259,13 +259,13 @@ export default function HeadingTools() {
 
       <div className="flex gap-4">
         <div
-          className="cursor-pointer rounded-[.7rem] bg-transparent px-6 py-[.7rem] font-medium text-main-gray-text duration-200"
+          className="cursor-pointer rounded-3xl bg-transparent px-6 py-[.7rem] font-medium text-main-gray-text duration-200"
           onClick={() => setShowAddDocument(true)}
         >
           Export CSV
         </div>
         <div
-          className="font-regular cursor-pointer rounded-[.7rem] bg-main px-6 py-[.7rem] text-white duration-200 hover:bg-main-hover"
+          className="font-regular cursor-pointer rounded-3xl bg-main px-6 py-[.7rem] text-white duration-200 hover:bg-main-hover"
           onClick={() => setShowAddDocument(true)}
         >
           Tambah dokumen

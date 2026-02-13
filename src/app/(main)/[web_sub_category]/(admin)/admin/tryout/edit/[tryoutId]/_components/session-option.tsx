@@ -145,7 +145,7 @@ const SessionOption = () => {
             </h1>
             {showDetailTryout ? (
               <div
-                className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
+                className="font-regular relative mr-[.5rem] cursor-pointer rounded-3xl border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
                 onClick={() => {
                   setShowDetailTryout(false);
                 }}
@@ -154,7 +154,7 @@ const SessionOption = () => {
               </div>
             ) : (
               <div
-                className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
+                className="font-regular relative mr-[.5rem] cursor-pointer rounded-3xl border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
                 onClick={() => {
                   setShowDetailTryout(true);
                 }}
@@ -240,7 +240,7 @@ const SessionOption = () => {
               <div
                 key={qIndex}
                 className={cn(
-                  'flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-[.8rem] bg-white font-medium text-main-gray-text duration-300 md:hover:bg-main-gray-input md:active:shadow-default',
+                  'flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-3xl bg-white font-medium text-main-gray-text duration-300 md:hover:bg-main-gray-input md:active:shadow-default',
                   qIndex === questionIndex &&
                     'bg-main text-white md:hover:bg-main',
                 )}
@@ -251,7 +251,7 @@ const SessionOption = () => {
             );
           })}
         <div
-          className="flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-[.8rem] bg-blue-100 font-medium text-blue-600 duration-300 md:hover:bg-blue-200 md:hover:shadow-default md:active:bg-blue-100"
+          className="flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-3xl bg-blue-100 font-medium text-blue-600 duration-300 md:hover:bg-blue-200 md:hover:shadow-default md:active:bg-blue-100"
           onClick={addQuestion}
         >
           <IconPlus w={15} />

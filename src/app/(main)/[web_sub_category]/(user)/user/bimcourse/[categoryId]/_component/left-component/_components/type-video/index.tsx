@@ -54,38 +54,25 @@ const VideoType = () => {
   return (
     <div
       id="course-video"
-      className="flex flex-col gap-4 p-6 h-full w-full max-w-[1000px] mx-auto"
+      className="flex flex-col gap-4 p-4 md:p-6 h-full w-full max-w-[1000px] mx-auto"
     >
       {isDone && (
-        // <div className="mb-8 mt-4 flex w-full justify-start text-[1.3rem] font-semibold">
-        //   <div className="relative flex items-center gap-[.5rem]">
-        //     <p>Course Ini Telah Selesai</p>
-        //     <IconCheckList className="text-green-600" />
-        //     <div className="absolute top-[90%] h-[2px] w-[90%] bg-green-600" />
-        //   </div>
-        // </div>
-        <div className="flex w-full justify-between items-center my-4">
-          {/* Bagian progress */}
-          <div className="flex items-center gap-2 text-blue-600">
-            <Loader className="h-4 w-4" />
+        <div className="flex w-full justify-between items-center rounded-xl bg-slate-50 border border-slate-200/60 px-4 py-2.5">
+          <div className="flex items-center gap-2 text-blue-600 text-sm">
+            <Loader className="h-3.5 w-3.5" />
             <span>
-              {/* Pastikan CourseProgress tidak undefined */}
               {CourseProgress
                 ? `${CourseProgress.percentageProgress}% Selesai`
                 : 'Progress tidak tersedia'}
             </span>
           </div>
-
-          {/* Bagian estimasi waktu atau durasi */}
-          <div className="flex items-center gap-2 text-gray-600">
-            <ClockIcon className="h-4 w-4" />
+          <div className="flex items-center gap-2 text-slate-500 text-sm">
+            <ClockIcon className="h-3.5 w-3.5" />
             <span>{CourseData?.spendTime ?? 0} Menit</span>
           </div>
-
-          {/* Penanda Selesai */}
-          <div className="flex items-center gap-2 text-primary">
-            <p>Selesai</p>
-            <IconCheckList className="text-green-500" />
+          <div className="flex items-center gap-1.5 text-emerald-600 text-sm font-medium">
+            <IconCheckList className="text-emerald-500" w={16} />
+            <span>Selesai</span>
           </div>
         </div>
       )}
@@ -95,24 +82,17 @@ const VideoType = () => {
         </div>
       )}
       {CourseData?.video && CourseData?.video?.length > 0 && (
-        <div
-          className={`flex h-fit w-full flex-col p-0 pb-0 duration-300 ease-in-out`}
-        >
+        <div className="flex h-fit w-full flex-col">
           <video
             ref={videoRef}
             controls
             controlsList="nodownload"
-            className="h-fit w-full rounded-[.8rem] bg-black 234"
+            className="h-fit w-full rounded-2xl bg-black shadow-sm"
           >
-            {/* <source
-              src={`${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/course/${CourseData?.video}`}
-              type="video/mp4"
-            />
-            Your browser does not support the video tag. */}
           </video>
         </div>
       )}
-      <h2 className="text-2xl">{CourseData?.title}</h2>
+      <h2 className="text-xl font-semibold text-slate-800">{CourseData?.title}</h2>
       {/* <p className="">{CourseData?.description}</p> */}
       {/* <MarkdownPreview
         source={CourseData?.description}
@@ -126,9 +106,10 @@ const VideoType = () => {
 
       <ReactMarkdownBlog
         value={CourseData?.description || ''}
-        className="pt-4 pb-12"
+        className="pt-2 pb-8"
       />
-      <div className="w-full flex justify-center pb-28">
+      <div className="flex items-center justify-between rounded-xl bg-slate-50 border border-slate-200/60 px-4 py-2.5 mb-28">
+        <span className="text-xs font-semibold text-slate-600">Berikan Rating</span>
         <EmojiRating />
       </div>
     </div>

@@ -1,304 +1,305 @@
+'use client';
+
+import {
+  Message,
+  MessageContent,
+  MessageResponse,
+} from '@/components/ai-elements/message';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { BimBot } from '@/components/ui/bim-brand';
-import ReactMarkdownChatAI from '@/components/ui/react-markdown-chat-ai';
 import { env } from '@/env.mjs';
-import { cn, getDate, getHours } from '@/lib/utils';
-import { Bot, User } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Bot, Lightbulb } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
-import { useProvider } from '../../provider';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import { type MessageDataType, useProvider } from '../../provider';
 import ChatTools from '../chat-tools';
-import LoadingChat from '../loading-chat';
 import SubmitChatEdit from '../submit-chat-edit';
+import 'katex/dist/katex.min.css';
 
-export default function Row({
-  index,
-  style,
-  data: {
-    listRef,
-    rowHeights,
-    setShowButtonScroll,
-    firstRender,
-    setFirstRender,
-    scrollToBottom,
-  },
-}: {
+type Props = {
+  message: MessageDataType;
   index: number;
-  style: React.CSSProperties;
-  data: {
-    listRef: React.RefObject<any>;
-    rowHeights: any;
-    setShowButtonScroll: React.Dispatch<React.SetStateAction<boolean>>;
-    firstRender: boolean;
-    setFirstRender: React.Dispatch<React.SetStateAction<boolean>>;
-    scrollToBottom: () => void;
-  };
-}) {
+  isLast: boolean;
+  isStreaming: boolean;
+};
+
+// ── Preprocessing helpers ──────────────────────────────────────────
+
+/** Extract [SARAN_PERTANYAAN] block from AI output */
+function extractSaranPertanyaan(content: string) {
+  const match = content.match(
+    /\[SARAN_PERTANYAAN\]([\s\S]*?)\[\/SARAN_PERTANYAAN\]/,
+  );
+  if (!match) return { main: content, saran: null };
+
+  const main = content.replace(match[0], '').trim();
+  const saranLines = match[1]
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line && /^\d+\./.test(line))
+    .map((line) => line.replace(/^\d+\.\s?/, ''));
+
+  return { main, saran: saranLines };
+}
+
+/** Preprocess content for Streamdown rendering */
+function preprocessContent(content: string) {
+  const { main, saran } = extractSaranPertanyaan(content);
+
+  let processed = main
+    // Convert LaTeX \(...\) → $ and \[...\] → $$ for Streamdown math plugin
+    .replace(/\\\[/g, '$$$$')
+    .replace(/\\\]/g, '$$$$')
+    .replace(/\\\(/g, '$$')
+    .replace(/\\\)/g, '$$');
+
+  // Convert <PAGE#n> tags to clickable badge-style inline code
+  processed = processed.replace(
+    /<PAGE#(\d+)-(\d+)>/g,
+    (_: string, start: string, end: string) => {
+      const s = parseInt(start);
+      const e = parseInt(end);
+      return Array.from(
+        { length: e - s + 1 },
+        (_, i) => `\`📄${s + i}\``,
+      ).join(' ');
+    },
+  );
+  processed = processed.replace(/<PAGE#(\d+)>/g, '`📄$1`');
+
+  return { main: processed, saran };
+}
+
+// ── Row component ──────────────────────────────────────────────────
+
+export default function Row({ message, index, isLast, isStreaming }: Props) {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
-
-  // Get dynamic colors from the selected category
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
   const {
-    messageData,
-    useMessages: { isLoadingMessages },
-    useMessagesEdit: { isLoadingMessagesEdit },
     editMessage,
     scrollToPdfPage,
     onClickPageNumber,
-    setEditMessage,
+    useMessages: { appendMessages },
+    setFirstMessage,
+    prevChatMessages,
   } = useProvider();
 
-  const currentMessage = messageData[index];
-  const rowRef = useRef<HTMLDivElement>(null);
-  const isBase64Image = currentMessage?.content?.startsWith(
+  const isUser = message.role === 'user';
+  const isAssistant = message.role === 'assistant';
+  const isBase64Image = message.content?.startsWith(
     env.NEXT_PUBLIC_SUPABASE_URL,
   );
 
-  const setRowHeight = (index: any, size: any) => {
-    if (listRef.current) {
-      listRef.current.resetAfterIndex(0);
-      rowHeights.current = { ...rowHeights.current, [index]: size };
-    }
-  };
+  // Preprocess assistant content (memoised per content string)
+  const { main: processedContent, saran } = useMemo(
+    () =>
+      isAssistant
+        ? preprocessContent(message.content)
+        : { main: message.content, saran: null },
+    [message.content, isAssistant],
+  );
 
+  // Ref for marking page badge code elements after render
+  const pageContentRef = useRef<HTMLDivElement>(null);
+
+  // After each render, find code elements with 📄 prefix and add .page-badge class
   useEffect(() => {
-    const input = document.getElementById('editInput');
-    const handleInputChange = (e: any) => {
-      setEditMessage((prev) => ({ ...prev, value: e.target.value }));
-    };
-    if (input) {
-      input.addEventListener('input', handleInputChange);
-    }
-    return () => {
-      if (input) {
-        input.removeEventListener('input', handleInputChange);
+    const el = pageContentRef.current;
+    if (!el) return;
+    el.querySelectorAll('code').forEach((code) => {
+      if (code.textContent?.startsWith('📄')) {
+        code.classList.add('page-badge');
+        // Replace visible text to just the number
+        code.textContent = code.textContent.replace('📄', '').trim();
       }
-    };
-  }, []);
+    });
+  }, [processedContent]);
 
-  // Simplified scroll down when new messages come in
-  useEffect(() => {
-    if (isLoadingMessages || isLoadingMessagesEdit) {
-      // Single smooth scroll call
-      setTimeout(() => scrollToBottom(), 150);
-    }
-  }, [
-    isLoadingMessages,
-    isLoadingMessagesEdit,
-    messageData.length,
-    scrollToBottom,
-  ]);
+  // Handle click on page-tag badges rendered as inline code `📄 Hal. n`
+  const handleContentClick = useCallback(
+    (e: React.MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === 'CODE' &&
+        (target.classList.contains('page-badge') ||
+          target.textContent?.startsWith('📄'))
+      ) {
+        const pageNum = parseInt(
+          target.textContent?.replace(/[^0-9]/g, '') || '',
+        );
 
-  // Simplified scroll to bottom on first render
-  useEffect(() => {
-    if (firstRender && listRef?.current) {
-      setTimeout(() => {
-        scrollToBottom();
-        setShowButtonScroll(false);
-        setFirstRender(false);
-      }, 200);
-    }
-  }, [
-    firstRender,
-    listRef,
-    scrollToBottom,
-    setFirstRender,
-    setShowButtonScroll,
-  ]);
-
-  // Simplified row height update
-  useEffect(() => {
-    if (rowRef.current) {
-      const height = rowRef.current.clientHeight;
-      if (rowHeights.current[index] !== height) {
-        setRowHeight(index, height);
+        if (!isNaN(pageNum)) {
+          scrollToPdfPage?.(pageNum);
+          onClickPageNumber?.();
+        }
       }
-    }
-  }, [index, rowRef.current?.clientHeight]);
+    },
+    [scrollToPdfPage, onClickPageNumber],
+  );
 
-  const isUser = currentMessage?.role === 'user' || currentMessage === null;
+  // Handle clicking a suggested question
+  const handleSaranClick = useCallback(
+    (q: string) => {
+      if (!appendMessages) return;
+      if (
+        setFirstMessage &&
+        (!prevChatMessages || prevChatMessages.length === 0)
+      ) {
+        setFirstMessage(true);
+      }
+      appendMessages({
+        id: crypto.randomUUID(),
+        content: q,
+        role: 'user',
+        createdAt: new Date(),
+      });
+    },
+    [appendMessages, setFirstMessage, prevChatMessages],
+  );
 
-  return (
-    <div
-      style={{
-        ...style,
-        overflow: 'hidden',
-        paddingLeft: '0.75rem',
-        paddingRight: '0.75rem',
-        paddingBottom: '0.75rem',
-        paddingTop: '0.5rem',
-      }}
-    >
-      <div
-        ref={rowRef}
-        className={cn(
-          'flex w-full max-w-4xl mx-auto',
-          isUser ? 'justify-end' : 'justify-start',
-        )}
-      >
-        <div
+  // ── User bubble ──────────────────────────────────────────────────
+
+  if (isUser) {
+    return (
+      <Message from="user" className="items-end w-full">
+        <MessageContent
           className={cn(
-            'flex gap-2.5 max-w-[92%] sm:max-w-[85%]',
-            isUser ? 'flex-row-reverse' : 'flex-row',
+            'rounded-2xl rounded-br-md px-3.5 py-2 text-[13px] text-white leading-relaxed',
+            'max-w-[85%] sm:max-w-[80%]',
           )}
+          style={{ backgroundColor: mainColor }}
         >
-          {/* Avatar */}
-          <div className="shrink-0 mt-1">
-            <Avatar className="w-7 h-7 sm:w-8 sm:h-8 border border-gray-200/80 shadow-sm">
-              <AvatarFallback
-                className={cn(
-                  'text-white font-semibold',
-                  isUser
-                    ? 'bg-linear-to-br from-green-500 to-emerald-600'
-                    : 'bg-linear-to-br',
-                )}
-                style={{
-                  backgroundImage: !isUser
-                    ? `linear-gradient(135deg, ${mainColor}, ${websiteSubCategory?.secondary_color || mainColor})`
-                    : undefined,
-                }}
-              >
-                {isUser ? (
-                  <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                ) : (
-                  <Bot className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                )}
-              </AvatarFallback>
-            </Avatar>
-          </div>
-
-          {/* Message Content */}
-          <div className="flex-1 min-w-0">
-            {/* Message Header */}
-            <div
-              className={cn(
-                'flex items-center gap-1.5 mb-1.5',
-                isUser ? 'flex-row-reverse' : 'flex-row',
-              )}
-            >
-              <div
-                className={cn(
-                  'flex items-center gap-1.5',
-                  isUser ? 'flex-row-reverse' : 'flex-row',
-                )}
-              >
-                <span className="font-semibold text-xs sm:text-sm text-slate-800">
-                  {isUser ? (
-                    session?.user?.name || 'You'
-                  ) : (
-                    <>
-                      <BimBot /> AI
-                    </>
-                  )}
-                </span>
-                {!isUser && (
-                  <div
-                    className="px-1.5 py-0.5 rounded-full text-[10px] font-bold text-white"
-                    style={{ backgroundColor: mainColor }}
-                  >
-                    AI
-                  </div>
-                )}
-              </div>
-              {currentMessage.createdAt && (
-                <span className="text-[10px] sm:text-xs text-gray-400">
-                  {getHours(currentMessage.createdAt)} •{' '}
-                  {getDate(currentMessage.createdAt)}
-                </span>
-              )}
-            </div>
-
-            {/* Message Bubble */}
-            <div
-              className={cn(
-                'relative rounded-3xl px-3 py-2.5 sm:px-4 sm:py-3 shadow-sm border transition-all duration-200',
-                isUser
-                  ? 'bg-white border-gray-200/80'
-                  : 'border-transparent shadow-md',
-              )}
-              style={{
-                backgroundColor: !isUser ? `${mainColor}08` : undefined,
-                borderColor: !isUser ? `${mainColor}20` : undefined,
-              }}
-            >
-              {/* Message Content */}
-              {isBase64Image && currentMessage ? (
-                <div className="rounded-3xl overflow-hidden">
-                  <Image
-                    src={
-                      currentMessage.content.includes('data:image/png;base64')
-                        ? currentMessage.content.split('=')[0] ||
-                          '/placeholder.svg'
-                        : currentMessage.content || '/placeholder.svg'
-                    }
-                    className="h-auto max-w-full"
-                    alt="Bimbelio - Bimbel AI"
-                    width={500}
-                    height={300}
-                  />
-                </div>
-              ) : (
-                currentMessage && (
-                  <>
-                    {editMessage.index !== index ? (
-                      <ReactMarkdownChatAI
-                        value={currentMessage?.content}
-                        onClickPageNumber={onClickPageNumber}
-                        scrollToPdfPage={scrollToPdfPage}
-                        className={cn(
-                          'prose prose-base max-w-none prose-headings:text-inherit prose-p:text-inherit prose-strong:text-inherit prose-code:text-inherit prose-pre:text-inherit prose-li:text-inherit prose-blockquote:text-inherit',
-                          // Additional styling for user messages
-                          isUser && 'prose-p:text-gray-700',
-                        )}
-                      />
-                    ) : (
-                      <SubmitChatEdit />
-                    )}
-                  </>
-                )
-              )}
-
-              {/* Message Actions */}
-              {!editMessage.bool && currentMessage && (
-                <div
-                  className={cn(
-                    'mt-3 pt-2 border-t border-gray-100',
-                    isUser ? 'text-right' : 'text-left',
-                  )}
-                >
-                  <ChatTools messageIndex={index} />
-                </div>
-              )}
-
-              {/* Message Tail */}
-              <div
-                className={cn(
-                  'absolute top-3 w-0 h-0',
-                  isUser
-                    ? 'right-[-8px] border-l-8 border-l-white border-t-4 border-t-transparent border-b-4 border-b-transparent'
-                    : 'left-[-8px] border-r-8 border-t-4 border-t-transparent border-b-4 border-b-transparent',
-                )}
-                style={{
-                  borderRightColor: !isUser ? `${mainColor}08` : undefined,
-                }}
+          {isBase64Image ? (
+            <div className="rounded-2xl overflow-hidden">
+              <Image
+                src={
+                  message.content.includes('data:image/png;base64')
+                    ? message.content.split('=')[0] || '/placeholder.svg'
+                    : message.content || '/placeholder.svg'
+                }
+                className="h-auto max-w-full"
+                alt="Bimbelio"
+                width={500}
+                height={300}
               />
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Loading Indicator - Positioned separately below the current message */}
-      {index === messageData.length - 1 &&
-        (isLoadingMessages || isLoadingMessagesEdit) &&
-        currentMessage.role === 'user' && (
-          <div className="mt-4">
-            <LoadingChat />
+          ) : editMessage.index === index ? (
+            <SubmitChatEdit />
+          ) : (
+            <p className="whitespace-pre-wrap break-words">
+              {message.content}
+            </p>
+          )}
+        </MessageContent>
+        {!editMessage.bool && message.content && (
+          <div className="mt-1 opacity-0 hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200 flex justify-end">
+            <ChatTools messageIndex={index} />
           </div>
         )}
-    </div>
+      </Message>
+    );
+  }
+
+  // ── Assistant bubble (Streamdown / AI Elements) ──────────────────
+
+  return (
+    <Message from="assistant" className="w-full">
+      <div className="flex gap-2">
+        {/* Avatar */}
+        <div className="shrink-0 mt-0.5">
+          <div
+            className="w-6 h-6 rounded-full flex items-center justify-center"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${websiteSubCategory?.secondary_color || mainColor})`,
+            }}
+          >
+            <Bot className="w-3 h-3 text-white" />
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0 max-w-[90%] sm:max-w-[85%]">
+          {/* Name badge */}
+          <p className="text-[10px] font-semibold text-gray-400 mb-1 flex items-center gap-1">
+            <BimBot />
+            <span
+              className="px-1 py-px text-[7px] font-extrabold text-white rounded"
+              style={{ backgroundColor: mainColor }}
+            >
+              AI
+            </span>
+          </p>
+
+          {/* Message body — Streamdown renderer */}
+          <MessageContent className="w-full text-[13px] leading-relaxed text-gray-700 max-w-none">
+            {isAssistant && isLast && isStreaming && !message.content ? (
+              <div className="flex items-center gap-1.5 py-1">
+                {[0, 1, 2].map((i) => (
+                  <div
+                    key={i}
+                    className="w-1.5 h-1.5 rounded-full animate-bounce"
+                    style={{
+                      backgroundColor: mainColor,
+                      animationDelay: `${i * 150}ms`,
+                      animationDuration: '0.8s',
+                    }}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div ref={pageContentRef} onClick={handleContentClick}>
+                <MessageResponse>
+                  {processedContent}
+                </MessageResponse>
+              </div>
+            )}
+          </MessageContent>
+
+          {/* Saran Pertanyaan section */}
+          {saran && saran.length > 0 && (
+            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-2xl">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                  <Lightbulb className="text-white w-3 h-3" />
+                </div>
+                <h3 className="font-semibold text-blue-900 text-xs">
+                  Saran Pertanyaan
+                </h3>
+              </div>
+              <div className="space-y-1.5">
+                {saran.map((q, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    className="w-full text-left p-2.5 bg-white border border-blue-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 text-gray-700 text-xs leading-relaxed shadow-sm hover:shadow-md"
+                    onClick={() => handleSaranClick(q)}
+                  >
+                    <span className="font-medium text-blue-600 mr-1.5">
+                      {i + 1}.
+                    </span>
+                    {q}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {!editMessage.bool && message.content && (
+            <div
+              className={cn(
+                'mt-1 opacity-0 hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200',
+                isLast && !isStreaming && 'opacity-100',
+              )}
+            >
+              <ChatTools messageIndex={index} />
+            </div>
+          )}
+        </div>
+      </div>
+    </Message>
   );
 }

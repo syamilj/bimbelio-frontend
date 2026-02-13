@@ -318,7 +318,7 @@ export const SectionPerformance = () => {
               {/* Summary Stats */}
               <div className="mt-8 grid grid-cols-2 gap-3">
                 <div
-                  className="text-center p-3 rounded-lg"
+                  className="text-center p-3 rounded-3xl"
                   style={{ backgroundColor: `${mainColor}08` }}
                 >
                   <p className="text-xs text-gray-500 mb-1">Total Undangan</p>
@@ -330,7 +330,7 @@ export const SectionPerformance = () => {
                   </p>
                 </div>
                 <div
-                  className="text-center p-3 rounded-lg"
+                  className="text-center p-3 rounded-3xl"
                   style={{ backgroundColor: '#D1FAE5' }}
                 >
                   <p className="text-xs text-gray-500 mb-1">Hadir</p>
@@ -339,7 +339,7 @@ export const SectionPerformance = () => {
                   </p>
                 </div>
                 <div
-                  className="text-center p-3 rounded-lg"
+                  className="text-center p-3 rounded-3xl"
                   style={{ backgroundColor: '#FEF3C7' }}
                 >
                   <p className="text-xs text-gray-500 mb-1">Terlambat</p>
@@ -348,7 +348,7 @@ export const SectionPerformance = () => {
                   </p>
                 </div>
                 <div
-                  className="text-center p-3 rounded-lg"
+                  className="text-center p-3 rounded-3xl"
                   style={{ backgroundColor: '#FEE2E2' }}
                 >
                   <p className="text-xs text-gray-500 mb-1">Absen</p>
@@ -426,7 +426,7 @@ export const SectionPerformance = () => {
                     return (
                       <div
                         key={item.id}
-                        className="p-3 rounded-lg border border-gray-200 hover:shadow-md transition-all"
+                        className="p-3 rounded-3xl border border-gray-200 hover:shadow-md transition-all"
                       >
                         {/* Title */}
                         <p className="font-semibold text-sm text-gray-900 truncate mb-2">
@@ -480,7 +480,7 @@ export const SectionPerformance = () => {
                         {/* Presence Statistics */}
                         <div className="grid grid-cols-3 gap-2 text-xs">
                           <div
-                            className="text-center p-2 rounded-lg text-white font-semibold"
+                            className="text-center p-2 rounded-3xl text-white font-semibold"
                             style={{ backgroundColor: '#10B981' }}
                           >
                             <p className="text-xs opacity-90">Hadir</p>
@@ -489,7 +489,7 @@ export const SectionPerformance = () => {
                             </p>
                           </div>
                           <div
-                            className="text-center p-2 rounded-lg text-white font-semibold"
+                            className="text-center p-2 rounded-3xl text-white font-semibold"
                             style={{ backgroundColor: '#F59E0B' }}
                           >
                             <p className="text-xs opacity-90">Terlambat</p>
@@ -498,7 +498,7 @@ export const SectionPerformance = () => {
                             </p>
                           </div>
                           <div
-                            className="text-center p-2 rounded-lg text-white font-semibold"
+                            className="text-center p-2 rounded-3xl text-white font-semibold"
                             style={{ backgroundColor: '#EF4444' }}
                           >
                             <p className="text-xs opacity-90">Absen</p>

@@ -35,12 +35,12 @@ export default function LeftComponent() {
     <ResizablePanel
       defaultSize={50}
       minSize={0}
-      className={`DocumentContainer relative ${mobileScreen === 'minimize' && ''} h-[calc(100vh-120px)] bg-bg-workspace`}
+      className={`DocumentContainer relative h-[calc(100vh-120px)] bg-white`}
     >
       <div
         id="container-course"
         className={cn(
-          'absolute top-0 left-0 w-full h-full bg-bg-workspace overflow-y-auto mb-10',
+          'absolute top-0 left-0 w-full h-full bg-white overflow-y-auto mb-10',
         )}
       >
         <HeaderCourse

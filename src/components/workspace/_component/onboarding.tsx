@@ -151,7 +151,7 @@ const ChatAI = () => {
         </div>
         <div className="flex w-full items-center justify-end gap-4">
           <button
-            className="rounded-[.8rem] px-4 py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
+            className="rounded-3xl px-4 py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
             onClick={() => {
               if (index > 0) {
                 setIndex((prev) => prev - 1);
@@ -167,7 +167,7 @@ const ChatAI = () => {
             {index === 0 ? 'Tutup' : 'Sebelumnya'}
           </button>
           <button
-            className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 hover:bg-main/85"
+            className="w-[120px] rounded-3xl bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 hover:bg-main/85"
             onClick={() => {
               if (index < data.length - 1) {
                 setIndex((prev) => prev + 1);
@@ -252,7 +252,7 @@ const Notes = () => {
         </div>
         <div className="flex w-full items-center justify-end gap-4">
           <button
-            className="rounded-[.8rem] px-4 py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
+            className="rounded-3xl px-4 py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
             onClick={() => {
               if (index > 0) {
                 setIndex((prev) => prev - 1);
@@ -268,7 +268,7 @@ const Notes = () => {
             {index === 0 ? 'Tutup' : 'Sebelumnya'}
           </button>
           <button
-            className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 hover:bg-main/85"
+            className="w-[120px] rounded-3xl bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 hover:bg-main/85"
             onClick={() => {
               if (index < data.length - 1) {
                 setIndex((prev) => prev + 1);
@@ -363,7 +363,7 @@ const QuizAI = () => {
         </div>
         <div className="flex w-full items-center justify-end gap-4">
           <button
-            className="rounded-[.8rem] px-4 py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
+            className="rounded-3xl px-4 py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
             onClick={() => {
               if (index > 0) {
                 setIndex((prev) => prev - 1);
@@ -379,7 +379,7 @@ const QuizAI = () => {
             {index === 0 ? 'Tutup' : 'Sebelumnya'}
           </button>
           <button
-            className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 hover:bg-main/85"
+            className="w-[120px] rounded-3xl bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 hover:bg-main/85"
             onClick={() => {
               if (index < data.length - 1) {
                 setIndex((prev) => prev + 1);
@@ -486,7 +486,7 @@ const Tryout = () => {
         </div>
         <div className="flex w-full items-center justify-end gap-4">
           <button
-            className="rounded-[.8rem] px-4 py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
+            className="rounded-3xl px-4 py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
             onClick={() => {
               if (index > 0) {
                 setIndex((prev) => prev - 1);
@@ -502,7 +502,7 @@ const Tryout = () => {
             {index === 0 ? 'Tutup' : 'Sebelumnya'}
           </button>
           <button
-            className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 hover:bg-main/85"
+            className="w-[120px] rounded-3xl bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 hover:bg-main/85"
             onClick={() => {
               if (index < data.length - 1) {
                 setIndex((prev) => prev + 1);

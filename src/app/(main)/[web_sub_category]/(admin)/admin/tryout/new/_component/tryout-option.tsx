@@ -129,7 +129,7 @@ const TryoutOption = ({
           <h1 className="text-[1.2rem] font-medium">Detail Try out</h1>
           {currentIndexEdit !== null ? (
             <div
-              className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
+              className="font-regular relative mr-[.5rem] cursor-pointer rounded-3xl border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
               onClick={() => {
                 setCurrentIndexEdit(null);
                 if (currentIndexEdit !== null)
@@ -140,7 +140,7 @@ const TryoutOption = ({
             </div>
           ) : (
             <div
-              className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
+              className="font-regular relative mr-[.5rem] cursor-pointer rounded-3xl border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
               onClick={() => {
                 if (prevIndexEdit !== null) setCurrentIndexEdit(prevIndexEdit);
                 else setCurrentIndexEdit(0);
@@ -183,7 +183,7 @@ const TryoutOption = ({
           <input
             type="text"
             placeholder="Judul try out"
-            className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+            className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
             required
             value={tryout?.title ? tryout?.title : ''}
             onChange={(e) => {
@@ -241,7 +241,7 @@ const TryoutOption = ({
               <input
                 type="text"
                 placeholder="Link postingan instagram"
-                className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+                className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
                 value={tryout?.instagram ? tryout?.instagram : ''}
                 onChange={(e) => {
                   setTryout((prev) => ({ ...prev, instagram: e.target.value }));
@@ -256,7 +256,7 @@ const TryoutOption = ({
               <input
                 type="text"
                 placeholder="Link postingan tiktok"
-                className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+                className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
                 value={tryout?.tiktok ? tryout?.tiktok : ''}
                 onChange={(e) => {
                   setTryout((prev) => ({ ...prev, tiktok: e.target.value }));
@@ -271,7 +271,7 @@ const TryoutOption = ({
             <input
               type="date"
               placeholder="Judul try out"
-              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
               required
               value={startDate}
               onChange={(e) => {
@@ -281,7 +281,7 @@ const TryoutOption = ({
             <input
               type="time"
               placeholder="Judul try out"
-              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
               required
               value={startDateTime}
               onChange={(e) => {
@@ -296,7 +296,7 @@ const TryoutOption = ({
             <input
               type="date"
               placeholder="Judul try out"
-              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
               required
               value={endDate}
               onChange={(e) => {
@@ -306,7 +306,7 @@ const TryoutOption = ({
             <input
               type="time"
               placeholder="Judul try out"
-              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
               required
               value={endDateTime}
               onChange={(e) => {
@@ -321,7 +321,7 @@ const TryoutOption = ({
             <input
               type="date"
               placeholder="Judul try out"
-              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
               required
               value={resultDate}
               onChange={(e) => {
@@ -331,7 +331,7 @@ const TryoutOption = ({
             <input
               type="time"
               placeholder="Judul try out"
-              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
               required
               value={resultDateTime}
               onChange={(e) => {
@@ -359,7 +359,7 @@ const TryoutOption = ({
         <div className="flex items-center justify-between">
           <h1 className="text-[1.1rem] font-medium">Sesi Tryout</h1>
           <div
-            className="cursor-pointer rounded-[.8rem] bg-main px-4 py-[.8rem] text-white duration-300 hover:bg-main/85 md:active:bg-main"
+            className="cursor-pointer rounded-3xl bg-main px-4 py-[.8rem] text-white duration-300 hover:bg-main/85 md:active:bg-main"
             onClick={addSesi}
           >
             Tambah sesi
@@ -370,7 +370,7 @@ const TryoutOption = ({
             key={sessionIndex}
             className="flex w-full gap-4"
           >
-            <div className="overflow-visible rounded-[.8rem] border border-transparent bg-white duration-300 md:hover:shadow-default">
+            <div className="overflow-visible rounded-3xl border border-transparent bg-white duration-300 md:hover:shadow-default">
               <input
                 type="text"
                 defaultValue={`${sessionIndex + 1}`}
@@ -394,7 +394,7 @@ const TryoutOption = ({
                   setSessions([...currentSessions]);
                 }}
               >
-                <SelectTrigger className="h-full min-w-[63px] rounded-[.8rem] border-none bg-white shadow-none outline-none">
+                <SelectTrigger className="h-full min-w-[63px] rounded-3xl border-none bg-white shadow-none outline-none">
                   <SelectValue placeholder="Kategori" />
                 </SelectTrigger>
                 <SelectContent>
@@ -415,7 +415,7 @@ const TryoutOption = ({
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex w-full items-center justify-between rounded-[.8rem] bg-white px-4 py-[.8rem]">
+            <div className="flex w-full items-center justify-between rounded-3xl bg-white px-4 py-[.8rem]">
               {item.categoryId !== '' ? (
                 <div className="flex items-center">
                   <div className="rounded-3xl bg-main px-[.5rem] py-[.2rem] text-[.8rem] text-white">
@@ -455,7 +455,7 @@ const TryoutOption = ({
           <input
             type="number"
             placeholder="Durasi istirahat"
-            className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+            className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
             value={tryout?.restTime ? tryout?.restTime : ''}
             onChange={(e) => {
               setTryout((prev) => ({
@@ -469,7 +469,7 @@ const TryoutOption = ({
       <div className="my-4 h-px w-full bg-main-gray-disabled/60" />
       <div className="grid w-full grid-cols-2 gap-4">
         <div
-          className="flex w-full shrink-0 cursor-pointer items-center justify-center rounded-[.8rem] bg-red-100 py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100"
+          className="flex w-full shrink-0 cursor-pointer items-center justify-center rounded-3xl bg-red-100 py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100"
           onClick={async () => {
             await resetTryout();
             await storage.from('img').remove([`tryout/${tryout?.image}`]);
@@ -477,7 +477,7 @@ const TryoutOption = ({
         >
           Hapus
         </div>
-        <div className="relative w-full overflow-visible rounded-[.8rem] border border-transparent bg-white duration-300 md:hover:shadow-default">
+        <div className="relative w-full overflow-visible rounded-3xl border border-transparent bg-white duration-300 md:hover:shadow-default">
           <input
             type="text"
             defaultValue={tryout?.status ? `${tryout?.status}` : ''}
@@ -493,7 +493,7 @@ const TryoutOption = ({
               }));
             }}
           >
-            <SelectTrigger className="h-full w-full rounded-[.8rem] border-none bg-white shadow-none outline-none">
+            <SelectTrigger className="h-full w-full rounded-3xl border-none bg-white shadow-none outline-none">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
@@ -516,7 +516,7 @@ const TryoutOption = ({
         ) : (
           <button
             type="submit"
-            className="h-full w-full rounded-[.8rem] bg-main text-white duration-300 hover:bg-main/85 md:active:bg-main"
+            className="h-full w-full rounded-3xl bg-main text-white duration-300 hover:bg-main/85 md:active:bg-main"
           >
             Simpan
           </button>

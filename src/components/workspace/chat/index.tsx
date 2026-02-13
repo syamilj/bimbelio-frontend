@@ -1,23 +1,26 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 // index.tsx
-// import { useChatStore } from "@/lib/store";
 import { Document, User, UserDocument } from '@/types/database';
-import 'katex/dist/katex.min.css';
 import { Loader2 } from 'lucide-react';
 
-import { SpinnerCentered } from '@/components/ui/spinner';
+import {
+  Conversation,
+  ConversationContent,
+  ConversationScrollButton,
+} from '@/components/ai-elements/conversation';
+import { Spinner } from '@/components/ui/spinner';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
-import MessageContainer from './_component/message-container';
+import MessageList from './_component/message-container';
 import Start from './_component/start';
 import SubmitChat from './_component/submit-chat';
 import ThreeQuestions from './_component/three-questions';
-import Provider, { MessageDataType, useProvider } from './provider';
+import Provider, { type MessageDataType, useProvider } from './provider';
 
 interface Props {
   apiChat: string;
   body: object;
   fetchMessages: () => Promise<any>;
+  onChatFinish?: () => void;
   messages: {
     prevChatMessages: MessageDataType[] | undefined;
     isLoadingPrevMessage: boolean;
@@ -43,6 +46,7 @@ export default function Chat({
   body,
   apiChat,
   fetchMessages,
+  onChatFinish,
   messages: { isLoadingPrevMessage, prevChatMessages },
   vectorize,
   userDoc,
@@ -53,6 +57,7 @@ export default function Chat({
       apiChat={apiChat}
       body={body}
       fetchMessages={fetchMessages}
+      onChatFinish={onChatFinish}
       prevChatMessages={prevChatMessages}
       isLoadingPrevMessage={isLoadingPrevMessage}
       onClickPageNumber={onClickPageNumber}
@@ -70,10 +75,6 @@ const MainContent = () => {
 
   const {
     messageData,
-    setMessageData,
-    useMessages: { messages, isLoadingMessages },
-    useMessagesEdit: { messageEdit, isLoadingMessagesEdit },
-    firstMessage,
     prevChatMessages,
     isLoadingPrevMessage,
     vectorize,
@@ -82,44 +83,20 @@ const MainContent = () => {
 
   const isVectorising = vectorize?.isVectorising;
   const vectoriseDocMutation = vectorize?.vectoriseDocMutation;
-
   const userDocData = userDoc?.userDocData;
   const isUserDocLoading = userDoc?.isUserDocLoading || false;
+  const isVectorised = userDocData?.isVectorised || false;
 
   const pathname = usePathname();
   const pathnameArray = pathname?.split('/');
   const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
 
-  // Load previous messages once
-  useEffect(() => {
-    if (prevChatMessages && prevChatMessages.length > 0 && !firstMessage) {
-      setMessageData([GreetingMessage, ...prevChatMessages]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [prevChatMessages?.length, firstMessage]);
-
-  // Handle new messages from streaming
-  useEffect(() => {
-    if (isLoadingMessages && messages.length > 0 && prevChatMessages) {
-      setMessageData([GreetingMessage, ...prevChatMessages, ...messages]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages.length, isLoadingMessages]);
-
-  // Handle edited messages
-  useEffect(() => {
-    if (isLoadingMessagesEdit && messageEdit.length > 0 && prevChatMessages) {
-      setMessageData([GreetingMessage, ...prevChatMessages, ...messageEdit]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messageEdit.length, isLoadingMessagesEdit]);
-
-  const isVectorised = userDocData?.isVectorised || false;
-
-  if (isLoadingPrevMessage) {
-    <div className="flex justify-center items-center h-full w-full">
-      <Loader2 className="w-4 h-4 animate-spin" />
-    </div>;
+  if (isLoadingPrevMessage && messageData.length === 0) {
+    return (
+      <div className="flex flex-1 items-center justify-center min-h-0">
+        <Loader2 className="w-4 h-4 animate-spin" />
+      </div>
+    );
   }
 
   const isMessages = messageData?.length !== 0;
@@ -127,10 +104,12 @@ const MainContent = () => {
     messageData?.length === 0 && prevChatMessages?.length === 0 && !newChat;
 
   if (isUserDocLoading === true) {
-    return <SpinnerCentered />;
+    return (
+      <div className="flex flex-1 items-center justify-center min-h-0">
+        <Spinner />
+      </div>
+    );
   }
-
-  console.log({ isVectorised, userDoc });
 
   if (!isVectorised && userDoc) {
     return (
@@ -145,20 +124,20 @@ const MainContent = () => {
   }
 
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden bg-slate-50/50">
+    <div className="flex flex-col flex-1 min-h-0 bg-white">
       <FormMessageEdit />
-      <div
-        id="chatAI"
-        className="flex flex-1 flex-col overflow-hidden"
-      >
-        {isMessages ? (
-          <MessageContainer />
-        ) : isNoMessages ? (
-          <ThreeQuestions />
-        ) : (
-          <LoadingMessages />
-        )}
-      </div>
+      <Conversation>
+        <ConversationContent className="chat-ai-messages flex flex-col gap-3 pt-3 px-3 sm:px-4 pb-8">
+          {isMessages ? (
+            <MessageList />
+          ) : isNoMessages ? (
+            <ThreeQuestions />
+          ) : (
+            <LoadingMessages />
+          )}
+        </ConversationContent>
+        <ConversationScrollButton />
+      </Conversation>
       <SubmitChat />
     </div>
   );
@@ -166,7 +145,7 @@ const MainContent = () => {
 
 const LoadingMessages = () => {
   return (
-    <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
+    <div className="flex flex-1 justify-center items-center min-h-[200px]">
       <Loader2 className="animate-spin w-4 h-4" />
     </div>
   );
@@ -174,41 +153,22 @@ const LoadingMessages = () => {
 
 const FormMessageEdit = () => {
   const {
-    useMessagesEdit: { inputMessagesEdit, handleSubmitMessagesEdit },
+    useMessagesEdit: {
+      inputMessagesEdit,
+      appendMessagesEdit,
+    },
   } = useProvider();
 
   useEffect(() => {
     if (inputMessagesEdit.length > 0) {
-      const submit = document.getElementById(
-        'editMessage',
-      ) as HTMLButtonElement;
-      submit.click();
+      appendMessagesEdit({
+        id: crypto.randomUUID(),
+        content: inputMessagesEdit,
+        role: 'user',
+        createdAt: new Date(),
+      });
     }
   }, [inputMessagesEdit]);
 
-  return (
-    <form
-      className="absolute z-100 w-0 overflow-hidden p-0 text-black"
-      onSubmit={(e) => {
-        handleSubmitMessagesEdit(e);
-      }}
-    >
-      <input
-        type="text"
-        value={inputMessagesEdit}
-        onChange={() => {}}
-      />
-      <button id="editMessage">submit</button>
-    </form>
-  );
-};
-
-const GreetingMessage: MessageDataType = {
-  id: 'id',
-  content:
-    'Selamat datang di **Bimbelio**! Aku siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang PTN dan Kedinasan. Mari kita maksimalkan pembelajaran Kamu!',
-  role: 'assistant',
-  createdAt: null,
-  like: false,
-  dislike: false,
+  return null;
 };

@@ -3,6 +3,7 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -10,6 +11,12 @@ import {
 
 export default function ChatProvider({ children }: { children: ReactNode }) {
   const [isMinimized, setIsMinimized] = useState(true); // Start minimized on mobile
+  // Counter that increments when chat history should be refreshed (e.g. AI-generated title)
+  const [historyVersion, setHistoryVersion] = useState(0);
+
+  const refreshHistory = useCallback(() => {
+    setHistoryVersion((v) => v + 1);
+  }, []);
 
   // Handle responsive behavior
   useEffect(() => {
@@ -34,6 +41,8 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
   const Context = {
     isMinimized,
     setIsMinimized,
+    historyVersion,
+    refreshHistory,
   };
 
   return (
@@ -44,6 +53,8 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
 interface ChatContextProps {
   isMinimized: boolean;
   setIsMinimized: Dispatch<SetStateAction<boolean>>;
+  historyVersion: number;
+  refreshHistory: () => void;
 }
 
 const ChatContext = createContext<ChatContextProps | null>(null);

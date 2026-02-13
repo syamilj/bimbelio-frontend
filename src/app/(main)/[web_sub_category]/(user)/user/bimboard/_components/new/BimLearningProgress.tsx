@@ -216,7 +216,7 @@ export default function BimLearningProgress({
                 <Link
                   key={liveClass.id}
                   href={`/${website_sub_category_id}/user/bimlive/${liveClass.id}`}
-                  className="group relative rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 bg-slate-900 border border-slate-100 flex-shrink-0 w-[280px] md:w-auto aspect-[4/5]"
+                  className="group relative rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 bg-slate-900 border border-slate-100 flex-shrink-0 w-[280px] md:w-auto aspect-[4/5]"
                 >
                   {/* Full Background Image */}
                   {liveClass.thumbnail ? (
@@ -512,7 +512,7 @@ export default function BimLearningProgress({
                 <Link
                   key={tryout.id}
                   href={`/${website_sub_category_id}/user/bimarena/try-out/${tryout.id}`}
-                  className="group relative rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 bg-slate-900 border border-slate-100 flex-shrink-0 w-[280px] md:w-auto aspect-[4/5]"
+                  className="group relative rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 bg-slate-900 border border-slate-100 flex-shrink-0 w-[280px] md:w-auto aspect-[4/5]"
                 >
                   {/* Full Background Image */}
                   {tryout.thumbnail ? (

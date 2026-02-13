@@ -199,7 +199,7 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
     };
 
   return (
-    <div className="flex border rounded-lg items-center text-sm px-1">
+    <div className="flex border rounded-3xl items-center text-sm px-1">
       <input
         type="text"
         ref={monthRef}
