@@ -53,7 +53,7 @@ export default function BimBotPage() {
         toast: {
           errorMsg: 'Gagal membuat chat baru',
         },
-        onSuccess: ({ data }: { data: { id: string } }) => {
+        onSuccess: ({ data }) => {
           newChatId = data?.id || '';
         },
       });

@@ -5,11 +5,12 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { BimBot } from '@/components/ui/bim-brand';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import Logo from '@/components/ui/logo';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn, getDateStringShort, getHours } from '@/lib/utils';
+import LogoSvg from '@/styles/logo-svg';
 import { ChatHistory } from '@/types/database';
 import { Bot, Clock, Edit3, MessageSquare, Plus, X } from 'lucide-react';
 import Link from 'next/link';
@@ -30,7 +31,6 @@ export default function SidebarChat() {
 
   const [chatHistory, setChatHistory] = useState<ChatHistory[]>([]);
   const [loading, setLoading] = useState(false);
-  const [newChatInput, setNewChatInput] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -100,18 +100,13 @@ export default function SidebarChat() {
     console.log({ res });
   };
 
-  const handleNewChat = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleNewChat = async () => {
     setLoading(true);
-    if (newChatInput.trim()) {
-      const userMessage = newChatInput;
-      const res = await createNewChat({ title: 'Chat Baru' });
-      setNewChatInput('');
+    const res = await createNewChat({ title: 'Chat Baru' });
+    if (res?.id) {
       router.push(
-        `/${website_sub_category_id}/user/bimbot/${res.id}?new=${encodeURIComponent(userMessage)}`,
+        `/${website_sub_category_id}/user/bimbot/${res.id}`,
       );
-    } else {
-      setLoading(false);
     }
   };
 
@@ -131,84 +126,53 @@ export default function SidebarChat() {
   return (
     <>
       {/* Desktop Sidebar - Always visible */}
-      <div className="hidden md:flex w-80 h-full bg-white border-r-2 border-gray-100 flex-col relative overflow-hidden">
+      <div className="hidden md:flex w-80 h-full bg-white border-r border-slate-200 flex-col relative overflow-hidden">
         {/* Header */}
-        <div className="p-6 border-b-2 border-gray-100 relative overflow-hidden shrink-0">
-          <div className="relative z-10 space-y-4">
+        <div className="px-4 py-4 border-b border-slate-200 relative overflow-hidden shrink-0">
+          <div className="relative z-10 space-y-3">
             <div className="flex items-center gap-3 group">
-              <div
-                className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-all duration-300"
-                style={{ backgroundColor: mainColor }}
-              >
-                <Bot className="w-6 h-6 text-white" />
+              <div className="flex items-center justify-center">
+                <LogoSvg className="w-10 h-10 text-main" />
               </div>
               <div className="flex-1">
                 <h2
-                  className="font-black text-lg leading-tight"
+                  className="font-bold text-2xl leading-tight"
                   style={{ color: mainColor }}
                 >
                   <BimBot /> AI
                 </h2>
-                <p className="text-xs text-gray-500 font-medium">
-                  Smart Assistant
+                <p className="text-sm text-gray-500 font-medium">
+                  by Bimbelio
                 </p>
               </div>
-            </div>
-
-            {/* Status indicator */}
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-50 border border-green-200">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-xs font-bold text-green-700">
-                Online & Ready
-              </span>
             </div>
           </div>
         </div>
 
-        {/* New Chat Input */}
-        <div className="p-4 border-b-2 border-gray-100 shrink-0">
-          <form
-            onSubmit={handleNewChat}
-            className="space-y-3"
+        {/* New Chat */}
+        <div className="p-4 border-b border-slate-200 shrink-0">
+          <Button
+            type="button"
+            onClick={handleNewChat}
+            disabled={loading}
+            className="w-full h-10 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-white font-semibold"
+            style={{ backgroundColor: mainColor }}
           >
-            <div className="relative group">
-              <Input
-                placeholder="Tulis topik chat..."
-                value={newChatInput}
-                onChange={(e) => setNewChatInput(e.target.value)}
-                className="h-11 rounded-3xl pl-4 pr-3 border-2 border-gray-200 focus:border-transparent transition-all duration-300"
-                style={
-                  {
-                    '--tw-ring-color': mainColor,
-                  } as any
-                }
-                disabled={loading}
-              />
-            </div>
-            <Button
-              type="submit"
-              disabled={!newChatInput.trim() || loading}
-              className="w-full h-11 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 text-white font-bold"
-              style={{
-                backgroundColor: newChatInput.trim() ? mainColor : '#ccc',
-              }}
-            >
-              {loading ? (
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-              ) : (
-                <>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Chat Baru
-                </>
-              )}
-            </Button>
-          </form>
+            {loading ? (
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+            ) : (
+              <>
+                <Plus className="w-4 h-4 mr-2" />
+                Chat Baru
+              </>
+            )}
+          </Button>
         </div>
 
         {/* Chat History */}
         <div className="flex-1 flex flex-col overflow-hidden">
-          <div className="p-4 pb-2 shrink-0">
-            <h3 className="text-sm font-black text-gray-900">Riwayat Chat</h3>
+          <div className="px-4 pt-4 pb-2 shrink-0">
+            <h3 className="text-sm font-bold text-gray-900">Riwayat Chat</h3>
             <p className="text-xs text-gray-500 font-medium">
               {chatHistory?.length || 0} percakapan
             </p>
@@ -229,10 +193,10 @@ export default function SidebarChat() {
                     >
                       <div
                         className={cn(
-                          'flex items-start gap-3 p-3 rounded-3xl transition-all duration-300 cursor-pointer border-2',
+                          'flex items-start gap-3 p-3 rounded-xl transition-all duration-200 cursor-pointer border',
                           isActive
                             ? 'shadow-sm'
-                            : 'border-gray-100 hover:border-gray-200 hover:shadow-sm',
+                            : 'border-gray-200 hover:border-gray-300 bg-white',
                         )}
                         style={{
                           backgroundColor: isActive ? mainColor : 'white',
@@ -241,7 +205,7 @@ export default function SidebarChat() {
                       >
                         <div
                           className={cn(
-                            'w-8 h-8 rounded-3xl flex items-center justify-center shrink-0 transition-all duration-300',
+                            'w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-all duration-200',
                           )}
                           style={{
                             backgroundColor: isActive
@@ -272,13 +236,13 @@ export default function SidebarChat() {
                                   setEditingId(null);
                                 }
                               }}
-                              className="bg-transparent border-none outline-none w-full text-sm font-bold"
+                              className="bg-transparent border-none outline-none w-full text-sm font-semibold"
                               onClick={(e) => e.stopPropagation()}
                             />
                           ) : (
                             <h4
                               className={cn(
-                                'text-sm font-bold line-clamp-2 mb-1',
+                                'text-sm font-semibold line-clamp-2 mb-1',
                                 isActive ? 'text-white' : 'text-gray-900',
                               )}
                             >
@@ -306,7 +270,7 @@ export default function SidebarChat() {
                       variant="ghost"
                       size="sm"
                       className={cn(
-                        'absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-all duration-300 p-1 h-7 w-7 rounded-3xl',
+                        'absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-all duration-200 p-1 h-7 w-7 rounded-lg',
                         isActive
                           ? 'text-white hover:bg-white/20'
                           : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600',
@@ -326,37 +290,31 @@ export default function SidebarChat() {
           </ScrollArea>
         </div>
 
-        {/* Footer */}
-        <div className="p-4 border-t-2 border-gray-100 bg-white">
-          <p className="text-xs text-gray-500 text-center font-medium">
-            💬 Tanya apapun kepada <BimBot /> AI
-          </p>
-        </div>
       </div>
 
       {/* Mobile Sidebar - Shows when not minimized */}
       {!isMinimized && (
         <>
-          <div className="fixed inset-y-0 left-0 w-80 z-9999 md:hidden bg-white border-r-2 border-gray-100 flex flex-col overflow-hidden">
+          <div className="fixed inset-y-0 left-0 w-80 z-9999 md:hidden bg-white border-r border-slate-200 flex flex-col overflow-hidden">
             {/* Header */}
-            <div className="p-6 border-b-2 border-gray-100 relative overflow-hidden shrink-0">
-              <div className="relative z-10 space-y-4">
+            <div className="px-4 py-4 border-b border-slate-200 relative overflow-hidden shrink-0">
+              <div className="relative z-10 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3 group flex-1">
                     <div
-                      className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-sm shrink-0"
+                      className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm shrink-0"
                       style={{ backgroundColor: mainColor }}
                     >
-                      <Bot className="w-6 h-6 text-white" />
+                      <Bot className="w-5 h-5 text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <h2
-                        className="font-black text-lg leading-tight"
+                        className="font-bold text-2xl leading-tight"
                         style={{ color: mainColor }}
                       >
                         <BimBot /> AI
                       </h2>
-                      <p className="text-xs text-gray-500 font-medium">
+                      <p className="text-sm text-gray-500 font-medium">
                         Smart Assistant
                       </p>
                     </div>
@@ -365,66 +323,39 @@ export default function SidebarChat() {
                     variant="ghost"
                     size="sm"
                     onClick={handleCloseSidebar}
-                    className="shrink-0 rounded-3xl p-2 hover:bg-gray-100"
+                    className="shrink-0 rounded-lg p-2 hover:bg-gray-100"
                   >
                     <X className="w-5 h-5" />
                   </Button>
                 </div>
 
-                {/* Status indicator */}
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-50 border border-green-200">
-                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  <span className="text-xs font-bold text-green-700">
-                    Online & Ready
-                  </span>
-                </div>
               </div>
             </div>
 
-            {/* New Chat Input */}
-            <div className="p-4 border-b-2 border-gray-100 shrink-0">
-              <form
-                onSubmit={handleNewChat}
-                className="space-y-3"
+            {/* New Chat */}
+            <div className="p-4 border-b border-slate-200 shrink-0">
+              <Button
+                type="button"
+                onClick={handleNewChat}
+                disabled={loading}
+                className="w-full h-10 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-white font-semibold"
+                style={{ backgroundColor: mainColor }}
               >
-                <div className="relative group">
-                  <Input
-                    placeholder="Tulis topik chat..."
-                    value={newChatInput}
-                    onChange={(e) => setNewChatInput(e.target.value)}
-                    className="h-11 rounded-3xl pl-4 pr-3 border-2 border-gray-200 focus:border-transparent transition-all duration-300"
-                    style={
-                      {
-                        '--tw-ring-color': mainColor,
-                      } as any
-                    }
-                    disabled={loading}
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  disabled={!newChatInput.trim() || loading}
-                  className="w-full h-11 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 text-white font-bold"
-                  style={{
-                    backgroundColor: newChatInput.trim() ? mainColor : '#ccc',
-                  }}
-                >
-                  {loading ? (
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-                  ) : (
-                    <>
-                      <Plus className="w-4 h-4 mr-2" />
-                      Chat Baru
-                    </>
-                  )}
-                </Button>
-              </form>
+                {loading ? (
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                ) : (
+                  <>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Chat Baru
+                  </>
+                )}
+              </Button>
             </div>
 
             {/* Chat History */}
             <div className="flex-1 flex flex-col overflow-hidden">
-              <div className="p-4 pb-2 shrink-0">
-                <h3 className="text-sm font-black text-gray-900">
+              <div className="px-4 pt-4 pb-2 shrink-0">
+                <h3 className="text-sm font-bold text-gray-900">
                   Riwayat Chat
                 </h3>
                 <p className="text-xs text-gray-500 font-medium">
@@ -448,10 +379,10 @@ export default function SidebarChat() {
                         >
                           <div
                             className={cn(
-                              'flex items-start gap-3 p-3 rounded-3xl transition-all duration-300 cursor-pointer border-2',
+                              'flex items-start gap-3 p-3 rounded-xl transition-all duration-200 cursor-pointer border',
                               isActive
                                 ? 'shadow-sm'
-                                : 'border-gray-100 hover:border-gray-200 hover:shadow-sm',
+                                : 'border-gray-200 hover:border-gray-300 bg-white',
                             )}
                             style={{
                               backgroundColor: isActive ? mainColor : 'white',
@@ -460,7 +391,7 @@ export default function SidebarChat() {
                           >
                             <div
                               className={cn(
-                                'w-8 h-8 rounded-3xl flex items-center justify-center shrink-0 transition-all duration-300',
+                                'w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-all duration-200',
                               )}
                               style={{
                                 backgroundColor: isActive
@@ -493,13 +424,13 @@ export default function SidebarChat() {
                                       setEditingId(null);
                                     }
                                   }}
-                                  className="bg-transparent border-none outline-none w-full text-sm font-bold"
+                                  className="bg-transparent border-none outline-none w-full text-sm font-semibold"
                                   onClick={(e) => e.stopPropagation()}
                                 />
                               ) : (
                                 <h4
                                   className={cn(
-                                    'text-sm font-bold line-clamp-2 mb-1',
+                                    'text-sm font-semibold line-clamp-2 mb-1',
                                     isActive ? 'text-white' : 'text-gray-900',
                                   )}
                                 >
@@ -527,7 +458,7 @@ export default function SidebarChat() {
                           variant="ghost"
                           size="sm"
                           className={cn(
-                            'absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-all duration-300 p-1 h-7 w-7 rounded-3xl',
+                            'absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-all duration-200 p-1 h-7 w-7 rounded-lg',
                             isActive
                               ? 'text-white hover:bg-white/20'
                               : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600',
@@ -547,12 +478,6 @@ export default function SidebarChat() {
               </ScrollArea>
             </div>
 
-            {/* Footer */}
-            <div className="p-4 border-t-2 border-gray-100 bg-white">
-              <p className="text-xs text-gray-500 text-center font-medium">
-                💬 Tanya apapun kepada <BimBot /> AI
-              </p>
-            </div>
           </div>
 
           {/* Mobile Overlay */}

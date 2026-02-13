@@ -17,6 +17,7 @@ const blacklistPaths = [
   '/user/bimarena/try-out',
   '/user/bimcourse',
   '/user/workspace',
+  '/user/bimbot',
 ];
 
 export const DialogBimbotAI = () => {
