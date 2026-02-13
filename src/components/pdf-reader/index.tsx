@@ -8,10 +8,14 @@ import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import { useVideoHLS } from '@/hooks/use-hls-video';
 import { deleteGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useGet } from '@/lib/fetch-helper/useGet';
+import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { HighlightTypeEnum, Message, Video } from '@/types/database';
 import { insertOrUpdateBlock } from '@blocknote/core';
 import { createId } from '@paralleldrive/cuid2';
-import { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { Star } from 'lucide-react';
 import { GhostHighlight, Scaled } from 'react-pdf-highlighter-extended';
 import { useSession } from '../provider/provider-session-auth';
 import { ToolTip } from '../ui/tooltip';
@@ -101,6 +105,8 @@ const DocViewer = ({ canEdit, doc, userId, isCourseDone }: Props) => {
 
 const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
   // const { isReady } = useRouter();
+  const searchParams = useSearchParams();
+  const subChapterId = searchParams?.get('sub') || '';
 
   const { data: session } = useSession();
 
@@ -313,6 +319,70 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
     `${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/document/${doc.video?.url}`,
   );
 
+  const videoData = doc.video as (Video & {
+    rating?: number;
+    starReview?: number;
+    reviewCount?: number;
+    totalReviews?: number;
+  }) | null;
+
+  const starRating =
+    typeof videoData?.rating === 'number'
+      ? videoData.rating
+      : typeof videoData?.starReview === 'number'
+        ? videoData.starReview
+        : 4.9;
+
+  const reviewCount =
+    typeof videoData?.reviewCount === 'number'
+      ? videoData.reviewCount
+      : typeof videoData?.totalReviews === 'number'
+        ? videoData.totalReviews
+        : null;
+
+  const { data: userRatingData, isLoading: isLoadingUserRating, refetch } =
+    useGet<{ id: string; value: number }>('/course/getUserRatingBySubChapterId', {
+      params: { subChapterId },
+      enabled: !!subChapterId,
+      useEffectDependencies: [subChapterId],
+    });
+
+  const { mutate: addRating, isLoading: isSubmittingRating } = useMutation(
+    '/course/addRatingSubChapter',
+    'post',
+    {
+      toast: {
+        hideSuccess: true,
+      },
+      onSuccess: async () => {
+        await refetch();
+      },
+    },
+  );
+
+  const [userRating, setUserRating] = useState<number | null>(null);
+  const emojis = ['😞', '😕', '😐', '😊', '😍'];
+
+  useEffect(() => {
+    if (typeof userRatingData?.value === 'number') {
+      setUserRating(userRatingData.value);
+    }
+  }, [userRatingData]);
+
+  const handleSubmitRating = async (value: number) => {
+    if (!subChapterId) {
+      toaster({
+        title: 'Gagal',
+        description: 'Sub chapter tidak ditemukan.',
+        condition: 'warning',
+      });
+      return;
+    }
+
+    setUserRating(value);
+    await addRating({ payload: { subChapterId, value } });
+  };
+
   useEffect(() => {
     if (window && window.PdfViewer) {
       setZoomValue(`${window.PdfViewer.viewer._currentScale}`);
@@ -339,7 +409,7 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
           <div
             className={`relative w-full shrink-0 overflow-hidden transition-all duration-300 ease-in-out ${hideVideo ? 'h-0' : 'h-auto'}`}
           >
-            <div className="p-3 pb-0">
+            <div className="px-2 pb-0 pt-2 sm:p-3 sm:pb-0">
               {doc.video?.url?.length > 0 && (
                 <div className="relative rounded-3xl overflow-hidden shadow-sm border border-slate-200/80 bg-black">
                   <video
@@ -350,14 +420,52 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
                   />
                 </div>
               )}
-              <div className="flex w-full items-center justify-end px-1 py-1">
-                <button
-                  className="rounded-3xl bg-slate-50 hover:bg-slate-100 px-2.5 py-0.5 text-[10px] text-slate-500 font-medium transition-colors border border-slate-200/60"
-                  onClick={() => setHideVideo(true)}
-                >
-                  Sembunyikan Video
-                </button>
-              </div>
+              {doc.video?.url?.length > 0 && (
+                <div className="mt-2 rounded-2xl border border-slate-200/70 bg-white px-2.5 py-2 sm:px-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex min-w-0 items-center gap-1.5">
+                      {[1, 2, 3, 4, 5].map((item) => (
+                        <button
+                          key={item}
+                          className="rounded p-0.5 disabled:cursor-not-allowed"
+                          onClick={() => handleSubmitRating(item)}
+                          disabled={isSubmittingRating || isLoadingUserRating}
+                          aria-label={`Rating ${item}`}
+                          type="button"
+                        >
+                          <Star
+                            className={`h-3.5 w-3.5 transition-colors ${
+                              (userRating ?? 0) >= item
+                                ? 'fill-amber-400 text-amber-400'
+                                : 'text-slate-300 hover:text-amber-300'
+                            }`}
+                          />
+                        </button>
+                      ))}
+                      <span className="ml-1 truncate text-xs text-slate-600">
+                        {userRating ? emojis[userRating - 1] : 'Beri rating'}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <span className="text-[11px] font-medium text-slate-500">
+                        {userRating
+                          ? 'Rating tersimpan'
+                          : reviewCount !== null
+                            ? `${reviewCount.toLocaleString('id-ID')} ulasan`
+                            : `${starRating.toFixed(1)} · Ulasan siswa`}
+                      </span>
+                      <button
+                        className="rounded-3xl border border-slate-200/70 bg-slate-50 px-2.5 py-0.5 text-[10px] font-medium text-slate-500 transition-colors hover:bg-slate-100"
+                        onClick={() => setHideVideo(true)}
+                        type="button"
+                      >
+                        Sembunyikan
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -365,8 +473,8 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
           id="DocumentViewPdf"
           className="relative flex-1 w-full bg-slate-50/50"
           style={{
-            height: 'calc(100vh - 120px)',
-            minHeight: '500px',
+            height: 'calc(100dvh - 120px)',
+            minHeight: '420px',
           }}
         >
           <PdfReader
