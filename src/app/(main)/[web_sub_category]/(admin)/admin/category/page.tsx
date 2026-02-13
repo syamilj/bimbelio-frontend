@@ -36,8 +36,9 @@ export default function Kategori() {
     id: string;
     name: string;
     open: boolean;
+    image: string | null;
     visibleAtWebSubIds: string[];
-  }>({ id: '', name: '', open: false, visibleAtWebSubIds: [] });
+  }>({ id: '', name: '', open: false, image: null, visibleAtWebSubIds: [] });
 
   const [editSubKategoriData, setEditSubKategoriData] = useState<{
     id: string;
@@ -69,6 +70,7 @@ export default function Kategori() {
   const [categories, setCategories] = useState<
     {
       name: string;
+      image: string | null;
       id: string;
       total: number;
       visibleAtWebSubIds: string[];
@@ -177,6 +179,7 @@ export default function Kategori() {
               fetchCategories();
               fetchSubCategories();
             }}
+            image={editKategoriData.image}
             id={editKategoriData.id}
             name={editKategoriData.name}
             visibleAtWebSubIdsData={editKategoriData.visibleAtWebSubIds}
@@ -238,6 +241,7 @@ export default function Kategori() {
                       id: category.id,
                       name: category.name,
                       visibleAtWebSubIds: category.visibleAtWebSubIds,
+                      image: category.image,
                       open: true,
                     });
                   }}

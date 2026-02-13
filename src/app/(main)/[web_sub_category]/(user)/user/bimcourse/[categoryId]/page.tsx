@@ -14,7 +14,7 @@ import {
   BarChart3,
   BookOpen,
   FileText,
-  Lock,
+  Gem,
   PlayCircle,
   Search,
   Target,
@@ -422,6 +422,8 @@ export default function CourseOverviewPage() {
                   let displayImage = null;
                   if (sub.Document?.img) {
                     displayImage = `${process.env.NEXT_PUBLIC_SUPABASE_IMG_URL}/document/${sub.Document.img}`;
+                  } else if (sub.type === 'PROGRESS_TEST') {
+                    displayImage = `${sub.image}`;
                   }
 
                   return (
@@ -499,9 +501,9 @@ export default function CourseOverviewPage() {
                                 </span>
                               </div>
                             )}
-                            {sub.premium && !isSubCompleted && (
-                              <div className="w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white">
-                                <Lock className="w-4 h-4" />
+                            {sub.premium && (
+                              <div className="w-8 h-8 rounded-full bg-blue-400 backdrop-blur-md flex items-center justify-center text-white">
+                                <Gem className="w-4 h-4" />
                               </div>
                             )}
                           </div>

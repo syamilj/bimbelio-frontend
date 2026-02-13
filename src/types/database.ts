@@ -437,6 +437,7 @@ export type CourseSubChapter = {
   type: TypeCourseEnum;
   tryoutSessionId: string | null;
   materi: string | null;
+  image: string | null;
   status: 'DRAFT' | 'PUBLISH' | 'UPCOMING';
   publishedAt: string | null;
 };

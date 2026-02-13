@@ -4,6 +4,7 @@ import BlogEditor from '@/components/ui/blog-editor';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { InputImage } from '@/components/ui/input-image';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -346,6 +347,36 @@ const SubChapterOption = ({
                 }}
               />
             </div>
+            {EditSubChapter.type === 'PROGRESS_TEST' && (
+              <div className="flex flex-col gap-2">
+                <Label>
+                  Upload Thumbnail{' '}
+                  <span className="text-gray-400 text-sm">(Optional)</span>
+                </Label>
+
+                <InputImage
+                  preview={
+                    EditSubChapter.image ? EditSubChapter.image : undefined
+                  }
+                  imageFile={EditSubChapter.imageFile}
+                  onChange={async (image) => {
+                    if (image) {
+                      setSubChapter((prev) =>
+                        prev.map((sChapter, index) => {
+                          if (index === currentIndexEdit) {
+                            return {
+                              ...sChapter,
+                              imageFile: image,
+                            };
+                          }
+                          return sChapter;
+                        }),
+                      );
+                    }
+                  }}
+                />
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent

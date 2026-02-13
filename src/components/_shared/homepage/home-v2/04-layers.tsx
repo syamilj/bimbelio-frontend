@@ -2,6 +2,8 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { BimBot } from '@/components/ui/bim-brand';
+import { useGet } from '@/lib/fetch-helper/useGet';
+import { Category, Instructor } from '@/types/database';
 import {
   Brain,
   CheckCircle2,
@@ -15,10 +17,10 @@ import { useState } from 'react';
 
 interface Tutor {
   name: string;
-  university: string;
+  // university: string;
   major: string;
   quote: string;
-  badge: string;
+  badge?: string;
   image?: string;
 }
 
@@ -27,34 +29,16 @@ const LayersSection: React.FC = () => {
   const [activeLayer, setActiveLayer] = useState<number>(0);
   const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
 
-  const tutors: Tutor[] = [
-    {
-      name: 'Kak Ashel',
-      university: 'Universitas Indonesia',
-      major: 'Sastra Arab',
-      quote: 'Bahasa itu bukan soal hafalan, tapi feeling!',
-      badge: 'UI 2022',
-      image: '/tutors/ashel.webp',
-    },
-    {
-      name: 'Kak Erich',
-      university: 'Universitas Indonesia',
-      major: 'Ilmu Komputer',
-      quote: 'Matematika UTBK itu pattern recognition!',
-      badge: 'UI 2022',
-      image: '/tutors/erich.webp',
-    },
-    {
-      name: 'Kak Naufal',
-      university: 'Universitas Indonesia',
-      major: 'Matematika',
-      quote: 'Penalaran Umum bukan IQ test. Ada triknya!',
-      badge: 'UI 2020',
-      image: '/tutors/naufal.webp',
-    },
+  const { data: Instructors } = useGet<
+    (Instructor & {
+      Category: Category[];
+      totalLiveClass: number;
+    })[]
+  >('/instructor/getAllInstructor');
+
+  const addTutor = [
     {
       name: 'Kak Okky',
-      university: 'Universitas Indonesia',
       major: 'Sastra Arab',
       quote: 'Baca cepat, tangkep inti, jawab tepat!',
       badge: 'UI 2019',
@@ -62,13 +46,69 @@ const LayersSection: React.FC = () => {
     },
     {
       name: 'Kak Syamil',
-      university: 'Universitas Indonesia',
       major: 'Manajemen',
       quote: 'PPU bukan tes wawasan, tapi strategi eliminasi!',
       badge: 'UI 2019',
       image: '/tutors/syamil.webp',
     },
   ];
+
+  const tutors = [
+    ...(Instructors || []).map((inst) => {
+      const name = inst.name;
+
+      return {
+        name,
+        major: inst.lastEducation,
+        quote: inst.description,
+        badge: inst.lastEducation,
+        image: inst.image,
+      };
+    }),
+    ...addTutor,
+  ];
+  // const tutors2: Tutor[] = [
+  //   {
+  //     name: 'Kak Ashel',
+  //     university: 'Universitas Indonesia',
+  //     major: 'Sastra Arab',
+  //     quote: 'Bahasa itu bukan soal hafalan, tapi feeling!',
+  //     badge: 'UI 2022',
+  //     image: '/tutors/ashel.webp',
+  //   },
+  //   {
+  //     name: 'Kak Erich',
+  //     university: 'Universitas Indonesia',
+  //     major: 'Ilmu Komputer',
+  //     quote: 'Matematika UTBK itu pattern recognition!',
+  //     badge: 'UI 2022',
+  //     image: '/tutors/erich.webp',
+  //   },
+  //   {
+  //     name: 'Kak Naufal',
+  //     university: 'Universitas Indonesia',
+  //     major: 'Matematika',
+  //     quote: 'Penalaran Umum bukan IQ test. Ada triknya!',
+  //     badge: 'UI 2020',
+  //     image: '/tutors/naufal.webp',
+  //   },
+  //   {
+  //     name: 'Kak Okky',
+  //     university: 'Universitas Indonesia',
+  //     major: 'Sastra Arab',
+  //     quote: 'Baca cepat, tangkep inti, jawab tepat!',
+  //     badge: 'UI 2019',
+  //     image: '/tutors/okky.webp',
+  //   },
+  //   {
+  //     name: 'Kak Syamil',
+  //     university: 'Universitas Indonesia',
+  //     major: 'Manajemen',
+  //     quote: 'PPU bukan tes wawasan, tapi strategi eliminasi!',
+  //     badge: 'UI 2019',
+  //     image: '/tutors/syamil.webp',
+  //   },
+  // ];
 
   const layers = [
     {
@@ -296,12 +336,14 @@ const LayersSection: React.FC = () => {
                       <Brain className="w-16 h-16 text-gray-300" />
                     </div>
                   )}
-                  <div
-                    className="absolute top-3 right-3 px-2.5 py-1 rounded-full text-xs font-bold bg-white shadow-sm"
-                    style={{ color: mainColor }}
-                  >
-                    {tutor.badge}
-                  </div>
+                  {tutor.badge && (
+                    <div
+                      className="absolute top-3 right-3 px-2.5 py-1 rounded-full text-xs font-bold bg-white shadow-sm"
+                      style={{ color: mainColor }}
+                    >
+                      {tutor.badge}
+                    </div>
+                  )}
                 </div>
 
                 <div className="p-4">

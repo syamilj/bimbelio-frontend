@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils';
 import { useStorageSocket } from '@/supabaseClient';
 import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Button } from './button';
 import { Dialog, DialogContent } from './dialog';
 import { Progress } from './progress';
 
@@ -154,14 +153,14 @@ export function LoadingPageStorage({
 
   return (
     <>
-      <Button
+      {/* <Button
         className="fixed top-0 left-0 z-[99999]"
         onClick={() => {
           emit('join:loading', { loadingId: '123' });
         }}
       >
         Test Socket
-      </Button>
+      </Button> */}
       {loading && (
         <div className="fixed left-0 top-0 z-[9999] flex h-full w-full select-none items-center justify-center bg-[#ffffff52] backdrop-blur-[6px]">
           <div className="flex flex-col items-center gap-[.5rem] text-center">

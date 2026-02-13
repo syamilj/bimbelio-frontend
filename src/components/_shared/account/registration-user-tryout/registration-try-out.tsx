@@ -73,6 +73,7 @@ const RegistrationTryOut = ({
   const [Gender, setGender] = useState<string>('');
   const [Age, setAge] = useState<number>(0); // Ubah menjadi number
   const [Phone, setPhone] = useState<string>('');
+  const [PhoneParent, setPhoneParent] = useState<string>('');
   const [Kabupaten, setKabupaten] = useState<string>('');
   const [Provinsi, setProvinsi] = useState<string>('');
 
@@ -147,6 +148,7 @@ const RegistrationTryOut = ({
           gender: Gender,
           age: Age,
           phone: Phone,
+          phoneParent: PhoneParent,
           kabupaten: Kabupaten,
           provinsi: Provinsi,
           schoolTipe: TipeSekolah,
@@ -254,22 +256,42 @@ const RegistrationTryOut = ({
               </Select>
             </div>
           </div>
-          <div className="flex flex-col gap-[.5rem]">
-            <p className="text-[.9rem]">
-              No. Hp<span className="text-red-600">*</span>
-            </p>
-            <div className="relative flex items-center">
-              <p className="absolute left-4 text-[.9rem]">+62</p>
-              <input
-                type="number"
-                className="font-regular w-full rounded-3xl border border-main-gray-input py-[.5rem] pl-16 pr-4 text-[.9rem] text-black outline-none focus:border-main"
-                placeholder={'No. Hp'}
-                onChange={(e) => {
-                  setPhone(e.target.value);
-                }}
-                value={Phone}
-                required
-              />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-[.5rem]">
+              <p className="text-[.9rem]">
+                No. Hp<span className="text-red-600">*</span>
+              </p>
+              <div className="relative flex items-center">
+                <p className="absolute left-4 text-[.9rem]">+62</p>
+                <input
+                  type="number"
+                  className="font-regular w-full rounded-[.5rem] border border-main-gray-input py-[.5rem] pl-16 pr-4 text-[.9rem] text-black outline-none focus:border-main"
+                  placeholder={'No. Hp'}
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                  }}
+                  value={Phone}
+                  required
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-[.5rem]">
+              <p className="text-[.9rem]">
+                No. Hp Orang Tua<span className="text-red-600">*</span>
+              </p>
+              <div className="relative flex items-center">
+                <p className="absolute left-4 text-[.9rem]">+62</p>
+                <input
+                  type="number"
+                  className="font-regular w-full rounded-[.5rem] border border-main-gray-input py-[.5rem] pl-16 pr-4 text-[.9rem] text-black outline-none focus:border-main"
+                  placeholder={'No. Hp'}
+                  onChange={(e) => {
+                    setPhoneParent(e.target.value);
+                  }}
+                  value={PhoneParent}
+                  required
+                />
+              </div>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
