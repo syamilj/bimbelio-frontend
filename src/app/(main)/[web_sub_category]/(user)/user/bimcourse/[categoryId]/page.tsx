@@ -441,16 +441,18 @@ export default function CourseOverviewPage() {
                         className="group relative bg-white rounded-3xl border-2 border-slate-100 overflow-hidden hover:border-blue-300 hover:shadow-lg transition-all cursor-pointer flex flex-col h-full active:scale-95 touch-manipulation"
                       >
                         {/* Thumbnail / Placeholder */}
-                        <div className="h-36 sm:h-32 bg-slate-100 relative overflow-hidden">
+                        <div className="bg-slate-100 relative overflow-hidden">
                           {/* Image or Gradient */}
                           {displayImage ? (
                             <img
                               src={displayImage}
                               alt={sub.title}
-                              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                              className="block w-full h-auto transition-transform duration-500 group-hover:scale-[1.02]"
                               onError={(e) => {
                                 e.currentTarget.style.display = 'none';
                                 e.currentTarget.parentElement?.classList.add(
+                                  'h-44',
+                                  'sm:h-44',
                                   'bg-linear-to-br',
                                   'from-slate-200',
                                   'to-slate-300',
@@ -460,7 +462,7 @@ export default function CourseOverviewPage() {
                           ) : (
                             <div
                               className={cn(
-                                'absolute inset-0 bg-linear-to-br opacity-80 transition-transform duration-500 group-hover:scale-110',
+                                'h-44 sm:h-44 bg-linear-to-br opacity-80 transition-transform duration-500 group-hover:scale-110',
                                 sub.type === 'VIDEO'
                                   ? 'from-indigo-400 to-purple-500'
                                   : sub.type === 'TRYOUT'
@@ -469,24 +471,6 @@ export default function CourseOverviewPage() {
                               )}
                             />
                           )}
-
-                          {/* Dark Overlay for better text/icon visibility if image exists */}
-                          {sub.Document?.img && (
-                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors" />
-                          )}
-
-                          {/* Icon Overlay */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="w-12 h-12 rounded-full bg-white/30 backdrop-blur-md flex items-center justify-center text-white shadow-sm ring-1 ring-white/40">
-                              {sub.type === 'VIDEO' ? (
-                                <PlayCircle className="w-6 h-6 fill-current" />
-                              ) : sub.type === 'TRYOUT' ? (
-                                <Trophy className="w-6 h-6" />
-                              ) : (
-                                <FileText className="w-6 h-6" />
-                              )}
-                            </div>
-                          </div>
 
                           {/* Lock Status or Progress Status */}
                           <div className="absolute top-3 right-3 flex gap-2">
