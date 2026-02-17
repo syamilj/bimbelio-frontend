@@ -48,13 +48,7 @@ export function TryOutSelector() {
 
   useEffect(() => {
     if (Array.isArray(TryoutList) && TryoutList.length > 0 && firstLoad === 0) {
-      let selectedId: string | undefined;
-
-      if (TryoutList.length > 1) {
-        selectedId = TryoutList[1]?.id;
-      } else {
-        selectedId = TryoutList[0]?.id;
-      }
+      const selectedId = TryoutList[0]?.id;
 
       if (selectedId) {
         setSelectedTryOut(selectedId);

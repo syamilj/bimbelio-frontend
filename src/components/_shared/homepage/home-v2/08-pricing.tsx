@@ -5,7 +5,7 @@ import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/typ
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
-import { Crown, MessageCircle } from 'lucide-react';
+import { Crown, MessageCircle, Star } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -37,6 +37,7 @@ const PricingSection: React.FC = () => {
   );
 
   const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color ?? '#5aa4dd';
 
   const getAllPlans = (): PlanDataType[] => {
     let categoryToUse = PricingData?.webSubCategory?.find(
@@ -71,7 +72,8 @@ const PricingSection: React.FC = () => {
   };
 
   const allPlans = getAllPlans();
-  const topPlans = allPlans.slice(0, 3);
+  const recommendedPlans = allPlans.filter((plan) => plan.recommended);
+  const topPlans = allPlans.filter((plan) => !plan.recommended).slice(0, 3);
 
   if (!PricingData) {
     return (
@@ -114,26 +116,70 @@ const PricingSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Top 3 Plans */}
-        <div className="flex overflow-x-auto touch-pan-y md:grid md:grid-cols-3 gap-5 mb-8 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
-          {topPlans.length === 0 ? (
-            <div className="col-span-3 text-center py-10 w-full">
-              <p className="text-gray-500">Belum ada paket tersedia</p>
-            </div>
-          ) : (
-            topPlans.map((plan, index) => (
+        {/* Recommended Plans Section */}
+        {recommendedPlans.length > 0 && (
+          <div className="mb-12">
+            <div className="text-center mb-6">
               <div
-                key={plan.id}
-                className={cn(
-                  'min-w-[85%] sm:min-w-[350px] md:min-w-0 snap-center',
-                  index === 1 ? 'md:scale-105 md:z-10 relative' : '',
-                )}
+                className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold text-white border-none mb-3 shadow-sm"
+                style={{
+                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                }}
               >
-                <CardPlan plan={plan} />
+                <Star className="w-3.5 h-3.5" />
+                Rekomendasi Terbaik
               </div>
-            ))
-          )}
-        </div>
+              <h3 className="text-2xl md:text-3xl font-black text-slate-800">
+                Paket <span style={{ color: mainColor }}>Pilihan Kami</span>
+              </h3>
+              <p className="text-sm text-slate-600 mt-2 max-w-xl mx-auto">
+                Paket yang paling populer dan direkomendasikan untuk
+                memaksimalkan persiapanmu
+              </p>
+            </div>
+            <div className="flex overflow-x-auto touch-pan-y md:flex md:flex-wrap md:justify-center gap-5 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
+              {recommendedPlans.map((plan, index) => (
+                <div
+                  key={`recommended-${plan.id}`}
+                  className={cn(
+                    'min-w-[85%] sm:min-w-[350px] md:min-w-0 md:w-full md:max-w-md snap-center',
+                  )}
+                >
+                  <CardPlan plan={plan} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Other Plans */}
+        {topPlans.length > 0 && (
+          <div>
+            {recommendedPlans.length > 0 && (
+              <div className="text-center mb-6">
+                <h3 className="text-2xl md:text-3xl font-black text-slate-800">
+                  Paket <span style={{ color: mainColor }}>Lainnya</span>
+                </h3>
+                <p className="text-sm text-slate-600 mt-2 max-w-xl mx-auto">
+                  Pilihan paket lainnya yang bisa kamu sesuaikan dengan kebutuhanmu
+                </p>
+              </div>
+            )}
+            <div className="flex overflow-x-auto touch-pan-y md:grid md:grid-cols-3 gap-5 mb-8 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
+              {topPlans.map((plan, index) => (
+                <div
+                  key={plan.id}
+                  className={cn(
+                    'min-w-[85%] sm:min-w-[350px] md:min-w-0 snap-center',
+                    !recommendedPlans.length && index === 1 ? 'md:scale-105 md:z-10 relative' : '',
+                  )}
+                >
+                  <CardPlan plan={plan} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-20">

@@ -32,7 +32,7 @@ import {
 } from '@/components/ui/tooltip';
 import { cn, getInitials } from '@/lib/utils';
 import ExcelJS from 'exceljs'; // Tambahkan import ini
-import { ArrowUpDown, Search, Trophy } from 'lucide-react';
+import { ArrowUpDown, Info, Search, Trophy } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import ButtonUpgradeTryout from '../../try-out/_components/ui/button-upgrade-tryout';
 import { RankingTryoutProps } from './LeaderboardClient';
@@ -501,17 +501,34 @@ export function RankingTable() {
                                   {participant.name.charAt(0).toUpperCase()}
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                  <div className="font-medium text-gray-900 text-xs md:text-sm leading-tight">
-                                    {participant.name}
+                                  <div className="flex items-center gap-1 flex-wrap">
+                                    <span className="font-medium text-gray-900 text-xs md:text-sm leading-tight">
+                                      {participant.name}
+                                    </span>
                                     {isCurrentUser && (
                                       <span
-                                        className="ml-1 md:ml-2 px-1 md:px-2 py-0.5 md:py-1 text-xs font-bold rounded-full text-white"
+                                        className="px-1.5 py-0.5 text-[10px] font-bold rounded-full text-white shrink-0"
                                         style={{ backgroundColor: mainColor }}
                                       >
                                         Kamu
                                       </span>
                                     )}
                                   </div>
+                                  {participant.isBimbelioStudent && (
+                                    <div className="mt-0.5">
+                                      <span className="inline-flex items-center gap-0.5 px-1.5 py-px rounded-full bg-blue-50 border border-blue-200 text-blue-600 text-[10px] font-semibold">
+                                        BimCircle
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <Info className="w-2.5 h-2.5 text-blue-400 cursor-help" />
+                                          </TooltipTrigger>
+                                          <TooltipContent>
+                                            <p>Siswa Bimbelio</p>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      </span>
+                                    </div>
+                                  )}
                                   <div className="text-xs text-gray-500 truncate max-w-[120px] md:max-w-[200px]">
                                     {participant.school ||
                                       'Sekolah tidak tersedia'}
