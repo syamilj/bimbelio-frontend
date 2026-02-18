@@ -33,9 +33,43 @@ import {
 import { cn, getInitials } from '@/lib/utils';
 import ExcelJS from 'exceljs'; // Tambahkan import ini
 import { ArrowUpDown, Info, Search, Trophy } from 'lucide-react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import ButtonUpgradeTryout from '../../try-out/_components/ui/button-upgrade-tryout';
 import { RankingTryoutProps } from './LeaderboardClient';
+
+// Badge BimCircle dengan tooltip yang support click/tap di mobile
+function BimCircleBadge() {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLButtonElement>(null);
+
+  return (
+    <TooltipProvider>
+      <Tooltip open={open} onOpenChange={setOpen}>
+        <span className="inline-flex items-center gap-0.5 px-1.5 py-px rounded-full bg-blue-50 border border-blue-200 text-blue-600 text-[10px] font-semibold">
+          BimCircle
+          <TooltipTrigger asChild>
+            <button
+              ref={ref}
+              type="button"
+              className="focus:outline-none"
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpen((prev) => !prev);
+              }}
+              onMouseEnter={() => setOpen(true)}
+              onMouseLeave={() => setOpen(false)}
+            >
+              <Info className="w-2.5 h-2.5 text-blue-400 cursor-help" />
+            </button>
+          </TooltipTrigger>
+        </span>
+        <TooltipContent>
+          <p>Siswa Bimbelio</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
 
 const ITEMS_PER_PAGE = 20;
 
@@ -516,17 +550,7 @@ export function RankingTable() {
                                   </div>
                                   {participant.isBimbelioStudent && (
                                     <div className="mt-0.5">
-                                      <span className="inline-flex items-center gap-0.5 px-1.5 py-px rounded-full bg-blue-50 border border-blue-200 text-blue-600 text-[10px] font-semibold">
-                                        BimCircle
-                                        <Tooltip>
-                                          <TooltipTrigger asChild>
-                                            <Info className="w-2.5 h-2.5 text-blue-400 cursor-help" />
-                                          </TooltipTrigger>
-                                          <TooltipContent>
-                                            <p>Siswa Bimbelio</p>
-                                          </TooltipContent>
-                                        </Tooltip>
-                                      </span>
+                                      <BimCircleBadge />
                                     </div>
                                   )}
                                   <div className="text-xs text-gray-500 truncate max-w-[120px] md:max-w-[200px]">

@@ -5,7 +5,7 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { cn, Provinces } from '@/lib/utils';
+import { cn, getUniversityInitials, Provinces } from '@/lib/utils';
 import {
   ArrowDown,
   ArrowUp,
@@ -45,7 +45,7 @@ export function QuizLeaderboard() {
   const userStats = UserStatistic?.userStatistic;
   const userTarget = UserStatistic?.userTarget;
   const targetUniversity = {
-    name: userTarget?.univChoiceOne || '-',
+    name: getUniversityInitials(userTarget?.univChoiceOne) || '-',
     major: userTarget?.univStudyChoiceOne || '-',
   };
 

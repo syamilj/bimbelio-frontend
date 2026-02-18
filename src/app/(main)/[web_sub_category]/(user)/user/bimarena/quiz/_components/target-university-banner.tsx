@@ -1,6 +1,7 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { getUniversityInitials } from '@/lib/utils';
 import { GraduationCap, Target } from 'lucide-react';
 
 interface TargetUniversityBannerProps {
@@ -48,7 +49,7 @@ export function TargetUniversityBanner({
           </div>
           <div className="min-w-0">
             <h3 className="font-bold text-slate-800 text-sm md:text-base truncate">
-              {userTarget.univChoiceOne}
+              {getUniversityInitials(userTarget.univChoiceOne)}
             </h3>
             <p className="text-xs text-slate-500 truncate">
               {userTarget.univStudyChoiceOne}

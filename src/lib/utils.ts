@@ -128,6 +128,108 @@ export const getInitials = (input: string): string => {
 //   return withPrefix;
 // }
 
+const UNIVERSITY_INITIALS_MAP: Record<string, string> = {
+  // ── Data sesuai be/src/lib/data/university.ts ──
+  'Institut Teknologi Bandung': 'ITB',
+  'Universitas Indonesia': 'UI',
+  'Universitas Gadjah Mada': 'UGM',
+  'Institut Teknologi Sepuluh November': 'ITS',
+  'Universitas Airlangga': 'Unair',
+  'Universitas Diponegoro': 'Undip',
+  'Institut Pertanian Bogor': 'IPB',
+  'Universitas Padjadjaran': 'Unpad',
+  'UPN Veteran Jakarta': 'UPN Jakarta',
+  'Universitas Sebelas Maret': 'UNS',
+  'Universitas Brawijaya': 'UB',
+  'UPN Veteran Yogyakarta': 'UPN Yogyakarta',
+  'Universitas Negeri Yogyakarta': 'UNY',
+  'Universitas Sumatera Utara': 'USU',
+  'Universitas Jenderal Soedirman': 'Unsoed',
+  'UPN Veteran Jawa Timur': 'UPN Jawa Timur',
+  'Universitas Negeri Semarang': 'Unnes',
+  'Universitas Negeri Jakarta': 'UNJ',
+  'Universitas Udayana': 'Unud',
+  'Universitas Negeri Malang': 'UM',
+  STAN: 'STAN',
+
+  // ── PTN Populer lainnya ──
+  'Universitas Hasanuddin': 'Unhas',
+  'Universitas Andalas': 'Unand',
+  'Universitas Sriwijaya': 'Unsri',
+  'Universitas Lampung': 'Unila',
+  'Universitas Riau': 'Unri',
+  'Universitas Jember': 'Unej',
+  'Universitas Pendidikan Indonesia': 'UPI',
+  'Institut Teknologi Sumatera': 'ITERA',
+  'Institut Teknologi Kalimantan': 'ITK',
+  'Universitas Sam Ratulangi': 'Unsrat',
+  'Universitas Syiah Kuala': 'USK',
+  'Universitas Sultan Ageng Tirtayasa': 'Untirta',
+  'Universitas Tanjungpura': 'Untan',
+  'Universitas Mulawarman': 'Unmul',
+  'Universitas Haluoleo': 'UHO',
+  'Universitas Mataram': 'Unram',
+
+  // ── PTN Regional ──
+  'Universitas Jambi': 'Unja',
+  'Universitas Bengkulu': 'Unib',
+  'Universitas Lambung Mangkurat': 'ULM',
+  'Universitas Palangka Raya': 'UPR',
+  'Universitas Tadulako': 'Untad',
+  'Universitas Nusa Cendana': 'Undana',
+  'Universitas Pattimura': 'Unpatti',
+  'Universitas Negeri Makassar': 'UNM',
+  'Universitas Negeri Gorontalo': 'UNG',
+  'Universitas Negeri Manado': 'Unima',
+  'Universitas Negeri Medan': 'Unimed',
+  'Universitas Negeri Padang': 'UNP',
+  'Universitas Negeri Surabaya': 'Unesa',
+  'Universitas Malikussaleh': 'Unimal',
+  'Universitas Bangka Belitung': 'UBB',
+  'Universitas Maritim Raja Ali Haji': 'UMRAH',
+  'Universitas Borneo Tarakan': 'UBT',
+  'Universitas Cenderawasih': 'Uncen',
+  'Universitas Papua': 'Unipa',
+  'Universitas Khairun': 'Unkhair',
+  'Universitas Tidar': 'Untidar',
+  'Universitas Siliwangi': 'Unsil',
+  'Universitas Trunojoyo Madura': 'UTM',
+  'Universitas Singaperbangsa Karawang': 'Unsika',
+  'Universitas Pembangunan Nasional Veteran': 'UPN',
+  'Universitas Musamus': 'Unmus',
+  'Universitas Negeri Papua': 'UNIPA',
+
+  // ── Kedinasan ──
+  'Sekolah Tinggi Akuntansi Negara': 'STAN',
+  'Institut Pemerintahan Dalam Negeri': 'IPDN',
+  'Sekolah Tinggi Ilmu Statistik': 'STIS',
+  'Politeknik Keuangan Negara STAN': 'PKN STAN',
+  'Politeknik Statistika STIS': 'Polstat STIS',
+  'Sekolah Tinggi Sandi Negara': 'STSN',
+  'Sekolah Tinggi Meteorologi Klimatologi dan Geofisika': 'STMKG',
+  'Sekolah Tinggi Intelijen Negara': 'STIN',
+  'Akademi Militer': 'Akmil',
+  'Akademi Angkatan Laut': 'AAL',
+  'Akademi Angkatan Udara': 'AAU',
+  'Akademi Kepolisian': 'Akpol',
+  'Sekolah Tinggi Ilmu Pelayaran': 'STIP',
+  'Politeknik Transportasi Darat Indonesia': 'PTDI',
+  'Politeknik Perkeretaapian Indonesia': 'PPI',
+  'Politeknik Penerbangan Indonesia Curug': 'PPI Curug',
+  'Sekolah Tinggi Pertanahan Nasional': 'STPN',
+  'Politeknik Kesehatan Kemenkes': 'Poltekkes',
+  'Sekolah Tinggi Ilmu Administrasi LAN': 'STIA LAN',
+};
+
+/**
+ * Converts a full university name to its common initials/abbreviation.
+ * Falls back to the original value if no mapping found.
+ */
+export function getUniversityInitials(name: string | undefined | null): string {
+  if (!name || name === '-') return name || '-';
+  return UNIVERSITY_INITIALS_MAP[name] ?? name;
+}
+
 export function formatSchoolName(school: string | undefined): string {
   if (!school) return '-';
 

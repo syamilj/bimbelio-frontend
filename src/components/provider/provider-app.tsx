@@ -25,7 +25,7 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
     redirect: string | null;
   }>({ open: false, redirect: null });
   const [pagesSetting, setPagesSetting] = useState<
-    'account' | 'subscription' | 'history' | 'installment' | undefined
+    'account' | 'subscription' | 'history' | 'installment' | 'target' | undefined
   >();
 
   const [minimizeSidebar, setMinimizeSidebar] = useState<boolean>(true);
@@ -190,10 +190,11 @@ interface AppContextType {
     | 'subscription'
     | 'history'
     | 'installment'
+    | 'target'
     | undefined;
   setPagesSetting: Dispatch<
     SetStateAction<
-      'account' | 'subscription' | 'history' | 'installment' | undefined
+      'account' | 'subscription' | 'history' | 'installment' | 'target' | undefined
     >
   >;
   search: string;

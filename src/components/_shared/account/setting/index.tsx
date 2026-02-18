@@ -17,13 +17,14 @@ import {
   Transaction,
 } from '@/types/database';
 import Cookies from 'js-cookie';
-import { Coins, Crown, History, User, X } from 'lucide-react';
+import { Coins, Crown, GraduationCap, History, User, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { AccountTab } from './components/account-tab';
 import { HistoryPaymentTab } from './components/history-payment-tab';
 import { SubscriptionTab } from './components/subscription-tab';
 import { TabInstallment } from './components/tab-installment';
+import { TargetTab } from './components/target-tab';
 
 // HistoryPayment Component
 export default function AccountSetting() {
@@ -177,6 +178,7 @@ export default function AccountSetting() {
 
   const tabs = [
     { value: 'account', label: 'Akun', icon: User },
+    { value: 'target', label: 'Target', icon: GraduationCap },
     { value: 'subscription', label: 'Subscription', icon: Crown },
     { value: 'installment', label: 'Cicilan', icon: Coins },
     { value: 'history', label: 'Riwayat', icon: History },
@@ -247,6 +249,14 @@ export default function AccountSetting() {
               profileImage={profileImage}
               loading={loading}
               handleChangeProfile={handleChangeProfile}
+              mainColor={mainColor}
+              secondaryColor={secondaryColor}
+            />
+          )}
+          {page === 'target' && (
+            <TargetTab
+              userId={session?.user.id}
+              websiteSubCategoryId={websiteSubCategory?.id}
               mainColor={mainColor}
               secondaryColor={secondaryColor}
             />
