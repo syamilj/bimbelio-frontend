@@ -9,16 +9,38 @@ import {
   useState,
 } from 'react';
 
+type OnBoardingObjectType = {
+  COURSE: boolean;
+  DOCUMENT_CHAT_AI: boolean;
+  DOCUMENT_NOTES: boolean;
+  DOCUMENT_QUIZ: boolean;
+  QUIZ: boolean;
+  TRYOUT: boolean;
+  CHAT_AI: boolean;
+};
+
+type OnBoardingListType =
+  | 'COURSE'
+  | 'DOCUMENT_CHAT_AI'
+  | 'DOCUMENT_NOTES'
+  | 'DOCUMENT_QUIZ'
+  | 'QUIZ'
+  | 'TRYOUT'
+  | 'CHAT_AI';
+
 export default function ProviderOnBoarding({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [userOnBoarding, setUserOnBoarding] = useState({
-    COURSE: true,
-    DOCUMENT: true,
-    QUIZ: true,
-    TRYOUT: true,
+  const [userOnBoarding, setUserOnBoarding] = useState<OnBoardingObjectType>({
+    COURSE: false,
+    DOCUMENT_CHAT_AI: false,
+    DOCUMENT_NOTES: false,
+    DOCUMENT_QUIZ: false,
+    QUIZ: false,
+    TRYOUT: false,
+    CHAT_AI: false,
   });
 
   const { isLoading, refetch } = useGet('/user/getUserOnBoarding', {
@@ -42,7 +64,7 @@ export default function ProviderOnBoarding({
 
   const handleAddUserOnBoarding = (
     payload: {
-      type: 'COURSE' | 'DOCUMENT' | 'QUIZ' | 'TRYOUT';
+      type: OnBoardingListType;
       step: number;
     }[],
   ) => {
@@ -73,20 +95,8 @@ export default function ProviderOnBoarding({
 }
 
 interface OnBoardingContextType {
-  userOnBoarding: {
-    COURSE: boolean;
-    DOCUMENT: boolean;
-    QUIZ: boolean;
-    TRYOUT: boolean;
-  };
-  setUserOnBoarding: Dispatch<
-    SetStateAction<{
-      COURSE: boolean;
-      DOCUMENT: boolean;
-      QUIZ: boolean;
-      TRYOUT: boolean;
-    }>
-  >;
+  userOnBoarding: OnBoardingObjectType;
+  setUserOnBoarding: Dispatch<SetStateAction<OnBoardingObjectType>>;
   refetch: () => Promise<
     | {
         message: string;
@@ -100,7 +110,7 @@ interface OnBoardingContextType {
   isLoading: boolean;
   handleAddUserOnBoarding: (
     payload: {
-      type: 'COURSE' | 'DOCUMENT' | 'QUIZ' | 'TRYOUT';
+      type: OnBoardingListType;
       step: number;
     }[],
   ) => void;

@@ -9,6 +9,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 // Bim Components
 // import BimHeroWelcome from "./new/BimHeroWelcome";
+import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import BimAchievementBadges from './new/AchievementBadges';
 import BimLearningProgress from './new/BimLearningProgress';
 import BimPerformanceChart from './new/BimPerformanceChart';
@@ -93,6 +94,7 @@ export interface DashboardData {
       instructorAvatar: string | null;
       isPremium: boolean;
       isRegistered: boolean;
+      websiteSubCategoryId: string;
     }>;
   };
   performanceData: {
@@ -349,6 +351,8 @@ export default function DashboardClientNew() {
           instructorAvatar: lc.Instructor?.image || null,
           isPremium: lc.accessType === 'PREMIUM',
           isRegistered: false, // TODO: check registration status
+          websiteSubCategoryId:
+            lc.websiteSubCategoryId || website_sub_category_id_params,
         })),
       };
 

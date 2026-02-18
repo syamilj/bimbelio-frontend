@@ -121,7 +121,7 @@ const FeaturesSection: React.FC = () => {
         </div>
 
         {/* Features Grid - Horizontal Scroll on Mobile */}
-        <div className="flex overflow-x-auto touch-pan-y md:grid md:grid-cols-2 gap-4 md:gap-6 mb-10 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0 px-4 -mx-4 md:px-0 md:mx-0">
+        <div className="flex overflow-x-auto touch-pan-x md:grid md:grid-cols-2 gap-4 md:gap-6 mb-10 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0 px-4 -mx-4 md:px-0 md:mx-0">
           {features.map((feature) => {
             const Icon = feature.icon;
             return (

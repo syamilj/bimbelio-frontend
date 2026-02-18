@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 
 import ReportBug from '@/components/_shared/other/report-bug';
 import { useAppContext } from '@/components/provider/provider-app';
+import { useUserOnBoarding } from '@/components/provider/provider-on-boarding';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import OnBoarding from '@/components/workspace/_component/onboarding';
@@ -85,13 +86,9 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
 
   const router = useRouter();
 
-  const {
-    setMobileScreen,
-    mobileScreen,
-    onBoarding,
-    setOnBoarding,
-    setShowSidebar,
-  } = useAppContext();
+  const { setMobileScreen, mobileScreen, setShowSidebar } = useAppContext();
+
+  const { userOnBoarding } = useUserOnBoarding();
 
   const isMobile = useMedia({ maxWidth: '768px' });
   const [activeIndex, setActiveIndex] = useState(tab || 'chat');
@@ -111,30 +108,6 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
     setIsResetModalOpen(false);
     await handleResetChat();
   };
-
-  useEffect(() => {
-    const getOnboarding = localStorage.getItem('on-boarding');
-    const onBoarding = {
-      chat: true,
-      notes: true,
-      quiz: true,
-      tryout: true,
-    };
-    if (!getOnboarding) {
-      localStorage.setItem('on-boarding', JSON.stringify(onBoarding));
-    } else {
-      const data = JSON.parse(getOnboarding);
-      const isValid =
-        data &&
-        typeof data.chat === 'boolean' &&
-        typeof data.notes === 'boolean' &&
-        typeof data.quiz === 'boolean' &&
-        typeof data.tryout === 'boolean';
-      if (isValid) {
-        setOnBoarding({ ...data });
-      }
-    }
-  }, []);
 
   const handleResetChat = async () => {
     setIsLoading(true);
@@ -177,11 +150,11 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
   return (
     <div className="absolute left-0 top-0 h-full w-full bg-slate-50/80 md:relative">
       {tab === 'chat' ? (
-        <OnBoarding open={onBoarding.chat} type="chat" />
+        <OnBoarding type="chat" />
       ) : tab === 'notes' ? (
-        <OnBoarding open={onBoarding.notes} type="notes" />
+        <OnBoarding type="notes" />
       ) : tab === 'quiz' ? (
-        <OnBoarding open={onBoarding.quiz} type="quiz" />
+        <OnBoarding type="quiz" />
       ) : null}
 
       {/* Reset Confirmation Modal */}
@@ -215,9 +188,11 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
               >
                 {isLoading ? (
                   <Loader2 className="animate-spin w-4 h-4 text-red-500 mx-auto" />
-                ) : (
-                  tab === 'chat' ? 'Hapus Chat' : tab === 'quiz' ? 'Hapus Quiz' : null
-                )}
+                ) : tab === 'chat' ? (
+                  'Hapus Chat'
+                ) : tab === 'quiz' ? (
+                  'Hapus Quiz'
+                ) : null}
               </button>
               <button
                 className="flex-1 rounded-3xl border border-slate-200 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50 transition-colors"
@@ -252,10 +227,14 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
         <div className="relative z-8 flex h-[52px] items-center justify-between border-b border-slate-200/80 bg-white px-3 shrink-0">
           <TabsList className="h-full bg-transparent gap-1">
             {TABS.map((item) => (
-              <div className="relative" key={item.value} onClick={() => setHeaderTab(item.value)}>
-                {((onBoarding.notes && item.value === 'notes') ||
-                  (onBoarding.chat && item.value === 'chat') ||
-                  (onBoarding.quiz && item.value === 'quiz')) && (
+              <div
+                className="relative"
+                key={item.value}
+                onClick={() => setHeaderTab(item.value)}
+              >
+                {((!userOnBoarding.DOCUMENT_NOTES && item.value === 'notes') ||
+                  (!userOnBoarding.DOCUMENT_CHAT_AI && item.value === 'chat') ||
+                  (!userOnBoarding.DOCUMENT_QUIZ && item.value === 'quiz')) && (
                   <div className="absolute right-2 top-1.5 z-10 h-1.5 w-1.5 rounded-full bg-red-500" />
                 )}
                 <CustomTooltip content={item.tooltip}>
@@ -265,14 +244,17 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
                       'relative flex items-center gap-1.5 rounded-3xl border border-transparent px-3 py-1.5 text-xs font-medium text-slate-500 transition-all duration-200',
                       'data-[state=active]:border-slate-200 data-[state=active]:bg-white data-[state=active]:text-slate-800 data-[state=active]:shadow-sm',
                       'hover:bg-slate-100/80',
-                      headerTab === item.value && 'gap-1.5 border-slate-200 bg-white text-slate-800 shadow-sm',
+                      headerTab === item.value &&
+                        'gap-1.5 border-slate-200 bg-white text-slate-800 shadow-sm',
                     )}
                   >
                     {item.icon}
-                    <p className={cn(
-                      'overflow-hidden w-0 md:w-fit transition-all',
-                      headerTab === item.value && 'w-fit',
-                    )}>
+                    <p
+                      className={cn(
+                        'overflow-hidden w-0 md:w-fit transition-all',
+                        headerTab === item.value && 'w-fit',
+                      )}
+                    >
                       {item.title}
                     </p>
                   </TabsTrigger>
@@ -312,12 +294,18 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
                 <button
                   className="w-7 h-7 rounded-3xl flex items-center justify-center border border-slate-200 hover:bg-slate-50 text-slate-400 transition-colors"
                   onClick={() => {
-                    const chatAIContainer = document.querySelector('.chatAIContainer') as HTMLDivElement;
-                    const DocumentContainer = document.querySelector('.DocumentContainer') as HTMLDivElement;
+                    const chatAIContainer = document.querySelector(
+                      '.chatAIContainer',
+                    ) as HTMLDivElement;
+                    const DocumentContainer = document.querySelector(
+                      '.DocumentContainer',
+                    ) as HTMLDivElement;
                     DocumentContainer.setAttribute('data-panel-size', '0.0');
-                    DocumentContainer.style.cssText = 'flex: 0 1 0px; overflow: hidden;';
+                    DocumentContainer.style.cssText =
+                      'flex: 0 1 0px; overflow: hidden;';
                     chatAIContainer.setAttribute('data-panel-size', '100.0');
-                    chatAIContainer.style.cssText = 'flex: 100.0 1 0px; overflow: hidden; position: relative;';
+                    chatAIContainer.style.cssText =
+                      'flex: 100.0 1 0px; overflow: hidden; position: relative;';
                     setMobileScreen('fullscreen');
                   }}
                 >
@@ -330,12 +318,18 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
                 <button
                   className="w-7 h-7 rounded-3xl flex items-center justify-center border border-slate-200 hover:bg-slate-50 text-slate-400 transition-colors"
                   onClick={() => {
-                    const chatAIContainer = document.querySelector('.chatAIContainer') as HTMLDivElement;
-                    const DocumentContainer = document.querySelector('.DocumentContainer') as HTMLDivElement;
+                    const chatAIContainer = document.querySelector(
+                      '.chatAIContainer',
+                    ) as HTMLDivElement;
+                    const DocumentContainer = document.querySelector(
+                      '.DocumentContainer',
+                    ) as HTMLDivElement;
                     DocumentContainer.setAttribute('data-panel-size', '50.0');
-                    DocumentContainer.style.cssText = 'flex: 50.0 1 0px; overflow: hidden;';
+                    DocumentContainer.style.cssText =
+                      'flex: 50.0 1 0px; overflow: hidden;';
                     chatAIContainer.setAttribute('data-panel-size', '50.0');
-                    chatAIContainer.style.cssText = 'flex: 50.0 1 0px; overflow: hidden; position: relative;';
+                    chatAIContainer.style.cssText =
+                      'flex: 50.0 1 0px; overflow: hidden; position: relative;';
                     setMobileScreen('minimize');
                   }}
                 >

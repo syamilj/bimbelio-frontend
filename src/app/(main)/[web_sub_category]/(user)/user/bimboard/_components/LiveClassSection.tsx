@@ -15,6 +15,7 @@ interface LiveClass {
   thumbnail: string | null;
   instructorName: string;
   isPremium: boolean;
+  websiteSubCategoryId: string;
 }
 
 interface LiveClassSectionProps {
@@ -92,7 +93,7 @@ export default function LiveClassSection({
             {liveClasses.map((lc) => (
               <Link
                 key={lc.id}
-                href={`/${webSubId}/user/bimlive`}
+                href={`/${lc.websiteSubCategoryId}/user/bimlive/detail/${lc.id}`}
                 className="flex-shrink-0 group first:ml-0 snap-start"
               >
                 <div className="w-[280px] md:w-[300px] aspect-[4/5] relative rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all hover:-translate-y-1 bg-slate-900 border border-slate-100">

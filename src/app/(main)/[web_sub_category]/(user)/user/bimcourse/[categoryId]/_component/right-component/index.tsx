@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 
 import ReportBug from '@/components/_shared/other/report-bug';
 import { useAppContext } from '@/components/provider/provider-app';
+import { useUserOnBoarding } from '@/components/provider/provider-on-boarding';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { ResizablePanel } from '@/components/ui/resizable';
 import { toaster } from '@/components/ui/toaster';
@@ -138,6 +139,8 @@ const Sidebar = ({
     useParams: { sub, tab, categoryId },
   } = useProvider();
 
+  const { userOnBoarding } = useUserOnBoarding();
+
   const courseType = CourseData?.type;
 
   const [headerTab, setHeaderTab] = useState<string>('notes');
@@ -155,13 +158,7 @@ const Sidebar = ({
   );
   const router = useRouter();
 
-  const {
-    setMobileScreen,
-    mobileScreen,
-    onBoarding,
-    setOnBoarding,
-    setShowSidebar,
-  } = useAppContext();
+  const { setMobileScreen, mobileScreen, setShowSidebar } = useAppContext();
 
   const isMobile = useMedia({ maxWidth: '768px' });
   const [activeIndex, setActiveIndex] = useState(tab || 'chat');
@@ -187,30 +184,6 @@ const Sidebar = ({
     setIsResetModalOpen(false);
     await handleResetChat();
   };
-
-  useEffect(() => {
-    const getOnboarding = localStorage.getItem('on-boarding');
-    const onBoarding = {
-      chat: true,
-      notes: true,
-      quiz: true,
-      tryout: true,
-    };
-    if (!getOnboarding) {
-      localStorage.setItem('on-boarding', JSON.stringify(onBoarding));
-    } else {
-      const data = JSON.parse(getOnboarding);
-      const isValid =
-        data &&
-        typeof data.chat === 'boolean' &&
-        typeof data.notes === 'boolean' &&
-        typeof data.quiz === 'boolean' &&
-        typeof data.tryout === 'boolean';
-      if (isValid) {
-        setOnBoarding({ ...data });
-      }
-    }
-  }, []);
 
   const handleResetChat = async () => {
     try {
@@ -269,20 +242,11 @@ const Sidebar = ({
       )}
     >
       {tab === 'chat' ? (
-        <OnBoarding
-          open={onBoarding.chat}
-          type="chat"
-        />
+        <OnBoarding type="chat" />
       ) : tab === 'notes' ? (
-        <OnBoarding
-          open={onBoarding.notes}
-          type="notes"
-        />
+        <OnBoarding type="notes" />
       ) : tab === 'quiz' ? (
-        <OnBoarding
-          open={onBoarding.quiz}
-          type="quiz"
-        />
+        <OnBoarding type="quiz" />
       ) : null}
       {isResetModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
@@ -291,11 +255,16 @@ const Sidebar = ({
               {tab === 'chat' ? (
                 <p className="text-sm text-slate-600">
                   Seluruh chat dalam material{' '}
-                  <span className="font-semibold text-slate-800">[nama material]</span> akan
-                  dihapus.
+                  <span className="font-semibold text-slate-800">
+                    [nama material]
+                  </span>{' '}
+                  akan dihapus.
                 </p>
               ) : tab === 'quiz' ? (
-                <p className="text-sm text-slate-600"> Quiz ini akan dihapus.</p>
+                <p className="text-sm text-slate-600">
+                  {' '}
+                  Quiz ini akan dihapus.
+                </p>
               ) : null}
               <p className="text-sm font-medium text-red-500">
                 Apa kamu yakin ingin melanjutkan?
@@ -378,11 +347,12 @@ const Sidebar = ({
                   setHeaderTab(item.value);
                 }}
               >
-                {onBoarding.notes && item.value === 'notes' ? (
+                {!userOnBoarding.DOCUMENT_NOTES && item.value === 'notes' ? (
                   <div className="absolute right-2 top-0.5 z-10 h-1.5 w-1.5 rounded-full bg-red-500" />
-                ) : onBoarding.chat && item.value === 'chat' ? (
+                ) : !userOnBoarding.DOCUMENT_CHAT_AI &&
+                  item.value === 'chat' ? (
                   <div className="absolute right-2 top-0.5 z-10 h-1.5 w-1.5 rounded-full bg-red-500" />
-                ) : onBoarding.quiz && item.value === 'quiz' ? (
+                ) : !userOnBoarding.DOCUMENT_QUIZ && item.value === 'quiz' ? (
                   <div className="absolute right-2 top-0.5 z-10 h-1.5 w-1.5 rounded-full bg-red-500" />
                 ) : null}
                 <CustomTooltip content={item.tooltip}>

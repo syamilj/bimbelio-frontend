@@ -115,7 +115,7 @@ const PricingSection: React.FC = () => {
         </div>
 
         {/* Top 3 Plans */}
-        <div className="flex overflow-x-auto touch-pan-y md:grid md:grid-cols-3 gap-5 mb-8 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
+        <div className="flex overflow-x-auto touch-pan-x md:grid md:grid-cols-3 gap-5 mb-8 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
           {topPlans.length === 0 ? (
             <div className="col-span-3 text-center py-10 w-full">
               <p className="text-gray-500">Belum ada paket tersedia</p>

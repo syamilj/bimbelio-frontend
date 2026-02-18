@@ -126,7 +126,7 @@ const LiveClassSection: React.FC = () => {
                   style={{ backgroundColor: `${mainColor}30` }}
                 />
               </div>
-              <div className="flex overflow-x-auto touch-pan-y md:grid md:grid-cols-3 gap-5 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
+              <div className="flex overflow-x-auto touch-pan-x md:grid md:grid-cols-3 gap-5 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
                 {liveClassesFree?.slice(0, 6).map((liveClass) => {
                   const status = getStatusLabel(liveClass.status);
                   const accesType =
@@ -299,7 +299,7 @@ const LiveClassSection: React.FC = () => {
 
         {/* All Live Class Cards Section */}
         {isLoading ? (
-          <div className="flex overflow-x-auto touch-pan-y md:grid md:grid-cols-3 gap-5 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
+          <div className="flex overflow-x-auto touch-pan-x md:grid md:grid-cols-3 gap-5 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <Card
                 key={i}
@@ -333,7 +333,7 @@ const LiveClassSection: React.FC = () => {
                 style={{ backgroundColor: `${mainColor}30` }}
               />
             </div>
-            <div className="flex overflow-x-auto touch-pan-y md:grid md:grid-cols-3 gap-5 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
+            <div className="flex overflow-x-auto touch-pan-x md:grid md:grid-cols-3 gap-5 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
               {liveClasses?.slice(0, 6).map((liveClass) => {
                 const status = getStatusLabel(liveClass.status);
                 const accesType =
