@@ -44,7 +44,10 @@ function BimCircleBadge() {
 
   return (
     <TooltipProvider>
-      <Tooltip open={open} onOpenChange={setOpen}>
+      <Tooltip
+        open={open}
+        onOpenChange={setOpen}
+      >
         <span className="inline-flex items-center gap-0.5 px-1.5 py-px rounded-full bg-blue-50 border border-blue-200 text-blue-600 text-[10px] font-semibold">
           BimCircle
           <TooltipTrigger asChild>
@@ -212,7 +215,9 @@ export function RankingTable() {
       >
         {!isMapel && `${label}`}
         {isMapel && (
-          <span className="text-xs md:text-sm">{getInitials(label)}</span>
+          <span className="text-xs md:text-sm">
+            {getInitials(label, { type: "Remove 'dan'" })}
+          </span>
         )}
         <ArrowUpDown
           className={cn(
@@ -389,7 +394,9 @@ export function RankingTable() {
                         className="text-xs"
                       >
                         <span className="font-semibold">
-                          {getInitials(subCat.subCategory)}
+                          {getInitials(subCat.subCategory, {
+                            type: "Remove 'dan'",
+                          })}
                         </span>{' '}
                         = {subCat.subCategory}
                       </div>
