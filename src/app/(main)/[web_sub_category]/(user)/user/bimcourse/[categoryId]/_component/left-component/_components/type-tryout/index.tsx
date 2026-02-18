@@ -1,31 +1,18 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import BlocknoteEditor from '@/components/ui/blocknote-editor';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-// import ReactMarkdown from '@/components/ui/react-markdown';
-import BlocknoteEditor from '@/components/ui/blocknote-editor';
 import { cn } from '@/lib/utils';
 import {
   BookOpen,
   CheckCircle2,
-  Clock,
+  ChevronLeft,
+  ChevronRight,
   FileText,
-  Grid3x3,
-  Sparkles,
+  LayoutGrid,
+  Target,
   Trophy,
-  Zap,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useProvider } from '../../../../_provider/provider';
@@ -40,477 +27,381 @@ type userAnswersProps = {
   notSure: boolean;
 };
 
+const ANSWER_LABELS = ['A', 'B', 'C', 'D', 'E'];
+
 const TryoutType = () => {
   const {
     useParams: { sub },
     useData: { CourseData },
   } = useProvider();
 
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
   const TryoutSession = CourseData?.TryoutSession;
   const subCourseId = CourseData?.id;
 
-  const [userAnswers, setUserAnswers] = useState<userAnswersProps[] | null>(
-    null,
-  );
+  const [userAnswers, setUserAnswers] = useState<userAnswersProps[] | null>(null);
   const [currentSub, setCurrentSub] = useState<string | null>(null);
   const [isDone, setIsDone] = useState<boolean>(false);
   const [currentIndexQuestion, setCurrentIndexQuestion] = useState<number>(0);
+  const [showSidebar, setShowSidebar] = useState<boolean>(false);
 
   useEffect(() => {
     const savedAnswer = localStorage.getItem(`tryout-sub-chapter-${sub}`);
     const savedAnswerArray = savedAnswer ? JSON.parse(savedAnswer) : null;
     if (savedAnswerArray) {
-      setUserAnswers(
-        savedAnswerArray.sort((a: any, b: any) => a.number - b.number),
-      );
+      setUserAnswers(savedAnswerArray.sort((a: userAnswersProps, b: userAnswersProps) => a.number - b.number));
     } else if (TryoutSession) {
-      const initialAnswers = TryoutSession.TryoutQuestion.map((item) => {
-        return {
-          number: item.number,
-          questionId: item.id,
-          answerId: '',
-          answer: '',
-          notSure: false,
-        };
-      }).sort((a, b) => a.number - b.number);
+      const initialAnswers = TryoutSession.TryoutQuestion.map((item) => ({
+        number: item.number,
+        questionId: item.id,
+        answerId: '',
+        answer: '',
+        notSure: false,
+      })).sort((a, b) => a.number - b.number);
       setUserAnswers(initialAnswers);
     }
-    if (
-      TryoutSession &&
-      TryoutSession?.TryoutSessionResult.length > 0 &&
-      TryoutSession.TryoutSessionParticipant.length > 0
-    ) {
+    if ((TryoutSession?.TryoutSessionResult?.length ?? 0) > 0 && (TryoutSession?.TryoutSessionParticipant?.length ?? 0) > 0) {
       setIsDone(true);
     }
   }, [TryoutSession]);
 
   useEffect(() => {
-    if (userAnswers && currentSub == sub) {
-      localStorage.setItem(
-        `tryout-sub-chapter-${sub}`,
-        JSON.stringify(userAnswers),
-      );
+    if (userAnswers && currentSub === sub) {
+      localStorage.setItem(`tryout-sub-chapter-${sub}`, JSON.stringify(userAnswers));
     }
-    if (sub !== currentSub && typeof sub === 'string') {
-      setCurrentSub(sub);
-    }
+    if (sub !== currentSub && typeof sub === 'string') setCurrentSub(sub);
   }, [userAnswers, sub, currentSub]);
 
   if (!TryoutSession) return null;
 
-  const answered = () => {
-    let total = 0;
-    userAnswers?.forEach((item) => {
-      if (item.answerId) {
-        total += 1;
-      }
-    });
-    return total;
-  };
-  const progress = (answered() / (userAnswers?.length || 0)) * 100;
+  const totalQ = userAnswers?.length || 0;
+  const answeredCount = userAnswers?.filter((a) => a.answerId).length || 0;
+  const progressPercentage = totalQ > 0 ? (answeredCount / totalQ) * 100 : 0;
 
-  const getRadioGroupValue = () => {
-    const data = userAnswers?.find(
-      (item) =>
-        item.questionId ===
-        TryoutSession.TryoutQuestion[currentIndexQuestion].id,
+  const getSelectedAnswer = () =>
+    userAnswers?.find((a) => a.questionId === TryoutSession.TryoutQuestion[currentIndexQuestion]?.id)?.answerId ?? '';
+
+  const isAnswered = (index: number) => !!(userAnswers?.[index]?.answerId);
+
+  const currentQuestion = TryoutSession.TryoutQuestion[currentIndexQuestion];
+  const isFirst = currentIndexQuestion === 0;
+  const isLast = currentIndexQuestion === TryoutSession.TryoutQuestion.length - 1;
+
+  if (isDone) {
+    return (
+      <div className="p-4">
+        <ReviewTabTypeTryout sessionResult={TryoutSession.TryoutSessionParticipant[0]} />
+      </div>
     );
-    if (data) {
-      return data.answerId;
-    }
-    return '';
-  };
+  }
 
   return (
-    <div className="flex w-full flex-col gap-6 p-6 h-full pb-[100px]">
-      {!isDone ? (
-        <>
-          {/* Header Card with Gradient */}
-          <div className="relative rounded-3xl bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 p-6 shadow-xl">
-            {/* <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full blur-3xl -ml-24 -mb-24"></div> */}
-
-            <div className="relative z-10">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Sparkles className="w-5 h-5 text-yellow-300" />
-                    <span className="text-xs font-semibold text-white/80 uppercase tracking-wider">
-                      Tryout Mode
-                    </span>
-                  </div>
-                  <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                    {TryoutSession.name}
-                  </h1>
-                </div>
-                <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-3xl px-4 py-2">
-                  <Trophy className="w-5 h-5 text-yellow-300" />
-                  <span className="text-lg font-bold text-white">
-                    {progress.toFixed(0)}%
-                  </span>
-                </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Sticky Header */}
+      <div className="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm">
+        <div className="px-4 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div
+                className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm"
+                style={{ backgroundColor: `${mainColor}18` }}
+              >
+                <Trophy className="w-5 h-5" style={{ color: mainColor }} />
               </div>
-
-              <div className="flex flex-wrap gap-4 text-white/90 text-sm">
-                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-3xl px-3 py-1.5">
-                  <FileText className="w-4 h-4" />
-                  <span>{userAnswers?.length || 0} Soal</span>
-                </div>
-                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-3xl px-3 py-1.5">
-                  <CheckCircle2 className="w-4 h-4" />
-                  <span>{answered()} Terjawab</span>
-                </div>
-                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-3xl px-3 py-1.5">
-                  <Clock className="w-4 h-4" />
-                  <span>
-                    {userAnswers ? userAnswers.length - answered() : 0} Tersisa
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-4">
-                <Progress
-                  value={progress}
-                  className="h-2 bg-white/20"
-                  classNameThumb="bg-gradient-to-r from-yellow-400 to-orange-500"
-                />
+              <div>
+                <h1 className="text-sm font-black text-gray-900 line-clamp-1">{TryoutSession.name}</h1>
+                <p className="text-xs text-gray-500 font-medium">Uji Progress</p>
               </div>
             </div>
-          </div>
-
-          {/* Navigation Card */}
-          <Card className="border-none shadow-lg">
-            <CardHeader className="pb-4">
-              <div className="flex items-center gap-2">
-                <Grid3x3 className="w-5 h-5 text-main" />
-                <CardTitle className="text-lg">Navigasi Soal</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <Accordion
-                type="single"
-                collapsible
-                defaultValue="item-1"
+            <div className="flex items-center gap-2">
+              <div
+                className="hidden sm:flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-black"
+                style={{ backgroundColor: `${mainColor}18`, color: mainColor }}
               >
-                <AccordionItem
-                  value="item-1"
-                  className="border-none"
-                >
-                  <AccordionTrigger className="hover:no-underline py-2">
-                    <span className="text-sm font-medium">
-                      Lihat Semua Nomor
-                    </span>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="flex flex-wrap justify-center gap-3 pt-4">
-                      {Array.from({
-                        length: TryoutSession.TryoutQuestion.length,
-                      }).map((_, index) => {
-                        const isAnswered =
-                          userAnswers && userAnswers[index].answerId.length > 0;
-                        const isCurrent = currentIndexQuestion === index;
-
-                        return (
-                          <Button
-                            key={index}
-                            variant={'outline'}
-                            size="sm"
-                            className={cn(
-                              'relative h-12 w-12 rounded-3xl font-bold transition-all duration-300 transform hover:scale-110',
-                              'border-2',
-                              isCurrent &&
-                                !isAnswered &&
-                                'border-blue-500 bg-blue-50 text-blue-600 shadow-lg shadow-blue-200',
-                              isCurrent &&
-                                isAnswered &&
-                                'border-green-500 bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-lg shadow-green-200',
-                              !isCurrent &&
-                                !isAnswered &&
-                                'border-gray-200 bg-white text-gray-600 hover:border-blue-400 hover:bg-blue-50',
-                              !isCurrent &&
-                                isAnswered &&
-                                'border-green-400 bg-gradient-to-br from-green-400 to-emerald-500 text-white hover:from-green-500 hover:to-emerald-600',
-                            )}
-                            onClick={() => setCurrentIndexQuestion(index)}
-                          >
-                            {isAnswered && (
-                              <CheckCircle2 className="absolute -top-1 -right-1 w-4 h-4 text-green-600 bg-white rounded-full" />
-                            )}
-                            {index + 1}
-                          </Button>
-                        );
-                      })}
-                    </div>
-
-                    {/* Legend */}
-                    <div className="flex flex-wrap justify-center gap-4 mt-6 pt-4 border-t">
-                      <div className="flex items-center gap-2 text-xs">
-                        <div className="w-6 h-6 rounded-3xl bg-gradient-to-br from-green-400 to-emerald-500 border border-green-400"></div>
-                        <span className="text-gray-600">Terjawab</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs">
-                        <div className="w-6 h-6 rounded-3xl bg-white border-2 border-gray-200"></div>
-                        <span className="text-gray-600">Belum Dijawab</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs">
-                        <div className="w-6 h-6 rounded-3xl bg-blue-50 border-2 border-blue-500"></div>
-                        <span className="text-gray-600">Soal Aktif</span>
-                      </div>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </CardContent>
-          </Card>
-
-          {/* Question Card */}
-          <Card className="border-none shadow-lg">
-            <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-bold shadow-lg">
-                    {currentIndexQuestion + 1}
-                  </div>
-                  <div>
-                    <CardTitle className="text-lg">
-                      Soal {currentIndexQuestion + 1}
-                    </CardTitle>
-                    <CardDescription>
-                      dari {userAnswers?.length} pertanyaan
-                    </CardDescription>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Zap className="w-4 h-4 text-yellow-500" />
-                  <span className="font-medium text-gray-700">
-                    {answered()} / {userAnswers?.length}
-                  </span>
-                </div>
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                {answeredCount}/{totalQ}
               </div>
-            </CardHeader>
-            <CardContent className="pt-6">
-              <div className="space-y-6">
-                {/* Question */}
-                <div className="p-4 bg-gradient-to-br from-gray-50 to-blue-50/30 rounded-3xl border border-gray-200">
-                  <div className="flex items-start gap-3">
-                    <BookOpen className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
-                    <BlocknoteEditor
-                      value={
-                        TryoutSession.TryoutQuestion[currentIndexQuestion]
-                          .question
-                      }
-                      viewOnly
-                      className="question-content"
-                    />
+              <button
+                onClick={() => setShowSidebar(!showSidebar)}
+                className="lg:hidden p-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 transition-colors"
+              >
+                <LayoutGrid className="w-4 h-4 text-slate-600" />
+              </button>
+            </div>
+          </div>
+          <div className="mt-3">
+            <Progress value={progressPercentage} className="h-1.5 bg-slate-100" />
+          </div>
+        </div>
+      </div>
+
+      {/* Body */}
+      <div className="px-3 py-4 lg:px-4 pb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+          {/* Main Question Card */}
+          <div className="lg:col-span-3">
+            <Card className="rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+              <CardHeader className="border-b bg-gradient-to-r from-slate-50 to-white p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-10 h-10 rounded-2xl flex items-center justify-center text-white font-black text-base shadow-sm"
+                      style={{ backgroundColor: mainColor }}
+                    >
+                      {currentIndexQuestion + 1}
+                    </div>
+                    <div>
+                      <h2 className="text-base font-black text-slate-900">Soal {currentIndexQuestion + 1}</h2>
+                      <p className="text-xs text-slate-500 font-medium">dari {totalQ} soal</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <FileText className="w-4 h-4 text-slate-400" />
+                    <span className="text-xs font-medium text-slate-500">Pilihan Ganda</span>
+                  </div>
+                </div>
+              </CardHeader>
+
+              <CardContent className="p-4 space-y-5">
+                <div className="flex items-start">
+                  <BlocknoteEditor
+                    value={currentQuestion.question}
+                    viewOnly
+                    className="question-content flex-1"
+                  />
+                </div>
+
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-slate-200" />
+                  </div>
+                  <div className="relative flex justify-center">
+                    <span className="bg-white px-3 text-xs text-slate-400 font-medium">Pilih jawaban yang tepat</span>
                   </div>
                 </div>
 
-                {/* Answers */}
-                <div className="space-y-3">
-                  <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
-                    Pilih Jawaban:
-                  </p>
-                  <RadioGroup
-                    value={getRadioGroupValue()}
-                    onValueChange={() => {}}
-                  >
-                    {TryoutSession.TryoutQuestion[
-                      currentIndexQuestion
-                    ].TryoutAnswers.map((answer, aIndex) => {
-                      const isSelected = getRadioGroupValue() === answer.id;
-                      const answerLabel = String.fromCharCode(65 + aIndex); // A, B, C, D, etc.
-
-                      return (
+                <RadioGroup value={getSelectedAnswer()} onValueChange={() => {}}>
+                  {currentQuestion.TryoutAnswers.map((answer, aIndex) => {
+                    const isSelected = getSelectedAnswer() === answer.id;
+                    const label = ANSWER_LABELS[aIndex] ?? String(aIndex + 1);
+                    return (
+                      <div
+                        key={aIndex}
+                        onClick={() => {
+                          if (!userAnswers) return;
+                          setUserAnswers(
+                            userAnswers.map((ua) =>
+                              ua.questionId === currentQuestion.id
+                                ? { ...ua, answer: answer.answer, answerId: answer.id }
+                                : ua,
+                            ),
+                          );
+                        }}
+                        className={cn(
+                          'group flex items-start gap-3 rounded-2xl p-3.5 cursor-pointer border-2 transition-all duration-150',
+                          isSelected
+                            ? 'border-blue-500 bg-blue-50/60 shadow-sm'
+                            : 'border-slate-200 bg-white hover:border-blue-200 hover:bg-blue-50/30',
+                        )}
+                      >
                         <div
-                          key={aIndex}
                           className={cn(
-                            'group relative flex items-start gap-3 rounded-3xl p-4 transition-all duration-300 cursor-pointer border-2',
-                            isSelected
-                              ? 'bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-500 shadow-md'
-                              : 'bg-white border-gray-200 hover:border-blue-300 hover:bg-blue-50/50 hover:shadow-sm',
+                            'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-black transition-colors',
+                            isSelected ? 'text-white shadow-sm' : 'bg-slate-100 text-slate-500 group-hover:bg-blue-100 group-hover:text-blue-600',
                           )}
-                          onClick={() => {
-                            if (!userAnswers) return;
-                            const newData = userAnswers?.map((uAnswer) => {
-                              if (
-                                uAnswer.questionId ===
-                                TryoutSession.TryoutQuestion[
-                                  currentIndexQuestion
-                                ].id
-                              ) {
-                                return {
-                                  ...uAnswer,
-                                  answer: answer.answer,
-                                  answerId: answer.id,
-                                };
-                              }
-                              return uAnswer;
-                            });
-                            setUserAnswers(newData);
-                          }}
+                          style={isSelected ? { backgroundColor: mainColor } : undefined}
                         >
-                          <div
-                            className={cn(
-                              'flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm flex-shrink-0 transition-all duration-300',
-                              isSelected
-                                ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg'
-                                : 'bg-gray-100 text-gray-600 group-hover:bg-blue-100 group-hover:text-blue-600',
-                            )}
-                          >
-                            {answerLabel}
-                          </div>
-                          <div className="flex-1 flex items-center gap-3">
-                            <RadioGroupItem
-                              id={answer.id}
-                              value={answer.id}
-                              className={cn(
-                                'transition-all',
-                                isSelected && 'border-blue-600 text-blue-600',
-                              )}
-                            />
-                            {/* <Label
-                              htmlFor={answer.id}
-                              className={cn(
-                                'flex-1 cursor-pointer text-gray-700 font-medium',
-                                isSelected && 'text-blue-900',
-                              )}
-                            >
-                              {answer.answer}
-                            </Label> */}
+                          {label}
+                        </div>
+                        <div className="flex flex-1 items-center gap-2 min-w-0">
+                          <RadioGroupItem
+                            id={answer.id}
+                            value={answer.id}
+                            className={cn('shrink-0', isSelected && 'border-blue-600 text-blue-600')}
+                          />
+                          <div className="flex-1 min-w-0 text-sm [&_.bn-block-content]:text-sm [&_p]:text-sm">
                             <BlocknoteEditor
                               value={answer.answer}
                               viewOnly
                               className="question-content"
                             />
                           </div>
-                          {isSelected && (
-                            <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0" />
-                          )}
                         </div>
-                      );
-                    })}
-                  </RadioGroup>
-                </div>
+                        {isSelected && <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" style={{ color: mainColor }} />}
+                      </div>
+                    );
+                  })}
+                </RadioGroup>
+              </CardContent>
 
-                {/* Navigation Buttons */}
-                <div className="flex items-center justify-between pt-6 border-t">
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      'rounded-3xl px-6 py-6 font-semibold transition-all',
-                      currentIndexQuestion === 0
-                        ? 'opacity-50 cursor-not-allowed'
-                        : 'hover:bg-gray-100 hover:shadow-md',
-                    )}
-                    onClick={() => {
-                      setCurrentIndexQuestion((prev) => {
-                        if (prev > 0) {
-                          return prev - 1;
-                        }
-                        return prev;
-                      });
-                    }}
-                    disabled={currentIndexQuestion === 0}
+              <CardFooter className="flex items-center justify-between gap-3 border-t bg-gradient-to-r from-slate-50 to-white p-4">
+                <button
+                  onClick={() => !isFirst && setCurrentIndexQuestion((p) => p - 1)}
+                  disabled={isFirst}
+                  className={cn(
+                    'flex items-center gap-1.5 px-4 py-2 rounded-2xl font-bold text-sm border transition-all',
+                    isFirst ? 'border-slate-100 text-slate-300 cursor-not-allowed bg-white' : 'border-slate-200 text-slate-600 bg-white hover:bg-slate-50',
+                  )}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Sebelumnya
+                </button>
+                <span className="text-xs text-slate-500 font-medium">{answeredCount} dari {totalQ} terjawab</span>
+                {!isLast ? (
+                  <button
+                    onClick={() => setCurrentIndexQuestion((p) => p + 1)}
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-2xl font-bold text-sm text-white transition-all shadow-sm hover:opacity-90"
+                    style={{ backgroundColor: mainColor }}
                   >
-                    ← Sebelumnya
-                  </Button>
-                  <Button
-                    className={cn(
-                      'rounded-3xl px-6 py-6 font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all',
-                      currentIndexQuestion ===
-                        TryoutSession.TryoutQuestion.length - 1 &&
-                        'opacity-50 cursor-not-allowed',
-                    )}
-                    onClick={() => {
-                      setCurrentIndexQuestion((prev) => {
-                        if (prev < TryoutSession.TryoutQuestion.length - 1) {
-                          return prev + 1;
-                        }
-                        return prev;
-                      });
-                    }}
-                    disabled={
-                      currentIndexQuestion ===
-                      TryoutSession.TryoutQuestion.length - 1
-                    }
-                  >
-                    Selanjutnya →
-                  </Button>
-                </div>
+                    Selanjutnya
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                ) : (
+                  <SubmitTryout
+                    sessionAnswer={userAnswers}
+                    sessionId={TryoutSession.id}
+                    subCourseId={subCourseId || ''}
+                  />
+                )}
+              </CardFooter>
+            </Card>
+          </div>
+
+          {/* Desktop Sidebar */}
+          <div className="hidden lg:block lg:col-span-1">
+            <div className="sticky top-28 space-y-4">
+              <Card className="rounded-3xl border shadow-sm" style={{ borderColor: `${mainColor}25` }}>
+                <CardContent className="p-5">
+                  <h3 className="font-black text-sm mb-4 flex items-center gap-2" style={{ color: mainColor }}>
+                    <BookOpen className="w-4 h-4" />
+                    Statistik
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3 mb-3">
+                    <div className="text-center">
+                      <div className="text-xl font-black" style={{ color: mainColor }}>{answeredCount}</div>
+                      <div className="text-xs text-slate-500 font-medium">Terjawab</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-xl font-black text-slate-400">{totalQ - answeredCount}</div>
+                      <div className="text-xs text-slate-500 font-medium">Tersisa</div>
+                    </div>
+                  </div>
+                  <Progress value={progressPercentage} className="h-1.5" />
+                  <p className="text-center text-xs font-black mt-1.5" style={{ color: mainColor }}>{Math.round(progressPercentage)}%</p>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-3xl border shadow-sm" style={{ borderColor: `${secondaryColor}25` }}>
+                <CardContent className="p-5">
+                  <h3 className="font-black text-sm mb-4 flex items-center gap-2 text-slate-700">
+                    <Target className="w-4 h-4" style={{ color: secondaryColor }} />
+                    Navigasi Soal
+                  </h3>
+                  <div className="grid grid-cols-5 gap-1.5 max-h-64 overflow-y-auto no-scrollbar">
+                    {TryoutSession.TryoutQuestion.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setCurrentIndexQuestion(i)}
+                        className={cn(
+                          'h-9 w-9 rounded-xl font-black text-xs transition-all border shadow-sm',
+                          currentIndexQuestion === i
+                            ? 'text-white border-transparent'
+                            : isAnswered(i)
+                              ? 'text-white border-transparent bg-emerald-500'
+                              : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300',
+                        )}
+                        style={currentIndexQuestion === i ? { backgroundColor: mainColor } : undefined}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex flex-col gap-1.5 mt-4 pt-3 border-t border-slate-100">
+                    {[
+                      { cls: 'bg-emerald-500', label: 'Terjawab' },
+                      { cls: 'bg-white border border-slate-200', label: 'Belum Dijawab' },
+                    ].map((item) => (
+                      <div key={item.label} className="flex items-center gap-2 text-xs text-slate-500 font-medium">
+                        <div className={cn('w-4 h-4 rounded-md', item.cls)} />
+                        {item.label}
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-3xl border shadow-sm" style={{ borderColor: `${mainColor}25` }}>
+                <CardContent className="p-5">
+                  <h3 className="font-black text-sm mb-3 flex items-center gap-2" style={{ color: mainColor }}>
+                    <FileText className="w-4 h-4" />
+                    Selesaikan
+                  </h3>
+                  <SubmitTryout
+                    sessionAnswer={userAnswers}
+                    sessionId={TryoutSession.id}
+                    subCourseId={subCourseId || ''}
+                  />
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Sidebar Drawer */}
+      {showSidebar && (
+        <div className="fixed inset-0 z-[200] lg:hidden">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setShowSidebar(false)} />
+          <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl p-5 max-h-[75vh] overflow-y-auto no-scrollbar">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-black text-base text-slate-800">Navigasi Soal</h3>
+              <button onClick={() => setShowSidebar(false)} className="text-slate-400 text-sm font-medium">
+                Tutup
+              </button>
+            </div>
+            <div className="grid grid-cols-3 gap-3 mb-4 p-3 bg-slate-50 rounded-2xl">
+              <div className="text-center">
+                <div className="text-lg font-black" style={{ color: mainColor }}>{answeredCount}</div>
+                <div className="text-xs text-slate-500">Terjawab</div>
               </div>
-            </CardContent>
-          </Card>
-        </>
-      ) : (
-        // <div className="flex w-full flex-col gap-4">
-        //   <div
-        //     className={cn(
-        //       'flex flex-col items-center gap-4 rounded-3xl py-6 font-medium text-white',
-        //       isPassed && 'bg-main',
-        //       !isPassed && 'bg-main-red',
-        //     )}
-        //   >
-        //     {isPassed ? (
-        //       <>
-        //         <IconCheckList
-        //           w={46}
-        //           className="text-white"
-        //         />
-        //         <h1 className="text-[1.2rem]">SELAMAT, KAMU LULUS!</h1>
-        //         <p>{accuracy?.toFixed(2)}% akurasi</p>
-        //         <p>
-        //           Nilai Akhir: {totalScore}/{perfectScore}
-        //         </p>
-        //       </>
-        //     ) : (
-        //       <>
-        //         <IconX
-        //           w={46}
-        //           className="text-white"
-        //         />
-        //         <h1 className="text-[1.2rem]">MAAF, KAMU BELUM LULUS!</h1>
-        //         <p>{accuracy?.toFixed(2)}% akurasi</p>
-        //         <p>
-        //           Nilai Akhir: {totalScore}/{perfectScore}
-        //         </p>
-        //       </>
-        //     )}
-        //   </div>
-        //   <div className="grid grid-cols-2 gap-4">
-        //     <div className="flex gap-[.5rem] rounded-3xl bg-white p-4">
-        //       <div className="">
-        //         <IconCircleLoop className="mt-[.1rem] text-main" />
-        //       </div>
-        //       <div className="flex w-full flex-col">
-        //         <h1 className="font-medium">Jawaban Benar</h1>
-        //         <p className="font-regular text-[.9rem] text-main-gray-text">
-        //           {correctAnswer}/{totalQuestion} soal
-        //         </p>
-        //       </div>
-        //     </div>
-        //     <div className="flex gap-[.5rem] rounded-3xl bg-white p-4">
-        //       <div className="">
-        //         <IconTimer className="mt-[.1rem] text-main" />
-        //       </div>
-        //       <div className="flex w-full flex-col">
-        //         <h1 className="font-medium">Waktu pengerjaaan</h1>
-        //         <p className="font-regular text-[.9rem] text-main-gray-text">
-        //           Coming soon!
-        //         </p>
-        //       </div>
-        //     </div>
-        //   </div>
-        // </div>
-        <ReviewTabTypeTryout
-          sessionResult={TryoutSession.TryoutSessionParticipant[0]}
-        />
-      )}
-      {!isDone && (
-        <SubmitTryout
-          sessionAnswer={userAnswers}
-          sessionId={TryoutSession.id}
-          subCourseId={subCourseId || ''}
-        />
+              <div className="text-center">
+                <div className="text-lg font-black text-slate-400">{totalQ - answeredCount}</div>
+                <div className="text-xs text-slate-500">Tersisa</div>
+              </div>
+              <div className="text-center">
+                <div className="text-lg font-black text-slate-700">{totalQ}</div>
+                <div className="text-xs text-slate-500">Total</div>
+              </div>
+            </div>
+            <div className="grid grid-cols-6 gap-2 mb-4">
+              {TryoutSession.TryoutQuestion.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => { setCurrentIndexQuestion(i); setShowSidebar(false); }}
+                  className={cn(
+                    'h-10 w-10 rounded-xl font-black text-sm transition-all border shadow-sm',
+                    currentIndexQuestion === i
+                      ? 'text-white border-transparent'
+                      : isAnswered(i)
+                        ? 'text-white border-transparent bg-emerald-500'
+                        : 'border-slate-200 bg-white text-slate-600',
+                  )}
+                  style={currentIndexQuestion === i ? { backgroundColor: mainColor } : undefined}
+                >
+                  {i + 1}
+                </button>
+              ))}
+            </div>
+            <SubmitTryout
+              sessionAnswer={userAnswers}
+              sessionId={TryoutSession.id}
+              subCourseId={subCourseId || ''}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
