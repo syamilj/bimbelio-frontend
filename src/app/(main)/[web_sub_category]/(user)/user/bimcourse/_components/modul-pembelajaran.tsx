@@ -66,6 +66,7 @@ type SubChapterSearchResult = {
 type TypeData = {
   id: string;
   name: string;
+  image: string | null;
   CourseChapter: {
     isDone: boolean;
     title: string;
@@ -664,145 +665,61 @@ export default function ModulPembelajaranSection() {
                   return (
                     <Card
                       key={category.id}
-                      className="border-2 border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 relative overflow-visible"
+                      className="border border-gray-100 rounded-3xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden p-0 gap-0"
                     >
-                      {/* Enhanced Progress Ring - Pojok Kanan Atas */}
-                      <div className="absolute -top-3 -right-3 z-10">
-                        <div className="relative w-16 h-16">
-                          {/* Background circle with shadow */}
-                          <div className="absolute inset-0 bg-white rounded-full shadow-lg" />
-
-                          {/* SVG Progress Ring */}
-                          <svg
-                            className="w-16 h-16 transform -rotate-90 relative z-10"
-                            viewBox="0 0 36 36"
+                      {/* Image Cover */}
+                      <div className="relative w-full aspect-video overflow-hidden">
+                        {category.image ? (
+                          <img
+                            src={category.image}
+                            alt={category.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div
+                            className="w-full h-full flex items-center justify-center"
+                            style={{ backgroundColor: `${mainColor}20` }}
                           >
-                            {/* Background track */}
-                            <path
-                              className="text-gray-200"
-                              stroke="currentColor"
-                              strokeWidth="3.5"
-                              fill="transparent"
-                              strokeDasharray="100, 100"
-                              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                            />
-                            {/* Progress arc */}
-                            <path
-                              stroke={mainColor}
-                              strokeWidth="3.5"
-                              fill="transparent"
-                              strokeDasharray={`${Math.min(100, Math.round(category.percentageProgress || 0))}, 100`}
-                              strokeLinecap="round"
-                              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                              style={{
-                                filter: `drop-shadow(0 2px 4px ${mainColor}40)`,
-                              }}
-                            />
-                          </svg>
-
-                          {/* Percentage Text */}
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="text-center">
-                              <span
-                                className="text-xs font-black leading-none"
-                                style={{ color: mainColor }}
-                              >
-                                {Math.min(
-                                  100,
-                                  Math.round(category.percentageProgress || 0),
-                                )}
-                                %
-                              </span>
-                            </div>
+                            <BookOpenIcon className="w-12 h-12" style={{ color: mainColor }} />
                           </div>
+                        )}
+                        {/* Progress badge overlay */}
+                        <div className="absolute top-3 right-3">
+                          <div
+                            className="px-2.5 py-1 rounded-full text-xs font-black text-white shadow"
+                            style={{ backgroundColor: mainColor }}
+                          >
+                            {Math.min(100, Math.round(category.percentageProgress || 0))}%
+                          </div>
+                        </div>
+                        {/* Status badge overlay */}
+                        <div className="absolute top-3 left-3">
+                          {getStatusBadge()}
                         </div>
                       </div>
 
-                      <CardHeader className="pb-4">
-                        <div className="flex items-start gap-4 pr-16">
-                          <div
-                            className="w-12 h-12 rounded-3xl flex items-center justify-center flex-shrink-0"
-                            style={{ backgroundColor: mainColor }}
-                          >
-                            <BookOpenIcon className="w-6 h-6 text-white" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            {getStatusBadge()}
-                            <CardTitle className="text-lg font-bold text-gray-900 mt-2 mb-1">
-                              {category.name}
-                            </CardTitle>
-                            <p className="text-sm text-gray-600 line-clamp-2">
-                              Tingkatkan kemampuan berpikir logis dan analitis
-                              untuk menghadapi tantangan SNBT
-                            </p>
-                          </div>
-                        </div>
-                      </CardHeader>
+                      <CardContent className="p-4 space-y-3">
+                        <CardTitle className="text-base font-bold text-gray-900 line-clamp-2 leading-snug">
+                          {category.name}
+                        </CardTitle>
 
-                      <CardContent className="p-6 pt-0 space-y-4">
                         {/* Progress Bar */}
-                        <div className="space-y-2">
-                          <div className="flex justify-between items-center text-sm">
-                            <span className="font-medium text-gray-700">
-                              Progress
-                            </span>
-                            <span className="font-bold text-gray-900">
-                              {category.completedChapters}/
-                              {category.totalChapters} Sub Chapter
+                        <div className="space-y-1.5">
+                          <div className="flex justify-between items-center text-xs">
+                            <span className="text-gray-500">Progress</span>
+                            <span className="font-bold text-gray-700">
+                              {category.completedChapters}/{category.totalChapters} Sub Chapter
                             </span>
                           </div>
                           <Progress
                             value={category.percentageProgress}
-                            className="h-2"
-                            style={{
-                              backgroundColor: `${mainColor}20`,
-                            }}
+                            className="h-1.5"
+                            style={{ backgroundColor: `${mainColor}20` }}
                           />
                         </div>
 
-                        {/* Stats Grid - Gradient Style */}
-                        <div className="grid grid-cols-2 gap-3">
-                          <div
-                            className="p-4 rounded-3xl border-2"
-                            style={{
-                              background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
-                              borderColor: 'rgb(191 219 254)',
-                            }}
-                          >
-                            <div className="flex items-center gap-2 mb-1">
-                              <ClockIcon className="w-4 h-4 text-blue-600" />
-                              <span className="text-xs font-medium text-blue-600">
-                                Waktu
-                              </span>
-                            </div>
-                            <div className="text-sm font-bold text-blue-700">
-                              {category.totalSpendTime / 60 < 1
-                                ? `${category.totalSpendTime} Min`
-                                : `${(category.totalSpendTime / 60).toFixed(1)} Jam`}
-                            </div>
-                          </div>
-
-                          <div
-                            className="p-4 rounded-3xl border-2"
-                            style={{
-                              background: `linear-gradient(to bottom right, rgb(240 253 244), rgb(220 252 231))`,
-                              borderColor: 'rgb(187 247 208)',
-                            }}
-                          >
-                            <div className="flex items-center gap-2 mb-1">
-                              <FileQuestionIcon className="w-4 h-4 text-green-600" />
-                              <span className="text-xs font-medium text-green-600">
-                                Quiz
-                              </span>
-                            </div>
-                            <div className="text-sm font-bold text-green-700">
-                              {category.totalTryout} Soal
-                            </div>
-                          </div>
-                        </div>
-
                         {/* Action Buttons */}
-                        <div className="flex gap-2 pt-2">
+                        <div className="flex gap-2 pt-1">
                           {/* Detail Dialog Button */}
                           <Dialog>
                             <DialogTrigger asChild>
