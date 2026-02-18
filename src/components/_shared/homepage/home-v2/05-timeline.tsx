@@ -117,7 +117,7 @@ const TimelineSection: React.FC = () => {
             style={{ backgroundColor: `${mainColor}15` }}
           />
 
-          <div className="flex overflow-x-auto touch-pan-y md:block md:space-y-4 gap-4 md:gap-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0 px-4 -mx-4 md:px-0 md:mx-0">
+          <div className="flex overflow-x-auto touch-pan-x md:block md:space-y-4 gap-4 md:gap-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0 px-4 -mx-4 md:px-0 md:mx-0">
             {programs.map((program, index) => (
               <div
                 key={program.id}

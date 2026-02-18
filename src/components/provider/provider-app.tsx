@@ -51,13 +51,6 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
   // Editor
   const [editor, setEditor] = useState<BlocknoteEditorType | null>(null);
 
-  const [onBoarding, setOnBoarding] = useState<OnBoardingProps>({
-    chat: false,
-    notes: false,
-    quiz: false,
-    tryout: false,
-  });
-
   // useEffect(() => {
   //   if (isDekstop) setMinimizeSidebar(false);
   // }, [isDekstop]);
@@ -138,8 +131,6 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
     setPagesSetting,
     search,
     setSearch,
-    onBoarding,
-    setOnBoarding,
     useSendMessage: {
       sendMessage,
       setSendMessage,
@@ -207,8 +198,6 @@ interface AppContextType {
   >;
   search: string;
   setSearch: Dispatch<SetStateAction<string>>;
-  onBoarding: OnBoardingProps;
-  setOnBoarding: Dispatch<SetStateAction<OnBoardingProps>>;
   useSendMessage: {
     sendMessage: string | null;
     setSendMessage: Dispatch<SetStateAction<string | null>>;
@@ -229,11 +218,4 @@ interface AppContextType {
       }>
     >;
   };
-}
-
-interface OnBoardingProps {
-  chat: boolean;
-  notes: false;
-  quiz: boolean;
-  tryout: boolean;
 }

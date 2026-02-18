@@ -54,6 +54,7 @@ interface DashboardData {
     thumbnail: string | null;
     instructorName: string;
     isPremium: boolean;
+    websiteSubCategoryId: string;
   }>;
   content: {
     tryouts: Array<{
@@ -277,6 +278,7 @@ export default function DashboardClient() {
           thumbnail: getImageUrl(lc.thumbnail || lc.image, 'liveclass') || null,
           instructorName: lc.Instructor?.name || 'Tutor',
           isPremium: lc.accessType === 'PREMIUM',
+          websiteSubCategoryId: lc.websiteSubCategoryId || webSubCategoryId,
         })),
         content: {
           tryouts: tryoutImages,

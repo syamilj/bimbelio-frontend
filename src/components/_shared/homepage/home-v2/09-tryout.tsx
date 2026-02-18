@@ -95,7 +95,7 @@ const TryoutSection: React.FC = () => {
         {/* Cards Grid */}
         <div
           className={cn(
-            'flex overflow-x-auto touch-pan-y gap-5 mb-8 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0',
+            'flex overflow-x-auto touch-pan-x gap-5 mb-8 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0',
             cards.length === 1 && !isLoading
               ? 'justify-center md:max-w-md md:mx-auto'
               : cards.length === 2 && !isLoading

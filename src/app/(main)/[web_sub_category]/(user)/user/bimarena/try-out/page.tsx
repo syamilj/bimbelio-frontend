@@ -1,7 +1,6 @@
 'use client';
 
 import { RegistrationUserTryout } from '@/components/_shared/account/registration-user-tryout';
-import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { toaster } from '@/components/ui/toaster';
@@ -9,12 +8,7 @@ import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { cn } from '@/lib/utils';
-import {
-  Calendar,
-  CheckCircle,
-  Globe,
-  Zap,
-} from 'lucide-react';
+import { Calendar, CheckCircle, Globe, Zap } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Done from './_components/done';
@@ -72,7 +66,6 @@ const Content = () => {
 
   const Router = useRouter();
   const { data: session } = useSession();
-  const { onBoarding, setOnBoarding } = useAppContext();
 
   const [step, setStep] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -108,30 +101,6 @@ const Content = () => {
 
   useEffect(() => {
     getUserTryout();
-  }, []);
-
-  useEffect(() => {
-    const getOnboarding = localStorage.getItem('on-boarding');
-    const onBoarding = {
-      chat: true,
-      notes: true,
-      quiz: true,
-      tryout: true,
-    };
-    if (!getOnboarding) {
-      localStorage.setItem('on-boarding', JSON.stringify(onBoarding));
-    } else {
-      const data = JSON.parse(getOnboarding);
-      const isValid =
-        data &&
-        typeof data.chat === 'boolean' &&
-        typeof data.notes === 'boolean' &&
-        typeof data.quiz === 'boolean' &&
-        typeof data.tryout === 'boolean';
-      if (isValid) {
-        setOnBoarding({ ...data });
-      }
-    }
   }, []);
 
   const [open, setOpen] = useState<boolean>(false);
@@ -230,10 +199,7 @@ const Content = () => {
           openExternal={open}
           setOpenExternal={setOpen}
         />
-        <OnBoarding
-          open={onBoarding.tryout}
-          type="tryout"
-        />
+        <OnBoarding type="tryout" />
 
         {/* Hero Summary */}
         <div className="p-4 md:p-6">
@@ -245,7 +211,10 @@ const Content = () => {
           <div className="max-w-7xl mx-auto px-4 md:px-6 space-y-0">
             {/* Sleek Tab Navigation */}
             <div className="sticky top-0 z-30 bg-slate-50/80 backdrop-blur-xl py-2">
-              <div className="flex gap-1.5 p-1 bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+              <div
+                className="flex gap-1.5 p-1 bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-x-auto"
+                style={{ scrollbarWidth: 'none' }}
+              >
                 {tabItems.map((tab) => {
                   const Icon = tab.icon;
                   const isActive = activeTab === tab.id;

@@ -9,46 +9,41 @@ import OpeningQuiz from '@/_assets/onboarding/quiz/1-opening.png';
 import Quiz1 from '@/_assets/onboarding/quiz/2-quiz.png';
 import Quiz2 from '@/_assets/onboarding/quiz/3-quiz.png';
 import Quiz3 from '@/_assets/onboarding/quiz/4-quiz.png';
-import { useAppContext } from '@/components/provider/provider-app';
+import { useUserOnBoarding } from '@/components/provider/provider-on-boarding';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import Image from 'next/image';
 import { useState } from 'react';
 
 interface Props {
-  open: boolean;
   type: 'chat' | 'notes' | 'quiz' | 'tryout';
 }
 
-const OnBoarding = ({ open, type }: Props) => {
-  const { setOnBoarding, onBoarding } = useAppContext();
+const OnBoarding = ({ type }: Props) => {
+  const { handleAddUserOnBoarding, userOnBoarding } = useUserOnBoarding();
 
   const handleClose = () => {
     if (type === 'chat') {
-      setOnBoarding((prev: any) => ({ ...prev, chat: false }));
-      localStorage.setItem(
-        'on-boarding',
-        JSON.stringify({ ...onBoarding, chat: false }),
-      );
+      handleAddUserOnBoarding([{ step: 1, type: 'CHAT_AI' }]);
     } else if (type === 'notes') {
-      setOnBoarding((prev: any) => ({ ...prev, notes: false }));
-      localStorage.setItem(
-        'on-boarding',
-        JSON.stringify({ ...onBoarding, notes: false }),
-      );
+      handleAddUserOnBoarding([{ step: 1, type: 'DOCUMENT_NOTES' }]);
     } else if (type === 'quiz') {
-      setOnBoarding((prev: any) => ({ ...prev, quiz: false }));
-      localStorage.setItem(
-        'on-boarding',
-        JSON.stringify({ ...onBoarding, quiz: false }),
-      );
+      handleAddUserOnBoarding([{ step: 1, type: 'DOCUMENT_QUIZ' }]);
     } else if (type === 'tryout') {
-      setOnBoarding((prev: any) => ({ ...prev, tryout: false }));
-      localStorage.setItem(
-        'on-boarding',
-        JSON.stringify({ ...onBoarding, tryout: false }),
-      );
+      handleAddUserOnBoarding([{ step: 1, type: 'TRYOUT' }]);
     }
   };
+
+  const open = (() => {
+    if (type === 'chat') {
+      return !userOnBoarding.DOCUMENT_CHAT_AI;
+    } else if (type === 'notes') {
+      return !userOnBoarding.DOCUMENT_NOTES;
+    } else if (type === 'quiz') {
+      return !userOnBoarding.DOCUMENT_QUIZ;
+    } else if (type === 'tryout') {
+      return !userOnBoarding.TRYOUT;
+    }
+  })();
 
   return (
     <Dialog
@@ -78,7 +73,7 @@ const OnBoarding = ({ open, type }: Props) => {
 export default OnBoarding;
 
 const ChatAI = () => {
-  const { setOnBoarding, onBoarding } = useAppContext();
+  const { handleAddUserOnBoarding } = useUserOnBoarding();
 
   const [index, setIndex] = useState<number>(0);
 
@@ -154,11 +149,9 @@ const ChatAI = () => {
               if (index > 0) {
                 setIndex((prev) => prev - 1);
               } else if (index === 0) {
-                setOnBoarding((prev: any) => ({ ...prev, notes: false }));
-                localStorage.setItem(
-                  'on-boarding',
-                  JSON.stringify({ ...onBoarding, notes: false }),
-                );
+                handleAddUserOnBoarding([
+                  { step: 1, type: 'DOCUMENT_CHAT_AI' },
+                ]);
               }
             }}
           >
@@ -170,11 +163,9 @@ const ChatAI = () => {
               if (index < data.length - 1) {
                 setIndex((prev) => prev + 1);
               } else if (index === data.length - 1) {
-                setOnBoarding((prev: any) => ({ ...prev, chat: false }));
-                localStorage.setItem(
-                  'on-boarding',
-                  JSON.stringify({ ...onBoarding, chat: false }),
-                );
+                handleAddUserOnBoarding([
+                  { step: 1, type: 'DOCUMENT_CHAT_AI' },
+                ]);
               }
             }}
           >
@@ -191,7 +182,7 @@ const ChatAI = () => {
 };
 
 const Notes = () => {
-  const { setOnBoarding, onBoarding } = useAppContext();
+  const { handleAddUserOnBoarding } = useUserOnBoarding();
 
   const [index, setIndex] = useState<number>(0);
 
@@ -255,11 +246,7 @@ const Notes = () => {
               if (index > 0) {
                 setIndex((prev) => prev - 1);
               } else if (index === 0) {
-                setOnBoarding((prev: any) => ({ ...prev, notes: false }));
-                localStorage.setItem(
-                  'on-boarding',
-                  JSON.stringify({ ...onBoarding, notes: false }),
-                );
+                handleAddUserOnBoarding([{ step: 1, type: 'DOCUMENT_NOTES' }]);
               }
             }}
           >
@@ -271,11 +258,7 @@ const Notes = () => {
               if (index < data.length - 1) {
                 setIndex((prev) => prev + 1);
               } else if (index === data.length - 1) {
-                setOnBoarding((prev: any) => ({ ...prev, notes: false }));
-                localStorage.setItem(
-                  'on-boarding',
-                  JSON.stringify({ ...onBoarding, notes: false }),
-                );
+                handleAddUserOnBoarding([{ step: 1, type: 'DOCUMENT_NOTES' }]);
               }
             }}
           >
@@ -292,7 +275,7 @@ const Notes = () => {
 };
 
 const QuizAI = () => {
-  const { setOnBoarding, onBoarding } = useAppContext();
+  const { handleAddUserOnBoarding } = useUserOnBoarding();
   const [index, setIndex] = useState<number>(0);
   const data = [
     {
@@ -366,11 +349,7 @@ const QuizAI = () => {
               if (index > 0) {
                 setIndex((prev) => prev - 1);
               } else if (index === 0) {
-                setOnBoarding((prev: any) => ({ ...prev, quiz: false }));
-                localStorage.setItem(
-                  'on-boarding',
-                  JSON.stringify({ ...onBoarding, quiz: false }),
-                );
+                handleAddUserOnBoarding([{ step: 1, type: 'DOCUMENT_QUIZ' }]);
               }
             }}
           >
@@ -382,11 +361,7 @@ const QuizAI = () => {
               if (index < data.length - 1) {
                 setIndex((prev) => prev + 1);
               } else if (index === data.length - 1) {
-                setOnBoarding((prev: any) => ({ ...prev, quiz: false }));
-                localStorage.setItem(
-                  'on-boarding',
-                  JSON.stringify({ ...onBoarding, quiz: false }),
-                );
+                handleAddUserOnBoarding([{ step: 1, type: 'DOCUMENT_QUIZ' }]);
               }
             }}
           >
@@ -403,7 +378,7 @@ const QuizAI = () => {
 };
 
 const Tryout = () => {
-  const { setOnBoarding, onBoarding } = useAppContext();
+  const { handleAddUserOnBoarding } = useUserOnBoarding();
   const [index, setIndex] = useState<number>(0);
   const data = [
     {
@@ -477,11 +452,7 @@ const Tryout = () => {
               if (index > 0) {
                 setIndex((prev) => prev - 1);
               } else if (index === 0) {
-                setOnBoarding((prev: any) => ({ ...prev, tryout: false }));
-                localStorage.setItem(
-                  'on-boarding',
-                  JSON.stringify({ ...onBoarding, tryout: false }),
-                );
+                handleAddUserOnBoarding([{ step: 1, type: 'TRYOUT' }]);
               }
             }}
           >
@@ -493,11 +464,7 @@ const Tryout = () => {
               if (index < data.length - 1) {
                 setIndex((prev) => prev + 1);
               } else if (index === data.length - 1) {
-                setOnBoarding((prev: any) => ({ ...prev, tryout: false }));
-                localStorage.setItem(
-                  'on-boarding',
-                  JSON.stringify({ ...onBoarding, tryout: false }),
-                );
+                handleAddUserOnBoarding([{ step: 1, type: 'TRYOUT' }]);
               }
             }}
           >

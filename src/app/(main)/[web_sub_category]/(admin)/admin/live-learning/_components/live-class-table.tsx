@@ -15,6 +15,7 @@ import {
 import ListPagination from '@/components/ui/list-pagination';
 import { ModalVerification } from '@/components/ui/modal-verification';
 import { Skeleton } from '@/components/ui/skeleton';
+import LoadingPageWithText from '@/components/ui/spinner';
 import {
   Table,
   TableBody,
@@ -35,7 +36,11 @@ import {
 import { cn } from '@/lib/utils';
 import { sanitizeFileName } from '@/lib/utils/storage';
 import { storage } from '@/supabaseClient';
-import { Category, Instructor, LiveClass } from '@/types/database';
+import {
+  Category,
+  Instructor,
+  LiveClass as LiveClassType,
+} from '@/types/database';
 import {
   AccessibilityIcon,
   Clock,
@@ -71,7 +76,7 @@ export function LiveClassTable({
     totalPages,
     refetch: LiveClassRefetch,
   } = useGet<
-    (LiveClass & {
+    (LiveClassType & {
       Instructor: Instructor;
       Category: Category;
       endDate: string;
@@ -104,6 +109,18 @@ export function LiveClassTable({
         }
 
         LiveClassRefetch();
+      },
+    });
+
+  const { mutate: DuplicateLiveClass, isLoading: DuplicateLiveClassIsLoading } =
+    useMutation<LiveClassType>('/liveClass/duplicateLiveClass', 'post', {
+      async onSuccess({ data }) {
+        const id = data?.id;
+        if (id) {
+          router.push(
+            `/${website_sub_category_id}/admin/live-learning/edit/${id}`,
+          );
+        }
       },
     });
 
@@ -171,6 +188,10 @@ export function LiveClassTable({
 
   return (
     <>
+      <LoadingPageWithText
+        loading={DuplicateLiveClassIsLoading}
+        heading="Menduplicate Live Learning..."
+      />
       <Card className="border-0 shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-lg font-semibold">
@@ -346,6 +367,16 @@ export function LiveClassTable({
                             >
                               <DropdownMenuLabel>Aksi</DropdownMenuLabel>
                               <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  DuplicateLiveClass({
+                                    params: { id: liveClass.id },
+                                  });
+                                }}
+                              >
+                                <Copy className="mr-2 h-4 w-4" />
+                                Duplicate
+                              </DropdownMenuItem>
                               <DropdownMenuItem
                                 onClick={() => handleEdit(liveClass.id)}
                               >

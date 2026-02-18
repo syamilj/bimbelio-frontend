@@ -179,7 +179,7 @@ export function CardPlan({
     <ProviderContext.Provider value={Context}>
       <div
         className={cn(
-          'w-full max-w-md group relative overflow-hidden bg-white rounded-3xl border-2 transition-all duration-200 touch-pan-y shadow-sm hover:shadow-lg',
+          'w-full max-w-md group relative overflow-hidden bg-white rounded-3xl border-2 transition-all duration-200 touch-pan-x shadow-sm hover:shadow-lg',
           isRecommended && 'ring-2 ring-offset-2',
         )}
         style={{

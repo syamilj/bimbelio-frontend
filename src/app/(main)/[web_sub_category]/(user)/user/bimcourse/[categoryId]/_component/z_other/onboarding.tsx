@@ -1,6 +1,7 @@
 'use client';
 
-import { useAppContext } from '@/components/provider/provider-app';
+// import { useAppContext } from '@/components/provider/provider-app';
+import { useUserOnBoarding } from '@/components/provider/provider-on-boarding';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -26,46 +27,40 @@ import {
 import { useState } from 'react';
 
 interface Props {
-  open: boolean;
   type: 'chat' | 'notes' | 'quiz' | 'tryout';
 }
 
-const OnBoarding = ({ open, type }: Props) => {
-  const { setOnBoarding, onBoarding } = useAppContext();
+const OnBoarding = ({ type }: Props) => {
   const { websiteSubCategory } = useWebsiteSubCategory();
+  const { handleAddUserOnBoarding, userOnBoarding } = useUserOnBoarding();
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const handleClose = () => {
-    // setOnBoarding({ ...onBoarding, [type]: false });
     if (type === 'chat') {
-      setOnBoarding((prev: any) => ({ ...prev, chat: false }));
-      localStorage.setItem(
-        'on-boarding',
-        JSON.stringify({ ...onBoarding, chat: false }),
-      );
+      handleAddUserOnBoarding([{ step: 1, type: 'CHAT_AI' }]);
     } else if (type === 'notes') {
-      setOnBoarding((prev: any) => ({ ...prev, notes: false }));
-      localStorage.setItem(
-        'on-boarding',
-        JSON.stringify({ ...onBoarding, notes: false }),
-      );
+      handleAddUserOnBoarding([{ step: 1, type: 'DOCUMENT_NOTES' }]);
     } else if (type === 'quiz') {
-      setOnBoarding((prev: any) => ({ ...prev, quiz: false }));
-      localStorage.setItem(
-        'on-boarding',
-        JSON.stringify({ ...onBoarding, quiz: false }),
-      );
+      handleAddUserOnBoarding([{ step: 1, type: 'DOCUMENT_QUIZ' }]);
     } else if (type === 'tryout') {
-      setOnBoarding((prev: any) => ({ ...prev, tryout: false }));
-      localStorage.setItem(
-        'on-boarding',
-        JSON.stringify({ ...onBoarding, tryout: false }),
-      );
+      handleAddUserOnBoarding([{ step: 1, type: 'TRYOUT' }]);
     }
   };
+
+  const open = (() => {
+    if (type === 'chat') {
+      return !userOnBoarding.DOCUMENT_CHAT_AI;
+    } else if (type === 'notes') {
+      return !userOnBoarding.DOCUMENT_NOTES;
+    } else if (type === 'quiz') {
+      return !userOnBoarding.DOCUMENT_QUIZ;
+    } else if (type === 'tryout') {
+      return !userOnBoarding.TRYOUT;
+    }
+  })();
 
   const getOnboardingContent = () => {
     switch (type) {
@@ -170,7 +165,7 @@ const OnBoarding = ({ open, type }: Props) => {
 export default OnBoarding;
 
 const ChatAI = () => {
-  const { setOnBoarding, onBoarding } = useAppContext();
+  const { handleAddUserOnBoarding } = useUserOnBoarding();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const [index, setIndex] = useState<number>(0);
 
@@ -327,11 +322,7 @@ const ChatAI = () => {
         ) : (
           <Button
             onClick={() => {
-              setOnBoarding({ ...onBoarding, chat: false });
-              localStorage.setItem(
-                'on-boarding',
-                JSON.stringify({ ...onBoarding, chat: false }),
-              );
+              handleAddUserOnBoarding([{ step: 1, type: 'DOCUMENT_CHAT_AI' }]);
             }}
             className="rounded-3xl text-white"
             style={{
@@ -348,7 +339,7 @@ const ChatAI = () => {
 };
 
 const Notes = () => {
-  const { setOnBoarding, onBoarding } = useAppContext();
+  const { handleAddUserOnBoarding } = useUserOnBoarding();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const [index, setIndex] = useState<number>(0);
 
@@ -480,11 +471,7 @@ const Notes = () => {
         ) : (
           <Button
             onClick={() => {
-              setOnBoarding({ ...onBoarding, notes: false });
-              localStorage.setItem(
-                'on-boarding',
-                JSON.stringify({ ...onBoarding, notes: false }),
-              );
+              handleAddUserOnBoarding([{ step: 1, type: 'DOCUMENT_NOTES' }]);
             }}
             className="rounded-3xl text-white"
             style={{
@@ -501,7 +488,7 @@ const Notes = () => {
 };
 
 const QuizAI = () => {
-  const { setOnBoarding, onBoarding } = useAppContext();
+  const { handleAddUserOnBoarding } = useUserOnBoarding();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const [index, setIndex] = useState<number>(0);
 
@@ -604,11 +591,7 @@ const QuizAI = () => {
         ) : (
           <Button
             onClick={() => {
-              setOnBoarding({ ...onBoarding, quiz: false });
-              localStorage.setItem(
-                'on-boarding',
-                JSON.stringify({ ...onBoarding, quiz: false }),
-              );
+              handleAddUserOnBoarding([{ step: 1, type: 'DOCUMENT_QUIZ' }]);
             }}
             className="rounded-3xl text-white"
             style={{
@@ -625,7 +608,7 @@ const QuizAI = () => {
 };
 
 const Tryout = () => {
-  const { setOnBoarding, onBoarding } = useAppContext();
+  const { handleAddUserOnBoarding } = useUserOnBoarding();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const [index, setIndex] = useState<number>(0);
 
@@ -729,11 +712,7 @@ const Tryout = () => {
         ) : (
           <Button
             onClick={() => {
-              setOnBoarding({ ...onBoarding, tryout: false });
-              localStorage.setItem(
-                'on-boarding',
-                JSON.stringify({ ...onBoarding, tryout: false }),
-              );
+              handleAddUserOnBoarding([{ step: 1, type: 'TRYOUT' }]);
             }}
             className="rounded-3xl text-white"
             style={{

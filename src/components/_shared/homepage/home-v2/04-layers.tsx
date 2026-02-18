@@ -371,7 +371,7 @@ const LayersSection: React.FC = () => {
           </div>
 
           {/* Mobile: Horizontal Scroll */}
-          <div className="md:hidden flex overflow-x-auto touch-pan-y gap-3 snap-x snap-mandatory scrollbar-hide pb-4 px-4 -mx-4">
+          <div className="md:hidden flex overflow-x-auto touch-pan-x gap-3 snap-x snap-mandatory scrollbar-hide pb-4 px-4 -mx-4">
             {tutors.map((tutor, index) => (
               <div
                 key={index}

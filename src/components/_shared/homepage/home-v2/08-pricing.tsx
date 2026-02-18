@@ -161,7 +161,8 @@ const PricingSection: React.FC = () => {
                   Paket <span style={{ color: mainColor }}>Lainnya</span>
                 </h3>
                 <p className="text-sm text-slate-600 mt-2 max-w-xl mx-auto">
-                  Pilihan paket lainnya yang bisa kamu sesuaikan dengan kebutuhanmu
+                  Pilihan paket lainnya yang bisa kamu sesuaikan dengan
+                  kebutuhanmu
                 </p>
               </div>
             )}
@@ -171,7 +172,9 @@ const PricingSection: React.FC = () => {
                   key={plan.id}
                   className={cn(
                     'min-w-[85%] sm:min-w-[350px] md:min-w-0 snap-center',
-                    !recommendedPlans.length && index === 1 ? 'md:scale-105 md:z-10 relative' : '',
+                    !recommendedPlans.length && index === 1
+                      ? 'md:scale-105 md:z-10 relative'
+                      : '',
                   )}
                 >
                   <CardPlan plan={plan} />
