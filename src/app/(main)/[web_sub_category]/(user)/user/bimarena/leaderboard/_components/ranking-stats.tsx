@@ -403,11 +403,14 @@ const Statistics = () => {
             </CardHeader>
             <CardContent>
               <div className="h-96 w-full">
-                <ResponsiveContainer
-                  width="100%"
-                  height="100%"
+                <ChartContainer
+                  config={chartConfig}
+                  className="w-full h-full"
                 >
-                  <ChartContainer config={chartConfig}>
+                  <ResponsiveContainer
+                    width="100%"
+                    height="100%"
+                  >
                     <BarChart
                       data={RankingTryout?.DistributionScore}
                       margin={{ top: 30, right: 30, left: 20, bottom: 20 }}
@@ -449,8 +452,8 @@ const Statistics = () => {
                         />
                       </Bar>
                     </BarChart>
-                  </ChartContainer>
-                </ResponsiveContainer>
+                  </ResponsiveContainer>
+                </ChartContainer>
               </div>
             </CardContent>
           </Card>
@@ -510,11 +513,14 @@ const AnalysisSubject = () => {
           </CardHeader>
           <CardContent>
             <div className="h-96 w-full">
-              <ResponsiveContainer
-                width="100%"
-                height="100%"
+              <ChartContainer
+                config={chartConfig}
+                className="w-full h-full"
               >
-                <ChartContainer config={chartConfig}>
+                <ResponsiveContainer
+                  width="100%"
+                  height="100%"
+                >
                   <LineChart
                     data={subjectAnalysis}
                     margin={{ top: 30, right: 30, left: 20, bottom: 80 }}
@@ -572,8 +578,8 @@ const AnalysisSubject = () => {
                       />
                     </Line>
                   </LineChart>
-                </ChartContainer>
-              </ResponsiveContainer>
+                </ResponsiveContainer>
+              </ChartContainer>
             </div>
           </CardContent>
         </Card>
