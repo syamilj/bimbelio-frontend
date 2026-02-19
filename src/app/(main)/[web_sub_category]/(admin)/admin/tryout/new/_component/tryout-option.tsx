@@ -9,14 +9,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { env } from '@/env.mjs';
-import {
-  IconDown,
-  IconFullscreen,
-  IconMinimizeScreen,
-  IconUp,
-} from '@/styles/icon';
 import { storage } from '@/supabaseClient';
-import { Loader2 } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import React, { SetStateAction, useState } from 'react';
 import { SessionProps, TryoutProps } from '../page';
 // import Image from 'next/image';
@@ -72,8 +66,6 @@ const TryoutOption = ({
   setAssesmentType,
   resetTryout,
 }: Props) => {
-  const [dateTryoutHeight, setDateTryoutHeight] = useState<number>(0);
-  const [showDateTryout, setShowDateTryout] = useState<boolean>(true);
   const [prevIndexEdit, setPrevIndexEdit] = useState<number | null>(null);
   // const [thumbnail, setThumbnail] = useState<File | undefined>();
   // const [thumbnailName, setThumbnailName] = useState<string>('');
@@ -123,524 +115,262 @@ const TryoutOption = ({
   // }, [tryout]);
 
   return (
-    <div className="flex w-full flex-col gap-4 p-4 text-[.9rem]">
-      <div className="flex w-full items-center justify-between">
-        <div className="flex items-center gap-4">
-          <h1 className="text-[1.2rem] font-medium">Detail Try out</h1>
-          {currentIndexEdit !== null ? (
-            <div
-              className="font-regular relative mr-[.5rem] cursor-pointer rounded-3xl border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
-              onClick={() => {
-                setCurrentIndexEdit(null);
-                if (currentIndexEdit !== null)
-                  setPrevIndexEdit(currentIndexEdit);
-              }}
-            >
-              <IconFullscreen w={15} />
-            </div>
-          ) : (
-            <div
-              className="font-regular relative mr-[.5rem] cursor-pointer rounded-3xl border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
-              onClick={() => {
-                if (prevIndexEdit !== null) setCurrentIndexEdit(prevIndexEdit);
-                else setCurrentIndexEdit(0);
-              }}
-            >
-              <IconMinimizeScreen w={15} />
-            </div>
-          )}
+    <div className="flex h-full w-full flex-col">
+      {/* Panel header */}
+      <div className="shrink-0 px-5 pt-5 pb-4 border-b border-gray-100 flex items-center justify-between">
+        <div>
+          <h2 className="text-sm font-semibold text-gray-800">Detail Tryout</h2>
+          <p className="text-xs text-gray-400 mt-0.5">Konfigurasi dasar tryout</p>
         </div>
-        <div
-          className="cursor-pointer text-main-gray-text duration-300 md:hover:text-black"
-          onClick={() => {
-            const div = document.querySelector(
-              '#tryout-admin #date',
-            ) as HTMLDivElement;
-            if (div) {
-              if (div.clientHeight !== 0) {
-                div.style.height = `${div.clientHeight}px`;
-                setDateTryoutHeight(div.clientHeight);
-                setShowDateTryout(false);
-              } else {
-                setShowDateTryout(true);
-              }
-              div.style.height =
-                div.clientHeight === 0 ? `${dateTryoutHeight}px` : '0px';
-              div.style.overflow = 'hidden';
-              div.style.transition = 'height 0.3s ease';
-            }
-          }}
-        >
-          {showDateTryout ? <IconUp /> : <IconDown />}
-        </div>
+        {currentIndexEdit !== null && (
+          <button
+            type="button"
+            onClick={() => {
+              setCurrentIndexEdit(null);
+              if (currentIndexEdit !== null) setPrevIndexEdit(currentIndexEdit);
+            }}
+            className="text-xs text-gray-500 hover:text-gray-800 border border-gray-200 hover:border-gray-300 rounded-lg px-2.5 py-1.5 transition-colors"
+          >
+            Lihat semua
+          </button>
+        )}
       </div>
-      <div
-        id="date"
-        className="flex flex-col gap-4"
-      >
-        <div className="flex flex-col gap-[.5rem]">
-          <p className="font-medium">Judul tryout</p>
+
+      <div className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-5">
+        {/* Title */}
+        <div className="flex flex-col gap-1.5">
+          <label className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Judul Tryout</label>
           <input
             type="text"
-            placeholder="Judul try out"
-            className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+            placeholder="Masukkan judul tryout..."
+            className="h-9 w-full rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
             required
-            value={tryout?.title ? tryout?.title : ''}
-            onChange={(e) => {
-              setTryout((prev) => ({ ...prev, title: e.target.value }));
-            }}
+            value={tryout?.title ?? ''}
+            onChange={(e) => setTryout((prev) => ({ ...prev, title: e.target.value }))}
           />
         </div>
-        <div className="flex gap-8">
-          <div className="flex flex-col gap-[.5rem]">
-            <p className="font-medium">Thumbnail</p>
-            <InputImage
-              preview={
-                tryout?.image && tryout.image !== ''
-                  ? `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/tryout/${tryout?.image}`
-                  : undefined
-              }
-              onChange={async (image) => {
-                const imageNow = tryout?.image;
-                if (!image) return;
-                const filename = `tryout-${crypto.randomUUID()}`;
-                const upload = await storage
-                  .from('img')
-                  .upload(`tryout/${filename}`, image);
 
-                // .upload(`tryout/${filename}`, image);
-
-                if (upload?.data) {
-                }
-                if (upload?.error) {
-                  if (upload.error.message === 'The resource already exists') {
-                    const update = await storage
-                      .from('img')
-                      .update(`tryout/${filename}`, image);
-                    if (update?.data) {
-                    }
-                    if (update?.error) {
-                    }
-                  }
-                }
-
-                if (imageNow) {
-                  await storage.from('img').remove([`tryout/${imageNow}`]);
-                }
-
-                setTryout((prev) => ({ ...prev, image: filename }));
-              }}
-            />
-          </div>
-          <div className="flex flex-col gap-4 w-full">
-            <div className="flex flex-col gap-[.5rem]">
-              <p className="font-medium">
-                Postingan Instagram{' '}
-                <span className="text-gray-500">(optional)</span>
-              </p>
+        {/* Status + Instagram */}
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Status</label>
+            <div className="relative bg-white rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">
               <input
                 type="text"
-                placeholder="Link postingan instagram"
-                className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
-                value={tryout?.instagram ? tryout?.instagram : ''}
-                onChange={(e) => {
-                  setTryout((prev) => ({ ...prev, instagram: e.target.value }));
-                }}
-              />
-            </div>
-            {/* <div className="flex flex-col gap-[.5rem]">
-              <p className="font-medium">
-                Postingan Tiktok{' '}
-                <span className="text-gray-500">(optional)</span>
-              </p>
-              <input
-                type="text"
-                placeholder="Link postingan tiktok"
-                className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
-                value={tryout?.tiktok ? tryout?.tiktok : ''}
-                onChange={(e) => {
-                  setTryout((prev) => ({ ...prev, tiktok: e.target.value }));
-                }}
-              />
-            </div> */}
-          </div>
-        </div>
-        <div className="flex flex-col gap-[.5rem]">
-          <p className="font-medium">Waktu mulai tryout</p>
-          <div className="grid w-full grid-cols-2 gap-4">
-            <input
-              type="date"
-              placeholder="Judul try out"
-              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
-              required
-              value={startDate}
-              onChange={(e) => {
-                setStartDate(e.target.value);
-              }}
-            />
-            <input
-              type="time"
-              placeholder="Judul try out"
-              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
-              required
-              value={startDateTime}
-              onChange={(e) => {
-                setStartDateTime(e.target.value);
-              }}
-            />
-          </div>
-        </div>
-        <div className="flex flex-col gap-[.5rem]">
-          <p className="font-medium">Pelaksanaan berakhir</p>
-          <div className="grid w-full grid-cols-2 gap-4">
-            <input
-              type="date"
-              placeholder="Judul try out"
-              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
-              required
-              value={endDate}
-              onChange={(e) => {
-                setEndDate(e.target.value);
-              }}
-            />
-            <input
-              type="time"
-              placeholder="Judul try out"
-              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
-              required
-              value={endDateTime}
-              onChange={(e) => {
-                setEndDateTime(e.target.value);
-              }}
-            />
-          </div>
-        </div>
-        <div className="flex flex-col gap-[.5rem]">
-          <p className="font-medium">Waktu pembagian hasil tryout</p>
-          <div className="grid w-full grid-cols-2 gap-4">
-            <input
-              type="date"
-              placeholder="Judul try out"
-              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
-              required
-              value={resultDate}
-              onChange={(e) => {
-                setResultDate(e.target.value);
-              }}
-            />
-            <input
-              type="time"
-              placeholder="Judul try out"
-              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
-              required
-              value={resultDateTime}
-              onChange={(e) => {
-                setResultDateTime(e.target.value);
-              }}
-            />
-          </div>
-        </div>
-      </div>
-      {/* <div id="thumbnail" className="w-[300px]">
-        <UploadImage
-          heading="Thumbnail Tryout"
-          inputId="tryoutThumbnail"
-          file={thumbnail}
-          image
-          fileName={thumbnailName}
-          setFile={setThumbnail}
-        />
-      </div> */}
-      <div className="my-4 h-px w-full bg-main-gray-disabled/60" />
-      <div
-        id="session"
-        className="flex flex-col gap-[.5rem]"
-      >
-        <div className="flex items-center justify-between">
-          <h1 className="text-[1.1rem] font-medium">Sesi Tryout</h1>
-          <div
-            className="cursor-pointer rounded-3xl bg-main px-4 py-[.8rem] text-white duration-300 hover:bg-main/85 md:active:bg-main"
-            onClick={addSesi}
-          >
-            Tambah sesi
-          </div>
-        </div>
-        {sessions?.map((item, sessionIndex: number) => (
-          <div
-            key={sessionIndex}
-            className="flex w-full gap-4"
-          >
-            <div className="overflow-visible rounded-3xl border border-transparent bg-white duration-300 md:hover:shadow-default">
-              <input
-                type="text"
-                defaultValue={`${sessionIndex + 1}`}
+                defaultValue={tryout?.status ?? ''}
                 required
-                className="absolute bottom-0 left-4 h-1 w-1 p-0 text-transparent outline-none"
+                className="absolute bottom-0 left-4 h-px w-px p-0 opacity-0 pointer-events-none"
               />
               <Select
-                value={`${sessionIndex + 1}`}
+                value={tryout?.status ?? 'placeholder'}
                 onValueChange={(value) => {
-                  const fixValue = parseInt(value) - 1;
-
-                  const currentSessions = [...sessions];
-
-                  const [movedSession] = currentSessions.splice(
-                    sessionIndex,
-                    1,
-                  );
-
-                  currentSessions.splice(fixValue, 0, movedSession);
-
-                  setSessions([...currentSessions]);
+                  setTryout((prev) => ({ ...prev, status: value as 'PUBLIC' | 'PRIVATE' | 'DRAFT' }));
                 }}
               >
-                <SelectTrigger className="h-full min-w-[63px] rounded-3xl border-none bg-white shadow-none outline-none">
-                  <SelectValue placeholder="Kategori" />
+                <SelectTrigger className="h-9 w-full rounded-lg border-none bg-transparent shadow-none outline-none text-sm px-3">
+                  <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem
-                    value="placeholder"
-                    disabled
-                  >
-                    Urutan Sesi
-                  </SelectItem>
-                  {Array.from({ length: sessions.length }).map((_, index) => (
-                    <SelectItem
-                      key={index}
-                      value={`${index + 1}`}
-                    >
-                      {index + 1}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value="placeholder" disabled>Pilih Status</SelectItem>
+                  <SelectItem value="PUBLIC">PUBLIC</SelectItem>
+                  <SelectItem value="PRIVATE">PRIVATE</SelectItem>
+                  <SelectItem value="DRAFT">DRAFT</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex w-full items-center justify-between rounded-3xl bg-white px-4 py-[.8rem]">
-              {item.categoryId !== '' ? (
-                <div className="flex items-center">
-                  <div className="rounded-3xl bg-main px-[.5rem] py-[.2rem] text-[.8rem] text-white">
-                    <p>
-                      {item.category === 'Tes Potensi Skolastik (TPS)' && 'TPS'}
-                      {item.category === 'Tes Literasi Bahasa' && 'Literasi'}
-                      {item.category === 'Tes Penalaran Matematika' &&
-                        'Matematika'}
-                    </p>
-                  </div>
-                  <div className="rounded-3xl bg-main-gray-input2 px-[.5rem] py-[.2rem] text-[.8rem] text-black ml-2">
-                    <p>{item.subCategory}</p>
-                  </div>
-                </div>
-              ) : (
-                <p>.....</p>
-              )}
-              <p>{item.Questions ? item.Questions.length : 0} soal</p>
-              <p>{item.duration === '' ? 0 : item.duration} menit</p>
-            </div>
-            <div
-              className="shrink-0 cursor-pointer px-4 py-[.8rem] text-main-gray-text duration-300 md:hover:text-black"
-              onClick={() => {
-                setCurrentIndexEdit(sessionIndex);
-                setQuestionIndex(0);
-                if (item.assessmentType) setAssesmentType(item.assessmentType);
-              }}
-            >
-              Edit
-            </div>
           </div>
-        ))}
-        <div className="flex w-full items-center gap-4">
-          <div className="flex w-full items-center justify-between py-[.8rem] font-medium">
-            Waktu istirahat (menit)
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+              Instagram <span className="font-normal normal-case text-gray-400">(opsional)</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Link postingan..."
+              className="h-9 w-full rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+              value={tryout?.instagram ?? ''}
+              onChange={(e) => setTryout((prev) => ({ ...prev, instagram: e.target.value }))}
+            />
           </div>
-          <input
-            type="number"
-            placeholder="Durasi istirahat"
-            className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
-            value={tryout?.restTime ? tryout?.restTime : ''}
-            onChange={(e) => {
-              setTryout((prev) => ({
-                ...prev,
-                restTime: parseInt(e.target.value),
-              }));
+        </div>
+
+        {/* Thumbnail */}
+        <div className="flex flex-col gap-1.5">
+          <label className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Thumbnail</label>
+          <InputImage
+            preview={
+              tryout?.image && tryout.image !== ''
+                ? `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/tryout/${tryout?.image}`
+                : undefined
+            }
+            onChange={async (image) => {
+              const imageNow = tryout?.image;
+              if (!image) return;
+              const filename = `tryout-${crypto.randomUUID()}`;
+              const upload = await storage.from('img').upload(`tryout/${filename}`, image);
+              if (upload?.error?.message === 'The resource already exists') {
+                await storage.from('img').update(`tryout/${filename}`, image);
+              }
+              if (imageNow) {
+                await storage.from('img').remove([`tryout/${imageNow}`]);
+              }
+              setTryout((prev) => ({ ...prev, image: filename }));
             }}
           />
         </div>
-      </div>
-      <div className="my-4 h-px w-full bg-main-gray-disabled/60" />
-      <div className="grid w-full grid-cols-2 gap-4">
-        <div
-          className="flex w-full shrink-0 cursor-pointer items-center justify-center rounded-3xl bg-red-100 py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100"
+
+        <div className="h-px bg-gray-100" />
+
+        {/* Timeline */}
+        <div className="flex flex-col gap-3">
+          <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Timeline</p>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs text-gray-600 font-medium">Mulai</label>
+            <div className="grid grid-cols-2 gap-2">
+              <input type="date" required value={startDate} onChange={(e) => setStartDate(e.target.value)}
+                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300" />
+              <input type="time" required value={startDateTime} onChange={(e) => setStartDateTime(e.target.value)}
+                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300" />
+            </div>
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs text-gray-600 font-medium">Berakhir</label>
+            <div className="grid grid-cols-2 gap-2">
+              <input type="date" required value={endDate} onChange={(e) => setEndDate(e.target.value)}
+                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300" />
+              <input type="time" required value={endDateTime} onChange={(e) => setEndDateTime(e.target.value)}
+                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300" />
+            </div>
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs text-gray-600 font-medium">Pembagian Hasil</label>
+            <div className="grid grid-cols-2 gap-2">
+              <input type="date" required value={resultDate} onChange={(e) => setResultDate(e.target.value)}
+                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300" />
+              <input type="time" required value={resultDateTime} onChange={(e) => setResultDateTime(e.target.value)}
+                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300" />
+            </div>
+          </div>
+        </div>
+
+        <div className="h-px bg-gray-100" />
+
+        {/* Sessions */}
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Sesi Tryout</p>
+            <button
+              type="button"
+              onClick={addSesi}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 hover:border-blue-300 rounded-lg px-3 py-1.5 transition-colors"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              Tambah Sesi
+            </button>
+          </div>
+
+          {sessions.length === 0 && (
+            <div className="rounded-lg border border-dashed border-gray-200 bg-gray-50 py-6 flex flex-col items-center gap-1">
+              <p className="text-sm text-gray-400">Belum ada sesi</p>
+              <p className="text-xs text-gray-300">Klik "Tambah Sesi" untuk mulai</p>
+            </div>
+          )}
+
+          {sessions.map((item, sessionIndex) => (
+            <div
+              key={sessionIndex}
+              className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white p-3 hover:border-gray-300 transition-colors"
+            >
+              <div className="shrink-0">
+                <input
+                  type="text"
+                  defaultValue={`${sessionIndex + 1}`}
+                  required
+                  className="absolute bottom-0 left-4 h-px w-px p-0 opacity-0 pointer-events-none"
+                />
+                <Select
+                  value={`${sessionIndex + 1}`}
+                  onValueChange={(value) => {
+                    const fixValue = parseInt(value) - 1;
+                    const currentSessions = [...sessions];
+                    const [movedSession] = currentSessions.splice(sessionIndex, 1);
+                    currentSessions.splice(fixValue, 0, movedSession);
+                    setSessions([...currentSessions]);
+                  }}
+                >
+                  <SelectTrigger className="h-7 w-12 rounded-lg border border-gray-200 bg-gray-50 text-xs shadow-none px-2">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: sessions.length }).map((_, index) => (
+                      <SelectItem key={index} value={`${index + 1}`}>{index + 1}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  {item.subCategory ? (
+                    <span className="inline-flex items-center rounded-md bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-semibold px-2 py-0.5">{item.subCategory}</span>
+                  ) : (
+                    <span className="text-xs text-gray-400">Belum dikonfig</span>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-[11px] text-gray-500">{item.Questions?.length ?? 0} soal</span>
+                  <span className="text-[11px] text-gray-300">·</span>
+                  <span className="text-[11px] text-gray-500">{item.duration || 0} mnt</span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setCurrentIndexEdit(sessionIndex);
+                  setQuestionIndex(0);
+                  if (item.assessmentType) setAssesmentType(item.assessmentType);
+                }}
+                className="shrink-0 text-xs font-semibold text-blue-600 hover:text-blue-800 border border-blue-200 hover:border-blue-300 bg-blue-50 hover:bg-blue-100 rounded-lg px-3 py-1.5 transition-colors"
+              >
+                Edit
+              </button>
+            </div>
+          ))}
+
+          {/* Rest time */}
+          <div className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white p-3">
+            <div>
+              <p className="text-xs font-medium text-gray-700">Waktu Istirahat</p>
+              <p className="text-[11px] text-gray-400">menit antar sesi</p>
+            </div>
+            <input
+              type="number"
+              placeholder="0"
+              className="h-9 w-24 rounded-lg border border-gray-200 px-3 text-sm text-right outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+              value={tryout?.restTime ?? ''}
+              onChange={(e) => setTryout((prev) => ({ ...prev, restTime: parseInt(e.target.value) }))}
+            />
+          </div>
+        </div>
+
+        <div className="h-px bg-gray-100" />
+
+        {/* Danger zone */}
+        <button
+          type="button"
+          className="w-full rounded-lg border border-red-200 bg-red-50 hover:bg-red-100 text-red-600 text-sm font-medium py-2.5 transition-colors"
           onClick={async () => {
             await resetTryout();
             await storage.from('img').remove([`tryout/${tryout?.image}`]);
           }}
         >
-          Hapus
-        </div>
-        <div className="relative w-full overflow-visible rounded-3xl border border-transparent bg-white duration-300 md:hover:shadow-default">
-          <input
-            type="text"
-            defaultValue={tryout?.status ? `${tryout?.status}` : ''}
-            required
-            className="absolute bottom-0 left-4 h-1 w-1 p-0 text-transparent outline-none"
-          />
-          <Select
-            value={tryout?.status ? `${tryout?.status}` : 'placeholder'}
-            onValueChange={(value) => {
-              setTryout((prev) => ({
-                ...prev,
-                status: value as 'PUBLIC' | 'PRIVATE' | 'DRAFT',
-              }));
-            }}
-          >
-            <SelectTrigger className="h-full w-full rounded-3xl border-none bg-white shadow-none outline-none">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem
-                value="placeholder"
-                disabled
-              >
-                Status
-              </SelectItem>
-              <SelectItem value="PUBLIC">PUBLIC</SelectItem>
-              <SelectItem value="PRIVATE">PRIVATE</SelectItem>
-              <SelectItem value="DRAFT">DRAFT</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-      <div className="flex h-[45px] w-full items-center justify-center">
-        {isLoading ? (
-          <Loader2 className="h-6 w-6 animate-spin" />
-        ) : (
-          <button
-            type="submit"
-            className="h-full w-full rounded-3xl bg-main text-white duration-300 hover:bg-main/85 md:active:bg-main"
-          >
-            Simpan
-          </button>
-        )}
+          Reset & Hapus Draft
+        </button>
+
+        <div className="h-4" />
       </div>
     </div>
   );
 };
 
 export default TryoutOption;
-
-// const UploadImage = ({ file, setFile, heading, inputId, fileName }: any) => {
-//   const [previewHover, setPreviewHover] = useState<boolean>(false);
-//   const [previewImage, setPreviewImage] = useState<string>('');
-
-//   useEffect(() => {
-//     setPreviewImage('');
-//     if (file) {
-//       const reader = new FileReader();
-
-//       reader.onloadend = () => {
-//         const result = reader.result as string;
-//         setPreviewImage(result);
-//       };
-
-//       reader.readAsDataURL(file);
-//     } else {
-//       setPreviewImage(`${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/tryout/${fileName}`);
-//     }
-//   }, [file, fileName]);
-
-//   return (
-//     <div className="relative">
-//       <p className="font-medium text-[.9rem] mb-[.5rem]">{heading}</p>
-//       <div className="absolute -bottom-4 left-4">
-//         <input
-//           id={`${inputId}`}
-//           type="file"
-//           onChange={(e: any) => {
-//             setFile(e.target.files[0]);
-//           }}
-//           className="border-transparent p-0 w-0 h-0 bg-transparent text-transparent"
-//         />
-//         <input
-//           type="text"
-//           value={fileName}
-//           className="border-transparent p-0 w-1 h-1 bg-transparent text-transparent outline-none"
-//           required
-//         />
-//         <div className="absolute top-0 left-0 w-full h-full bg-workspace" />
-//       </div>
-//       <div className="border-2 border-main-gray-input border-dashed rounded-3xl overflow-hidden p-4 flex flex-col gap-4 relative">
-//         {!previewImage ? (
-//           <>
-//             <div className={`relative ${previewHover ? 'z-4' : 'z-6'}`}>
-//               <Image
-//                 src={previewImage}
-//                 alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
-//                 layout="responsive"
-//                 width={500}
-//                 height={300}
-//                 onMouseOver={() => {
-//                   if (previewImage) {
-//                     setPreviewHover(true);
-//                   }
-//                 }}
-//               />
-//             </div>
-//             <div className="absolute top-0 left-0 w-full h-full bg-[#ffffffc4] flex justify-center items-center z-5 p-4">
-//               <div
-//                 className="w-full h-full flex justify-center items-center"
-//                 onClick={() => {
-//                   document.getElementById(`${inputId}`)?.click();
-//                 }}
-//                 onMouseLeave={() => {
-//                   if (previewImage) {
-//                     setPreviewHover(false);
-//                   }
-//                 }}
-//               >
-//                 <div className="flex flex-col items-center text-center text-main-gray-text">
-//                   <i className="bx bx-upload text-[1.5rem]" />
-//                   <p>Ganti Thumbnail</p>
-//                 </div>
-//               </div>
-//             </div>
-//           </>
-//         ) : (
-//           <>
-//             <div className={`relative ${previewHover ? 'z-4' : 'z-6'}`}>
-//               <Image
-//                 src={previewImage}
-//                 alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
-//                 layout="responsive"
-//                 width={500}
-//                 height={300}
-//                 onMouseOver={() => {
-//                   if (previewImage) {
-//                     setPreviewHover(true);
-//                   }
-//                 }}
-//               />
-//             </div>
-//             <div className="absolute top-0 left-0 w-full h-full bg-[#ffffffc4] flex justify-center items-center z-5 p-4">
-//               <div
-//                 className="w-full h-full flex justify-center items-center"
-//                 onClick={() => {
-//                   document.getElementById(`${inputId}`)?.click();
-//                 }}
-//                 onMouseLeave={() => {
-//                   if (previewImage) {
-//                     setPreviewHover(false);
-//                   }
-//                 }}
-//               >
-//                 <div className="flex flex-col items-center text-center text-main-gray-text">
-//                   <i className="bx bx-upload text-[1.5rem]" />
-//                   <p>Ganti Thumbnail</p>
-//                 </div>
-//               </div>
-//             </div>
-//           </>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };

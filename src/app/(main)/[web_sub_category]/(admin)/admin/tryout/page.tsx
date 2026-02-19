@@ -1,17 +1,37 @@
 'use client';
 
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
+import {
+  Table as ShadTable,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-// import axiosInstance from "@/lib/axios/axiosInstance";
 import { useGet } from '@/lib/fetch-helper/useGet';
-// import { response } from "@/lib/response";
-import { cn, getDateString, getHours } from '@/lib/utils';
+import { getDateString, getHours } from '@/lib/utils';
 import { Tryout } from '@/types/database';
-// import { api } from '@/trpc/react';
 import ExcelJS from 'exceljs';
-import { Loader2 } from 'lucide-react';
+import {
+  BarChart2,
+  ClipboardList,
+  Copy,
+  Edit,
+  FileSpreadsheet,
+  FlaskConical,
+  Plus,
+  Search,
+  Trash2,
+  Users,
+} from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
 
 interface TryoutData extends Tryout {
   TryoutSession: {
@@ -35,55 +55,38 @@ interface TryoutData extends Tryout {
   irt: boolean;
 }
 
+const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
+  ACTIVE:   { label: 'Aktif',    className: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+  INACTIVE: { label: 'Nonaktif', className: 'bg-gray-100 text-gray-500 border-gray-200' },
+  DRAFT:    { label: 'Draft',    className: 'bg-amber-50 text-amber-700 border-amber-200' },
+  ENDED:    { label: 'Selesai',  className: 'bg-blue-50 text-blue-700 border-blue-200' },
+};
+
 export default function Page() {
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
-  // const [tryout, setTryout] = useState<TryoutData[] | undefined>();
+  const [search, setSearch] = useState('');
 
-  // useEffect(() => {
-  //   getGeneral('/tryout/getTryout', {
-  //     setData: setTryout,
-  //     setLoading: setIsLoading,
-  //   });
-  // }, []);
-
-  const {
-    data: tryout,
-    isLoading,
-    refetch,
-  } = useGet<TryoutData[]>('/tryout/getTryout', {
-    params: {
-      type: 'TRYOUT',
-    },
+  const { data: tryout, isLoading, refetch } = useGet<TryoutData[]>('/tryout/getTryout', {
+    params: { type: 'TRYOUT' },
   });
 
-  const { data: tryoutInfo } = useGet<{ title: string; total: number }[]>(
-    '/tryout/getTryoutInfo',
-  );
+  const { data: tryoutInfo } = useGet<{ title: string; total: number }[]>('/tryout/getTryoutInfo');
 
-  const exportData = async ({
-    downloadData,
-    fileName,
-  }: {
-    downloadData: any[];
-    fileName: string;
-  }) => {
+  const filtered = tryout
+    ?.filter((t) => t.title.toLowerCase().includes(search.toLowerCase()))
+    .sort(
+      (a, b) =>
+        new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
+    );
+
+  const exportData = async ({ downloadData, fileName }: { downloadData: any[]; fileName: string }) => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('items');
-
     if (downloadData.length > 0) {
-      const headers = Object.keys(downloadData[0]);
-      worksheet.addRow(headers);
-
-      downloadData.forEach((row) => {
-        worksheet.addRow(Object.values(row));
-      });
+      worksheet.addRow(Object.keys(downloadData[0]));
+      downloadData.forEach((row) => worksheet.addRow(Object.values(row)));
     }
-
     const buffer = await workbook.xlsx.writeBuffer();
-    const blob = new Blob([buffer], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    });
-
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
@@ -95,212 +98,260 @@ export default function Page() {
     URL.revokeObjectURL(url);
   };
 
+  const STAT_ICONS = [ClipboardList, Users, BarChart2];
+
   return (
-    <div className="mt-4 flex flex-col gap-8">
-      <div className="grid grid-cols-3 gap-4">
-        {tryoutInfo?.map((item, index) => (
-          <div
-            key={index}
-            className="flex h-full w-full flex-col rounded-3xl bg-white p-8"
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Manajemen Tryout</h1>
+          <p className="text-gray-500 text-sm mt-0.5">Kelola semua soal dan sesi tryout</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/${website_sub_category_id}/admin/tryout/testing/try-out`}
+            className="inline-flex items-center gap-1.5 h-9 px-3 rounded-xl border border-amber-300 bg-amber-50 text-amber-700 text-sm font-medium hover:bg-amber-100 transition-colors"
           >
-            <h1 className="font-regular text-[2rem]">{item.total}</h1>
-            <p className="text-main-gray-text">{item.title}</p>
-          </div>
-        ))}
+            <FlaskConical className="h-4 w-4" />
+            Test Tryout
+          </Link>
+          <Link
+            href={`/${website_sub_category_id}/admin/tryout/new`}
+            className="inline-flex items-center gap-1.5 h-9 px-4 rounded-xl bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors"
+          >
+            <Plus className="h-4 w-4" />
+            Tambah Tryout
+          </Link>
+        </div>
       </div>
 
-      <div className="flex flex-col gap-8">
-        <Link
-          href={`/${website_sub_category_id}/admin/tryout/testing/try-out`}
-          className="flex w-fit cursor-pointer items-center justify-center rounded-3xl bg-yellow-400 px-4 py-[.6rem] text-white duration-300 md:hover:bg-yellow-300"
-        >
-          Test Tryout
-        </Link>
-        <div
-          id="head"
-          className="flex items-center justify-between"
-        >
-          <div className="flex items-center gap-4">
-            <input
-              type="text"
-              className="w-[300px] rounded-3xl border border-transparent px-4 py-[.5rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-              placeholder="Cari tryout.."
+      {/* Stats */}
+      {tryoutInfo && tryoutInfo.length > 0 && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {tryoutInfo.map((item, i) => {
+            const Icon = STAT_ICONS[i % STAT_ICONS.length];
+            return (
+              <div key={i} className="bg-white rounded-2xl border border-gray-100 p-5 flex items-center gap-4">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+                  <Icon className="h-5 w-5 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{item.total}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{item.title}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Table card */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-4">
+        {/* Toolbar */}
+        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+          <div className="relative w-full sm:max-w-xs">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Cari tryout..."
+              className="pl-10 rounded-xl border-gray-200"
             />
-            <div className="flex h-full items-center justify-center rounded-3xl bg-white px-8 py-[.5rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:shadow-default">
-              Filter
-            </div>
           </div>
-          <div className="flex items-center gap-4 text-[.9rem]">
-            <div className="flex h-full cursor-pointer items-center justify-center px-4 font-medium text-main-gray-text duration-300 md:hover:text-black">
-              Export CSV
-            </div>
-            <Link
-              href={`/${website_sub_category_id}/admin/tryout/new`}
-              className="flex cursor-pointer items-center justify-center rounded-3xl bg-main px-4 py-[.6rem] text-white duration-300 hover:bg-main/85"
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => {
+                if (!tryout) return;
+                const rows = tryout.map((t, i) => ({
+                  No: i + 1,
+                  Judul: t.title,
+                  Daftar: t.totalRegistration,
+                  Mengerjakan: t.totalJoin,
+                  Tanggal: getDateString(t.startDate),
+                  Status: t.status,
+                }));
+                exportData({ downloadData: rows, fileName: 'tryout-list' });
+              }}
+              className="inline-flex items-center gap-1.5 h-9 px-3 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors"
             >
-              Tambah try out
-            </Link>
+              <FileSpreadsheet className="h-4 w-4" />
+              Export CSV
+            </button>
           </div>
         </div>
-        <div
-          id="table"
-          className="w-full"
-        >
-          <table className="w-full rounded-3xl">
-            <thead>
-              <tr>
-                <th className="rounded-tl-[.8rem] bg-white py-4 text-center">
-                  No
-                </th>
-                <th className="bg-white py-4 text-start">Judul</th>
-                <th className="bg-white py-4 text-start">ID</th>
-                <th className="bg-white py-4 text-center">Daftar</th>
-                <th className="bg-white py-4 text-center">Mengerjakan</th>
-                <th className="bg-white py-4 text-center">Tanggal</th>
-                <th className="bg-white py-4 text-start">Kategori</th>
-                <th className="bg-white py-4 text-start">Status</th>
-                <th className="bg-white py-4 text-start">Action</th>
-                <th className="rounded-tr-[.8rem] bg-white py-4 text-center">
-                  Clear
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {!isLoading &&
-                tryout?.map((item, i: number) => {
-                  const localString = localStorage.getItem(
-                    `temporary-edit-tryout-${item.id}`,
-                  );
-                  return (
-                    <tr key={i}>
-                      <td
-                        className={cn(
-                          'border-t bg-white px-[.5rem] py-4 text-center text-[.9rem] text-main-gray-text',
-                          i === tryout.length - 1 && 'rounded-bl-[.8rem]',
-                        )}
-                      >
-                        {i + 1}
-                      </td>
-                      <td className="border-t bg-white px-[.5rem] py-4 text-start text-[.9rem] text-main-gray-text">
-                        {item.title}
-                      </td>
-                      <td className="border-t bg-white px-[.5rem] py-4 text-start text-[.9rem] text-main-gray-text">
+
+        {/* Table */}
+        <div className="w-full overflow-x-auto rounded-xl border border-gray-100">
+          <ShadTable>
+            <TableHeader>
+              <TableRow className="bg-gray-50 hover:bg-gray-50">
+                <TableHead className="w-10 text-center font-bold text-gray-600 text-xs">No.</TableHead>
+                <TableHead className="font-bold text-gray-600 text-xs">Judul</TableHead>
+                <TableHead className="text-center font-bold text-gray-600 text-xs">Daftar</TableHead>
+                <TableHead className="text-center font-bold text-gray-600 text-xs">Mengerjakan</TableHead>
+                <TableHead className="text-center font-bold text-gray-600 text-xs">Tanggal</TableHead>
+                <TableHead className="font-bold text-gray-600 text-xs">Sesi</TableHead>
+                <TableHead className="text-center font-bold text-gray-600 text-xs">Status</TableHead>
+                <TableHead className="text-center font-bold text-gray-600 text-xs">Aksi</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {/* Skeleton */}
+              {isLoading && Array.from({ length: 6 }).map((_, i) => (
+                <TableRow key={`sk-${i}`} className="animate-pulse">
+                  <TableCell className="text-center"><Skeleton className="h-4 w-5 mx-auto rounded" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-48 rounded" /></TableCell>
+                  <TableCell className="text-center"><Skeleton className="h-4 w-8 mx-auto rounded" /></TableCell>
+                  <TableCell className="text-center"><Skeleton className="h-4 w-8 mx-auto rounded" /></TableCell>
+                  <TableCell className="text-center"><Skeleton className="h-4 w-28 mx-auto rounded" /></TableCell>
+                  <TableCell><Skeleton className="h-6 w-24 rounded-full" /></TableCell>
+                  <TableCell className="text-center"><Skeleton className="h-6 w-16 mx-auto rounded-full" /></TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex justify-center gap-1">
+                      <Skeleton className="h-8 w-8 rounded-lg" />
+                      <Skeleton className="h-8 w-8 rounded-lg" />
+                      <Skeleton className="h-8 w-8 rounded-lg" />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+
+              {/* Empty */}
+              {!isLoading && filtered?.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={8} className="h-48 text-center">
+                    <div className="flex flex-col items-center justify-center gap-3 py-8">
+                      <ClipboardList className="w-12 h-12 text-gray-300" />
+                      <p className="text-sm font-semibold text-gray-500">Tidak ada tryout</p>
+                      <p className="text-xs text-gray-400">{search ? 'Coba kata kunci lain' : 'Belum ada tryout yang ditambahkan'}</p>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )}
+
+              {/* Rows */}
+              {!isLoading && filtered?.map((item, i) => {
+                const localString = typeof window !== 'undefined'
+                  ? localStorage.getItem(`temporary-edit-tryout-${item.id}`)
+                  : null;
+                const statusCfg = STATUS_CONFIG[item.status] ?? { label: item.status, className: 'bg-gray-100 text-gray-600 border-gray-200' };
+
+                return (
+                  <TableRow key={item.id} className="hover:bg-gray-50/80 transition-colors">
+                    <TableCell className="text-center text-sm text-gray-500 font-medium">{i + 1}</TableCell>
+
+                    <TableCell className="max-w-[220px]">
+                      <div className="space-y-0.5">
+                        <p className="font-semibold text-gray-800 text-sm leading-tight" title={item.title}>
+                          {item.title}
+                        </p>
                         <button
-                          className="rounded-3xl bg-main-gray-input px-[.5rem] py-[.2rem] duration-300 md:hover:bg-main-gray-input2 md:active:bg-main-gray-input"
+                          className="inline-flex items-center gap-1 text-[10px] text-gray-400 hover:text-gray-600 transition-colors"
                           onClick={() => {
-                            navigator.clipboard.writeText(`${item.id}`);
-                            toaster({
-                              title: 'Success',
-                              description: `ID Tryout Berhasil Disalin \n (${item.id})`,
-                              duration: 3000,
-                            });
+                            navigator.clipboard.writeText(item.id);
+                            toaster({ title: 'ID disalin', description: item.id, duration: 2000 });
                           }}
                         >
-                          Copy ID
+                          <Copy className="w-2.5 h-2.5" />
+                          {item.id.slice(0, 12)}…
                         </button>
-                      </td>
-                      <td className="border-t bg-white px-[.5rem] py-4 text-center text-[.9rem] text-main-gray-text">
-                        {item.totalRegistration}
-                      </td>
-                      <td className="border-t bg-white px-[.5rem] py-4 text-center text-[.9rem] text-main-gray-text">
-                        {item.totalJoin}
-                      </td>
-                      <td className="border-t bg-white px-[.5rem] py-4 text-center text-[.9rem] text-main-gray-text">
-                        {getDateString(item.startDate)} |{' '}
-                        {getHours(item.startDate)}
-                      </td>
-                      <td className="border-t bg-white px-[.5rem] py-4 text-start text-[.9rem] text-main-gray-text">
-                        <div className="flex items-center gap-[.5rem]">
-                          {item.TryoutSession.map((item2, i: number) => {
-                            return (
-                              <div
-                                key={i}
-                                className="rounded-3xl bg-main px-[.5rem] text-[.9rem] text-white cursor-pointer"
-                                onClick={() => {
-                                  const fileName = `${item2.TryoutCategory.name} - ${item2.TryoutSubCategory.name}`;
-                                  const data = item2.TryoutQuestion.map(
-                                    (quest) => {
-                                      return {
-                                        Session: fileName,
-                                        Question: quest.number,
-                                        a: quest.a_discrimination,
-                                        b: quest.b_difficulty,
-                                        c: quest.c_guessing,
-                                        SubCategory: quest.subCategory,
-                                        SubSubCategory: quest.subSubCategory,
-                                      };
-                                    },
-                                  );
-                                  exportData({ downloadData: data, fileName });
-                                }}
-                              >
-                                {item2.TryoutCategory?.name}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </td>
-                      <td className="border-t bg-white px-[.5rem] py-4 text-start text-[.9rem] text-main-gray-text">
-                        {item.status}
-                      </td>
-                      <td className="border-t bg-white px-[.5rem] py-4 text-start text-[.9rem] text-main-gray-text">
-                        <div className="flex w-full justify-center gap-4">
-                          <Link
-                            href={`/${website_sub_category_id}/admin/tryout/edit/${item.id}`}
+                      </div>
+                    </TableCell>
+
+                    <TableCell className="text-center">
+                      <span className="text-sm font-semibold text-gray-700">{item.totalRegistration}</span>
+                    </TableCell>
+
+                    <TableCell className="text-center">
+                      <span className="text-sm font-semibold text-gray-700">{item.totalJoin}</span>
+                    </TableCell>
+
+                    <TableCell className="text-center">
+                      <span className="text-xs text-gray-600 whitespace-nowrap">
+                        {getDateString(item.startDate)}
+                        <br />
+                        <span className="text-gray-400">{getHours(item.startDate)}</span>
+                      </span>
+                    </TableCell>
+
+                    <TableCell>
+                      <div className="flex flex-wrap gap-1">
+                        {item.TryoutSession.map((s, si) => (
+                          <button
+                            key={si}
+                            title={`Download IRT: ${s.TryoutCategory.name} - ${s.TryoutSubCategory.name}`}
+                            onClick={() => {
+                              const fileName = `${s.TryoutCategory.name} - ${s.TryoutSubCategory.name}`;
+                              const data = s.TryoutQuestion.map((q) => ({
+                                Session: fileName,
+                                Question: q.number,
+                                a: q.a_discrimination,
+                                b: q.b_difficulty,
+                                c: q.c_guessing,
+                                SubCategory: q.subCategory,
+                                SubSubCategory: q.subSubCategory,
+                              }));
+                              exportData({ downloadData: data, fileName });
+                            }}
+                            className="inline-flex items-center gap-1 bg-indigo-50 text-indigo-700 border border-indigo-100 px-2 py-0.5 rounded-full text-xs font-medium hover:bg-indigo-100 transition-colors"
                           >
-                            Edit
-                          </Link>
-                          {item.irt && (
-                            <Link
-                              href={`/${website_sub_category_id}/admin/tryout/irt/${item.id}`}
-                            >
-                              IRT
-                            </Link>
-                          )}
-                          {/* {item.irt && (
-                        <button
-                          className=""
-                          onClick={() =>
-                            handleSaveIRT({
-                              tryoutId: item.id,
-                              title: item.title,
-                            })
-                          }
+                            <FileSpreadsheet className="w-3 h-3" />
+                            {s.TryoutSubCategory.name}
+                          </button>
+                        ))}
+                      </div>
+                    </TableCell>
+
+                    <TableCell className="text-center">
+                      <Badge className={`border text-xs font-semibold rounded-full hover:opacity-80 ${statusCfg.className}`}>
+                        {statusCfg.label}
+                      </Badge>
+                    </TableCell>
+
+                    <TableCell>
+                      <div className="flex items-center justify-center gap-1">
+                        <Link
+                          href={`/${website_sub_category_id}/admin/tryout/edit/${item.id}`}
+                          title="Edit tryout"
+                          className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
                         >
-                          SaveIRT
-                        </button>
-                      )} */}
-                        </div>
-                      </td>
-                      <td
-                        className={cn(
-                          'border-t bg-white text-start text-[.9rem] text-main-gray-text',
-                          i === tryout.length - 1 && 'rounded-br-[.8rem]',
+                          <Edit className="w-4 h-4" />
+                        </Link>
+                        {item.irt && (
+                          <Link
+                            href={`/${website_sub_category_id}/admin/tryout/irt/${item.id}`}
+                            title="Lihat IRT"
+                            className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-purple-600 hover:bg-purple-50 transition-colors"
+                          >
+                            <BarChart2 className="w-4 h-4" />
+                          </Link>
                         )}
-                      >
                         <Button
+                          variant="ghost"
+                          size="icon"
                           disabled={!localString || isLoading}
+                          title="Clear local storage"
+                          className="w-8 h-8 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 disabled:opacity-30"
                           onClick={async () => {
-                            localStorage.removeItem(
-                              `temporary-edit-tryout-${item.id}`,
-                            );
+                            localStorage.removeItem(`temporary-edit-tryout-${item.id}`);
                             await refetch();
                           }}
                         >
-                          Clear localStorage
+                          <Trash2 className="w-4 h-4" />
                         </Button>
-                      </td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </table>
-          {isLoading && (
-            <div className="flex justify-center items-center h-full w-full">
-              <Loader2 className="w-4 h-4 animate-spin" />
-            </div>
-          )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </ShadTable>
         </div>
+
+        {!isLoading && filtered && filtered.length > 0 && (
+          <p className="text-center text-xs text-gray-400">{filtered.length} tryout ditemukan</p>
+        )}
       </div>
     </div>
   );

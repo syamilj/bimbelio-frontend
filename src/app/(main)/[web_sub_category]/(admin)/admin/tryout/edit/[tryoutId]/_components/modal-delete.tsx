@@ -17,12 +17,12 @@ const ModalDeleteSession = ({ deleteSession }: any) => {
       open={open}
       onOpenChange={setOpen}
     >
-      <DialogTrigger>
+      <DialogTrigger className="w-full">
         <div
-          className="shrink-0 cursor-pointer rounded-3xl bg-red-100 px-4 py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100"
+          className="w-full cursor-pointer rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 text-center duration-300 hover:bg-red-100 active:bg-red-200 transition-colors"
           onClick={() => setOpen(true)}
         >
-          Hapus sesi
+          Hapus Sesi
         </div>
       </DialogTrigger>
       <DialogContent className="w-[360px]">
