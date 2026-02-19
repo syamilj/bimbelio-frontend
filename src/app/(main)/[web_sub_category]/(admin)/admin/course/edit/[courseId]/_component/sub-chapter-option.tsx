@@ -369,12 +369,15 @@ const SubChapterOption = ({
                     />
                   </>
                 ) : (
-                  <div className="text-center py-8 text-gray-500 border-2 border-dashed border-gray-200 rounded-3xl">
-                    <p>Belum ada soal</p>
+                  <div className="text-center py-10 border-2 border-dashed border-gray-200 rounded-xl">
+                    <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center mx-auto mb-3">
+                      <Plus className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <p className="text-sm text-gray-500 mb-3">Belum ada soal</p>
                     <Button
                       onClick={addQuestion}
                       size="sm"
-                      className="mt-2"
+                      className="rounded-lg"
                     >
                       <Plus className="h-4 w-4 mr-1" />
                       Tambah Soal Pertama
@@ -444,35 +447,39 @@ const VideoEditor = ({
   handleVideoUpload: (e: ChangeEvent<HTMLInputElement>) => void;
 }) => (
   <div className="space-y-4">
-    <div className="border-2 border-dashed border-gray-300 rounded-3xl p-8 text-center">
-      <Video className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+    <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center">
+      <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
+        <Video className="h-6 w-6 text-blue-500" />
+      </div>
       {EditSubChapter.video ? (
         <div>
-          <p className="text-green-600 mb-2">✓ Video sudah diupload</p>
-          <div className="space-y-2">
+          <p className="text-sm font-medium text-green-600 mb-3">✓ Video sudah diupload</p>
+          <div className="flex items-center justify-center gap-2 flex-wrap">
             <Button
               variant="outline"
+              size="sm"
+              className="rounded-xl"
               onClick={() => document.getElementById('video-upload')?.click()}
             >
               Ganti Video
             </Button>
             {EditSubChapter.video && (
-              <div>
-                <a
-                  href={`${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/course/${EditSubChapter.video}`}
-                  target="_blank"
-                  className="inline-block text-blue-600 hover:text-blue-800 text-sm"
-                >
-                  Lihat Video
-                </a>
-              </div>
+              <a
+                href={`${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/course/${EditSubChapter.video}`}
+                target="_blank"
+                className="inline-flex items-center px-3 py-1.5 text-sm text-blue-600 hover:text-blue-800 border border-blue-200 rounded-xl hover:bg-blue-50 transition-colors"
+              >
+                Lihat Video
+              </a>
             )}
           </div>
         </div>
       ) : (
         <div>
-          <p className="text-gray-500 mb-4">Upload file MP4</p>
+          <p className="text-sm text-gray-500 mb-3">Upload file video MP4</p>
           <Button
+            size="sm"
+            className="rounded-xl"
             onClick={() => document.getElementById('video-upload')?.click()}
           >
             Pilih Video
@@ -533,13 +540,15 @@ const DocumentSelector = ({
     return (
       <div
         key={selectedDoc?.id}
-        className="p-3 border rounded-3xl cursor-pointer hover:bg-gray-50 "
+        className="p-3 border border-green-100 bg-green-50 rounded-xl"
       >
-        <div className="flex items-center gap-3 relative">
-          <FileText className="h-5 w-5 text-gray-400" />
-          <span>{selectedDoc?.title}</span>
-          <X
-            className="absolute right-2 w-4 h-4 hover:bg-gray-500 hover:text-white rounded-full"
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center shrink-0">
+            <FileText className="h-4 w-4 text-green-600" />
+          </div>
+          <span className="text-sm font-medium text-gray-800 flex-1">{selectedDoc?.title}</span>
+          <button
+            className="w-7 h-7 rounded-lg hover:bg-green-200 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
             onClick={() => {
               setSubChapter((prev) =>
                 prev.map((sChapter, sIndex) => {
@@ -554,7 +563,9 @@ const DocumentSelector = ({
                 }),
               );
             }}
-          />
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
     );
@@ -570,11 +581,11 @@ const DocumentSelector = ({
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
-      <div className="max-h-64 overflow-y-auto space-y-2">
+      <div className="max-h-64 overflow-y-auto space-y-1.5">
         {documents?.map((doc) => (
           <div
             key={doc.id}
-            className="p-3 border rounded-3xl cursor-pointer hover:bg-gray-50"
+            className="p-3 border border-gray-100 rounded-xl cursor-pointer hover:bg-blue-50 hover:border-blue-200 transition-colors"
             onClick={() => {
               setSubChapter((prev) =>
                 prev.map((sChapter, sIndex) => {
@@ -591,8 +602,10 @@ const DocumentSelector = ({
             }}
           >
             <div className="flex items-center gap-3">
-              <FileText className="h-5 w-5 text-gray-400" />
-              <span>{doc.title}</span>
+              <div className="w-7 h-7 rounded-lg bg-gray-100 flex items-center justify-center shrink-0">
+                <FileText className="h-3.5 w-3.5 text-gray-500" />
+              </div>
+              <span className="text-sm text-gray-700">{doc.title}</span>
             </div>
           </div>
         ))}

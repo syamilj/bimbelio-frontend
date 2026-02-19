@@ -267,7 +267,7 @@ const SubChapterHeading = ({
 
             <div>
               <Label>Status Premium</Label>
-              <div className="flex items-center space-x-3 p-3 border border-gray-200 rounded-3xl">
+              <div className="flex items-center space-x-3 p-3 border border-gray-200 rounded-xl">
                 <Switch
                   checked={EditSubChapter.premium}
                   onCheckedChange={(checked) => {

@@ -9,6 +9,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table as ShadTable,
@@ -21,18 +22,19 @@ import {
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import axiosInstance from '@/lib/axios/axiosInstance';
 import { deleteGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { storage } from '@/supabaseClient';
 import { Category, Document, Subcategory, Video } from '@/types/database';
 import {
   ChevronLeft,
   ChevronRight,
-  Copy,
   Download,
   ExternalLink,
   FileX,
   Pencil,
   Trash2,
+  Video as VideoIcon,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useProvider } from '../provider';
@@ -58,6 +60,27 @@ export default function Table() {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [deleteData, setDeleteData] = useState({ id: '', title: '', videoTitle: '' });
+  const [togglingIds, setTogglingIds] = useState<Set<string>>(new Set());
+
+  const handleTogglePremium = async (item: (typeof documentData)[number]) => {
+    if (togglingIds.has(item.id)) return;
+    setTogglingIds((prev) => new Set(prev).add(item.id));
+    try {
+      await axiosInstance.patch('/document/togglePremium', {
+        id: item.id,
+        premium: !item.premium,
+      });
+      await fetchDocument();
+    } catch {
+      toaster({ title: 'Gagal mengubah status', condition: 'warning' });
+    } finally {
+      setTogglingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(item.id);
+        return next;
+      });
+    }
+  };
 
   const fileDownload = async (fileName: string) => {
     try {
@@ -100,7 +123,7 @@ export default function Table() {
             <TableRow className="bg-gray-50 hover:bg-gray-50">
               <TableHead className="w-12 text-center font-bold text-gray-600 text-xs">No.</TableHead>
               <TableHead className="font-bold text-gray-600 text-xs">Judul</TableHead>
-              <TableHead className="font-bold text-gray-600 text-xs">ID</TableHead>
+              <TableHead className="text-center font-bold text-gray-600 text-xs">Video</TableHead>
               <TableHead className="text-center font-bold text-gray-600 text-xs">Dipilih</TableHead>
               {isCore && (
                 <TableHead className="text-center font-bold text-gray-600 text-xs">Visible At</TableHead>
@@ -119,7 +142,7 @@ export default function Table() {
                 <TableRow key={`skel-${i}`} className="animate-pulse">
                   <TableCell className="text-center"><Skeleton className="h-4 w-6 mx-auto rounded" /></TableCell>
                   <TableCell><Skeleton className="h-4 w-40 rounded" /></TableCell>
-                  <TableCell><Skeleton className="h-6 w-20 rounded-lg" /></TableCell>
+                  <TableCell className="text-center"><Skeleton className="h-6 w-14 mx-auto rounded-full" /></TableCell>
                   <TableCell className="text-center"><Skeleton className="h-4 w-8 mx-auto rounded" /></TableCell>
                   {isCore && <TableCell><Skeleton className="h-4 w-16 mx-auto rounded" /></TableCell>}
                   <TableCell className="text-center"><Skeleton className="h-6 w-16 mx-auto rounded-full" /></TableCell>
@@ -163,22 +186,17 @@ export default function Table() {
                     </p>
                   </TableCell>
 
-                  <TableCell>
-                    <button
-                      title="Salin ID"
-                      className="group flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors text-xs font-mono text-gray-600 max-w-[130px]"
-                      onClick={() => {
-                        navigator.clipboard.writeText(item.id);
-                        toaster({
-                          title: 'ID Disalin',
-                          description: `ID: ${item.id}`,
-                          duration: 2000,
-                        });
-                      }}
-                    >
-                      <Copy className="w-3 h-3 text-gray-400 group-hover:text-gray-600 shrink-0" />
-                      <span className="truncate">{item.id.slice(0, 10)}…</span>
-                    </button>
+                  <TableCell className="text-center">
+                    {item.video ? (
+                      <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-600 border border-blue-100 px-2 py-0.5 rounded-full text-xs font-medium">
+                        <VideoIcon className="w-3 h-3" />
+                        Video
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center bg-red-50 text-red-400 border border-red-100 px-2 py-0.5 rounded-full text-xs font-medium">
+                        Tdk Ada
+                      </span>
+                    )}
                   </TableCell>
 
                   <TableCell className="text-center">
@@ -198,15 +216,17 @@ export default function Table() {
                   )}
 
                   <TableCell className="text-center">
-                    {item.premium ? (
-                      <Badge className="bg-amber-100 text-amber-700 border-amber-200 border hover:bg-amber-100 text-xs font-semibold rounded-full">
-                        Premium
-                      </Badge>
-                    ) : (
-                      <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 border hover:bg-emerald-50 text-xs font-semibold rounded-full">
-                        Free
-                      </Badge>
-                    )}
+                    <div className="flex flex-col items-center gap-1">
+                      <Switch
+                        checked={!!item.premium}
+                        disabled={togglingIds.has(item.id)}
+                        onCheckedChange={() => handleTogglePremium(item)}
+                        className="data-[state=checked]:bg-amber-400"
+                      />
+                      <span className={`text-[10px] font-semibold ${item.premium ? 'text-amber-600' : 'text-emerald-600'}`}>
+                        {togglingIds.has(item.id) ? '...' : item.premium ? 'Premium' : 'Free'}
+                      </span>
+                    </div>
                   </TableCell>
 
                   <TableCell className="text-center">
