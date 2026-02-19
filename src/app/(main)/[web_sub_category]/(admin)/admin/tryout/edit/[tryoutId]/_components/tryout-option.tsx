@@ -16,7 +16,8 @@ import axiosInstance from '@/lib/axios/axiosInstance';
 import { response, responseError } from '@/lib/response';
 import { cn } from '@/lib/utils';
 import { storage } from '@/supabaseClient';
-import { Plus } from 'lucide-react';
+import DialogAIMatch from '@/app/(main)/[web_sub_category]/(admin)/admin/tryout/_component/DialogAIMatch';
+import { Plus, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ReactNode, useState } from 'react';
 import ModalDeleteTryout from './modal-delete-tryout';
@@ -51,9 +52,7 @@ const TryoutOption = () => {
   const router = useRouter();
 
   const [openDelete, setOpenDelete] = useState<boolean>(false);
-
   const [prevIndexEdit, setPrevIndexEdit] = useState<number | null>(null);
-
   const [loadingDeleteTryout, setIsLoadingDeleteTryout] =
     useState<boolean>(false);
 
@@ -245,14 +244,27 @@ const TryoutOption = () => {
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Sesi Tryout</p>
-            <button
-              type="button"
-              onClick={addSesi}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 hover:border-blue-300 rounded-lg px-3 py-1.5 transition-colors"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              Tambah Sesi
-            </button>
+            <div className="flex items-center gap-1.5">
+              <DialogAIMatch sessions={sessions} setSessions={setSessions} currentWebsubId={website_sub_category_id ?? ''}>
+                <button
+                  type="button"
+                  title="AI otomatis cocokkan kategori dan bab materi untuk semua sesi"
+                  disabled={sessions.every((s) => !s.Questions?.length)}
+                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-purple-600 hover:text-purple-800 border border-purple-200 hover:border-purple-300 bg-purple-50 hover:bg-purple-100 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg px-2.5 py-1.5 transition-colors"
+                >
+                  <Sparkles className="w-3 h-3" />
+                  AI Match
+                </button>
+              </DialogAIMatch>
+              <button
+                type="button"
+                onClick={addSesi}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 hover:border-blue-300 rounded-lg px-3 py-1.5 transition-colors"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                Tambah Sesi
+              </button>
+            </div>
           </div>
 
           {sessions.length === 0 && (
