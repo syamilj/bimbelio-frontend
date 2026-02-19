@@ -11,6 +11,7 @@ import { LoadingPageStorage } from '@/components/ui/spinner';
 import { getDateForInput, getHours } from '@/lib/utils';
 import { storage } from '@/supabaseClient';
 import { Category, Subcategory } from '@/types/database';
+import { X } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useProvider } from '../../provider';
@@ -250,7 +251,7 @@ export default function EditDocument() {
       )}
       <div
         id="tambah-dokumen"
-        className={`fixed top-0 z-50 h-full w-[400px] border border-main-gray-input bg-white duration-300 ${showEditDocument ? 'right-0' : 'right-[-420px]'} overflow-y-auto`}
+        className={`fixed top-0 z-50 flex flex-col h-full w-[480px] border-l border-gray-200 bg-white shadow-2xl duration-300 ${showEditDocument ? 'right-0' : 'right-[-500px]'} overflow-hidden`}
       >
         {loading && option === 'doc' && <LoadingPage />}
         {loading && option === 'video' && (
@@ -261,9 +262,24 @@ export default function EditDocument() {
             }
           />
         )}
-        <div className="flex flex-col gap-4 p-8">
-          <h1 className="text-[1.2rem] font-semibold">Edit Material</h1>
-          <div className="flex flex-col gap-4 text-[.9rem] font-medium">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4 shrink-0">
+          <div>
+            <h1 className="text-base font-bold text-gray-900">Edit Material</h1>
+            <p className="text-xs text-gray-400 mt-0.5">Perbarui informasi dokumen</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => { setShowEditDocument(false); setEditData(null); }}
+            className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* Scrollable body */}
+        <div className="flex flex-col gap-5 p-6 overflow-y-auto flex-1">
+          <div className="flex flex-col gap-5 text-sm">
             <MultiSelectVisibleAt
               value={visibleAtWebSubIds}
               onValuesChange={setVisibleAtWebSubIds}
@@ -295,60 +311,58 @@ export default function EditDocument() {
               </div>
             )}
             {!to && (
-              <div
-                id="name-file"
-                className="flex flex-col gap-[.5rem]"
-              >
-                <p>
-                  Judul dokumen{' '}
-                  <span className="text-main-gray-text">(opsional)</span>
-                </p>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  Judul Dokumen <span className="normal-case text-gray-400 font-normal">(opsional)</span>
+                </label>
                 <input
                   type="text"
-                  className="font-regular w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
+                  className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition"
                   placeholder="Masukan judul dokumen"
                   onChange={(e) => setFileName(e.target.value)}
                   value={fileName}
                 />
               </div>
             )}
-            <div
-              id="category"
-              className="flex flex-col gap-[.5rem]"
-            >
-              <p>Fitur</p>
-              <div className="flex w-full justify-between gap-4">
-                <div className="flex w-full justify-between gap-4">
-                  <div
-                    className={`w-full cursor-pointer rounded-3xl border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${!premium && 'border-main bg-main text-white'}`}
-                    onClick={() => setPremium(false)}
-                  >
-                    Free
-                  </div>
-                </div>
-                <div className="flex w-full justify-between gap-4">
-                  <div
-                    className={`w-full cursor-pointer rounded-3xl border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${premium && 'border-main bg-main text-white'}`}
-                    onClick={() => setPremium(true)}
-                  >
-                    Premium
-                  </div>
-                </div>
+            <div className="flex flex-col gap-2">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Akses</p>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setPremium(false)}
+                  className={`flex-1 py-2 rounded-xl text-sm font-semibold border cursor-pointer transition ${
+                    !premium
+                      ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                      : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
+                  }`}
+                >
+                  Free
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPremium(true)}
+                  className={`flex-1 py-2 rounded-xl text-sm font-semibold border cursor-pointer transition ${
+                    premium
+                      ? 'border-amber-500 bg-amber-50 text-amber-700'
+                      : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
+                  }`}
+                >
+                  Premium
+                </button>
               </div>
             </div>
-            <div
-              id="category"
-              className="flex flex-col gap-[.5rem]"
-            >
-              <p>Kategori</p>
-              <div
-                id="row"
-                className="flex w-full justify-start gap-4 overflow-y-auto pb-[.5rem]"
-              >
+            <div className="flex flex-col gap-2">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Kategori</p>
+              <div className="flex gap-2 overflow-x-auto pb-1">
                 {categoryAndSubCategory?.category.map((item: any, i: any) => (
-                  <div
+                  <button
+                    type="button"
                     key={i}
-                    className={`w-fit shrink-0 cursor-pointer rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${category === item.id && 'border-main bg-main text-white'}`}
+                    className={`shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer transition whitespace-nowrap ${
+                      category === item.id
+                        ? 'border-main bg-main text-white shadow-sm'
+                        : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50'
+                    }`}
                     onClick={() => {
                       setCategory(item.id);
                       setSubCategory('');
@@ -356,27 +370,26 @@ export default function EditDocument() {
                     }}
                   >
                     {item.name}
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
-            <div
-              id="subCategory"
-              className="flex flex-col gap-[.5rem]"
-            >
-              <p>Subkategori</p>
-              <div
-                id="row"
-                className="flex w-full justify-start gap-4 overflow-y-auto pb-[.5rem]"
-              >
+            <div className="flex flex-col gap-2">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Subkategori</p>
+              <div className="flex gap-2 overflow-x-auto pb-1">
                 {subCategoryData?.map((item: any, i: any) => (
-                  <div
+                  <button
+                    type="button"
                     key={i}
-                    className={`w-fit shrink-0 cursor-pointer rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${subCategory === item.id && 'border-main bg-main text-white'}`}
+                    className={`shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer transition whitespace-nowrap ${
+                      subCategory === item.id
+                        ? 'border-main bg-main text-white shadow-sm'
+                        : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50'
+                    }`}
                     onClick={() => setSubCategory(item.id)}
                   >
                     {item.name}
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
@@ -426,23 +439,33 @@ export default function EditDocument() {
                 /> */}
               </>
             )}
-            <div
-              id="line"
-              className="my-[0] h-px w-full bg-main-gray-input"
-            />
+            <div className="border-t border-gray-100" />
 
-            <div className="flex w-full justify-between gap-4">
-              <div
-                className={`w-full cursor-pointer rounded-3xl border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${option === 'doc' && 'border-main bg-main text-white'}`}
-                onClick={() => setOption('doc')}
-              >
-                Dokumen
-              </div>
-              <div
-                className={`w-full cursor-pointer rounded-3xl border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${option === 'video' && 'border-main bg-main text-white'}`}
-                onClick={() => setOption('video')}
-              >
-                Video
+            <div className="flex flex-col gap-2">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Tipe Konten</p>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  className={`flex-1 py-2 rounded-xl text-sm font-semibold border cursor-pointer transition ${
+                    option === 'doc'
+                      ? 'border-main bg-main text-white shadow-sm'
+                      : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
+                  }`}
+                  onClick={() => setOption('doc')}
+                >
+                  Dokumen
+                </button>
+                <button
+                  type="button"
+                  className={`flex-1 py-2 rounded-xl text-sm font-semibold border cursor-pointer transition ${
+                    option === 'video'
+                      ? 'border-main bg-main text-white shadow-sm'
+                      : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
+                  }`}
+                  onClick={() => setOption('video')}
+                >
+                  Video
+                </button>
               </div>
             </div>
             <div id="thumbnail">
@@ -474,45 +497,34 @@ export default function EditDocument() {
                   />
                 </div>
 
-                <div
-                  id="judul-video"
-                  className="flex flex-col gap-[.5rem]"
-                >
-                  <p>
-                    Judul Video{' '}
-                    <span className="text-main-gray-text">(opsional)</span>
-                  </p>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    Judul Video <span className="normal-case text-gray-400 font-normal">(opsional)</span>
+                  </label>
                   <input
                     type="text"
-                    className="font-regular w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
-                    placeholder="Masukan judul dokumen"
+                    className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition"
+                    placeholder="Masukan judul video"
                     onChange={(e) => setVideoName(e.target.value)}
                     value={videoName}
                   />
                 </div>
               </>
             )}
-            <div
-              id="action"
-              className="mt-4 flex gap-4"
-            >
+            <div className="border-t border-gray-100 pt-4 flex gap-3">
               <button
-                className="w-full rounded-3xl border border-main-gray-input py-[.6rem] text-main-gray-text duration-300 hover:border-transparent hover:bg-main-hover hover:text-white"
-                onClick={() => {
-                  setShowEditDocument(false);
-                  setEditData(null);
-                }}
+                type="button"
+                className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition"
+                onClick={() => { setShowEditDocument(false); setEditData(null); }}
               >
                 Batalkan
               </button>
               <button
                 type="submit"
-                className="w-full rounded-3xl border border-main bg-main py-[.6rem] text-white"
-                onClick={() => {
-                  EditDocument();
-                }}
+                className="flex-1 py-2.5 rounded-xl bg-main text-white text-sm font-semibold hover:opacity-90 transition"
+                onClick={() => EditDocument()}
               >
-                Edit material
+                Simpan Perubahan
               </button>
             </div>
           </div>
@@ -670,20 +682,21 @@ const UploadFile = ({
         onChange={(e: any) => setFile(e.target.files[0])}
         className="absolute right-0 top-0 h-0 w-0"
       />
-      <div className="relative flex flex-col gap-4 rounded-3xl border-2 border-dashed border-main-gray-input p-4">
+      <div className="relative flex flex-col gap-3 rounded-xl border-2 border-dashed border-gray-200 p-4 hover:border-gray-300 transition">
         {!image ? (
           <>
-            <div className="flex flex-col items-center gap-[.5rem] text-center">
+            <div className="flex flex-col items-center gap-2 text-center">
               <Image
                 src={uploadFileImg}
                 alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
               />
-              <p className="text-[.8rem] text-main-gray-text">
-                {!file ? `${contentText}` : `${file.name}`}
+              <p className="text-xs text-gray-500">
+                {!file ? contentText : file.name}
               </p>
             </div>
             <button
-              className="w-full rounded-3xl border border-main-gray-input py-[.5rem] text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main-hover"
+              type="button"
+              className="w-full rounded-xl border border-dashed border-gray-300 py-2 text-xs font-medium text-gray-500 hover:border-main hover:text-main hover:bg-blue-50 transition"
               onClick={() => {
                 document.getElementById(`${inputId}`)?.click();
               }}
@@ -695,17 +708,18 @@ const UploadFile = ({
           <>
             {!previewImage ? (
               <>
-                <div className="flex flex-col items-center gap-[.5rem] text-center">
+                <div className="flex flex-col items-center gap-2 text-center">
                   <Image
                     src={uploadFileImg}
                     alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                   />
-                  <p className="text-[.8rem] text-main-gray-text">
-                    {!file ? `${contentText}` : `${file.name}`}
+                  <p className="text-xs text-gray-500">
+                    {!file ? contentText : file.name}
                   </p>
                 </div>
                 <button
-                  className="w-full rounded-3xl border border-main-gray-input py-[.5rem] text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main-hover"
+                  type="button"
+                  className="w-full rounded-xl border border-dashed border-gray-300 py-2 text-xs font-medium text-gray-500 hover:border-main hover:text-main hover:bg-blue-50 transition"
                   onClick={() => {
                     document.getElementById(`${inputId}`)?.click();
                   }}
@@ -768,17 +782,14 @@ const InputText = ({
   value: string;
 }) => {
   return (
-    <div
-      id="name-file"
-      className="flex flex-col gap-[.5rem]"
-    >
-      <p>
-        {heading} <span className="text-main-gray-text">(Try-Out)</span>
-      </p>
+    <div className="flex flex-col gap-1.5">
+      <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+        {heading} <span className="normal-case text-gray-400 font-normal">(Try-Out)</span>
+      </label>
       <input
         type="text"
-        className="font-regular w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
-        placeholder={`${placeholder}`}
+        className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition"
+        placeholder={placeholder}
         onChange={(e) => setValue(e.target.value)}
         value={value}
       />
@@ -826,25 +837,24 @@ const InputDateAndTime = ({
   }, [date, time]);
 
   return (
-    <div
-      id="name-file"
-      className="flex flex-col gap-[.5rem]"
-    >
-      <p>
-        {heading} <span className="text-main-gray-text">(Try-Out)</span>
-      </p>
-      <input
-        type="date"
-        className="font-regular w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
-        onChange={(e) => setDate(e.target.value)}
-        value={date ? date : ''}
-      />
-      <input
-        type="time"
-        className="font-regular w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
-        onChange={(e) => setTime(e.target.value)}
-        value={time ? time : ''}
-      />
+    <div className="flex flex-col gap-1.5">
+      <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+        {heading} <span className="normal-case text-gray-400 font-normal">(Try-Out)</span>
+      </label>
+      <div className="grid grid-cols-2 gap-2">
+        <input
+          type="date"
+          className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition"
+          onChange={(e) => setDate(e.target.value)}
+          value={date ? date : ''}
+        />
+        <input
+          type="time"
+          className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition"
+          onChange={(e) => setTime(e.target.value)}
+          value={time ? time : ''}
+        />
+      </div>
     </div>
   );
 };
@@ -861,16 +871,14 @@ const InputTextarea = ({
   value: string;
 }) => {
   return (
-    <div
-      id="name-file"
-      className="flex flex-col gap-[.5rem]"
-    >
-      <p>
-        {heading} <span className="text-main-gray-text">(Try-Out)</span>
-      </p>
+    <div className="flex flex-col gap-1.5">
+      <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+        {heading} <span className="normal-case text-gray-400 font-normal">(Try-Out)</span>
+      </label>
       <textarea
-        className="font-regular w-full rounded-3xl border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
-        placeholder={`${placeholder}`}
+        rows={3}
+        className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition resize-none"
+        placeholder={placeholder}
         onChange={(e) => setValue(e.target.value)}
         value={value}
       />

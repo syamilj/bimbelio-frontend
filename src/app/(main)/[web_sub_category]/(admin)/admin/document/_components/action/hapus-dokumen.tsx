@@ -1,4 +1,4 @@
-import { Loader2 } from 'lucide-react';
+import { Loader2, Trash2 } from 'lucide-react';
 import { Dispatch, SetStateAction } from 'react';
 
 type Props = {
@@ -7,13 +7,7 @@ type Props = {
   videoTitle: string;
   setDeleteConfirmation: Dispatch<SetStateAction<boolean>>;
   loading: boolean;
-  setDeleteData: Dispatch<
-    SetStateAction<{
-      id: string;
-      title: string;
-      videoTitle: string;
-    }>
-  >;
+  setDeleteData: Dispatch<SetStateAction<{ id: string; title: string; videoTitle: string }>>;
 };
 
 export default function HapusDokumen({
@@ -27,22 +21,19 @@ export default function HapusDokumen({
   return (
     <>
       {loading && (
-        <div className="fixed left-0 top-0 z-100 flex h-full w-full items-center justify-center bg-[#ffffff09]">
-          <Loader2 className={'mr-2 h-20 w-20 animate-spin'} />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm">
+          <Loader2 className="h-10 w-10 animate-spin text-main" />
         </div>
       )}
       <button
-        className="cursor-pointer border border-black px-4 py-[.3rem]"
+        title="Hapus dokumen"
+        className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
         onClick={() => {
           setDeleteConfirmation(true);
-          setDeleteData({
-            id,
-            title,
-            videoTitle,
-          });
+          setDeleteData({ id, title, videoTitle });
         }}
       >
-        Hapus
+        <Trash2 className="w-4 h-4" />
       </button>
     </>
   );
