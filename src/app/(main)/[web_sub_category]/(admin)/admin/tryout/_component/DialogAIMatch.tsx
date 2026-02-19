@@ -882,7 +882,7 @@ export default function DialogAIMatch({
                 errorCount === 0 ? 'text-green-700' : 'text-amber-700',
               )}>
                 {errorCount === 0
-                  ? <><CheckCircle2 className="h-4 w-4 shrink-0" /> Hasil tersimpan — klik Selesai untuk menutup</>  
+                  ? <><CheckCircle2 className="h-4 w-4 shrink-0" /> Hasil tersimpan — klik Selesai untuk menutup</>
                   : <><AlertCircle className="h-4 w-4 shrink-0" /> {doneCount} berhasil · {errorCount} gagal</>}
               </p>
             )}
