@@ -1,4 +1,6 @@
 // ============ TYPES ============
+import { SNBT_SUBTEST_INITIALS } from '@/lib/utils/snbt';
+
 export interface Volume {
   id: string;
   name: string;
@@ -159,7 +161,7 @@ export const SUB_CATEGORIES: SubCategory[] = [
   {
     id: 'pu',
     name: 'Penalaran Umum',
-    code: 'PU',
+    code: SNBT_SUBTEST_INITIALS['Penalaran Umum'],
     gradient: 'from-blue-500 to-blue-600',
     bg: 'from-blue-50 to-blue-100',
     iconBg: 'bg-blue-500',
@@ -168,7 +170,7 @@ export const SUB_CATEGORIES: SubCategory[] = [
   {
     id: 'ppu',
     name: 'Pengetahuan & Pemahaman Umum',
-    code: 'PPU',
+    code: SNBT_SUBTEST_INITIALS['Pengetahuan dan Pemahaman Umum'],
     gradient: 'from-green-500 to-green-600',
     bg: 'from-green-50 to-green-100',
     iconBg: 'bg-green-500',
@@ -177,7 +179,7 @@ export const SUB_CATEGORIES: SubCategory[] = [
   {
     id: 'pbm',
     name: 'Pemahaman Bacaan & Menulis',
-    code: 'PBM',
+    code: SNBT_SUBTEST_INITIALS['Pemahaman Bacaan dan Menulis'],
     gradient: 'from-yellow-500 to-yellow-600',
     bg: 'from-yellow-50 to-yellow-100',
     iconBg: 'bg-yellow-500',
@@ -186,7 +188,7 @@ export const SUB_CATEGORIES: SubCategory[] = [
   {
     id: 'pk',
     name: 'Pengetahuan Kuantitatif',
-    code: 'PK',
+    code: SNBT_SUBTEST_INITIALS['Pengetahuan Kuantitatif'],
     gradient: 'from-red-500 to-red-600',
     bg: 'from-red-50 to-red-100',
     iconBg: 'bg-red-500',
@@ -195,7 +197,7 @@ export const SUB_CATEGORIES: SubCategory[] = [
   {
     id: 'lbi',
     name: 'Literasi Bahasa Indonesia',
-    code: 'LBI',
+    code: SNBT_SUBTEST_INITIALS['Literasi Bahasa Indonesia'],
     gradient: 'from-indigo-500 to-indigo-600',
     bg: 'from-indigo-50 to-indigo-100',
     iconBg: 'bg-indigo-500',
@@ -204,7 +206,7 @@ export const SUB_CATEGORIES: SubCategory[] = [
   {
     id: 'lbe',
     name: 'Literasi Bahasa Inggris',
-    code: 'LBE',
+    code: SNBT_SUBTEST_INITIALS['Literasi Bahasa Inggris'],
     gradient: 'from-purple-500 to-purple-600',
     bg: 'from-purple-50 to-purple-100',
     iconBg: 'bg-purple-500',
@@ -213,7 +215,7 @@ export const SUB_CATEGORIES: SubCategory[] = [
   {
     id: 'pm',
     name: 'Penalaran Matematika',
-    code: 'PM',
+    code: SNBT_SUBTEST_INITIALS['Penalaran Matematika'],
     gradient: 'from-orange-500 to-orange-600',
     bg: 'from-orange-50 to-orange-100',
     iconBg: 'bg-orange-500',

@@ -31,6 +31,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { cn, getInitials } from '@/lib/utils';
+import { SNBT_SUBTEST_ORDER, getSubtestLabel } from '@/lib/utils/snbt';
 import ExcelJS from 'exceljs'; // Tambahkan import ini
 import { ArrowUpDown, Info, Search, Trophy } from 'lucide-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
@@ -96,6 +97,20 @@ export function RankingTable() {
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const websiteSubCategoryId = websiteSubCategory?.id;
+
+  // Sort sessionResult arrays by canonical SNBT order when on snbt websub
+  const sortSessionsBySnbtOrder = useCallback(
+    <T extends { subCategory: string }>(sessions: T[]): T[] => {
+      if (websiteSubCategoryId !== 'snbt') return sessions;
+      return [...sessions].sort(
+        (a, b) =>
+          (SNBT_SUBTEST_ORDER.indexOf(a.subCategory as (typeof SNBT_SUBTEST_ORDER)[number]) + 1 || 999) -
+          (SNBT_SUBTEST_ORDER.indexOf(b.subCategory as (typeof SNBT_SUBTEST_ORDER)[number]) + 1 || 999),
+      );
+    },
+    [websiteSubCategoryId],
+  );
 
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -169,8 +184,11 @@ export function RankingTable() {
       return 0;
     });
 
-    return processedData;
-  }, [RankingTryout?.rankingData, searchTerm, sortField, sortDirection]);
+    return processedData.map((p) => ({
+      ...p,
+      sessionResult: sortSessionsBySnbtOrder(p.sessionResult),
+    }));
+  }, [RankingTryout?.rankingData, searchTerm, sortField, sortDirection, sortSessionsBySnbtOrder]);
 
   // Pagination
   const paginatedData = useMemo(() => {
@@ -186,10 +204,15 @@ export function RankingTable() {
     session?.user?.role === 'ADMIN' || session?.user?.role === 'SUPER_ADMIN';
 
   // Mock data for non-premium users to show scrollable columns
-  const mockSessionResults =
-    RankingTryout && RankingTryout?.rankingData.length > 0
-      ? RankingTryout?.rankingData[0].sessionResult
-      : [];
+  const mockSessionResults = useMemo(
+    () =>
+      sortSessionsBySnbtOrder(
+        RankingTryout && RankingTryout?.rankingData.length > 0
+          ? RankingTryout?.rankingData[0].sessionResult
+          : [],
+      ),
+    [RankingTryout, sortSessionsBySnbtOrder],
+  );
 
   // Komponen SortButton untuk memicu sorting
   const SortButton = ({
@@ -216,7 +239,7 @@ export function RankingTable() {
         {!isMapel && `${label}`}
         {isMapel && (
           <span className="text-xs md:text-sm">
-            {getInitials(label, { type: "Remove 'dan'" })}
+            {getSubtestLabel(label, websiteSubCategoryId)}
           </span>
         )}
         <ArrowUpDown
@@ -387,16 +410,16 @@ export function RankingTable() {
                   <span className="font-semibold">Keterangan Inisial:</span>
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                  {RankingTryout?.rankingData?.[0]?.sessionResult.map(
+                  {sortSessionsBySnbtOrder(
+                    RankingTryout?.rankingData?.[0]?.sessionResult ?? [],
+                  ).map(
                     (subCat) => (
                       <div
                         key={subCat.sessionId}
                         className="text-xs"
                       >
                         <span className="font-semibold">
-                          {getInitials(subCat.subCategory, {
-                            type: "Remove 'dan'",
-                          })}
+                          {getSubtestLabel(subCat.subCategory, websiteSubCategoryId)}
                         </span>{' '}
                         = {subCat.subCategory}
                       </div>
@@ -448,10 +471,7 @@ export function RankingTable() {
                       </TableHead>
 
                       {/* Session Score Columns - Always visible for scrolling desire */}
-                      {(
-                        RankingTryout?.rankingData?.[0]?.sessionResult ||
-                        mockSessionResults
-                      )?.map((session, index) => (
+                      {mockSessionResults?.map((session, index) => (
                         <TableHead
                           key={index}
                           className="text-right font-bold text-gray-700 text-xs md:text-sm min-w-[140px] relative"
@@ -475,8 +495,7 @@ export function RankingTable() {
                         <TableCell
                           colSpan={
                             8 +
-                            (RankingTryout?.rankingData?.[0]?.sessionResult
-                              ?.length || 0) +
+                            (mockSessionResults?.length || 0) +
                             (!isAdmin ? 3 : 0) // Add extra columns for non-premium
                           }
                           className="text-center h-32"

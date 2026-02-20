@@ -26,6 +26,7 @@ import {
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import { getSubtestLabel } from '@/lib/utils/snbt';
 import {
   Activity,
   BarChart2,
@@ -552,13 +553,17 @@ const AnalysisSubject = () => {
 
   const subjects = useMemo(() => {
     const items = [...(RankingTryout?.AnalisisCategory ?? [])];
+    const websiteSubCategoryId = websiteSubCategory?.id;
+
     const names = items.map((item) => item.name);
 
-    // Build unique short labels: start at 13 chars and grow until no collision
+    // Build unique short labels: use SNBT initials for snbt, else auto-truncate
     const makeShort = (name: string, len: number) =>
       name.length > len + 1 ? name.slice(0, len) + '\u2026' : name;
 
     const shortNames = names.map((name, i) => {
+      const initials = getSubtestLabel(name, websiteSubCategoryId);
+      if (initials !== name) return initials;
       let len = 13;
       while (len <= name.length) {
         const candidate = makeShort(name, len);
@@ -581,7 +586,7 @@ const AnalysisSubject = () => {
         totalScore: parseFloat(item.totalScore?.toFixed(1) || '0'),
       }))
       .sort((a, b) => b.value - a.value);
-  }, [RankingTryout, isIRT]);
+  }, [RankingTryout, isIRT, websiteSubCategory?.id]);
 
   const maxValue = useMemo(
     () => Math.max(...subjects.map((s) => Math.abs(s.value)), 0.001),

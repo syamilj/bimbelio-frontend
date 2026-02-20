@@ -2,6 +2,7 @@
 
 import { toaster } from '@/components/ui/toaster';
 import { useGet } from '@/lib/fetch-helper/useGet';
+import { getSnbtShortName } from '@/lib/utils/snbt';
 import {
   Prediction,
   PredictionScore,
@@ -378,40 +379,41 @@ export type UniversityType = {
   }[];
 };
 
+// Labels use SNBT initials — see @/lib/utils/snbt for the canonical map
 const UTBK_DATA = [
   {
     name: 'penalaran_umum',
-    label: 'Penalaran Umum',
+    label: getSnbtShortName('Penalaran Umum'), // PU
     score: 0,
   },
   {
     name: 'pengetahuan_pemahaman_umum',
-    label: 'Pengetahuan & Pemahaman Umum',
+    label: getSnbtShortName('Pengetahuan dan Pemahaman Umum'), // PPU
     score: 0,
   },
   {
     name: 'pemahaman_bacaan_menulis',
-    label: 'Pemahaman Bacaan & Menulis',
+    label: getSnbtShortName('Pemahaman Bacaan dan Menulis'), // PBM
     score: 0,
   },
   {
     name: 'penalaran_kuantitatif',
-    label: 'Penalaran Kuantitatif',
+    label: getSnbtShortName('Pengetahuan Kuantitatif'), // PK
     score: 0,
   },
   {
     name: 'literasi_bahasa_indonesia',
-    label: 'Literasi Bahasa Indonesia',
+    label: getSnbtShortName('Literasi Bahasa Indonesia'), // LBI
     score: 0,
   },
   {
     name: 'literasi_bahasa_inggris',
-    label: 'Literasi Bahasa Inggris',
+    label: getSnbtShortName('Literasi Bahasa Inggris'), // LBE
     score: 0,
   },
   {
     name: 'matematika',
-    label: 'Matematika',
+    label: getSnbtShortName('Penalaran Matematika'), // PM
     score: 0,
   },
 ];
