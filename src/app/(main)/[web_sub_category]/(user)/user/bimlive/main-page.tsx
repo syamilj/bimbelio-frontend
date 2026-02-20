@@ -5,14 +5,9 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Select,
   SelectContent,
@@ -20,15 +15,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   website_sub_category_id,
   website_sub_category_id_params,
 } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
-import { formatDateTime, formatDuration } from '@/lib/utils';
-import { getStatusColor } from '@/lib/utils/live-class';
+import { cn, formatDateTime, formatDuration } from '@/lib/utils';
 import {
   Category,
   CourseSubChapter,
@@ -40,36 +33,33 @@ import {
 import {
   AlertCircle,
   Award,
+  Bell,
   BookOpen,
   Calendar,
+  CalendarDays,
   Check,
   CheckCircle2,
   Clock,
   Crown,
   Eye,
+  LayoutGrid,
   PlayCircle,
   Search,
-  Star,
-  Target,
   Timer,
   UserCheck,
   Users,
   Video,
-  XCircle,
+  Zap,
 } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import './_components/_style.css'; // Keep the CSS import here if it's specific to the dashboard layout
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DialogLiveClassRegister } from './_components/dialog-live-class-register';
 import { CalendarView } from './_components/live-class-calendar-view';
 import { useCountdown } from './_components/live-class-hooks';
-import {
-  CountdownTimer,
-  EmptyState,
-  MarketingCTA,
-  NotificationBadge,
-  PreviewContent,
-} from './_components/live-class-shared-components';
+import { CountdownTimer } from './_components/live-class-shared-components';
+
+// ─── Types ─────────────────────────────────────────────────────────────────────
 
 export type LiveLearningDataType = LiveClass & {
   Instructor: Instructor;
@@ -91,12 +81,16 @@ export type LiveLearningDataType = LiveClass & {
   participantStatus?: 'Diundang' | 'Terdaftar' | 'Tidak Terdaftar';
 };
 
+const TAB_IDS = ['available', 'registered', 'invited', 'completed'] as const;
+type TabId = (typeof TAB_IDS)[number];
+
+// ─── Main Page ─────────────────────────────────────────────────────────────────
+
 export default function LiveLearningDashboard({
   type,
 }: {
   type?: 'LIVECLASS' | 'LIVESTREAM' | 'WEBINAR';
 }) {
-  // === DESIGN SYSTEM PATTERNS FROM LEADERBOARD ===
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -104,30 +98,26 @@ export default function LiveLearningDashboard({
   const webSubCategoryId =
     website_sub_category_id ?? website_sub_category_id_params;
 
-  const [activeTab, setActiveTab] = useState('available');
+  const [activeTab, setActiveTab] = useState<TabId>('available');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [viewMode, setViewMode] = useState<'grid' | 'calendar'>('grid');
-  // const [sortBy, setSortBy] = useState<'date' | 'name' | 'status'>('date');
-  // const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const hasAutoSelected = useRef(false);
 
-  const typeLabel = type
-    ? type === 'LIVECLASS'
+  const typeLabel =
+    type === 'LIVECLASS'
       ? 'Live Class'
       : type === 'LIVESTREAM'
         ? 'Livestream'
-        : 'Webinar'
-    : 'Live Learning';
-  const typeIcon =
-    type === 'LIVECLASS'
-      ? Video
-      : type === 'LIVESTREAM'
-        ? PlayCircle
         : type === 'WEBINAR'
-          ? Users
-          : Video;
-  const TypeIcon = typeIcon;
+          ? 'Webinar'
+          : 'Live Learning';
+
+  const TypeIcon =
+    type === 'LIVESTREAM' ? PlayCircle : type === 'WEBINAR' ? Users : Video;
+
+  // ─── Data ──────────────────────────────────────────────────────────────────
 
   const {
     data: LiveClassAvailable,
@@ -138,75 +128,47 @@ export default function LiveLearningDashboard({
   } = useGet<LiveLearningDataType[]>('/liveClass/getAllLiveClassAvailable', {
     params: {
       ...(type ? { type } : {}),
-      ...(webSubCategoryId
-        ? { website_sub_category_id: webSubCategoryId }
-        : {}),
+      ...(webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : {}),
     },
     useEffectDependencies: [type, webSubCategoryId],
     enabled: Boolean(webSubCategoryId),
   });
 
-  console.log({ LiveClassAvailableTotalData, LiveClassAvailableIsLoading });
-
-  const {
-    data: LiveClassCompleted,
-    // isLoading: LiveClassCompletedIsLoading,
-    // error: LiveClassCompletedError,
-    totalData: LiveClassCompletedTotalData,
-  } = useGet<LiveLearningDataType[]>('/liveClass/getAllLiveClassCompleted', {
-    params: {
-      ...(type ? { type } : {}),
-      ...(webSubCategoryId
-        ? { website_sub_category_id: webSubCategoryId }
-        : {}),
-    },
-    useEffectDependencies: [type, webSubCategoryId],
-    enabled: Boolean(webSubCategoryId),
-  });
+  const { data: LiveClassCompleted, totalData: LiveClassCompletedTotalData } =
+    useGet<LiveLearningDataType[]>('/liveClass/getAllLiveClassCompleted', {
+      params: {
+        ...(type ? { type } : {}),
+        ...(webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : {}),
+      },
+      useEffectDependencies: [type, webSubCategoryId],
+      enabled: Boolean(webSubCategoryId),
+    });
 
   const {
     data: LiveClassRegistered,
-    // isLoading: LiveClassRegisteredIsLoading,
-    // error: LiveClassRegisteredError,
     totalData: LiveClassRegisteredTotalData,
     refetch: LiveClassRegisteredRefetch,
   } = useGet<LiveLearningDataType[]>('/user/getUserLiveClassRegistered', {
     params: {
       ...(type ? { type } : {}),
-      ...(webSubCategoryId
-        ? { website_sub_category_id: webSubCategoryId }
-        : {}),
+      ...(webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : {}),
     },
     enabled: LiveClassAvailableIsLoading === false && Boolean(webSubCategoryId),
-    useEffectDependencies: [
-      type,
-      LiveClassAvailableIsLoading,
-      webSubCategoryId,
-    ],
+    useEffectDependencies: [type, LiveClassAvailableIsLoading, webSubCategoryId],
   });
 
-  const {
-    data: LiveClassInvited,
-    // isLoading: LiveClassInvitedIsLoading,
-    // error: LiveClassInvitedError,
-    totalData: LiveClassInviteTotalData,
-  } = useGet<LiveLearningDataType[]>('/user/getUserLiveClassInvited', {
-    params: {
-      ...(type ? { type } : {}),
-      ...(webSubCategoryId
-        ? { website_sub_category_id: webSubCategoryId }
-        : {}),
-    },
-    useEffectDependencies: [type, webSubCategoryId],
-    enabled: Boolean(webSubCategoryId),
-  });
+  const { data: LiveClassInvited, totalData: LiveClassInviteTotalData } =
+    useGet<LiveLearningDataType[]>('/user/getUserLiveClassInvited', {
+      params: {
+        ...(type ? { type } : {}),
+        ...(webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : {}),
+      },
+      useEffectDependencies: [type, webSubCategoryId],
+      enabled: Boolean(webSubCategoryId),
+    });
 
-  // Attendance Report
   const { data: attendanceReport } = useGet<{
-    report: {
-      id: string;
-      attendanceStatus: 'PRESENT' | 'LATE' | 'ABSENT' | 'UPCOMING';
-    }[];
+    report: { id: string; attendanceStatus: 'PRESENT' | 'LATE' | 'ABSENT' | 'UPCOMING' }[];
     summary: {
       total: number;
       present: number;
@@ -220,36 +182,90 @@ export default function LiveLearningDashboard({
       take: 100,
       page: 1,
       ...(type ? { type } : {}),
-      ...(webSubCategoryId
-        ? { website_sub_category_id: webSubCategoryId }
-        : {}),
+      ...(webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : {}),
     },
     useEffectDependencies: [type, webSubCategoryId],
     enabled: Boolean(webSubCategoryId),
   });
 
-  // Create attendance status map for quick lookup
-  const attendanceStatusMap = new Map(
-    attendanceReport?.report?.map((r) => [r.id, r.attendanceStatus]) || [],
-  );
-
-  const { data: Categories } = useGet<Category[]>(
-    '/category/getAllCategories',
-    {
-      params: webSubCategoryId
-        ? { website_sub_category_id: webSubCategoryId }
-        : undefined,
-      useEffectDependencies: [webSubCategoryId],
-      enabled: Boolean(webSubCategoryId),
-    },
-  );
-
-  console.log({
-    LiveClassAvailable,
-    LiveClassRegistered,
-    LiveClassCompleted,
-    LiveClassInvited,
+  const { data: Categories } = useGet<Category[]>('/category/getAllCategories', {
+    params: webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : undefined,
+    useEffectDependencies: [webSubCategoryId],
+    enabled: Boolean(webSubCategoryId),
   });
+
+  // ─── Filter ────────────────────────────────────────────────────────────────
+
+  const applyFilter = useCallback(
+    (list: LiveLearningDataType[] | null | undefined, sortDesc = false) => {
+      if (!list) return [];
+      const q = searchQuery.toLowerCase();
+      const filtered = list.filter((lc) => {
+        const matchSearch =
+          !q ||
+          lc.title.toLowerCase().includes(q) ||
+          lc.Instructor.name.toLowerCase().includes(q);
+        const matchSubject =
+          selectedSubject === 'all' || lc.categoryId === selectedSubject;
+        const matchStatus =
+          selectedStatus === 'all' || lc.status === selectedStatus;
+        return matchSearch && matchSubject && matchStatus;
+      });
+      // Sort: ascending = soonest first (available/registered/invited), descending = most recently done first (completed)
+      return filtered.sort((a, b) => {
+        const diff =
+          new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+        return sortDesc ? -diff : diff;
+      });
+    },
+    [searchQuery, selectedSubject, selectedStatus],
+  );
+
+  const filteredAvailable = useMemo(
+    () => applyFilter(LiveClassAvailable),
+    [applyFilter, LiveClassAvailable],
+  );
+  const filteredRegistered = useMemo(
+    () => applyFilter(LiveClassRegistered),
+    [applyFilter, LiveClassRegistered],
+  );
+  const filteredInvited = useMemo(
+    () => applyFilter(LiveClassInvited),
+    [applyFilter, LiveClassInvited],
+  );
+  const filteredCompleted = useMemo(
+    () => applyFilter(LiveClassCompleted, true),
+    [applyFilter, LiveClassCompleted],
+  );
+
+  // ─── Auto-select first populated tab ───────────────────────────────────────
+
+  const tabCountsRaw = useMemo(
+    () => ({
+      available: LiveClassAvailable?.length ?? null,
+      registered: LiveClassRegistered?.length ?? null,
+      invited: LiveClassInvited?.length ?? null,
+      completed: LiveClassCompleted?.length ?? null,
+    }),
+    [LiveClassAvailable, LiveClassRegistered, LiveClassInvited, LiveClassCompleted],
+  );
+
+  useEffect(() => {
+    if (hasAutoSelected.current) return;
+    if (tabCountsRaw.available === null) return;
+    for (const id of TAB_IDS) {
+      const count = tabCountsRaw[id];
+      if (count === null) continue;
+      if (count > 0) {
+        setActiveTab(id);
+        hasAutoSelected.current = true;
+        return;
+      }
+    }
+    if (TAB_IDS.every((id) => tabCountsRaw[id] !== null)) {
+      hasAutoSelected.current = true;
+    }
+  }, [tabCountsRaw]);
 
   useEffect(() => {
     trackUnifiedEvent({
@@ -271,1444 +287,713 @@ export default function LiveLearningDashboard({
     });
   }, [session]);
 
+  // ─── Tab config ────────────────────────────────────────────────────────────
+
+  const tabItems: {
+    id: TabId;
+    label: string;
+    icon: React.ElementType;
+    count: number;
+  }[] = [
+    {
+      id: 'available',
+      label: 'Tersedia',
+      icon: BookOpen,
+      count: LiveClassAvailableTotalData || LiveClassAvailable?.length || 0,
+    },
+    {
+      id: 'registered',
+      label: 'Terdaftar',
+      icon: UserCheck,
+      count: LiveClassRegisteredTotalData || LiveClassRegistered?.length || 0,
+    },
+    {
+      id: 'invited',
+      label: 'Diundang',
+      icon: Bell,
+      count: LiveClassInviteTotalData || LiveClassInvited?.length || 0,
+    },
+    {
+      id: 'completed',
+      label: 'Selesai',
+      icon: Check,
+      count: LiveClassCompletedTotalData || LiveClassCompleted?.length || 0,
+    },
+  ];
+
+  const summary = attendanceReport?.summary;
+
+  // ─── Render ────────────────────────────────────────────────────────────────
+
   return (
-    <div className="min-h-screen">
-      <div className="container mx-auto max-w-7xl px-4 py-6">
-        {/* ENHANCED HEADER - LEADERBOARD PATTERN */}
-        <Card className="bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden mb-8">
-          <CardHeader
-            className="pb-6 border-b-2 border-gray-100 relative overflow-hidden"
-            style={{
-              background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-            }}
+    <div className="min-h-screen pb-12">
+      {/* Page title + attendance summary */}
+      <div className="p-4 md:p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div
+            className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0"
+            style={{ backgroundColor: `${mainColor}20` }}
           >
-            <div className="relative z-10">
-              <CardTitle className="text-3xl font-black flex items-center gap-4 text-gray-900">
-                <div
-                  className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-sm"
-                  style={{ backgroundColor: `${mainColor}15` }}
-                >
-                  <TypeIcon
-                    className="w-6 h-6"
-                    style={{ color: mainColor }}
-                  />
-                </div>
-                {typeLabel} Dashboard
-              </CardTitle>
-              <CardDescription className="text-lg mt-3 text-gray-500 font-medium">
-                Ikuti kelas langsung dengan tutor ahli dan tingkatkan persiapan
-                ujian Anda
-              </CardDescription>
-            </div>
-          </CardHeader>
-          {/* STATS CARDS - LEADERBOARD PATTERN */}
-          <CardContent className="p-6">
-            {/* Attendance Stats */}
-            {attendanceReport?.summary &&
-              attendanceReport.summary.total > 0 && (
-                <div className="mb-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <UserCheck className="w-5 h-5 text-emerald-600" />
-                    <h3 className="text-lg font-black text-gray-900">
-                      Statistik Kehadiran
-                    </h3>
-                  </div>
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                    <div className="bg-emerald-50 rounded-3xl p-4 border-2 border-emerald-200">
-                      <div className="flex items-center gap-2 mb-1">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                        <span className="text-xs font-bold text-emerald-700">
-                          Hadir
-                        </span>
-                      </div>
-                      <p className="text-2xl font-black text-emerald-900">
-                        {attendanceReport.summary.present}
-                      </p>
-                    </div>
-                    <div className="bg-yellow-50 rounded-3xl p-4 border-2 border-yellow-200">
-                      <div className="flex items-center gap-2 mb-1">
-                        <AlertCircle className="w-4 h-4 text-yellow-600" />
-                        <span className="text-xs font-bold text-yellow-700">
-                          Terlambat
-                        </span>
-                      </div>
-                      <p className="text-2xl font-black text-yellow-900">
-                        {attendanceReport.summary.late}
-                      </p>
-                    </div>
-                    <div className="bg-red-50 rounded-3xl p-4 border-2 border-red-200">
-                      <div className="flex items-center gap-2 mb-1">
-                        <XCircle className="w-4 h-4 text-red-600" />
-                        <span className="text-xs font-bold text-red-700">
-                          Tidak Hadir
-                        </span>
-                      </div>
-                      <p className="text-2xl font-black text-red-900">
-                        {attendanceReport.summary.absent}
-                      </p>
-                    </div>
-                    <div className="bg-blue-50 rounded-3xl p-4 border-2 border-blue-200">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Clock className="w-4 h-4 text-blue-600" />
-                        <span className="text-xs font-bold text-blue-700">
-                          Akan Datang
-                        </span>
-                      </div>
-                      <p className="text-2xl font-black text-blue-900">
-                        {attendanceReport.summary.upcoming}
-                      </p>
-                    </div>
-                    <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-3xl p-4 border-2 border-indigo-200">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Target className="w-4 h-4 text-indigo-600" />
-                        <span className="text-xs font-bold text-indigo-700">
-                          Tingkat Kehadiran
-                        </span>
-                      </div>
-                      <p className="text-2xl font-black text-indigo-900">
-                        {attendanceReport.summary.attendanceRate}%
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
+            <TypeIcon className="w-5 h-5" style={{ color: mainColor }} />
+          </div>
+          <div>
+            <h1 className="text-xl font-black text-slate-900">{typeLabel}</h1>
+            <p className="text-xs text-slate-400 font-medium">
+              Ikuti kelas langsung bersama tutor ahli
+            </p>
+          </div>
+        </div>
 
-            {/* Upcoming Live Classes - Responsive Grid */}
-            {LiveClassAvailable && LiveClassAvailable.length > 0 && (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl flex items-center justify-center shadow-lg">
-                      <Timer className="w-5 h-5 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-black text-gray-900">
-                        {typeLabel} Mendatang
-                      </h3>
-                      <p className="text-sm text-gray-500">
-                        {LiveClassAvailable.length} kelas tersedia
-                      </p>
-                    </div>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-blue-600 font-bold hover:bg-blue-50"
-                    onClick={() => setActiveTab('available')}
-                  >
-                    Lihat Semua →
-                  </Button>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                  {LiveClassAvailable.slice(0, 4).map((liveClass, index) => (
-                    <UpcomingCard
-                      key={liveClass.id}
-                      liveClass={liveClass}
-                      index={index}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="mb-6 border-2 border-gray-100 rounded-3xl shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="flex-1">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                    <Input
-                      placeholder="Cari berdasarkan judul, deskripsi, atau nama tutor..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 border-2 rounded-3xl shadow-sm"
-                    />
-                  </div>
-                </div>
-                <Select
-                  value={selectedSubject}
-                  onValueChange={setSelectedSubject}
-                >
-                  <SelectTrigger className="w-full sm:w-[200px] border-2 rounded-3xl shadow-sm font-bold">
-                    <SelectValue placeholder="Pilih mata pelajaran" />
-                  </SelectTrigger>
-                  <SelectContent className="border-2 border-gray-100 rounded-3xl shadow-sm">
-                    <SelectItem value="all">Semua Mata Pelajaran</SelectItem>
-                    {Categories?.map((subject) => (
-                      <SelectItem
-                        key={subject.id}
-                        value={subject.id}
-                      >
-                        {subject.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Select
-                  value={selectedStatus}
-                  onValueChange={setSelectedStatus}
-                >
-                  <SelectTrigger className="w-full sm:w-[150px] border-2 rounded-3xl shadow-sm font-bold">
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent className="border-2 border-gray-100 rounded-3xl shadow-sm">
-                    <SelectItem value="all">Semua Status</SelectItem>
-                    <SelectItem value="SCHEDULED">Terjadwal</SelectItem>
-                    <SelectItem value="ONGOING">Berlangsung</SelectItem>
-                    <SelectItem value="COMPLETED">Selesai</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="flex items-center justify-between border-t-2 border-gray-100 pt-4">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-black text-gray-900">
-                      Tampilan:
-                    </span>
-                    <div className="flex bg-gray-100 rounded-3xl p-1 border-2 border-gray-200">
-                      <button
-                        onClick={() => setViewMode('grid')}
-                        className={`px-3 py-2 text-sm font-bold rounded-3xl transition-all ${
-                          viewMode === 'grid'
-                            ? 'bg-white text-gray-900 shadow-sm'
-                            : 'text-gray-600 hover:text-gray-900'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <Target className="w-4 h-4" />
-                          <span className="hidden sm:inline">Grid</span>
-                        </div>
-                      </button>
-                      <button
-                        onClick={() => setViewMode('calendar')}
-                        className={`px-3 py-2 text-sm font-bold rounded-3xl transition-all ${
-                          viewMode === 'calendar'
-                            ? 'bg-white text-gray-900 shadow-sm'
-                            : 'text-gray-600 hover:text-gray-900'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <Calendar className="w-4 h-4" />
-                          <span className="hidden sm:inline">Calendar</span>
-                        </div>
-                      </button>
-                    </div>
-                  </div>
-                  {/* <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-gray-700">
-                      Urutkan:
-                    </span>
-                    <Select
-                      value={sortBy}
-                      onValueChange={(value: 'date' | 'name' | 'status') =>
-                        setSortBy(value)
-                      }
-                    >
-                      <SelectTrigger className="w-[120px] h-9">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="date">Tanggal</SelectItem>
-                        <SelectItem value="name">Nama</SelectItem>
-                        <SelectItem value="status">Status</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <button
-                      onClick={() =>
-                        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
-                      }
-                      className="p-2 h-9 border rounded-3xl hover:bg-gray-50 transition-colors"
-                      title={`Urutan: ${sortOrder === 'asc' ? 'Naik' : 'Turun'}`}
-                    >
-                      {sortOrder === 'asc' ? '↑' : '↓'}
-                    </button>
-                  </div> */}
-                </div>
-                {/* <div className="hidden lg:flex items-center gap-4 text-sm text-gray-600">
-                  <div className="flex items-center gap-1">
-                    <Bell className="w-4 h-4" />
-                    <span>{'-'} upcoming</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Users className="w-4 h-4" />
-                    <span>{'-'} registered</span>
-                  </div>
-                </div> */}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Tabs
-          value={activeTab}
-          onValueChange={setActiveTab}
-        >
-          <TabsList className="grid w-full grid-cols-4 mb-6 md:mb-8 bg-gray-50 rounded-3xl p-1 h-11 md:h-12 border-2 border-gray-100">
-            <TabsTrigger
-              value="available"
-              className="flex items-center gap-2 rounded-3xl px-3 md:px-4 py-2 text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              style={
-                { '--tw-bg-opacity': '1' } as React.CSSProperties & {
-                  [key: string]: string;
-                }
-              }
-              data-active-bg={mainColor}
-            >
-              <BookOpen className="w-4 h-4" />
-              <span className="hidden sm:inline font-bold">
-                {typeLabel} Tersedia
+        {/* Attendance pills */}
+        {summary && summary.total > 0 && (
+          <div
+            className="flex items-center gap-2 overflow-x-auto pb-1"
+            style={{ scrollbarWidth: 'none' }}
+          >
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 flex-shrink-0">
+              <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+              <span className="text-[10px] font-bold text-emerald-700">
+                {summary.present} Hadir
               </span>
-              <span className="sm:hidden font-bold">Semua</span>
-              <NotificationBadge
-                count={
-                  LiveClassAvailableTotalData || LiveClassAvailable?.length || 0
-                }
-              />
-            </TabsTrigger>
-            <TabsTrigger
-              value="registered"
-              className="flex items-center gap-2 rounded-3xl px-3 md:px-4 py-2 text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              style={
-                { '--tw-bg-opacity': '1' } as React.CSSProperties & {
-                  [key: string]: string;
-                }
-              }
-              data-active-bg={mainColor}
-            >
-              <Users className="w-4 h-4" />
-              <span className="hidden sm:inline font-bold">Terdaftar</span>
-              <span className="sm:hidden font-bold">Daftar</span>
-              <NotificationBadge
-                count={
-                  LiveClassRegisteredTotalData ||
-                  LiveClassRegistered?.length ||
-                  0
-                }
-                variant="yellow"
-              />
-            </TabsTrigger>
-            <TabsTrigger
-              value="invited"
-              className="flex items-center gap-2 rounded-3xl px-3 md:px-4 py-2 text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              style={
-                { '--tw-bg-opacity': '1' } as React.CSSProperties & {
-                  [key: string]: string;
-                }
-              }
-              data-active-bg={mainColor}
-            >
-              <Video className="w-4 h-4" />
-              <span className="hidden sm:inline font-bold">Diundang</span>
-              <span className="sm:hidden font-bold">Live</span>
-              <NotificationBadge
-                count={
-                  LiveClassInviteTotalData || LiveClassInvited?.length || 0
-                }
-                variant="green"
-              />
-            </TabsTrigger>
-            <TabsTrigger
-              value="completed"
-              className="flex items-center gap-2 rounded-3xl px-3 md:px-4 py-2 text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              style={
-                { '--tw-bg-opacity': '1' } as React.CSSProperties & {
-                  [key: string]: string;
-                }
-              }
-              data-active-bg={mainColor}
-            >
-              <Check className="w-4 h-4" />
-              <span className="hidden sm:inline font-bold">Selesai</span>
-              <span className="sm:hidden font-bold">Selesai</span>
-              <NotificationBadge
-                count={
-                  LiveClassCompletedTotalData || LiveClassCompleted?.length || 0
-                }
-                variant="green"
-              />
-            </TabsTrigger>
-          </TabsList>
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-100 flex-shrink-0">
+              <AlertCircle className="w-3 h-3 text-amber-600" />
+              <span className="text-[10px] font-bold text-amber-700">
+                {summary.late} Terlambat
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 flex-shrink-0">
+              <Clock className="w-3 h-3 text-blue-600" />
+              <span className="text-[10px] font-bold text-blue-700">
+                {summary.upcoming} Mendatang
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-violet-50 border border-violet-100 flex-shrink-0">
+              <Award className="w-3 h-3 text-violet-600" />
+              <span className="text-[10px] font-bold text-violet-700">
+                {summary.attendanceRate}% Kehadiran
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
 
-          <TabsContent
-            value="available"
-            className="space-y-4"
+      {/* Main content area */}
+      <div className="max-w-7xl mx-auto px-4 md:px-6 space-y-0">
+        {/* Filter row */}
+        <div className="flex flex-col sm:flex-row gap-2 mb-3">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+            <Input
+              placeholder="Cari judul atau nama tutor..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9 h-10 rounded-2xl border-slate-200 bg-white shadow-sm font-medium text-sm"
+            />
+          </div>
+          <Select value={selectedSubject} onValueChange={setSelectedSubject}>
+            <SelectTrigger className="w-full sm:w-[170px] h-10 rounded-2xl border-slate-200 bg-white shadow-sm font-semibold text-sm">
+              <SelectValue placeholder="Semua Mapel" />
+            </SelectTrigger>
+            <SelectContent className="rounded-2xl">
+              <SelectItem value="all">Semua Mapel</SelectItem>
+              {Categories?.map((cat) => (
+                <SelectItem key={cat.id} value={cat.id}>
+                  {cat.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+            <SelectTrigger className="w-full sm:w-[150px] h-10 rounded-2xl border-slate-200 bg-white shadow-sm font-semibold text-sm">
+              <SelectValue placeholder="Semua Status" />
+            </SelectTrigger>
+            <SelectContent className="rounded-2xl">
+              <SelectItem value="all">Semua Status</SelectItem>
+              <SelectItem value="Akan Datang">Akan Datang</SelectItem>
+              <SelectItem value="Sedang Berlangsung">Berlangsung</SelectItem>
+              <SelectItem value="Selesai">Selesai</SelectItem>
+            </SelectContent>
+          </Select>
+          {/* View toggle */}
+          <div className="flex bg-white border border-slate-200 shadow-sm rounded-2xl p-1 gap-1 h-10 flex-shrink-0 self-start sm:self-auto">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={cn(
+                'flex items-center gap-1.5 px-3 rounded-xl text-xs font-bold transition-all',
+                viewMode === 'grid'
+                  ? 'text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700',
+              )}
+              style={viewMode === 'grid' ? { background: mainColor } : undefined}
+            >
+              <LayoutGrid className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Grid</span>
+            </button>
+            <button
+              onClick={() => setViewMode('calendar')}
+              className={cn(
+                'flex items-center gap-1.5 px-3 rounded-xl text-xs font-bold transition-all',
+                viewMode === 'calendar'
+                  ? 'text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700',
+              )}
+              style={
+                viewMode === 'calendar' ? { background: mainColor } : undefined
+              }
+            >
+              <CalendarDays className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Kalender</span>
+            </button>
+          </div>
+        </div>
+
+        {/* ─── Sticky Tab Navigation — identical to bimarena ─────────────────── */}
+        <div className="sticky top-0 z-30 bg-slate-50/80 backdrop-blur-xl py-2">
+          <div
+            className="flex gap-1.5 p-1 bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-x-auto"
+            style={{ scrollbarWidth: 'none' }}
           >
-            {LiveClassAvailableError ? (
-              <div className="bg-orange-50 border-2 border-orange-200 rounded-3xl p-6 text-center">
-                <div className="text-orange-500 mb-3">
-                  <svg
-                    className="h-12 w-12 mx-auto"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+            {tabItems.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={cn(
+                    'relative flex items-center gap-1.5 px-4 py-2.5 rounded-3xl font-bold text-xs md:text-sm transition-all whitespace-nowrap flex-1 justify-center min-w-0',
+                    isActive
+                      ? 'text-white shadow-lg'
+                      : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50',
+                  )}
+                >
+                  {isActive && (
+                    <div
+                      className="absolute inset-0 rounded-3xl"
+                      style={{ background: mainColor }}
                     />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold text-orange-800 mb-2">
-                  Fitur Multi-Plan Tidak Tersedia
-                </h3>
-                <p className="text-orange-600">
-                  Terjadi kesalahan saat memuat data multi-plan. Anda masih
-                  dapat menggunakan tab lain.
-                </p>
-              </div>
-            ) : LiveClassAvailableIsLoading ? (
-              <div className="space-y-4">
-                {[1, 2, 3].map((i) => (
-                  <div
-                    key={i}
-                    className="border rounded-3xl p-4 animate-pulse"
-                  >
-                    <div className="h-6 bg-gray-200 rounded w-48 mb-2"></div>
-                    <div className="h-4 bg-gray-200 rounded w-full mb-4"></div>
-                    <div className="h-10 bg-gray-200 rounded w-24"></div>
+                  )}
+                  <div className="relative z-10 flex items-center gap-1.5">
+                    <Icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                    <span>{tab.label}</span>
+                    {tab.count > 0 && (
+                      <span
+                        className={cn(
+                          'text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none',
+                          isActive
+                            ? 'bg-white/25 text-white'
+                            : 'bg-slate-100 text-slate-500',
+                        )}
+                      >
+                        {tab.count}
+                      </span>
+                    )}
                   </div>
-                ))}
-              </div>
-            ) : viewMode === 'calendar' ? (
-              <CalendarView
-                liveClass={LiveClassAvailable || []}
-                onJoin={() => {}}
-                onRate={() => {}}
-                onUpgrade={() => {}}
-              />
-            ) : (
-              <>
-                {LiveClassAvailable && LiveClassAvailable?.length > 0 && (
-                  <div
-                    className={`grid gap-4 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : ''}`}
-                  >
-                    {LiveClassAvailable?.map((liveClass) => (
-                      <LiveClassCard
-                        key={liveClass.id}
-                        liveClass={liveClass}
-                        onJoin={() => {}}
-                        onRate={() => {}}
-                        viewMode={viewMode}
-                        isRegistrationStep={true}
-                        onFinishRegistered={async () => {
-                          await LiveClassAvailableRefetch();
-                          await LiveClassRegisteredRefetch();
-                        }}
-                      />
-                    ))}
-                  </div>
-                )}
-                {LiveClassAvailable?.length === 0 && (
-                  <EmptyState
-                    icon={Crown}
-                    title="Belum ada live class premium"
-                    description="Live class premium dengan plan requirements akan muncul di sini. Saat ini belum ada live class yang dikaitkan dengan paket premium."
-                  />
-                )}
-              </>
-            )}
-          </TabsContent>
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
-          <TabsContent
-            value="registered"
-            className="space-y-4"
-          >
-            {viewMode === 'calendar' ? (
-              <CalendarView
-                liveClass={LiveClassRegistered || []}
-                onJoin={() => {}}
-                onRate={() => {}}
-                onUpgrade={() => {}}
-              />
-            ) : LiveClassRegistered && LiveClassRegistered?.length > 0 ? (
-              <div
-                className={`grid gap-4 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : ''}`}
-              >
-                {LiveClassRegistered?.map((liveClass) => (
-                  <LiveClassCard
-                    key={liveClass.id}
-                    liveClass={liveClass}
-                    onJoin={() => {}}
-                    onRate={() => {}}
-                    viewMode={viewMode}
-                  />
-                ))}
-              </div>
-            ) : (
-              <EmptyState
-                icon={Users}
-                title="Belum ada kelas terdaftar"
-                description="Kelas yang sudah Anda daftarkan akan muncul di sini."
-              />
-            )}
-          </TabsContent>
-
-          <TabsContent
-            value="invited"
-            className="space-y-4"
-          >
-            {viewMode === 'calendar' ? (
-              <CalendarView
-                liveClass={LiveClassInvited || []}
-                onJoin={() => {}}
-                onRate={() => {}}
-                onUpgrade={() => {}}
-              />
-            ) : LiveClassInvited && LiveClassInvited?.length > 0 ? (
-              <div
-                className={`grid gap-4 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : ''}`}
-              >
-                {LiveClassInvited?.map((liveClass) => (
-                  <LiveClassCard
-                    key={liveClass.id}
-                    liveClass={liveClass}
-                    onJoin={() => {}}
-                    onRate={() => {}}
-                    viewMode={viewMode}
-                  />
-                ))}
-              </div>
-            ) : (
-              <EmptyState
-                icon={Video}
-                title="Belum ada undangan kelas"
-                description="Kelas yang sudah diundang admin akan muncul di sini."
-              />
-            )}
-          </TabsContent>
-
-          <TabsContent
-            value="completed"
-            className="space-y-4"
-          >
-            {viewMode === 'calendar' ? (
-              <CalendarView
-                liveClass={LiveClassCompleted || []}
-                onJoin={() => {}}
-                onRate={() => {}}
-                onUpgrade={() => {}}
-              />
-            ) : LiveClassCompleted && LiveClassCompleted?.length > 0 ? (
-              <div
-                className={`grid gap-4 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : ''}`}
-              >
-                {LiveClassCompleted?.map((liveClass) => (
-                  <LiveClassCard
-                    key={liveClass.id}
-                    liveClass={liveClass}
-                    onJoin={() => {}}
-                    onRate={() => {}}
-                    viewMode={viewMode}
-                  />
-                ))}
-              </div>
-            ) : (
-              <EmptyState
-                icon={Clock}
-                title="Belum ada kelas selesai"
-                description="Kelas yang sudah selesai akan muncul di sini."
-              />
-            )}
-          </TabsContent>
-        </Tabs>
-
-        {/* <RatingModal
-          isOpen={ratingModal.isOpen}
-          onClose={closeRatingModal}
-          liveClass={ratingModal.liveClass}
-          onSubmit={handleRatingSubmit}
-        />
-        <JoinLiveClassModal
-          isOpen={joinModal.isOpen}
-          onClose={closeJoinModal}
-          liveClass={joinModal.liveClass}
-          onSuccess={handleJoinSuccess}
-        /> */}
+        {/* ─── Tab Content Card — identical frame to bimarena ────────────────── */}
+        <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden mt-2">
+          <div className={cn(activeTab !== 'available' && 'hidden')}>
+            <LiveClassSection
+              icon={<Video className="w-4 h-4 text-blue-600" />}
+              iconBg="bg-blue-100"
+              title={`${typeLabel} Tersedia`}
+              subtitle="Daftar dan ikuti kelas yang tersedia untukmu"
+              count={filteredAvailable.length}
+              isLoading={LiveClassAvailableIsLoading}
+              hasError={Boolean(LiveClassAvailableError)}
+              viewMode={viewMode}
+              data={filteredAvailable}
+              mainColor={mainColor}
+              secondaryColor={secondaryColor}
+              emptyIcon={<Video className="w-10 h-10 text-slate-300" />}
+              emptyTitle="Belum ada live class tersedia"
+              emptyDesc="Live class baru akan segera hadir. Pantau terus halaman ini!"
+              isRegistrationStep
+              onFinishRegistered={async () => {
+                await LiveClassAvailableRefetch();
+                await LiveClassRegisteredRefetch();
+              }}
+            />
+          </div>
+          <div className={cn(activeTab !== 'registered' && 'hidden')}>
+            <LiveClassSection
+              icon={<UserCheck className="w-4 h-4 text-emerald-600" />}
+              iconBg="bg-emerald-100"
+              title={`${typeLabel} Terdaftar`}
+              subtitle="Kelas yang sudah kamu daftarkan"
+              count={filteredRegistered.length}
+              isLoading={false}
+              hasError={false}
+              viewMode={viewMode}
+              data={filteredRegistered}
+              mainColor={mainColor}
+              secondaryColor={secondaryColor}
+              emptyIcon={<Users className="w-10 h-10 text-slate-300" />}
+              emptyTitle="Belum ada kelas terdaftar"
+              emptyDesc="Kelas yang kamu daftarkan akan muncul di sini."
+            />
+          </div>
+          <div className={cn(activeTab !== 'invited' && 'hidden')}>
+            <LiveClassSection
+              icon={<Bell className="w-4 h-4 text-purple-600" />}
+              iconBg="bg-purple-100"
+              title={`Undangan ${typeLabel}`}
+              subtitle="Kelas yang diundang khusus untukmu"
+              count={filteredInvited.length}
+              isLoading={false}
+              hasError={false}
+              viewMode={viewMode}
+              data={filteredInvited}
+              mainColor={mainColor}
+              secondaryColor={secondaryColor}
+              emptyIcon={<Bell className="w-10 h-10 text-slate-300" />}
+              emptyTitle="Belum ada undangan"
+              emptyDesc="Undangan kelas eksklusif dari admin akan muncul di sini."
+            />
+          </div>
+          <div className={cn(activeTab !== 'completed' && 'hidden')}>
+            <LiveClassSection
+              icon={<Check className="w-4 h-4 text-slate-600" />}
+              iconBg="bg-slate-100"
+              title={`${typeLabel} Selesai`}
+              subtitle="Rekap kelas yang telah kamu ikuti"
+              count={filteredCompleted.length}
+              isLoading={false}
+              hasError={false}
+              viewMode={viewMode}
+              data={filteredCompleted}
+              mainColor={mainColor}
+              secondaryColor={secondaryColor}
+              emptyIcon={<Clock className="w-10 h-10 text-slate-300" />}
+              emptyTitle="Belum ada kelas selesai"
+              emptyDesc="Kelas yang sudah selesai akan tercatat di sini."
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-const UpcomingCard = ({
-  liveClass,
-  index,
+// ─── Section wrapper (same as Terbaru/Upcoming in bimarena) ────────────────────
+
+function LiveClassSection({
+  icon,
+  iconBg,
+  title,
+  subtitle,
+  count,
+  isLoading,
+  hasError,
+  viewMode,
+  data,
+  mainColor,
+  secondaryColor,
+  emptyIcon,
+  emptyTitle,
+  emptyDesc,
+  isRegistrationStep = false,
+  onFinishRegistered,
 }: {
-  liveClass: LiveLearningDataType;
-  index?: number;
-}) => {
-  const timeLeft = useCountdown(liveClass.startDate);
-  const colors = [
-    {
-      bg: 'from-blue-500 to-indigo-600',
-      light: 'bg-blue-50 border-blue-200',
-      text: 'text-blue-700',
-    },
-    {
-      bg: 'from-purple-500 to-pink-600',
-      light: 'bg-purple-50 border-purple-200',
-      text: 'text-purple-700',
-    },
-    {
-      bg: 'from-emerald-500 to-teal-600',
-      light: 'bg-emerald-50 border-emerald-200',
-      text: 'text-emerald-700',
-    },
-    {
-      bg: 'from-orange-500 to-red-600',
-      light: 'bg-orange-50 border-orange-200',
-      text: 'text-orange-700',
-    },
-  ];
-  const color = colors[(index ?? 0) % colors.length];
-
+  icon: React.ReactNode;
+  iconBg: string;
+  title: string;
+  subtitle: string;
+  count: number;
+  isLoading: boolean;
+  hasError: boolean;
+  viewMode: 'grid' | 'calendar';
+  data: LiveLearningDataType[];
+  mainColor: string;
+  secondaryColor: string;
+  emptyIcon: React.ReactNode;
+  emptyTitle: string;
+  emptyDesc: string;
+  isRegistrationStep?: boolean;
+  onFinishRegistered?: () => Promise<void>;
+}) {
   return (
-    <Card
-      className={`group hover:shadow-lg transition-all duration-300 border-2 ${color.light} rounded-3xl overflow-hidden`}
-    >
-      <CardContent className="p-0">
-        <div className={`h-2 bg-gradient-to-r ${color.bg}`} />
-        <div className="p-4 space-y-3">
-          <div className="flex items-start justify-between">
-            <Badge
-              className={`${color.light} ${color.text} border font-bold text-xs`}
-            >
-              {liveClass.status}
-            </Badge>
-            <span className="text-xs font-mono text-gray-400">
-              #{liveClass.id.slice(-4).toUpperCase()}
-            </span>
-          </div>
-
-          <h4 className="font-black text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
-            {liveClass.title}
-          </h4>
-
-          <div className="flex items-center gap-2">
-            <Avatar className="h-6 w-6 border border-gray-200">
-              <AvatarImage src={liveClass.Instructor.image || undefined} />
-              <AvatarFallback className="text-xs font-bold">
-                {liveClass.Instructor.name
-                  .split(' ')
-                  .map((n) => n[0])
-                  .join('')}
-              </AvatarFallback>
-            </Avatar>
-            <span className="text-sm font-semibold text-gray-700 truncate">
-              {liveClass.Instructor.name}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2 text-xs text-gray-500">
-            <Calendar className="h-3 w-3" />
-            <span>{formatDateTime(liveClass.startDate)}</span>
-          </div>
-
-          {!timeLeft.isExpired && (
-            <div className="bg-gray-50 rounded-3xl p-2 border border-gray-100">
-              <div className="text-xs text-gray-500 mb-1 text-center font-semibold">
-                Dimulai dalam
-              </div>
-              <div className="flex justify-center gap-2">
-                {timeLeft.days > 0 && (
-                  <div className="text-center">
-                    <div className="text-lg font-black text-gray-900">
-                      {timeLeft.days}
-                    </div>
-                    <div className="text-xs text-gray-500">hari</div>
-                  </div>
-                )}
-                <div className="text-center">
-                  <div className="text-lg font-black text-gray-900">
-                    {timeLeft.hours.toString().padStart(2, '0')}
-                  </div>
-                  <div className="text-xs text-gray-500">jam</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-lg font-black text-gray-900">
-                    {timeLeft.minutes.toString().padStart(2, '0')}
-                  </div>
-                  <div className="text-xs text-gray-500">mnt</div>
-                </div>
-              </div>
-            </div>
+    <div className="p-4 md:p-6">
+      {/* Section header — identical to terbaru.tsx */}
+      <div className="flex items-center gap-2 mb-4">
+        <div
+          className={cn(
+            'w-8 h-8 rounded-3xl flex items-center justify-center flex-shrink-0',
+            iconBg,
           )}
-
-          <Link
-            href={`/${website_sub_category_id}/user/bimlive/detail/${liveClass.id}`}
-          >
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full h-9 font-bold rounded-3xl border-2 hover:bg-gray-50"
-            >
-              <Eye className="h-4 w-4 mr-2" />
-              Lihat Detail
-            </Button>
-          </Link>
+        >
+          {icon}
         </div>
-      </CardContent>
-    </Card>
+        <div>
+          <h3 className="text-base font-black text-slate-800">{title}</h3>
+          <p className="text-xs text-slate-400 font-medium">{subtitle}</p>
+        </div>
+        {!isLoading && count > 0 && (
+          <Badge className="ml-auto bg-slate-50 text-slate-700 border-slate-200 text-[10px] font-bold">
+            {count} kelas
+          </Badge>
+        )}
+      </div>
+
+      {/* Error state */}
+      {hasError && (
+        <div className="rounded-2xl bg-red-50 border border-red-200 p-5 text-center">
+          <p className="text-red-700 font-bold text-sm">
+            Gagal memuat data. Silakan refresh halaman.
+          </p>
+        </div>
+      )}
+
+      {/* Loading skeletons */}
+      {isLoading && (
+        <div
+          className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' } as React.CSSProperties}
+        >
+          {Array.from({ length: 3 }).map((_, i) => (
+            <Skeleton
+              key={i}
+              className="h-[520px] min-w-[80%] sm:min-w-[320px] md:min-w-0 md:w-full rounded-3xl shrink-0 snap-center"
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Calendar view */}
+      {!isLoading && !hasError && viewMode === 'calendar' && (
+        <CalendarView
+          liveClass={data}
+          onJoin={() => {}}
+          onRate={() => {}}
+          onUpgrade={() => {}}
+        />
+      )}
+
+      {/* Grid view */}
+      {!isLoading && !hasError && viewMode === 'grid' && data.length > 0 && (
+        <div
+          className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3 xl:grid-cols-4"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' } as React.CSSProperties}
+        >
+          {data.map((lc) => (
+            <LiveClassCard
+              key={lc.id}
+              liveClass={lc}
+              mainColor={mainColor}
+              secondaryColor={secondaryColor}
+              isRegistrationStep={isRegistrationStep}
+              onFinishRegistered={onFinishRegistered}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Empty state */}
+      {!isLoading && !hasError && viewMode === 'grid' && data.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <div className="w-20 h-20 rounded-3xl bg-slate-50 flex items-center justify-center mb-4">
+            {emptyIcon}
+          </div>
+          <h4 className="text-base font-bold text-slate-700 mb-1">{emptyTitle}</h4>
+          <p className="text-sm text-slate-400 max-w-xs">{emptyDesc}</p>
+        </div>
+      )}
+    </div>
   );
-};
+}
+
+// ─── LiveClassCard — mirrors card-tryout.tsx structure exactly ─────────────────
+// Image: aspect-[4/5], full width, NO text overlay.
+// Status badge TOP-LEFT, access badge TOP-RIGHT.
+// Instructor info, title, stats grid, timer, and actions all BELOW image.
 
 function LiveClassCard({
   liveClass,
-  onJoin,
-  onRate,
-  onUpgrade,
-  showPlanInfo = false,
-  viewMode = 'grid',
-  variant = 'accessible', // NEW: Default variant
+  mainColor,
+  secondaryColor,
   isRegistrationStep = false,
   onFinishRegistered,
 }: {
   liveClass: LiveLearningDataType;
-  onJoin: (liveClass: LiveLearningDataType) => void;
-  onRate: (liveClass: LiveLearningDataType) => void;
-  onUpgrade?: (liveClass: any) => void;
-  showPlanInfo?: boolean;
-  viewMode?: 'grid' | 'calendar';
-  variant?: 'accessible' | 'preview' | 'locked';
+  mainColor: string;
+  secondaryColor: string;
   isRegistrationStep?: boolean;
   onFinishRegistered?: () => Promise<void>;
 }) {
-  const liveClassWithAccess = liveClass as any;
   const timeLeft = useCountdown(liveClass.startDate);
-  const isUpcoming = liveClass.status === 'Akan Datang' && !timeLeft.isExpired;
   const isLive = liveClass.status === 'Sedang Berlangsung';
+  const isDone = liveClass.status === 'Selesai';
+  const isUpcoming = liveClass.status === 'Akan Datang' && !timeLeft.isExpired;
 
-  // Grid view - more compact card
-  if (viewMode === 'grid') {
-    return (
-      <Card className="live-class-card hover:shadow-md transition-all duration-300 border-2 border-gray-100 rounded-3xl overflow-hidden group shadow-sm">
-        <CardContent className="p-0">
-          {/* Header with gradient and status */}
-          <div className="relative p-4 bg-gradient-to-br from-blue-50 to-indigo-50">
-            <div className="flex justify-between items-start mb-3">
-              <Badge
-                className={`status-badge ${getStatusColor(liveClass.status)} shadow-sm font-bold text-xs rounded-3xl`}
-              >
-                {liveClass.status}
-              </Badge>
-              {isLive && (
-                <div className="live-indicator flex items-center gap-1 text-red-600">
-                  <div className="w-2 h-2 bg-red-600 rounded-full"></div>
-                  <span className="text-xs font-black">LIVE</span>
-                </div>
-              )}
-            </div>
-            <h3 className="font-black text-lg mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors text-gray-900">
-              {liveClass.title}
-            </h3>
-            {/* Countdown for upcoming classes */}
-            {isUpcoming && (
-              <div className="mb-3">
-                <CountdownTimer timeLeft={timeLeft} />
-              </div>
-            )}
-          </div>
-          {/* Content */}
-          <div className="p-4 space-y-3">
-            {/* Header with ID */}
-            <div className="flex items-start justify-between mb-2">
-              <h4 className="font-black text-sm line-clamp-2 flex-1 pr-2 text-gray-900">
-                {liveClass.title}
-              </h4>
-              <Badge
-                variant="secondary"
-                className="text-xs font-mono bg-gray-100 text-gray-600 border-2 border-gray-300 shrink-0 ml-2 font-bold rounded-3xl"
-              >
-                #{liveClass.id.slice(-6).toUpperCase()}
-              </Badge>
-            </div>
-            {/* Instructor */}
-            <div className="flex items-center gap-2">
-              <Avatar className="h-8 w-8 border-2 border-gray-100">
-                <AvatarImage src={liveClass.Instructor.image || undefined} />
-                <AvatarFallback className="text-xs font-black">
-                  {liveClass.Instructor.name
-                    .split(' ')
-                    .map((n) => n[0])
-                    .join('')}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col gap-1 text-sm">
-                <span className="font-black text-gray-900 line-clamp-1">
-                  {liveClass.Instructor.name}
-                </span>
-                <div className="flex flex-wrap gap-2">
-                  {liveClass.Instructor.certificate && (
-                    <span className="text-xs px-2 py-1 bg-green-50 text-green-700 rounded-3xl border-2 border-green-200 line-clamp-1 max-w-[150px] truncate font-bold">
-                      {liveClass.Instructor.certificate}
-                    </span>
-                  )}
-                  {liveClass.Instructor.lastEducation && (
-                    <span className="text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-3xl border-2 border-blue-200 line-clamp-1 max-w-[150px] truncate font-bold">
-                      {liveClass.Instructor.lastEducation}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-            {/* Time info */}
-            <div className="space-y-2 text-sm text-gray-500 font-medium">
-              <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4 shrink-0" />
-                <span className="truncate">
-                  {formatDateTime(liveClass.startDate)}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 shrink-0" />
-                <span>{formatDuration(liveClass.duration)}</span>
-              </div>
-            </div>
+  const instructorInitials = liveClass.Instructor.name
+    .split(' ')
+    .slice(0, 2)
+    .map((n) => n[0])
+    .join('');
 
-            {/* Preview Content for marketing variant */}
-            {liveClassWithAccess.needsUpgrade && showPlanInfo && (
-              <div className="border-t-2 border-gray-100 pt-3">
-                <PreviewContent liveClass={liveClass} />
-              </div>
-            )}
-            {/* Plan info */}
-            {showPlanInfo && liveClassWithAccess.userAccess && (
-              <div className="border-t-2 border-gray-100 pt-3">
-                <div className="flex flex-wrap gap-1">
-                  {liveClassWithAccess.requiredPlans?.length > 0 ? (
-                    liveClassWithAccess.requiredPlans
-                      .slice(0, 2)
-                      .map((plan: any, index: number) => (
-                        <Badge
-                          key={index}
-                          variant={
-                            liveClassWithAccess.userAccess.canRegister
-                              ? 'default'
-                              : 'outline'
-                          }
-                          className={`text-xs font-bold rounded-3xl ${
-                            liveClassWithAccess.userAccess.canRegister
-                              ? 'bg-green-100 text-green-800 border-2 border-green-300'
-                              : 'bg-orange-100 text-orange-800 border-2 border-orange-300'
-                          }`}
-                        >
-                          <span className="mr-1">
-                            {liveClassWithAccess.userAccess.canRegister
-                              ? '✅'
-                              : '🔒'}
-                          </span>
-                          {typeof plan === 'string' ? plan : plan.name}
-                        </Badge>
-                      ))
-                  ) : (
-                    <Badge
-                      variant="secondary"
-                      className="text-xs font-bold rounded-3xl border-2"
-                    >
-                      📖 Free
-                    </Badge>
-                  )}
-                </div>
-              </div>
-            )}
-            {/* Actions with Enhanced Layout */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t-2 border-gray-100">
-              <div className="flex gap-2 flex-1">
-                {liveClassWithAccess.needsUpgrade && showPlanInfo ? (
-                  <MarketingCTA
-                    liveClass={liveClass}
-                    compact={true}
-                  />
-                ) : (
-                  <>
-                    {/* {liveClass.canJoin && (
-                      <Button
-                        onClick={() => onJoin(liveClass)}
-                        className="flex-1 h-10 text-sm font-medium"
-                        style={{
-                          backgroundColor: isLive ? '#ef4444' : undefined,
-                        }}
-                      >
-                        {isLive ? (
-                          <>
-                            <Video className="mr-2 h-4 w-4" />
-                            Join Live Now
-                          </>
-                        ) : (
-                          <>
-                            <PlayCircle className="mr-2 h-4 w-4" />
-                            Bergabung
-                          </>
-                        )}
-                      </Button>
-                    )} */}
-                    {showPlanInfo &&
-                      liveClassWithAccess.needsUpgrade &&
-                      onUpgrade && (
-                        <Button
-                          variant="outline"
-                          onClick={() => onUpgrade(liveClass)}
-                          className="flex-1 h-10 text-sm border-2 border-orange-300 text-orange-600 hover:bg-orange-50 rounded-3xl font-bold"
-                        >
-                          🔒 Upgrade Plan
-                        </Button>
-                      )}
-                  </>
-                )}
-              </div>
-              <div className="flex gap-2">
-                <div className="flex items-center justify-center gap-2 px-3 py-2 rounded-3xl border-2 border-gray-100">
-                  <div className="flex gap-2 text-xs text-gray-500 text-center">
-                    <Users className="h-3 w-3 mx-auto mb-1" />
-                    <div className="font-black text-gray-900">
-                      {liveClass.participants?.length || 0}
-                    </div>
-                  </div>
-                  <Link
-                    href={`/${website_sub_category_id}/user/bimlive/detail/${liveClass.id}`}
-                  >
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-10 ml-2 px-4 bg-transparent border-2 rounded-3xl font-bold"
-                    >
-                      <Eye className="mr-1 h-4 w-4" />
-                      <span className="inline">Detail</span>
-                    </Button>
-                  </Link>
-                  {liveClass.accessType === 'PREMIUM' && (
-                    <Badge className="h-10 px-3 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-800 border-2 border-blue-300 rounded-3xl font-black flex items-center gap-2 shadow-sm hover:shadow-md transition-all">
-                      <Crown className="h-4 w-4 text-blue-600 fill-blue-600" />
-                      <span>Premium</span>
-                    </Badge>
-                  )}
-                  {liveClass.accessType !== 'PREMIUM' &&
-                    isRegistrationStep &&
-                    liveClass.isRegistered === false &&
-                    onFinishRegistered && (
-                      <DialogLiveClassRegister
-                        liveClassId={liveClass.id}
-                        onFinish={onFinishRegistered}
-                        liveClassAccessType={liveClass.accessType}
-                      >
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-10 px-4 bg-transparent border-2 rounded-3xl font-bold"
-                        >
-                          <UserCheck className="mr-1 h-4 w-4" />
-                          <span className="inline">Daftar</span>
-                        </Button>
-                      </DialogLiveClassRegister>
-                    )}
-                  {liveClass.accessType !== 'PREMIUM' &&
-                    isRegistrationStep &&
-                    liveClass.isRegistered === true &&
-                    onFinishRegistered && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-10 px-4 bg-green-50 border-2 border-green-300 text-green-700 hover:bg-green-100 rounded-3xl font-bold"
-                      >
-                        <UserCheck className="mr-1 h-4 w-4" />
-                        <span className="inline">Terdaftar</span>
-                      </Button>
-                    )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
+  // Registration badge — mirrors getBadgeValue from card-tryout
+  const statusBadge = liveClass.isRegistered
+    ? {
+        className:
+          'bg-green-50 text-green-700 border-green-200 font-medium',
+        label: 'Terdaftar',
+        icon: <CheckCircle2 className="w-3 h-3" />,
+      }
+    : isLive
+      ? {
+          className:
+            'bg-red-50 text-red-700 border-red-200 font-medium animate-pulse',
+          label: 'LIVE',
+          icon: (
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+          ),
+        }
+      : isDone
+        ? {
+            className: 'bg-slate-100 text-slate-600 border-slate-200 font-medium',
+            label: 'Selesai',
+            icon: <Check className="w-3 h-3" />,
+          }
+        : {
+            className: 'bg-blue-50 text-blue-700 border-blue-200 font-medium',
+            label: 'Segera',
+            icon: <Clock className="w-3 h-3" />,
+          };
 
-  // List view - Modern redesigned layout
   return (
-    <Card className="hover:shadow-md transition-all duration-500 border-2 border-gray-100 rounded-3xl overflow-hidden cursor-pointer group bg-white hover:border-blue-200 shadow-sm">
+    <Card
+      className={cn(
+        'group relative overflow-hidden border-2 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01] rounded-3xl min-w-[85%] sm:min-w-[300px] md:min-w-0 flex-shrink-0 snap-center md:flex-shrink md:snap-none',
+        liveClass.accessType === 'PREMIUM'
+          ? 'border-gray-100 bg-white'
+          : 'border-emerald-200 bg-emerald-50/30',
+      )}
+    >
+      {/* Registration status badge — top right */}
+      <div className="absolute top-4 right-4 z-20">
+        <Badge className={cn('flex items-center gap-1', statusBadge.className)}>
+          {statusBadge.icon}
+          <span className="text-xs">{statusBadge.label}</span>
+        </Badge>
+      </div>
+
+      {/* Access type badge — top left */}
+      <div className="absolute top-4 left-4 z-20">
+        {liveClass.accessType === 'PREMIUM' ? (
+          <Badge className="bg-amber-50 text-amber-700 border-amber-200 font-bold flex items-center gap-1">
+            <Crown className="w-3 h-3" />
+            <span className="text-xs">Premium</span>
+          </Badge>
+        ) : (
+          <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 font-bold flex items-center gap-1">
+            <Award className="w-3 h-3" />
+            <span className="text-xs">Gratis</span>
+          </Badge>
+        )}
+      </div>
+
       <CardContent className="p-0">
-        {/* Modern Header with Floating Elements */}
-        <div className="relative bg-gradient-to-r from-slate-50 via-blue-50 to-indigo-50 p-6">
-          {/* Floating Status Elements */}
-          <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
-            <Badge
-              className={`status-badge ${getStatusColor(liveClass.status)} shadow-sm backdrop-blur-sm font-bold text-xs rounded-3xl`}
+        {/* ── Hero Image — aspect-[4/5], no text overlay ── */}
+        <div className="relative w-full aspect-[4/5] overflow-hidden">
+          {liveClass.image ? (
+            <Image
+              src={liveClass.image}
+              alt={liveClass.title}
+              fill
+              className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 768px) 90vw, (max-width: 1280px) 45vw, 25vw"
+            />
+          ) : liveClass.Instructor.image ? (
+            <Image
+              src={liveClass.Instructor.image}
+              alt={liveClass.Instructor.name}
+              fill
+              className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 768px) 90vw, 25vw"
+            />
+          ) : (
+            <div
+              className="w-full h-full flex items-center justify-center"
+              style={{
+                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              }}
             >
-              {liveClass.status}
-            </Badge>
-            {isLive && (
-              <div className="flex items-center gap-1 bg-red-500 text-white px-2 py-1 rounded-3xl text-xs font-black shadow-sm animate-pulse">
-                <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
-                LIVE
-              </div>
-            )}
-          </div>
-          <div className="flex items-start gap-4 pr-16">
-            {/* Instructor Avatar - Larger and more prominent */}
-            <div className="relative shrink-0">
-              <Avatar className="h-16 w-16 border-3 border-white shadow-sm ring-2 ring-blue-100">
-                <AvatarImage src={liveClass.Instructor.image || undefined} />
-                <AvatarFallback className="text-lg font-black bg-gradient-to-br from-blue-400 to-indigo-500 text-white">
-                  {liveClass.Instructor.name
-                    .split(' ')
-                    .map((n) => n[0])
-                    .join('')}
-                </AvatarFallback>
-              </Avatar>
-              {liveClass.Instructor.certificate && (
-                <div className="absolute -bottom-1 -right-1 bg-green-500 text-white rounded-full p-1 shadow-sm">
-                  <Award className="h-3 w-3" />
-                </div>
-              )}
-            </div>
-            {/* Main Content */}
-            <div className="flex-1 min-w-0">
-              <div className="mb-2">
-                <Badge
-                  variant="outline"
-                  className="text-xs font-mono bg-white/80 text-gray-600 border-2 border-gray-300 font-bold rounded-3xl"
-                >
-                  #{liveClass.id.slice(-6).toUpperCase()}
-                </Badge>
-              </div>
-              <h3 className="text-xl font-black text-gray-900 line-clamp-2 mb-2 group-hover:text-blue-600 transition-colors leading-tight">
-                {liveClass.title}
-              </h3>
-              {/* Instructor Info - Elegant layout */}
-              <div className="flex items-center gap-3 mb-3">
-                <div>
-                  <p className="font-black text-gray-900 text-base line-clamp-1">
-                    {liveClass.Instructor.name}
-                  </p>
-                  <div className="flex items-center gap-2 mt-1">
-                    {liveClass.Instructor.certificate && (
-                      <span
-                        className={`text-xs px-2 py-1 bg-green-100 text-green-700 rounded-3xl font-bold border-2 border-green-200 line-clamp-1 ${typeof window !== 'undefined' && window.innerWidth < 640 ? 'max-w-[150px] truncate' : ''}`}
-                      >
-                        ✓ {liveClass.Instructor.certificate}
-                      </span>
-                    )}
-                    {liveClass.Instructor.lastEducation && (
-                      <span
-                        className={`text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-3xl font-bold border-2 border-blue-200 line-clamp-1 ${typeof window !== 'undefined' && window.innerWidth < 640 ? 'max-w-[150px] truncate' : ''}`}
-                      >
-                        🎓 {liveClass.Instructor.lastEducation}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-              {/* Time Information - Clean layout */}
-              <div className="flex items-center gap-6 text-sm text-gray-600">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-3xl bg-blue-100 flex items-center justify-center border-2 border-blue-200">
-                    <Calendar className="h-4 w-4 text-blue-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 uppercase font-bold">
-                      Tanggal
-                    </p>
-                    <p className="font-black text-gray-900">
-                      {formatDateTime(liveClass.startDate)}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-3xl bg-purple-100 flex items-center justify-center border-2 border-purple-200">
-                    <Clock className="h-4 w-4 text-purple-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 uppercase font-bold">
-                      Durasi
-                    </p>
-                    <p className="font-black text-gray-900">
-                      {formatDuration(liveClass.duration)}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Countdown Timer - Modern design */}
-          {isUpcoming && !timeLeft.isExpired && (
-            <div className="mt-4 bg-white/90 backdrop-blur-sm rounded-3xl p-4 border-2 border-white/50 shadow-sm">
-              <div className="text-xs text-gray-600 mb-2 text-center font-black uppercase tracking-wide">
-                Dimulai dalam
-              </div>
-              <div className="flex justify-center">
-                <CountdownTimer timeLeft={timeLeft} />
-              </div>
-            </div>
-          )}
-          {/* Status Indicator for non-upcoming */}
-          {!isUpcoming && (
-            <div className="mt-4 flex justify-center">
-              {isLive && (
-                <div className="bg-red-500 text-white px-4 py-2 rounded-3xl text-sm font-black shadow-sm flex items-center gap-2 border-2 border-red-600">
-                  <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                  Sedang Berlangsung
-                </div>
-              )}
-              {liveClass.status === 'Selesai' && (
-                <div className="bg-gray-600 text-white px-4 py-2 rounded-3xl text-sm font-black shadow-sm flex items-center gap-2 border-2 border-gray-700">
-                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  Kelas Selesai
-                </div>
-              )}
+              <Video className="w-14 h-14 text-white opacity-40" />
             </div>
           )}
         </div>
-        {/* Content Section - Cleaner layout */}
-        <div className="p-6">
-          <p className="text-gray-500 text-sm mb-5 line-clamp-2 leading-relaxed font-medium">
-            {liveClass.description}
-          </p>
 
-          {/* Preview Content for marketing variant */}
-          {liveClassWithAccess.needsUpgrade && showPlanInfo ? (
-            <div className="mb-6">
-              <PreviewContent liveClass={liveClass} />
-            </div>
-          ) : (
-            <div className="grid gap-4 mb-6 lg:grid-cols-2">
-              {/* Agenda Items - Modern card */}
-              {liveClass.LiveClassAgenda &&
-                liveClass.LiveClassAgenda.length > 0 && (
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-4 border-2 border-blue-200">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-6 h-6 rounded-3xl bg-blue-500 flex items-center justify-center border-2 border-blue-600">
-                        <Target className="h-3 w-3 text-white" />
-                      </div>
-                      <span className="text-sm font-black text-blue-900">
-                        Agenda Pembelajaran ({liveClass.LiveClassAgenda.length})
-                      </span>
-                    </div>
-                    <div className="space-y-2">
-                      {liveClass.LiveClassAgenda.slice(0, 2).map(
-                        (agenda, index) => (
-                          <div
-                            key={agenda.id}
-                            className="bg-white/70 rounded-3xl p-3 border-2 border-white/50 shadow-sm"
-                          >
-                            <div className="flex items-start gap-3">
-                              <div className="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 border-2 border-blue-600">
-                                {agenda.order || index + 1}
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <p className="text-blue-900 font-black text-sm line-clamp-1">
-                                  {agenda.title}
-                                </p>
-                                {agenda.description && (
-                                  <p className="text-blue-700 text-xs mt-1 line-clamp-1 font-medium">
-                                    {agenda.description}
-                                  </p>
-                                )}
-                                <div className="flex items-center gap-2 mt-2">
-                                  <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-3xl font-bold border-2 border-blue-300">
-                                    {agenda.duration} menit
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ),
-                      )}
-                      {liveClass.LiveClassAgenda.length > 2 && (
-                        <div className="text-center py-2">
-                          <span className="text-xs text-blue-700 font-black">
-                            +{liveClass.LiveClassAgenda.length - 2} agenda
-                            lainnya
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              {/* Reference Items - Modern card */}
-              {liveClass.LiveClassReference &&
-                liveClass.LiveClassReference.length > 0 && (
-                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-3xl p-4 border-2 border-emerald-200">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-6 h-6 rounded-3xl bg-emerald-500 flex items-center justify-center border-2 border-emerald-600">
-                        <BookOpen className="h-3 w-3 text-white" />
-                      </div>
-                      <span className="text-sm font-black text-emerald-900">
-                        Materi Referensi ({liveClass.LiveClassReference.length})
-                      </span>
-                    </div>
-                    <div className="space-y-2">
-                      {liveClass.LiveClassReference.slice(0, 2).map((ref) => (
-                        <div
-                          key={ref.id}
-                          className="bg-white/70 rounded-3xl p-3 border-2 border-white/50 shadow-sm"
-                        >
-                          <div className="flex items-start gap-3">
-                            <div className="w-8 h-8 rounded-3xl bg-emerald-100 flex items-center justify-center shrink-0 border-2 border-emerald-200">
-                              {ref.urlType === 'VIDEO' && (
-                                <span className="text-emerald-600">🎥</span>
-                              )}
-                              {ref.urlType === 'DOCUMENT' && (
-                                <span className="text-emerald-600">📄</span>
-                              )}
-                              {ref.urlType === 'WEBSITE' && (
-                                <span className="text-emerald-600">🌐</span>
-                              )}
-                              {ref.urlType === 'ARTICLE' && (
-                                <span className="text-emerald-600">📰</span>
-                              )}
-                              {ref.urlType === 'AUDIO' && (
-                                <span className="text-emerald-600">🎵</span>
-                              )}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-emerald-900 font-black text-base line-clamp-1 mb-1 flex items-center gap-2">
-                                {/* Icon sesuai tipe materi */}
-                                {ref.urlType === 'VIDEO' && (
-                                  <Video className="h-4 w-4 text-emerald-600" />
-                                )}
-                                {ref.urlType === 'DOCUMENT' && (
-                                  <BookOpen className="h-4 w-4 text-emerald-600" />
-                                )}
-                                {ref.urlType === 'WEBSITE' && (
-                                  <Eye className="h-4 w-4 text-emerald-600" />
-                                )}
-                                {ref.urlType === 'ARTICLE' && (
-                                  <Award className="h-4 w-4 text-emerald-600" />
-                                )}
-                                {ref.urlType === 'AUDIO' && (
-                                  <PlayCircle className="h-4 w-4 text-emerald-600" />
-                                )}
-                                {ref.CourseSubChapter?.title || ref.title}
-                              </p>
-                              <div className="flex flex-wrap gap-2 mb-1">
-                                {ref.CourseSubChapter?.spendTime && (
-                                  <span className="text-xs px-2 py-1 bg-emerald-100 text-emerald-800 rounded-3xl border-2 border-emerald-200 font-bold flex items-center gap-1">
-                                    <Clock className="h-3 w-3" />
-                                    {ref.CourseSubChapter.spendTime} menit
-                                  </span>
-                                )}
-                                {ref.CourseSubChapter?.premium ? (
-                                  <span className="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded-3xl border-2 border-yellow-200 font-bold flex items-center gap-1">
-                                    <Star className="h-3 w-3" />
-                                    Premium
-                                  </span>
-                                ) : (
-                                  <span className="text-xs px-2 py-1 bg-gray-100 text-gray-800 rounded-3xl border-2 border-gray-200 font-bold flex items-center gap-1">
-                                    <BookOpen className="h-3 w-3" />
-                                    Gratis
-                                  </span>
-                                )}
-                              </div>
-                              <div className="flex items-center gap-2 mt-2">
-                                <Badge
-                                  variant="outline"
-                                  className="text-xs text-emerald-800 border-2 border-emerald-300 bg-emerald-50 flex items-center gap-1 font-bold rounded-3xl"
-                                >
-                                  <Target className="h-3 w-3" />
-                                  {ref.type}
-                                </Badge>
-                                {ref.url && (
-                                  <a
-                                    href={ref.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-xs text-emerald-700 underline hover:text-emerald-900 transition-colors flex items-center gap-1 font-bold"
-                                  >
-                                    <Eye className="h-3 w-3" />
-                                    Lihat Materi
-                                  </a>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                      {liveClass.LiveClassReference.length > 2 && (
-                        <div className="text-center py-2">
-                          <span className="text-xs text-emerald-700 font-black">
-                            +{liveClass.LiveClassReference.length - 2} referensi
-                            lainnya
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-            </div>
-          )}
-
-          {/* Plan Information - Modern design */}
-          {showPlanInfo && liveClassWithAccess.userAccess && (
-            <div className="mb-6">
-              <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-3xl p-4 border-2 border-orange-200">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-6 h-6 rounded-3xl bg-orange-500 flex items-center justify-center border-2 border-orange-600">
-                    <Target className="h-3 w-3 text-white" />
-                  </div>
-                  <span className="text-sm font-black text-orange-900">
-                    Status Akses
-                  </span>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {liveClassWithAccess.requiredPlans?.length > 0 ? (
-                    liveClassWithAccess.requiredPlans
-                      .slice(0, 2)
-                      .map((plan: any, index: number) => (
-                        <div
-                          key={index}
-                          className={`px-3 py-2 rounded-3xl border-2 text-sm font-black ${
-                            liveClassWithAccess.userAccess.canRegister
-                              ? 'bg-green-100 text-green-900 border-green-300'
-                              : 'bg-orange-100 text-orange-900 border-orange-300'
-                          }`}
-                        >
-                          <span className="mr-2">
-                            {liveClassWithAccess.userAccess.canRegister
-                              ? '✅'
-                              : '🔒'}
-                          </span>
-                          {typeof plan === 'string' ? plan : plan.name}
-                        </div>
-                      ))
-                  ) : (
-                    <div className="bg-gray-100 text-gray-900 px-3 py-2 rounded-3xl border-2 border-gray-300 text-sm font-black">
-                      <span className="mr-2">📖</span>
-                      Gratis untuk Semua
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-          {/* Modern Actions & Stats Section */}
-          <div className="flex items-center justify-between pt-4 border-t-2 border-gray-100">
-            {/* Action Buttons */}
-            <div className="flex gap-3">
-              {liveClassWithAccess.needsUpgrade && showPlanInfo ? (
-                <MarketingCTA
-                  liveClass={liveClass}
-                  compact={false}
-                />
-              ) : (
-                <>
-                  {/* {liveClass.canJoin && (
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onJoin(liveClass);
-                      }}
-                      size="lg"
-                      className={`h-11 px-6 font-semibold rounded-3xl shadow-lg transition-all duration-300 ${
-                        isLive
-                          ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse'
-                          : 'bg-blue-600 hover:bg-blue-700 text-white hover:shadow-xl'
-                      }`}
-                    >
-                      {isLive ? (
-                        <>
-                          <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></div>
-                          <Video className="mr-2 h-4 w-4" />
-                          Join Live
-                        </>
-                      ) : (
-                        <>
-                          <PlayCircle className="mr-2 h-4 w-4" />
-                          Daftar Kelas
-                        </>
-                      )}
-                    </Button>
-                  )} */}
-                  {showPlanInfo &&
-                    liveClassWithAccess.needsUpgrade &&
-                    onUpgrade && (
-                      <Button
-                        variant="outline"
-                        size="lg"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onUpgrade(liveClass);
-                        }}
-                        className="h-11 px-6 border-2 border-orange-300 text-orange-800 hover:bg-orange-50 font-black rounded-3xl transition-all duration-300 hover:shadow-md"
-                      >
-                        <div className="w-4 h-4 bg-orange-500 rounded-full mr-2 flex items-center justify-center">
-                          <span className="text-white text-xs">🔒</span>
-                        </div>
-                        Upgrade Plan
-                      </Button>
-                    )}
-                  {liveClass.status === 'Selesai' && (
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onRate(liveClass);
-                      }}
-                      className="h-11 px-6 border-2 border-yellow-300 text-yellow-800 hover:bg-yellow-50 font-black rounded-3xl transition-all duration-300 hover:shadow-md"
-                    >
-                      <Star className="mr-2 h-4 w-4" />
-                      Beri Rating
-                    </Button>
-                  )}
-                </>
+        {/* ── Content section — all text/info below image ── */}
+        <div className="p-4 lg:p-5 space-y-3">
+          {/* Instructor row */}
+          <div className="flex items-center gap-2">
+            <Avatar className="h-7 w-7 border-2 border-slate-100 flex-shrink-0">
+              <AvatarImage src={liveClass.Instructor.image || undefined} />
+              <AvatarFallback
+                className="text-[10px] font-black text-white"
+                style={{ background: mainColor }}
+              >
+                {instructorInitials}
+              </AvatarFallback>
+            </Avatar>
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-bold text-slate-700 truncate">
+                {liveClass.Instructor.name}
+              </p>
+              {liveClass.Instructor.certificate && (
+                <p className="text-[10px] text-slate-400 truncate">
+                  {liveClass.Instructor.certificate}
+                </p>
               )}
             </div>
-            {/* Stats & Detail Button */}
-            <div className="flex items-center gap-4">
-              {/* Enhanced Stats */}
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-3xl border-2 border-gray-100">
-                  <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center border-2 border-blue-200">
-                    <Users className="h-3 w-3 text-blue-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 font-bold">Peserta</p>
-                    <p className="text-sm font-black text-gray-900">
-                      {liveClass.participants?.length || 0}
-                    </p>
-                  </div>
-                </div>
-                {/* {liveClass.ratingStats &&
-                  liveClass.ratingStats.totalRatings > 0 && (
-                    <div className="flex items-center gap-2 bg-yellow-50 px-3 py-2 rounded-3xl">
-                      <div className="w-6 h-6 rounded-full bg-yellow-100 flex items-center justify-center">
-                        <Star className="h-3 w-3 text-yellow-600 fill-yellow-400" />
-                      </div>
-                      <div>
-                        <p className="text-xs text-gray-500 font-medium">
-                          Rating
-                        </p>
-                        <p className="text-sm font-bold text-gray-800">
-                          {liveClass.ratingStats.averageRating.toFixed(1)}
-                        </p>
-                      </div>
-                    </div>
-                  )} */}
+          </div>
+
+          {/* Title */}
+          <h3
+            className="font-bold leading-tight text-gray-900 line-clamp-2"
+            title={liveClass.title}
+          >
+            {liveClass.title}
+          </h3>
+          {liveClass.Category && (
+            <p className="text-xs text-gray-500">{liveClass.Category.name}</p>
+          )}
+
+          {/* Stats grid — 4 cols, mirrors bimarena card */}
+          <div className="grid grid-cols-4 gap-2">
+            <div className="flex flex-col items-center justify-center py-2 px-1 rounded-2xl border bg-blue-50/50 border-blue-100">
+              <Calendar className="w-3.5 h-3.5 text-blue-600 mb-1" />
+              <div className="text-[10px] font-bold text-blue-700 text-center leading-tight">
+                {new Date(liveClass.startDate).toLocaleDateString('id-ID', {
+                  day: '2-digit',
+                  month: 'short',
+                })}
               </div>
-              {/* Modern Detail Button */}
-              <Link
-                href={`/${website_sub_category_id}/user/bimlive/detail/${liveClass.id}`}
-              >
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="h-11 px-4 border-2 border-gray-300 hover:border-blue-400 text-gray-900 hover:text-blue-600 hover:bg-blue-50 font-black rounded-3xl transition-all duration-300 hover:shadow-md group bg-transparent"
-                >
-                  <Eye className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
-                  <span className="hidden sm:inline">Lihat Detail</span>
-                  <span className="sm:hidden">Detail</span>
-                </Button>
-              </Link>
+              <div className="text-[9px] text-blue-500 font-medium mt-0.5">
+                Mulai
+              </div>
+            </div>
+            <div className="flex flex-col items-center justify-center py-2 px-1 rounded-2xl border bg-green-50/50 border-green-100">
+              <Clock className="w-3.5 h-3.5 text-green-600 mb-1" />
+              <div className="text-[10px] font-bold text-green-700 leading-none">
+                {liveClass.duration}
+              </div>
+              <div className="text-[9px] text-green-500 font-medium mt-0.5">
+                Menit
+              </div>
+            </div>
+            <div className="flex flex-col items-center justify-center py-2 px-1 rounded-2xl border bg-purple-50/50 border-purple-100">
+              <Users className="w-3.5 h-3.5 text-purple-600 mb-1" />
+              <div className="text-[10px] font-bold text-purple-700 leading-none">
+                {liveClass.participants?.length || 0}
+              </div>
+              <div className="text-[9px] text-purple-500 font-medium mt-0.5">
+                Peserta
+              </div>
+            </div>
+            <div className="flex flex-col items-center justify-center py-2 px-1 rounded-2xl border bg-orange-50/50 border-orange-100">
+              <Eye className="w-3.5 h-3.5 text-orange-600 mb-1" />
+              <div className="text-[10px] font-bold text-orange-700 leading-none text-center">
+                {new Date(liveClass.startDate).toLocaleTimeString('id-ID', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </div>
+              <div className="text-[9px] text-orange-500 font-medium mt-0.5">
+                WIB
+              </div>
             </div>
           </div>
+
+          {/* Countdown timer — below stats, not on image */}
+          {isUpcoming && !timeLeft.isExpired && (
+            <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center gap-1.5 flex-shrink-0">
+                <Timer
+                  className="w-3.5 h-3.5"
+                  style={{ color: mainColor }}
+                />
+                <span className="text-[11px] font-bold text-slate-500">
+                  Mulai dalam
+                </span>
+              </div>
+              <CountdownTimer timeLeft={timeLeft} />
+            </div>
+          )}
+
+          {isLive && (
+            <div className="flex items-center justify-center gap-2 px-3 py-2 rounded-2xl bg-red-50 border border-red-200">
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <span className="text-xs font-black text-red-600">
+                Sedang Berlangsung
+              </span>
+            </div>
+          )}
         </div>
       </CardContent>
+
+      {/* ── Action footer ── */}
+      <CardFooter className="p-4 lg:p-5 pt-0 flex gap-2">
+        <Link
+          href={`/${website_sub_category_id}/user/bimlive/detail/${liveClass.id}`}
+          className="flex-1"
+        >
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full h-10 rounded-2xl border-slate-200 font-bold text-xs gap-1.5"
+          >
+            <Eye className="w-3.5 h-3.5" />
+            Detail
+          </Button>
+        </Link>
+
+        {isRegistrationStep &&
+          liveClass.accessType !== 'PREMIUM' &&
+          liveClass.isRegistered === false &&
+          onFinishRegistered && (
+            <DialogLiveClassRegister
+              liveClassId={liveClass.id}
+              onFinish={onFinishRegistered}
+              liveClassAccessType={liveClass.accessType}
+            >
+              <Button
+                size="sm"
+                className="flex-1 h-10 rounded-2xl font-bold text-xs text-white border-0 shadow-sm hover:opacity-90 gap-1.5"
+                style={{ background: mainColor }}
+              >
+                <UserCheck className="w-3.5 h-3.5" />
+                Daftar
+              </Button>
+            </DialogLiveClassRegister>
+          )}
+
+        {isRegistrationStep &&
+          liveClass.accessType !== 'PREMIUM' &&
+          liveClass.isRegistered === true && (
+            <Button
+              size="sm"
+              variant="outline"
+              className="flex-1 h-10 rounded-2xl font-bold text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 gap-1.5"
+            >
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              Terdaftar
+            </Button>
+          )}
+
+        {liveClass.accessType === 'PREMIUM' && (
+          <div className="flex-1 h-10 px-3 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl flex items-center justify-center gap-1.5">
+            <Crown className="h-3.5 w-3.5 text-amber-500" />
+            <span className="text-xs font-black text-amber-700">Premium</span>
+          </div>
+        )}
+      </CardFooter>
     </Card>
   );
 }
