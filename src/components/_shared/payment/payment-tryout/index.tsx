@@ -1,6 +1,6 @@
 import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/bimarena/try-out/_components/ui/card-tryout';
 import { useSession } from '@/components/provider/provider-session-auth';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn, getDateTryoutString, getHours } from '@/lib/utils';
 import { IconCrown, IconX } from '@/styles/icon';
@@ -100,7 +100,7 @@ export const PaymentTryout = ({
         <div className="overflow-hidden rounded-3xl bg-white">
           <div className="flex items-center justify-between bg-main p-6">
             <div className="flex items-center gap-[.5rem] text-white">
-              <p>Tryout Premium</p>
+              <DialogTitle className="text-white font-normal">Tryout Premium</DialogTitle>
               <IconCrown className="text-main-yellow" />
             </div>
             <div

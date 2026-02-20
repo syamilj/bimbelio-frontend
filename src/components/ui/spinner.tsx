@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { useStorageSocket } from '@/supabaseClient';
 import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Dialog, DialogContent } from './dialog';
+import { Dialog, DialogContent, DialogTitle } from './dialog';
 import { Progress } from './progress';
 
 export function Spinner({ width }: { width?: string }) {
@@ -74,9 +74,9 @@ export function LoadingPopUp({ title }: { title?: string }) {
         <div className="z-100000000 flex items-center justify-center p-6">
           <div className="flex flex-col items-center">
             <Loader2 className="h-8 w-[2rem] animate-spin" />
-            <p className="text-center text-[1.1rem] font-medium">
+            <DialogTitle className="text-center text-[1.1rem] font-medium">
               {title ? title : 'Loading...'}{' '}
-            </p>
+            </DialogTitle>
           </div>
         </div>
       </DialogContent>

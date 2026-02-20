@@ -343,9 +343,9 @@ export function Payment() {
           <div className="flex flex-col items-center gap-4 py-8">
             <AlertCircle className="h-12 w-12 text-red-500" />
             <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900">
+              <DialogTitle className="text-lg font-semibold text-gray-900">
                 Terjadi Kesalahan
-              </h3>
+              </DialogTitle>
               <p className="text-sm text-gray-600 mt-1">
                 Gagal memuat data paket. Silakan coba lagi.
               </p>

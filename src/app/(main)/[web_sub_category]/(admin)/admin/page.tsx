@@ -18,7 +18,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import ListPagination from '@/components/ui/list-pagination';
 import {
@@ -967,9 +967,9 @@ const DialogDetailSubscription = ({
         <div className="space-y-4">
           {/* Header */}
           <div className="space-y-1 border-b pb-4">
-            <h2 className="text-xl font-bold text-gray-900">
+            <DialogTitle className="text-xl font-bold text-gray-900">
               Subscription Details
-            </h2>
+            </DialogTitle>
             <p className="text-sm text-gray-500">
               {subData.length === 0
                 ? 'No active subscriptions'
