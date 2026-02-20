@@ -24,12 +24,14 @@ import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
 import { Check, ChevronsUpDown, GraduationCap, Phone, Target } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 
 type UniversityProps = {
   university: string;
   initials: string;
   averageScore: number;
+  isKedinasan?: boolean;
   studyProgramList: { study: string; averageScore: number | null }[];
 };
 
@@ -75,9 +77,9 @@ function UnivCombobox({
       </PopoverTrigger>
       <PopoverContent className="w-[350px] p-0 rounded-2xl shadow-xl" align="start" style={{ zIndex: 9999 }}>
         <Command>
-          <CommandInput placeholder="Cari universitas..." />
+          <CommandInput placeholder={`Cari ${placeholder.replace('Pilih ', '').replace('...', '')}...`} />
           <CommandList className="max-h-72">
-            <CommandEmpty>Universitas tidak ditemukan.</CommandEmpty>
+              <CommandEmpty>Tidak ditemukan.</CommandEmpty>
             <CommandGroup>
               {value && (
                 <CommandItem
@@ -203,7 +205,15 @@ type TargetTabProps = {
 };
 
 export function TargetTab({ userId, websiteSubCategoryId, mainColor, secondaryColor }: TargetTabProps) {
-  const [universityOptions, setUniversityOptions] = useState<UniversityProps[]>([]);
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  const params = useParams<{ web_sub_category: string }>();
+  // URL param is always correct (synchronous from route); context starts as "guest" before async fetch
+  const activeWebsubId = params.web_sub_category || websiteSubCategory?.id || websiteSubCategoryId || '';
+  const isKedinasan = activeWebsubId.toLowerCase().includes('kedinasan');
+  // Always show the university/institution section; for Kedinasan it shows kedinasan institutions
+  const showUniversitySection = true;
+
+  const [allUniversityOptions, setAllUniversityOptions] = useState<UniversityProps[]>([]);
   const [isSaving, setIsSaving] = useState(false);
 
   // Form state
@@ -215,12 +225,16 @@ export function TargetTab({ userId, websiteSubCategoryId, mainColor, secondaryCo
   const [univ2, setUniv2] = useState('');
   const [major2, setMajor2] = useState('');
 
-  // Fetch university options
+  // Fetch ALL universities once; filter in-memory to avoid race conditions
   useEffect(() => {
-    getGeneral('/universitas', {
-      setData: setUniversityOptions,
-    });
+    getGeneral('/universitas', { setData: setAllUniversityOptions });
   }, []);
+
+  // Filter based on isKedinasan — always has correct value because of URL param fallback
+  const universityOptions = useMemo(
+    () => (isKedinasan ? allUniversityOptions.filter((u) => u.isKedinasan) : allUniversityOptions),
+    [allUniversityOptions, isKedinasan],
+  );
 
   // Fetch existing user tryout data
   const { data: existingData, isLoading: isLoadingData } = useGet<UserTryoutDataType>(
@@ -319,12 +333,13 @@ export function TargetTab({ userId, websiteSubCategoryId, mainColor, secondaryCo
         </div>
       </div>
 
-      {/* Target Nilai */}
+      {/* Target Nilai — only for non-Kedinasan websubs */}
+      {!isKedinasan && (
       <div className="rounded-3xl border border-slate-200 overflow-hidden">
         <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200">
           <h3 className="text-sm font-black text-slate-700 flex items-center gap-2">
             <Target className="w-4 h-4" style={{ color: mainColor }} />
-            Target Nilai UTBK
+            {'Target Nilai UTBK'}
           </h3>
         </div>
         <div className="p-5">
@@ -334,7 +349,7 @@ export function TargetTab({ userId, websiteSubCategoryId, mainColor, secondaryCo
             </Label>
             <Input
               type="number"
-              placeholder="Contoh: 650"
+              placeholder={'Contoh: 650'}
               min={0}
               max={1000}
               value={targetValue}
@@ -345,84 +360,90 @@ export function TargetTab({ userId, websiteSubCategoryId, mainColor, secondaryCo
           </div>
         </div>
       </div>
+      )}
 
-      {/* Pilihan 1 */}
-      <div className="rounded-3xl border border-slate-200 overflow-hidden">
-        <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200">
-          <h3 className="text-sm font-black text-slate-700 flex items-center gap-2">
-            <GraduationCap className="w-4 h-4" style={{ color: mainColor }} />
-            Pilihan Universitas Pertama
-          </h3>
-        </div>
-        <div className="p-5 space-y-4">
-          <div className="space-y-1.5">
-            <Label className="text-xs font-bold uppercase tracking-wider" style={{ color: mainColor }}>
-              Universitas
-            </Label>
-            <UnivCombobox
-              value={univ1}
-              onChange={(v) => { setUniv1(v); setMajor1(''); }}
-              onClear={() => { setUniv1(''); setMajor1(''); }}
-              options={universityOptions}
-              placeholder="Pilih universitas..."
-              mainColor={mainColor}
-            />
+      {/* University/Institution sections */}
+      {showUniversitySection && (
+        <>
+          {/* Pilihan 1 */}
+          <div className="rounded-3xl border border-slate-200 overflow-hidden">
+            <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200">
+              <h3 className="text-sm font-black text-slate-700 flex items-center gap-2">
+                <GraduationCap className="w-4 h-4" style={{ color: mainColor }} />
+                {isKedinasan ? 'Pilihan Institusi Kedinasan Pertama' : 'Pilihan Universitas Pertama'}
+              </h3>
+            </div>
+            <div className="p-5 space-y-4">
+              <div className="space-y-1.5">
+                <Label className="text-xs font-bold uppercase tracking-wider" style={{ color: mainColor }}>
+                  {isKedinasan ? 'Institusi Kedinasan' : 'Universitas'}
+                </Label>
+                <UnivCombobox
+                  value={univ1}
+                  onChange={(v) => { setUniv1(v); setMajor1(''); }}
+                  onClear={() => { setUniv1(''); setMajor1(''); }}
+                  options={universityOptions}
+                  placeholder={isKedinasan ? 'Pilih institusi kedinasan...' : 'Pilih universitas...'}
+                  mainColor={mainColor}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs font-bold uppercase tracking-wider" style={{ color: mainColor }}>
+                  Jurusan / Program Studi
+                </Label>
+                <MajorCombobox
+                  value={major1}
+                  onChange={setMajor1}
+                  onClear={() => setMajor1('')}
+                  options={majorsForUniv1}
+                  placeholder={univ1 ? 'Pilih jurusan...' : (isKedinasan ? 'Pilih institusi dulu' : 'Pilih universitas dulu')}
+                  mainColor={mainColor}
+                  disabled={!univ1}
+                />
+              </div>
+            </div>
           </div>
-          <div className="space-y-1.5">
-            <Label className="text-xs font-bold uppercase tracking-wider" style={{ color: mainColor }}>
-              Jurusan / Program Studi
-            </Label>
-            <MajorCombobox
-              value={major1}
-              onChange={setMajor1}
-              onClear={() => setMajor1('')}
-              options={majorsForUniv1}
-              placeholder={univ1 ? 'Pilih jurusan...' : 'Pilih universitas dulu'}
-              mainColor={mainColor}
-              disabled={!univ1}
-            />
-          </div>
-        </div>
-      </div>
 
-      {/* Pilihan 2 */}
-      <div className="rounded-3xl border border-slate-200 overflow-hidden">
-        <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200">
-          <h3 className="text-sm font-black text-slate-700 flex items-center gap-2">
-            <GraduationCap className="w-4 h-4" style={{ color: mainColor }} />
-            Pilihan Universitas Kedua
-          </h3>
-        </div>
-        <div className="p-5 space-y-4">
-          <div className="space-y-1.5">
-            <Label className="text-xs font-bold uppercase tracking-wider" style={{ color: mainColor }}>
-              Universitas
-            </Label>
-            <UnivCombobox
-              value={univ2}
-              onChange={(v) => { setUniv2(v); setMajor2(''); }}
-              onClear={() => { setUniv2(''); setMajor2(''); }}
-              options={universityOptions}
-              placeholder="Pilih universitas..."
-              mainColor={mainColor}
-            />
+          {/* Pilihan 2 */}
+          <div className="rounded-3xl border border-slate-200 overflow-hidden">
+            <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200">
+              <h3 className="text-sm font-black text-slate-700 flex items-center gap-2">
+                <GraduationCap className="w-4 h-4" style={{ color: mainColor }} />
+                {isKedinasan ? 'Pilihan Institusi Kedinasan Kedua' : 'Pilihan Universitas Kedua'}
+              </h3>
+            </div>
+            <div className="p-5 space-y-4">
+              <div className="space-y-1.5">
+                <Label className="text-xs font-bold uppercase tracking-wider" style={{ color: mainColor }}>
+                  {isKedinasan ? 'Institusi Kedinasan' : 'Universitas'}
+                </Label>
+                <UnivCombobox
+                  value={univ2}
+                  onChange={(v) => { setUniv2(v); setMajor2(''); }}
+                  onClear={() => { setUniv2(''); setMajor2(''); }}
+                  options={universityOptions}
+                  placeholder={isKedinasan ? 'Pilih institusi kedinasan...' : 'Pilih universitas...'}
+                  mainColor={mainColor}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs font-bold uppercase tracking-wider" style={{ color: mainColor }}>
+                  Jurusan / Program Studi
+                </Label>
+                <MajorCombobox
+                  value={major2}
+                  onChange={setMajor2}
+                  onClear={() => setMajor2('')}
+                  options={majorsForUniv2}
+                  placeholder={univ2 ? 'Pilih jurusan...' : (isKedinasan ? 'Pilih institusi dulu' : 'Pilih universitas dulu')}
+                  mainColor={mainColor}
+                  disabled={!univ2}
+                />
+              </div>
+            </div>
           </div>
-          <div className="space-y-1.5">
-            <Label className="text-xs font-bold uppercase tracking-wider" style={{ color: mainColor }}>
-              Jurusan / Program Studi
-            </Label>
-            <MajorCombobox
-              value={major2}
-              onChange={setMajor2}
-              onClear={() => setMajor2('')}
-              options={majorsForUniv2}
-              placeholder={univ2 ? 'Pilih jurusan...' : 'Pilih universitas dulu'}
-              mainColor={mainColor}
-              disabled={!univ2}
-            />
-          </div>
-        </div>
-      </div>
+        </>
+      )}
 
       {/* Save Button */}
       <Button

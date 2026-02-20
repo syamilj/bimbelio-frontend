@@ -30,7 +30,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { cn, getInitials } from '@/lib/utils';
+import { cn, getInitials, getUniversityInitials } from '@/lib/utils';
 import { KEDINASAN_SUBTEST_ORDER, SNBT_SUBTEST_ORDER, getKedinasanThreshold, getSubtestLabel } from '@/lib/utils/subtest';
 import ExcelJS from 'exceljs'; // Tambahkan import ini
 import { ArrowUpDown, Info, Search, Trophy } from 'lucide-react';
@@ -513,7 +513,6 @@ export function RankingTable() {
                         <TableCell
                           colSpan={
                             8 +
-                            (isKedinasanWebsub ? 1 : 0) +
                             (mockSessionResults?.length || 0) +
                             (!isAdmin ? 3 : 0) // Add extra columns for non-premium
                           }
@@ -609,11 +608,12 @@ export function RankingTable() {
                               <div className="space-y-1">
                                 <div className="font-medium text-xs md:text-sm text-gray-900 truncate">
                                   {participant.univStudyChoice ||
-                                    'Jurusan belum dipilih'}
+                                    (isKedinasanWebsub ? 'Jurusan belum dipilih' : 'Jurusan belum dipilih')}
                                 </div>
                                 <div className="text-xs text-gray-500 truncate">
-                                  {participant.univChoice ||
-                                    'Universitas belum dipilih'}
+                                  {participant.univChoice && participant.univChoice !== '-'
+                                    ? <span className="font-semibold">{getUniversityInitials(participant.univChoice)}</span>
+                                    : <span>{isKedinasanWebsub ? 'Institusi belum dipilih' : 'Universitas belum dipilih'}</span>}
                                 </div>
                               </div>
                             </TableCell>
@@ -632,15 +632,7 @@ export function RankingTable() {
                                       : participant.maxScore}
                                   </span>
                                 </div>
-                                <div className="w-12 md:w-16 ml-auto bg-gray-200 rounded-full h-1 md:h-1.5 overflow-hidden">
-                                  <div
-                                    className="h-full rounded-full transition-all duration-300"
-                                    style={{
-                                      width: `${(participant.totalScore / participant.maxScore) * 100}%`,
-                                      backgroundColor: mainColor,
-                                    }}
-                                  />
-                                </div>
+
                               </div>
                             </TableCell>
 
@@ -662,9 +654,13 @@ export function RankingTable() {
                             </TableCell>
                             <TableCell className="text-center py-3 md:py-4">
                               <span className="inline-flex items-center justify-center px-2 h-6 md:h-7 rounded-full bg-violet-50 text-violet-700 font-bold text-xs md:text-sm">
-                                {participant.totalQuestions > 0
-                                  ? `${Math.round((participant.benar / participant.totalQuestions) * 100)}%`
-                                  : '-'}
+                                {isKedinasanWebsub
+                                  ? (participant.maxScore > 0
+                                    ? `${Math.round((participant.totalScore / participant.maxScore) * 100)}%`
+                                    : '-')
+                                  : (participant.totalQuestions > 0
+                                    ? `${Math.round((participant.benar / participant.totalQuestions) * 100)}%`
+                                    : '-')}
                               </span>
                             </TableCell>
 
@@ -679,7 +675,7 @@ export function RankingTable() {
                                 </TableCell>
                               );
                               const allLolos = sessionsWithThreshold.every(
-                                s => s.isUnlocked && s.totalScore >= (getKedinasanThreshold(s.subCategory) ?? 0)
+                                s => s.totalScore >= (getKedinasanThreshold(s.subCategory) ?? 0)
                               );
                               return (
                                 <TableCell className="text-center py-3 md:py-4">
@@ -725,15 +721,7 @@ export function RankingTable() {
                                           {passes ? `✓ ≥${threshold}` : `✗ <${threshold}`}
                                         </div>
                                       )}
-                                      <div className="w-8 md:w-12 ml-auto bg-gray-200 rounded-full h-1 overflow-hidden">
-                                        <div
-                                          className="h-full rounded-full transition-all duration-300"
-                                          style={{
-                                            width: `${(session.totalScore / session.maxScore) * 100}%`,
-                                            backgroundColor: passes === false ? '#ef4444' : passes === true ? '#10b981' : mainColor,
-                                          }}
-                                        />
-                                      </div>
+
                                     </div>
                                   ) : (
                                     <ButtonUpgradeTryout
@@ -856,6 +844,8 @@ export default RankingTable;
 const ExportButton = () => {
   const { RankingTryout } = useLeaderboardContext();
   const { data: session } = useSession();
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  const isKedinasanExport = (websiteSubCategory?.id ?? '').toLowerCase().includes('kedinasan');
 
   const exportData = RankingTryout?.rankingData || [];
 
@@ -871,7 +861,7 @@ const ExportButton = () => {
       'Name',
       'Email',
       'Sekolah',
-      'Univ Pilihan',
+      'Pilihan Institusi / Univ',
       'Jurusan Pilihan',
       'Total Skor',
       'Rata-rata Skor',

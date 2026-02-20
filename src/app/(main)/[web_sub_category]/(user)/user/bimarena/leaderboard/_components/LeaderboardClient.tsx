@@ -28,6 +28,7 @@ export interface RankingTryoutProps {
     school: string | undefined;
     univChoice: string | undefined;
     univStudyChoice: string | undefined;
+    targetValue: number | null | undefined;
     image: string | null;
     isBimbelioStudent: boolean;
     benar: number;

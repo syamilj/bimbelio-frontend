@@ -159,8 +159,6 @@ const UNIVERSITY_INITIALS_MAP: Record<string, string> = {
   'Universitas Negeri Jakarta': 'UNJ',
   'Universitas Udayana': 'Unud',
   'Universitas Negeri Malang': 'UM',
-  STAN: 'STAN',
-
   // ── PTN Populer lainnya ──
   'Universitas Hasanuddin': 'Unhas',
   'Universitas Andalas': 'Unand',
@@ -209,7 +207,6 @@ const UNIVERSITY_INITIALS_MAP: Record<string, string> = {
   'Universitas Negeri Papua': 'UNIPA',
 
   // ── Kedinasan ──
-  'Sekolah Tinggi Akuntansi Negara': 'STAN',
   'Institut Pemerintahan Dalam Negeri': 'IPDN',
   'Sekolah Tinggi Ilmu Statistik': 'STIS',
   'Politeknik Keuangan Negara STAN': 'PKN STAN',
