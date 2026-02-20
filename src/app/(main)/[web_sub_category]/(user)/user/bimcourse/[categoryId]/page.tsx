@@ -207,29 +207,6 @@ export default function CourseOverviewPage() {
 
   return (
     <div className="container mx-auto p-4 md:p-8 max-w-7xl space-y-8 min-h-screen pb-32">
-      {/* Search & Filter Bar - Improved */}
-      <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-white p-4 rounded-3xl border-2 border-slate-100 shadow-sm">
-        <div className="relative w-full md:w-96">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
-          <Input
-            placeholder="Cari materi pembelajaran..."
-            className="pl-12 h-12 rounded-3xl border-slate-200 bg-slate-50 focus:bg-white transition-all text-base"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-        <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
-          <Badge className="h-10 px-4 rounded-3xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 cursor-pointer border-indigo-100 text-sm whitespace-nowrap">
-            Semua Materi
-          </Badge>
-          <Badge className="h-10 px-4 rounded-3xl bg-white text-slate-600 border-2 border-slate-100 hover:bg-slate-50 cursor-pointer text-sm whitespace-nowrap">
-            <PlayCircle className="w-3.5 h-3.5 mr-2" /> Video
-          </Badge>
-          <Badge className="h-10 px-4 rounded-3xl bg-white text-slate-600 border-2 border-slate-100 hover:bg-slate-50 cursor-pointer text-sm whitespace-nowrap">
-            <Trophy className="w-3.5 h-3.5 mr-2" /> Latihan Soal
-          </Badge>
-        </div>
-      </div>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* Main Content: Chapter List */}
