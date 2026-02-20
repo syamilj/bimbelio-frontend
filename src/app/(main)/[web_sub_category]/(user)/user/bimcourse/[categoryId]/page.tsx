@@ -472,6 +472,16 @@ export default function CourseOverviewPage() {
                             />
                           )}
 
+                          {/* Video badge — top-left */}
+                          {(sub.type === 'VIDEO' || sub.Document?.videoId) && (
+                            <div className="absolute top-3 left-3 h-6 px-2 rounded-full bg-indigo-600/90 backdrop-blur-md flex items-center gap-1 text-white shadow-sm">
+                              <PlayCircle className="w-3 h-3 fill-white/30" />
+                              <span className="text-[10px] font-bold uppercase tracking-wider">
+                                Video
+                              </span>
+                            </div>
+                          )}
+
                           {/* Lock Status or Progress Status */}
                           <div className="absolute top-3 right-3 flex gap-2">
                             {isSubCompleted && (
