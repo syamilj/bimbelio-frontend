@@ -57,7 +57,7 @@ const VideoType = () => {
       className="flex flex-col gap-4 p-4 md:p-6 h-full w-full max-w-[1000px] mx-auto"
     >
       {isDone && (
-        <div className="flex w-full justify-between items-center rounded-xl bg-slate-50 border border-slate-200/60 px-4 py-2.5">
+        <div className="flex w-full justify-between items-center rounded-3xl bg-slate-50 border border-slate-200/60 px-4 py-2.5">
           <div className="flex items-center gap-2 text-blue-600 text-sm">
             <Loader className="h-3.5 w-3.5" />
             <span>
@@ -90,7 +90,7 @@ const VideoType = () => {
             ref={videoRef}
             controls
             controlsList="nodownload"
-            className="h-fit w-full rounded-2xl bg-black shadow-sm"
+            className="h-fit w-full rounded-3xl bg-black shadow-sm"
           ></video>
         </div>
       )}
@@ -112,7 +112,7 @@ const VideoType = () => {
         value={CourseData?.description || ''}
         className="pt-2 pb-8"
       />
-      <div className="flex items-center justify-between rounded-xl bg-slate-50 border border-slate-200/60 px-4 py-2.5 mb-28">
+      <div className="flex items-center justify-between rounded-3xl bg-slate-50 border border-slate-200/60 px-4 py-2.5 mb-28">
         <span className="text-xs font-semibold text-slate-600">
           Berikan Rating
         </span>

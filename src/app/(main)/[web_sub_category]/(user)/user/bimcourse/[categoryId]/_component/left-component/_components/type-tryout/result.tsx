@@ -108,13 +108,13 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
             : 'Terus berlatih dan kamu pasti bisa.'}
         </p>
         <div className="flex justify-center gap-3">
-          <div className="bg-white/20 rounded-2xl px-5 py-2.5">
+          <div className="bg-white/20 rounded-3xl px-5 py-2.5">
             <p className="text-xs text-white/70 font-medium">Akurasi</p>
             <p className="text-2xl font-black text-white">
               {accuracy.toFixed(1)}%
             </p>
           </div>
-          <div className="bg-white/20 rounded-2xl px-5 py-2.5">
+          <div className="bg-white/20 rounded-3xl px-5 py-2.5">
             <p className="text-xs text-white/70 font-medium">Skor</p>
             <p className="text-2xl font-black text-white">{score}</p>
           </div>
@@ -123,7 +123,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
 
       <div className="px-4 py-5 space-y-4">
         {/* Stats + Progress */}
-        <div className="rounded-2xl border border-slate-200 bg-white p-4">
+        <div className="rounded-3xl border border-slate-200 bg-white p-4">
           <div className="grid grid-cols-3 gap-2 mb-3">
             <div className="text-center">
               <div className="text-xl font-black text-emerald-500">
@@ -157,7 +157,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
         </div>
 
         {/* Question Navigation Grid */}
-        <div className="rounded-2xl border border-slate-200 bg-white p-4">
+        <div className="rounded-3xl border border-slate-200 bg-white p-4">
           <h2 className="text-sm font-black text-slate-800 mb-3">
             Navigasi Soal
           </h2>
@@ -170,7 +170,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
                   key={i}
                   onClick={() => setUserAnswerIndex(i)}
                   className={cn(
-                    'h-10 w-full rounded-xl font-black text-xs border transition-all',
+                    'h-10 w-full rounded-3xl font-black text-xs border transition-all',
                     isCurrent && 'ring-2 ring-offset-1 ring-slate-400',
                     isCorrect === true
                       ? 'bg-emerald-500 text-white border-transparent'
@@ -198,7 +198,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
 
         {/* Review Card */}
         {UserAnswers && (
-          <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden">
+          <div className="rounded-3xl border border-slate-200 bg-white overflow-hidden">
             {/* Question Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
               <div className="flex items-center gap-2.5">
@@ -235,7 +235,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
 
             <div className="p-4 space-y-3">
               {/* Question */}
-              <div className="rounded-xl bg-slate-50 border border-slate-100 p-3">
+              <div className="rounded-3xl bg-slate-50 border border-slate-100 p-3">
                 <BlocknoteEditor
                   value={UserAnswers.TryoutQuestion.question || ''}
                   viewOnly
@@ -246,7 +246,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
               {/* User Answer */}
               <div
                 className={cn(
-                  'rounded-xl border p-3',
+                  'rounded-3xl border p-3',
                   getIsCorrect(safeUserAnswerIndex) === false
                     ? 'bg-rose-50 border-rose-200'
                     : 'bg-blue-50 border-blue-200',
@@ -270,7 +270,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
               </div>
 
               {/* Correct Answer */}
-              <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-3">
+              <div className="rounded-3xl bg-emerald-50 border border-emerald-200 p-3">
                 <p className="text-xs font-black uppercase text-emerald-600 mb-1">
                   Jawaban Benar
                 </p>
@@ -283,7 +283,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
 
               {/* Explanation */}
               {UserAnswers.TryoutQuestion.explanation && (
-                <div className="rounded-xl bg-amber-50 border border-amber-200 p-3">
+                <div className="rounded-3xl bg-amber-50 border border-amber-200 p-3">
                   <p className="text-xs font-black uppercase text-amber-600 mb-1">
                     Pembahasan
                   </p>
@@ -301,7 +301,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
               <button
                 onClick={() => setUserAnswerIndex((p) => Math.max(0, p - 1))}
                 disabled={userAnswerIndex === 0}
-                className="flex-1 flex items-center justify-center gap-1.5 h-10 rounded-xl border border-slate-200 text-slate-600 font-bold text-sm disabled:opacity-40 hover:bg-slate-50 transition-colors"
+                className="flex-1 flex items-center justify-center gap-1.5 h-10 rounded-3xl border border-slate-200 text-slate-600 font-bold text-sm disabled:opacity-40 hover:bg-slate-50 transition-colors"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 Sebelumnya
@@ -311,7 +311,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
                   setUserAnswerIndex((p) => Math.min(TotalQuestion - 1, p + 1))
                 }
                 disabled={userAnswerIndex === TotalQuestion - 1}
-                className="flex-1 flex items-center justify-center gap-1.5 h-10 rounded-xl border border-slate-200 text-slate-600 font-bold text-sm disabled:opacity-40 hover:bg-slate-50 transition-colors"
+                className="flex-1 flex items-center justify-center gap-1.5 h-10 rounded-3xl border border-slate-200 text-slate-600 font-bold text-sm disabled:opacity-40 hover:bg-slate-50 transition-colors"
               >
                 Selanjutnya
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -341,7 +341,7 @@ const DocumentLink = ({
           `/user/workspace/${sessionResult.TryoutSession.Document!.category.id}/${sessionResult.TryoutSession.Document!.id}`,
         )
       }
-      className="w-full flex items-center justify-center gap-2 h-11 rounded-2xl border border-slate-200 bg-white text-slate-700 font-bold text-sm hover:bg-slate-50 transition-colors"
+      className="w-full flex items-center justify-center gap-2 h-11 rounded-3xl border border-slate-200 bg-white text-slate-700 font-bold text-sm hover:bg-slate-50 transition-colors"
     >
       <Book className="w-4 h-4" />
       Lihat Pembahasan Lengkap
