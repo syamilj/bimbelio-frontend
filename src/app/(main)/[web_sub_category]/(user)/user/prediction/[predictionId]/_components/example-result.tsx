@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { getSnbtShortName } from '@/lib/utils/snbt';
+import { getSnbtShortName } from '@/lib/utils/subtest';
 import {
   AlertCircle,
   CheckCircle,

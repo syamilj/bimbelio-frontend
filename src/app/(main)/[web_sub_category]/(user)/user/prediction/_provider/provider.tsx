@@ -2,7 +2,7 @@
 
 import { toaster } from '@/components/ui/toaster';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { getSnbtShortName } from '@/lib/utils/snbt';
+import { getSnbtShortName } from '@/lib/utils/subtest';
 import {
   Prediction,
   PredictionScore,

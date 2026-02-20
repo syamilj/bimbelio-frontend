@@ -31,7 +31,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { cn, getInitials } from '@/lib/utils';
-import { SNBT_SUBTEST_ORDER, getSubtestLabel } from '@/lib/utils/snbt';
+import { KEDINASAN_SUBTEST_ORDER, SNBT_SUBTEST_ORDER, getKedinasanThreshold, getSubtestLabel } from '@/lib/utils/subtest';
 import ExcelJS from 'exceljs'; // Tambahkan import ini
 import { ArrowUpDown, Info, Search, Trophy } from 'lucide-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
@@ -98,16 +98,27 @@ export function RankingTable() {
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const websiteSubCategoryId = websiteSubCategory?.id;
+  const isKedinasanWebsub = (websiteSubCategoryId ?? '').toLowerCase().includes('kedinasan');
 
-  // Sort sessionResult arrays by canonical SNBT order when on snbt websub
+  // Sort sessionResult arrays by canonical subtest order when on snbt/kedinasan websub
   const sortSessionsBySnbtOrder = useCallback(
     <T extends { subCategory: string }>(sessions: T[]): T[] => {
-      if (websiteSubCategoryId !== 'snbt') return sessions;
-      return [...sessions].sort(
-        (a, b) =>
-          (SNBT_SUBTEST_ORDER.indexOf(a.subCategory as (typeof SNBT_SUBTEST_ORDER)[number]) + 1 || 999) -
-          (SNBT_SUBTEST_ORDER.indexOf(b.subCategory as (typeof SNBT_SUBTEST_ORDER)[number]) + 1 || 999),
-      );
+      const id = (websiteSubCategoryId ?? '').toLowerCase();
+      if (id.includes('snbt')) {
+        return [...sessions].sort(
+          (a, b) =>
+            (SNBT_SUBTEST_ORDER.indexOf(a.subCategory as (typeof SNBT_SUBTEST_ORDER)[number]) + 1 || 999) -
+            (SNBT_SUBTEST_ORDER.indexOf(b.subCategory as (typeof SNBT_SUBTEST_ORDER)[number]) + 1 || 999),
+        );
+      }
+      if (id.includes('kedinasan')) {
+        return [...sessions].sort(
+          (a, b) =>
+            (KEDINASAN_SUBTEST_ORDER.indexOf(a.subCategory as (typeof KEDINASAN_SUBTEST_ORDER)[number]) + 1 || 999) -
+            (KEDINASAN_SUBTEST_ORDER.indexOf(b.subCategory as (typeof KEDINASAN_SUBTEST_ORDER)[number]) + 1 || 999),
+        );
+      }
+      return sessions;
     },
     [websiteSubCategoryId],
   );
@@ -470,6 +481,13 @@ export function RankingTable() {
                         Akurasi
                       </TableHead>
 
+                      {/* Ambang Batas - Kedinasan only */}
+                      {isKedinasanWebsub && (
+                        <TableHead className="text-center font-bold text-amber-700 text-xs md:text-sm min-w-[100px]">
+                          Batas
+                        </TableHead>
+                      )}
+
                       {/* Session Score Columns - Always visible for scrolling desire */}
                       {mockSessionResults?.map((session, index) => (
                         <TableHead
@@ -495,6 +513,7 @@ export function RankingTable() {
                         <TableCell
                           colSpan={
                             8 +
+                            (isKedinasanWebsub ? 1 : 0) +
                             (mockSessionResults?.length || 0) +
                             (!isAdmin ? 3 : 0) // Add extra columns for non-premium
                           }
@@ -649,29 +668,69 @@ export function RankingTable() {
                               </span>
                             </TableCell>
 
+                            {/* Ambang Batas cell - Kedinasan only */}
+                            {isKedinasanWebsub && (() => {
+                              const sessionsWithThreshold = participant.sessionResult?.filter(
+                                s => getKedinasanThreshold(s.subCategory) !== null
+                              ) ?? [];
+                              if (sessionsWithThreshold.length === 0) return (
+                                <TableCell className="text-center py-3 md:py-4">
+                                  <span className="text-gray-400 text-xs">-</span>
+                                </TableCell>
+                              );
+                              const allLolos = sessionsWithThreshold.every(
+                                s => s.isUnlocked && s.totalScore >= (getKedinasanThreshold(s.subCategory) ?? 0)
+                              );
+                              return (
+                                <TableCell className="text-center py-3 md:py-4">
+                                  <span className={cn(
+                                    'inline-flex items-center justify-center px-2 h-6 md:h-7 rounded-full font-bold text-xs',
+                                    allLolos
+                                      ? 'bg-emerald-50 text-emerald-700'
+                                      : 'bg-red-50 text-red-600'
+                                  )}>
+                                    {allLolos ? 'Lolos' : 'Tidak Lolos'}
+                                  </span>
+                                </TableCell>
+                              );
+                            })()}
+
                             {/* Session Score Columns - Enhanced with Premium Logic */}
                             {participant.sessionResult?.map(
-                              (session, sessionIndex) => (
+                              (session, sessionIndex) => {
+                                const isKedinasan = (websiteSubCategoryId ?? '').toLowerCase().includes('kedinasan');
+                                const threshold = isKedinasan ? getKedinasanThreshold(session.subCategory) : null;
+                                const passes = threshold !== null ? session.totalScore >= threshold : null;
+                                return (
                                 <TableCell
                                   key={sessionIndex}
                                   className="text-right py-3 md:py-4 relative"
                                 >
                                   {session.isUnlocked ? (
                                     <div className="space-y-1">
-                                      <div className="font-semibold text-xs md:text-sm">
-                                        <span className="text-green-600">
+                                      <div className="font-semibold text-xs md:text-sm flex items-center justify-end gap-1">
+                                        <span className={passes === true ? 'text-emerald-600' : passes === false ? 'text-red-500' : 'text-green-600'}>
                                           {session.totalScore.toFixed(0)}
                                         </span>
                                         <span className="text-gray-400 text-xs font-normal">
                                           /{session.maxScore}
                                         </span>
                                       </div>
+                                      {passes !== null && (
+                                        <div className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-auto w-fit ${
+                                          passes
+                                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                            : 'bg-red-50 text-red-600 border border-red-200'
+                                        }`}>
+                                          {passes ? `✓ ≥${threshold}` : `✗ <${threshold}`}
+                                        </div>
+                                      )}
                                       <div className="w-8 md:w-12 ml-auto bg-gray-200 rounded-full h-1 overflow-hidden">
                                         <div
                                           className="h-full rounded-full transition-all duration-300"
                                           style={{
                                             width: `${(session.totalScore / session.maxScore) * 100}%`,
-                                            backgroundColor: mainColor,
+                                            backgroundColor: passes === false ? '#ef4444' : passes === true ? '#10b981' : mainColor,
                                           }}
                                         />
                                       </div>
@@ -686,8 +745,9 @@ export function RankingTable() {
                                     </ButtonUpgradeTryout>
                                   )}
                                 </TableCell>
-                              ),
-                            )}
+                              );
+                            })}
+
 
                             {/* Extra locked columns for non-premium mobile users */}
                           </TableRow>

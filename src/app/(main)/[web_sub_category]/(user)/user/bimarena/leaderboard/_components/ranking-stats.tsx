@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
-import { getSubtestLabel } from '@/lib/utils/snbt';
+import { getSubtestLabel } from '@/lib/utils/subtest';
 import {
   Activity,
   BarChart2,

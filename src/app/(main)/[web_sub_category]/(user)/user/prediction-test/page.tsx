@@ -2,7 +2,7 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { getSnbtShortName } from '@/lib/utils/snbt';
+import { getSnbtShortName } from '@/lib/utils/subtest';
 import {
   Card,
   CardContent,

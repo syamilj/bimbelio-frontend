@@ -1,5 +1,5 @@
 // ============ TYPES ============
-import { SNBT_SUBTEST_INITIALS } from '@/lib/utils/snbt';
+import { SNBT_SUBTEST_INITIALS } from '@/lib/utils/subtest';
 
 export interface Volume {
   id: string;
