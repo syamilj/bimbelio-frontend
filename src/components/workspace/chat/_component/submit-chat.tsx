@@ -138,7 +138,7 @@ const SubmitChat = () => {
       {/* Limitation Banners */}
       <div className="max-w-2xl mx-auto">
         {isLimitReached && (
-          <div className="mb-2 flex items-center gap-2 p-2.5 rounded-2xl bg-red-50 border border-red-100">
+          <div className="mb-2 flex items-center gap-2 p-2.5 rounded-3xl bg-red-50 border border-red-100">
             <AlertCircle className="w-3.5 h-3.5 text-red-500 shrink-0" />
             <span className="text-xs text-red-600 flex-1 font-medium">
               Limit chat tercapai
@@ -155,7 +155,7 @@ const SubmitChat = () => {
         )}
 
         {hasLimitWarning && (
-          <div className="mb-2 flex items-center gap-2 p-2.5 rounded-2xl bg-amber-50/80 border border-amber-100/80">
+          <div className="mb-2 flex items-center gap-2 p-2.5 rounded-3xl bg-amber-50/80 border border-amber-100/80">
             <Zap
               className="w-3.5 h-3.5 shrink-0"
               style={{ color: mainColor }}
@@ -180,7 +180,7 @@ const SubmitChat = () => {
 
         {(session?.user.role === 'ADMIN' ||
           session?.user.role === 'SUPER_ADMIN') && (
-          <div className="mb-2 flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/60">
+          <div className="mb-2 flex items-center gap-1 px-3 py-1.5 rounded-3xl bg-slate-50 border border-slate-200/60">
             <div className="flex items-center gap-1 text-slate-500 text-[11px]">
               <IconUnlimited w={11} />
               <span>/</span>
@@ -195,7 +195,7 @@ const SubmitChat = () => {
         {/* Chat Input — Gemini-style card */}
         <div
           className={cn(
-            'relative rounded-2xl border transition-all duration-200',
+            'relative rounded-3xl border transition-all duration-200',
             isLimitReached
               ? 'bg-gray-50 border-gray-200 opacity-60'
               : 'bg-white border-slate-200 hover:border-slate-300 focus-within:border-slate-400 focus-within:shadow-sm',
@@ -263,7 +263,7 @@ const SubmitChat = () => {
                 </Button>
 
                 {showUpgrade && (
-                  <div className="absolute bottom-full right-0 mb-2 w-48 p-3 bg-gray-900 text-white rounded-2xl shadow-xl z-50">
+                  <div className="absolute bottom-full right-0 mb-2 w-48 p-3 bg-gray-900 text-white rounded-3xl shadow-xl z-50">
                     <div className="space-y-2">
                       <h4 className="font-semibold text-xs">
                         Limit Chat Tercapai

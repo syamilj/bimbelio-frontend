@@ -139,14 +139,14 @@ export default function Page() {
         <div className="flex items-center gap-2">
           <Link
             href={`/${website_sub_category_id}/admin/tryout/testing/try-out`}
-            className="inline-flex items-center gap-1.5 h-9 px-3 rounded-xl border border-amber-300 bg-amber-50 text-amber-700 text-sm font-medium hover:bg-amber-100 transition-colors"
+            className="inline-flex items-center gap-1.5 h-9 px-3 rounded-3xl border border-amber-300 bg-amber-50 text-amber-700 text-sm font-medium hover:bg-amber-100 transition-colors"
           >
             <FlaskConical className="h-4 w-4" />
             Test Tryout
           </Link>
           <Link
             href={`/${website_sub_category_id}/admin/tryout/new`}
-            className="inline-flex items-center gap-1.5 h-9 px-4 rounded-xl bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors"
+            className="inline-flex items-center gap-1.5 h-9 px-4 rounded-3xl bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors"
           >
             <Plus className="h-4 w-4" />
             Tambah Tryout
@@ -162,9 +162,9 @@ export default function Page() {
             return (
               <div
                 key={i}
-                className="bg-white rounded-2xl border border-gray-100 p-5 flex items-center gap-4"
+                className="bg-white rounded-3xl border border-gray-100 p-5 flex items-center gap-4"
               >
-                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-3xl bg-blue-50 flex items-center justify-center shrink-0">
                   <Icon className="h-5 w-5 text-blue-600" />
                 </div>
                 <div>
@@ -180,7 +180,7 @@ export default function Page() {
       )}
 
       {/* Table card */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-4">
+      <div className="bg-white rounded-3xl border border-gray-100 p-6 space-y-4">
         {/* Toolbar */}
         <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
           <div className="relative w-full sm:max-w-xs">
@@ -189,7 +189,7 @@ export default function Page() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Cari tryout..."
-              className="pl-10 rounded-xl border-gray-200"
+              className="pl-10 rounded-3xl border-gray-200"
             />
           </div>
           <div className="flex items-center gap-2 shrink-0">
@@ -206,7 +206,7 @@ export default function Page() {
                 }));
                 exportData({ downloadData: rows, fileName: 'tryout-list' });
               }}
-              className="inline-flex items-center gap-1.5 h-9 px-3 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors"
+              className="inline-flex items-center gap-1.5 h-9 px-3 rounded-3xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors"
             >
               <FileSpreadsheet className="h-4 w-4" />
               Export CSV
@@ -215,7 +215,7 @@ export default function Page() {
         </div>
 
         {/* Table */}
-        <div className="w-full overflow-x-auto rounded-xl border border-gray-100">
+        <div className="w-full overflow-x-auto rounded-3xl border border-gray-100">
           <ShadTable>
             <TableHeader>
               <TableRow className="bg-gray-50 hover:bg-gray-50">
@@ -276,9 +276,9 @@ export default function Page() {
                     </TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-1">
-                        <Skeleton className="h-8 w-8 rounded-lg" />
-                        <Skeleton className="h-8 w-8 rounded-lg" />
-                        <Skeleton className="h-8 w-8 rounded-lg" />
+                        <Skeleton className="h-8 w-8 rounded-3xl" />
+                        <Skeleton className="h-8 w-8 rounded-3xl" />
+                        <Skeleton className="h-8 w-8 rounded-3xl" />
                       </div>
                     </TableCell>
                   </TableRow>
@@ -415,7 +415,7 @@ export default function Page() {
                           <Link
                             href={`/${website_sub_category_id}/admin/tryout/edit/${item.id}`}
                             title="Edit tryout"
-                            className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
+                            className="flex items-center justify-center w-8 h-8 rounded-3xl text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
                           >
                             <Edit className="w-4 h-4" />
                           </Link>
@@ -423,7 +423,7 @@ export default function Page() {
                             <Link
                               href={`/${website_sub_category_id}/admin/tryout/irt/${item.id}`}
                               title="Lihat IRT"
-                              className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-purple-600 hover:bg-purple-50 transition-colors"
+                              className="flex items-center justify-center w-8 h-8 rounded-3xl text-gray-400 hover:text-purple-600 hover:bg-purple-50 transition-colors"
                             >
                               <BarChart2 className="w-4 h-4" />
                             </Link>
@@ -433,7 +433,7 @@ export default function Page() {
                             size="icon"
                             disabled={!localString || isLoading}
                             title="Clear local storage"
-                            className="w-8 h-8 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 disabled:opacity-30"
+                            className="w-8 h-8 rounded-3xl text-gray-400 hover:text-red-600 hover:bg-red-50 disabled:opacity-30"
                             onClick={async () => {
                               localStorage.removeItem(
                                 `temporary-edit-tryout-${item.id}`,

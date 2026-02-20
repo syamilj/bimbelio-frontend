@@ -54,7 +54,7 @@ function CourseCard({ item, web }: { item: CourseCategory; web: string }) {
       href={`/${web}/user/bimcourse/${item.id}`}
       className="flex items-center gap-4 p-4 hover:bg-slate-50/80 transition-colors group"
     >
-      <div className="relative w-20 h-14 md:w-24 md:h-16 rounded-2xl overflow-hidden flex-shrink-0 bg-slate-100">
+      <div className="relative w-20 h-14 md:w-24 md:h-16 rounded-3xl overflow-hidden flex-shrink-0 bg-slate-100">
         {item.image ? (
           <Image
             src={item.image}
@@ -132,7 +132,7 @@ export default function CourseTabProgress({ onCountReady }: Props) {
             key={i}
             className="flex gap-4 animate-pulse"
           >
-            <div className="w-24 h-16 rounded-2xl bg-slate-100 flex-shrink-0" />
+            <div className="w-24 h-16 rounded-3xl bg-slate-100 flex-shrink-0" />
             <div className="flex-1 space-y-2 py-1">
               <div className="h-3 w-16 bg-slate-100 rounded-full" />
               <div className="h-4 w-3/4 bg-slate-100 rounded-full" />

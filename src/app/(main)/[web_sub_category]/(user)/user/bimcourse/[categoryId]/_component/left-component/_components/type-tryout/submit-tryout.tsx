@@ -102,7 +102,7 @@ const SubmitTryout = ({
         onOpenChange={setOpen}
       >
         <DialogTrigger asChild>
-          <button className="flex w-full items-center justify-center gap-1.5 px-4 py-2 rounded-2xl font-bold text-sm text-white transition-all shadow-sm hover:opacity-90 bg-gradient-to-r from-blue-600 to-indigo-600">
+          <button className="flex w-full items-center justify-center gap-1.5 px-4 py-2 rounded-3xl font-bold text-sm text-white transition-all shadow-sm hover:opacity-90 bg-gradient-to-r from-blue-600 to-indigo-600">
             <svg
               className="w-4 h-4"
               fill="none"

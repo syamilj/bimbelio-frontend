@@ -217,7 +217,7 @@ const ModalImportExcel = ({
     >
       <DialogTrigger asChild>
         <button
-          className="shrink-0 cursor-pointer rounded-xl bg-blue-50 border border-blue-200 px-4 py-2 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-100 active:bg-blue-50"
+          className="shrink-0 cursor-pointer rounded-3xl bg-blue-50 border border-blue-200 px-4 py-2 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-100 active:bg-blue-50"
           onClick={() => setOpen(true)}
         >
           Import CSV
@@ -246,7 +246,7 @@ const ModalImportExcel = ({
             />
             {file ? (
               <button
-                className="w-full shrink-0 cursor-pointer rounded-xl bg-blue-600 py-2.5 font-medium text-white transition-colors hover:bg-blue-700 active:bg-blue-600 disabled:opacity-60 flex items-center justify-center gap-2"
+                className="w-full shrink-0 cursor-pointer rounded-3xl bg-blue-600 py-2.5 font-medium text-white transition-colors hover:bg-blue-700 active:bg-blue-600 disabled:opacity-60 flex items-center justify-center gap-2"
                 onClick={handleGenerate}
                 disabled={isLoading}
               >
@@ -260,7 +260,7 @@ const ModalImportExcel = ({
               </button>
             ) : (
               <button
-                className="w-full shrink-0 cursor-pointer rounded-xl bg-blue-50 border border-blue-200 py-2.5 font-medium text-blue-700 transition-colors hover:bg-blue-100 active:bg-blue-50 flex items-center justify-center gap-2"
+                className="w-full shrink-0 cursor-pointer rounded-3xl bg-blue-50 border border-blue-200 py-2.5 font-medium text-blue-700 transition-colors hover:bg-blue-100 active:bg-blue-50 flex items-center justify-center gap-2"
                 onClick={() => {
                   document.getElementById('uploadCSV')?.click();
                 }}

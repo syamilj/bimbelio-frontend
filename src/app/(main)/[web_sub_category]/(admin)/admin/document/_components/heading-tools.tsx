@@ -73,7 +73,7 @@ export default function HeadingTools() {
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             placeholder="Cari dokumen..."
-            className="w-full pl-9 pr-9 py-2 rounded-xl border border-gray-200 bg-white text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-offset-0 focus:border-transparent transition"
+            className="w-full pl-9 pr-9 py-2 rounded-3xl border border-gray-200 bg-white text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-offset-0 focus:border-transparent transition"
             style={
               {
                 '--tw-ring-color': 'var(--color-main, #0091FF)',
@@ -105,7 +105,7 @@ export default function HeadingTools() {
             type="button"
             onClick={() => setShowFilter((v) => !v)}
             className={cn(
-              'relative z-50 flex items-center gap-1.5 px-3 py-2 rounded-xl border text-sm font-medium transition',
+              'relative z-50 flex items-center gap-1.5 px-3 py-2 rounded-3xl border text-sm font-medium transition',
               isFiltered
                 ? 'bg-main border-main text-white'
                 : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50',
@@ -123,7 +123,7 @@ export default function HeadingTools() {
           </button>
 
           {showFilter && (
-            <div className="absolute left-0 top-[calc(100%+6px)] z-50 w-72 rounded-2xl bg-white border border-gray-200 shadow-xl p-4 space-y-3">
+            <div className="absolute left-0 top-[calc(100%+6px)] z-50 w-72 rounded-3xl bg-white border border-gray-200 shadow-xl p-4 space-y-3">
               <p className="text-xs font-bold text-gray-700 uppercase tracking-wide">
                 Filter Dokumen
               </p>
@@ -138,7 +138,7 @@ export default function HeadingTools() {
                     setFilter({ type: 'option', filter: v, value: '' })
                   }
                 >
-                  <SelectTrigger className="rounded-xl h-9 text-sm">
+                  <SelectTrigger className="rounded-3xl h-9 text-sm">
                     <SelectValue placeholder="Pilih filter..." />
                   </SelectTrigger>
                   <SelectContent className="z-[200]">
@@ -161,7 +161,7 @@ export default function HeadingTools() {
                       setFilter((prev) => (prev ? { ...prev, value: v } : null))
                     }
                   >
-                    <SelectTrigger className="rounded-xl h-9 text-sm">
+                    <SelectTrigger className="rounded-3xl h-9 text-sm">
                       <SelectValue placeholder="Pilih nilai..." />
                     </SelectTrigger>
                     <SelectContent className="z-[200]">
@@ -189,7 +189,7 @@ export default function HeadingTools() {
                 <button
                   type="button"
                   onClick={handleClearFilter}
-                  className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700 px-2 py-1.5 rounded-lg hover:bg-gray-100 transition"
+                  className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700 px-2 py-1.5 rounded-3xl hover:bg-gray-100 transition"
                 >
                   <RotateCcw className="w-3 h-3" />
                   Reset
@@ -198,7 +198,7 @@ export default function HeadingTools() {
                   type="button"
                   onClick={handleApplyFilter}
                   disabled={!filter || filter.value === ''}
-                  className="flex-1 text-xs font-semibold py-1.5 rounded-xl bg-main text-white disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition"
+                  className="flex-1 text-xs font-semibold py-1.5 rounded-3xl bg-main text-white disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition"
                 >
                   Terapkan
                 </button>
@@ -209,7 +209,7 @@ export default function HeadingTools() {
 
         {/* Active filter chip */}
         {isFiltered && (
-          <div className="flex items-center gap-1.5 text-xs bg-blue-50 border border-blue-200 text-blue-700 rounded-xl px-2.5 py-1.5 font-medium">
+          <div className="flex items-center gap-1.5 text-xs bg-blue-50 border border-blue-200 text-blue-700 rounded-3xl px-2.5 py-1.5 font-medium">
             <span>
               {filterDocument?.filter}: {filterDocument?.filterValue}
             </span>
@@ -225,14 +225,14 @@ export default function HeadingTools() {
         <Button
           variant="outline"
           size="sm"
-          className="rounded-xl text-gray-600 border-gray-200 hover:border-gray-300 text-sm font-medium"
+          className="rounded-3xl text-gray-600 border-gray-200 hover:border-gray-300 text-sm font-medium"
           onClick={() => setShowAddDocument(true)}
         >
           Export CSV
         </Button>
         <Button
           size="sm"
-          className="rounded-xl bg-main hover:opacity-90 text-white text-sm font-semibold gap-1.5"
+          className="rounded-3xl bg-main hover:opacity-90 text-white text-sm font-semibold gap-1.5"
           onClick={() => setShowAddDocument(true)}
         >
           <Plus className="w-4 h-4" />

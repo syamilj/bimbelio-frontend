@@ -130,7 +130,7 @@ const TryoutOption = ({
               setCurrentIndexEdit(null);
               if (currentIndexEdit !== null) setPrevIndexEdit(currentIndexEdit);
             }}
-            className="text-xs text-gray-500 hover:text-gray-800 border border-gray-200 hover:border-gray-300 rounded-lg px-2.5 py-1.5 transition-colors"
+            className="text-xs text-gray-500 hover:text-gray-800 border border-gray-200 hover:border-gray-300 rounded-3xl px-2.5 py-1.5 transition-colors"
           >
             Lihat semua
           </button>
@@ -146,7 +146,7 @@ const TryoutOption = ({
           <input
             type="text"
             placeholder="Masukkan judul tryout..."
-            className="h-9 w-full rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+            className="h-9 w-full rounded-3xl border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
             required
             value={tryout?.title ?? ''}
             onChange={(e) =>
@@ -161,7 +161,7 @@ const TryoutOption = ({
             <label className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
               Status
             </label>
-            <div className="relative bg-white rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">
+            <div className="relative bg-white rounded-3xl border border-gray-200 hover:border-gray-300 transition-colors">
               <input
                 type="text"
                 defaultValue={tryout?.status ?? ''}
@@ -177,7 +177,7 @@ const TryoutOption = ({
                   }));
                 }}
               >
-                <SelectTrigger className="h-9 w-full rounded-lg border-none bg-transparent shadow-none outline-none text-sm px-3">
+                <SelectTrigger className="h-9 w-full rounded-3xl border-none bg-transparent shadow-none outline-none text-sm px-3">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -204,7 +204,7 @@ const TryoutOption = ({
             <input
               type="text"
               placeholder="Link postingan..."
-              className="h-9 w-full rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+              className="h-9 w-full rounded-3xl border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
               value={tryout?.instagram ?? ''}
               onChange={(e) =>
                 setTryout((prev) => ({ ...prev, instagram: e.target.value }))
@@ -257,14 +257,14 @@ const TryoutOption = ({
                 required
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+                className="h-9 rounded-3xl border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
               />
               <input
                 type="time"
                 required
                 value={startDateTime}
                 onChange={(e) => setStartDateTime(e.target.value)}
-                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+                className="h-9 rounded-3xl border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
               />
             </div>
           </div>
@@ -278,14 +278,14 @@ const TryoutOption = ({
                 required
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+                className="h-9 rounded-3xl border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
               />
               <input
                 type="time"
                 required
                 value={endDateTime}
                 onChange={(e) => setEndDateTime(e.target.value)}
-                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+                className="h-9 rounded-3xl border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
               />
             </div>
           </div>
@@ -299,14 +299,14 @@ const TryoutOption = ({
                 required
                 value={resultDate}
                 onChange={(e) => setResultDate(e.target.value)}
-                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+                className="h-9 rounded-3xl border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
               />
               <input
                 type="time"
                 required
                 value={resultDateTime}
                 onChange={(e) => setResultDateTime(e.target.value)}
-                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+                className="h-9 rounded-3xl border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
               />
             </div>
           </div>
@@ -330,7 +330,7 @@ const TryoutOption = ({
                   type="button"
                   title="AI otomatis cocokkan kategori dan bab materi untuk semua sesi"
                   disabled={sessions.every((s) => !s.Questions?.length)}
-                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-purple-600 hover:text-purple-800 border border-purple-200 hover:border-purple-300 bg-purple-50 hover:bg-purple-100 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg px-2.5 py-1.5 transition-colors"
+                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-purple-600 hover:text-purple-800 border border-purple-200 hover:border-purple-300 bg-purple-50 hover:bg-purple-100 disabled:opacity-40 disabled:cursor-not-allowed rounded-3xl px-2.5 py-1.5 transition-colors"
                 >
                   <Sparkles className="w-3 h-3" />
                   AI Match
@@ -339,7 +339,7 @@ const TryoutOption = ({
               <button
                 type="button"
                 onClick={addSesi}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 hover:border-blue-300 rounded-lg px-3 py-1.5 transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 hover:border-blue-300 rounded-3xl px-3 py-1.5 transition-colors"
               >
                 <Plus className="w-3.5 h-3.5" />
                 Tambah Sesi
@@ -348,7 +348,7 @@ const TryoutOption = ({
           </div>
 
           {sessions.length === 0 && (
-            <div className="rounded-lg border border-dashed border-gray-200 bg-gray-50 py-6 flex flex-col items-center gap-1">
+            <div className="rounded-3xl border border-dashed border-gray-200 bg-gray-50 py-6 flex flex-col items-center gap-1">
               <p className="text-sm text-gray-400">Belum ada sesi</p>
               <p className="text-xs text-gray-300">
                 Klik "Tambah Sesi" untuk mulai
@@ -359,7 +359,7 @@ const TryoutOption = ({
           {sessions.map((item, sessionIndex) => (
             <div
               key={sessionIndex}
-              className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white p-3 hover:border-gray-300 transition-colors"
+              className="flex items-center gap-2 rounded-3xl border border-gray-200 bg-white p-3 hover:border-gray-300 transition-colors"
             >
               <div className="shrink-0">
                 <input
@@ -381,7 +381,7 @@ const TryoutOption = ({
                     setSessions([...currentSessions]);
                   }}
                 >
-                  <SelectTrigger className="h-7 w-12 rounded-lg border border-gray-200 bg-gray-50 text-xs shadow-none px-2">
+                  <SelectTrigger className="h-7 w-12 rounded-3xl border border-gray-200 bg-gray-50 text-xs shadow-none px-2">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -400,7 +400,7 @@ const TryoutOption = ({
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5 flex-wrap">
                   {item.subCategory ? (
-                    <span className="inline-flex items-center rounded-md bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-semibold px-2 py-0.5">
+                    <span className="inline-flex items-center rounded-3xl bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-semibold px-2 py-0.5">
                       {item.subCategory}
                     </span>
                   ) : (
@@ -428,7 +428,7 @@ const TryoutOption = ({
                   if (item.assessmentType)
                     setAssesmentType(item.assessmentType);
                 }}
-                className="shrink-0 text-xs font-semibold text-blue-600 hover:text-blue-800 border border-blue-200 hover:border-blue-300 bg-blue-50 hover:bg-blue-100 rounded-lg px-3 py-1.5 transition-colors"
+                className="shrink-0 text-xs font-semibold text-blue-600 hover:text-blue-800 border border-blue-200 hover:border-blue-300 bg-blue-50 hover:bg-blue-100 rounded-3xl px-3 py-1.5 transition-colors"
               >
                 Edit
               </button>
@@ -436,7 +436,7 @@ const TryoutOption = ({
           ))}
 
           {/* Rest time */}
-          <div className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white p-3">
+          <div className="flex items-center justify-between gap-3 rounded-3xl border border-gray-200 bg-white p-3">
             <div>
               <p className="text-xs font-medium text-gray-700">
                 Waktu Istirahat
@@ -446,7 +446,7 @@ const TryoutOption = ({
             <input
               type="number"
               placeholder="0"
-              className="h-9 w-24 rounded-lg border border-gray-200 px-3 text-sm text-right outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+              className="h-9 w-24 rounded-3xl border border-gray-200 px-3 text-sm text-right outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
               value={tryout?.restTime ?? ''}
               onChange={(e) =>
                 setTryout((prev) => ({
@@ -463,7 +463,7 @@ const TryoutOption = ({
         {/* Danger zone */}
         <button
           type="button"
-          className="w-full rounded-lg border border-red-200 bg-red-50 hover:bg-red-100 text-red-600 text-sm font-medium py-2.5 transition-colors"
+          className="w-full rounded-3xl border border-red-200 bg-red-50 hover:bg-red-100 text-red-600 text-sm font-medium py-2.5 transition-colors"
           onClick={async () => {
             await resetTryout();
             await storage.from('img').remove([`tryout/${tryout?.image}`]);

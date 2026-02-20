@@ -428,7 +428,7 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
                 </div>
               )}
               {doc.video?.url?.length > 0 && (
-                <div className="mt-2 rounded-2xl border border-slate-200/70 bg-white px-2.5 py-2 sm:px-3">
+                <div className="mt-2 rounded-3xl border border-slate-200/70 bg-white px-2.5 py-2 sm:px-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex min-w-0 items-center gap-1.5">
                       {[1, 2, 3, 4, 5].map((item) => (

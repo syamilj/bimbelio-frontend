@@ -538,7 +538,7 @@ export default function TambahDokumen() {
           <button
             type="button"
             onClick={() => setShowAddDocument(false)}
-            className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition"
+            className="flex items-center justify-center w-8 h-8 rounded-3xl text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition"
           >
             <X className="w-4 h-4" />
           </button>
@@ -583,7 +583,7 @@ export default function TambahDokumen() {
                 </label>
                 <input
                   type="text"
-                  className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition"
+                  className="w-full rounded-3xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition"
                   placeholder="Masukan judul dokumen"
                   onChange={(e) => setFileName(e.target.value)}
                   value={fileName}
@@ -599,7 +599,7 @@ export default function TambahDokumen() {
                 <button
                   type="button"
                   onClick={() => setPremium(false)}
-                  className={`flex-1 py-2 rounded-xl text-sm font-semibold border cursor-pointer transition ${
+                  className={`flex-1 py-2 rounded-3xl text-sm font-semibold border cursor-pointer transition ${
                     !premium
                       ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
                       : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
@@ -610,7 +610,7 @@ export default function TambahDokumen() {
                 <button
                   type="button"
                   onClick={() => setPremium(true)}
-                  className={`flex-1 py-2 rounded-xl text-sm font-semibold border cursor-pointer transition ${
+                  className={`flex-1 py-2 rounded-3xl text-sm font-semibold border cursor-pointer transition ${
                     premium
                       ? 'border-amber-500 bg-amber-50 text-amber-700'
                       : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
@@ -630,7 +630,7 @@ export default function TambahDokumen() {
                   <button
                     type="button"
                     key={i}
-                    className={`shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer transition whitespace-nowrap ${
+                    className={`shrink-0 px-3 py-1.5 rounded-3xl text-xs font-semibold border cursor-pointer transition whitespace-nowrap ${
                       category === item.id
                         ? 'border-main bg-main text-white shadow-sm'
                         : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50'
@@ -656,7 +656,7 @@ export default function TambahDokumen() {
                   <button
                     type="button"
                     key={i}
-                    className={`shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer transition whitespace-nowrap ${
+                    className={`shrink-0 px-3 py-1.5 rounded-3xl text-xs font-semibold border cursor-pointer transition whitespace-nowrap ${
                       subCategory === item.id
                         ? 'border-main bg-main text-white shadow-sm'
                         : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50'
@@ -717,7 +717,7 @@ export default function TambahDokumen() {
               <div className="flex gap-2">
                 <button
                   type="button"
-                  className={`flex-1 py-2 rounded-xl text-sm font-semibold border cursor-pointer transition ${
+                  className={`flex-1 py-2 rounded-3xl text-sm font-semibold border cursor-pointer transition ${
                     option === 'doc'
                       ? 'border-main bg-main text-white shadow-sm'
                       : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
@@ -728,7 +728,7 @@ export default function TambahDokumen() {
                 </button>
                 <button
                   type="button"
-                  className={`flex-1 py-2 rounded-xl text-sm font-semibold border cursor-pointer transition ${
+                  className={`flex-1 py-2 rounded-3xl text-sm font-semibold border cursor-pointer transition ${
                     option === 'video'
                       ? 'border-main bg-main text-white shadow-sm'
                       : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
@@ -788,7 +788,7 @@ export default function TambahDokumen() {
                   </label>
                   <input
                     type="text"
-                    className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition"
+                    className="w-full rounded-3xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition"
                     placeholder="Masukan judul video"
                     onChange={(e) => setVideoName(e.target.value)}
                     value={videoName}
@@ -800,14 +800,14 @@ export default function TambahDokumen() {
             <div className="border-t border-gray-100 pt-4 flex gap-3">
               <button
                 type="button"
-                className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition"
+                className="flex-1 py-2.5 rounded-3xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition"
                 onClick={() => setShowAddDocument(false)}
               >
                 Batalkan
               </button>
               <button
                 type="submit"
-                className="flex-1 py-2.5 rounded-xl bg-main text-white text-sm font-semibold hover:opacity-90 transition disabled:opacity-50"
+                className="flex-1 py-2.5 rounded-3xl bg-main text-white text-sm font-semibold hover:opacity-90 transition disabled:opacity-50"
                 onClick={() => AddDokumen()}
               >
                 Tambah Material
@@ -979,7 +979,7 @@ export const UploadFile = ({
 
             <button
               type="button"
-              className="w-full rounded-xl border border-dashed border-gray-300 py-2 text-xs font-medium text-gray-500 hover:border-main hover:text-main hover:bg-blue-50 transition"
+              className="w-full rounded-3xl border border-dashed border-gray-300 py-2 text-xs font-medium text-gray-500 hover:border-main hover:text-main hover:bg-blue-50 transition"
               onClick={() => {
                 document.getElementById(inputId)?.click();
               }}
@@ -1082,7 +1082,7 @@ const InputText = ({
       </label>
       <input
         type="text"
-        className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition"
+        className="w-full rounded-3xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition"
         placeholder={placeholder}
         onChange={(e) => setValue(e.target.value)}
         value={value}
@@ -1139,13 +1139,13 @@ const InputDateAndTime = ({
       <div className="grid grid-cols-2 gap-2">
         <input
           type="date"
-          className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition"
+          className="w-full rounded-3xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition"
           onChange={(e) => setDate(e.target.value)}
           value={date ? date : ''}
         />
         <input
           type="time"
-          className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition"
+          className="w-full rounded-3xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition"
           onChange={(e) => setTime(e.target.value)}
           value={time ? time : ''}
         />
@@ -1173,7 +1173,7 @@ const InputTextarea = ({
       </label>
       <textarea
         rows={3}
-        className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition resize-none"
+        className="w-full rounded-3xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-50 focus:border-main transition resize-none"
         placeholder={placeholder}
         onChange={(e) => setValue(e.target.value)}
         value={value}

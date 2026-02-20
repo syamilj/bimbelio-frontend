@@ -129,7 +129,7 @@ const TryoutType = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div
-                className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm"
+                className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm"
                 style={{ backgroundColor: `${mainColor}18` }}
               >
                 <Trophy
@@ -148,7 +148,7 @@ const TryoutType = () => {
             </div>
             <div className="flex items-center gap-2">
               <div
-                className="hidden sm:flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-black"
+                className="hidden sm:flex items-center gap-1.5 rounded-3xl px-3 py-1.5 text-xs font-black"
                 style={{ backgroundColor: `${mainColor}18`, color: mainColor }}
               >
                 <CheckCircle2 className="w-3.5 h-3.5" />
@@ -156,7 +156,7 @@ const TryoutType = () => {
               </div>
               <button
                 onClick={() => setShowSidebar(!showSidebar)}
-                className="lg:hidden p-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 transition-colors"
+                className="lg:hidden p-2 rounded-3xl bg-white hover:bg-slate-50 border border-slate-200 transition-colors"
               >
                 <LayoutGrid className="w-4 h-4 text-slate-600" />
               </button>
@@ -181,7 +181,7 @@ const TryoutType = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-10 h-10 rounded-2xl flex items-center justify-center text-white font-black text-base shadow-sm"
+                      className="w-10 h-10 rounded-3xl flex items-center justify-center text-white font-black text-base shadow-sm"
                       style={{ backgroundColor: mainColor }}
                     >
                       {currentIndexQuestion + 1}
@@ -249,7 +249,7 @@ const TryoutType = () => {
                           );
                         }}
                         className={cn(
-                          'group flex items-start gap-3 rounded-2xl p-3.5 cursor-pointer border-2 transition-all duration-150',
+                          'group flex items-start gap-3 rounded-3xl p-3.5 cursor-pointer border-2 transition-all duration-150',
                           isSelected
                             ? 'border-blue-500 bg-blue-50/60 shadow-sm'
                             : 'border-slate-200 bg-white hover:border-blue-200 hover:bg-blue-50/30',
@@ -306,7 +306,7 @@ const TryoutType = () => {
                   }
                   disabled={isFirst}
                   className={cn(
-                    'flex items-center gap-1.5 px-4 py-2 rounded-2xl font-bold text-sm border transition-all',
+                    'flex items-center gap-1.5 px-4 py-2 rounded-3xl font-bold text-sm border transition-all',
                     isFirst
                       ? 'border-slate-100 text-slate-300 cursor-not-allowed bg-white'
                       : 'border-slate-200 text-slate-600 bg-white hover:bg-slate-50',
@@ -321,7 +321,7 @@ const TryoutType = () => {
                 {!isLast ? (
                   <button
                     onClick={() => setCurrentIndexQuestion((p) => p + 1)}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-2xl font-bold text-sm text-white transition-all shadow-sm hover:opacity-90"
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-3xl font-bold text-sm text-white transition-all shadow-sm hover:opacity-90"
                     style={{ backgroundColor: mainColor }}
                   >
                     Selanjutnya
@@ -405,7 +405,7 @@ const TryoutType = () => {
                         key={i}
                         onClick={() => setCurrentIndexQuestion(i)}
                         className={cn(
-                          'h-9 w-9 rounded-xl font-black text-xs transition-all border shadow-sm',
+                          'h-9 w-9 rounded-3xl font-black text-xs transition-all border shadow-sm',
                           currentIndexQuestion === i
                             ? 'text-white border-transparent'
                             : isAnswered(i)
@@ -434,7 +434,7 @@ const TryoutType = () => {
                         key={item.label}
                         className="flex items-center gap-2 text-xs text-slate-500 font-medium"
                       >
-                        <div className={cn('w-4 h-4 rounded-md', item.cls)} />
+                        <div className={cn('w-4 h-4 rounded-3xl', item.cls)} />
                         {item.label}
                       </div>
                     ))}
@@ -485,7 +485,7 @@ const TryoutType = () => {
                 Tutup
               </button>
             </div>
-            <div className="grid grid-cols-3 gap-3 mb-4 p-3 bg-slate-50 rounded-2xl">
+            <div className="grid grid-cols-3 gap-3 mb-4 p-3 bg-slate-50 rounded-3xl">
               <div className="text-center">
                 <div
                   className="text-lg font-black"
@@ -517,7 +517,7 @@ const TryoutType = () => {
                     setShowSidebar(false);
                   }}
                   className={cn(
-                    'h-10 w-10 rounded-xl font-black text-sm transition-all border shadow-sm',
+                    'h-10 w-10 rounded-3xl font-black text-sm transition-all border shadow-sm',
                     currentIndexQuestion === i
                       ? 'text-white border-transparent'
                       : isAnswered(i)

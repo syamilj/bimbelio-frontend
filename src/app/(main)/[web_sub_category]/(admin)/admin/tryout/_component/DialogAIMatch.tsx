@@ -427,13 +427,13 @@ export default function DialogAIMatch({
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
 
-      <DialogContent className="max-w-2xl w-full p-0 gap-0 overflow-hidden rounded-2xl">
+      <DialogContent className="max-w-2xl w-full p-0 gap-0 overflow-hidden rounded-3xl">
         {/* Header */}
         <DialogHeader className="px-6 pt-5 pb-4 border-b border-gray-100">
           <DialogTitle className="flex items-center gap-3 text-base font-semibold text-gray-900">
             <div
               className={cn(
-                'h-10 w-10 rounded-xl flex items-center justify-center shrink-0 shadow-md transition-all duration-500',
+                'h-10 w-10 rounded-3xl flex items-center justify-center shrink-0 shadow-md transition-all duration-500',
                 isAllDone
                   ? 'bg-gradient-to-br from-green-400 to-emerald-500'
                   : 'bg-gradient-to-br from-purple-500 to-violet-600',
@@ -498,7 +498,7 @@ export default function DialogAIMatch({
           >
             <div
               className={cn(
-                'h-11 w-11 rounded-xl flex items-center justify-center shrink-0 shadow-sm',
+                'h-11 w-11 rounded-3xl flex items-center justify-center shrink-0 shadow-sm',
                 errorCount === 0 ? 'bg-green-500' : 'bg-amber-500',
               )}
             >
@@ -539,7 +539,7 @@ export default function DialogAIMatch({
                 setAvgSessionTime(null);
               }}
               className={cn(
-                'shrink-0 text-[11px] font-medium border rounded-lg px-3 py-1.5 transition-colors',
+                'shrink-0 text-[11px] font-medium border rounded-3xl px-3 py-1.5 transition-colors',
                 errorCount === 0
                   ? 'text-green-700 border-green-300 hover:bg-green-100'
                   : 'text-amber-700 border-amber-300 hover:bg-amber-100',
@@ -568,7 +568,7 @@ export default function DialogAIMatch({
                 <button
                   type="button"
                   onClick={() => setWebsubOpen((v) => !v)}
-                  className="w-full flex items-center justify-between gap-2 h-9 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 hover:border-gray-300 transition-colors"
+                  className="w-full flex items-center justify-between gap-2 h-9 rounded-3xl border border-gray-200 bg-white px-3 text-sm text-gray-700 hover:border-gray-300 transition-colors"
                 >
                   <span className="truncate">{selectedSubName}</span>
                   <ChevronDown
@@ -579,7 +579,7 @@ export default function DialogAIMatch({
                   />
                 </button>
                 {websubOpen && (
-                  <div className="absolute z-50 top-full mt-1 left-0 right-0 rounded-xl border border-gray-200 bg-white shadow-lg max-h-52 overflow-y-auto">
+                  <div className="absolute z-50 top-full mt-1 left-0 right-0 rounded-3xl border border-gray-200 bg-white shadow-lg max-h-52 overflow-y-auto">
                     {allWebCategories.length === 0 ? (
                       <div className="px-4 py-6 flex items-center justify-center gap-2 text-sm text-gray-400">
                         <Loader2 className="w-3.5 h-3.5 animate-spin" />{' '}
@@ -658,7 +658,7 @@ export default function DialogAIMatch({
                   onClick={() => {
                     batchCancelRef.current = true;
                   }}
-                  className="text-xs font-medium text-red-500 hover:text-red-700 border border-red-200 hover:border-red-300 rounded-lg px-3 py-1.5 transition-colors"
+                  className="text-xs font-medium text-red-500 hover:text-red-700 border border-red-200 hover:border-red-300 rounded-3xl px-3 py-1.5 transition-colors"
                 >
                   Batalkan
                 </button>
@@ -670,7 +670,7 @@ export default function DialogAIMatch({
                   <button
                     type="button"
                     onClick={handleRunPending}
-                    className="inline-flex items-center gap-1 text-xs font-medium text-amber-600 hover:text-amber-800 border border-amber-200 hover:border-amber-300 bg-amber-50 rounded-lg px-3 py-1.5 transition-colors"
+                    className="inline-flex items-center gap-1 text-xs font-medium text-amber-600 hover:text-amber-800 border border-amber-200 hover:border-amber-300 bg-amber-50 rounded-3xl px-3 py-1.5 transition-colors"
                   >
                     <RefreshCw className="w-3 h-3" />
                     Yang Belum ({pendingIndices.length})
@@ -681,7 +681,7 @@ export default function DialogAIMatch({
                 disabled={isAnyRunning}
                 onClick={handleRunAll}
                 className={cn(
-                  'inline-flex items-center gap-1.5 text-xs font-semibold rounded-lg px-3 py-1.5 transition-all duration-200 shadow-sm',
+                  'inline-flex items-center gap-1.5 text-xs font-semibold rounded-3xl px-3 py-1.5 transition-all duration-200 shadow-sm',
                   isAllDone
                     ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white'
                     : 'bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white',
@@ -732,7 +732,7 @@ export default function DialogAIMatch({
                 <div
                   key={idx}
                   className={cn(
-                    'flex items-start gap-3 rounded-xl border p-3.5 transition-all duration-300',
+                    'flex items-start gap-3 rounded-3xl border p-3.5 transition-all duration-300',
                     !hasQ && 'opacity-40 bg-gray-50 border-gray-100',
                     hasQ &&
                       !prog &&
@@ -865,7 +865,7 @@ export default function DialogAIMatch({
                                         void fetchCategoriesForWebsub(sub.id);
                                       }}
                                       className={cn(
-                                        'text-[10px] font-medium rounded-md px-2 py-0.5 border transition-all',
+                                        'text-[10px] font-medium rounded-3xl px-2 py-0.5 border transition-all',
                                         isActive
                                           ? 'bg-purple-600 text-white border-purple-600'
                                           : 'bg-white text-gray-600 border-gray-200 hover:border-purple-300 hover:text-purple-700',
@@ -934,7 +934,7 @@ export default function DialogAIMatch({
                                             });
                                           }}
                                           className={cn(
-                                            'inline-flex items-center gap-0.5 text-[10px] font-medium rounded-md px-2 py-0.5 border transition-all',
+                                            'inline-flex items-center gap-0.5 text-[10px] font-medium rounded-3xl px-2 py-0.5 border transition-all',
                                             isSelected
                                               ? 'bg-emerald-600 text-white border-emerald-600'
                                               : 'bg-white text-gray-600 border-gray-200 hover:border-emerald-300 hover:text-emerald-700',
@@ -959,7 +959,7 @@ export default function DialogAIMatch({
                       {hasQ && (
                         <div className="shrink-0">
                           {isSessionRunning ? (
-                            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-purple-500 bg-purple-50 border border-purple-100 rounded-lg px-2.5 py-1">
+                            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-purple-500 bg-purple-50 border border-purple-100 rounded-3xl px-2.5 py-1">
                               <Loader2 className="w-3 h-3 animate-spin" />{' '}
                               Menganalisis...
                             </span>
@@ -974,7 +974,7 @@ export default function DialogAIMatch({
                                 disabled={isAnyRunning}
                                 onClick={() => handleRunOne(idx)}
                                 title="Jalankan ulang sesi ini"
-                                className="ml-0.5 text-[10px] font-medium text-gray-400 hover:text-purple-600 border border-gray-200 hover:border-purple-200 rounded-md px-1.5 py-0.5 transition-colors disabled:opacity-40"
+                                className="ml-0.5 text-[10px] font-medium text-gray-400 hover:text-purple-600 border border-gray-200 hover:border-purple-200 rounded-3xl px-1.5 py-0.5 transition-colors disabled:opacity-40"
                               >
                                 <RefreshCw className="w-2.5 h-2.5 inline" />
                               </button>
@@ -984,7 +984,7 @@ export default function DialogAIMatch({
                               type="button"
                               disabled={isAnyRunning}
                               onClick={() => handleRunOne(idx)}
-                              className="inline-flex items-center gap-1 text-[11px] font-semibold text-red-500 hover:text-red-700 border border-red-200 hover:border-red-300 bg-red-50 rounded-lg px-2.5 py-1 transition-colors disabled:opacity-40"
+                              className="inline-flex items-center gap-1 text-[11px] font-semibold text-red-500 hover:text-red-700 border border-red-200 hover:border-red-300 bg-red-50 rounded-3xl px-2.5 py-1 transition-colors disabled:opacity-40"
                             >
                               <RefreshCw className="w-3 h-3" /> Coba Lagi
                             </button>
@@ -994,7 +994,7 @@ export default function DialogAIMatch({
                               disabled={isAnyRunning}
                               onClick={() => handleRunOne(idx)}
                               className={cn(
-                                'inline-flex items-center gap-1 text-[11px] font-semibold rounded-lg px-2.5 py-1 transition-all duration-200',
+                                'inline-flex items-center gap-1 text-[11px] font-semibold rounded-3xl px-2.5 py-1 transition-all duration-200',
                                 'bg-gradient-to-r from-purple-500 to-violet-500 hover:from-purple-600 hover:to-violet-600 text-white shadow-sm',
                                 'disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none',
                               )}
@@ -1050,7 +1050,7 @@ export default function DialogAIMatch({
                               {prog.categoryStats.slice(0, 6).map((cs, ci) => (
                                 <span
                                   key={ci}
-                                  className="inline-flex items-center gap-1 text-[10px] font-medium bg-emerald-100 text-emerald-700 rounded-md px-1.5 py-0.5 border border-emerald-200/80"
+                                  className="inline-flex items-center gap-1 text-[10px] font-medium bg-emerald-100 text-emerald-700 rounded-3xl px-1.5 py-0.5 border border-emerald-200/80"
                                 >
                                   {cs.name}
                                   <span className="text-emerald-500 font-bold">
@@ -1144,7 +1144,7 @@ export default function DialogAIMatch({
             onClick={() => setOpen(false)}
             disabled={isAnyRunning}
             className={cn(
-              'text-sm font-semibold rounded-lg px-5 py-2 border transition-all duration-300 disabled:opacity-40',
+              'text-sm font-semibold rounded-3xl px-5 py-2 border transition-all duration-300 disabled:opacity-40',
               !isAllDone && 'text-gray-600 hover:text-gray-800 border-gray-200',
               isAllDone &&
                 errorCount === 0 &&

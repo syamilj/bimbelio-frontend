@@ -115,7 +115,7 @@ const ChapterOption = ({
             onChange={(e) =>
               setChapter((prev) => ({ ...prev, title: e.target.value }))
             }
-            className="mt-1 rounded-xl border-gray-200"
+            className="mt-1 rounded-3xl border-gray-200"
           />
         </div>
 
@@ -132,7 +132,7 @@ const ChapterOption = ({
               setChapter((prev) => ({ ...prev, categoryId: value }))
             }
           >
-            <SelectTrigger className="mt-1 rounded-xl border-gray-200">
+            <SelectTrigger className="mt-1 rounded-3xl border-gray-200">
               <SelectValue placeholder="Pilih kategori..." />
             </SelectTrigger>
             <SelectContent>
@@ -167,7 +167,7 @@ const ChapterOption = ({
                   number: parseInt(e.target.value) || 0,
                 }))
               }
-              className="mt-1 rounded-xl border-gray-200"
+              className="mt-1 rounded-3xl border-gray-200"
             />
           </div>
           <div>
@@ -186,7 +186,7 @@ const ChapterOption = ({
                 }))
               }
             >
-              <SelectTrigger className="mt-1 rounded-xl border-gray-200">
+              <SelectTrigger className="mt-1 rounded-3xl border-gray-200">
                 <SelectValue placeholder="Status..." />
               </SelectTrigger>
               <SelectContent>
@@ -210,7 +210,7 @@ const ChapterOption = ({
               size="sm"
               variant="outline"
               disabled={isLoading}
-              className="h-7 px-2.5 text-xs rounded-lg border-gray-200"
+              className="h-7 px-2.5 text-xs rounded-3xl border-gray-200"
             >
               <Plus className="h-3.5 w-3.5 mr-1" />
               Tambah
@@ -218,7 +218,7 @@ const ChapterOption = ({
           </div>
 
           {subChapter.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-6 text-center border-2 border-dashed border-gray-200 rounded-xl">
+            <div className="flex flex-col items-center justify-center py-6 text-center border-2 border-dashed border-gray-200 rounded-3xl">
               <p className="text-sm text-gray-400 mb-2">
                 Belum ada sub chapter
               </p>
@@ -227,7 +227,7 @@ const ChapterOption = ({
                 size="sm"
                 variant="outline"
                 disabled={isLoading}
-                className="h-7 px-3 text-xs rounded-lg"
+                className="h-7 px-3 text-xs rounded-3xl"
               >
                 <Plus className="h-3.5 w-3.5 mr-1" />
                 Tambah Sub Chapter
@@ -241,7 +241,7 @@ const ChapterOption = ({
                   <div
                     key={index}
                     className={cn(
-                      'group flex items-center gap-2.5 p-2.5 border rounded-xl cursor-pointer transition-all',
+                      'group flex items-center gap-2.5 p-2.5 border rounded-3xl cursor-pointer transition-all',
                       currentIndexEdit === index
                         ? 'border-blue-300 bg-blue-50'
                         : 'border-gray-100 hover:border-gray-200 hover:bg-gray-50',
@@ -267,7 +267,7 @@ const ChapterOption = ({
                     {tc && (
                       <div
                         className={cn(
-                          'flex items-center justify-center w-6 h-6 rounded-lg border shrink-0',
+                          'flex items-center justify-center w-6 h-6 rounded-3xl border shrink-0',
                           tc.color,
                         )}
                       >
@@ -293,7 +293,7 @@ const ChapterOption = ({
                     {item.status && (
                       <span
                         className={cn(
-                          'text-[10px] font-medium px-1.5 py-0.5 rounded-md shrink-0',
+                          'text-[10px] font-medium px-1.5 py-0.5 rounded-3xl shrink-0',
                           item.status === 'PUBLISH'
                             ? 'bg-green-100 text-green-700'
                             : item.status === 'UPCOMING'
@@ -313,7 +313,7 @@ const ChapterOption = ({
                         e.stopPropagation();
                         removeSubChapter(index);
                       }}
-                      className="h-6 w-6 p-0 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+                      className="h-6 w-6 p-0 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
                       disabled={isLoading}
                     >
                       <Trash2 className="h-3 w-3" />
@@ -328,7 +328,7 @@ const ChapterOption = ({
 
       {/* Helper Text */}
       {!chapter?.categoryId && (
-        <div className="flex items-start gap-2 text-xs text-blue-700 bg-blue-50 border border-blue-100 p-3 rounded-xl">
+        <div className="flex items-start gap-2 text-xs text-blue-700 bg-blue-50 border border-blue-100 p-3 rounded-3xl">
           <span className="mt-0.5">💡</span>
           <span>
             Pilih kategori terlebih dahulu untuk menambahkan sub chapter

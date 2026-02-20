@@ -170,13 +170,13 @@ export default function Row({ message, index, isLast, isStreaming }: Props) {
       >
         <MessageContent
           className={cn(
-            'rounded-2xl rounded-br-md px-3.5 py-2 text-[13px] text-white leading-relaxed',
+            'rounded-3xl rounded-br-md px-3.5 py-2 text-[13px] text-white leading-relaxed',
             'max-w-[85%] sm:max-w-[80%]',
           )}
           style={{ backgroundColor: mainColor }}
         >
           {isBase64Image ? (
-            <div className="rounded-2xl overflow-hidden">
+            <div className="rounded-3xl overflow-hidden">
               <Image
                 src={
                   message.content.includes('data:image/png;base64')
@@ -265,7 +265,7 @@ export default function Row({ message, index, isLast, isStreaming }: Props) {
 
           {/* Saran Pertanyaan section */}
           {saran && saran.length > 0 && (
-            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-2xl">
+            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-3xl">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
                   <Lightbulb className="text-white w-3 h-3" />
@@ -279,7 +279,7 @@ export default function Row({ message, index, isLast, isStreaming }: Props) {
                   <button
                     key={i}
                     type="button"
-                    className="w-full text-left p-2.5 bg-white border border-blue-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 text-gray-700 text-xs leading-relaxed shadow-sm hover:shadow-md"
+                    className="w-full text-left p-2.5 bg-white border border-blue-200 rounded-3xl hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 text-gray-700 text-xs leading-relaxed shadow-sm hover:shadow-md"
                     onClick={() => handleSaranClick(q)}
                   >
                     <span className="font-medium text-blue-600 mr-1.5">

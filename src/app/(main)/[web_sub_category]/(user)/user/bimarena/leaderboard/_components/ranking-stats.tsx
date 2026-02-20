@@ -141,7 +141,7 @@ interface CustomTooltipProps {
 const CustomDistTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl shadow-xl p-3 text-xs min-w-[140px]">
+    <div className="bg-white border border-gray-200 rounded-3xl shadow-xl p-3 text-xs min-w-[140px]">
       <p className="font-bold text-gray-800 mb-1.5 text-sm">Rentang: {label}</p>
       <div className="flex items-center justify-between gap-4">
         <span className="text-gray-500">Peserta</span>
@@ -180,7 +180,7 @@ export function RankingStats() {
       <CardHeader className="pb-5 border-b-2 border-gray-100">
         <div className="flex items-center gap-3">
           <div
-            className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm flex-shrink-0"
+            className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm flex-shrink-0"
             style={{ backgroundColor: mainColor }}
           >
             <BarChart2 className="w-5 h-5 text-white" />
@@ -221,19 +221,19 @@ export function RankingStats() {
             defaultValue="summary"
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-3 mb-6 bg-gray-50 rounded-2xl p-1 h-11 border-0">
+            <TabsList className="grid w-full grid-cols-3 mb-6 bg-gray-50 rounded-3xl p-1 h-11 border-0">
               {tabs.map((tab, i) => (
                 <React.Fragment key={i}>
                   {!RankingTryoutIsLoading ? (
                     <TabsTrigger
                       value={tab.value}
-                      className="flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold transition-all text-gray-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
+                      className="flex items-center gap-1.5 rounded-3xl px-3 py-2 text-xs font-semibold transition-all text-gray-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
                     >
                       {tab.icon}
                       <span className="hidden sm:inline">{tab.title}</span>
                     </TabsTrigger>
                   ) : (
-                    <Skeleton className="h-9 w-full rounded-xl" />
+                    <Skeleton className="h-9 w-full rounded-3xl" />
                   )}
                 </React.Fragment>
               ))}
@@ -421,12 +421,12 @@ const Summary = () => {
           {Array.from({ length: 4 }).map((_, i) => (
             <Skeleton
               key={i}
-              className="h-28 w-full rounded-2xl"
+              className="h-28 w-full rounded-3xl"
             />
           ))}
         </div>
-        <Skeleton className="w-full h-44 rounded-2xl" />
-        <Skeleton className="w-full h-32 rounded-2xl" />
+        <Skeleton className="w-full h-44 rounded-3xl" />
+        <Skeleton className="w-full h-32 rounded-3xl" />
       </div>
     );
   }
@@ -438,7 +438,7 @@ const Summary = () => {
         {kpiCards.map((card, i) => (
           <div
             key={i}
-            className="relative overflow-hidden rounded-2xl p-4 bg-white border-2 border-gray-100 hover:shadow-md transition-shadow"
+            className="relative overflow-hidden rounded-3xl p-4 bg-white border-2 border-gray-100 hover:shadow-md transition-shadow"
           >
             <div
               className="absolute top-0 right-0 w-20 h-20 rounded-full opacity-5 translate-x-6 -translate-y-6"
@@ -449,7 +449,7 @@ const Summary = () => {
                 {card.title}
               </p>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm"
+                className="w-8 h-8 rounded-3xl flex items-center justify-center flex-shrink-0 shadow-sm"
                 style={{ backgroundColor: card.accent }}
               >
                 {card.icon}
@@ -468,7 +468,7 @@ const Summary = () => {
       </div>
 
       {/* Range + distribution */}
-      <div className="rounded-2xl border-2 border-gray-100 bg-gray-50/40 p-5 space-y-4">
+      <div className="rounded-3xl border-2 border-gray-100 bg-gray-50/40 p-5 space-y-4">
         <div className="flex items-center gap-2 flex-wrap">
           <Target className="w-4 h-4 text-gray-400" />
           <span className="text-sm font-bold text-gray-700">
@@ -567,7 +567,7 @@ const Summary = () => {
 
       {/* Auto insights */}
       {insights.length > 0 && (
-        <div className="rounded-2xl border-2 border-gray-100 overflow-hidden">
+        <div className="rounded-3xl border-2 border-gray-100 overflow-hidden">
           <div className="px-5 py-3 border-b border-gray-100 bg-gray-50/80 flex items-center gap-2">
             <Brain className="w-4 h-4 text-gray-400" />
             <p className="text-sm font-bold text-gray-700">Wawasan Otomatis</p>
@@ -579,7 +579,7 @@ const Summary = () => {
             {insights.map((ins, i) => (
               <div
                 key={i}
-                className={cn('rounded-xl p-3.5 border', ins.base)}
+                className={cn('rounded-3xl p-3.5 border', ins.base)}
               >
                 <div
                   className={cn(
@@ -669,8 +669,8 @@ const Statistics = () => {
   if (RankingTryoutIsLoading) {
     return (
       <div className="space-y-5">
-        <Skeleton className="w-full h-64 rounded-2xl" />
-        <Skeleton className="w-full h-72 rounded-2xl" />
+        <Skeleton className="w-full h-64 rounded-3xl" />
+        <Skeleton className="w-full h-72 rounded-3xl" />
       </div>
     );
   }
@@ -678,10 +678,10 @@ const Statistics = () => {
   return (
     <div className="space-y-6">
       {/* Stats Table */}
-      <div className="rounded-2xl border-2 border-gray-100 overflow-hidden">
+      <div className="rounded-3xl border-2 border-gray-100 overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-100 flex items-center gap-3 bg-gray-50/80">
           <div
-            className="w-7 h-7 rounded-xl flex items-center justify-center"
+            className="w-7 h-7 rounded-3xl flex items-center justify-center"
             style={{ backgroundColor: `${mainColor}18` }}
           >
             <Sigma
@@ -874,10 +874,10 @@ const Statistics = () => {
       </div>
 
       {/* Distribution Chart */}
-      <div className="rounded-2xl border-2 border-gray-100 overflow-hidden">
+      <div className="rounded-3xl border-2 border-gray-100 overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-100 flex items-center gap-3 bg-gray-50/80">
           <div
-            className="w-7 h-7 rounded-xl flex items-center justify-center"
+            className="w-7 h-7 rounded-3xl flex items-center justify-center"
             style={{ backgroundColor: `${mainColor}18` }}
           >
             <BarChart2
@@ -1052,7 +1052,7 @@ const AnalysisSubject = () => {
     i === 0 ? '#f59e0b' : i === 1 ? '#94a3b8' : i === 2 ? '#b45309' : '#d1d5db';
 
   if (RankingTryoutIsLoading)
-    return <Skeleton className="w-full h-[480px] rounded-2xl" />;
+    return <Skeleton className="w-full h-[480px] rounded-3xl" />;
 
   const strengths = subjects.slice(0, Math.min(3, subjects.length));
   const weaknesses =
@@ -1064,8 +1064,8 @@ const AnalysisSubject = () => {
     <div className="space-y-6">
       {/* IRT info banner */}
       {isIRT && (
-        <div className="rounded-2xl border-2 border-indigo-100 bg-indigo-50/60 p-4 flex items-start gap-3">
-          <div className="w-8 h-8 rounded-xl bg-indigo-100 flex items-center justify-center shrink-0 mt-0.5">
+        <div className="rounded-3xl border-2 border-indigo-100 bg-indigo-50/60 p-4 flex items-start gap-3">
+          <div className="w-8 h-8 rounded-3xl bg-indigo-100 flex items-center justify-center shrink-0 mt-0.5">
             <Brain className="w-4 h-4 text-indigo-600" />
           </div>
           <div className="flex-1">
@@ -1088,7 +1088,7 @@ const AnalysisSubject = () => {
       {subjects.length >= 2 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Kekuatan */}
-          <div className="rounded-2xl border-2 border-emerald-100 overflow-hidden">
+          <div className="rounded-3xl border-2 border-emerald-100 overflow-hidden">
             <div className="px-4 py-3 bg-emerald-50 border-b border-emerald-100 flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-emerald-600" />
               <p className="text-sm font-bold text-emerald-800">
@@ -1130,7 +1130,7 @@ const AnalysisSubject = () => {
             </div>
           </div>
           {/* Kelemahan */}
-          <div className="rounded-2xl border-2 border-red-100 overflow-hidden">
+          <div className="rounded-3xl border-2 border-red-100 overflow-hidden">
             <div className="px-4 py-3 bg-red-50 border-b border-red-100 flex items-center gap-2">
               <TrendingDown className="w-4 h-4 text-red-600" />
               <p className="text-sm font-bold text-red-800">
@@ -1175,10 +1175,10 @@ const AnalysisSubject = () => {
       )}
 
       {/* Horizontal ranked bars */}
-      <div className="rounded-2xl border-2 border-gray-100 overflow-hidden">
+      <div className="rounded-3xl border-2 border-gray-100 overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/80 flex items-center gap-3">
           <div
-            className="w-7 h-7 rounded-xl flex items-center justify-center"
+            className="w-7 h-7 rounded-3xl flex items-center justify-center"
             style={{ backgroundColor: `${mainColor}18` }}
           >
             <Target
@@ -1286,10 +1286,10 @@ const AnalysisSubject = () => {
 
       {/* Radar Chart */}
       {radarData.length >= 3 && (
-        <div className="rounded-2xl border-2 border-gray-100 overflow-hidden">
+        <div className="rounded-3xl border-2 border-gray-100 overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/80 flex items-center gap-3">
             <div
-              className="w-7 h-7 rounded-xl flex items-center justify-center"
+              className="w-7 h-7 rounded-3xl flex items-center justify-center"
               style={{ backgroundColor: `${mainColor}18` }}
             >
               <Activity
@@ -1342,7 +1342,7 @@ const AnalysisSubject = () => {
                       const full = pl.fullName ?? d.payload.subject;
                       const raw = pl.rawValue;
                       return (
-                        <div className="rounded-xl border border-gray-200 bg-white shadow-lg px-3 py-2 space-y-1">
+                        <div className="rounded-3xl border border-gray-200 bg-white shadow-lg px-3 py-2 space-y-1">
                           <p className="text-xs font-semibold text-gray-700">
                             {full}
                           </p>

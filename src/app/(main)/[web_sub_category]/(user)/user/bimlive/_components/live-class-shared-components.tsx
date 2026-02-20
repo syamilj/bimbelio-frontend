@@ -76,7 +76,7 @@ export function CountdownTimer({ timeLeft }: CountdownTimerProps) {
       {units.map(({ value, label }, i) => (
         <div
           key={label}
-          className="flex flex-col items-center justify-center min-w-[36px] px-2 py-1.5 rounded-xl bg-white border border-slate-200 shadow-sm"
+          className="flex flex-col items-center justify-center min-w-[36px] px-2 py-1.5 rounded-3xl bg-white border border-slate-200 shadow-sm"
         >
           <span className="text-sm font-black leading-none text-slate-800">
             {String(value).padStart(2, '0')}

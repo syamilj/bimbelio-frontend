@@ -30,7 +30,7 @@ export default function DocumentInfo() {
         {Array.from({ length: 4 }).map((_, i) => (
           <Skeleton
             key={i}
-            className="h-24 rounded-2xl"
+            className="h-24 rounded-3xl"
           />
         ))}
       </div>
@@ -47,10 +47,10 @@ export default function DocumentInfo() {
         return (
           <div
             key={i}
-            className="rounded-2xl bg-white border border-gray-100 p-4 flex items-center gap-3.5 hover:shadow-md transition-shadow"
+            className="rounded-3xl bg-white border border-gray-100 p-4 flex items-center gap-3.5 hover:shadow-md transition-shadow"
           >
             <div
-              className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+              className="w-11 h-11 rounded-3xl flex items-center justify-center shrink-0"
               style={{ backgroundColor: meta.bg }}
             >
               <Icon

@@ -107,7 +107,7 @@ function StatCard({
   const cls = accentMap[accent ?? 'default'];
   const iconCls = iconMap[accent ?? 'default'];
   return (
-    <div className={`rounded-xl border p-4 ${cls} space-y-1.5`}>
+    <div className={`rounded-3xl border p-4 ${cls} space-y-1.5`}>
       {Icon && <Icon className={`h-4 w-4 ${iconCls}`} />}
       <p className="text-2xl font-bold tracking-tight leading-none">{value}</p>
       <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
@@ -147,9 +147,9 @@ function DistributionBar({
             <span className="w-24 text-right text-xs text-muted-foreground shrink-0">
               {b.label}
             </span>
-            <div className="flex-1 h-5 bg-muted/40 rounded-sm overflow-hidden">
+            <div className="flex-1 h-5 bg-muted/40 rounded-3xl overflow-hidden">
               <div
-                className={`h-full ${barColor} rounded-sm transition-all duration-500`}
+                className={`h-full ${barColor} rounded-3xl transition-all duration-500`}
                 style={{ width: `${b.pct}%` }}
               />
             </div>
@@ -401,9 +401,9 @@ export default function ResultsOverview({ result, sessionLabel }: Props) {
                   <span className="w-16 text-right text-xs text-muted-foreground shrink-0">
                     {cat.label}
                   </span>
-                  <div className="flex-1 h-5 bg-muted/40 rounded-sm overflow-hidden">
+                  <div className="flex-1 h-5 bg-muted/40 rounded-3xl overflow-hidden">
                     <div
-                      className={`h-full ${cat.color} rounded-sm transition-all duration-500`}
+                      className={`h-full ${cat.color} rounded-3xl transition-all duration-500`}
                       style={{ width: `${(cat.count / catMax) * 100}%` }}
                     />
                   </div>
@@ -445,7 +445,7 @@ export default function ResultsOverview({ result, sessionLabel }: Props) {
           <CardContent className="space-y-5">
             {/* Average params */}
             <div className="grid grid-cols-3 gap-3">
-              <div className="rounded-lg border bg-background p-3 text-center space-y-1.5">
+              <div className="rounded-3xl border bg-background p-3 text-center space-y-1.5">
                 <p className="text-2xl font-bold text-purple-600">
                   {avgA !== null ? avgA.toFixed(3) : '\u2014'}
                 </p>
@@ -461,7 +461,7 @@ export default function ResultsOverview({ result, sessionLabel }: Props) {
                   </Badge>
                 )}
               </div>
-              <div className="rounded-lg border bg-background p-3 text-center space-y-1.5">
+              <div className="rounded-3xl border bg-background p-3 text-center space-y-1.5">
                 <p className="text-2xl font-bold text-yellow-600">
                   {avgB !== null ? avgB.toFixed(3) : '\u2014'}
                 </p>
@@ -477,7 +477,7 @@ export default function ResultsOverview({ result, sessionLabel }: Props) {
                   </Badge>
                 )}
               </div>
-              <div className="rounded-lg border bg-background p-3 text-center space-y-1.5">
+              <div className="rounded-3xl border bg-background p-3 text-center space-y-1.5">
                 <p className="text-2xl font-bold text-blue-600">
                   {avgC !== null ? avgC.toFixed(3) : '\u2014'}
                 </p>
@@ -523,9 +523,9 @@ export default function ResultsOverview({ result, sessionLabel }: Props) {
                         <span className="text-xs text-muted-foreground w-36 shrink-0">
                           {row.label}
                         </span>
-                        <div className="flex-1 h-4 bg-muted/40 rounded-sm overflow-hidden">
+                        <div className="flex-1 h-4 bg-muted/40 rounded-3xl overflow-hidden">
                           <div
-                            className={`h-full ${row.color} rounded-sm`}
+                            className={`h-full ${row.color} rounded-3xl`}
                             style={{ width: `${(row.count / mx) * 100}%` }}
                           />
                         </div>
@@ -574,9 +574,9 @@ export default function ResultsOverview({ result, sessionLabel }: Props) {
                         <span className="text-xs text-muted-foreground w-36 shrink-0">
                           {row.label}
                         </span>
-                        <div className="flex-1 h-4 bg-muted/40 rounded-sm overflow-hidden">
+                        <div className="flex-1 h-4 bg-muted/40 rounded-3xl overflow-hidden">
                           <div
-                            className={`h-full ${row.color} rounded-sm`}
+                            className={`h-full ${row.color} rounded-3xl`}
                             style={{ width: `${(row.count / mx) * 100}%` }}
                           />
                         </div>

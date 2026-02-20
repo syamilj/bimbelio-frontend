@@ -97,7 +97,7 @@ function CourseGridCard({ item, web }: { item: CourseCategory; web: string }) {
   return (
     <Link
       href={`/${web}/user/bimcourse/${item.id}`}
-      className="group flex flex-col rounded-2xl overflow-hidden border border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all duration-200 bg-white"
+      className="group flex flex-col rounded-3xl overflow-hidden border border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all duration-200 bg-white"
     >
       {/* Thumbnail */}
       <div className="relative aspect-video w-full bg-slate-100 overflow-hidden">
@@ -193,7 +193,7 @@ function CourseGridCard({ item, web }: { item: CourseCategory; web: string }) {
         {/* CTA */}
         <button
           className={cn(
-            'w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-[11px] font-black transition-all duration-150',
+            'w-full flex items-center justify-center gap-1.5 py-2 rounded-3xl text-[11px] font-black transition-all duration-150',
             BUTTON_STYLE[status],
           )}
         >
@@ -238,7 +238,7 @@ export default function CourseTabAll({ onCountReady }: Props) {
           placeholder="Cari modul..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-10 pr-10 py-2.5 text-sm rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-300 transition-all"
+          className="w-full pl-10 pr-10 py-2.5 text-sm rounded-3xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-300 transition-all"
         />
         {search && (
           <button
@@ -270,14 +270,14 @@ export default function CourseTabAll({ onCountReady }: Props) {
             {Array.from({ length: 4 }).map((_, i) => (
               <div
                 key={i}
-                className="rounded-2xl overflow-hidden animate-pulse border border-slate-100 shrink-0 w-[72vw]"
+                className="rounded-3xl overflow-hidden animate-pulse border border-slate-100 shrink-0 w-[72vw]"
               >
                 <div className="aspect-video bg-slate-100" />
                 <div className="p-3 space-y-2">
                   <div className="h-4 bg-slate-100 rounded-full w-3/4" />
                   <div className="h-3 bg-slate-100 rounded-full w-1/2" />
                   <div className="h-1.5 bg-slate-100 rounded-full w-full" />
-                  <div className="h-7 bg-slate-100 rounded-xl w-full mt-1" />
+                  <div className="h-7 bg-slate-100 rounded-3xl w-full mt-1" />
                 </div>
               </div>
             ))}
@@ -287,14 +287,14 @@ export default function CourseTabAll({ onCountReady }: Props) {
             {Array.from({ length: 8 }).map((_, i) => (
               <div
                 key={i}
-                className="rounded-2xl overflow-hidden animate-pulse border border-slate-100"
+                className="rounded-3xl overflow-hidden animate-pulse border border-slate-100"
               >
                 <div className="aspect-video bg-slate-100" />
                 <div className="p-3 space-y-2">
                   <div className="h-4 bg-slate-100 rounded-full w-3/4" />
                   <div className="h-3 bg-slate-100 rounded-full w-1/2" />
                   <div className="h-1.5 bg-slate-100 rounded-full w-full" />
-                  <div className="h-7 bg-slate-100 rounded-xl w-full mt-1" />
+                  <div className="h-7 bg-slate-100 rounded-3xl w-full mt-1" />
                 </div>
               </div>
             ))}
@@ -302,7 +302,7 @@ export default function CourseTabAll({ onCountReady }: Props) {
         </>
       ) : filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
+          <div className="w-16 h-16 rounded-3xl bg-slate-100 flex items-center justify-center mb-4">
             <Search className="w-7 h-7 text-slate-300" />
           </div>
           <p className="font-bold text-slate-600 mb-1">

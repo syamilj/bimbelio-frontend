@@ -650,7 +650,7 @@ export default function IRTProcessorPage() {
       <Card className="bg-gradient-to-r from-blue-600 to-purple-700 text-white border-0 shadow-lg overflow-hidden">
         <CardHeader className="pb-5">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-white/20 rounded-xl">
+            <div className="p-2.5 bg-white/20 rounded-3xl">
               <Cpu className="h-7 w-7" />
             </div>
             <div>

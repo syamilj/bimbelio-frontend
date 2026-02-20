@@ -129,7 +129,7 @@ const SessionOption = () => {
         {/* Top bar */}
         <div className="shrink-0 border-b border-gray-200 px-4 py-3 flex items-center gap-3">
           <div className="flex items-center gap-2 min-w-0 flex-1">
-            <span className="inline-flex items-center justify-center h-7 w-7 rounded-lg bg-blue-600 text-white text-xs font-bold shrink-0">
+            <span className="inline-flex items-center justify-center h-7 w-7 rounded-3xl bg-blue-600 text-white text-xs font-bold shrink-0">
               {currentIndexEdit + 1}
             </span>
             <h2 className="text-sm font-semibold text-gray-800 truncate">
@@ -151,7 +151,7 @@ const SessionOption = () => {
                   : 'Tampilkan panel tryout'
               }
               onClick={() => setShowDetailTryout((prev) => !prev)}
-              className="inline-flex items-center gap-1.5 text-[11px] font-medium text-gray-500 hover:text-gray-800 border border-gray-200 hover:border-gray-300 rounded-lg px-2.5 py-1.5 transition-colors"
+              className="inline-flex items-center gap-1.5 text-[11px] font-medium text-gray-500 hover:text-gray-800 border border-gray-200 hover:border-gray-300 rounded-3xl px-2.5 py-1.5 transition-colors"
             >
               {showDetailTryout ? (
                 <PanelLeft className="w-3.5 h-3.5" />
@@ -181,7 +181,7 @@ const SessionOption = () => {
               <button
                 type="button"
                 onClick={addQuestion}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-800 border border-blue-200 hover:border-blue-300 bg-blue-50 hover:bg-blue-100 rounded-lg px-3 py-1.5 transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-800 border border-blue-200 hover:border-blue-300 bg-blue-50 hover:bg-blue-100 rounded-3xl px-3 py-1.5 transition-colors"
               >
                 <Plus className="w-3.5 h-3.5" />
                 Tambah Soal
@@ -201,7 +201,7 @@ const SessionOption = () => {
                       type="button"
                       onClick={() => setQuestionIndex(qIndex)}
                       className={cn(
-                        'flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-xs font-semibold transition-colors',
+                        'flex h-8 w-8 cursor-pointer items-center justify-center rounded-3xl text-xs font-semibold transition-colors',
                         qIndex === questionIndex
                           ? 'bg-blue-600 text-white shadow-sm'
                           : 'bg-white text-gray-600 border border-gray-200 hover:border-blue-300 hover:text-blue-600',
@@ -225,7 +225,7 @@ const SessionOption = () => {
           <QuestionSessionTryout />
         ) : (
           <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center px-10">
-            <div className="h-16 w-16 rounded-2xl bg-blue-50 flex items-center justify-center">
+            <div className="h-16 w-16 rounded-3xl bg-blue-50 flex items-center justify-center">
               <FileText className="h-8 w-8 text-blue-400" />
             </div>
             <div className="flex flex-col gap-1.5">
@@ -241,7 +241,7 @@ const SessionOption = () => {
             <button
               type="button"
               onClick={addQuestion}
-              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-colors shadow-sm"
+              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-3xl transition-colors shadow-sm"
             >
               <Plus className="w-4 h-4" />
               Tambah Soal Pertama

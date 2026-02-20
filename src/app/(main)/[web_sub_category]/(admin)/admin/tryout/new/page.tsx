@@ -407,7 +407,7 @@ const NewTryOut = () => {
           type="submit"
           form="tryout-admin"
           disabled={isLoading}
-          className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+          className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium px-4 py-2 rounded-3xl transition-colors"
         >
           {isLoading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
           Simpan

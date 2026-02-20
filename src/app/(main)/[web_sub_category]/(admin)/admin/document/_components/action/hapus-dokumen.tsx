@@ -29,7 +29,7 @@ export default function HapusDokumen({
       )}
       <button
         title="Hapus dokumen"
-        className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+        className="flex items-center justify-center w-8 h-8 rounded-3xl text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
         onClick={() => {
           setDeleteConfirmation(true);
           setDeleteData({ id, title, videoTitle });

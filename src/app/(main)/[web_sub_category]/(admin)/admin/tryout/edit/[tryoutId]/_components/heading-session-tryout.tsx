@@ -450,7 +450,7 @@ const HeadingSessionTryout = () => {
             <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
               Kategori Tes
             </p>
-            <div className="relative bg-white rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">
+            <div className="relative bg-white rounded-3xl border border-gray-200 hover:border-gray-300 transition-colors">
               <input
                 type="text"
                 value={
@@ -472,7 +472,7 @@ const HeadingSessionTryout = () => {
                   value && onChangeCategory(value);
                 }}
               >
-                <SelectTrigger className="h-9 w-full rounded-lg border-none bg-transparent shadow-none outline-none text-sm px-3">
+                <SelectTrigger className="h-9 w-full rounded-3xl border-none bg-transparent shadow-none outline-none text-sm px-3">
                   <SelectValue placeholder="Pilih Tes" />
                 </SelectTrigger>
                 <SelectContent>
@@ -499,7 +499,7 @@ const HeadingSessionTryout = () => {
               Sub Tes / Subtest
             </p>
             {EditSession.categoryId && EditSession.categoryId.length > 0 ? (
-              <div className="relative bg-white rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">
+              <div className="relative bg-white rounded-3xl border border-gray-200 hover:border-gray-300 transition-colors">
                 <input
                   type="text"
                   value={
@@ -521,7 +521,7 @@ const HeadingSessionTryout = () => {
                     value && onChangeSubCategory(value);
                   }}
                 >
-                  <SelectTrigger className="h-9 w-full rounded-lg border-none bg-transparent shadow-none outline-none text-sm px-3">
+                  <SelectTrigger className="h-9 w-full rounded-3xl border-none bg-transparent shadow-none outline-none text-sm px-3">
                     <SelectValue placeholder="Pilih Sub Tes" />
                   </SelectTrigger>
                   <SelectContent>
@@ -545,7 +545,7 @@ const HeadingSessionTryout = () => {
                 </Select>
               </div>
             ) : (
-              <div className="h-9 rounded-lg border border-dashed border-gray-200 bg-gray-50 flex items-center px-3">
+              <div className="h-9 rounded-3xl border border-dashed border-gray-200 bg-gray-50 flex items-center px-3">
                 <span className="text-sm text-gray-400">Pilih tes dulu</span>
               </div>
             )}
@@ -561,7 +561,7 @@ const HeadingSessionTryout = () => {
             <input
               type="number"
               placeholder="60"
-              className="h-9 w-full rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+              className="h-9 w-full rounded-3xl border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
               required
               value={EditSession.duration === 0 ? '' : EditSession.duration}
               onChange={(e) => onChangeDuration(e)}
@@ -571,7 +571,7 @@ const HeadingSessionTryout = () => {
             <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
               Penilaian
             </p>
-            <div className="relative bg-white rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">
+            <div className="relative bg-white rounded-3xl border border-gray-200 hover:border-gray-300 transition-colors">
               <input
                 type="text"
                 defaultValue={assessmentType !== '' ? `${assessmentType}` : ''}
@@ -587,7 +587,7 @@ const HeadingSessionTryout = () => {
                   changeQuestionAssestmentType(value);
                 }}
               >
-                <SelectTrigger className="h-9 w-full rounded-lg border-none bg-transparent shadow-none outline-none text-sm px-3">
+                <SelectTrigger className="h-9 w-full rounded-3xl border-none bg-transparent shadow-none outline-none text-sm px-3">
                   <SelectValue placeholder="Tipe" />
                 </SelectTrigger>
                 <SelectContent>
@@ -614,7 +614,7 @@ const HeadingSessionTryout = () => {
             <input
               type="number"
               placeholder="opsional"
-              className="h-9 w-full rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+              className="h-9 w-full rounded-3xl border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
               value={
                 EditSession.thresholdValue === 0
                   ? ''
@@ -646,7 +646,7 @@ const HeadingSessionTryout = () => {
             <input
               type="text"
               placeholder="Judul sesi..."
-              className="h-9 w-full rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+              className="h-9 w-full rounded-3xl border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
               required
               value={EditSession.name}
               onChange={(e) => {
@@ -671,7 +671,7 @@ const HeadingSessionTryout = () => {
             <input
               type="text"
               placeholder="Document ID..."
-              className="h-9 w-full rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+              className="h-9 w-full rounded-3xl border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
               value={EditSession.documentId || ''}
               onChange={(e) => {
                 setSessions((prev) =>
@@ -697,11 +697,11 @@ const HeadingSessionTryout = () => {
               id="context-for-generate-ai-edit"
               placeholder="Masukkan konteks materi untuk generate soal..."
               rows={2}
-              className="flex-1 rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300 resize-none"
+              className="flex-1 rounded-3xl border border-gray-200 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300 resize-none"
             />
             <button
               type="button"
-              className="shrink-0 self-end h-9 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold px-4 transition-colors whitespace-nowrap"
+              className="shrink-0 self-end h-9 rounded-3xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold px-4 transition-colors whitespace-nowrap"
               onClick={() => {
                 handleGenerate();
               }}

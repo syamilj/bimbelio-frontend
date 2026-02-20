@@ -177,10 +177,10 @@ export default function BimLearningProgress({
         <h2 className="text-lg font-black text-slate-800">Progress Belajar</h2>
 
         <div className="w-full overflow-x-auto scrollbar-hide pb-0.5">
-          <div className="flex gap-1 w-max bg-slate-100 p-1 rounded-2xl">
+          <div className="flex gap-1 w-max bg-slate-100 p-1 rounded-3xl">
             <button
               onClick={() => setActiveTab('live')}
-              className={`px-3 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+              className={`px-3 py-2 rounded-3xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
                 activeTab === 'live'
                   ? 'bg-sky-500 text-white shadow-sm'
                   : 'text-slate-500 hover:text-slate-700 hover:bg-white/60'
@@ -191,7 +191,7 @@ export default function BimLearningProgress({
             </button>
             <button
               onClick={() => setActiveTab('tryouts')}
-              className={`px-3 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+              className={`px-3 py-2 rounded-3xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
                 activeTab === 'tryouts'
                   ? 'bg-orange-500 text-white shadow-sm'
                   : 'text-slate-500 hover:text-slate-700 hover:bg-white/60'
@@ -203,7 +203,7 @@ export default function BimLearningProgress({
             </button>
             <button
               onClick={() => setActiveTab('quiz')}
-              className={`px-3 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+              className={`px-3 py-2 rounded-3xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
                 activeTab === 'quiz'
                   ? 'bg-violet-500 text-white shadow-sm'
                   : 'text-slate-500 hover:text-slate-700 hover:bg-white/60'
@@ -215,7 +215,7 @@ export default function BimLearningProgress({
             </button>
             <button
               onClick={() => setActiveTab('courses')}
-              className={`px-3 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+              className={`px-3 py-2 rounded-3xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
                 activeTab === 'courses'
                   ? 'bg-emerald-500 text-white shadow-sm'
                   : 'text-slate-500 hover:text-slate-700 hover:bg-white/60'

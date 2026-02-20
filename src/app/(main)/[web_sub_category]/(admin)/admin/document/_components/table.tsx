@@ -124,7 +124,7 @@ export default function Table() {
       )}
 
       {/* Table */}
-      <div className="w-full overflow-x-auto rounded-xl border border-gray-100">
+      <div className="w-full overflow-x-auto rounded-3xl border border-gray-100">
         <ShadTable>
           <TableHeader>
             <TableRow className="bg-gray-50 hover:bg-gray-50">
@@ -196,10 +196,10 @@ export default function Table() {
                   </TableCell>
                   <TableCell className="text-center">
                     <div className="flex justify-center gap-1">
-                      <Skeleton className="h-8 w-8 rounded-lg" />
-                      <Skeleton className="h-8 w-8 rounded-lg" />
-                      <Skeleton className="h-8 w-8 rounded-lg" />
-                      <Skeleton className="h-8 w-8 rounded-lg" />
+                      <Skeleton className="h-8 w-8 rounded-3xl" />
+                      <Skeleton className="h-8 w-8 rounded-3xl" />
+                      <Skeleton className="h-8 w-8 rounded-3xl" />
+                      <Skeleton className="h-8 w-8 rounded-3xl" />
                     </div>
                   </TableCell>
                 </TableRow>
@@ -313,7 +313,7 @@ export default function Table() {
                         href={`${env.NEXT_PUBLIC_SUPABASE_PDF_URL}/document/${item.url}`}
                         target="_blank"
                         title="Lihat dokumen"
-                        className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                        className="flex items-center justify-center w-8 h-8 rounded-3xl text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
                       >
                         <ExternalLink className="w-4 h-4" />
                       </a>
@@ -321,7 +321,7 @@ export default function Table() {
                       {/* Download */}
                       <button
                         title="Unduh dokumen"
-                        className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+                        className="flex items-center justify-center w-8 h-8 rounded-3xl text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
                         onClick={() => fileDownload(item.title)}
                       >
                         <Download className="w-4 h-4" />
@@ -330,7 +330,7 @@ export default function Table() {
                       {/* Edit */}
                       <button
                         title="Edit dokumen"
-                        className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
+                        className="flex items-center justify-center w-8 h-8 rounded-3xl text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
                         onClick={() => setEditData({ ...item })}
                       >
                         <Pencil className="w-4 h-4" />
@@ -339,7 +339,7 @@ export default function Table() {
                       {/* Delete */}
                       <button
                         title="Hapus dokumen"
-                        className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                        className="flex items-center justify-center w-8 h-8 rounded-3xl text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
                         onClick={() => {
                           setDeleteData({
                             id: item.id,
@@ -373,7 +373,7 @@ export default function Table() {
             <button
               disabled={page <= 1}
               onClick={() => setPage((p) => Math.max(1, p - 1))}
-              className="flex items-center justify-center w-8 h-8 rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="flex items-center justify-center w-8 h-8 rounded-3xl border border-gray-200 text-gray-500 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -399,7 +399,7 @@ export default function Table() {
                   <button
                     key={p}
                     onClick={() => setPage(p as number)}
-                    className={`w-8 h-8 rounded-lg text-xs font-semibold transition-colors ${
+                    className={`w-8 h-8 rounded-3xl text-xs font-semibold transition-colors ${
                       page === p
                         ? 'bg-main text-white shadow-sm'
                         : 'border border-gray-200 text-gray-600 hover:bg-gray-50'
@@ -412,7 +412,7 @@ export default function Table() {
             <button
               disabled={page >= (totalPages || 1)}
               onClick={() => setPage((p) => p + 1)}
-              className="flex items-center justify-center w-8 h-8 rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="flex items-center justify-center w-8 h-8 rounded-3xl border border-gray-200 text-gray-500 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -425,7 +425,7 @@ export default function Table() {
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
       >
-        <AlertDialogContent className="rounded-2xl max-w-md">
+        <AlertDialogContent className="rounded-3xl max-w-md">
           <AlertDialogHeader>
             <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 mx-auto mb-2">
               <Trash2 className="w-6 h-6 text-red-600" />
@@ -442,11 +442,11 @@ export default function Table() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="flex-row gap-2 justify-center">
-            <AlertDialogCancel className="flex-1 rounded-xl">
+            <AlertDialogCancel className="flex-1 rounded-3xl">
               Batal
             </AlertDialogCancel>
             <AlertDialogAction
-              className="flex-1 rounded-xl bg-red-600 hover:bg-red-700 text-white"
+              className="flex-1 rounded-3xl bg-red-600 hover:bg-red-700 text-white"
               onClick={() => removeDocument()}
             >
               Ya, Hapus

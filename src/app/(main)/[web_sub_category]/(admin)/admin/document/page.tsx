@@ -29,7 +29,7 @@ export default function Dokumen() {
         <DocumentInfo />
 
         {/* Table card */}
-        <div className="rounded-2xl border border-gray-100 bg-white p-6">
+        <div className="rounded-3xl border border-gray-100 bg-white p-6">
           <div className="flex flex-col gap-4">
             <HeadingTools />
             <Table />

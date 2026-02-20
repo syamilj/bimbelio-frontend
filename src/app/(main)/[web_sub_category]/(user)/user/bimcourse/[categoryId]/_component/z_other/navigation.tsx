@@ -134,7 +134,7 @@ const NavigationButtons = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex w-fit justify-between items-center gap-2 bg-white/95 backdrop-blur-sm rounded-xl shadow-lg shadow-slate-200/50 border border-slate-200/60 p-1"
+        className="flex w-fit justify-between items-center gap-2 bg-white/95 backdrop-blur-sm rounded-3xl shadow-lg shadow-slate-200/50 border border-slate-200/60 p-1"
       >
         {prevLink && (
           <Button
@@ -142,7 +142,7 @@ const NavigationButtons = () => {
             variant="outline"
             size="sm"
             disabled={loading}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 text-xs md:text-sm"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-3xl border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 text-xs md:text-sm"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             Sebelumnya
@@ -155,7 +155,7 @@ const NavigationButtons = () => {
             disabled={loading}
             size="sm"
             className={cn(
-              'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white border-0 font-medium shadow-sm hover:shadow-md transition-all duration-200 group text-xs md:text-sm',
+              'flex items-center gap-1.5 px-3 py-1.5 rounded-3xl text-white border-0 font-medium shadow-sm hover:shadow-md transition-all duration-200 group text-xs md:text-sm',
               loading && 'opacity-50 cursor-not-allowed',
             )}
             style={{

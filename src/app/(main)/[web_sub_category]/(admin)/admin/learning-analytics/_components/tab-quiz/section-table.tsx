@@ -206,7 +206,7 @@ export const SectionTable = ({
                       <TableCell>
                         <button
                           onClick={() => toggleExpanded(volume.id)}
-                          className="inline-flex items-center justify-center p-1 rounded-md hover:bg-slate-200 transition-colors"
+                          className="inline-flex items-center justify-center p-1 rounded-3xl hover:bg-slate-200 transition-colors"
                         >
                           {expandedVolumes.has(volume.id) ? (
                             <ChevronUp className="w-4 h-4" />
@@ -298,7 +298,7 @@ export const SectionTable = ({
                                 volume.TryoutCategory.map((category) => (
                                   <div
                                     key={category.id}
-                                    className="border border-slate-200 rounded-lg p-4 bg-white"
+                                    className="border border-slate-200 rounded-3xl p-4 bg-white"
                                   >
                                     <h4 className="font-bold text-slate-900 mb-3">
                                       {category.name}

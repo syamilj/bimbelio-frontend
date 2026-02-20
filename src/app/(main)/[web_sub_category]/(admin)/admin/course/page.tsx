@@ -185,7 +185,7 @@ export default function Index() {
         </div>
         <Button
           asChild
-          className="gap-2 rounded-xl"
+          className="gap-2 rounded-3xl"
         >
           <Link href={`/${website_sub_category_id}/admin/course/new`}>
             <Plus className="h-4 w-4" />
@@ -195,7 +195,7 @@ export default function Index() {
       </div>
 
       {/* Content Card */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-5">
+      <div className="bg-white rounded-3xl border border-gray-100 p-6 space-y-5">
         {/* Category Filter */}
         {!isCategoryLoading && category ? (
           <div className="flex items-center gap-1.5 flex-wrap">
@@ -204,7 +204,7 @@ export default function Index() {
                 key={cat.id}
                 onClick={() => setCategoryId(cat.id)}
                 className={cn(
-                  'h-8 px-4 text-sm font-medium rounded-lg transition-all border',
+                  'h-8 px-4 text-sm font-medium rounded-3xl transition-all border',
                   categoryId === cat.id
                     ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
                     : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300 hover:text-blue-600',
@@ -215,7 +215,7 @@ export default function Index() {
             ))}
           </div>
         ) : (
-          <Skeleton className="h-8 w-80 rounded-xl" />
+          <Skeleton className="h-8 w-80 rounded-3xl" />
         )}
 
         {/* Search */}
@@ -225,7 +225,7 @@ export default function Index() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Cari kursus..."
-            className="pl-10 rounded-xl border-gray-200"
+            className="pl-10 rounded-3xl border-gray-200"
           />
         </div>
 
@@ -235,12 +235,12 @@ export default function Index() {
             Array.from({ length: 4 }).map((_, i) => (
               <Skeleton
                 key={i}
-                className="h-24 w-full rounded-xl"
+                className="h-24 w-full rounded-3xl"
               />
             ))
           ) : filteredCourses?.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <div className="w-14 h-14 rounded-2xl bg-gray-100 flex items-center justify-center mb-4">
+              <div className="w-14 h-14 rounded-3xl bg-gray-100 flex items-center justify-center mb-4">
                 <BookOpen className="h-7 w-7 text-gray-400" />
               </div>
               <h3 className="text-base font-semibold text-gray-900 mb-1">
@@ -254,7 +254,7 @@ export default function Index() {
               {!searchQuery && (
                 <Button
                   asChild
-                  className="rounded-xl"
+                  className="rounded-3xl"
                 >
                   <Link href={`/${website_sub_category_id}/admin/course/new`}>
                     <Plus className="h-4 w-4 mr-2" />
@@ -270,7 +270,7 @@ export default function Index() {
               return (
                 <div
                   key={course.id}
-                  className="border border-gray-100 rounded-xl hover:border-gray-200 hover:shadow-sm transition-all bg-white"
+                  className="border border-gray-100 rounded-3xl hover:border-gray-200 hover:shadow-sm transition-all bg-white"
                 >
                   {/* Main Course Row */}
                   <div className="flex items-center justify-between p-4">
@@ -371,7 +371,7 @@ export default function Index() {
                           variant="ghost"
                           size="sm"
                           onClick={() => toggleCourseExpansion(course.id)}
-                          className="gap-1.5 text-xs h-8 px-3 rounded-lg"
+                          className="gap-1.5 text-xs h-8 px-3 rounded-3xl"
                         >
                           {isExpanded ? (
                             <>
@@ -390,7 +390,7 @@ export default function Index() {
                         variant="outline"
                         size="sm"
                         asChild
-                        className="gap-1.5 text-xs h-8 px-3 rounded-lg border-gray-200 hover:border-blue-300 hover:text-blue-600"
+                        className="gap-1.5 text-xs h-8 px-3 rounded-3xl border-gray-200 hover:border-blue-300 hover:text-blue-600"
                       >
                         <Link
                           href={`/${website_sub_category_id}/admin/course/edit/${course.id}`}
@@ -410,7 +410,7 @@ export default function Index() {
                         {course.CourseSubChapter.slice(0, 4).map((sub) => (
                           <div
                             key={sub.id}
-                            className="flex items-center gap-1.5 text-xs text-gray-500 whitespace-nowrap bg-gray-50 rounded-lg px-2.5 py-1"
+                            className="flex items-center gap-1.5 text-xs text-gray-500 whitespace-nowrap bg-gray-50 rounded-3xl px-2.5 py-1"
                           >
                             {getTypeIcon(sub.type)}
                             <span className="max-w-[120px] truncate">
@@ -501,7 +501,7 @@ export default function Index() {
                         {course.CourseSubChapter.map((subChapter, index) => (
                           <div
                             key={subChapter.id}
-                            className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+                            className="flex items-center gap-3 p-3 bg-gray-50 rounded-3xl hover:bg-gray-100 transition-colors"
                           >
                             <div className="w-6 h-6 rounded-full bg-white border border-gray-200 flex items-center justify-center text-xs font-medium text-gray-500 shrink-0 shadow-sm">
                               {index + 1}
@@ -513,7 +513,7 @@ export default function Index() {
                               </div>
                               {subChapter.type === 'DOCUMENT' &&
                                 subChapter.Document?.videoId && (
-                                  <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-600 border border-blue-100 px-1.5 py-0.5 rounded-md text-xs font-medium ml-6">
+                                  <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-600 border border-blue-100 px-1.5 py-0.5 rounded-3xl text-xs font-medium ml-6">
                                     <Video className="h-3 w-3" />
                                     Video
                                   </span>

@@ -77,7 +77,7 @@ function UnivCombobox({
         <button
           type="button"
           className={cn(
-            'w-full flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-left hover:border-slate-300 transition-colors',
+            'w-full flex items-center justify-between rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-left hover:border-slate-300 transition-colors',
             !value && 'text-slate-400',
           )}
         >
@@ -86,7 +86,7 @@ function UnivCombobox({
         </button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[350px] p-0 rounded-2xl shadow-xl"
+        className="w-[350px] p-0 rounded-3xl shadow-xl"
         align="start"
         style={{ zIndex: 9999 }}
       >
@@ -168,7 +168,7 @@ function MajorCombobox({
           type="button"
           disabled={disabled}
           className={cn(
-            'w-full flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-left hover:border-slate-300 transition-colors',
+            'w-full flex items-center justify-between rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-left hover:border-slate-300 transition-colors',
             !value && 'text-slate-400',
             disabled && 'opacity-50 cursor-not-allowed',
           )}
@@ -178,7 +178,7 @@ function MajorCombobox({
         </button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[350px] p-0 rounded-2xl shadow-xl"
+        className="w-[350px] p-0 rounded-3xl shadow-xl"
         align="start"
         style={{ zIndex: 9999 }}
       >
@@ -377,7 +377,7 @@ export function TargetTab({
               placeholder="Contoh: 081234567890"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="rounded-2xl border-slate-200 text-sm font-medium"
+              className="rounded-3xl border-slate-200 text-sm font-medium"
             />
           </div>
           <div className="space-y-1.5">
@@ -392,7 +392,7 @@ export function TargetTab({
               placeholder="Contoh: 081234567890 (opsional)"
               value={phoneParent}
               onChange={(e) => setPhoneParent(e.target.value)}
-              className="rounded-2xl border-slate-200 text-sm font-medium"
+              className="rounded-3xl border-slate-200 text-sm font-medium"
             />
           </div>
         </div>
@@ -429,7 +429,7 @@ export function TargetTab({
                     e.target.value === '' ? '' : Number(e.target.value),
                   )
                 }
-                className="rounded-2xl border-slate-200 text-sm font-medium"
+                className="rounded-3xl border-slate-200 text-sm font-medium"
               />
               <p className="text-xs text-slate-400">
                 Rata-rata skor UTBK berkisar antara 400–800

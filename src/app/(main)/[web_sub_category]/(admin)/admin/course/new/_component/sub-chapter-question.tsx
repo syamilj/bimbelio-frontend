@@ -537,7 +537,7 @@ const SubChapterQuestion = ({
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-500 text-white rounded-xl flex items-center justify-center font-bold">
+              <div className="w-10 h-10 bg-blue-500 text-white rounded-3xl flex items-center justify-center font-bold">
                 {currentQuestion.number}
               </div>
               <span>Soal {currentQuestion.number}</span>
@@ -625,7 +625,7 @@ const SubChapterQuestion = ({
           />
 
           {/* Image Upload Section */}
-          <div className="border-2 border-dashed border-gray-200 rounded-xl p-4">
+          <div className="border-2 border-dashed border-gray-200 rounded-3xl p-4">
             <div className="text-center">
               <ImageIcon className="w-8 h-8 text-gray-400 mx-auto mb-2" />
               {currentQuestion.image ? (

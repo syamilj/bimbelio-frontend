@@ -433,7 +433,7 @@ const Index = () => {
         <div className="flex items-center gap-3 min-w-0">
           <button
             onClick={() => router.back()}
-            className="shrink-0 w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500 transition-colors"
+            className="shrink-0 w-8 h-8 rounded-3xl hover:bg-gray-100 flex items-center justify-center text-gray-500 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
@@ -448,7 +448,7 @@ const Index = () => {
           onClick={handleSubmit}
           disabled={!canSave() || isLoading}
           size="sm"
-          className="shrink-0 rounded-xl gap-2"
+          className="shrink-0 rounded-3xl gap-2"
         >
           <Save className="h-3.5 w-3.5" />
           Simpan Kursus
@@ -496,7 +496,7 @@ const Index = () => {
           ) : (
             <div className="h-full flex items-center justify-center">
               <div className="text-center">
-                <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 rounded-3xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
                   <Check className="h-7 w-7 text-gray-300" />
                 </div>
                 <h3 className="text-base font-semibold text-gray-700 mb-1">

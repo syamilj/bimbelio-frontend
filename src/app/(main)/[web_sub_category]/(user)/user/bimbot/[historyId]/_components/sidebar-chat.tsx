@@ -150,7 +150,7 @@ export default function SidebarChat() {
             type="button"
             onClick={handleNewChat}
             disabled={loading}
-            className="w-full h-10 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-white font-semibold"
+            className="w-full h-10 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 text-white font-semibold"
             style={{ backgroundColor: mainColor }}
           >
             {loading ? (
@@ -188,7 +188,7 @@ export default function SidebarChat() {
                     >
                       <div
                         className={cn(
-                          'flex items-start gap-3 p-3 rounded-xl transition-all duration-200 cursor-pointer border',
+                          'flex items-start gap-3 p-3 rounded-3xl transition-all duration-200 cursor-pointer border',
                           isActive
                             ? 'shadow-sm'
                             : 'border-gray-200 hover:border-gray-300 bg-white',
@@ -200,7 +200,7 @@ export default function SidebarChat() {
                       >
                         <div
                           className={cn(
-                            'w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-all duration-200',
+                            'w-8 h-8 rounded-3xl flex items-center justify-center shrink-0 transition-all duration-200',
                           )}
                           style={{
                             backgroundColor: isActive
@@ -265,7 +265,7 @@ export default function SidebarChat() {
                       variant="ghost"
                       size="sm"
                       className={cn(
-                        'absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-all duration-200 p-1 h-7 w-7 rounded-lg',
+                        'absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-all duration-200 p-1 h-7 w-7 rounded-3xl',
                         isActive
                           ? 'text-white hover:bg-white/20'
                           : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600',
@@ -296,7 +296,7 @@ export default function SidebarChat() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3 group flex-1">
                     <div
-                      className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm shrink-0"
+                      className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm shrink-0"
                       style={{ backgroundColor: mainColor }}
                     >
                       <Bot className="w-5 h-5 text-white" />
@@ -317,7 +317,7 @@ export default function SidebarChat() {
                     variant="ghost"
                     size="sm"
                     onClick={handleCloseSidebar}
-                    className="shrink-0 rounded-lg p-2 hover:bg-gray-100"
+                    className="shrink-0 rounded-3xl p-2 hover:bg-gray-100"
                   >
                     <X className="w-5 h-5" />
                   </Button>
@@ -331,7 +331,7 @@ export default function SidebarChat() {
                 type="button"
                 onClick={handleNewChat}
                 disabled={loading}
-                className="w-full h-10 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-white font-semibold"
+                className="w-full h-10 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 text-white font-semibold"
                 style={{ backgroundColor: mainColor }}
               >
                 {loading ? (
@@ -372,7 +372,7 @@ export default function SidebarChat() {
                         >
                           <div
                             className={cn(
-                              'flex items-start gap-3 p-3 rounded-xl transition-all duration-200 cursor-pointer border',
+                              'flex items-start gap-3 p-3 rounded-3xl transition-all duration-200 cursor-pointer border',
                               isActive
                                 ? 'shadow-sm'
                                 : 'border-gray-200 hover:border-gray-300 bg-white',
@@ -384,7 +384,7 @@ export default function SidebarChat() {
                           >
                             <div
                               className={cn(
-                                'w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-all duration-200',
+                                'w-8 h-8 rounded-3xl flex items-center justify-center shrink-0 transition-all duration-200',
                               )}
                               style={{
                                 backgroundColor: isActive
@@ -451,7 +451,7 @@ export default function SidebarChat() {
                           variant="ghost"
                           size="sm"
                           className={cn(
-                            'absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-all duration-200 p-1 h-7 w-7 rounded-lg',
+                            'absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-all duration-200 p-1 h-7 w-7 rounded-3xl',
                             isActive
                               ? 'text-white hover:bg-white/20'
                               : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600',

@@ -156,7 +156,7 @@ export function SectionDetail({ id }: { id: string | null }) {
         <CardContent className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
             {/* Start Date */}
-            <div className="border border-slate-200 rounded-2xl p-4">
+            <div className="border border-slate-200 rounded-3xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Calendar
                   className="w-4 h-4"
@@ -175,7 +175,7 @@ export function SectionDetail({ id }: { id: string | null }) {
             </div>
 
             {/* End Date */}
-            <div className="border border-slate-200 rounded-2xl p-4">
+            <div className="border border-slate-200 rounded-3xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Calendar
                   className="w-4 h-4"
@@ -194,7 +194,7 @@ export function SectionDetail({ id }: { id: string | null }) {
             </div>
 
             {/* Total Subscribers */}
-            <div className="border border-slate-200 rounded-2xl p-4">
+            <div className="border border-slate-200 rounded-3xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Users
                   className="w-4 h-4"
@@ -394,7 +394,7 @@ const NotSelectedPage = () => {
                 </p>
               </div>
               <div className="pt-6">
-                <div className="flex items-center gap-3 px-4 py-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="flex items-center gap-3 px-4 py-3 bg-blue-50 border border-blue-200 rounded-3xl">
                   <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0" />
                   <p className="text-sm text-blue-700">
                     Scroll ke atas untuk memilih tryout dari daftar yang

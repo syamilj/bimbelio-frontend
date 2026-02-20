@@ -437,7 +437,7 @@ export function RankingTable() {
           {/* Table Section - Mobile Responsive with Scrollable Locked Columns */}
           {!RankingTryoutIsLoading ? (
             <div className="rounded-3xl border-2 border-gray-100 overflow-hidden">
-              <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-3xl">
                 <p className="text-sm text-blue-700 mb-2">
                   <span className="font-semibold">Keterangan Inisial:</span>
                 </p>

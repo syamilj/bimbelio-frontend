@@ -369,15 +369,15 @@ const SubChapterOption = ({
                     />
                   </>
                 ) : (
-                  <div className="text-center py-10 border-2 border-dashed border-gray-200 rounded-xl">
-                    <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center mx-auto mb-3">
+                  <div className="text-center py-10 border-2 border-dashed border-gray-200 rounded-3xl">
+                    <div className="w-12 h-12 rounded-3xl bg-gray-50 flex items-center justify-center mx-auto mb-3">
                       <Plus className="h-5 w-5 text-gray-400" />
                     </div>
                     <p className="text-sm text-gray-500 mb-3">Belum ada soal</p>
                     <Button
                       onClick={addQuestion}
                       size="sm"
-                      className="rounded-lg"
+                      className="rounded-3xl"
                     >
                       <Plus className="h-4 w-4 mr-1" />
                       Tambah Soal Pertama
@@ -447,8 +447,8 @@ const VideoEditor = ({
   handleVideoUpload: (e: ChangeEvent<HTMLInputElement>) => void;
 }) => (
   <div className="space-y-4">
-    <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center">
-      <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
+    <div className="border-2 border-dashed border-gray-200 rounded-3xl p-8 text-center">
+      <div className="w-12 h-12 rounded-3xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
         <Video className="h-6 w-6 text-blue-500" />
       </div>
       {EditSubChapter.video ? (
@@ -460,7 +460,7 @@ const VideoEditor = ({
             <Button
               variant="outline"
               size="sm"
-              className="rounded-xl"
+              className="rounded-3xl"
               onClick={() => document.getElementById('video-upload')?.click()}
             >
               Ganti Video
@@ -469,7 +469,7 @@ const VideoEditor = ({
               <a
                 href={`${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/course/${EditSubChapter.video}`}
                 target="_blank"
-                className="inline-flex items-center px-3 py-1.5 text-sm text-blue-600 hover:text-blue-800 border border-blue-200 rounded-xl hover:bg-blue-50 transition-colors"
+                className="inline-flex items-center px-3 py-1.5 text-sm text-blue-600 hover:text-blue-800 border border-blue-200 rounded-3xl hover:bg-blue-50 transition-colors"
               >
                 Lihat Video
               </a>
@@ -481,7 +481,7 @@ const VideoEditor = ({
           <p className="text-sm text-gray-500 mb-3">Upload file video MP4</p>
           <Button
             size="sm"
-            className="rounded-xl"
+            className="rounded-3xl"
             onClick={() => document.getElementById('video-upload')?.click()}
           >
             Pilih Video
@@ -542,17 +542,17 @@ const DocumentSelector = ({
     return (
       <div
         key={selectedDoc?.id}
-        className="p-3 border border-green-100 bg-green-50 rounded-xl"
+        className="p-3 border border-green-100 bg-green-50 rounded-3xl"
       >
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 rounded-3xl bg-green-100 flex items-center justify-center shrink-0">
             <FileText className="h-4 w-4 text-green-600" />
           </div>
           <span className="text-sm font-medium text-gray-800 flex-1">
             {selectedDoc?.title}
           </span>
           <button
-            className="w-7 h-7 rounded-lg hover:bg-green-200 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
+            className="w-7 h-7 rounded-3xl hover:bg-green-200 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
             onClick={() => {
               setSubChapter((prev) =>
                 prev.map((sChapter, sIndex) => {
@@ -589,7 +589,7 @@ const DocumentSelector = ({
         {documents?.map((doc) => (
           <div
             key={doc.id}
-            className="p-3 border border-gray-100 rounded-xl cursor-pointer hover:bg-blue-50 hover:border-blue-200 transition-colors"
+            className="p-3 border border-gray-100 rounded-3xl cursor-pointer hover:bg-blue-50 hover:border-blue-200 transition-colors"
             onClick={() => {
               setSubChapter((prev) =>
                 prev.map((sChapter, sIndex) => {
@@ -606,7 +606,7 @@ const DocumentSelector = ({
             }}
           >
             <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-lg bg-gray-100 flex items-center justify-center shrink-0">
+              <div className="w-7 h-7 rounded-3xl bg-gray-100 flex items-center justify-center shrink-0">
                 <FileText className="h-3.5 w-3.5 text-gray-500" />
               </div>
               <span className="text-sm text-gray-700">{doc.title}</span>
