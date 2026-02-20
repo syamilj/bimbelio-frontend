@@ -887,11 +887,11 @@ export default function ModulPembelajaranSection() {
                               <div className="flex flex-wrap gap-3 text-sm text-gray-600">
                                 <span className="flex items-center gap-1">
                                   <BookOpenIcon className="w-4 h-4" />
-                                  {category.CourseChapter.length} Bab
+                                  {category.CourseChapter.length} Chapter
                                 </span>
                                 <span className="flex items-center gap-1">
                                   <FileTextIcon className="w-4 h-4" />
-                                  {category.totalChapters} Sub-Bab
+                                  {category.totalChapters} Sub-Chapter
                                 </span>
                                 <span className="flex items-center gap-1">
                                   <ClockIcon className="w-4 h-4" />
@@ -915,7 +915,7 @@ export default function ModulPembelajaranSection() {
                             </span>
                             <span className="font-bold text-gray-900">
                               {category.completedChapters}/
-                              {category.totalChapters} Sub-Bab Selesai
+                              {category.totalChapters} Sub-Chapter Selesai
                             </span>
                           </div>
                           <Progress
@@ -974,7 +974,7 @@ export default function ModulPembelajaranSection() {
                                         <div className="flex items-center gap-4 text-sm text-gray-600">
                                           <span className="font-semibold">
                                             {completedInChapter}/
-                                            {chapterSubChapters.length} Sub-Bab
+                                            {chapterSubChapters.length} Sub-Chapter
                                             Selesai
                                           </span>
                                           <span
@@ -1220,11 +1220,11 @@ export default function ModulPembelajaranSection() {
                             <div className="flex flex-wrap gap-3 text-sm text-gray-600">
                               <span className="flex items-center gap-1">
                                 <BookOpenIcon className="w-4 h-4" />
-                                {category.CourseChapter.length} Bab
+                                {category.CourseChapter.length} Chapter
                               </span>
                               <span className="flex items-center gap-1">
                                 <FileTextIcon className="w-4 h-4" />
-                                {category.totalChapters} Sub-Bab
+                                {category.totalChapters} Sub-Chapter
                               </span>
                               <span className="flex items-center gap-1">
                                 <ClockIcon className="w-4 h-4" />
@@ -1248,7 +1248,7 @@ export default function ModulPembelajaranSection() {
                           </span>
                           <span className="font-bold text-gray-900">
                             {category.completedChapters}/
-                            {category.totalChapters} Sub-Bab Selesai
+                            {category.totalChapters} Sub-Chapter Selesai
                           </span>
                         </div>
                         <Progress
@@ -1303,7 +1303,7 @@ export default function ModulPembelajaranSection() {
                                     <div className="flex items-center gap-4 text-sm text-gray-600">
                                       <span className="font-semibold">
                                         {completedInChapter}/
-                                        {chapterSubChapters.length} Sub-Bab
+                                        {chapterSubChapters.length} Sub-Chapter
                                         Selesai
                                       </span>
                                       <span

@@ -6,15 +6,17 @@ import { Input } from '@/components/ui/input';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import {
   BookOpen,
+  Calendar,
   CheckCircle,
   Clock,
   MonitorPlay,
   Search,
+  Swords,
   Target,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { EmptyStateIllustrations } from './EmptyStateIllustrations';
 
 interface BimLearningProgressProps {
@@ -49,24 +51,75 @@ interface BimLearningProgressProps {
     isRegistered: boolean;
     websiteSubCategoryId: string;
   }>;
+  quizVolumes: Array<{
+    id: string;
+    title: string;
+    image: string | null;
+    startDate: string;
+    endDate: string;
+    status: 'PUBLIC' | 'PRIVATE' | 'DRAFT';
+    number: number;
+  }>;
 }
 
 export default function BimLearningProgress({
   courses,
   tryouts,
   liveClasses,
+  quizVolumes,
 }: BimLearningProgressProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
-  // Default tab to BimLive
-  const [activeTab, setActiveTab] = useState<'live' | 'courses' | 'tryouts'>(
+  const [activeTab, setActiveTab] = useState<'live' | 'courses' | 'tryouts' | 'quiz'>(
     'live',
   );
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState<
     'all' | 'completed' | 'in-progress'
   >('all');
+
+  // Reset search + filter when switching tabs
+  useEffect(() => {
+    setSearchQuery('');
+    setFilterStatus('all');
+  }, [activeTab]);
+
+  // Helper: get live class schedule status
+  const getLiveClassStatus = (scheduleTime: string, duration: number) => {
+    const start = new Date(scheduleTime);
+    const end = new Date(start.getTime() + duration * 60 * 1000);
+    const now = new Date();
+    if (now >= start && now <= end) return 'live';
+    if (now > end) return 'past';
+    return 'upcoming';
+  };
+
+  // Filter live classes
+  const filteredLiveClasses = liveClasses
+    .filter((lc) =>
+      lc.title.toLowerCase().includes(searchQuery.toLowerCase()),
+    )
+    .filter((lc) => {
+      if (filterStatus === 'all') return true;
+      const status = getLiveClassStatus(lc.scheduleTime, lc.duration);
+      if (filterStatus === 'completed') return status === 'past';
+      if (filterStatus === 'in-progress') return status === 'live';
+      return true;
+    });
+
+  // Filter quiz volumes
+  const filteredQuizVolumes = quizVolumes.filter((qv) =>
+    qv.title.toLowerCase().includes(searchQuery.toLowerCase()),
+  ).filter((qv) => {
+    if (filterStatus === 'all') return true;
+    const now = new Date();
+    const end = new Date(qv.endDate);
+    const start = new Date(qv.startDate);
+    if (filterStatus === 'completed') return now > end;
+    if (filterStatus === 'in-progress') return now >= start && now <= end;
+    return true;
+  });
 
   // Filter courses
   const filteredCourses = courses
@@ -125,40 +178,55 @@ export default function BimLearningProgress({
       <div className="flex flex-col gap-4 mb-6">
         <h2 className="text-lg font-black text-slate-800">Progress Belajar</h2>
 
-        <div className="flex gap-2 w-fit bg-slate-100 p-1 rounded-full overflow-x-auto scrollbar-hide">
-          <button
-            onClick={() => setActiveTab('live')}
-            className={`px-4 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
-              activeTab === 'live'
-                ? 'bg-white text-slate-800 shadow-sm'
-                : 'text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            <MonitorPlay className="w-4 h-4" />
-            <BimLive />
-          </button>
-          <button
-            onClick={() => setActiveTab('tryouts')}
-            className={`px-4 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
-              activeTab === 'tryouts'
-                ? 'bg-white text-slate-800 shadow-sm'
-                : 'text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            <Target className="w-4 h-4" />
-            <BimArena />
-          </button>
-          <button
-            onClick={() => setActiveTab('courses')}
-            className={`px-4 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
-              activeTab === 'courses'
-                ? 'bg-white text-slate-800 shadow-sm'
-                : 'text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            <BookOpen className="w-4 h-4" />
-            <BimCourse />
-          </button>
+        <div className="w-full overflow-x-auto scrollbar-hide pb-0.5">
+          <div className="flex gap-1 w-max bg-slate-100 p-1 rounded-2xl">
+            <button
+              onClick={() => setActiveTab('live')}
+              className={`px-3 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                activeTab === 'live'
+                  ? 'bg-sky-500 text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700 hover:bg-white/60'
+              }`}
+            >
+              <MonitorPlay className="w-3.5 h-3.5" />
+              <BimLive />
+            </button>
+            <button
+              onClick={() => setActiveTab('tryouts')}
+              className={`px-3 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                activeTab === 'tryouts'
+                  ? 'bg-orange-500 text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700 hover:bg-white/60'
+              }`}
+            >
+              <Target className="w-3.5 h-3.5" />
+              <BimArena />
+              <span>Try Out</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('quiz')}
+              className={`px-3 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                activeTab === 'quiz'
+                  ? 'bg-violet-500 text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700 hover:bg-white/60'
+              }`}
+            >
+              <Swords className="w-3.5 h-3.5" />
+              <BimArena />
+              <span>Quiz</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('courses')}
+              className={`px-3 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                activeTab === 'courses'
+                  ? 'bg-emerald-500 text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700 hover:bg-white/60'
+              }`}
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              <BimCourse />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -167,7 +235,12 @@ export default function BimLearningProgress({
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
           <Input
-            placeholder={`Cari ${activeTab === 'live' ? 'BimLive' : activeTab === 'courses' ? 'BimCourse' : 'BimArena'}...`}
+            placeholder={`Cari ${
+              activeTab === 'live' ? 'BimLive'
+              : activeTab === 'courses' ? 'BimCourse'
+              : activeTab === 'quiz' ? 'BimArena Quiz'
+              : 'BimArena'
+            }...`}
             className="pl-10 h-10 rounded-full border-slate-200 bg-slate-50 focus:bg-white transition-all"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -211,82 +284,95 @@ export default function BimLearningProgress({
       {/* Content - Horizontal Scroll for Mobile, Grid for Desktop */}
       <div className="max-h-[500px] overflow-y-auto scrollbar-hide">
         {activeTab === 'live' ? (
-          liveClasses && liveClasses.length > 0 ? (
+          filteredLiveClasses.length > 0 ? (
             <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
-              {liveClasses.map((liveClass) => (
-                <Link
-                  key={liveClass.id}
-                  href={`/${liveClass.websiteSubCategoryId}/user/bimlive/detail/${liveClass.id}`}
-                  className="group relative rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 bg-slate-900 border border-slate-100 flex-shrink-0 w-[280px] md:w-auto aspect-[4/5]"
-                >
-                  {/* Full Background Image */}
-                  {liveClass.thumbnail ? (
-                    <Image
-                      src={liveClass.thumbnail}
-                      alt={liveClass.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div
-                      className="w-full h-full flex items-center justify-center opacity-20"
-                      style={{ backgroundColor: mainColor }}
-                    >
-                      <MonitorPlay className="w-16 h-16 text-white" />
-                    </div>
-                  )}
-
-                  {/* Dark Gradient Overlay for Text Readability */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-
-                  {/* Top Badges */}
-                  <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 items-end">
-                    {liveClass.isPremium && (
-                      <div className="px-2 py-0.5 rounded-3xl bg-amber-400 text-white text-[10px] font-bold shadow-sm">
-                        PRO
+              {filteredLiveClasses.map((liveClass) => {
+                const lcStatus = getLiveClassStatus(
+                  liveClass.scheduleTime,
+                  liveClass.duration,
+                );
+                return (
+                  <Link
+                    key={liveClass.id}
+                    href={`/${liveClass.websiteSubCategoryId}/user/bimlive/detail/${liveClass.id}`}
+                    className="group relative rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 bg-slate-900 border border-slate-100 flex-shrink-0 w-[280px] md:w-auto aspect-[4/5]"
+                  >
+                    {/* Full Background Image */}
+                    {liveClass.thumbnail ? (
+                      <Image
+                        src={liveClass.thumbnail}
+                        alt={liveClass.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div
+                        className="w-full h-full flex items-center justify-center opacity-20"
+                        style={{ backgroundColor: mainColor }}
+                      >
+                        <MonitorPlay className="w-16 h-16 text-white" />
                       </div>
                     )}
-                  </div>
 
-                  <div className="absolute top-3 left-3 z-10">
-                    <div className="bg-rose-500 text-white text-[10px] px-2 py-0.5 font-bold rounded-3xl animate-pulse shadow-sm">
-                      LIVE
-                    </div>
-                  </div>
+                    {/* Dark Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
 
-                  {/* Content Overlay at Bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 p-5 z-20">
-                    {/* Instructor Info */}
-                    <div className="flex items-center gap-2 mb-2">
-                      {liveClass.instructorAvatar ? (
-                        <Image
-                          src={liveClass.instructorAvatar}
-                          alt={liveClass.instructorName}
-                          width={24}
-                          height={24}
-                          className="w-6 h-6 rounded-full object-cover border border-white/30"
-                        />
-                      ) : (
-                        <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30">
-                          <span className="text-[10px] font-bold text-white uppercase">
-                            {liveClass.instructorName.charAt(0)}
-                          </span>
+                    {/* Top Right: PRO badge */}
+                    <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 items-end">
+                      {liveClass.isPremium && (
+                        <div className="px-2 py-0.5 rounded-3xl bg-amber-400 text-white text-[10px] font-bold shadow-sm">
+                          PRO
                         </div>
                       )}
-                      <span className="text-xs font-bold text-white shadow-black drop-shadow-md truncate">
-                        {liveClass.instructorName}
-                      </span>
                     </div>
 
-                    <h3 className="font-extrabold text-white text-lg line-clamp-2 leading-tight mb-2 drop-shadow-md group-hover:text-blue-200 transition-colors">
-                      {liveClass.title}
-                    </h3>
+                    {/* Top Left: real status badge */}
+                    <div className="absolute top-3 left-3 z-10">
+                      {lcStatus === 'live' ? (
+                        <div className="bg-rose-500 text-white text-[10px] px-2 py-0.5 font-bold rounded-3xl animate-pulse shadow-sm">
+                          LIVE
+                        </div>
+                      ) : lcStatus === 'past' ? (
+                        <div className="bg-slate-600/90 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 font-bold rounded-3xl shadow-sm">
+                          SELESAI
+                        </div>
+                      ) : (
+                        <div className="bg-blue-500/90 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 font-bold rounded-3xl shadow-sm">
+                          UPCOMING
+                        </div>
+                      )}
+                    </div>
 
-                    {/* Schedule & Duration */}
-                    <div className="flex items-center gap-3 text-xs text-white/80 font-medium">
-                      <div className="flex items-center gap-1.5 bg-white/10 px-2 py-1 rounded-full backdrop-blur-sm">
-                        <Clock className="w-3 h-3" />
-                        <span>
+                    {/* Bottom Content */}
+                    <div className="absolute bottom-0 left-0 right-0 p-5 z-20">
+                      <div className="flex items-center gap-2 mb-2">
+                        {liveClass.instructorAvatar ? (
+                          <Image
+                            src={liveClass.instructorAvatar}
+                            alt={liveClass.instructorName}
+                            width={24}
+                            height={24}
+                            className="w-6 h-6 rounded-full object-cover border border-white/30"
+                          />
+                        ) : (
+                          <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30">
+                            <span className="text-[10px] font-bold text-white uppercase">
+                              {liveClass.instructorName.charAt(0)}
+                            </span>
+                          </div>
+                        )}
+                        <span className="text-xs font-bold text-white drop-shadow-md truncate">
+                          {liveClass.instructorName}
+                        </span>
+                      </div>
+
+                      <h3 className="font-extrabold text-white text-lg line-clamp-2 leading-tight mb-2 drop-shadow-md group-hover:text-blue-200 transition-colors">
+                        {liveClass.title}
+                      </h3>
+
+                      <div className="flex items-center gap-1.5 bg-white/10 px-2 py-1 rounded-full backdrop-blur-sm w-fit">
+                        <Clock className="w-3 h-3 text-white/80" />
+                        <span className="text-xs text-white/80 font-medium">
                           {new Date(liveClass.scheduleTime).toLocaleDateString(
                             'id-ID',
                             {
@@ -299,18 +385,21 @@ export default function BimLearningProgress({
                         </span>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                );
+              })}
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-12">
               <MonitorPlay className="w-16 h-16 text-slate-300 mb-4" />
               <p className="text-slate-500 text-center font-medium">
-                Belum ada kelas live
-              </p>
-              <p className="text-slate-400 text-sm text-center mt-2">
-                Kelas live akan ditampilkan di sini
+                {searchQuery
+                  ? 'Tidak ada kelas live yang cocok'
+                  : filterStatus === 'completed'
+                    ? 'Belum ada kelas live yang selesai'
+                    : filterStatus === 'in-progress'
+                      ? 'Tidak ada kelas live yang berlangsung sekarang'
+                      : 'Belum ada kelas live'}
               </p>
             </div>
           )
@@ -426,7 +515,7 @@ export default function BimLearningProgress({
                       <div className="flex items-center gap-2 text-xs text-slate-600">
                         <Clock className="w-3.5 h-3.5 opacity-70" />
                         <span className="font-bold">
-                          {course.completedChapters}/{course.totalChapters} Bab
+                          {course.completedChapters}/{course.totalChapters} Sub-Chapter
                           Selesai
                         </span>
                       </div>
@@ -480,6 +569,117 @@ export default function BimLearningProgress({
               )}
             </div>
           )
+        ) : activeTab === 'quiz' ? (
+          filteredQuizVolumes.length > 0 ? (
+            <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
+              {filteredQuizVolumes.map((qv) => {
+                const now = new Date();
+                const start = new Date(qv.startDate);
+                const end = new Date(qv.endDate);
+                const isActive = now >= start && now <= end;
+                const isPast = now > end;
+
+                return (
+                  <Link
+                    key={qv.id}
+                    href={`/${website_sub_category_id}/user/bimarena/quiz`}
+                    className="group relative rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 flex-shrink-0 w-[280px] md:w-auto aspect-[4/5]"
+                  >
+                    {/* Violet gradient base */}
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #4c1d95, #6d28d9, #7c3aed)' }} />
+
+                    {/* Optional background image */}
+                    {qv.image && (
+                      <Image
+                        src={qv.image}
+                        alt={qv.title}
+                        fill
+                        className="object-cover opacity-40 group-hover:opacity-50 transition-opacity duration-500"
+                      />
+                    )}
+
+                    {/* Top gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-violet-950/30 to-transparent" />
+
+                    {/* Top left: Quiz chip */}
+                    <div className="absolute top-3 left-3 z-10">
+                      <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-violet-400/30 text-violet-200 border border-violet-400/50 backdrop-blur-sm uppercase tracking-wide">
+                        Quiz
+                      </span>
+                    </div>
+
+                    {/* Top right: status */}
+                    <div className="absolute top-3 right-3 z-10">
+                      {isActive ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-violet-500/80 backdrop-blur-sm text-white border border-violet-400/50">
+                          Berlangsung
+                        </span>
+                      ) : isPast ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/80 backdrop-blur-sm text-white border border-emerald-400/50">
+                          Selesai
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-700/80 backdrop-blur-sm text-white border border-slate-600/50">
+                          Akan Datang
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Center: faint swords decoration */}
+                    <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                      <Swords className="w-24 h-24 text-white/10" />
+                    </div>
+
+                    {/* Bottom content */}
+                    <div className="absolute bottom-0 left-0 right-0 p-5 z-20">
+                      <div className="flex items-center gap-1 mb-1.5">
+                        <Swords className="w-3 h-3 text-violet-300" />
+                        <span className="text-[10px] font-bold text-violet-300 uppercase tracking-wide">
+                          Vol. {qv.number}
+                        </span>
+                      </div>
+                      <h3 className="font-extrabold text-white text-lg line-clamp-2 leading-tight mb-2 drop-shadow-md group-hover:text-violet-200 transition-colors">
+                        {qv.title}
+                      </h3>
+                      <div className="flex items-center gap-1.5 bg-white/10 px-2 py-1 rounded-full backdrop-blur-sm w-fit">
+                        <Calendar className="w-3 h-3 text-white/70" />
+                        <span className="text-xs text-white/70 font-medium">
+                          {new Date(qv.startDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                          {' – '}
+                          {new Date(qv.endDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <Swords className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+              <h3 className="text-lg font-black text-slate-800 mb-2">
+                {searchQuery ? 'Tidak ada hasil' : 'Belum Ada Quiz'}
+              </h3>
+              <p className="text-sm text-slate-500 mb-4">
+                {searchQuery ? (
+                  'Coba kata kunci lain'
+                ) : (
+                  <>
+                    Ikuti <BimArena /> Quiz untuk menguji kemampuanmu
+                  </>
+                )}
+              </p>
+              {!searchQuery && (
+                <Link
+                  href={`/${website_sub_category_id}/user/bimarena/quiz`}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm text-white shadow-md hover:shadow-lg transition-all hover:scale-105"
+                  style={{ backgroundColor: mainColor }}
+                >
+                  Mulai <BimArena /> Quiz
+                </Link>
+              )}
+            </div>
+          )
         ) : filteredTryouts.length > 0 ? (
           <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
             {filteredTryouts.map((tryout) => {
@@ -487,22 +687,19 @@ export default function BimLearningProgress({
                 switch (tryout.status) {
                   case 'completed':
                     return (
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">
-                        <CheckCircle className="w-3 h-3" />
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/80 backdrop-blur-sm text-white border border-emerald-400/50">
                         Selesai
                       </span>
                     );
                   case 'in-progress':
                     return (
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700 border border-blue-200">
-                        <Clock className="w-3 h-3" />
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-orange-500/80 backdrop-blur-sm text-white border border-orange-400/50">
                         Berlangsung
                       </span>
                     );
                   default:
                     return (
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
-                        <Target className="w-3 h-3" />
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-700/80 backdrop-blur-sm text-white border border-slate-600/50">
                         Belum Mulai
                       </span>
                     );
@@ -522,59 +719,44 @@ export default function BimLearningProgress({
                       alt={tryout.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      sizes="(max-width: 768px) 280px, (max-width: 1200px) 50vw, 33vw"
                     />
                   ) : (
-                    <div
-                      className="w-full h-full flex items-center justify-center opacity-20"
-                      style={{ backgroundColor: mainColor }}
-                    >
-                      <Target className="w-16 h-16 text-white" />
+                    <div className="w-full h-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #ea580c, #dc2626)' }}>
+                      <Target className="w-16 h-16 text-white/20" />
                     </div>
                   )}
 
-                  {/* Dark Gradient Overlay for Text Readability */}
+                  {/* Dark Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
 
-                  {/* Top Badges */}
-                  <div className="absolute top-3 left-3 flex gap-2 z-10">
-                    {getStatusBadge()}
+                  {/* Top left: Try Out chip */}
+                  <div className="absolute top-3 left-3 z-10">
+                    <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-orange-500/80 text-white border border-orange-400/50 backdrop-blur-sm uppercase tracking-wide">
+                      Try Out
+                    </span>
                   </div>
 
-                  {/* Score Badge - Top Right (if completed) */}
-                  {tryout.score && tryout.score > 0 && (
-                    <div className="absolute top-3 right-3 z-10">
-                      <div className="bg-white/90 backdrop-blur-sm rounded-full shadow-sm px-2.5 py-1 flex items-center gap-1 border border-white/50">
-                        <Target
-                          className="w-3.5 h-3.5"
-                          style={{ color: mainColor }}
-                        />
-                        <span
-                          className="text-xs font-black"
-                          style={{ color: mainColor }}
-                        >
-                          {tryout.score}
-                        </span>
+                  {/* Top right: status + score */}
+                  <div className="absolute top-3 right-3 z-10 flex flex-col gap-1.5 items-end">
+                    {getStatusBadge()}
+                    {tryout.score && tryout.score > 0 && (
+                      <div className="bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-1 flex items-center gap-1 border border-white/50">
+                        <Target className="w-3 h-3 text-orange-500" />
+                        <span className="text-xs font-black text-orange-500">{tryout.score}</span>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
 
-                  {/* Content Overlay at Bottom */}
+                  {/* Bottom content */}
                   <div className="absolute bottom-0 left-0 right-0 p-5 z-20">
-                    {/* Title */}
-                    <h3 className="font-extrabold text-white text-lg line-clamp-3 leading-tight mb-3 drop-shadow-md group-hover:text-blue-200 transition-colors">
+                    <h3 className="font-extrabold text-white text-base line-clamp-3 leading-tight mb-2 drop-shadow-md group-hover:text-orange-200 transition-colors">
                       {tryout.title}
                     </h3>
-
-                    {/* Subtitle/Hint */}
-                    <p className="text-white/80 text-xs font-medium line-clamp-1 mb-1">
-                      {tryout.totalQuestions} Soal •{' '}
-                      {tryout.status === 'completed'
-                        ? 'Selesai'
-                        : tryout.status === 'in-progress'
-                          ? 'Lanjutkan'
-                          : 'Belum Mulai'}
-                    </p>
+                    <div className="flex items-center gap-1.5 bg-white/10 px-2 py-1 rounded-full backdrop-blur-sm w-fit">
+                      <Target className="w-3 h-3 text-white/80" />
+                      <span className="text-xs text-white/80 font-medium">{tryout.totalQuestions} soal</span>
+                    </div>
                   </div>
                 </Link>
               );
@@ -611,15 +793,34 @@ export default function BimLearningProgress({
       </div>
 
       {/* View All Link */}
-      {((activeTab === 'courses' && filteredCourses.length > 0) ||
+      {((activeTab === 'live' && filteredLiveClasses.length > 0) ||
+        (activeTab === 'courses' && filteredCourses.length > 0) ||
+        (activeTab === 'quiz' && filteredQuizVolumes.length > 0) ||
         (activeTab === 'tryouts' && filteredTryouts.length > 0)) && (
         <div className="mt-4 pt-4 border-t border-slate-100">
           <Link
-            href={`/${website_sub_category_id}/user/${activeTab === 'courses' ? 'bimcourse' : 'bimarena/try-out'}`}
+            href={`/${website_sub_category_id}/user/${
+              activeTab === 'courses'
+                ? 'bimcourse'
+                : activeTab === 'live'
+                  ? 'bimlive'
+                  : activeTab === 'quiz'
+                    ? 'bimarena/quiz'
+                    : 'bimarena/try-out'
+            }`}
             className="flex items-center justify-center gap-2 text-sm font-bold hover:gap-3 transition-all"
             style={{ color: mainColor }}
           >
-            Lihat Semua {activeTab === 'courses' ? <BimCourse /> : <BimArena />}
+            Lihat Semua{' '}
+            {activeTab === 'courses' ? (
+              <BimCourse />
+            ) : activeTab === 'live' ? (
+              <BimLive />
+            ) : activeTab === 'quiz' ? (
+              <><BimArena /> Quiz</>
+            ) : (
+              <><BimArena /> Try Out</>
+            )}
             <Target className="w-4 h-4" />
           </Link>
         </div>

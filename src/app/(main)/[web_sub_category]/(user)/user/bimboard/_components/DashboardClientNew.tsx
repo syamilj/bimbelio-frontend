@@ -65,6 +65,15 @@ export interface DashboardData {
       thumbnail: string | null;
       deadline: string | null;
     }>;
+    quizVolumes: Array<{
+      id: string;
+      title: string;
+      image: string | null;
+      startDate: string;
+      endDate: string;
+      status: 'PUBLIC' | 'PRIVATE' | 'DRAFT';
+      number: number;
+    }>;
   };
   recentActivity: Array<{
     id: string;
@@ -196,7 +205,7 @@ export default function DashboardClientNew() {
     try {
       setLoading(true);
 
-      const [reportRes, tryoutsRes, liveClassRes, documentsRes, coursesRes] =
+      const [reportRes, tryoutsRes, liveClassRes, documentsRes, coursesRes, quizVolumesRes] =
         await Promise.all([
           getGeneral(`/report/getReportData`, {
             params: {
@@ -211,10 +220,6 @@ export default function DashboardClientNew() {
               take: 10,
             },
           }),
-          // Done tryouts can be removed or kept if we want history separate, but user wants landing page logic.
-          // For now, let's assume Upcoming2 returns mixed/relevant cards.
-          // We'll pass a dummy promise to keep array structure or remove it.
-          // Let's remove doneTryoutsRes fetch and adjust destructuring.
           getGeneral(`/liveClass/getAllLiveClassAvailable`, {
             params: {
               website_sub_category_id: webSubCategoryId,
@@ -234,6 +239,13 @@ export default function DashboardClientNew() {
               userId: session.user.id,
             },
           }),
+          getGeneral(`/quizTryout/getQuizVolumeList`, {
+            params: {
+              website_sub_category_id: webSubCategoryId,
+              page: '1',
+              take: '20',
+            },
+          }).catch(() => null),
         ]);
 
       const report = reportRes?.data;
@@ -241,9 +253,11 @@ export default function DashboardClientNew() {
       const liveClasses = liveClassRes?.data || [];
       const documents = documentsRes?.data || [];
       const courses = coursesRes?.data || [];
+      const quizVolumesRaw: any[] = quizVolumesRes?.data || [];
 
       // Tryout history
       const tryoutHistory = report?.tryoutHistory?.history || [];
+      const isSNBT = websiteSubCategory?.name?.toUpperCase().includes('SNBT');
 
       // Calculate study time this week from recent tryout sessions
       const oneWeekAgo = new Date();
@@ -261,59 +275,108 @@ export default function DashboardClientNew() {
         ) / 10; // Round to 1 decimal place
 
       // Build learning progress
-      const courseProgress = courses.slice(0, 5).map((course: any) => {
-        const totalChapters = course.CourseChapter?.length || 0;
-        const completedChapters =
-          course.CourseChapter?.filter((ch: any) =>
-            ch.CourseSubChapter?.every((sub: any) => sub.isCompleted),
-          ).length || 0;
-        const progress =
-          totalChapters > 0 ? (completedChapters / totalChapters) * 100 : 0;
+      // getCategoryForCard already returns percentageProgress, totalChapters, completedChapters directly
+      const courseProgress = courses.map((course: any) => ({
+        id: course.id,
+        name: course.name,
+        category: course.Category?.name || 'Umum',
+        progress: course.percentageProgress ?? 0,
+        totalChapters: course.totalChapters ?? 0,
+        completedChapters: course.completedChapters ?? 0,
+        thumbnail: getImageUrl(course.image, 'course') || null,
+        lastAccessed: course.updatedAt || course.createdAt || new Date().toISOString(),
+      }));
 
-        return {
-          id: course.id,
-          name: course.name,
-          category: course.Category?.name || 'Umum',
-          progress: Math.round(progress),
-          totalChapters,
-          completedChapters,
-          thumbnail: course.image,
-          lastAccessed: course.updatedAt || course.createdAt,
-        };
-      });
+      // Map completed tryouts from history (TryoutResult records)
+      const completedTryoutIds = new Set<string>();
+      const completedTryoutProgress = tryoutHistory
+        .filter((item: any) => item.show && item.Tryout?.id)
+        .map((item: any) => {
+          const tryoutId = item.Tryout?.id;
+          completedTryoutIds.add(tryoutId);
 
-      // Map Upcoming2 Data (similar to Landing Page CardTryOut)
-      const tryoutProgress = tryoutsData.slice(0, 10).map((tryout: any) => {
-        // Status determination logic based on CardTryOut.tsx
-        let status: 'completed' | 'in-progress' | 'not-started' = 'not-started';
-        if (tryout.isDone) {
-          status = 'completed';
-        } else if (tryout.isActive || tryout.isJoin) {
-          status = 'in-progress';
-        }
+          let score = item.totalScore || 0;
+          if (
+            isSNBT &&
+            item.TryoutSessionResult &&
+            item.TryoutSessionResult.length > 0
+          ) {
+            const subtestSum = item.TryoutSessionResult.reduce(
+              (s: number, sr: any) => s + (sr.totalScore || 0),
+              0,
+            );
+            score = Math.round(
+              subtestSum / item.TryoutSessionResult.length,
+            );
+          }
 
-        // Calculate total questions from TryoutSession array
-        const totalQuestions =
-          tryout.TryoutSession?.reduce(
-            (sum: number, session: any) =>
-              sum + (session._count?.TryoutQuestion || 0),
-            0,
-          ) || 0;
+          return {
+            id: tryoutId,
+            title: item.Tryout?.title || 'Try Out',
+            score: score > 0 ? score : null,
+            totalQuestions:
+              item.TryoutSessionResult?.reduce(
+                (s: number, sr: any) => s + (sr._count?.TryoutAnswer || 0),
+                0,
+              ) || 0,
+            answeredQuestions: 0,
+            status: 'completed' as const,
+            thumbnail: getImageUrl(item.Tryout?.image, 'tryout') || null,
+            deadline: null,
+          };
+        });
 
-        return {
-          id: tryout.id,
-          title: tryout.title,
-          // Score is strictly from report history, might not be in upcoming2 list directly
-          // We can leave score null or try to find it in history if needed, but for "Cards" visual it might not show score unless completed.
-          // In the new design, score is shown if present.
-          score: null, // Upcoming2 might not have user result attached directly in same format
-          totalQuestions,
-          answeredQuestions: 0, // Not provided in new endpoint summary
-          status,
-          thumbnail: getImageUrl(tryout.image, 'tryout') || null,
-          deadline: tryout.endDate,
-        };
-      });
+      // Map Upcoming2 Data — only include tryouts NOT already in completed history
+      const upcomingTryoutProgress = tryoutsData
+        .filter((tryout: any) => !completedTryoutIds.has(tryout.id))
+        .slice(0, 10)
+        .map((tryout: any) => {
+          let status: 'completed' | 'in-progress' | 'not-started' =
+            'not-started';
+          if (tryout.isDone) {
+            status = 'completed';
+          } else if (tryout.isActive || tryout.isJoin) {
+            status = 'in-progress';
+          }
+
+          const totalQuestions =
+            tryout.TryoutSession?.reduce(
+              (sum: number, session: any) =>
+                sum + (session._count?.TryoutQuestion || 0),
+              0,
+            ) || 0;
+
+          return {
+            id: tryout.id,
+            title: tryout.title,
+            score: null,
+            totalQuestions,
+            answeredQuestions: 0,
+            status,
+            thumbnail: getImageUrl(tryout.image, 'tryout') || null,
+            deadline: tryout.endDate,
+          };
+        });
+
+      // Merge: completed most-recent-first (reverse history order), then upcoming
+      const tryoutProgress = [
+        ...completedTryoutProgress.slice().reverse().slice(0, 15),
+        ...upcomingTryoutProgress.slice(0, 5),
+      ];
+
+      // Map quiz volumes
+      const now = new Date();
+      const quizVolumes = quizVolumesRaw
+        .filter((qv: any) => qv.status === 'PUBLIC')
+        .map((qv: any) => ({
+          id: qv.id,
+          title: qv.title || 'Quiz',
+          image: getImageUrl(qv.image, 'tryout') || null,
+          startDate: qv.startDate,
+          endDate: qv.endDate,
+          status: qv.status as 'PUBLIC' | 'PRIVATE' | 'DRAFT',
+          number: qv.number ?? 0,
+        }));
 
       // Build recent activity from tryout history
       const recentActivity = tryoutHistory.slice(0, 10).map((item: any) => ({
@@ -358,13 +421,6 @@ export default function DashboardClientNew() {
 
       // Build performance data - use tryout history from report
       const tryoutHistoryData = report?.tryoutHistory?.history || [];
-      const isSNBT = websiteSubCategory?.name?.toUpperCase().includes('SNBT');
-      console.log(
-        'Tryout History Data:',
-        tryoutHistoryData,
-        'Is SNBT:',
-        isSNBT,
-      ); // Debug log
 
       const scoreHistory = tryoutHistoryData
         .filter((item: any) => {
@@ -428,25 +484,15 @@ export default function DashboardClientNew() {
       });
 
       // Build recommendations
-      const recommendedCourses = courses.slice(0, 4).map((course: any) => {
-        const totalChapters = course.CourseChapter?.length || 0;
-        const completedChapters =
-          course.CourseChapter?.filter((ch: any) =>
-            ch.CourseSubChapter?.every((sub: any) => sub.isCompleted),
-          ).length || 0;
-        const progress =
-          totalChapters > 0 ? (completedChapters / totalChapters) * 100 : 0;
-
-        return {
-          id: course.id,
-          name: course.name,
-          category: course.Category?.name || 'Umum',
-          thumbnail: course.image,
-          progress: Math.round(progress),
-          isLocked: false, // TODO: check lock status
-          isPremium: course.accessType === 'PREMIUM',
-        };
-      });
+      const recommendedCourses = courses.slice(0, 4).map((course: any) => ({
+        id: course.id,
+        name: course.name,
+        category: course.Category?.name || 'Umum',
+        thumbnail: getImageUrl(course.image, 'course') || null,
+        progress: course.percentageProgress ?? 0,
+        isLocked: false,
+        isPremium: course.accessType === 'PREMIUM',
+      }));
 
       const recommendedTryouts = tryoutsData.slice(0, 4).map((t: any) => ({
         id: t.id,
@@ -577,23 +623,12 @@ export default function DashboardClientNew() {
             ? previousTryout.rank - (lastTryout?.rank || 0)
             : 0,
           tryoutsCompleted: validTryouts.length,
-          coursesCompleted: courses.filter((c: any) => {
-            const totalChapters = c.CourseChapter?.length || 0;
-            const completedChapters =
-              c.CourseChapter?.filter((ch: any) =>
-                ch.CourseSubChapter?.every((sub: any) => sub.isCompleted),
-              ).length || 0;
-            return totalChapters > 0 && totalChapters === completedChapters;
-          }).length,
+          coursesCompleted: courses.filter(
+            (c: any) => (c.percentageProgress ?? 0) === 100,
+          ).length,
           coursesInProgress: courses.filter((c: any) => {
-            const totalChapters = c.CourseChapter?.length || 0;
-            if (totalChapters === 0) return false; // Skip courses without chapters
-            const completedChapters =
-              c.CourseChapter?.filter((ch: any) =>
-                ch.CourseSubChapter?.every((sub: any) => sub.isCompleted),
-              ).length || 0;
-            // Count as in-progress if has chapters and not fully completed
-            return totalChapters > 0 && completedChapters < totalChapters;
+            const p = c.percentageProgress ?? 0;
+            return p > 0 && p < 100;
           }).length,
           documentsRead: documents.length, // Count of available documents
           liveClassesAttended: liveClasses.length, // Count of available live classes (user can join)
@@ -601,6 +636,7 @@ export default function DashboardClientNew() {
         learningProgress: {
           courses: courseProgress,
           tryouts: tryoutProgress,
+          quizVolumes,
         },
         recentActivity,
         upcomingSchedule: upcomingScheduleData,
@@ -701,6 +737,7 @@ export default function DashboardClientNew() {
               courses={data.learningProgress.courses}
               tryouts={data.learningProgress.tryouts}
               liveClasses={data.upcomingSchedule.liveClasses}
+              quizVolumes={data.learningProgress.quizVolumes}
             />
 
             {/* Performance Chart */}
