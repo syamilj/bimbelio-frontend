@@ -37,7 +37,7 @@ export function BimArenaQuizPageMain() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pb-12">
+    <div className="min-h-screen pb-12">
       {/* Hero Section */}
       <div className="p-4 md:p-6">
         <QuizSummary />
