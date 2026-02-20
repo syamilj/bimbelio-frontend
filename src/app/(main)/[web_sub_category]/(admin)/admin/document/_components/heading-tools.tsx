@@ -25,7 +25,9 @@ export default function HeadingTools() {
   const [showFilter, setShowFilter] = useState(false);
   const [searchValue, setSearchValue] = useState('');
 
-  const [category, setCategory] = useState<{ name: string; id: string; total: number }[]>([]);
+  const [category, setCategory] = useState<
+    { name: string; id: string; total: number }[]
+  >([]);
   useEffect(() => {
     getGeneral('/category/getAllCategories', { setData: setCategory });
   }, []);
@@ -72,7 +74,11 @@ export default function HeadingTools() {
             onChange={(e) => setSearchValue(e.target.value)}
             placeholder="Cari dokumen..."
             className="w-full pl-9 pr-9 py-2 rounded-xl border border-gray-200 bg-white text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-offset-0 focus:border-transparent transition"
-            style={{ '--tw-ring-color': 'var(--color-main, #0091FF)' } as React.CSSProperties}
+            style={
+              {
+                '--tw-ring-color': 'var(--color-main, #0091FF)',
+              } as React.CSSProperties
+            }
           />
           {searchValue && (
             <button
@@ -106,7 +112,9 @@ export default function HeadingTools() {
             )}
           >
             <Filter className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">{isFiltered ? 'Filtered' : 'Filter'}</span>
+            <span className="hidden sm:inline">
+              {isFiltered ? 'Filtered' : 'Filter'}
+            </span>
             {isFiltered && (
               <Badge className="bg-white/20 text-white text-[10px] px-1 py-0 h-4">
                 1
@@ -116,10 +124,14 @@ export default function HeadingTools() {
 
           {showFilter && (
             <div className="absolute left-0 top-[calc(100%+6px)] z-50 w-72 rounded-2xl bg-white border border-gray-200 shadow-xl p-4 space-y-3">
-              <p className="text-xs font-bold text-gray-700 uppercase tracking-wide">Filter Dokumen</p>
+              <p className="text-xs font-bold text-gray-700 uppercase tracking-wide">
+                Filter Dokumen
+              </p>
 
               <div className="space-y-2">
-                <label className="text-xs font-medium text-gray-500">Filter by</label>
+                <label className="text-xs font-medium text-gray-500">
+                  Filter by
+                </label>
                 <Select
                   value={filter?.filter || ''}
                   onValueChange={(v) =>
@@ -139,7 +151,9 @@ export default function HeadingTools() {
               {filter?.type === 'option' && filter.filter !== '' && (
                 <div className="space-y-2">
                   <label className="text-xs font-medium text-gray-500">
-                    {filter.filter === 'category' ? 'Pilih kategori' : 'Pilih status'}
+                    {filter.filter === 'category'
+                      ? 'Pilih kategori'
+                      : 'Pilih status'}
                   </label>
                   <Select
                     value={filter.value}
@@ -153,7 +167,10 @@ export default function HeadingTools() {
                     <SelectContent className="z-[200]">
                       {filter.filter === 'category' &&
                         category.map((c) => (
-                          <SelectItem key={c.id} value={`${c.id}`}>
+                          <SelectItem
+                            key={c.id}
+                            value={`${c.id}`}
+                          >
                             {c.name}
                           </SelectItem>
                         ))}
@@ -193,7 +210,9 @@ export default function HeadingTools() {
         {/* Active filter chip */}
         {isFiltered && (
           <div className="flex items-center gap-1.5 text-xs bg-blue-50 border border-blue-200 text-blue-700 rounded-xl px-2.5 py-1.5 font-medium">
-            <span>{filterDocument?.filter}: {filterDocument?.filterValue}</span>
+            <span>
+              {filterDocument?.filter}: {filterDocument?.filterValue}
+            </span>
             <button onClick={handleClearFilter}>
               <X className="w-3 h-3" />
             </button>

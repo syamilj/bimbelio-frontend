@@ -5,6 +5,7 @@ import { useAppContext } from '@/components/provider/provider-app';
 import { useUserLimitation } from '@/components/provider/provider-limitation';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { BimBot } from '@/components/ui/bim-brand';
 import { Button } from '@/components/ui/button';
 import { toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
@@ -15,7 +16,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { useDebouncedCallback } from 'use-debounce';
 import { useProvider } from '../provider';
-import { BimBot } from '@/components/ui/bim-brand';
 
 const SubmitChat = () => {
   const router = useRouter();
@@ -32,11 +32,7 @@ const SubmitChat = () => {
 
   const {
     prevChatMessages,
-    useMessages: {
-      isLoadingMessages,
-      appendMessages,
-      stopChat,
-    },
+    useMessages: { isLoadingMessages, appendMessages, stopChat },
     setFirstMessage,
   } = useProvider();
 
@@ -189,7 +185,9 @@ const SubmitChat = () => {
               <IconUnlimited w={11} />
               <span>/</span>
               <IconUnlimited w={11} />
-              <span className="font-medium ml-0.5 text-slate-600">Admin - Unlimited</span>
+              <span className="font-medium ml-0.5 text-slate-600">
+                Admin - Unlimited
+              </span>
             </div>
           </div>
         )}
@@ -258,7 +256,10 @@ const SubmitChat = () => {
                   onMouseLeave={() => setShowUpgrade(false)}
                   disabled
                 >
-                  <IconLock w={12} className="text-gray-400" />
+                  <IconLock
+                    w={12}
+                    className="text-gray-400"
+                  />
                 </Button>
 
                 {showUpgrade && (
@@ -302,7 +303,10 @@ const SubmitChat = () => {
                   color: 'white',
                 }}
               >
-                <ArrowUp className="w-4 h-4" strokeWidth={2.5} />
+                <ArrowUp
+                  className="w-4 h-4"
+                  strokeWidth={2.5}
+                />
               </Button>
             )}
           </div>

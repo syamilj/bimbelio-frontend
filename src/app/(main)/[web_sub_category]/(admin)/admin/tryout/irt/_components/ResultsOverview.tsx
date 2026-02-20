@@ -1,5 +1,6 @@
 'use client';
 
+import { Badge } from '@/components/ui/badge';
 import {
   Card,
   CardContent,
@@ -7,15 +8,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import {
-  BarChart3,
-  TrendingUp,
-  TrendingDown,
-  Target,
   Activity,
+  BarChart3,
   BookOpen,
+  Target,
+  TrendingDown,
+  TrendingUp,
   Users,
 } from 'lucide-react';
 import { DataIRTProps, OverallStatsProps } from '../[tryoutId]/page';
@@ -140,7 +140,10 @@ function DistributionBar({
       </div>
       <div className="space-y-1.5">
         {buckets.map((b, i) => (
-          <div key={i} className="flex items-center gap-3">
+          <div
+            key={i}
+            className="flex items-center gap-3"
+          >
             <span className="w-24 text-right text-xs text-muted-foreground shrink-0">
               {b.label}
             </span>
@@ -216,23 +219,53 @@ export default function ResultsOverview({ result, sessionLabel }: Props) {
 
   // SNBT bracket categories
   const categories = [
-    { label: '< 400', count: scores.filter((s) => s < 400).length, color: 'bg-red-400' },
-    { label: '400\u2013450', count: scores.filter((s) => s >= 400 && s < 450).length, color: 'bg-orange-400' },
-    { label: '450\u2013500', count: scores.filter((s) => s >= 450 && s < 500).length, color: 'bg-yellow-400' },
-    { label: '500\u2013550', count: scores.filter((s) => s >= 500 && s < 550).length, color: 'bg-lime-500' },
-    { label: '550\u2013600', count: scores.filter((s) => s >= 550 && s < 600).length, color: 'bg-green-500' },
-    { label: '\u2265 600', count: scores.filter((s) => s >= 600).length, color: 'bg-emerald-600' },
+    {
+      label: '< 400',
+      count: scores.filter((s) => s < 400).length,
+      color: 'bg-red-400',
+    },
+    {
+      label: '400\u2013450',
+      count: scores.filter((s) => s >= 400 && s < 450).length,
+      color: 'bg-orange-400',
+    },
+    {
+      label: '450\u2013500',
+      count: scores.filter((s) => s >= 450 && s < 500).length,
+      color: 'bg-yellow-400',
+    },
+    {
+      label: '500\u2013550',
+      count: scores.filter((s) => s >= 500 && s < 550).length,
+      color: 'bg-lime-500',
+    },
+    {
+      label: '550\u2013600',
+      count: scores.filter((s) => s >= 550 && s < 600).length,
+      color: 'bg-green-500',
+    },
+    {
+      label: '\u2265 600',
+      count: scores.filter((s) => s >= 600).length,
+      color: 'bg-emerald-600',
+    },
   ];
   const catMax = Math.max(...categories.map((c) => c.count), 1);
 
-  function discriminationLabel(a: number | null): { text: string; variant: string } {
+  function discriminationLabel(a: number | null): {
+    text: string;
+    variant: string;
+  } {
     if (a === null) return { text: '\u2014', variant: 'secondary' };
     if (a < 0.5) return { text: 'Rendah', variant: 'red' };
     if (a <= 2) return { text: 'Baik', variant: 'green' };
     return { text: 'Sangat Tinggi', variant: 'purple' };
   }
 
-  function difficultyLabel(b: number | null): { text: string; variant: string } {
+  function difficultyLabel(b: number | null): {
+    text: string;
+    variant: string;
+  } {
     if (b === null) return { text: '\u2014', variant: 'secondary' };
     if (b < -1) return { text: 'Mudah', variant: 'green' };
     if (b <= 1) return { text: 'Sedang', variant: 'yellow' };
@@ -361,7 +394,10 @@ export default function ResultsOverview({ result, sessionLabel }: Props) {
             </p>
             <div className="space-y-1.5">
               {categories.map((cat, i) => (
-                <div key={i} className="flex items-center gap-3">
+                <div
+                  key={i}
+                  className="flex items-center gap-3"
+                >
                   <span className="w-16 text-right text-xs text-muted-foreground shrink-0">
                     {cat.label}
                   </span>
@@ -400,7 +436,8 @@ export default function ResultsOverview({ result, sessionLabel }: Props) {
             </CardTitle>
             <CardDescription className="text-xs">
               {validQuestions.length} / {question.length} soal berhasil
-              diestimasi{question.length - validQuestions.length > 0
+              diestimasi
+              {question.length - validQuestions.length > 0
                 ? ` \u00b7 ${question.length - validQuestions.length} tidak valid (tanpa variasi)`
                 : ''}
             </CardDescription>
@@ -417,7 +454,9 @@ export default function ResultsOverview({ result, sessionLabel }: Props) {
                 </p>
                 <p className="text-xs text-muted-foreground">Diskriminasi</p>
                 {avgA !== null && (
-                  <Badge className={`text-xs ${getBadgeCls(discriminationLabel(avgA).variant)}`}>
+                  <Badge
+                    className={`text-xs ${getBadgeCls(discriminationLabel(avgA).variant)}`}
+                  >
                     {discriminationLabel(avgA).text}
                   </Badge>
                 )}
@@ -431,7 +470,9 @@ export default function ResultsOverview({ result, sessionLabel }: Props) {
                 </p>
                 <p className="text-xs text-muted-foreground">Kesulitan</p>
                 {avgB !== null && (
-                  <Badge className={`text-xs ${getBadgeCls(difficultyLabel(avgB).variant)}`}>
+                  <Badge
+                    className={`text-xs ${getBadgeCls(difficultyLabel(avgB).variant)}`}
+                  >
                     {difficultyLabel(avgB).text}
                   </Badge>
                 )}
@@ -443,7 +484,9 @@ export default function ResultsOverview({ result, sessionLabel }: Props) {
                 <p className="text-xs font-semibold text-muted-foreground uppercase">
                   Avg c
                 </p>
-                <p className="text-xs text-muted-foreground">Guessing (pseudo-chance)</p>
+                <p className="text-xs text-muted-foreground">
+                  Guessing (pseudo-chance)
+                </p>
               </div>
             </div>
 
@@ -455,13 +498,28 @@ export default function ResultsOverview({ result, sessionLabel }: Props) {
                 </p>
                 <div className="space-y-1.5">
                   {[
-                    { label: 'Mudah  (b < \u22121)', count: easyItems, color: 'bg-green-500' },
-                    { label: 'Sedang (\u22121 \u2264 b \u2264 1)', count: mediumItems, color: 'bg-yellow-500' },
-                    { label: 'Sulit  (b > 1)', count: hardItems, color: 'bg-red-500' },
+                    {
+                      label: 'Mudah  (b < \u22121)',
+                      count: easyItems,
+                      color: 'bg-green-500',
+                    },
+                    {
+                      label: 'Sedang (\u22121 \u2264 b \u2264 1)',
+                      count: mediumItems,
+                      color: 'bg-yellow-500',
+                    },
+                    {
+                      label: 'Sulit  (b > 1)',
+                      count: hardItems,
+                      color: 'bg-red-500',
+                    },
                   ].map((row, i) => {
                     const mx = Math.max(easyItems, mediumItems, hardItems, 1);
                     return (
-                      <div key={i} className="flex items-center gap-2">
+                      <div
+                        key={i}
+                        className="flex items-center gap-2"
+                      >
                         <span className="text-xs text-muted-foreground w-36 shrink-0">
                           {row.label}
                         </span>
@@ -486,13 +544,33 @@ export default function ResultsOverview({ result, sessionLabel }: Props) {
                 </p>
                 <div className="space-y-1.5">
                   {[
-                    { label: 'Rendah (a < 0.5)', count: lowDiscrim, color: 'bg-red-500' },
-                    { label: 'Baik (0.5 \u2013 2)', count: goodDiscrim, color: 'bg-green-500' },
-                    { label: 'Sangat tinggi (> 2)', count: highDiscrim, color: 'bg-purple-500' },
+                    {
+                      label: 'Rendah (a < 0.5)',
+                      count: lowDiscrim,
+                      color: 'bg-red-500',
+                    },
+                    {
+                      label: 'Baik (0.5 \u2013 2)',
+                      count: goodDiscrim,
+                      color: 'bg-green-500',
+                    },
+                    {
+                      label: 'Sangat tinggi (> 2)',
+                      count: highDiscrim,
+                      color: 'bg-purple-500',
+                    },
                   ].map((row, i) => {
-                    const mx = Math.max(lowDiscrim, goodDiscrim, highDiscrim, 1);
+                    const mx = Math.max(
+                      lowDiscrim,
+                      goodDiscrim,
+                      highDiscrim,
+                      1,
+                    );
                     return (
-                      <div key={i} className="flex items-center gap-2">
+                      <div
+                        key={i}
+                        className="flex items-center gap-2"
+                      >
                         <span className="text-xs text-muted-foreground w-36 shrink-0">
                           {row.label}
                         </span>

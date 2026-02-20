@@ -205,48 +205,54 @@ export default function DashboardClientNew() {
     try {
       setLoading(true);
 
-      const [reportRes, tryoutsRes, liveClassRes, documentsRes, coursesRes, quizVolumesRes] =
-        await Promise.all([
-          getGeneral(`/report/getReportData`, {
-            params: {
-              userId: session.user.id,
-              website_sub_category_id: webSubCategoryId,
-            },
-          }),
-          getGeneral(`/tryout/getTryOutCardUpcoming2`, {
-            params: {
-              website_sub_category_id: webSubCategoryId,
-              userId: session.user.id,
-              take: 10,
-            },
-          }),
-          getGeneral(`/liveClass/getAllLiveClassAvailable`, {
-            params: {
-              website_sub_category_id: webSubCategoryId,
-              userId: session.user.id,
-              limit: 10,
-            },
-          }),
-          getGeneral(`/document/getDocumentTerbaru`, {
-            params: {
-              website_sub_category_id: webSubCategoryId,
-              limit: 10,
-            },
-          }),
-          getGeneral(`/course/getCategoryForCard`, {
-            params: {
-              website_sub_category_id: webSubCategoryId,
-              userId: session.user.id,
-            },
-          }),
-          getGeneral(`/quizTryout/getQuizVolumeList`, {
-            params: {
-              website_sub_category_id: webSubCategoryId,
-              page: '1',
-              take: '20',
-            },
-          }).catch(() => null),
-        ]);
+      const [
+        reportRes,
+        tryoutsRes,
+        liveClassRes,
+        documentsRes,
+        coursesRes,
+        quizVolumesRes,
+      ] = await Promise.all([
+        getGeneral(`/report/getReportData`, {
+          params: {
+            userId: session.user.id,
+            website_sub_category_id: webSubCategoryId,
+          },
+        }),
+        getGeneral(`/tryout/getTryOutCardUpcoming2`, {
+          params: {
+            website_sub_category_id: webSubCategoryId,
+            userId: session.user.id,
+            take: 10,
+          },
+        }),
+        getGeneral(`/liveClass/getAllLiveClassAvailable`, {
+          params: {
+            website_sub_category_id: webSubCategoryId,
+            userId: session.user.id,
+            limit: 10,
+          },
+        }),
+        getGeneral(`/document/getDocumentTerbaru`, {
+          params: {
+            website_sub_category_id: webSubCategoryId,
+            limit: 10,
+          },
+        }),
+        getGeneral(`/course/getCategoryForCard`, {
+          params: {
+            website_sub_category_id: webSubCategoryId,
+            userId: session.user.id,
+          },
+        }),
+        getGeneral(`/quizTryout/getQuizVolumeList`, {
+          params: {
+            website_sub_category_id: webSubCategoryId,
+            page: '1',
+            take: '20',
+          },
+        }).catch(() => null),
+      ]);
 
       const report = reportRes?.data;
       const tryoutsData = tryoutsRes?.data || [];
@@ -284,7 +290,8 @@ export default function DashboardClientNew() {
         totalChapters: course.totalChapters ?? 0,
         completedChapters: course.completedChapters ?? 0,
         thumbnail: getImageUrl(course.image, 'course') || null,
-        lastAccessed: course.updatedAt || course.createdAt || new Date().toISOString(),
+        lastAccessed:
+          course.updatedAt || course.createdAt || new Date().toISOString(),
       }));
 
       // Map completed tryouts from history (TryoutResult records)
@@ -305,9 +312,7 @@ export default function DashboardClientNew() {
               (s: number, sr: any) => s + (sr.totalScore || 0),
               0,
             );
-            score = Math.round(
-              subtestSum / item.TryoutSessionResult.length,
-            );
+            score = Math.round(subtestSum / item.TryoutSessionResult.length);
           }
 
           return {

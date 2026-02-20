@@ -528,8 +528,12 @@ export default function TambahDokumen() {
         {/* Header */}
         <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4 shrink-0">
           <div>
-            <h1 className="text-base font-bold text-gray-900">Tambah Material</h1>
-            <p className="text-xs text-gray-400 mt-0.5">Isi semua informasi dokumen</p>
+            <h1 className="text-base font-bold text-gray-900">
+              Tambah Material
+            </h1>
+            <p className="text-xs text-gray-400 mt-0.5">
+              Isi semua informasi dokumen
+            </p>
           </div>
           <button
             type="button"
@@ -572,7 +576,10 @@ export default function TambahDokumen() {
             {!to && (
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                  Judul Dokumen <span className="normal-case text-gray-400 font-normal">(opsional)</span>
+                  Judul Dokumen{' '}
+                  <span className="normal-case text-gray-400 font-normal">
+                    (opsional)
+                  </span>
                 </label>
                 <input
                   type="text"
@@ -585,7 +592,9 @@ export default function TambahDokumen() {
             )}
 
             <div className="flex flex-col gap-2">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Akses</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Akses
+              </p>
               <div className="flex gap-2">
                 <button
                   type="button"
@@ -613,7 +622,9 @@ export default function TambahDokumen() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Kategori</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Kategori
+              </p>
               <div className="flex gap-2 overflow-x-auto pb-1">
                 {categoryAndSubCategory?.category?.map((item: any, i: any) => (
                   <button
@@ -637,7 +648,9 @@ export default function TambahDokumen() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Subkategori</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Subkategori
+              </p>
               <div className="flex gap-2 overflow-x-auto pb-1">
                 {subCategoryData?.map((item: any, i: any) => (
                   <button
@@ -698,30 +711,32 @@ export default function TambahDokumen() {
             <div className="border-t border-gray-100" />
 
             <div className="flex flex-col gap-2">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Tipe Konten</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Tipe Konten
+              </p>
               <div className="flex gap-2">
-              <button
-                type="button"
-                className={`flex-1 py-2 rounded-xl text-sm font-semibold border cursor-pointer transition ${
-                  option === 'doc'
-                    ? 'border-main bg-main text-white shadow-sm'
-                    : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
-                }`}
-                onClick={() => setOption('doc')}
-              >
-                Dokumen
-              </button>
-              <button
-                type="button"
-                className={`flex-1 py-2 rounded-xl text-sm font-semibold border cursor-pointer transition ${
-                  option === 'video'
-                    ? 'border-main bg-main text-white shadow-sm'
-                    : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
-                }`}
-                onClick={() => setOption('video')}
-              >
-                Video
-              </button>
+                <button
+                  type="button"
+                  className={`flex-1 py-2 rounded-xl text-sm font-semibold border cursor-pointer transition ${
+                    option === 'doc'
+                      ? 'border-main bg-main text-white shadow-sm'
+                      : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
+                  }`}
+                  onClick={() => setOption('doc')}
+                >
+                  Dokumen
+                </button>
+                <button
+                  type="button"
+                  className={`flex-1 py-2 rounded-xl text-sm font-semibold border cursor-pointer transition ${
+                    option === 'video'
+                      ? 'border-main bg-main text-white shadow-sm'
+                      : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
+                  }`}
+                  onClick={() => setOption('video')}
+                >
+                  Video
+                </button>
               </div>
             </div>
 
@@ -766,7 +781,10 @@ export default function TambahDokumen() {
 
                 <div className="flex flex-col gap-1.5">
                   <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    Judul Video <span className="normal-case text-gray-400 font-normal">(opsional)</span>
+                    Judul Video{' '}
+                    <span className="normal-case text-gray-400 font-normal">
+                      (opsional)
+                    </span>
                   </label>
                   <input
                     type="text"
@@ -1059,7 +1077,8 @@ const InputText = ({
   return (
     <div className="flex flex-col gap-1.5">
       <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-        {heading} <span className="normal-case text-gray-400 font-normal">(Try-Out)</span>
+        {heading}{' '}
+        <span className="normal-case text-gray-400 font-normal">(Try-Out)</span>
       </label>
       <input
         type="text"
@@ -1114,7 +1133,8 @@ const InputDateAndTime = ({
   return (
     <div className="flex flex-col gap-1.5">
       <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-        {heading} <span className="normal-case text-gray-400 font-normal">(Try-Out)</span>
+        {heading}{' '}
+        <span className="normal-case text-gray-400 font-normal">(Try-Out)</span>
       </label>
       <div className="grid grid-cols-2 gap-2">
         <input
@@ -1148,7 +1168,8 @@ const InputTextarea = ({
   return (
     <div className="flex flex-col gap-1.5">
       <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-        {heading} <span className="normal-case text-gray-400 font-normal">(Try-Out)</span>
+        {heading}{' '}
+        <span className="normal-case text-gray-400 font-normal">(Try-Out)</span>
       </label>
       <textarea
         rows={3}

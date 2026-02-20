@@ -71,9 +71,9 @@ export default function BimLearningProgress({
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
-  const [activeTab, setActiveTab] = useState<'live' | 'courses' | 'tryouts' | 'quiz'>(
-    'live',
-  );
+  const [activeTab, setActiveTab] = useState<
+    'live' | 'courses' | 'tryouts' | 'quiz'
+  >('live');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState<
     'all' | 'completed' | 'in-progress'
@@ -97,9 +97,7 @@ export default function BimLearningProgress({
 
   // Filter live classes
   const filteredLiveClasses = liveClasses
-    .filter((lc) =>
-      lc.title.toLowerCase().includes(searchQuery.toLowerCase()),
-    )
+    .filter((lc) => lc.title.toLowerCase().includes(searchQuery.toLowerCase()))
     .filter((lc) => {
       if (filterStatus === 'all') return true;
       const status = getLiveClassStatus(lc.scheduleTime, lc.duration);
@@ -109,17 +107,17 @@ export default function BimLearningProgress({
     });
 
   // Filter quiz volumes
-  const filteredQuizVolumes = quizVolumes.filter((qv) =>
-    qv.title.toLowerCase().includes(searchQuery.toLowerCase()),
-  ).filter((qv) => {
-    if (filterStatus === 'all') return true;
-    const now = new Date();
-    const end = new Date(qv.endDate);
-    const start = new Date(qv.startDate);
-    if (filterStatus === 'completed') return now > end;
-    if (filterStatus === 'in-progress') return now >= start && now <= end;
-    return true;
-  });
+  const filteredQuizVolumes = quizVolumes
+    .filter((qv) => qv.title.toLowerCase().includes(searchQuery.toLowerCase()))
+    .filter((qv) => {
+      if (filterStatus === 'all') return true;
+      const now = new Date();
+      const end = new Date(qv.endDate);
+      const start = new Date(qv.startDate);
+      if (filterStatus === 'completed') return now > end;
+      if (filterStatus === 'in-progress') return now >= start && now <= end;
+      return true;
+    });
 
   // Filter courses
   const filteredCourses = courses
@@ -236,10 +234,13 @@ export default function BimLearningProgress({
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
           <Input
             placeholder={`Cari ${
-              activeTab === 'live' ? 'BimLive'
-              : activeTab === 'courses' ? 'BimCourse'
-              : activeTab === 'quiz' ? 'BimArena Quiz'
-              : 'BimArena'
+              activeTab === 'live'
+                ? 'BimLive'
+                : activeTab === 'courses'
+                  ? 'BimCourse'
+                  : activeTab === 'quiz'
+                    ? 'BimArena Quiz'
+                    : 'BimArena'
             }...`}
             className="pl-10 h-10 rounded-full border-slate-200 bg-slate-50 focus:bg-white transition-all"
             value={searchQuery}
@@ -515,8 +516,8 @@ export default function BimLearningProgress({
                       <div className="flex items-center gap-2 text-xs text-slate-600">
                         <Clock className="w-3.5 h-3.5 opacity-70" />
                         <span className="font-bold">
-                          {course.completedChapters}/{course.totalChapters} Sub-Chapter
-                          Selesai
+                          {course.completedChapters}/{course.totalChapters}{' '}
+                          Sub-Chapter Selesai
                         </span>
                       </div>
 
@@ -586,7 +587,13 @@ export default function BimLearningProgress({
                     className="group relative rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 flex-shrink-0 w-[280px] md:w-auto aspect-[4/5]"
                   >
                     {/* Violet gradient base */}
-                    <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #4c1d95, #6d28d9, #7c3aed)' }} />
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        background:
+                          'linear-gradient(135deg, #4c1d95, #6d28d9, #7c3aed)',
+                      }}
+                    />
 
                     {/* Optional background image */}
                     {qv.image && (
@@ -644,9 +651,15 @@ export default function BimLearningProgress({
                       <div className="flex items-center gap-1.5 bg-white/10 px-2 py-1 rounded-full backdrop-blur-sm w-fit">
                         <Calendar className="w-3 h-3 text-white/70" />
                         <span className="text-xs text-white/70 font-medium">
-                          {new Date(qv.startDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                          {new Date(qv.startDate).toLocaleDateString('id-ID', {
+                            day: 'numeric',
+                            month: 'short',
+                          })}
                           {' – '}
-                          {new Date(qv.endDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                          {new Date(qv.endDate).toLocaleDateString('id-ID', {
+                            day: 'numeric',
+                            month: 'short',
+                          })}
                         </span>
                       </div>
                     </div>
@@ -722,7 +735,12 @@ export default function BimLearningProgress({
                       sizes="(max-width: 768px) 280px, (max-width: 1200px) 50vw, 33vw"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #ea580c, #dc2626)' }}>
+                    <div
+                      className="w-full h-full flex items-center justify-center"
+                      style={{
+                        background: 'linear-gradient(135deg, #ea580c, #dc2626)',
+                      }}
+                    >
                       <Target className="w-16 h-16 text-white/20" />
                     </div>
                   )}
@@ -743,7 +761,9 @@ export default function BimLearningProgress({
                     {tryout.score && tryout.score > 0 && (
                       <div className="bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-1 flex items-center gap-1 border border-white/50">
                         <Target className="w-3 h-3 text-orange-500" />
-                        <span className="text-xs font-black text-orange-500">{tryout.score}</span>
+                        <span className="text-xs font-black text-orange-500">
+                          {tryout.score}
+                        </span>
                       </div>
                     )}
                   </div>
@@ -755,7 +775,9 @@ export default function BimLearningProgress({
                     </h3>
                     <div className="flex items-center gap-1.5 bg-white/10 px-2 py-1 rounded-full backdrop-blur-sm w-fit">
                       <Target className="w-3 h-3 text-white/80" />
-                      <span className="text-xs text-white/80 font-medium">{tryout.totalQuestions} soal</span>
+                      <span className="text-xs text-white/80 font-medium">
+                        {tryout.totalQuestions} soal
+                      </span>
                     </div>
                   </div>
                 </Link>
@@ -817,9 +839,13 @@ export default function BimLearningProgress({
             ) : activeTab === 'live' ? (
               <BimLive />
             ) : activeTab === 'quiz' ? (
-              <><BimArena /> Quiz</>
+              <>
+                <BimArena /> Quiz
+              </>
             ) : (
-              <><BimArena /> Try Out</>
+              <>
+                <BimArena /> Try Out
+              </>
             )}
             <Target className="w-4 h-4" />
           </Link>

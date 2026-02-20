@@ -4,8 +4,7 @@ import { cn } from '@/lib/utils';
 import React from 'react';
 import { useWebsiteSubCategory } from '../provider/provider-website-category';
 
-interface PulsatingButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface PulsatingButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   pulseColor?: string;
   duration?: string;
 }

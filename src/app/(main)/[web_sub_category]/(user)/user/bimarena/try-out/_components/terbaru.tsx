@@ -3,17 +3,17 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
-import {
-  BookOpen,
-  Clock,
-  Layers,
-  Play,
-  Zap,
-} from 'lucide-react';
-import { useMemo, useEffect, useState } from 'react';
+import { BookOpen, Clock, Layers, Play, Zap } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
 import CardTryOut, { CardTryoutProps } from './ui/card-tryout';
 
-export default function Terbaru({ id, onCountReady }: { id: string; onCountReady?: (count: number) => void }) {
+export default function Terbaru({
+  id,
+  onCountReady,
+}: {
+  id: string;
+  onCountReady?: (count: number) => void;
+}) {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -44,11 +44,26 @@ export default function Terbaru({ id, onCountReady }: { id: string; onCountReady
   const overview = useMemo(() => {
     if (!cards?.length) return null;
     const totalQuestions = cards.reduce((sum, c) => {
-      return sum + (c.TryoutSession?.reduce((s: number, sess: any) => s + (sess._count?.TryoutQuestion || 0), 0) || 0);
+      return (
+        sum +
+        (c.TryoutSession?.reduce(
+          (s: number, sess: any) => s + (sess._count?.TryoutQuestion || 0),
+          0,
+        ) || 0)
+      );
     }, 0);
-    const totalSubtests = cards.reduce((sum, c) => sum + (c.TryoutSession?.length || 0), 0);
+    const totalSubtests = cards.reduce(
+      (sum, c) => sum + (c.TryoutSession?.length || 0),
+      0,
+    );
     const totalDuration = cards.reduce((sum, c) => {
-      return sum + (c.TryoutSession?.reduce((s: number, sess: any) => s + (sess.duration || 0), 0) || 0);
+      return (
+        sum +
+        (c.TryoutSession?.reduce(
+          (s: number, sess: any) => s + (sess.duration || 0),
+          0,
+        ) || 0)
+      );
     }, 0);
     const registered = cards.filter((c) => c.isRegistered).length;
     return { totalQuestions, totalSubtests, totalDuration, registered };
@@ -66,8 +81,12 @@ export default function Terbaru({ id, onCountReady }: { id: string; onCountReady
           <Play className="w-4 h-4 text-emerald-600" />
         </div>
         <div>
-          <h3 className="text-base font-black text-slate-800">Sedang Berlangsung</h3>
-          <p className="text-xs text-slate-400 font-medium">Try out yang bisa kamu kerjakan sekarang</p>
+          <h3 className="text-base font-black text-slate-800">
+            Sedang Berlangsung
+          </h3>
+          <p className="text-xs text-slate-400 font-medium">
+            Try out yang bisa kamu kerjakan sekarang
+          </p>
         </div>
         {!isLoading && cards && cards.length > 0 && (
           <Badge className="ml-auto bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px] font-bold gap-1 animate-pulse">
@@ -79,23 +98,34 @@ export default function Terbaru({ id, onCountReady }: { id: string; onCountReady
 
       {/* Quick overview banner */}
       {!isLoading && overview && cards.length > 0 && (
-        <div className="mb-4 flex items-center gap-3 overflow-x-auto py-2" style={{ scrollbarWidth: 'none' }}>
+        <div
+          className="mb-4 flex items-center gap-3 overflow-x-auto py-2"
+          style={{ scrollbarWidth: 'none' }}
+        >
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 flex-shrink-0">
             <BookOpen className="w-3 h-3 text-emerald-500" />
-            <span className="text-[10px] font-bold text-emerald-700">{overview.totalQuestions} soal</span>
+            <span className="text-[10px] font-bold text-emerald-700">
+              {overview.totalQuestions} soal
+            </span>
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 flex-shrink-0">
             <Layers className="w-3 h-3 text-blue-500" />
-            <span className="text-[10px] font-bold text-blue-700">{overview.totalSubtests} subtes</span>
+            <span className="text-[10px] font-bold text-blue-700">
+              {overview.totalSubtests} subtes
+            </span>
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-50 border border-purple-100 flex-shrink-0">
             <Clock className="w-3 h-3 text-purple-500" />
-            <span className="text-[10px] font-bold text-purple-700">{overview.totalDuration} menit</span>
+            <span className="text-[10px] font-bold text-purple-700">
+              {overview.totalDuration} menit
+            </span>
           </div>
           {overview.registered > 0 && (
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-100 flex-shrink-0">
               <Zap className="w-3 h-3 text-amber-500" />
-              <span className="text-[10px] font-bold text-amber-700">{overview.registered} terdaftar</span>
+              <span className="text-[10px] font-bold text-amber-700">
+                {overview.registered} terdaftar
+              </span>
             </div>
           )}
         </div>
@@ -120,9 +150,12 @@ export default function Terbaru({ id, onCountReady }: { id: string; onCountReady
           <div className="w-20 h-20 rounded-3xl bg-emerald-50 flex items-center justify-center mb-4">
             <Play className="w-10 h-10 text-emerald-300" />
           </div>
-          <h4 className="text-base font-bold text-slate-700 mb-1">Tidak ada try out berlangsung</h4>
+          <h4 className="text-base font-bold text-slate-700 mb-1">
+            Tidak ada try out berlangsung
+          </h4>
           <p className="text-sm text-slate-400 max-w-xs">
-            Belum ada try out yang aktif saat ini. Cek tab &quot;Akan Datang&quot; untuk try out berikutnya
+            Belum ada try out yang aktif saat ini. Cek tab &quot;Akan
+            Datang&quot; untuk try out berikutnya
           </p>
         </div>
       )}

@@ -3,7 +3,7 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -680,7 +680,10 @@ export default function ModulPembelajaranSection() {
                             className="w-full h-full flex items-center justify-center"
                             style={{ backgroundColor: `${mainColor}20` }}
                           >
-                            <BookOpenIcon className="w-12 h-12" style={{ color: mainColor }} />
+                            <BookOpenIcon
+                              className="w-12 h-12"
+                              style={{ color: mainColor }}
+                            />
                           </div>
                         )}
                         {/* Progress badge overlay */}
@@ -689,7 +692,11 @@ export default function ModulPembelajaranSection() {
                             className="px-2.5 py-1 rounded-full text-xs font-black text-white shadow"
                             style={{ backgroundColor: mainColor }}
                           >
-                            {Math.min(100, Math.round(category.percentageProgress || 0))}%
+                            {Math.min(
+                              100,
+                              Math.round(category.percentageProgress || 0),
+                            )}
+                            %
                           </div>
                         </div>
                         {/* Status badge overlay */}
@@ -708,7 +715,8 @@ export default function ModulPembelajaranSection() {
                           <div className="flex justify-between items-center text-xs">
                             <span className="text-gray-500">Progress</span>
                             <span className="font-bold text-gray-700">
-                              {category.completedChapters}/{category.totalChapters} Sub Chapter
+                              {category.completedChapters}/
+                              {category.totalChapters} Sub Chapter
                             </span>
                           </div>
                           <Progress
@@ -974,8 +982,8 @@ export default function ModulPembelajaranSection() {
                                         <div className="flex items-center gap-4 text-sm text-gray-600">
                                           <span className="font-semibold">
                                             {completedInChapter}/
-                                            {chapterSubChapters.length} Sub-Chapter
-                                            Selesai
+                                            {chapterSubChapters.length}{' '}
+                                            Sub-Chapter Selesai
                                           </span>
                                           <span
                                             className="font-bold"

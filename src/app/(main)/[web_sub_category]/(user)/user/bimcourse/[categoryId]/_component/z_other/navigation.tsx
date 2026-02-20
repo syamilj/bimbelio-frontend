@@ -94,7 +94,9 @@ const NavigationButtons = () => {
       return false;
     }
 
-    const result = await saveProgress({ payload: { subCourseId: CourseData.id } });
+    const result = await saveProgress({
+      payload: { subCourseId: CourseData.id },
+    });
     if (!result || result.status >= 400) {
       return false;
     }

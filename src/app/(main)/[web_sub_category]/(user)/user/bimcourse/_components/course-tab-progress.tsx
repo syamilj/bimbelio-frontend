@@ -1,11 +1,11 @@
 'use client';
 
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { useParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { BookOpen, ChevronRight, Play, SkipForward } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 interface CourseCategory {
@@ -106,7 +106,9 @@ export default function CourseTabProgress({ onCountReady }: Props) {
   const params = useParams();
   const web = (params?.web_sub_category as string) || '';
 
-  const { data, isLoading } = useGet<CourseCategory[]>('/course/getCategoryForCard');
+  const { data, isLoading } = useGet<CourseCategory[]>(
+    '/course/getCategoryForCard',
+  );
 
   const items = data ?? [];
   const inProgress = items.filter((i) => getStatus(i) === 'Berlangsung');
@@ -126,7 +128,10 @@ export default function CourseTabProgress({ onCountReady }: Props) {
     return (
       <div className="p-6 space-y-3">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="flex gap-4 animate-pulse">
+          <div
+            key={i}
+            className="flex gap-4 animate-pulse"
+          >
             <div className="w-24 h-16 rounded-2xl bg-slate-100 flex-shrink-0" />
             <div className="flex-1 space-y-2 py-1">
               <div className="h-3 w-16 bg-slate-100 rounded-full" />
@@ -145,8 +150,12 @@ export default function CourseTabProgress({ onCountReady }: Props) {
         <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-4">
           <BookOpen className="w-8 h-8 text-blue-400" />
         </div>
-        <p className="font-bold text-slate-700 text-base mb-1">Belum ada modul aktif</p>
-        <p className="text-sm text-slate-500">Mulai belajar dari tab Semua Modul.</p>
+        <p className="font-bold text-slate-700 text-base mb-1">
+          Belum ada modul aktif
+        </p>
+        <p className="text-sm text-slate-500">
+          Mulai belajar dari tab Semua Modul.
+        </p>
       </div>
     );
   }
@@ -157,14 +166,20 @@ export default function CourseTabProgress({ onCountReady }: Props) {
         <section>
           <div className="flex items-center gap-2 px-5 pt-5 pb-3">
             <div className="w-1 h-5 rounded-full bg-blue-500" />
-            <h3 className="font-black text-slate-800 text-sm">Sedang Belajar</h3>
+            <h3 className="font-black text-slate-800 text-sm">
+              Sedang Belajar
+            </h3>
             <span className="text-[11px] font-bold bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">
               {inProgress.length}
             </span>
           </div>
           <div className="divide-y divide-slate-100">
             {inProgress.map((item) => (
-              <CourseCard key={item.id} item={item} web={web} />
+              <CourseCard
+                key={item.id}
+                item={item}
+                web={web}
+              />
             ))}
           </div>
         </section>
@@ -180,7 +195,11 @@ export default function CourseTabProgress({ onCountReady }: Props) {
           </div>
           <div className="divide-y divide-slate-100">
             {notStarted.map((item) => (
-              <CourseCard key={item.id} item={item} web={web} />
+              <CourseCard
+                key={item.id}
+                item={item}
+                web={web}
+              />
             ))}
           </div>
         </section>

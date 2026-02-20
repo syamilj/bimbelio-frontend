@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 
 const CARD_META = [
   { icon: FileText, color: '#6366f1', bg: '#eef2ff' },
-  { icon: Tag,      color: '#0891b2', bg: '#ecfeff' },
-  { icon: Crown,    color: '#d97706', bg: '#fffbeb' },
+  { icon: Tag, color: '#0891b2', bg: '#ecfeff' },
+  { icon: Crown, color: '#d97706', bg: '#fffbeb' },
   { icon: BookOpen, color: '#059669', bg: '#d1fae5' },
 ];
 
@@ -20,13 +20,18 @@ export default function DocumentInfo() {
     setLoading(false);
   };
 
-  useEffect(() => { fetchDocumentInfo(); }, []);
+  useEffect(() => {
+    fetchDocumentInfo();
+  }, []);
 
   if (loading) {
     return (
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 w-full">
         {Array.from({ length: 4 }).map((_, i) => (
-          <Skeleton key={i} className="h-24 rounded-2xl" />
+          <Skeleton
+            key={i}
+            className="h-24 rounded-2xl"
+          />
         ))}
       </div>
     );
@@ -48,7 +53,10 @@ export default function DocumentInfo() {
               className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
               style={{ backgroundColor: meta.bg }}
             >
-              <Icon className="w-5 h-5" style={{ color: meta.color }} />
+              <Icon
+                className="w-5 h-5"
+                style={{ color: meta.color }}
+              />
             </div>
             <div>
               <p className="text-2xl font-black text-gray-900 leading-none">

@@ -16,7 +16,6 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
-import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { format } from 'date-fns';
@@ -97,7 +96,8 @@ export default function BimPerformanceChart({
     if (!isSNBT) return progressData;
     return progressData.map((p) => ({
       ...p,
-      score: p.subtestCount > 1 ? Math.round(p.score / p.subtestCount) : p.score,
+      score:
+        p.subtestCount > 1 ? Math.round(p.score / p.subtestCount) : p.score,
     }));
   }, [progressData, isSNBT]);
 
@@ -122,7 +122,8 @@ export default function BimPerformanceChart({
     const trend = latest - prev;
     const totalBenar = filteredData.reduce((a, b) => a + b.benar, 0);
     const totalSoal = filteredData.reduce((a, b) => a + b.totalQuestions, 0);
-    const accuracy = totalSoal > 0 ? Math.round((totalBenar / totalSoal) * 100) : 0;
+    const accuracy =
+      totalSoal > 0 ? Math.round((totalBenar / totalSoal) * 100) : 0;
     return { max, min, avg, latest, trend, count: scores.length, accuracy };
   }, [filteredData]);
 
@@ -194,26 +195,39 @@ export default function BimPerformanceChart({
 
         {/* Score summary badges */}
         {stats && (
-          <div className="flex gap-2 mt-3 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+          <div
+            className="flex gap-2 mt-3 overflow-x-auto pb-1"
+            style={{ scrollbarWidth: 'none' }}
+          >
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 flex-shrink-0">
               <TrendingUp className="w-3 h-3 text-emerald-500" />
-              <span className="text-[10px] font-bold text-emerald-700">Tertinggi: {stats.max}</span>
+              <span className="text-[10px] font-bold text-emerald-700">
+                Tertinggi: {stats.max}
+              </span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 flex-shrink-0">
               <BarChart3 className="w-3 h-3 text-blue-500" />
-              <span className="text-[10px] font-bold text-blue-700">Rata-rata: {stats.avg}</span>
+              <span className="text-[10px] font-bold text-blue-700">
+                Rata-rata: {stats.avg}
+              </span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-violet-50 border border-violet-100 flex-shrink-0">
               <Target className="w-3 h-3 text-violet-500" />
-              <span className="text-[10px] font-bold text-violet-700">Akurasi: {stats.accuracy}%</span>
+              <span className="text-[10px] font-bold text-violet-700">
+                Akurasi: {stats.accuracy}%
+              </span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-100 flex-shrink-0">
               <Star className="w-3 h-3 text-amber-500" />
-              <span className="text-[10px] font-bold text-amber-700">Terakhir: {stats.latest}</span>
+              <span className="text-[10px] font-bold text-amber-700">
+                Terakhir: {stats.latest}
+              </span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 border border-red-100 flex-shrink-0">
               <TrendingDown className="w-3 h-3 text-red-400" />
-              <span className="text-[10px] font-bold text-red-600">Terendah: {stats.min}</span>
+              <span className="text-[10px] font-bold text-red-600">
+                Terendah: {stats.min}
+              </span>
             </div>
           </div>
         )}
@@ -238,18 +252,38 @@ export default function BimPerformanceChart({
               }}
               className="h-[240px] md:h-[280px] w-full"
             >
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer
+                width="100%"
+                height="100%"
+              >
                 <AreaChart
                   data={chartData}
                   margin={{ top: 20, right: 35, left: -10, bottom: 10 }}
                 >
                   <defs>
-                    <linearGradient id="bimboardScoreGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor={mainColor} stopOpacity={0.3} />
-                      <stop offset="95%" stopColor={mainColor} stopOpacity={0} />
+                    <linearGradient
+                      id="bimboardScoreGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop
+                        offset="5%"
+                        stopColor={mainColor}
+                        stopOpacity={0.3}
+                      />
+                      <stop
+                        offset="95%"
+                        stopColor={mainColor}
+                        stopOpacity={0}
+                      />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke="#E5E7EB"
+                  />
                   <XAxis
                     dataKey="shortName"
                     tick={{ fontSize: 10, fill: '#6B7280' }}
@@ -280,31 +314,53 @@ export default function BimPerformanceChart({
                     content={
                       <ChartTooltipContent
                         labelFormatter={(_, payload) => {
-                          const p = payload?.[0]?.payload as ProgressItem & { shortName: string };
+                          const p = payload?.[0]?.payload as ProgressItem & {
+                            shortName: string;
+                          };
                           return p?.name || '';
                         }}
                         formatter={(value, name, item) => {
                           if (name === 'score') {
                             return (
                               <>
-                                <div className="h-2.5 w-2.5 shrink-0 rounded-[2px]" style={{ backgroundColor: mainColor }} />
-                                <span className="text-muted-foreground">Skor</span>
-                                <span className="ml-auto font-mono font-medium tabular-nums">{value}</span>
+                                <div
+                                  className="h-2.5 w-2.5 shrink-0 rounded-[2px]"
+                                  style={{ backgroundColor: mainColor }}
+                                />
+                                <span className="text-muted-foreground">
+                                  Skor
+                                </span>
+                                <span className="ml-auto font-mono font-medium tabular-nums">
+                                  {value}
+                                </span>
                               </>
                             );
                           }
                           if (name === 'benar') {
-                            const p = (item as { payload: ProgressItem })?.payload;
+                            const p = (item as { payload: ProgressItem })
+                              ?.payload;
                             return (
                               <>
                                 <div className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-emerald-500" />
-                                <span className="text-muted-foreground">B/S/K</span>
+                                <span className="text-muted-foreground">
+                                  B/S/K
+                                </span>
                                 <span className="ml-auto font-mono font-medium tabular-nums">
-                                  <span className="text-emerald-600">{p?.benar ?? value}</span>
-                                  <span className="text-muted-foreground">/</span>
-                                  <span className="text-red-500">{p?.salah ?? 0}</span>
-                                  <span className="text-muted-foreground">/</span>
-                                  <span className="text-gray-400">{p?.kosong ?? 0}</span>
+                                  <span className="text-emerald-600">
+                                    {p?.benar ?? value}
+                                  </span>
+                                  <span className="text-muted-foreground">
+                                    /
+                                  </span>
+                                  <span className="text-red-500">
+                                    {p?.salah ?? 0}
+                                  </span>
+                                  <span className="text-muted-foreground">
+                                    /
+                                  </span>
+                                  <span className="text-gray-400">
+                                    {p?.kosong ?? 0}
+                                  </span>
                                 </span>
                               </>
                             );
@@ -321,8 +377,18 @@ export default function BimPerformanceChart({
                     stroke={mainColor}
                     strokeWidth={3}
                     fill="url(#bimboardScoreGradient)"
-                    dot={{ fill: mainColor, r: 4, strokeWidth: 2, stroke: '#fff' }}
-                    activeDot={{ r: 6, fill: mainColor, stroke: '#fff', strokeWidth: 2 }}
+                    dot={{
+                      fill: mainColor,
+                      r: 4,
+                      strokeWidth: 2,
+                      stroke: '#fff',
+                    }}
+                    activeDot={{
+                      r: 6,
+                      fill: mainColor,
+                      stroke: '#fff',
+                      strokeWidth: 2,
+                    }}
                   >
                     <LabelList
                       position="top"
@@ -337,8 +403,18 @@ export default function BimPerformanceChart({
                     stroke="#10B981"
                     strokeWidth={2}
                     strokeDasharray="5 3"
-                    dot={{ fill: '#10B981', r: 3, strokeWidth: 2, stroke: '#fff' }}
-                    activeDot={{ r: 5, fill: '#10B981', stroke: '#fff', strokeWidth: 2 }}
+                    dot={{
+                      fill: '#10B981',
+                      r: 3,
+                      strokeWidth: 2,
+                      stroke: '#fff',
+                    }}
+                    activeDot={{
+                      r: 5,
+                      fill: '#10B981',
+                      stroke: '#fff',
+                      strokeWidth: 2,
+                    }}
                   >
                     <LabelList
                       position="bottom"
@@ -420,7 +496,9 @@ export default function BimPerformanceChart({
                             <div className="flex items-center gap-2 flex-1">
                               <div
                                 className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-                                  item.rank <= 3 ? 'bg-yellow-100' : 'bg-blue-50'
+                                  item.rank <= 3
+                                    ? 'bg-yellow-100'
+                                    : 'bg-blue-50'
                                 }`}
                               >
                                 <Trophy

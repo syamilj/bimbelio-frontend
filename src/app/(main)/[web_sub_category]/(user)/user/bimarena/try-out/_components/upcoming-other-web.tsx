@@ -1,20 +1,16 @@
-import CardNotFound from '@/app/(main)/[web_sub_category]/(user)/user/_components/card-not-found';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import {
   ArrowRight,
-  BookOpen,
-  ChevronRight,
   Globe,
   GraduationCap,
   Layers,
   Sparkles,
   Star,
 } from 'lucide-react';
-import { useMemo, useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import CardTryOut, { CardTryoutProps } from './ui/card-tryout';
 
 interface GroupedTryout {
@@ -27,7 +23,13 @@ interface GroupedTryout {
   tryouts: CardTryoutProps[];
 }
 
-export default function UpcomingOtherWeb({ id, onCountReady }: { id: string; onCountReady?: (count: number) => void }) {
+export default function UpcomingOtherWeb({
+  id,
+  onCountReady,
+}: {
+  id: string;
+  onCountReady?: (count: number) => void;
+}) {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -86,10 +88,11 @@ export default function UpcomingOtherWeb({ id, onCountReady }: { id: string; onC
       const group = map.get(key)!;
       group.count++;
       group.tryouts.push(card);
-      const questions = card.TryoutSession?.reduce(
-        (sum: number, s: any) => sum + (s._count?.TryoutQuestion || 0),
-        0,
-      ) || 0;
+      const questions =
+        card.TryoutSession?.reduce(
+          (sum: number, s: any) => sum + (s._count?.TryoutQuestion || 0),
+          0,
+        ) || 0;
       group.totalQuestions += questions;
       group.totalSubtests += card.TryoutSession?.length || 0;
     }
@@ -121,10 +124,14 @@ export default function UpcomingOtherWeb({ id, onCountReady }: { id: string; onC
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <h3 className="text-base font-black text-slate-800">Explore Programs</h3>
+            <h3 className="text-base font-black text-slate-800">
+              Explore Programs
+            </h3>
             <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-100 to-orange-100 border border-amber-200/60">
               <Sparkles className="w-3 h-3 text-amber-500" />
-              <span className="text-[9px] font-black text-amber-700 tracking-wide">CROSS-PROGRAM</span>
+              <span className="text-[9px] font-black text-amber-700 tracking-wide">
+                CROSS-PROGRAM
+              </span>
             </div>
           </div>
           <p className="text-xs text-slate-400 font-medium">
@@ -136,7 +143,10 @@ export default function UpcomingOtherWeb({ id, onCountReady }: { id: string; onC
       {/* Program Chips — filter by program */}
       {!isLoading && grouped.length > 0 && (
         <div className="mb-4">
-          <div className="flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+          <div
+            className="flex gap-2 overflow-x-auto pb-1"
+            style={{ scrollbarWidth: 'none' }}
+          >
             {/* All chip */}
             <button
               onClick={() => setActiveProgram(null)}
@@ -148,18 +158,24 @@ export default function UpcomingOtherWeb({ id, onCountReady }: { id: string; onC
             >
               <Layers className="w-3.5 h-3.5" />
               Semua
-              <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none ${
-                !activeProgram ? 'bg-white/20' : 'bg-slate-100'
-              }`}>
+              <span
+                className={`text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none ${
+                  !activeProgram ? 'bg-white/20' : 'bg-slate-100'
+                }`}
+              >
                 {cards.length}
               </span>
             </button>
             {grouped.map((group) => (
               <button
                 key={group.webSubName}
-                onClick={() => setActiveProgram(
-                  activeProgram === group.webSubName ? null : group.webSubName,
-                )}
+                onClick={() =>
+                  setActiveProgram(
+                    activeProgram === group.webSubName
+                      ? null
+                      : group.webSubName,
+                  )
+                }
                 className={`flex items-center gap-1.5 px-3.5 py-2 rounded-3xl text-xs font-bold transition-all flex-shrink-0 border ${
                   activeProgram === group.webSubName
                     ? 'text-white shadow-md border-transparent'
@@ -177,9 +193,7 @@ export default function UpcomingOtherWeb({ id, onCountReady }: { id: string; onC
                 {group.webSubName}
                 <span
                   className={`text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none ${
-                    activeProgram === group.webSubName
-                      ? 'bg-white/25'
-                      : ''
+                    activeProgram === group.webSubName ? 'bg-white/25' : ''
                   }`}
                   style={
                     activeProgram !== group.webSubName
@@ -200,27 +214,39 @@ export default function UpcomingOtherWeb({ id, onCountReady }: { id: string; onC
         <div className="mb-5 p-3 rounded-3xl bg-gradient-to-r from-amber-50/80 via-orange-50/50 to-rose-50/80 border border-amber-100/60">
           <div className="flex items-center justify-around">
             <div className="text-center">
-              <p className="text-lg font-black text-slate-800">{grouped.length}</p>
-              <p className="text-[9px] font-bold text-amber-600/80 uppercase tracking-wider">Program</p>
+              <p className="text-lg font-black text-slate-800">
+                {grouped.length}
+              </p>
+              <p className="text-[9px] font-bold text-amber-600/80 uppercase tracking-wider">
+                Program
+              </p>
             </div>
             <div className="w-px h-8 bg-amber-200/50" />
             <div className="text-center">
-              <p className="text-lg font-black text-slate-800">{cards.length}</p>
-              <p className="text-[9px] font-bold text-orange-600/80 uppercase tracking-wider">Try Out</p>
+              <p className="text-lg font-black text-slate-800">
+                {cards.length}
+              </p>
+              <p className="text-[9px] font-bold text-orange-600/80 uppercase tracking-wider">
+                Try Out
+              </p>
             </div>
             <div className="w-px h-8 bg-amber-200/50" />
             <div className="text-center">
               <p className="text-lg font-black text-slate-800">
                 {grouped.reduce((a, g) => a + g.totalSubtests, 0)}
               </p>
-              <p className="text-[9px] font-bold text-rose-600/80 uppercase tracking-wider">Subtes</p>
+              <p className="text-[9px] font-bold text-rose-600/80 uppercase tracking-wider">
+                Subtes
+              </p>
             </div>
             <div className="w-px h-8 bg-amber-200/50" />
             <div className="text-center">
               <p className="text-lg font-black text-slate-800">
                 {grouped.reduce((a, g) => a + g.totalQuestions, 0)}
               </p>
-              <p className="text-[9px] font-bold text-purple-600/80 uppercase tracking-wider">Soal</p>
+              <p className="text-[9px] font-bold text-purple-600/80 uppercase tracking-wider">
+                Soal
+              </p>
             </div>
           </div>
         </div>
@@ -252,7 +278,8 @@ export default function UpcomingOtherWeb({ id, onCountReady }: { id: string; onC
                     {group.webSubName}
                   </span>
                   <p className="text-[10px] text-slate-400 font-medium">
-                    {group.count} try out · {group.totalSubtests} subtes · {group.totalQuestions} soal
+                    {group.count} try out · {group.totalSubtests} subtes ·{' '}
+                    {group.totalQuestions} soal
                   </p>
                 </div>
                 <ArrowRight
@@ -289,7 +316,9 @@ export default function UpcomingOtherWeb({ id, onCountReady }: { id: string; onC
               <Star className="w-3 h-3 text-white" />
             </div>
           </div>
-          <h4 className="text-base font-black text-slate-700 mb-1">Belum ada dari program lain</h4>
+          <h4 className="text-base font-black text-slate-700 mb-1">
+            Belum ada dari program lain
+          </h4>
           <p className="text-sm text-slate-400 max-w-xs">
             Try out dari program studi lain akan muncul di sini saat tersedia
           </p>
@@ -301,7 +330,10 @@ export default function UpcomingOtherWeb({ id, onCountReady }: { id: string; onC
           {/* Skeleton chips */}
           <div className="flex gap-2">
             {Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton key={i} className="h-10 w-24 rounded-3xl flex-shrink-0" />
+              <Skeleton
+                key={i}
+                className="h-10 w-24 rounded-3xl flex-shrink-0"
+              />
             ))}
           </div>
           <Skeleton className="h-16 w-full rounded-3xl" />

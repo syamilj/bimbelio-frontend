@@ -1,7 +1,14 @@
 'use client';
 
+import DialogAIMatch from '@/app/(main)/[web_sub_category]/(admin)/admin/tryout/_component/DialogAIMatch';
 import { useEditTryoutContext } from '@/app/(main)/[web_sub_category]/(admin)/admin/tryout/_component/provider-edit-tryout';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { InputImage } from '@/components/ui/input-image';
 import {
   Select,
@@ -16,7 +23,6 @@ import axiosInstance from '@/lib/axios/axiosInstance';
 import { response, responseError } from '@/lib/response';
 import { cn } from '@/lib/utils';
 import { storage } from '@/supabaseClient';
-import DialogAIMatch from '@/app/(main)/[web_sub_category]/(admin)/admin/tryout/_component/DialogAIMatch';
 import { Plus, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ReactNode, useState } from 'react';
@@ -106,7 +112,9 @@ const TryoutOption = () => {
       <div className="shrink-0 px-5 pt-5 pb-4 border-b border-gray-100 flex items-center justify-between">
         <div>
           <h2 className="text-sm font-semibold text-gray-800">Detail Tryout</h2>
-          <p className="text-xs text-gray-400 mt-0.5">Konfigurasi dasar tryout</p>
+          <p className="text-xs text-gray-400 mt-0.5">
+            Konfigurasi dasar tryout
+          </p>
         </div>
         {currentIndexEdit !== null && (
           <button
@@ -125,21 +133,27 @@ const TryoutOption = () => {
       <div className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-5">
         {/* Title */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Judul Tryout</label>
+          <label className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+            Judul Tryout
+          </label>
           <input
             type="text"
             placeholder="Masukkan judul tryout..."
             className="h-9 w-full rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
             required
             value={tryout?.title ?? ''}
-            onChange={(e) => setTryout((prev) => ({ ...prev, title: e.target.value }))}
+            onChange={(e) =>
+              setTryout((prev) => ({ ...prev, title: e.target.value }))
+            }
           />
         </div>
 
         {/* Status + Instagram */}
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1.5">
-            <label className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Status</label>
+            <label className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+              Status
+            </label>
             <div className="relative bg-white rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">
               <input
                 type="text"
@@ -150,14 +164,23 @@ const TryoutOption = () => {
               <Select
                 value={tryout?.status ?? 'placeholder'}
                 onValueChange={(value) => {
-                  if (value) setTryout((prev) => ({ ...prev, status: value as 'PUBLIC' | 'PRIVATE' | 'DRAFT' }));
+                  if (value)
+                    setTryout((prev) => ({
+                      ...prev,
+                      status: value as 'PUBLIC' | 'PRIVATE' | 'DRAFT',
+                    }));
                 }}
               >
                 <SelectTrigger className="h-9 w-full rounded-lg border-none bg-transparent shadow-none outline-none text-sm px-3">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="placeholder" disabled>Pilih Status</SelectItem>
+                  <SelectItem
+                    value="placeholder"
+                    disabled
+                  >
+                    Pilih Status
+                  </SelectItem>
                   <SelectItem value="PUBLIC">PUBLIC</SelectItem>
                   <SelectItem value="PRIVATE">PRIVATE</SelectItem>
                   <SelectItem value="DRAFT">DRAFT</SelectItem>
@@ -167,21 +190,28 @@ const TryoutOption = () => {
           </div>
           <div className="flex flex-col gap-1.5">
             <label className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
-              Instagram <span className="font-normal normal-case text-gray-400">(opsional)</span>
+              Instagram{' '}
+              <span className="font-normal normal-case text-gray-400">
+                (opsional)
+              </span>
             </label>
             <input
               type="text"
               placeholder="Link postingan..."
               className="h-9 w-full rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
               value={tryout?.instagram ?? ''}
-              onChange={(e) => setTryout((prev) => ({ ...prev, instagram: e.target.value }))}
+              onChange={(e) =>
+                setTryout((prev) => ({ ...prev, instagram: e.target.value }))
+              }
             />
           </div>
         </div>
 
         {/* Thumbnail */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Thumbnail</label>
+          <label className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+            Thumbnail
+          </label>
           <InputImage
             preview={
               tryout?.image && tryout.image !== ''
@@ -192,7 +222,9 @@ const TryoutOption = () => {
               const imageNow = tryout?.image;
               if (!image) return;
               const filename = `tryout-${crypto.randomUUID()}`;
-              const upload = await storage.from('img').upload(`tryout/${filename}`, image);
+              const upload = await storage
+                .from('img')
+                .upload(`tryout/${filename}`, image);
               if (upload?.error?.message === 'The resource already exists') {
                 await storage.from('img').update(`tryout/${filename}`, image);
               }
@@ -208,32 +240,68 @@ const TryoutOption = () => {
 
         {/* Timeline */}
         <div className="flex flex-col gap-3">
-          <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Timeline</p>
+          <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+            Timeline
+          </p>
           <div className="flex flex-col gap-1.5">
             <label className="text-xs text-gray-600 font-medium">Mulai</label>
             <div className="grid grid-cols-2 gap-2">
-              <input type="date" required value={startDate} onChange={(e) => setStartDate(e.target.value)}
-                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300" />
-              <input type="time" required value={startDateTime} onChange={(e) => setStartDateTime(e.target.value)}
-                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300" />
+              <input
+                type="date"
+                required
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+              />
+              <input
+                type="time"
+                required
+                value={startDateTime}
+                onChange={(e) => setStartDateTime(e.target.value)}
+                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+              />
             </div>
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs text-gray-600 font-medium">Berakhir</label>
+            <label className="text-xs text-gray-600 font-medium">
+              Berakhir
+            </label>
             <div className="grid grid-cols-2 gap-2">
-              <input type="date" required value={endDate} onChange={(e) => setEndDate(e.target.value)}
-                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300" />
-              <input type="time" required value={endDateTime} onChange={(e) => setEndDateTime(e.target.value)}
-                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300" />
+              <input
+                type="date"
+                required
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+              />
+              <input
+                type="time"
+                required
+                value={endDateTime}
+                onChange={(e) => setEndDateTime(e.target.value)}
+                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+              />
             </div>
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs text-gray-600 font-medium">Pembagian Hasil</label>
+            <label className="text-xs text-gray-600 font-medium">
+              Pembagian Hasil
+            </label>
             <div className="grid grid-cols-2 gap-2">
-              <input type="date" required value={resultDate} onChange={(e) => setResultDate(e.target.value)}
-                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300" />
-              <input type="time" required value={resultDateTime} onChange={(e) => setResultDateTime(e.target.value)}
-                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300" />
+              <input
+                type="date"
+                required
+                value={resultDate}
+                onChange={(e) => setResultDate(e.target.value)}
+                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+              />
+              <input
+                type="time"
+                required
+                value={resultDateTime}
+                onChange={(e) => setResultDateTime(e.target.value)}
+                className="h-9 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+              />
             </div>
           </div>
         </div>
@@ -243,9 +311,15 @@ const TryoutOption = () => {
         {/* Sessions */}
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Sesi Tryout</p>
+            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+              Sesi Tryout
+            </p>
             <div className="flex items-center gap-1.5">
-              <DialogAIMatch sessions={sessions} setSessions={setSessions} currentWebsubId={website_sub_category_id ?? ''}>
+              <DialogAIMatch
+                sessions={sessions}
+                setSessions={setSessions}
+                currentWebsubId={website_sub_category_id ?? ''}
+              >
                 <button
                   type="button"
                   title="AI otomatis cocokkan kategori dan bab materi untuk semua sesi"
@@ -270,7 +344,9 @@ const TryoutOption = () => {
           {sessions.length === 0 && (
             <div className="rounded-lg border border-dashed border-gray-200 bg-gray-50 py-6 flex flex-col items-center gap-1">
               <p className="text-sm text-gray-400">Belum ada sesi</p>
-              <p className="text-xs text-gray-300">Klik "Tambah Sesi" untuk mulai</p>
+              <p className="text-xs text-gray-300">
+                Klik "Tambah Sesi" untuk mulai
+              </p>
             </div>
           )}
 
@@ -285,7 +361,10 @@ const TryoutOption = () => {
                   onValueChange={(value) => {
                     const fixValue = parseInt(value) - 1;
                     const currentSessions = [...sessions];
-                    const [movedSession] = currentSessions.splice(sessionIndex, 1);
+                    const [movedSession] = currentSessions.splice(
+                      sessionIndex,
+                      1,
+                    );
                     currentSessions.splice(fixValue, 0, movedSession);
                     setSessions([...currentSessions]);
                   }}
@@ -295,7 +374,12 @@ const TryoutOption = () => {
                   </SelectTrigger>
                   <SelectContent>
                     {Array.from({ length: sessions.length }).map((_, index) => (
-                      <SelectItem key={index} value={`${index + 1}`}>{index + 1}</SelectItem>
+                      <SelectItem
+                        key={index}
+                        value={`${index + 1}`}
+                      >
+                        {index + 1}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -304,15 +388,23 @@ const TryoutOption = () => {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5 flex-wrap">
                   {item.subCategory ? (
-                    <span className="inline-flex items-center rounded-md bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-semibold px-2 py-0.5">{item.subCategory}</span>
+                    <span className="inline-flex items-center rounded-md bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-semibold px-2 py-0.5">
+                      {item.subCategory}
+                    </span>
                   ) : (
-                    <span className="text-xs text-gray-400">Belum dikonfig</span>
+                    <span className="text-xs text-gray-400">
+                      Belum dikonfig
+                    </span>
                   )}
                 </div>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-[11px] text-gray-500">{item.Questions?.length ?? 0} soal</span>
+                  <span className="text-[11px] text-gray-500">
+                    {item.Questions?.length ?? 0} soal
+                  </span>
                   <span className="text-[11px] text-gray-300">&middot;</span>
-                  <span className="text-[11px] text-gray-500">{item.duration || 0} mnt</span>
+                  <span className="text-[11px] text-gray-500">
+                    {item.duration || 0} mnt
+                  </span>
                 </div>
               </div>
 
@@ -321,7 +413,8 @@ const TryoutOption = () => {
                 onClick={() => {
                   setCurrentIndexEdit(sessionIndex);
                   setQuestionIndex(0);
-                  if (item.assessmentType) setAssesmentType(item.assessmentType);
+                  if (item.assessmentType)
+                    setAssesmentType(item.assessmentType);
                 }}
                 className="shrink-0 text-xs font-semibold text-blue-600 hover:text-blue-800 border border-blue-200 hover:border-blue-300 bg-blue-50 hover:bg-blue-100 rounded-lg px-3 py-1.5 transition-colors"
               >
@@ -333,7 +426,9 @@ const TryoutOption = () => {
           {/* Rest time */}
           <div className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white p-3">
             <div>
-              <p className="text-xs font-medium text-gray-700">Waktu Istirahat</p>
+              <p className="text-xs font-medium text-gray-700">
+                Waktu Istirahat
+              </p>
               <p className="text-[11px] text-gray-400">menit antar sesi</p>
             </div>
             <input
@@ -341,7 +436,12 @@ const TryoutOption = () => {
               placeholder="0"
               className="h-9 w-24 rounded-lg border border-gray-200 px-3 text-sm text-right outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
               value={tryout?.restTime ?? ''}
-              onChange={(e) => setTryout((prev) => ({ ...prev, restTime: parseInt(e.target.value) }))}
+              onChange={(e) =>
+                setTryout((prev) => ({
+                  ...prev,
+                  restTime: parseInt(e.target.value),
+                }))
+              }
             />
           </div>
         </div>
@@ -435,7 +535,6 @@ const DialogKunciJawaban = ({ children }: { children: ReactNode }) => {
           </p>
         </DialogHeader>
         <div className="flex flex-col gap-6">
-
           {data.map((session) => (
             <div
               key={session.number}

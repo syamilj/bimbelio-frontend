@@ -30,8 +30,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { cn, getInitials, getUniversityInitials } from '@/lib/utils';
-import { KEDINASAN_SUBTEST_ORDER, SNBT_SUBTEST_ORDER, getKedinasanThreshold, getSubtestLabel } from '@/lib/utils/subtest';
+import { cn, getUniversityInitials } from '@/lib/utils';
+import {
+  KEDINASAN_SUBTEST_ORDER,
+  SNBT_SUBTEST_ORDER,
+  getKedinasanThreshold,
+  getSubtestLabel,
+} from '@/lib/utils/subtest';
 import ExcelJS from 'exceljs'; // Tambahkan import ini
 import { ArrowUpDown, Info, Search, Trophy } from 'lucide-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
@@ -98,7 +103,9 @@ export function RankingTable() {
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const websiteSubCategoryId = websiteSubCategory?.id;
-  const isKedinasanWebsub = (websiteSubCategoryId ?? '').toLowerCase().includes('kedinasan');
+  const isKedinasanWebsub = (websiteSubCategoryId ?? '')
+    .toLowerCase()
+    .includes('kedinasan');
 
   // Sort sessionResult arrays by canonical subtest order when on snbt/kedinasan websub
   const sortSessionsBySnbtOrder = useCallback(
@@ -107,15 +114,23 @@ export function RankingTable() {
       if (id.includes('snbt')) {
         return [...sessions].sort(
           (a, b) =>
-            (SNBT_SUBTEST_ORDER.indexOf(a.subCategory as (typeof SNBT_SUBTEST_ORDER)[number]) + 1 || 999) -
-            (SNBT_SUBTEST_ORDER.indexOf(b.subCategory as (typeof SNBT_SUBTEST_ORDER)[number]) + 1 || 999),
+            (SNBT_SUBTEST_ORDER.indexOf(
+              a.subCategory as (typeof SNBT_SUBTEST_ORDER)[number],
+            ) + 1 || 999) -
+            (SNBT_SUBTEST_ORDER.indexOf(
+              b.subCategory as (typeof SNBT_SUBTEST_ORDER)[number],
+            ) + 1 || 999),
         );
       }
       if (id.includes('kedinasan')) {
         return [...sessions].sort(
           (a, b) =>
-            (KEDINASAN_SUBTEST_ORDER.indexOf(a.subCategory as (typeof KEDINASAN_SUBTEST_ORDER)[number]) + 1 || 999) -
-            (KEDINASAN_SUBTEST_ORDER.indexOf(b.subCategory as (typeof KEDINASAN_SUBTEST_ORDER)[number]) + 1 || 999),
+            (KEDINASAN_SUBTEST_ORDER.indexOf(
+              a.subCategory as (typeof KEDINASAN_SUBTEST_ORDER)[number],
+            ) + 1 || 999) -
+            (KEDINASAN_SUBTEST_ORDER.indexOf(
+              b.subCategory as (typeof KEDINASAN_SUBTEST_ORDER)[number],
+            ) + 1 || 999),
         );
       }
       return sessions;
@@ -199,7 +214,13 @@ export function RankingTable() {
       ...p,
       sessionResult: sortSessionsBySnbtOrder(p.sessionResult),
     }));
-  }, [RankingTryout?.rankingData, searchTerm, sortField, sortDirection, sortSessionsBySnbtOrder]);
+  }, [
+    RankingTryout?.rankingData,
+    searchTerm,
+    sortField,
+    sortDirection,
+    sortSessionsBySnbtOrder,
+  ]);
 
   // Pagination
   const paginatedData = useMemo(() => {
@@ -423,19 +444,20 @@ export function RankingTable() {
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {sortSessionsBySnbtOrder(
                     RankingTryout?.rankingData?.[0]?.sessionResult ?? [],
-                  ).map(
-                    (subCat) => (
-                      <div
-                        key={subCat.sessionId}
-                        className="text-xs"
-                      >
-                        <span className="font-semibold">
-                          {getSubtestLabel(subCat.subCategory, websiteSubCategoryId)}
-                        </span>{' '}
-                        = {subCat.subCategory}
-                      </div>
-                    ),
-                  )}
+                  ).map((subCat) => (
+                    <div
+                      key={subCat.sessionId}
+                      className="text-xs"
+                    >
+                      <span className="font-semibold">
+                        {getSubtestLabel(
+                          subCat.subCategory,
+                          websiteSubCategoryId,
+                        )}
+                      </span>{' '}
+                      = {subCat.subCategory}
+                    </div>
+                  ))}
                 </div>
               </div>
               <div className="overflow-x-auto">
@@ -608,12 +630,25 @@ export function RankingTable() {
                               <div className="space-y-1">
                                 <div className="font-medium text-xs md:text-sm text-gray-900 truncate">
                                   {participant.univStudyChoice ||
-                                    (isKedinasanWebsub ? 'Jurusan belum dipilih' : 'Jurusan belum dipilih')}
+                                    (isKedinasanWebsub
+                                      ? 'Jurusan belum dipilih'
+                                      : 'Jurusan belum dipilih')}
                                 </div>
                                 <div className="text-xs text-gray-500 truncate">
-                                  {participant.univChoice && participant.univChoice !== '-'
-                                    ? <span className="font-semibold">{getUniversityInitials(participant.univChoice)}</span>
-                                    : <span>{isKedinasanWebsub ? 'Institusi belum dipilih' : 'Universitas belum dipilih'}</span>}
+                                  {participant.univChoice &&
+                                  participant.univChoice !== '-' ? (
+                                    <span className="font-semibold">
+                                      {getUniversityInitials(
+                                        participant.univChoice,
+                                      )}
+                                    </span>
+                                  ) : (
+                                    <span>
+                                      {isKedinasanWebsub
+                                        ? 'Institusi belum dipilih'
+                                        : 'Universitas belum dipilih'}
+                                    </span>
+                                  )}
                                 </div>
                               </div>
                             </TableCell>
@@ -632,7 +667,6 @@ export function RankingTable() {
                                       : participant.maxScore}
                                   </span>
                                 </div>
-
                               </div>
                             </TableCell>
 
@@ -655,87 +689,116 @@ export function RankingTable() {
                             <TableCell className="text-center py-3 md:py-4">
                               <span className="inline-flex items-center justify-center px-2 h-6 md:h-7 rounded-full bg-violet-50 text-violet-700 font-bold text-xs md:text-sm">
                                 {isKedinasanWebsub
-                                  ? (participant.maxScore > 0
+                                  ? participant.maxScore > 0
                                     ? `${Math.round((participant.totalScore / participant.maxScore) * 100)}%`
-                                    : '-')
-                                  : (participant.totalQuestions > 0
+                                    : '-'
+                                  : participant.totalQuestions > 0
                                     ? `${Math.round((participant.benar / participant.totalQuestions) * 100)}%`
-                                    : '-')}
+                                    : '-'}
                               </span>
                             </TableCell>
 
                             {/* Ambang Batas cell - Kedinasan only */}
-                            {isKedinasanWebsub && (() => {
-                              const sessionsWithThreshold = participant.sessionResult?.filter(
-                                s => getKedinasanThreshold(s.subCategory) !== null
-                              ) ?? [];
-                              if (sessionsWithThreshold.length === 0) return (
-                                <TableCell className="text-center py-3 md:py-4">
-                                  <span className="text-gray-400 text-xs">-</span>
-                                </TableCell>
-                              );
-                              const allLolos = sessionsWithThreshold.every(
-                                s => s.totalScore >= (getKedinasanThreshold(s.subCategory) ?? 0)
-                              );
-                              return (
-                                <TableCell className="text-center py-3 md:py-4">
-                                  <span className={cn(
-                                    'inline-flex items-center justify-center px-2 h-6 md:h-7 rounded-full font-bold text-xs',
-                                    allLolos
-                                      ? 'bg-emerald-50 text-emerald-700'
-                                      : 'bg-red-50 text-red-600'
-                                  )}>
-                                    {allLolos ? 'Lolos' : 'Tidak Lolos'}
-                                  </span>
-                                </TableCell>
-                              );
-                            })()}
+                            {isKedinasanWebsub &&
+                              (() => {
+                                const sessionsWithThreshold =
+                                  participant.sessionResult?.filter(
+                                    (s) =>
+                                      getKedinasanThreshold(s.subCategory) !==
+                                      null,
+                                  ) ?? [];
+                                if (sessionsWithThreshold.length === 0)
+                                  return (
+                                    <TableCell className="text-center py-3 md:py-4">
+                                      <span className="text-gray-400 text-xs">
+                                        -
+                                      </span>
+                                    </TableCell>
+                                  );
+                                const allLolos = sessionsWithThreshold.every(
+                                  (s) =>
+                                    s.totalScore >=
+                                    (getKedinasanThreshold(s.subCategory) ?? 0),
+                                );
+                                return (
+                                  <TableCell className="text-center py-3 md:py-4">
+                                    <span
+                                      className={cn(
+                                        'inline-flex items-center justify-center px-2 h-6 md:h-7 rounded-full font-bold text-xs',
+                                        allLolos
+                                          ? 'bg-emerald-50 text-emerald-700'
+                                          : 'bg-red-50 text-red-600',
+                                      )}
+                                    >
+                                      {allLolos ? 'Lolos' : 'Tidak Lolos'}
+                                    </span>
+                                  </TableCell>
+                                );
+                              })()}
 
                             {/* Session Score Columns - Enhanced with Premium Logic */}
                             {participant.sessionResult?.map(
                               (session, sessionIndex) => {
-                                const isKedinasan = (websiteSubCategoryId ?? '').toLowerCase().includes('kedinasan');
-                                const threshold = isKedinasan ? getKedinasanThreshold(session.subCategory) : null;
-                                const passes = threshold !== null ? session.totalScore >= threshold : null;
+                                const isKedinasan = (websiteSubCategoryId ?? '')
+                                  .toLowerCase()
+                                  .includes('kedinasan');
+                                const threshold = isKedinasan
+                                  ? getKedinasanThreshold(session.subCategory)
+                                  : null;
+                                const passes =
+                                  threshold !== null
+                                    ? session.totalScore >= threshold
+                                    : null;
                                 return (
-                                <TableCell
-                                  key={sessionIndex}
-                                  className="text-right py-3 md:py-4 relative"
-                                >
-                                  {session.isUnlocked ? (
-                                    <div className="space-y-1">
-                                      <div className="font-semibold text-xs md:text-sm flex items-center justify-end gap-1">
-                                        <span className={passes === true ? 'text-emerald-600' : passes === false ? 'text-red-500' : 'text-green-600'}>
-                                          {session.totalScore.toFixed(0)}
-                                        </span>
-                                        <span className="text-gray-400 text-xs font-normal">
-                                          /{session.maxScore}
-                                        </span>
-                                      </div>
-                                      {passes !== null && (
-                                        <div className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-auto w-fit ${
-                                          passes
-                                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                                            : 'bg-red-50 text-red-600 border border-red-200'
-                                        }`}>
-                                          {passes ? `✓ ≥${threshold}` : `✗ <${threshold}`}
+                                  <TableCell
+                                    key={sessionIndex}
+                                    className="text-right py-3 md:py-4 relative"
+                                  >
+                                    {session.isUnlocked ? (
+                                      <div className="space-y-1">
+                                        <div className="font-semibold text-xs md:text-sm flex items-center justify-end gap-1">
+                                          <span
+                                            className={
+                                              passes === true
+                                                ? 'text-emerald-600'
+                                                : passes === false
+                                                  ? 'text-red-500'
+                                                  : 'text-green-600'
+                                            }
+                                          >
+                                            {session.totalScore.toFixed(0)}
+                                          </span>
+                                          <span className="text-gray-400 text-xs font-normal">
+                                            /{session.maxScore}
+                                          </span>
                                         </div>
-                                      )}
-
-                                    </div>
-                                  ) : (
-                                    <ButtonUpgradeTryout
-                                      tryoutId={RankingTryout?.tryoutId}
-                                    >
-                                      <span className="text-yellow-500 underline cursor-pointer text-xs">
-                                        Buka ini
-                                      </span>
-                                    </ButtonUpgradeTryout>
-                                  )}
-                                </TableCell>
-                              );
-                            })}
-
+                                        {passes !== null && (
+                                          <div
+                                            className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-auto w-fit ${
+                                              passes
+                                                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                                : 'bg-red-50 text-red-600 border border-red-200'
+                                            }`}
+                                          >
+                                            {passes
+                                              ? `✓ ≥${threshold}`
+                                              : `✗ <${threshold}`}
+                                          </div>
+                                        )}
+                                      </div>
+                                    ) : (
+                                      <ButtonUpgradeTryout
+                                        tryoutId={RankingTryout?.tryoutId}
+                                      >
+                                        <span className="text-yellow-500 underline cursor-pointer text-xs">
+                                          Buka ini
+                                        </span>
+                                      </ButtonUpgradeTryout>
+                                    )}
+                                  </TableCell>
+                                );
+                              },
+                            )}
 
                             {/* Extra locked columns for non-premium mobile users */}
                           </TableRow>
@@ -845,7 +908,9 @@ const ExportButton = () => {
   const { RankingTryout } = useLeaderboardContext();
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const isKedinasanExport = (websiteSubCategory?.id ?? '').toLowerCase().includes('kedinasan');
+  const isKedinasanExport = (websiteSubCategory?.id ?? '')
+    .toLowerCase()
+    .includes('kedinasan');
 
   const exportData = RankingTryout?.rankingData || [];
 

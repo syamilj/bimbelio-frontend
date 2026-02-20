@@ -501,7 +501,10 @@ const SubChapterOption = ({
             <div className="space-y-6">
               <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100">
                 <div>
-                  <Label htmlFor="premium" className="text-sm font-semibold text-gray-800">
+                  <Label
+                    htmlFor="premium"
+                    className="text-sm font-semibold text-gray-800"
+                  >
                     Konten Premium
                   </Label>
                   <p className="text-xs text-gray-500 mt-0.5">
@@ -649,7 +652,9 @@ const VideoEditor = ({
       </div>
       {EditSubChapter.video ? (
         <div>
-          <p className="text-green-600 font-medium mb-3">✓ Video sudah diupload</p>
+          <p className="text-green-600 font-medium mb-3">
+            ✓ Video sudah diupload
+          </p>
           <Button
             variant="outline"
             onClick={() => document.getElementById('video-upload')?.click()}
@@ -714,7 +719,9 @@ const DocumentSelector = ({
           <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center shrink-0">
             <FileText className="h-4 w-4 text-green-600" />
           </div>
-          <span className="text-sm font-medium text-gray-800">{selectedDoc?.title}</span>
+          <span className="text-sm font-medium text-gray-800">
+            {selectedDoc?.title}
+          </span>
         </div>
       </div>
     );

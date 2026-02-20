@@ -4,7 +4,6 @@ import axiosInstanceWithToken from '@/lib/axios/axiosInstanceWithToken';
 import { cn } from '@/lib/utils';
 import {
   AlertCircle,
-  BarChart3,
   Check,
   CheckCircle2,
   ChevronDown,
@@ -40,8 +39,14 @@ interface WebsiteCategory {
 }
 
 type SessionStatus = 'idle' | 'processing' | 'done' | 'error';
-interface CategoryStat { name: string; count: number; }
-interface MatchCategory { id: string; name: string; }
+interface CategoryStat {
+  name: string;
+  count: number;
+}
+interface MatchCategory {
+  id: string;
+  name: string;
+}
 interface SessionCfg {
   sourceWebsubId: string;
   categoryIds: string[]; // empty = all categories
@@ -66,9 +71,14 @@ interface Props {
 /* ─── helpers ────────────────────────────────────────────────────────── */
 
 const stripHtml = (html: string) =>
-  html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  html
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 const fmtEta = (ms: number) =>
-  ms < 60_000 ? `~${Math.ceil(ms / 1000)} dtk` : `~${Math.ceil(ms / 60_000)} mnt`;
+  ms < 60_000
+    ? `~${Math.ceil(ms / 1000)} dtk`
+    : `~${Math.ceil(ms / 60_000)} mnt`;
 
 /* ─── component ─────────────────────────────────────────────────────── */
 
@@ -81,7 +91,9 @@ export default function DialogAIMatch({
   const [open, setOpen] = useState(false);
 
   // websub picker
-  const [allWebCategories, setAllWebCategories] = useState<WebsiteCategory[]>([]);
+  const [allWebCategories, setAllWebCategories] = useState<WebsiteCategory[]>(
+    [],
+  );
   const [sourceWebsubId, setSourceWebsubId] = useState<string>(currentWebsubId);
   const [websubOpen, setWebsubOpen] = useState(false);
   const websubRef = useRef<HTMLDivElement>(null);
@@ -94,9 +106,13 @@ export default function DialogAIMatch({
   sessionsRef.current = sessions;
 
   // per-session config overrides (websub + category filter)
-  const [sessionCfgs, setSessionCfgs] = useState<Map<number, SessionCfg>>(new Map());
+  const [sessionCfgs, setSessionCfgs] = useState<Map<number, SessionCfg>>(
+    new Map(),
+  );
   const [expandedCfg, setExpandedCfg] = useState<Set<number>>(new Set());
-  const [catCache, setCatCache] = useState<Map<string, MatchCategory[]>>(new Map());
+  const [catCache, setCatCache] = useState<Map<string, MatchCategory[]>>(
+    new Map(),
+  );
   const [catLoadingSet, setCatLoadingSet] = useState<Set<string>>(new Set());
 
   // progress
@@ -132,7 +148,7 @@ export default function DialogAIMatch({
       setCatLoadingSet(new Set());
     }
     prevOpenRef.current = open;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   /* close dropdown on outside click */
@@ -149,7 +165,9 @@ export default function DialogAIMatch({
   const allSubCategories = allWebCategories.flatMap((wc) =>
     wc.WebsiteSubCategory.map((sub) => ({ ...sub, categoryName: wc.name })),
   );
-  const selectedSubName = allSubCategories.find((s) => s.id === sourceWebsubId)?.name ?? 'Pilih sumber...';
+  const selectedSubName =
+    allSubCategories.find((s) => s.id === sourceWebsubId)?.name ??
+    'Pilih sumber...';
   const eligibleIndices = sessions
     .map((s, i) => (s.Questions && s.Questions.length > 0 ? i : -1))
     .filter((i) => i !== -1);
@@ -165,9 +183,15 @@ export default function DialogAIMatch({
   const totalToProcess = eligibleIndices.length;
   const totalMatched = progress.reduce((acc, p) => acc + p.matchedCount, 0);
   const totalQInRun = progress.reduce((acc, p) => acc + p.questions, 0);
-  const overallPct = totalToProcess > 0 ? Math.round((processedCount / totalToProcess) * 100) : 0;
+  const overallPct =
+    totalToProcess > 0
+      ? Math.round((processedCount / totalToProcess) * 100)
+      : 0;
   const remaining = totalToProcess - processedCount;
-  const etaMs = avgSessionTime != null && remaining > 0 && isAnyRunning ? avgSessionTime * remaining : null;
+  const etaMs =
+    avgSessionTime != null && remaining > 0 && isAnyRunning
+      ? avgSessionTime * remaining
+      : null;
   const isAllDone =
     sessionsWithQ > 0 &&
     eligibleIndices.every((i) => {
@@ -193,15 +217,25 @@ export default function DialogAIMatch({
 
   const fetchCategoriesForWebsub = async (websubId: string) => {
     if (catCache.has(websubId) || catLoadingSet.has(websubId)) return;
-    setCatLoadingSet((prev) => { const n = new Set(prev); n.add(websubId); return n; });
+    setCatLoadingSet((prev) => {
+      const n = new Set(prev);
+      n.add(websubId);
+      return n;
+    });
     try {
       const res = await axiosInstanceWithToken.get(
         `/ai/getMatchCategories?website_sub_category_id=${currentWebsubId}&source_website_sub_category_id=${websubId}`,
       );
       const cats: MatchCategory[] = res.data?.data?.categories ?? [];
       setCatCache((prev) => new Map(prev).set(websubId, cats));
-    } catch { /* silently ignore */ } finally {
-      setCatLoadingSet((prev) => { const n = new Set(prev); n.delete(websubId); return n; });
+    } catch {
+      /* silently ignore */
+    } finally {
+      setCatLoadingSet((prev) => {
+        const n = new Set(prev);
+        n.delete(websubId);
+        return n;
+      });
     }
   };
 
@@ -222,10 +256,15 @@ export default function DialogAIMatch({
   const runSingleSession = async (sIdx: number) => {
     // use ref to always work with the latest sessions — prevents stale-closure crashes
     const session = sessionsRef.current[sIdx];
-    if (!session || !session.Questions || session.Questions.length === 0) return;
+    if (!session || !session.Questions || session.Questions.length === 0)
+      return;
 
     // add to runningSet
-    setRunningSet((prev) => { const n = new Set(prev); n.add(sIdx); return n; });
+    setRunningSet((prev) => {
+      const n = new Set(prev);
+      n.add(sIdx);
+      return n;
+    });
 
     // initialise / reset progress entry
     setProgress((prev) => {
@@ -239,7 +278,9 @@ export default function DialogAIMatch({
         errorMsg: undefined,
       };
       const exists = prev.some((p) => p.index === sIdx);
-      return exists ? prev.map((p) => (p.index === sIdx ? entry : p)) : [...prev, entry];
+      return exists
+        ? prev.map((p) => (p.index === sIdx ? entry : p))
+        : [...prev, entry];
     });
 
     const t0 = Date.now();
@@ -249,9 +290,10 @@ export default function DialogAIMatch({
         text: stripHtml(q?.question || ''),
       }));
       const cfg = getCfg(sIdx);
-      const catParam = cfg.categoryIds.length > 0
-        ? `&category_ids=${cfg.categoryIds.join(',')}`
-        : '';
+      const catParam =
+        cfg.categoryIds.length > 0
+          ? `&category_ids=${cfg.categoryIds.join(',')}`
+          : '';
       const res = await axiosInstanceWithToken.post(
         `/ai/matchQuestionCategory?website_sub_category_id=${currentWebsubId}&source_website_sub_category_id=${cfg.sourceWebsubId}${catParam}`,
         { questions },
@@ -271,7 +313,13 @@ export default function DialogAIMatch({
               ...s,
               Questions: s.Questions.map((q, qIdx) => {
                 const m = matches.find((m) => m.questionIndex === qIdx);
-                return m ? { ...q, categoryId: m.categoryId, courseChapterIds: m.courseChapterIds } : q;
+                return m
+                  ? {
+                      ...q,
+                      categoryId: m.categoryId,
+                      courseChapterIds: m.courseChapterIds,
+                    }
+                  : q;
               }),
             };
           }),
@@ -291,7 +339,12 @@ export default function DialogAIMatch({
       setProgress((prev) =>
         prev.map((p) =>
           p.index === sIdx
-            ? { ...p, status: 'done', matchedCount: matches.length, categoryStats }
+            ? {
+                ...p,
+                status: 'done',
+                matchedCount: matches.length,
+                categoryStats,
+              }
             : p,
         ),
       );
@@ -299,21 +352,30 @@ export default function DialogAIMatch({
       const elapsed = Date.now() - t0;
       sessionTimesRef.current.push(elapsed);
       setAvgSessionTime(
-        sessionTimesRef.current.reduce((a, b) => a + b, 0) / sessionTimesRef.current.length,
+        sessionTimesRef.current.reduce((a, b) => a + b, 0) /
+          sessionTimesRef.current.length,
       );
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Terjadi kesalahan';
       setProgress((prev) =>
-        prev.map((p) => (p.index === sIdx ? { ...p, status: 'error', errorMsg: msg } : p)),
+        prev.map((p) =>
+          p.index === sIdx ? { ...p, status: 'error', errorMsg: msg } : p,
+        ),
       );
     } finally {
       // remove from runningSet regardless of outcome
-      setRunningSet((prev) => { const n = new Set(prev); n.delete(sIdx); return n; });
+      setRunningSet((prev) => {
+        const n = new Set(prev);
+        n.delete(sIdx);
+        return n;
+      });
     }
   };
 
   /* ── run a single session (fire-and-forget from button click) ── */
-  const handleRunOne = (sIdx: number) => { void runSingleSession(sIdx); };
+  const handleRunOne = (sIdx: number) => {
+    void runSingleSession(sIdx);
+  };
 
   /* ── run ALL eligible sessions sequentially ── */
   const handleRunAll = async () => {
@@ -327,7 +389,11 @@ export default function DialogAIMatch({
       .filter((i) => i !== -1);
     for (const sIdx of indices) {
       if (batchCancelRef.current) break;
-      try { await runSingleSession(sIdx); } catch { /* errors already handled inside */ }
+      try {
+        await runSingleSession(sIdx);
+      } catch {
+        /* errors already handled inside */
+      }
     }
   };
 
@@ -344,33 +410,46 @@ export default function DialogAIMatch({
       });
     for (const sIdx of pending) {
       if (batchCancelRef.current) break;
-      try { await runSingleSession(sIdx); } catch { /* errors already handled inside */ }
+      try {
+        await runSingleSession(sIdx);
+      } catch {
+        /* errors already handled inside */
+      }
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={(v) => { if (!isAnyRunning) setOpen(v); }}>
+    <Dialog
+      open={open}
+      onOpenChange={(v) => {
+        if (!isAnyRunning) setOpen(v);
+      }}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
 
       <DialogContent className="max-w-2xl w-full p-0 gap-0 overflow-hidden rounded-2xl">
-
         {/* Header */}
         <DialogHeader className="px-6 pt-5 pb-4 border-b border-gray-100">
           <DialogTitle className="flex items-center gap-3 text-base font-semibold text-gray-900">
-            <div className={cn(
-              'h-10 w-10 rounded-xl flex items-center justify-center shrink-0 shadow-md transition-all duration-500',
-              isAllDone
-                ? 'bg-gradient-to-br from-green-400 to-emerald-500'
-                : 'bg-gradient-to-br from-purple-500 to-violet-600',
-            )}>
-              {isAllDone
-                ? <CheckCircle2 className="h-5 w-5 text-white" />
-                : <Sparkles className="h-5 w-5 text-white" />}
+            <div
+              className={cn(
+                'h-10 w-10 rounded-xl flex items-center justify-center shrink-0 shadow-md transition-all duration-500',
+                isAllDone
+                  ? 'bg-gradient-to-br from-green-400 to-emerald-500'
+                  : 'bg-gradient-to-br from-purple-500 to-violet-600',
+              )}
+            >
+              {isAllDone ? (
+                <CheckCircle2 className="h-5 w-5 text-white" />
+              ) : (
+                <Sparkles className="h-5 w-5 text-white" />
+              )}
             </div>
             <div className="flex-1 min-w-0">
               AI Auto-Match Kategori &amp; Materi
               <p className="text-xs text-gray-400 font-normal mt-0.5">
-                Jalankan per-sesi atau sekaligus — AI mencocokkan setiap soal ke kategori &amp; bab materi.
+                Jalankan per-sesi atau sekaligus — AI mencocokkan setiap soal ke
+                kategori &amp; bab materi.
               </p>
             </div>
           </DialogTitle>
@@ -381,15 +460,19 @@ export default function DialogAIMatch({
           <div className="px-6 py-3 bg-purple-50 border-b border-purple-100">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-semibold text-purple-700">
-                <span className="text-purple-600">{runningSet.size}</span> sesi sedang berjalan
+                <span className="text-purple-600">{runningSet.size}</span> sesi
+                sedang berjalan
                 {processedCount > 0 && (
-                  <span className="text-purple-400 ml-1.5">· {processedCount}/{totalToProcess} selesai</span>
+                  <span className="text-purple-400 ml-1.5">
+                    · {processedCount}/{totalToProcess} selesai
+                  </span>
                 )}
               </span>
               <div className="flex items-center gap-3 text-[11px] text-purple-400">
                 {etaMs != null && (
                   <span className="flex items-center gap-1">
-                    <Clock className="w-3 h-3" />{fmtEta(etaMs)} tersisa
+                    <Clock className="w-3 h-3" />
+                    {fmtEta(etaMs)} tersisa
                   </span>
                 )}
               </div>
@@ -405,33 +488,46 @@ export default function DialogAIMatch({
 
         {/* All-done celebration banner */}
         {!isAnyRunning && isAllDone && (
-          <div className={cn(
-            'px-6 py-4 border-b flex items-center gap-4',
-            errorCount === 0
-              ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200'
-              : 'bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-200',
-          )}>
-            <div className={cn(
-              'h-11 w-11 rounded-xl flex items-center justify-center shrink-0 shadow-sm',
-              errorCount === 0 ? 'bg-green-500' : 'bg-amber-500',
-            )}>
-              {errorCount === 0
-                ? <CheckCircle2 className="h-6 w-6 text-white" />
-                : <AlertCircle className="h-6 w-6 text-white" />}
+          <div
+            className={cn(
+              'px-6 py-4 border-b flex items-center gap-4',
+              errorCount === 0
+                ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200'
+                : 'bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-200',
+            )}
+          >
+            <div
+              className={cn(
+                'h-11 w-11 rounded-xl flex items-center justify-center shrink-0 shadow-sm',
+                errorCount === 0 ? 'bg-green-500' : 'bg-amber-500',
+              )}
+            >
+              {errorCount === 0 ? (
+                <CheckCircle2 className="h-6 w-6 text-white" />
+              ) : (
+                <AlertCircle className="h-6 w-6 text-white" />
+              )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className={cn(
-                'text-sm font-bold',
-                errorCount === 0 ? 'text-green-800' : 'text-amber-800',
-              )}>
-                {errorCount === 0 ? 'Semua sesi berhasil di-match! 🎉' : `${doneCount} sesi berhasil, ${errorCount} gagal`}
+              <p
+                className={cn(
+                  'text-sm font-bold',
+                  errorCount === 0 ? 'text-green-800' : 'text-amber-800',
+                )}
+              >
+                {errorCount === 0
+                  ? 'Semua sesi berhasil di-match! 🎉'
+                  : `${doneCount} sesi berhasil, ${errorCount} gagal`}
               </p>
-              <p className={cn(
-                'text-xs mt-0.5',
-                errorCount === 0 ? 'text-green-600' : 'text-amber-600',
-              )}>
+              <p
+                className={cn(
+                  'text-xs mt-0.5',
+                  errorCount === 0 ? 'text-green-600' : 'text-amber-600',
+                )}
+              >
                 <span className="font-semibold">{totalMatched}</span> dari{' '}
-                <span className="font-semibold">{totalQInRun}</span> soal berhasil dicocokkan ke kategori &amp; materi
+                <span className="font-semibold">{totalQInRun}</span> soal
+                berhasil dicocokkan ke kategori &amp; materi
               </p>
             </div>
             <button
@@ -455,7 +551,6 @@ export default function DialogAIMatch({
         )}
 
         <div className="px-6 py-4 flex flex-col gap-4 max-h-[65vh] overflow-y-auto">
-
           {/* Websub picker — only before any session is run */}
           {!isAnyRunning && processedCount === 0 && (
             <div className="flex flex-col gap-2">
@@ -463,22 +558,32 @@ export default function DialogAIMatch({
                 Default Sumber — Semua Sesi
               </label>
               <p className="text-[11px] text-gray-400 -mt-1">
-                Pilih platform/websub default — tiap sesi bisa di-override secara individual
+                Pilih platform/websub default — tiap sesi bisa di-override
+                secara individual
               </p>
-              <div ref={websubRef} className="relative">
+              <div
+                ref={websubRef}
+                className="relative"
+              >
                 <button
                   type="button"
                   onClick={() => setWebsubOpen((v) => !v)}
                   className="w-full flex items-center justify-between gap-2 h-9 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 hover:border-gray-300 transition-colors"
                 >
                   <span className="truncate">{selectedSubName}</span>
-                  <ChevronDown className={cn('w-4 h-4 text-gray-400 shrink-0 transition-transform', websubOpen && 'rotate-180')} />
+                  <ChevronDown
+                    className={cn(
+                      'w-4 h-4 text-gray-400 shrink-0 transition-transform',
+                      websubOpen && 'rotate-180',
+                    )}
+                  />
                 </button>
                 {websubOpen && (
                   <div className="absolute z-50 top-full mt-1 left-0 right-0 rounded-xl border border-gray-200 bg-white shadow-lg max-h-52 overflow-y-auto">
                     {allWebCategories.length === 0 ? (
                       <div className="px-4 py-6 flex items-center justify-center gap-2 text-sm text-gray-400">
-                        <Loader2 className="w-3.5 h-3.5 animate-spin" /> Memuat...
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />{' '}
+                        Memuat...
                       </div>
                     ) : (
                       allWebCategories.map((wc) => (
@@ -490,18 +595,26 @@ export default function DialogAIMatch({
                             <button
                               key={sub.id}
                               type="button"
-                              onClick={() => { setSourceWebsubId(sub.id); setWebsubOpen(false); }}
+                              onClick={() => {
+                                setSourceWebsubId(sub.id);
+                                setWebsubOpen(false);
+                              }}
                               className={cn(
                                 'w-full text-left px-4 py-2 text-sm flex items-center justify-between gap-2 hover:bg-gray-50 transition-colors',
-                                sourceWebsubId === sub.id && 'bg-purple-50 text-purple-700',
+                                sourceWebsubId === sub.id &&
+                                  'bg-purple-50 text-purple-700',
                               )}
                             >
                               <span>{sub.name}</span>
                               <div className="flex items-center gap-1.5 shrink-0">
                                 {sub.id === currentWebsubId && (
-                                  <span className="text-[10px] text-gray-400 border border-gray-200 rounded px-1.5 py-0.5">current</span>
+                                  <span className="text-[10px] text-gray-400 border border-gray-200 rounded px-1.5 py-0.5">
+                                    current
+                                  </span>
                                 )}
-                                {sourceWebsubId === sub.id && <Check className="w-3.5 h-3.5 text-purple-600" />}
+                                {sourceWebsubId === sub.id && (
+                                  <Check className="w-3.5 h-3.5 text-purple-600" />
+                                )}
                               </div>
                             </button>
                           ))}
@@ -514,19 +627,27 @@ export default function DialogAIMatch({
             </div>
           )}
 
-{/* Batch actions row */}
+          {/* Batch actions row */}
           <div className="flex items-center justify-between gap-3 pt-1">
             <p className="text-xs text-gray-500 font-medium">
               {isAllDone ? (
-                <span className={cn('font-semibold', errorCount === 0 ? 'text-green-600' : 'text-amber-600')}>
+                <span
+                  className={cn(
+                    'font-semibold',
+                    errorCount === 0 ? 'text-green-600' : 'text-amber-600',
+                  )}
+                >
                   {doneCount}/{sessionsWithQ} selesai
                 </span>
               ) : (
                 <>
                   {sessionsWithQ} sesi tersedia
-                  {pendingIndices.length > 0 && pendingIndices.length < sessionsWithQ && (
-                    <span className="ml-1 text-amber-500">· {pendingIndices.length} belum diproses</span>
-                  )}
+                  {pendingIndices.length > 0 &&
+                    pendingIndices.length < sessionsWithQ && (
+                      <span className="ml-1 text-amber-500">
+                        · {pendingIndices.length} belum diproses
+                      </span>
+                    )}
                 </>
               )}
             </p>
@@ -534,22 +655,27 @@ export default function DialogAIMatch({
               {isAnyRunning && (
                 <button
                   type="button"
-                  onClick={() => { batchCancelRef.current = true; }}
+                  onClick={() => {
+                    batchCancelRef.current = true;
+                  }}
                   className="text-xs font-medium text-red-500 hover:text-red-700 border border-red-200 hover:border-red-300 rounded-lg px-3 py-1.5 transition-colors"
                 >
                   Batalkan
                 </button>
               )}
-              {!isAnyRunning && !isAllDone && pendingIndices.length > 0 && processedCount > 0 && (
-                <button
-                  type="button"
-                  onClick={handleRunPending}
-                  className="inline-flex items-center gap-1 text-xs font-medium text-amber-600 hover:text-amber-800 border border-amber-200 hover:border-amber-300 bg-amber-50 rounded-lg px-3 py-1.5 transition-colors"
-                >
-                  <RefreshCw className="w-3 h-3" />
-                  Yang Belum ({pendingIndices.length})
-                </button>
-              )}
+              {!isAnyRunning &&
+                !isAllDone &&
+                pendingIndices.length > 0 &&
+                processedCount > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleRunPending}
+                    className="inline-flex items-center gap-1 text-xs font-medium text-amber-600 hover:text-amber-800 border border-amber-200 hover:border-amber-300 bg-amber-50 rounded-lg px-3 py-1.5 transition-colors"
+                  >
+                    <RefreshCw className="w-3 h-3" />
+                    Yang Belum ({pendingIndices.length})
+                  </button>
+                )}
               <button
                 type="button"
                 disabled={isAnyRunning}
@@ -563,11 +689,18 @@ export default function DialogAIMatch({
                 )}
               >
                 {isAnyRunning ? (
-                  <><Loader2 className="h-3 w-3 animate-spin" /> Berjalan...</>
+                  <>
+                    <Loader2 className="h-3 w-3 animate-spin" /> Berjalan...
+                  </>
                 ) : isAllDone ? (
-                  <><RefreshCw className="h-3 w-3" /> Jalankan Ulang</>
+                  <>
+                    <RefreshCw className="h-3 w-3" /> Jalankan Ulang
+                  </>
                 ) : (
-                  <><Sparkles className="h-3 w-3" /> Jalankan Semua ({sessionsWithQ})</>
+                  <>
+                    <Sparkles className="h-3 w-3" /> Jalankan Semua (
+                    {sessionsWithQ})
+                  </>
                 )}
               </button>
             </div>
@@ -587,9 +720,12 @@ export default function DialogAIMatch({
 
               // per-session config
               const cfg = getCfg(idx);
-              const cfgWebsubName = allSubCategories.find((s) => s.id === cfg.sourceWebsubId)?.name ?? '';
+              const cfgWebsubName =
+                allSubCategories.find((s) => s.id === cfg.sourceWebsubId)
+                  ?.name ?? '';
               const hasCustomWebsub = cfg.sourceWebsubId !== sourceWebsubId;
-              const hasCustomCfg = hasCustomWebsub || cfg.categoryIds.length > 0;
+              const hasCustomCfg =
+                hasCustomWebsub || cfg.categoryIds.length > 0;
               const isCfgOpen = expandedCfg.has(idx);
 
               return (
@@ -598,21 +734,38 @@ export default function DialogAIMatch({
                   className={cn(
                     'flex items-start gap-3 rounded-xl border p-3.5 transition-all duration-300',
                     !hasQ && 'opacity-40 bg-gray-50 border-gray-100',
-                    hasQ && !prog && !isSessionRunning && 'border-gray-200 bg-white',
-                    isSessionRunning && 'border-purple-300 bg-purple-50/80 ring-1 ring-purple-200/50',
-                    !isSessionRunning && prog?.status === 'done' && 'border-green-300 bg-green-50 ring-1 ring-green-200/60',
-                    !isSessionRunning && prog?.status === 'error' && 'border-red-200 bg-red-50/60',
+                    hasQ &&
+                      !prog &&
+                      !isSessionRunning &&
+                      'border-gray-200 bg-white',
+                    isSessionRunning &&
+                      'border-purple-300 bg-purple-50/80 ring-1 ring-purple-200/50',
+                    !isSessionRunning &&
+                      prog?.status === 'done' &&
+                      'border-green-300 bg-green-50 ring-1 ring-green-200/60',
+                    !isSessionRunning &&
+                      prog?.status === 'error' &&
+                      'border-red-200 bg-red-50/60',
                   )}
                 >
                   {/* Circular status indicator */}
-                  <div className={cn(
-                    'shrink-0 mt-0.5 h-7 w-7 rounded-full flex items-center justify-center text-[11px] font-bold transition-all duration-300',
-                    !hasQ && 'bg-gray-100 text-gray-400',
-                    hasQ && !prog && !isSessionRunning && 'bg-gray-100 text-gray-500',
-                    isSessionRunning && 'bg-purple-200 text-purple-700',
-                    !isSessionRunning && prog?.status === 'done' && 'bg-green-500 text-white shadow-sm',
-                    !isSessionRunning && prog?.status === 'error' && 'bg-red-100 text-red-500',
-                  )}>
+                  <div
+                    className={cn(
+                      'shrink-0 mt-0.5 h-7 w-7 rounded-full flex items-center justify-center text-[11px] font-bold transition-all duration-300',
+                      !hasQ && 'bg-gray-100 text-gray-400',
+                      hasQ &&
+                        !prog &&
+                        !isSessionRunning &&
+                        'bg-gray-100 text-gray-500',
+                      isSessionRunning && 'bg-purple-200 text-purple-700',
+                      !isSessionRunning &&
+                        prog?.status === 'done' &&
+                        'bg-green-500 text-white shadow-sm',
+                      !isSessionRunning &&
+                        prog?.status === 'error' &&
+                        'bg-red-100 text-red-500',
+                    )}
+                  >
                     {isSessionRunning ? (
                       <Loader2 className="h-3.5 w-3.5 animate-spin" />
                     ) : prog?.status === 'done' ? (
@@ -628,57 +781,87 @@ export default function DialogAIMatch({
                     {/* Row 1: name + per-session action button */}
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex-1 min-w-0">
-                        <p className={cn(
-                          'text-sm font-semibold truncate',
-                          isSessionRunning && 'text-purple-700',
-                          !isSessionRunning && prog?.status === 'done' && 'text-green-700',
-                          !isSessionRunning && prog?.status === 'error' && 'text-red-600',
-                          (!prog || (!isSessionRunning && prog.status !== 'done' && prog.status !== 'error')) && !isSessionRunning && 'text-gray-800',
-                        )}>
+                        <p
+                          className={cn(
+                            'text-sm font-semibold truncate',
+                            isSessionRunning && 'text-purple-700',
+                            !isSessionRunning &&
+                              prog?.status === 'done' &&
+                              'text-green-700',
+                            !isSessionRunning &&
+                              prog?.status === 'error' &&
+                              'text-red-600',
+                            (!prog ||
+                              (!isSessionRunning &&
+                                prog.status !== 'done' &&
+                                prog.status !== 'error')) &&
+                              !isSessionRunning &&
+                              'text-gray-800',
+                          )}
+                        >
                           {session.name || `Sesi ${idx + 1}`}
                         </p>
                         <p className="text-[11px] text-gray-400 mt-0.5">
                           {qCount} soal
                           {!hasQ && ' · belum ada soal'}
-                          {!isSessionRunning && prog?.status === 'error' && ' · gagal diproses'}
+                          {!isSessionRunning &&
+                            prog?.status === 'error' &&
+                            ' · gagal diproses'}
                         </p>
                         {/* Config summary + toggle — hidden once this session is done */}
-                        {hasQ && !isSessionRunning && prog?.status !== 'done' && (
-                          <div className="mt-1 flex items-center gap-1.5">
-                            {hasCustomCfg && (
-                              <span className="text-[10px] text-purple-500 font-medium">
-                                {hasCustomWebsub && cfgWebsubName}
-                                {cfg.categoryIds.length > 0 && ` · ${cfg.categoryIds.length} kat`}
-                              </span>
-                            )}
-                            <button
-                              type="button"
-                              onClick={() => toggleCfgPanel(idx, cfg.sourceWebsubId)}
-                              className={cn(
-                                'flex items-center gap-0.5 text-[10px] font-medium transition-colors',
-                                hasCustomCfg ? 'text-purple-500 hover:text-purple-700' : 'text-gray-400 hover:text-purple-600',
+                        {hasQ &&
+                          !isSessionRunning &&
+                          prog?.status !== 'done' && (
+                            <div className="mt-1 flex items-center gap-1.5">
+                              {hasCustomCfg && (
+                                <span className="text-[10px] text-purple-500 font-medium">
+                                  {hasCustomWebsub && cfgWebsubName}
+                                  {cfg.categoryIds.length > 0 &&
+                                    ` · ${cfg.categoryIds.length} kat`}
+                                </span>
                               )}
-                            >
-                              <Settings2 className="w-2.5 h-2.5" />
-                              {isCfgOpen ? 'Tutup' : hasCustomCfg ? 'Ubah config' : 'Atur config'}
-                            </button>
-                          </div>
-                        )}
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  toggleCfgPanel(idx, cfg.sourceWebsubId)
+                                }
+                                className={cn(
+                                  'flex items-center gap-0.5 text-[10px] font-medium transition-colors',
+                                  hasCustomCfg
+                                    ? 'text-purple-500 hover:text-purple-700'
+                                    : 'text-gray-400 hover:text-purple-600',
+                                )}
+                              >
+                                <Settings2 className="w-2.5 h-2.5" />
+                                {isCfgOpen
+                                  ? 'Tutup'
+                                  : hasCustomCfg
+                                    ? 'Ubah config'
+                                    : 'Atur config'}
+                              </button>
+                            </div>
+                          )}
                         {/* Per-session config panel */}
                         {hasQ && isCfgOpen && !isSessionRunning && (
                           <div className="mt-2.5 pt-2.5 border-t border-gray-100 flex flex-col gap-3">
                             {/* Websub row */}
                             <div>
-                              <p className="text-[10px] font-semibold text-purple-600 mb-1.5">Sumber platform</p>
+                              <p className="text-[10px] font-semibold text-purple-600 mb-1.5">
+                                Sumber platform
+                              </p>
                               <div className="flex flex-wrap gap-1">
                                 {allSubCategories.map((sub) => {
-                                  const isActive = cfg.sourceWebsubId === sub.id;
+                                  const isActive =
+                                    cfg.sourceWebsubId === sub.id;
                                   return (
                                     <button
                                       key={sub.id}
                                       type="button"
                                       onClick={() => {
-                                        updateSessionCfg(idx, { sourceWebsubId: sub.id, categoryIds: [] });
+                                        updateSessionCfg(idx, {
+                                          sourceWebsubId: sub.id,
+                                          categoryIds: [],
+                                        });
                                         void fetchCategoriesForWebsub(sub.id);
                                       }}
                                       className={cn(
@@ -690,7 +873,9 @@ export default function DialogAIMatch({
                                     >
                                       {sub.name}
                                       {sub.id === currentWebsubId && (
-                                        <span className="ml-1 text-[9px] opacity-60">current</span>
+                                        <span className="ml-1 text-[9px] opacity-60">
+                                          current
+                                        </span>
                                       )}
                                     </button>
                                   );
@@ -702,12 +887,16 @@ export default function DialogAIMatch({
                               <div className="flex items-center justify-between mb-1.5">
                                 <p className="text-[10px] font-semibold text-purple-600">
                                   Filter kategori
-                                  <span className="text-gray-400 font-normal ml-1">(kosong = semua)</span>
+                                  <span className="text-gray-400 font-normal ml-1">
+                                    (kosong = semua)
+                                  </span>
                                 </p>
                                 {cfg.categoryIds.length > 0 && (
                                   <button
                                     type="button"
-                                    onClick={() => updateSessionCfg(idx, { categoryIds: [] })}
+                                    onClick={() =>
+                                      updateSessionCfg(idx, { categoryIds: [] })
+                                    }
                                     className="text-[10px] text-red-400 hover:text-red-600 flex items-center gap-0.5 transition-colors"
                                   >
                                     <X className="w-2.5 h-2.5" /> Reset
@@ -716,36 +905,49 @@ export default function DialogAIMatch({
                               </div>
                               {catLoadingSet.has(cfg.sourceWebsubId) ? (
                                 <span className="text-[10px] text-gray-400 flex items-center gap-1">
-                                  <Loader2 className="w-3 h-3 animate-spin" /> Memuat kategori...
+                                  <Loader2 className="w-3 h-3 animate-spin" />{' '}
+                                  Memuat kategori...
                                 </span>
-                              ) : (catCache.get(cfg.sourceWebsubId) ?? []).length === 0 ? (
-                                <span className="text-[10px] text-gray-400">Belum ada kategori tersedia</span>
+                              ) : (catCache.get(cfg.sourceWebsubId) ?? [])
+                                  .length === 0 ? (
+                                <span className="text-[10px] text-gray-400">
+                                  Belum ada kategori tersedia
+                                </span>
                               ) : (
                                 <div className="flex flex-wrap gap-1 max-h-28 overflow-y-auto pr-0.5">
-                                  {(catCache.get(cfg.sourceWebsubId) ?? []).map((cat) => {
-                                    const isSelected = cfg.categoryIds.includes(cat.id);
-                                    return (
-                                      <button
-                                        key={cat.id}
-                                        type="button"
-                                        onClick={() => {
-                                          const updated = isSelected
-                                            ? cfg.categoryIds.filter((id) => id !== cat.id)
-                                            : [...cfg.categoryIds, cat.id];
-                                          updateSessionCfg(idx, { categoryIds: updated });
-                                        }}
-                                        className={cn(
-                                          'inline-flex items-center gap-0.5 text-[10px] font-medium rounded-md px-2 py-0.5 border transition-all',
-                                          isSelected
-                                            ? 'bg-emerald-600 text-white border-emerald-600'
-                                            : 'bg-white text-gray-600 border-gray-200 hover:border-emerald-300 hover:text-emerald-700',
-                                        )}
-                                      >
-                                        {isSelected && <Check className="w-2.5 h-2.5 shrink-0" />}
-                                        {cat.name}
-                                      </button>
-                                    );
-                                  })}
+                                  {(catCache.get(cfg.sourceWebsubId) ?? []).map(
+                                    (cat) => {
+                                      const isSelected =
+                                        cfg.categoryIds.includes(cat.id);
+                                      return (
+                                        <button
+                                          key={cat.id}
+                                          type="button"
+                                          onClick={() => {
+                                            const updated = isSelected
+                                              ? cfg.categoryIds.filter(
+                                                  (id) => id !== cat.id,
+                                                )
+                                              : [...cfg.categoryIds, cat.id];
+                                            updateSessionCfg(idx, {
+                                              categoryIds: updated,
+                                            });
+                                          }}
+                                          className={cn(
+                                            'inline-flex items-center gap-0.5 text-[10px] font-medium rounded-md px-2 py-0.5 border transition-all',
+                                            isSelected
+                                              ? 'bg-emerald-600 text-white border-emerald-600'
+                                              : 'bg-white text-gray-600 border-gray-200 hover:border-emerald-300 hover:text-emerald-700',
+                                          )}
+                                        >
+                                          {isSelected && (
+                                            <Check className="w-2.5 h-2.5 shrink-0" />
+                                          )}
+                                          {cat.name}
+                                        </button>
+                                      );
+                                    },
+                                  )}
                                 </div>
                               )}
                             </div>
@@ -758,7 +960,8 @@ export default function DialogAIMatch({
                         <div className="shrink-0">
                           {isSessionRunning ? (
                             <span className="inline-flex items-center gap-1 text-[11px] font-medium text-purple-500 bg-purple-50 border border-purple-100 rounded-lg px-2.5 py-1">
-                              <Loader2 className="w-3 h-3 animate-spin" /> Menganalisis...
+                              <Loader2 className="w-3 h-3 animate-spin" />{' '}
+                              Menganalisis...
                             </span>
                           ) : prog?.status === 'done' ? (
                             <div className="flex items-center gap-1.5">
@@ -811,49 +1014,68 @@ export default function DialogAIMatch({
                     )}
 
                     {/* Done: match quality bar + category distribution pills */}
-                    {!isSessionRunning && prog?.status === 'done' && prog.questions > 0 && (
-                      <>
-                        <div className="mt-2.5 flex items-center gap-2">
-                          <div className="flex-1 h-1.5 rounded-full bg-gray-200 overflow-hidden">
-                            <div
+                    {!isSessionRunning &&
+                      prog?.status === 'done' &&
+                      prog.questions > 0 && (
+                        <>
+                          <div className="mt-2.5 flex items-center gap-2">
+                            <div className="flex-1 h-1.5 rounded-full bg-gray-200 overflow-hidden">
+                              <div
+                                className={cn(
+                                  'h-full rounded-full transition-all duration-700 ease-out',
+                                  matchPct >= 80
+                                    ? 'bg-green-400'
+                                    : matchPct >= 50
+                                      ? 'bg-amber-400'
+                                      : 'bg-red-400',
+                                )}
+                                style={{ width: `${matchPct}%` }}
+                              />
+                            </div>
+                            <span
                               className={cn(
-                                'h-full rounded-full transition-all duration-700 ease-out',
-                                matchPct >= 80 ? 'bg-green-400' : matchPct >= 50 ? 'bg-amber-400' : 'bg-red-400',
+                                'text-[10px] font-bold shrink-0',
+                                matchPct >= 80
+                                  ? 'text-green-600'
+                                  : matchPct >= 50
+                                    ? 'text-amber-500'
+                                    : 'text-red-400',
                               )}
-                              style={{ width: `${matchPct}%` }}
-                            />
+                            >
+                              {matchPct}%
+                            </span>
                           </div>
-                          <span className={cn(
-                            'text-[10px] font-bold shrink-0',
-                            matchPct >= 80 ? 'text-green-600' : matchPct >= 50 ? 'text-amber-500' : 'text-red-400',
-                          )}>
-                            {matchPct}%
-                          </span>
-                        </div>
-                        {prog.categoryStats.length > 0 && (
-                          <div className="mt-2 flex flex-wrap gap-1">
-                            {prog.categoryStats.slice(0, 6).map((cs, ci) => (
-                              <span
-                                key={ci}
-                                className="inline-flex items-center gap-1 text-[10px] font-medium bg-emerald-100 text-emerald-700 rounded-md px-1.5 py-0.5 border border-emerald-200/80"
-                              >
-                                {cs.name}<span className="text-emerald-500 font-bold">×{cs.count}</span>
-                              </span>
-                            ))}
-                            {prog.categoryStats.length > 6 && (
-                              <span className="text-[10px] text-gray-400 self-center">
-                                +{prog.categoryStats.length - 6} lagi
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </>
-                    )}
+                          {prog.categoryStats.length > 0 && (
+                            <div className="mt-2 flex flex-wrap gap-1">
+                              {prog.categoryStats.slice(0, 6).map((cs, ci) => (
+                                <span
+                                  key={ci}
+                                  className="inline-flex items-center gap-1 text-[10px] font-medium bg-emerald-100 text-emerald-700 rounded-md px-1.5 py-0.5 border border-emerald-200/80"
+                                >
+                                  {cs.name}
+                                  <span className="text-emerald-500 font-bold">
+                                    ×{cs.count}
+                                  </span>
+                                </span>
+                              ))}
+                              {prog.categoryStats.length > 6 && (
+                                <span className="text-[10px] text-gray-400 self-center">
+                                  +{prog.categoryStats.length - 6} lagi
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </>
+                      )}
 
                     {/* Error detail */}
-                    {!isSessionRunning && prog?.status === 'error' && prog.errorMsg && (
-                      <p className="mt-1.5 text-[10px] text-red-400 line-clamp-2">{prog.errorMsg}</p>
-                    )}
+                    {!isSessionRunning &&
+                      prog?.status === 'error' &&
+                      prog.errorMsg && (
+                        <p className="mt-1.5 text-[10px] text-red-400 line-clamp-2">
+                          {prog.errorMsg}
+                        </p>
+                      )}
                   </div>
                 </div>
               );
@@ -862,38 +1084,57 @@ export default function DialogAIMatch({
         </div>
 
         {/* Footer */}
-        <div className={cn(
-          'px-6 py-4 border-t flex items-center justify-between gap-3 transition-all duration-500',
-          isAllDone && errorCount === 0 && 'border-green-200 bg-green-50',
-          isAllDone && errorCount > 0 && 'border-amber-200 bg-amber-50',
-          !isAllDone && 'border-gray-100',
-        )}>
+        <div
+          className={cn(
+            'px-6 py-4 border-t flex items-center justify-between gap-3 transition-all duration-500',
+            isAllDone && errorCount === 0 && 'border-green-200 bg-green-50',
+            isAllDone && errorCount > 0 && 'border-amber-200 bg-amber-50',
+            !isAllDone && 'border-gray-100',
+          )}
+        >
           <div className="min-w-0">
             {isAnyRunning && (
               <p className="text-sm text-purple-600 font-medium flex items-center gap-1.5">
                 <Loader2 className="h-4 w-4 animate-spin shrink-0" />
-                {runningSet.size} sesi berjalan · {processedCount}/{totalToProcess} selesai
-                {etaMs != null && <span className="text-gray-400 text-xs ml-1">· {fmtEta(etaMs)}</span>}
+                {runningSet.size} sesi berjalan · {processedCount}/
+                {totalToProcess} selesai
+                {etaMs != null && (
+                  <span className="text-gray-400 text-xs ml-1">
+                    · {fmtEta(etaMs)}
+                  </span>
+                )}
               </p>
             )}
             {!isAnyRunning && isAllDone && (
-              <p className={cn(
-                'text-sm font-semibold flex items-center gap-1.5',
-                errorCount === 0 ? 'text-green-700' : 'text-amber-700',
-              )}>
-                {errorCount === 0
-                  ? <><CheckCircle2 className="h-4 w-4 shrink-0" /> Hasil tersimpan — klik Selesai untuk menutup</>
-                  : <><AlertCircle className="h-4 w-4 shrink-0" /> {doneCount} berhasil · {errorCount} gagal</>}
+              <p
+                className={cn(
+                  'text-sm font-semibold flex items-center gap-1.5',
+                  errorCount === 0 ? 'text-green-700' : 'text-amber-700',
+                )}
+              >
+                {errorCount === 0 ? (
+                  <>
+                    <CheckCircle2 className="h-4 w-4 shrink-0" /> Hasil
+                    tersimpan — klik Selesai untuk menutup
+                  </>
+                ) : (
+                  <>
+                    <AlertCircle className="h-4 w-4 shrink-0" /> {doneCount}{' '}
+                    berhasil · {errorCount} gagal
+                  </>
+                )}
               </p>
             )}
             {!isAnyRunning && !isAllDone && processedCount === 0 && (
               <p className="text-xs text-gray-400">
-                {sessionsWithQ} sesi siap — klik <strong>Jalankan</strong> per-sesi atau <strong>Jalankan Semua</strong>
+                {sessionsWithQ} sesi siap — klik <strong>Jalankan</strong>{' '}
+                per-sesi atau <strong>Jalankan Semua</strong>
               </p>
             )}
             {!isAnyRunning && !isAllDone && processedCount > 0 && (
               <p className="text-xs text-amber-600 font-medium">
-                {pendingIndices.length > 0 && `${pendingIndices.length} sesi belum diproses`}
+                {pendingIndices.length > 0 &&
+                  `${pendingIndices.length} sesi belum diproses`}
               </p>
             )}
           </div>
@@ -905,8 +1146,12 @@ export default function DialogAIMatch({
             className={cn(
               'text-sm font-semibold rounded-lg px-5 py-2 border transition-all duration-300 disabled:opacity-40',
               !isAllDone && 'text-gray-600 hover:text-gray-800 border-gray-200',
-              isAllDone && errorCount === 0 && 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white border-green-500 shadow-sm',
-              isAllDone && errorCount > 0 && 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-amber-500 shadow-sm',
+              isAllDone &&
+                errorCount === 0 &&
+                'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white border-green-500 shadow-sm',
+              isAllDone &&
+                errorCount > 0 &&
+                'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-amber-500 shadow-sm',
             )}
           >
             {isAllDone ? 'Selesai ✓' : 'Tutup'}

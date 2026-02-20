@@ -25,13 +25,16 @@ export default function ChatContent({ historyId }: { historyId: string }) {
   const [messageError, setMessageError] = useState<string | null>(null);
 
   const getMessages = async () => {
-    const res = await getGeneral(`/chat/getAllMessageByHistoryId?historyId=${historyId}`, {
-      setData: setPrevChatMessages,
-      setLoading: setIsLoadingPrevMessage,
-      onError({ message }) {
-        setMessageError(message);
+    const res = await getGeneral(
+      `/chat/getAllMessageByHistoryId?historyId=${historyId}`,
+      {
+        setData: setPrevChatMessages,
+        setLoading: setIsLoadingPrevMessage,
+        onError({ message }) {
+          setMessageError(message);
+        },
       },
-    });
+    );
     return res;
   };
 

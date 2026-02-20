@@ -20,9 +20,10 @@ export const SNBT_SUBTEST_INITIALS: Record<string, string> = {
 };
 
 /** Reverse map: initials → full name */
-export const SNBT_SUBTEST_FULL_NAMES: Record<string, string> = Object.fromEntries(
-  Object.entries(SNBT_SUBTEST_INITIALS).map(([full, short]) => [short, full]),
-);
+export const SNBT_SUBTEST_FULL_NAMES: Record<string, string> =
+  Object.fromEntries(
+    Object.entries(SNBT_SUBTEST_INITIALS).map(([full, short]) => [short, full]),
+  );
 
 /** Ordered list of all SNBT subtests for consistent display order */
 export const SNBT_SUBTEST_ORDER = [
@@ -65,9 +66,13 @@ export const KEDINASAN_SUBTEST_INITIALS: Record<string, string> = {
 };
 
 /** Reverse map: initials → full name */
-export const KEDINASAN_SUBTEST_FULL_NAMES: Record<string, string> = Object.fromEntries(
-  Object.entries(KEDINASAN_SUBTEST_INITIALS).map(([full, short]) => [short, full]),
-);
+export const KEDINASAN_SUBTEST_FULL_NAMES: Record<string, string> =
+  Object.fromEntries(
+    Object.entries(KEDINASAN_SUBTEST_INITIALS).map(([full, short]) => [
+      short,
+      full,
+    ]),
+  );
 
 /** Ordered list of Kedinasan subtests for consistent display order */
 export const KEDINASAN_SUBTEST_ORDER = [
@@ -122,7 +127,10 @@ export function getKedinasanThreshold(subCategory: string): number | null {
  * - kedinasan / KEDINASAN → Kedinasan initials
  * Falls back to `name` as-is for any other websub.
  */
-export function getSubtestLabel(name: string, websiteSubCategoryId?: string): string {
+export function getSubtestLabel(
+  name: string,
+  websiteSubCategoryId?: string,
+): string {
   const id = (websiteSubCategoryId ?? '').toLowerCase();
   if (id.includes('snbt')) return getSnbtShortName(name);
   if (id.includes('kedinasan')) return getKedinasanShortName(name);

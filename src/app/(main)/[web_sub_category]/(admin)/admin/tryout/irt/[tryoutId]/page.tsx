@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
@@ -343,7 +343,9 @@ export default function IRTProcessorPage() {
     const stdDev = (values: number[]) => {
       if (!values.length) return 0;
       const mean = values.reduce((s, v) => s + v, 0) / values.length;
-      return Math.sqrt(values.reduce((s, v) => s + (v - mean) ** 2, 0) / values.length);
+      return Math.sqrt(
+        values.reduce((s, v) => s + (v - mean) ** 2, 0) / values.length,
+      );
     };
     const quantile = (sorted: number[], p: number) => {
       if (!sorted.length) return 0;
@@ -354,14 +356,19 @@ export default function IRTProcessorPage() {
     };
     const fmt = (v: number, d = 2) => v.toFixed(d);
     const bar = (count: number, max: number, width = 20) =>
-      '█'.repeat(Math.round((count / Math.max(max, 1)) * width)).padEnd(width, '░');
+      '█'
+        .repeat(Math.round((count / Math.max(max, 1)) * width))
+        .padEnd(width, '░');
 
     const now = new Date();
     const dateStr = now.toLocaleDateString('id-ID', {
-      day: '2-digit', month: 'long', year: 'numeric',
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
     });
     const timeStr = now.toLocaleTimeString('id-ID', {
-      hour: '2-digit', minute: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
     });
 
     const lines: string[] = [];
@@ -369,8 +376,12 @@ export default function IRTProcessorPage() {
     lines.push(`# Laporan Analisis IRT — ${TryoutData?.title ?? tryoutId}`);
     lines.push(``);
     lines.push(`> **Digenerate pada:** ${dateStr}, pukul ${timeStr}  `);
-    lines.push(`> **Model:** Item Response Theory 3PL (Three-Parameter Logistic)  `);
-    lines.push(`> **Metode estimasi θ:** Expected A Posteriori (EAP) · Prior N(0, σ²=25)  `);
+    lines.push(
+      `> **Model:** Item Response Theory 3PL (Three-Parameter Logistic)  `,
+    );
+    lines.push(
+      `> **Metode estimasi θ:** Expected A Posteriori (EAP) · Prior N(0, σ²=25)  `,
+    );
     lines.push(`> **Skala skor:** SNBT (Z-score → Mean=500, SD=100)`);
     lines.push(``);
     lines.push(`---`);
@@ -380,7 +391,9 @@ export default function IRTProcessorPage() {
     lines.push(`## Ringkasan Semua Sesi`);
     lines.push(``);
     lines.push(`| Sesi | N | Mean | Median | SD | Min | Max | θ Mean | θ SD |`);
-    lines.push(`|------|---|------|--------|-----|-----|-----|--------|------|`);
+    lines.push(
+      `|------|---|------|--------|-----|-----|-----|--------|------|`,
+    );
     for (const s of processedSessions) {
       const r = s.result!;
       const scores = r.participants.map((p) => p.score);
@@ -416,7 +429,9 @@ export default function IRTProcessorPage() {
       lines.push(`| Metrik | Nilai |`);
       lines.push(`|--------|-------|`);
       lines.push(`| Total Peserta | **${n}** |`);
-      lines.push(`| Rata-rata (Mean) | **${fmt(overallStats.averageScores, 2)}** |`);
+      lines.push(
+        `| Rata-rata (Mean) | **${fmt(overallStats.averageScores, 2)}** |`,
+      );
       lines.push(`| Median | **${fmt(overallStats.medianScores, 2)}** |`);
       lines.push(`| Std. Deviasi | **${fmt(sd, 2)}** |`);
       lines.push(`| Nilai Tertinggi | **${fmt(overallStats.maxScores, 2)}** |`);
@@ -459,12 +474,16 @@ export default function IRTProcessorPage() {
       lines.push(`|---------|--------|------------|------------|`);
       for (const c of catCounts) {
         const pct = n > 0 ? ((c.count / n) * 100).toFixed(1) : '0.0';
-        lines.push(`| ${c.label} | ${c.count} | ${pct}% | \`${bar(c.count, catMax)}\` |`);
+        lines.push(
+          `| ${c.label} | ${c.count} | ${pct}% | \`${bar(c.count, catMax)}\` |`,
+        );
       }
       lines.push(``);
 
       // Item parameter analysis
-      const validQ = question.filter((q) => q.a !== null && q.b !== null && q.c !== null);
+      const validQ = question.filter(
+        (q) => q.a !== null && q.b !== null && q.c !== null,
+      );
       const aVals = validQ.map((q) => q.a as number);
       const bVals = validQ.map((q) => q.b as number);
       const cVals = validQ.map((q) => q.c as number);
@@ -484,39 +503,75 @@ export default function IRTProcessorPage() {
 
         lines.push(`### Parameter Butir (Model 3PL)`);
         lines.push(``);
-        lines.push(`> ${validQ.length} / ${question.length} soal berhasil diestimasi${question.length - validQ.length > 0 ? ` · ${question.length - validQ.length} soal tidak valid (tanpa variasi jawaban)` : ''}.`);
+        lines.push(
+          `> ${validQ.length} / ${question.length} soal berhasil diestimasi${question.length - validQ.length > 0 ? ` · ${question.length - validQ.length} soal tidak valid (tanpa variasi jawaban)` : ''}.`,
+        );
         lines.push(``);
         lines.push(`| Parameter | Rata-rata | Min | Max | SD | Interpretasi |`);
         lines.push(`|-----------|-----------|-----|-----|----|--------------|`);
-        lines.push(`| a (diskriminasi) | ${fmt(avgA, 3)} | ${fmt(Math.min(...aVals), 3)} | ${fmt(Math.max(...aVals), 3)} | ${fmt(stdDev(aVals), 3)} | ${avgA < 0.5 ? 'Rendah — soal kurang membedakan kemampuan' : avgA <= 2 ? 'Baik — soal cukup diskriminatif' : 'Sangat tinggi'} |`);
-        lines.push(`| b (kesulitan) | ${fmt(avgB, 3)} | ${fmt(Math.min(...bVals), 3)} | ${fmt(Math.max(...bVals), 3)} | ${fmt(stdDev(bVals), 3)} | ${avgB < -1 ? 'Mudah' : avgB <= 1 ? 'Sedang — tingkat kesulitan ideal' : 'Sulit'} |`);
-        lines.push(`| c (guessing) | ${fmt(avgC, 3)} | ${fmt(Math.min(...cVals), 3)} | ${fmt(Math.max(...cVals), 3)} | ${fmt(stdDev(cVals), 3)} | ${avgC < 0.1 ? 'Rendah — efek tebak minimal' : avgC <= 0.25 ? 'Wajar' : 'Tinggi — perlu perhatian'} |`);
+        lines.push(
+          `| a (diskriminasi) | ${fmt(avgA, 3)} | ${fmt(Math.min(...aVals), 3)} | ${fmt(Math.max(...aVals), 3)} | ${fmt(stdDev(aVals), 3)} | ${avgA < 0.5 ? 'Rendah — soal kurang membedakan kemampuan' : avgA <= 2 ? 'Baik — soal cukup diskriminatif' : 'Sangat tinggi'} |`,
+        );
+        lines.push(
+          `| b (kesulitan) | ${fmt(avgB, 3)} | ${fmt(Math.min(...bVals), 3)} | ${fmt(Math.max(...bVals), 3)} | ${fmt(stdDev(bVals), 3)} | ${avgB < -1 ? 'Mudah' : avgB <= 1 ? 'Sedang — tingkat kesulitan ideal' : 'Sulit'} |`,
+        );
+        lines.push(
+          `| c (guessing) | ${fmt(avgC, 3)} | ${fmt(Math.min(...cVals), 3)} | ${fmt(Math.max(...cVals), 3)} | ${fmt(stdDev(cVals), 3)} | ${avgC < 0.1 ? 'Rendah — efek tebak minimal' : avgC <= 0.25 ? 'Wajar' : 'Tinggi — perlu perhatian'} |`,
+        );
         lines.push(``);
         lines.push(`**Sebaran Tingkat Kesulitan (b):**`);
         lines.push(``);
         lines.push(`| Kategori | Jumlah | Distribusi |`);
         lines.push(`|----------|--------|------------|`);
-        lines.push(`| Mudah (b < −1) | ${easyN} | \`${bar(easyN, maxDiff)}\` |`);
-        lines.push(`| Sedang (−1 ≤ b ≤ 1) | ${medN} | \`${bar(medN, maxDiff)}\` |`);
+        lines.push(
+          `| Mudah (b < −1) | ${easyN} | \`${bar(easyN, maxDiff)}\` |`,
+        );
+        lines.push(
+          `| Sedang (−1 ≤ b ≤ 1) | ${medN} | \`${bar(medN, maxDiff)}\` |`,
+        );
         lines.push(`| Sulit (b > 1) | ${hardN} | \`${bar(hardN, maxDiff)}\` |`);
         lines.push(``);
         lines.push(`**Sebaran Daya Diskriminasi (a):**`);
         lines.push(``);
         lines.push(`| Kategori | Jumlah | Distribusi |`);
         lines.push(`|----------|--------|------------|`);
-        lines.push(`| Rendah (a < 0.5) | ${lowA} | \`${bar(lowA, maxDisc)}\` |`);
-        lines.push(`| Baik (0.5 ≤ a ≤ 2) | ${goodA} | \`${bar(goodA, maxDisc)}\` |`);
-        lines.push(`| Sangat Tinggi (a > 2) | ${highA} | \`${bar(highA, maxDisc)}\` |`);
+        lines.push(
+          `| Rendah (a < 0.5) | ${lowA} | \`${bar(lowA, maxDisc)}\` |`,
+        );
+        lines.push(
+          `| Baik (0.5 ≤ a ≤ 2) | ${goodA} | \`${bar(goodA, maxDisc)}\` |`,
+        );
+        lines.push(
+          `| Sangat Tinggi (a > 2) | ${highA} | \`${bar(highA, maxDisc)}\` |`,
+        );
         lines.push(``);
 
         // Item-level table
         lines.push(`### Tabel Parameter per Butir`);
         lines.push(``);
-        lines.push(`| No. | a (diskriminasi) | b (kesulitan) | c (guessing) | Ket. Kesulitan | Ket. Diskriminasi |`);
-        lines.push(`|-----|-----------------|--------------|-------------|----------------|-------------------|`);
+        lines.push(
+          `| No. | a (diskriminasi) | b (kesulitan) | c (guessing) | Ket. Kesulitan | Ket. Diskriminasi |`,
+        );
+        lines.push(
+          `|-----|-----------------|--------------|-------------|----------------|-------------------|`,
+        );
         for (const q of question) {
-          const diffLbl = q.b === null ? '—' : q.b < -1 ? 'Mudah' : q.b <= 1 ? 'Sedang' : 'Sulit';
-          const discLbl = q.a === null ? '—' : q.a < 0.5 ? 'Rendah' : q.a <= 2 ? 'Baik' : 'Sangat Tinggi';
+          const diffLbl =
+            q.b === null
+              ? '—'
+              : q.b < -1
+                ? 'Mudah'
+                : q.b <= 1
+                  ? 'Sedang'
+                  : 'Sulit';
+          const discLbl =
+            q.a === null
+              ? '—'
+              : q.a < 0.5
+                ? 'Rendah'
+                : q.a <= 2
+                  ? 'Baik'
+                  : 'Sangat Tinggi';
           lines.push(
             `| ${q.q} | ${q.a !== null ? fmt(q.a, 3) : '—'} | ${q.b !== null ? fmt(q.b, 3) : '—'} | ${q.c !== null ? fmt(q.c, 3) : '—'} | ${diffLbl} | ${discLbl} |`,
           );
@@ -528,26 +583,40 @@ export default function IRTProcessorPage() {
       lines.push(`### Analisis & Interpretasi`);
       lines.push(``);
       const spreadRatio = sd / 100;
-      lines.push(`- **Sebaran skor** ${spreadRatio < 0.7 ? 'sempit (homogen) — peserta memiliki kemampuan yang relatif merata.' : spreadRatio <= 1.3 ? 'normal — distribusi kemampuan peserta cukup bervariasi.' : 'lebar (heterogen) — terdapat perbedaan kemampuan yang signifikan antar peserta.'}`);
+      lines.push(
+        `- **Sebaran skor** ${spreadRatio < 0.7 ? 'sempit (homogen) — peserta memiliki kemampuan yang relatif merata.' : spreadRatio <= 1.3 ? 'normal — distribusi kemampuan peserta cukup bervariasi.' : 'lebar (heterogen) — terdapat perbedaan kemampuan yang signifikan antar peserta.'}`,
+      );
       const aboveAvg = scores.filter((s) => s >= 500).length;
-      lines.push(`- **${aboveAvg} peserta (${n > 0 ? ((aboveAvg / n) * 100).toFixed(1) : 0}%)** memperoleh skor ≥ 500 (di atas rata-rata nasional SNBT).`);
+      lines.push(
+        `- **${aboveAvg} peserta (${n > 0 ? ((aboveAvg / n) * 100).toFixed(1) : 0}%)** memperoleh skor ≥ 500 (di atas rata-rata nasional SNBT).`,
+      );
       const below400 = scores.filter((s) => s < 400).length;
       if (below400 > 0)
-        lines.push(`- **${below400} peserta (${((below400 / n) * 100).toFixed(1)}%)** memperoleh skor < 400 — perlu perhatian tambahan.`);
+        lines.push(
+          `- **${below400} peserta (${((below400 / n) * 100).toFixed(1)}%)** memperoleh skor < 400 — perlu perhatian tambahan.`,
+        );
       if (validQ.length > 0) {
         const avgA = aVals.reduce((s, v) => s + v, 0) / aVals.length;
         const avgB = bVals.reduce((s, v) => s + v, 0) / bVals.length;
-        lines.push(`- **Rata-rata diskriminasi a=${fmt(avgA, 3)}**: ${avgA >= 0.5 ? 'soal secara keseluruhan memiliki daya beda yang baik.' : 'daya beda soal perlu ditingkatkan.'}`);
-        lines.push(`- **Rata-rata kesulitan b=${fmt(avgB, 3)}**: ${avgB < -0.5 ? 'paket soal cenderung mudah.' : avgB <= 0.5 ? 'tingkat kesulitan paket soal sudah ideal.' : 'paket soal cenderung sulit.'}`);
+        lines.push(
+          `- **Rata-rata diskriminasi a=${fmt(avgA, 3)}**: ${avgA >= 0.5 ? 'soal secara keseluruhan memiliki daya beda yang baik.' : 'daya beda soal perlu ditingkatkan.'}`,
+        );
+        lines.push(
+          `- **Rata-rata kesulitan b=${fmt(avgB, 3)}**: ${avgB < -0.5 ? 'paket soal cenderung mudah.' : avgB <= 0.5 ? 'tingkat kesulitan paket soal sudah ideal.' : 'paket soal cenderung sulit.'}`,
+        );
       }
       lines.push(``);
       lines.push(`---`);
       lines.push(``);
     }
 
-    lines.push(`*Laporan ini digenerate secara otomatis oleh sistem IRT Analyzer Bimbelio.*`);
+    lines.push(
+      `*Laporan ini digenerate secara otomatis oleh sistem IRT Analyzer Bimbelio.*`,
+    );
 
-    const blob = new Blob([lines.join('\n')], { type: 'text/markdown;charset=utf-8' });
+    const blob = new Blob([lines.join('\n')], {
+      type: 'text/markdown;charset=utf-8',
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -562,9 +631,7 @@ export default function IRTProcessorPage() {
   }
 
   // ── Derived stats ─────────────────────────────────────────────────────────────
-  const savedCount = batchStates.filter(
-    (s) => s.status === 'saved',
-  ).length;
+  const savedCount = batchStates.filter((s) => s.status === 'saved').length;
   const doneCount = batchStates.filter(
     (s) => s.status === 'done' || s.status === 'saved',
   ).length;
@@ -679,7 +746,9 @@ export default function IRTProcessorPage() {
                   disabled={
                     isBatchRunning ||
                     !batchStates.some(
-                      (s) => s.result && (s.status === 'done' || s.status === 'saved'),
+                      (s) =>
+                        s.result &&
+                        (s.status === 'done' || s.status === 'saved'),
                     )
                   }
                   className="gap-2 border-purple-200 text-purple-700 hover:bg-purple-50"
@@ -724,8 +793,7 @@ export default function IRTProcessorPage() {
           <div className="space-y-3">
             {batchStates.map((session, idx) => {
               const isActive =
-                session.status === 'processing' ||
-                session.status === 'saving';
+                session.status === 'processing' || session.status === 'saving';
               return (
                 <Card
                   key={session.sessionId}
@@ -766,8 +834,7 @@ export default function IRTProcessorPage() {
                           variant="outline"
                           className="gap-1.5 text-blue-600 border-blue-200 hover:bg-blue-50 h-8"
                           disabled={
-                            isBatchRunning ||
-                            session.status === 'processing'
+                            isBatchRunning || session.status === 'processing'
                           }
                           onClick={() => processSession(session.sessionId)}
                         >

@@ -7,7 +7,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
 import {
   Select,
   SelectContent,
@@ -15,13 +14,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   website_sub_category_id,
   website_sub_category_id_params,
 } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
-import { cn, formatDateTime, formatDuration } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import {
   Category,
   CourseSubChapter,
@@ -49,7 +49,6 @@ import {
   UserCheck,
   Users,
   Video,
-  Zap,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -128,7 +127,9 @@ export default function LiveLearningDashboard({
   } = useGet<LiveLearningDataType[]>('/liveClass/getAllLiveClassAvailable', {
     params: {
       ...(type ? { type } : {}),
-      ...(webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : {}),
+      ...(webSubCategoryId
+        ? { website_sub_category_id: webSubCategoryId }
+        : {}),
     },
     useEffectDependencies: [type, webSubCategoryId],
     enabled: Boolean(webSubCategoryId),
@@ -138,7 +139,9 @@ export default function LiveLearningDashboard({
     useGet<LiveLearningDataType[]>('/liveClass/getAllLiveClassCompleted', {
       params: {
         ...(type ? { type } : {}),
-        ...(webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : {}),
+        ...(webSubCategoryId
+          ? { website_sub_category_id: webSubCategoryId }
+          : {}),
       },
       useEffectDependencies: [type, webSubCategoryId],
       enabled: Boolean(webSubCategoryId),
@@ -151,24 +154,35 @@ export default function LiveLearningDashboard({
   } = useGet<LiveLearningDataType[]>('/user/getUserLiveClassRegistered', {
     params: {
       ...(type ? { type } : {}),
-      ...(webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : {}),
+      ...(webSubCategoryId
+        ? { website_sub_category_id: webSubCategoryId }
+        : {}),
     },
     enabled: LiveClassAvailableIsLoading === false && Boolean(webSubCategoryId),
-    useEffectDependencies: [type, LiveClassAvailableIsLoading, webSubCategoryId],
+    useEffectDependencies: [
+      type,
+      LiveClassAvailableIsLoading,
+      webSubCategoryId,
+    ],
   });
 
   const { data: LiveClassInvited, totalData: LiveClassInviteTotalData } =
     useGet<LiveLearningDataType[]>('/user/getUserLiveClassInvited', {
       params: {
         ...(type ? { type } : {}),
-        ...(webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : {}),
+        ...(webSubCategoryId
+          ? { website_sub_category_id: webSubCategoryId }
+          : {}),
       },
       useEffectDependencies: [type, webSubCategoryId],
       enabled: Boolean(webSubCategoryId),
     });
 
   const { data: attendanceReport } = useGet<{
-    report: { id: string; attendanceStatus: 'PRESENT' | 'LATE' | 'ABSENT' | 'UPCOMING' }[];
+    report: {
+      id: string;
+      attendanceStatus: 'PRESENT' | 'LATE' | 'ABSENT' | 'UPCOMING';
+    }[];
     summary: {
       total: number;
       present: number;
@@ -182,17 +196,24 @@ export default function LiveLearningDashboard({
       take: 100,
       page: 1,
       ...(type ? { type } : {}),
-      ...(webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : {}),
+      ...(webSubCategoryId
+        ? { website_sub_category_id: webSubCategoryId }
+        : {}),
     },
     useEffectDependencies: [type, webSubCategoryId],
     enabled: Boolean(webSubCategoryId),
   });
 
-  const { data: Categories } = useGet<Category[]>('/category/getAllCategories', {
-    params: webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : undefined,
-    useEffectDependencies: [webSubCategoryId],
-    enabled: Boolean(webSubCategoryId),
-  });
+  const { data: Categories } = useGet<Category[]>(
+    '/category/getAllCategories',
+    {
+      params: webSubCategoryId
+        ? { website_sub_category_id: webSubCategoryId }
+        : undefined,
+      useEffectDependencies: [webSubCategoryId],
+      enabled: Boolean(webSubCategoryId),
+    },
+  );
 
   // ─── Filter ────────────────────────────────────────────────────────────────
 
@@ -247,7 +268,12 @@ export default function LiveLearningDashboard({
       invited: LiveClassInvited?.length ?? null,
       completed: LiveClassCompleted?.length ?? null,
     }),
-    [LiveClassAvailable, LiveClassRegistered, LiveClassInvited, LiveClassCompleted],
+    [
+      LiveClassAvailable,
+      LiveClassRegistered,
+      LiveClassInvited,
+      LiveClassCompleted,
+    ],
   );
 
   useEffect(() => {
@@ -334,7 +360,10 @@ export default function LiveLearningDashboard({
             className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0"
             style={{ backgroundColor: `${mainColor}20` }}
           >
-            <TypeIcon className="w-5 h-5" style={{ color: mainColor }} />
+            <TypeIcon
+              className="w-5 h-5"
+              style={{ color: mainColor }}
+            />
           </div>
           <div>
             <h1 className="text-xl font-black text-slate-900">{typeLabel}</h1>
@@ -391,20 +420,29 @@ export default function LiveLearningDashboard({
               className="pl-9 h-10 rounded-2xl border-slate-200 bg-white shadow-sm font-medium text-sm"
             />
           </div>
-          <Select value={selectedSubject} onValueChange={setSelectedSubject}>
+          <Select
+            value={selectedSubject}
+            onValueChange={setSelectedSubject}
+          >
             <SelectTrigger className="w-full sm:w-[170px] h-10 rounded-2xl border-slate-200 bg-white shadow-sm font-semibold text-sm">
               <SelectValue placeholder="Semua Mapel" />
             </SelectTrigger>
             <SelectContent className="rounded-2xl">
               <SelectItem value="all">Semua Mapel</SelectItem>
               {Categories?.map((cat) => (
-                <SelectItem key={cat.id} value={cat.id}>
+                <SelectItem
+                  key={cat.id}
+                  value={cat.id}
+                >
                   {cat.name}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-          <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+          <Select
+            value={selectedStatus}
+            onValueChange={setSelectedStatus}
+          >
             <SelectTrigger className="w-full sm:w-[150px] h-10 rounded-2xl border-slate-200 bg-white shadow-sm font-semibold text-sm">
               <SelectValue placeholder="Semua Status" />
             </SelectTrigger>
@@ -425,7 +463,9 @@ export default function LiveLearningDashboard({
                   ? 'text-white shadow-sm'
                   : 'text-slate-500 hover:text-slate-700',
               )}
-              style={viewMode === 'grid' ? { background: mainColor } : undefined}
+              style={
+                viewMode === 'grid' ? { background: mainColor } : undefined
+              }
             >
               <LayoutGrid className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Grid</span>
@@ -654,7 +694,12 @@ function LiveClassSection({
       {isLoading && (
         <div
           className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' } as React.CSSProperties}
+          style={
+            {
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+            } as React.CSSProperties
+          }
         >
           {Array.from({ length: 3 }).map((_, i) => (
             <Skeleton
@@ -679,7 +724,12 @@ function LiveClassSection({
       {!isLoading && !hasError && viewMode === 'grid' && data.length > 0 && (
         <div
           className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3 xl:grid-cols-4"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' } as React.CSSProperties}
+          style={
+            {
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+            } as React.CSSProperties
+          }
         >
           {data.map((lc) => (
             <LiveClassCard
@@ -700,7 +750,9 @@ function LiveClassSection({
           <div className="w-20 h-20 rounded-3xl bg-slate-50 flex items-center justify-center mb-4">
             {emptyIcon}
           </div>
-          <h4 className="text-base font-bold text-slate-700 mb-1">{emptyTitle}</h4>
+          <h4 className="text-base font-bold text-slate-700 mb-1">
+            {emptyTitle}
+          </h4>
           <p className="text-sm text-slate-400 max-w-xs">{emptyDesc}</p>
         </div>
       )}
@@ -740,8 +792,7 @@ function LiveClassCard({
   // Registration badge — mirrors getBadgeValue from card-tryout
   const statusBadge = liveClass.isRegistered
     ? {
-        className:
-          'bg-green-50 text-green-700 border-green-200 font-medium',
+        className: 'bg-green-50 text-green-700 border-green-200 font-medium',
         label: 'Terdaftar',
         icon: <CheckCircle2 className="w-3 h-3" />,
       }
@@ -756,7 +807,8 @@ function LiveClassCard({
         }
       : isDone
         ? {
-            className: 'bg-slate-100 text-slate-600 border-slate-200 font-medium',
+            className:
+              'bg-slate-100 text-slate-600 border-slate-200 font-medium',
             label: 'Selesai',
             icon: <Check className="w-3 h-3" />,
           }

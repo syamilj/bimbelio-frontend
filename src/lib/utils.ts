@@ -100,11 +100,13 @@ export const copyTextToClipboard = (text: string | undefined) => {
 //   return new Date();
 // };
 
-export const getInitials = (inputRaw: string, props?: {
-  type?: "Remove 'dan'"
-}): string => {
-
-  let input = inputRaw
+export const getInitials = (
+  inputRaw: string,
+  props?: {
+    type?: "Remove 'dan'";
+  },
+): string => {
+  let input = inputRaw;
 
   if (props?.type === "Remove 'dan'") {
     input = input.replace(/dan/gi, '');
@@ -286,15 +288,17 @@ export const getDate = (date: any) => {
   const day = Dates.getDate();
   const month = Dates.getMonth() + 1;
   const year = Dates.getFullYear();
-  return `${day < 10 ? `0${day}` : day}/${month < 10 ? `0${month}` : month
-    }/${year}`;
+  return `${day < 10 ? `0${day}` : day}/${
+    month < 10 ? `0${month}` : month
+  }/${year}`;
 };
 export const getHours = (date: any) => {
   const Dates = new Date(date);
   const hours = Dates.getHours();
   const minute = Dates.getMinutes();
-  return `${hours < 10 ? `0${hours}` : hours}:${minute < 10 ? `0${minute}` : minute
-    }`;
+  return `${hours < 10 ? `0${hours}` : hours}:${
+    minute < 10 ? `0${minute}` : minute
+  }`;
 };
 export const getHoursDetail = (date: any) => {
   if (!date) return '-';
@@ -303,8 +307,9 @@ export const getHoursDetail = (date: any) => {
   const hours = Dates.getHours();
   const minute = Dates.getMinutes();
   const second = Dates.getSeconds();
-  return `${hours < 10 ? `0${hours}` : hours}:${minute < 10 ? `0${minute}` : minute
-    }:${second < 10 ? `0${second}` : second}`;
+  return `${hours < 10 ? `0${hours}` : hours}:${
+    minute < 10 ? `0${minute}` : minute
+  }:${second < 10 ? `0${second}` : second}`;
 };
 export const getDateHourStr = (date: any) => {
   const dateData = new Date(date);

@@ -12,10 +12,16 @@ import {
   Layers,
   Zap,
 } from 'lucide-react';
-import { useMemo, useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import CardTryOut, { CardTryoutProps } from './ui/card-tryout';
 
-export default function Upcoming({ id, onCountReady }: { id: string; onCountReady?: (count: number) => void }) {
+export default function Upcoming({
+  id,
+  onCountReady,
+}: {
+  id: string;
+  onCountReady?: (count: number) => void;
+}) {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -49,11 +55,26 @@ export default function Upcoming({ id, onCountReady }: { id: string; onCountRead
   const overview = useMemo(() => {
     if (!cards?.length) return null;
     const totalQuestions = cards.reduce((sum, c) => {
-      return sum + (c.TryoutSession?.reduce((s: number, sess: any) => s + (sess._count?.TryoutQuestion || 0), 0) || 0);
+      return (
+        sum +
+        (c.TryoutSession?.reduce(
+          (s: number, sess: any) => s + (sess._count?.TryoutQuestion || 0),
+          0,
+        ) || 0)
+      );
     }, 0);
-    const totalSubtests = cards.reduce((sum, c) => sum + (c.TryoutSession?.length || 0), 0);
+    const totalSubtests = cards.reduce(
+      (sum, c) => sum + (c.TryoutSession?.length || 0),
+      0,
+    );
     const totalDuration = cards.reduce((sum, c) => {
-      return sum + (c.TryoutSession?.reduce((s: number, sess: any) => s + (sess.duration || 0), 0) || 0);
+      return (
+        sum +
+        (c.TryoutSession?.reduce(
+          (s: number, sess: any) => s + (sess.duration || 0),
+          0,
+        ) || 0)
+      );
     }, 0);
     const registered = cards.filter((c) => c.isRegistered).length;
 
@@ -71,7 +92,14 @@ export default function Upcoming({ id, onCountReady }: { id: string; onCountRead
       else daysUntil = getDateStringShort(nearestDate);
     }
 
-    return { totalQuestions, totalSubtests, totalDuration, registered, nearest, daysUntil };
+    return {
+      totalQuestions,
+      totalSubtests,
+      totalDuration,
+      registered,
+      nearest,
+      daysUntil,
+    };
   }, [cards]);
 
   if (!cards && !isLoading) {
@@ -87,7 +115,9 @@ export default function Upcoming({ id, onCountReady }: { id: string; onCountRead
         </div>
         <div>
           <h3 className="text-base font-black text-slate-800">Akan Datang</h3>
-          <p className="text-xs text-slate-400 font-medium">Daftar sekarang agar tidak ketinggalan</p>
+          <p className="text-xs text-slate-400 font-medium">
+            Daftar sekarang agar tidak ketinggalan
+          </p>
         </div>
         {!isLoading && cards && cards.length > 0 && (
           <span className="ml-auto text-xs font-bold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">
@@ -109,7 +139,9 @@ export default function Upcoming({ id, onCountReady }: { id: string; onCountRead
                 <p className="text-xs font-bold text-blue-800 truncate">
                   {overview.nearest.title}
                 </p>
-                <p className="text-[10px] text-blue-500 font-medium">Try out terdekat</p>
+                <p className="text-[10px] text-blue-500 font-medium">
+                  Try out terdekat
+                </p>
               </div>
               <Badge className="bg-blue-500 text-white border-0 text-xs font-bold flex-shrink-0">
                 {overview.daysUntil}
@@ -118,23 +150,34 @@ export default function Upcoming({ id, onCountReady }: { id: string; onCountRead
           )}
 
           {/* Quick stats tags */}
-          <div className="flex items-center gap-2 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+          <div
+            className="flex items-center gap-2 overflow-x-auto"
+            style={{ scrollbarWidth: 'none' }}
+          >
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 flex-shrink-0">
               <BookOpen className="w-3 h-3 text-blue-500" />
-              <span className="text-[10px] font-bold text-blue-700">{overview.totalQuestions} soal</span>
+              <span className="text-[10px] font-bold text-blue-700">
+                {overview.totalQuestions} soal
+              </span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 flex-shrink-0">
               <Layers className="w-3 h-3 text-indigo-500" />
-              <span className="text-[10px] font-bold text-indigo-700">{overview.totalSubtests} subtes</span>
+              <span className="text-[10px] font-bold text-indigo-700">
+                {overview.totalSubtests} subtes
+              </span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-50 border border-purple-100 flex-shrink-0">
               <Clock className="w-3 h-3 text-purple-500" />
-              <span className="text-[10px] font-bold text-purple-700">{overview.totalDuration} menit</span>
+              <span className="text-[10px] font-bold text-purple-700">
+                {overview.totalDuration} menit
+              </span>
             </div>
             {overview.registered > 0 && (
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 flex-shrink-0">
                 <Zap className="w-3 h-3 text-emerald-500" />
-                <span className="text-[10px] font-bold text-emerald-700">{overview.registered} terdaftar</span>
+                <span className="text-[10px] font-bold text-emerald-700">
+                  {overview.registered} terdaftar
+                </span>
               </div>
             )}
           </div>
@@ -161,7 +204,9 @@ export default function Upcoming({ id, onCountReady }: { id: string; onCountRead
           <div className="w-20 h-20 rounded-3xl bg-blue-50 flex items-center justify-center mb-4">
             <Calendar className="w-10 h-10 text-blue-300" />
           </div>
-          <h4 className="text-base font-bold text-slate-700 mb-1">Belum ada try out yang akan datang</h4>
+          <h4 className="text-base font-bold text-slate-700 mb-1">
+            Belum ada try out yang akan datang
+          </h4>
           <p className="text-sm text-slate-400 max-w-xs">
             Try out baru akan segera hadir. Pantau terus halaman ini!
           </p>

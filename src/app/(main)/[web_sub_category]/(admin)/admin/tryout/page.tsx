@@ -56,20 +56,38 @@ interface TryoutData extends Tryout {
 }
 
 const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
-  ACTIVE:   { label: 'Aktif',    className: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
-  INACTIVE: { label: 'Nonaktif', className: 'bg-gray-100 text-gray-500 border-gray-200' },
-  DRAFT:    { label: 'Draft',    className: 'bg-amber-50 text-amber-700 border-amber-200' },
-  ENDED:    { label: 'Selesai',  className: 'bg-blue-50 text-blue-700 border-blue-200' },
+  ACTIVE: {
+    label: 'Aktif',
+    className: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  },
+  INACTIVE: {
+    label: 'Nonaktif',
+    className: 'bg-gray-100 text-gray-500 border-gray-200',
+  },
+  DRAFT: {
+    label: 'Draft',
+    className: 'bg-amber-50 text-amber-700 border-amber-200',
+  },
+  ENDED: {
+    label: 'Selesai',
+    className: 'bg-blue-50 text-blue-700 border-blue-200',
+  },
 };
 
 export default function Page() {
   const [search, setSearch] = useState('');
 
-  const { data: tryout, isLoading, refetch } = useGet<TryoutData[]>('/tryout/getTryout', {
+  const {
+    data: tryout,
+    isLoading,
+    refetch,
+  } = useGet<TryoutData[]>('/tryout/getTryout', {
     params: { type: 'TRYOUT' },
   });
 
-  const { data: tryoutInfo } = useGet<{ title: string; total: number }[]>('/tryout/getTryoutInfo');
+  const { data: tryoutInfo } = useGet<{ title: string; total: number }[]>(
+    '/tryout/getTryoutInfo',
+  );
 
   const filtered = tryout
     ?.filter((t) => t.title.toLowerCase().includes(search.toLowerCase()))
@@ -78,7 +96,13 @@ export default function Page() {
         new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
     );
 
-  const exportData = async ({ downloadData, fileName }: { downloadData: any[]; fileName: string }) => {
+  const exportData = async ({
+    downloadData,
+    fileName,
+  }: {
+    downloadData: any[];
+    fileName: string;
+  }) => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('items');
     if (downloadData.length > 0) {
@@ -86,7 +110,9 @@ export default function Page() {
       downloadData.forEach((row) => worksheet.addRow(Object.values(row)));
     }
     const buffer = await workbook.xlsx.writeBuffer();
-    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const blob = new Blob([buffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
@@ -106,7 +132,9 @@ export default function Page() {
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Manajemen Tryout</h1>
-          <p className="text-gray-500 text-sm mt-0.5">Kelola semua soal dan sesi tryout</p>
+          <p className="text-gray-500 text-sm mt-0.5">
+            Kelola semua soal dan sesi tryout
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <Link
@@ -132,12 +160,17 @@ export default function Page() {
           {tryoutInfo.map((item, i) => {
             const Icon = STAT_ICONS[i % STAT_ICONS.length];
             return (
-              <div key={i} className="bg-white rounded-2xl border border-gray-100 p-5 flex items-center gap-4">
+              <div
+                key={i}
+                className="bg-white rounded-2xl border border-gray-100 p-5 flex items-center gap-4"
+              >
                 <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
                   <Icon className="h-5 w-5 text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">{item.total}</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {item.total}
+                  </p>
                   <p className="text-xs text-gray-500 mt-0.5">{item.title}</p>
                 </div>
               </div>
@@ -186,171 +219,243 @@ export default function Page() {
           <ShadTable>
             <TableHeader>
               <TableRow className="bg-gray-50 hover:bg-gray-50">
-                <TableHead className="w-10 text-center font-bold text-gray-600 text-xs">No.</TableHead>
-                <TableHead className="font-bold text-gray-600 text-xs">Judul</TableHead>
-                <TableHead className="text-center font-bold text-gray-600 text-xs">Daftar</TableHead>
-                <TableHead className="text-center font-bold text-gray-600 text-xs">Mengerjakan</TableHead>
-                <TableHead className="text-center font-bold text-gray-600 text-xs">Tanggal</TableHead>
-                <TableHead className="font-bold text-gray-600 text-xs">Sesi</TableHead>
-                <TableHead className="text-center font-bold text-gray-600 text-xs">Status</TableHead>
-                <TableHead className="text-center font-bold text-gray-600 text-xs">Aksi</TableHead>
+                <TableHead className="w-10 text-center font-bold text-gray-600 text-xs">
+                  No.
+                </TableHead>
+                <TableHead className="font-bold text-gray-600 text-xs">
+                  Judul
+                </TableHead>
+                <TableHead className="text-center font-bold text-gray-600 text-xs">
+                  Daftar
+                </TableHead>
+                <TableHead className="text-center font-bold text-gray-600 text-xs">
+                  Mengerjakan
+                </TableHead>
+                <TableHead className="text-center font-bold text-gray-600 text-xs">
+                  Tanggal
+                </TableHead>
+                <TableHead className="font-bold text-gray-600 text-xs">
+                  Sesi
+                </TableHead>
+                <TableHead className="text-center font-bold text-gray-600 text-xs">
+                  Status
+                </TableHead>
+                <TableHead className="text-center font-bold text-gray-600 text-xs">
+                  Aksi
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {/* Skeleton */}
-              {isLoading && Array.from({ length: 6 }).map((_, i) => (
-                <TableRow key={`sk-${i}`} className="animate-pulse">
-                  <TableCell className="text-center"><Skeleton className="h-4 w-5 mx-auto rounded" /></TableCell>
-                  <TableCell><Skeleton className="h-4 w-48 rounded" /></TableCell>
-                  <TableCell className="text-center"><Skeleton className="h-4 w-8 mx-auto rounded" /></TableCell>
-                  <TableCell className="text-center"><Skeleton className="h-4 w-8 mx-auto rounded" /></TableCell>
-                  <TableCell className="text-center"><Skeleton className="h-4 w-28 mx-auto rounded" /></TableCell>
-                  <TableCell><Skeleton className="h-6 w-24 rounded-full" /></TableCell>
-                  <TableCell className="text-center"><Skeleton className="h-6 w-16 mx-auto rounded-full" /></TableCell>
-                  <TableCell className="text-center">
-                    <div className="flex justify-center gap-1">
-                      <Skeleton className="h-8 w-8 rounded-lg" />
-                      <Skeleton className="h-8 w-8 rounded-lg" />
-                      <Skeleton className="h-8 w-8 rounded-lg" />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {isLoading &&
+                Array.from({ length: 6 }).map((_, i) => (
+                  <TableRow
+                    key={`sk-${i}`}
+                    className="animate-pulse"
+                  >
+                    <TableCell className="text-center">
+                      <Skeleton className="h-4 w-5 mx-auto rounded" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-48 rounded" />
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <Skeleton className="h-4 w-8 mx-auto rounded" />
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <Skeleton className="h-4 w-8 mx-auto rounded" />
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <Skeleton className="h-4 w-28 mx-auto rounded" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-6 w-24 rounded-full" />
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <Skeleton className="h-6 w-16 mx-auto rounded-full" />
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <div className="flex justify-center gap-1">
+                        <Skeleton className="h-8 w-8 rounded-lg" />
+                        <Skeleton className="h-8 w-8 rounded-lg" />
+                        <Skeleton className="h-8 w-8 rounded-lg" />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
 
               {/* Empty */}
               {!isLoading && filtered?.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={8} className="h-48 text-center">
+                  <TableCell
+                    colSpan={8}
+                    className="h-48 text-center"
+                  >
                     <div className="flex flex-col items-center justify-center gap-3 py-8">
                       <ClipboardList className="w-12 h-12 text-gray-300" />
-                      <p className="text-sm font-semibold text-gray-500">Tidak ada tryout</p>
-                      <p className="text-xs text-gray-400">{search ? 'Coba kata kunci lain' : 'Belum ada tryout yang ditambahkan'}</p>
+                      <p className="text-sm font-semibold text-gray-500">
+                        Tidak ada tryout
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        {search
+                          ? 'Coba kata kunci lain'
+                          : 'Belum ada tryout yang ditambahkan'}
+                      </p>
                     </div>
                   </TableCell>
                 </TableRow>
               )}
 
               {/* Rows */}
-              {!isLoading && filtered?.map((item, i) => {
-                const localString = typeof window !== 'undefined'
-                  ? localStorage.getItem(`temporary-edit-tryout-${item.id}`)
-                  : null;
-                const statusCfg = STATUS_CONFIG[item.status] ?? { label: item.status, className: 'bg-gray-100 text-gray-600 border-gray-200' };
+              {!isLoading &&
+                filtered?.map((item, i) => {
+                  const localString =
+                    typeof window !== 'undefined'
+                      ? localStorage.getItem(`temporary-edit-tryout-${item.id}`)
+                      : null;
+                  const statusCfg = STATUS_CONFIG[item.status] ?? {
+                    label: item.status,
+                    className: 'bg-gray-100 text-gray-600 border-gray-200',
+                  };
 
-                return (
-                  <TableRow key={item.id} className="hover:bg-gray-50/80 transition-colors">
-                    <TableCell className="text-center text-sm text-gray-500 font-medium">{i + 1}</TableCell>
+                  return (
+                    <TableRow
+                      key={item.id}
+                      className="hover:bg-gray-50/80 transition-colors"
+                    >
+                      <TableCell className="text-center text-sm text-gray-500 font-medium">
+                        {i + 1}
+                      </TableCell>
 
-                    <TableCell className="max-w-[220px]">
-                      <div className="space-y-0.5">
-                        <p className="font-semibold text-gray-800 text-sm leading-tight" title={item.title}>
-                          {item.title}
-                        </p>
-                        <button
-                          className="inline-flex items-center gap-1 text-[10px] text-gray-400 hover:text-gray-600 transition-colors"
-                          onClick={() => {
-                            navigator.clipboard.writeText(item.id);
-                            toaster({ title: 'ID disalin', description: item.id, duration: 2000 });
-                          }}
-                        >
-                          <Copy className="w-2.5 h-2.5" />
-                          {item.id.slice(0, 12)}…
-                        </button>
-                      </div>
-                    </TableCell>
-
-                    <TableCell className="text-center">
-                      <span className="text-sm font-semibold text-gray-700">{item.totalRegistration}</span>
-                    </TableCell>
-
-                    <TableCell className="text-center">
-                      <span className="text-sm font-semibold text-gray-700">{item.totalJoin}</span>
-                    </TableCell>
-
-                    <TableCell className="text-center">
-                      <span className="text-xs text-gray-600 whitespace-nowrap">
-                        {getDateString(item.startDate)}
-                        <br />
-                        <span className="text-gray-400">{getHours(item.startDate)}</span>
-                      </span>
-                    </TableCell>
-
-                    <TableCell>
-                      <div className="flex flex-wrap gap-1">
-                        {item.TryoutSession.map((s, si) => (
+                      <TableCell className="max-w-[220px]">
+                        <div className="space-y-0.5">
+                          <p
+                            className="font-semibold text-gray-800 text-sm leading-tight"
+                            title={item.title}
+                          >
+                            {item.title}
+                          </p>
                           <button
-                            key={si}
-                            title={`Download IRT: ${s.TryoutCategory.name} - ${s.TryoutSubCategory.name}`}
+                            className="inline-flex items-center gap-1 text-[10px] text-gray-400 hover:text-gray-600 transition-colors"
                             onClick={() => {
-                              const fileName = `${s.TryoutCategory.name} - ${s.TryoutSubCategory.name}`;
-                              const data = s.TryoutQuestion.map((q) => ({
-                                Session: fileName,
-                                Question: q.number,
-                                a: q.a_discrimination,
-                                b: q.b_difficulty,
-                                c: q.c_guessing,
-                                SubCategory: q.subCategory,
-                                SubSubCategory: q.subSubCategory,
-                              }));
-                              exportData({ downloadData: data, fileName });
+                              navigator.clipboard.writeText(item.id);
+                              toaster({
+                                title: 'ID disalin',
+                                description: item.id,
+                                duration: 2000,
+                              });
                             }}
-                            className="inline-flex items-center gap-1 bg-indigo-50 text-indigo-700 border border-indigo-100 px-2 py-0.5 rounded-full text-xs font-medium hover:bg-indigo-100 transition-colors"
                           >
-                            <FileSpreadsheet className="w-3 h-3" />
-                            {s.TryoutSubCategory.name}
+                            <Copy className="w-2.5 h-2.5" />
+                            {item.id.slice(0, 12)}…
                           </button>
-                        ))}
-                      </div>
-                    </TableCell>
+                        </div>
+                      </TableCell>
 
-                    <TableCell className="text-center">
-                      <Badge className={`border text-xs font-semibold rounded-full hover:opacity-80 ${statusCfg.className}`}>
-                        {statusCfg.label}
-                      </Badge>
-                    </TableCell>
+                      <TableCell className="text-center">
+                        <span className="text-sm font-semibold text-gray-700">
+                          {item.totalRegistration}
+                        </span>
+                      </TableCell>
 
-                    <TableCell>
-                      <div className="flex items-center justify-center gap-1">
-                        <Link
-                          href={`/${website_sub_category_id}/admin/tryout/edit/${item.id}`}
-                          title="Edit tryout"
-                          className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
+                      <TableCell className="text-center">
+                        <span className="text-sm font-semibold text-gray-700">
+                          {item.totalJoin}
+                        </span>
+                      </TableCell>
+
+                      <TableCell className="text-center">
+                        <span className="text-xs text-gray-600 whitespace-nowrap">
+                          {getDateString(item.startDate)}
+                          <br />
+                          <span className="text-gray-400">
+                            {getHours(item.startDate)}
+                          </span>
+                        </span>
+                      </TableCell>
+
+                      <TableCell>
+                        <div className="flex flex-wrap gap-1">
+                          {item.TryoutSession.map((s, si) => (
+                            <button
+                              key={si}
+                              title={`Download IRT: ${s.TryoutCategory.name} - ${s.TryoutSubCategory.name}`}
+                              onClick={() => {
+                                const fileName = `${s.TryoutCategory.name} - ${s.TryoutSubCategory.name}`;
+                                const data = s.TryoutQuestion.map((q) => ({
+                                  Session: fileName,
+                                  Question: q.number,
+                                  a: q.a_discrimination,
+                                  b: q.b_difficulty,
+                                  c: q.c_guessing,
+                                  SubCategory: q.subCategory,
+                                  SubSubCategory: q.subSubCategory,
+                                }));
+                                exportData({ downloadData: data, fileName });
+                              }}
+                              className="inline-flex items-center gap-1 bg-indigo-50 text-indigo-700 border border-indigo-100 px-2 py-0.5 rounded-full text-xs font-medium hover:bg-indigo-100 transition-colors"
+                            >
+                              <FileSpreadsheet className="w-3 h-3" />
+                              {s.TryoutSubCategory.name}
+                            </button>
+                          ))}
+                        </div>
+                      </TableCell>
+
+                      <TableCell className="text-center">
+                        <Badge
+                          className={`border text-xs font-semibold rounded-full hover:opacity-80 ${statusCfg.className}`}
                         >
-                          <Edit className="w-4 h-4" />
-                        </Link>
-                        {item.irt && (
+                          {statusCfg.label}
+                        </Badge>
+                      </TableCell>
+
+                      <TableCell>
+                        <div className="flex items-center justify-center gap-1">
                           <Link
-                            href={`/${website_sub_category_id}/admin/tryout/irt/${item.id}`}
-                            title="Lihat IRT"
-                            className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-purple-600 hover:bg-purple-50 transition-colors"
+                            href={`/${website_sub_category_id}/admin/tryout/edit/${item.id}`}
+                            title="Edit tryout"
+                            className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
                           >
-                            <BarChart2 className="w-4 h-4" />
+                            <Edit className="w-4 h-4" />
                           </Link>
-                        )}
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          disabled={!localString || isLoading}
-                          title="Clear local storage"
-                          className="w-8 h-8 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 disabled:opacity-30"
-                          onClick={async () => {
-                            localStorage.removeItem(`temporary-edit-tryout-${item.id}`);
-                            await refetch();
-                          }}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                          {item.irt && (
+                            <Link
+                              href={`/${website_sub_category_id}/admin/tryout/irt/${item.id}`}
+                              title="Lihat IRT"
+                              className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-purple-600 hover:bg-purple-50 transition-colors"
+                            >
+                              <BarChart2 className="w-4 h-4" />
+                            </Link>
+                          )}
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            disabled={!localString || isLoading}
+                            title="Clear local storage"
+                            className="w-8 h-8 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 disabled:opacity-30"
+                            onClick={async () => {
+                              localStorage.removeItem(
+                                `temporary-edit-tryout-${item.id}`,
+                              );
+                              await refetch();
+                            }}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </ShadTable>
         </div>
 
         {!isLoading && filtered && filtered.length > 0 && (
-          <p className="text-center text-xs text-gray-400">{filtered.length} tryout ditemukan</p>
+          <p className="text-center text-xs text-gray-400">
+            {filtered.length} tryout ditemukan
+          </p>
         )}
       </div>
     </div>

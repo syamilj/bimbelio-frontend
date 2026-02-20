@@ -57,7 +57,11 @@ interface CountdownTimerProps {
 
 export function CountdownTimer({ timeLeft }: CountdownTimerProps) {
   if (timeLeft.isExpired) {
-    return <div className="text-xs text-slate-400 font-semibold">Waktu telah berakhir</div>;
+    return (
+      <div className="text-xs text-slate-400 font-semibold">
+        Waktu telah berakhir
+      </div>
+    );
   }
 
   const units = [

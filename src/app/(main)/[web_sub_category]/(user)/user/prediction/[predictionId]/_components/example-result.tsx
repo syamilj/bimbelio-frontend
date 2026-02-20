@@ -750,7 +750,11 @@ const selectedPrograms = {
 
 // Labels use SNBT initials — see @/lib/utils/snbt for the canonical map
 const utbkScores = [
-  { label: getSnbtShortName('Penalaran Umum'), name: 'Penalaran Umum', score: 800 },
+  {
+    label: getSnbtShortName('Penalaran Umum'),
+    name: 'Penalaran Umum',
+    score: 800,
+  },
   {
     label: getSnbtShortName('Pengetahuan dan Pemahaman Umum'),
     name: 'Pengetahuan & Pemahaman Umum',
@@ -761,7 +765,11 @@ const utbkScores = [
     name: 'Pemahaman Bacaan & Menulis',
     score: 655,
   },
-  { label: getSnbtShortName('Pengetahuan Kuantitatif'), name: 'Penalaran Kuantitatif', score: 812 },
+  {
+    label: getSnbtShortName('Pengetahuan Kuantitatif'),
+    name: 'Penalaran Kuantitatif',
+    score: 812,
+  },
   {
     label: getSnbtShortName('Literasi Bahasa Indonesia'),
     name: 'Literasi Bahasa Indonesia',
@@ -772,7 +780,11 @@ const utbkScores = [
     name: 'Literasi Bahasa Inggris',
     score: 899,
   },
-  { label: getSnbtShortName('Penalaran Matematika'), name: 'Matematika', score: 675 },
+  {
+    label: getSnbtShortName('Penalaran Matematika'),
+    name: 'Matematika',
+    score: 675,
+  },
 ];
 
 const simakScores = [

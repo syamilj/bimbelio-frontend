@@ -13,12 +13,11 @@ import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { HighlightTypeEnum, Message, Video } from '@/types/database';
 import { insertOrUpdateBlock } from '@blocknote/core';
 import { createId } from '@paralleldrive/cuid2';
+import { Star } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Star } from 'lucide-react';
 import { GhostHighlight, Scaled } from 'react-pdf-highlighter-extended';
 import { useSession } from '../provider/provider-session-auth';
-import { ToolTip } from '../ui/tooltip';
 import Provider, { useProvider } from './_provider';
 
 export type DocDataType = {
@@ -319,12 +318,14 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
     `${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/document/${doc.video?.url}`,
   );
 
-  const videoData = doc.video as (Video & {
-    rating?: number;
-    starReview?: number;
-    reviewCount?: number;
-    totalReviews?: number;
-  }) | null;
+  const videoData = doc.video as
+    | (Video & {
+        rating?: number;
+        starReview?: number;
+        reviewCount?: number;
+        totalReviews?: number;
+      })
+    | null;
 
   const starRating =
     typeof videoData?.rating === 'number'
@@ -340,12 +341,18 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
         ? videoData.totalReviews
         : null;
 
-  const { data: userRatingData, isLoading: isLoadingUserRating, refetch } =
-    useGet<{ id: string; value: number }>('/course/getUserRatingBySubChapterId', {
+  const {
+    data: userRatingData,
+    isLoading: isLoadingUserRating,
+    refetch,
+  } = useGet<{ id: string; value: number }>(
+    '/course/getUserRatingBySubChapterId',
+    {
       params: { subChapterId },
       enabled: !!subChapterId,
       useEffectDependencies: [subChapterId],
-    });
+    },
+  );
 
   const { mutate: addRating, isLoading: isSubmittingRating } = useMutation(
     '/course/addRatingSubChapter',

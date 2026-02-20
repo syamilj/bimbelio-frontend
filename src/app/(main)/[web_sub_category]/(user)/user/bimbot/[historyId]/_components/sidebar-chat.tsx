@@ -5,7 +5,6 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { BimBot } from '@/components/ui/bim-brand';
 import { Button } from '@/components/ui/button';
-import Logo from '@/components/ui/logo';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
@@ -15,7 +14,7 @@ import { ChatHistory } from '@/types/database';
 import { Bot, Clock, Edit3, MessageSquare, Plus, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 export default function SidebarChat() {
@@ -104,9 +103,7 @@ export default function SidebarChat() {
     setLoading(true);
     const res = await createNewChat({ title: 'Chat Baru' });
     if (res?.id) {
-      router.push(
-        `/${website_sub_category_id}/user/bimbot/${res.id}`,
-      );
+      router.push(`/${website_sub_category_id}/user/bimbot/${res.id}`);
     }
   };
 
@@ -141,9 +138,7 @@ export default function SidebarChat() {
                 >
                   <BimBot /> AI
                 </h2>
-                <p className="text-sm text-gray-500 font-medium">
-                  by Bimbelio
-                </p>
+                <p className="text-sm text-gray-500 font-medium">by Bimbelio</p>
               </div>
             </div>
           </div>
@@ -289,7 +284,6 @@ export default function SidebarChat() {
             </div>
           </ScrollArea>
         </div>
-
       </div>
 
       {/* Mobile Sidebar - Shows when not minimized */}
@@ -328,7 +322,6 @@ export default function SidebarChat() {
                     <X className="w-5 h-5" />
                   </Button>
                 </div>
-
               </div>
             </div>
 
@@ -477,7 +470,6 @@ export default function SidebarChat() {
                 </div>
               </ScrollArea>
             </div>
-
           </div>
 
           {/* Mobile Overlay */}

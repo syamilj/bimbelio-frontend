@@ -192,7 +192,10 @@ export default function AccountSetting() {
       )}
     >
       {/* Backdrop click to close */}
-      <div className="absolute inset-0" onClick={() => setPage(undefined)} />
+      <div
+        className="absolute inset-0"
+        onClick={() => setPage(undefined)}
+      />
 
       <div className="relative w-full max-w-xl max-h-[80vh] m-4 bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-xl flex flex-col">
         {/* Header */}
@@ -204,7 +207,9 @@ export default function AccountSetting() {
         >
           <div>
             <h1 className="text-lg font-black text-white">Pengaturan Profil</h1>
-            <p className="text-xs text-white/60 mt-0.5">Kelola akun dan preferensi kamu</p>
+            <p className="text-xs text-white/60 mt-0.5">
+              Kelola akun dan preferensi kamu
+            </p>
           </div>
           <button
             onClick={() => setPage(undefined)}
@@ -226,7 +231,9 @@ export default function AccountSetting() {
                   onClick={() => (setPage as any)(tab.value)}
                   className={cn(
                     'flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold rounded-3xl transition-all cursor-pointer',
-                    isActive ? 'text-white shadow-sm' : 'text-slate-400 hover:text-slate-600',
+                    isActive
+                      ? 'text-white shadow-sm'
+                      : 'text-slate-400 hover:text-slate-600',
                   )}
                   style={isActive ? { backgroundColor: mainColor } : undefined}
                 >

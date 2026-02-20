@@ -266,11 +266,16 @@ export default function EditDocument() {
         <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4 shrink-0">
           <div>
             <h1 className="text-base font-bold text-gray-900">Edit Material</h1>
-            <p className="text-xs text-gray-400 mt-0.5">Perbarui informasi dokumen</p>
+            <p className="text-xs text-gray-400 mt-0.5">
+              Perbarui informasi dokumen
+            </p>
           </div>
           <button
             type="button"
-            onClick={() => { setShowEditDocument(false); setEditData(null); }}
+            onClick={() => {
+              setShowEditDocument(false);
+              setEditData(null);
+            }}
             className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition"
           >
             <X className="w-4 h-4" />
@@ -313,7 +318,10 @@ export default function EditDocument() {
             {!to && (
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                  Judul Dokumen <span className="normal-case text-gray-400 font-normal">(opsional)</span>
+                  Judul Dokumen{' '}
+                  <span className="normal-case text-gray-400 font-normal">
+                    (opsional)
+                  </span>
                 </label>
                 <input
                   type="text"
@@ -325,7 +333,9 @@ export default function EditDocument() {
               </div>
             )}
             <div className="flex flex-col gap-2">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Akses</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Akses
+              </p>
               <div className="flex gap-2">
                 <button
                   type="button"
@@ -352,7 +362,9 @@ export default function EditDocument() {
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Kategori</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Kategori
+              </p>
               <div className="flex gap-2 overflow-x-auto pb-1">
                 {categoryAndSubCategory?.category.map((item: any, i: any) => (
                   <button
@@ -375,7 +387,9 @@ export default function EditDocument() {
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Subkategori</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Subkategori
+              </p>
               <div className="flex gap-2 overflow-x-auto pb-1">
                 {subCategoryData?.map((item: any, i: any) => (
                   <button
@@ -442,7 +456,9 @@ export default function EditDocument() {
             <div className="border-t border-gray-100" />
 
             <div className="flex flex-col gap-2">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Tipe Konten</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Tipe Konten
+              </p>
               <div className="flex gap-2">
                 <button
                   type="button"
@@ -499,7 +515,10 @@ export default function EditDocument() {
 
                 <div className="flex flex-col gap-1.5">
                   <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    Judul Video <span className="normal-case text-gray-400 font-normal">(opsional)</span>
+                    Judul Video{' '}
+                    <span className="normal-case text-gray-400 font-normal">
+                      (opsional)
+                    </span>
                   </label>
                   <input
                     type="text"
@@ -515,7 +534,10 @@ export default function EditDocument() {
               <button
                 type="button"
                 className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition"
-                onClick={() => { setShowEditDocument(false); setEditData(null); }}
+                onClick={() => {
+                  setShowEditDocument(false);
+                  setEditData(null);
+                }}
               >
                 Batalkan
               </button>
@@ -784,7 +806,8 @@ const InputText = ({
   return (
     <div className="flex flex-col gap-1.5">
       <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-        {heading} <span className="normal-case text-gray-400 font-normal">(Try-Out)</span>
+        {heading}{' '}
+        <span className="normal-case text-gray-400 font-normal">(Try-Out)</span>
       </label>
       <input
         type="text"
@@ -839,7 +862,8 @@ const InputDateAndTime = ({
   return (
     <div className="flex flex-col gap-1.5">
       <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-        {heading} <span className="normal-case text-gray-400 font-normal">(Try-Out)</span>
+        {heading}{' '}
+        <span className="normal-case text-gray-400 font-normal">(Try-Out)</span>
       </label>
       <div className="grid grid-cols-2 gap-2">
         <input
@@ -873,7 +897,8 @@ const InputTextarea = ({
   return (
     <div className="flex flex-col gap-1.5">
       <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-        {heading} <span className="normal-case text-gray-400 font-normal">(Try-Out)</span>
+        {heading}{' '}
+        <span className="normal-case text-gray-400 font-normal">(Try-Out)</span>
       </label>
       <textarea
         rows={3}

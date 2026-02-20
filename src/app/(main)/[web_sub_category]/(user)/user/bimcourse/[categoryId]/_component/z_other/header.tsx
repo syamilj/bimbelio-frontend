@@ -191,9 +191,7 @@ export default function HeaderCourse({
                                       ? 'MATERI'
                                       : sChapter.type}{' '}
                               </span>
-                              <span>
-                                - {sChapter.spendTime} Menit
-                              </span>
+                              <span>- {sChapter.spendTime} Menit</span>
                             </div>
                           </div>
                         </Link>
@@ -363,7 +361,10 @@ export default function HeaderCourse({
             </ButtonPayment>
           ) : (
             <div className="flex items-center rounded-xl p-1.5 bg-amber-400 text-white">
-              <IconCrown className="text-white" w={14} />
+              <IconCrown
+                className="text-white"
+                w={14}
+              />
             </div>
           )}
         </div>
@@ -402,10 +403,15 @@ export default function HeaderCourse({
           <div className="flex items-center justify-between px-4 w-full border-x border-slate-200/60">
             <div className="flex items-center text-sm gap-3">
               <div className="hidden md:block">
-                <BookAIcon className="text-slate-400" size={20} />
+                <BookAIcon
+                  className="text-slate-400"
+                  size={20}
+                />
               </div>
               <div className="text-start text-nowrap">
-                <p className="text-sm font-medium text-slate-800">{sub === 'report' ? 'Report' : CourseData?.chapterTitle}</p>
+                <p className="text-sm font-medium text-slate-800">
+                  {sub === 'report' ? 'Report' : CourseData?.chapterTitle}
+                </p>
                 <p className="text-xs text-slate-500">
                   {sub === 'report'
                     ? 'Report untuk course ini'
@@ -445,7 +451,10 @@ export default function HeaderCourse({
               }
             }}
           >
-            <CircleChevronUp className="text-slate-400" size={20} />
+            <CircleChevronUp
+              className="text-slate-400"
+              size={20}
+            />
           </div>
 
           <motion.div
@@ -548,7 +557,10 @@ export default function HeaderCourse({
               strokeWidth={1}
             /> */}
 
-            <CircleChevronUp className="text-slate-400" size={18} />
+            <CircleChevronUp
+              className="text-slate-400"
+              size={18}
+            />
           </div>
 
           <motion.div

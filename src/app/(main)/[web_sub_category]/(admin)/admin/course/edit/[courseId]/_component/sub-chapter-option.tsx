@@ -453,7 +453,9 @@ const VideoEditor = ({
       </div>
       {EditSubChapter.video ? (
         <div>
-          <p className="text-sm font-medium text-green-600 mb-3">✓ Video sudah diupload</p>
+          <p className="text-sm font-medium text-green-600 mb-3">
+            ✓ Video sudah diupload
+          </p>
           <div className="flex items-center justify-center gap-2 flex-wrap">
             <Button
               variant="outline"
@@ -546,7 +548,9 @@ const DocumentSelector = ({
           <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center shrink-0">
             <FileText className="h-4 w-4 text-green-600" />
           </div>
-          <span className="text-sm font-medium text-gray-800 flex-1">{selectedDoc?.title}</span>
+          <span className="text-sm font-medium text-gray-800 flex-1">
+            {selectedDoc?.title}
+          </span>
           <button
             className="w-7 h-7 rounded-lg hover:bg-green-200 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
             onClick={() => {

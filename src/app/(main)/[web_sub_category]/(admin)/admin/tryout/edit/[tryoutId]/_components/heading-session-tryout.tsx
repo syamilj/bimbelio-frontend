@@ -440,58 +440,107 @@ const HeadingSessionTryout = () => {
 
   return (
     <>
-      <div id="heading" className="flex shrink-0 flex-col gap-4 pb-2">
+      <div
+        id="heading"
+        className="flex shrink-0 flex-col gap-4 pb-2"
+      >
         {/* Row 1: Category + SubCategory */}
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1.5">
-            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Kategori Tes</p>
+            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+              Kategori Tes
+            </p>
             <div className="relative bg-white rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">
               <input
                 type="text"
-                value={EditSession.categoryId ? `${EditSession.categoryId}-${EditSession.category}` : ''}
+                value={
+                  EditSession.categoryId
+                    ? `${EditSession.categoryId}-${EditSession.category}`
+                    : ''
+                }
                 readOnly
                 required
                 className="absolute bottom-0 left-4 h-px w-px p-0 opacity-0 pointer-events-none"
               />
               <Select
-                value={EditSession.categoryId ? `${EditSession.categoryId}-${EditSession.category}` : 'placeholder'}
-                onValueChange={(value) => { value && onChangeCategory(value); }}
+                value={
+                  EditSession.categoryId
+                    ? `${EditSession.categoryId}-${EditSession.category}`
+                    : 'placeholder'
+                }
+                onValueChange={(value) => {
+                  value && onChangeCategory(value);
+                }}
               >
                 <SelectTrigger className="h-9 w-full rounded-lg border-none bg-transparent shadow-none outline-none text-sm px-3">
                   <SelectValue placeholder="Pilih Tes" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="placeholder" disabled>Pilih Tes</SelectItem>
+                  <SelectItem
+                    value="placeholder"
+                    disabled
+                  >
+                    Pilih Tes
+                  </SelectItem>
                   {category?.map((item) => (
-                    <SelectItem key={item.id} value={`${item.id}-${item.name}`}>{item.name}</SelectItem>
+                    <SelectItem
+                      key={item.id}
+                      value={`${item.id}-${item.name}`}
+                    >
+                      {item.name}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
           </div>
           <div className="flex flex-col gap-1.5">
-            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Sub Tes / Subtest</p>
+            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+              Sub Tes / Subtest
+            </p>
             {EditSession.categoryId && EditSession.categoryId.length > 0 ? (
               <div className="relative bg-white rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">
                 <input
                   type="text"
-                  value={EditSession.subCategoryId ? `${EditSession.subCategoryId}-${EditSession.subCategory}` : ''}
+                  value={
+                    EditSession.subCategoryId
+                      ? `${EditSession.subCategoryId}-${EditSession.subCategory}`
+                      : ''
+                  }
                   readOnly
                   required
                   className="absolute bottom-0 left-4 h-px w-px p-0 opacity-0 pointer-events-none"
                 />
                 <Select
-                  value={EditSession.subCategoryId ? `${EditSession.subCategoryId}-${EditSession.subCategory}` : 'placeholder'}
-                  onValueChange={(value) => { value && onChangeSubCategory(value); }}
+                  value={
+                    EditSession.subCategoryId
+                      ? `${EditSession.subCategoryId}-${EditSession.subCategory}`
+                      : 'placeholder'
+                  }
+                  onValueChange={(value) => {
+                    value && onChangeSubCategory(value);
+                  }}
                 >
                   <SelectTrigger className="h-9 w-full rounded-lg border-none bg-transparent shadow-none outline-none text-sm px-3">
                     <SelectValue placeholder="Pilih Sub Tes" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="placeholder" disabled>Pilih Sub Tes</SelectItem>
-                    {category?.find((item) => item.id === EditSession.categoryId)?.TryoutSubCategory.map((item) => (
-                      <SelectItem key={item.id} value={`${item.id}-${item.name}`}>{item.name}</SelectItem>
-                    ))}
+                    <SelectItem
+                      value="placeholder"
+                      disabled
+                    >
+                      Pilih Sub Tes
+                    </SelectItem>
+                    {category
+                      ?.find((item) => item.id === EditSession.categoryId)
+                      ?.TryoutSubCategory.map((item) => (
+                        <SelectItem
+                          key={item.id}
+                          value={`${item.id}-${item.name}`}
+                        >
+                          {item.name}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -506,7 +555,9 @@ const HeadingSessionTryout = () => {
         {/* Row 2: Duration + Assessment + Threshold */}
         <div className="grid grid-cols-3 gap-3">
           <div className="flex flex-col gap-1.5">
-            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Durasi (mnt)</p>
+            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+              Durasi (mnt)
+            </p>
             <input
               type="number"
               placeholder="60"
@@ -517,7 +568,9 @@ const HeadingSessionTryout = () => {
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Penilaian</p>
+            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+              Penilaian
+            </p>
             <div className="relative bg-white rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">
               <input
                 type="text"
@@ -526,7 +579,9 @@ const HeadingSessionTryout = () => {
                 className="absolute bottom-0 left-4 h-px w-px p-0 opacity-0 pointer-events-none"
               />
               <Select
-                value={assessmentType !== '' ? `${assessmentType}` : 'placeholder'}
+                value={
+                  assessmentType !== '' ? `${assessmentType}` : 'placeholder'
+                }
                 onValueChange={(value) => {
                   setAssesmentType(value);
                   changeQuestionAssestmentType(value);
@@ -536,7 +591,12 @@ const HeadingSessionTryout = () => {
                   <SelectValue placeholder="Tipe" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="placeholder" disabled>Pilih Tipe</SelectItem>
+                  <SelectItem
+                    value="placeholder"
+                    disabled
+                  >
+                    Pilih Tipe
+                  </SelectItem>
                   <SelectItem value="1-5">1-5</SelectItem>
                   <SelectItem value="+5/0">+5/0</SelectItem>
                   <SelectItem value="IRT">IRT</SelectItem>
@@ -548,17 +608,26 @@ const HeadingSessionTryout = () => {
             </div>
           </div>
           <div className="flex flex-col gap-1.5">
-            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Ambang Batas</p>
+            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+              Ambang Batas
+            </p>
             <input
               type="number"
               placeholder="opsional"
               className="h-9 w-full rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
-              value={EditSession.thresholdValue === 0 ? '' : EditSession.thresholdValue}
+              value={
+                EditSession.thresholdValue === 0
+                  ? ''
+                  : EditSession.thresholdValue
+              }
               onChange={(e) => {
                 setSessions((prev) =>
                   prev.map((item, i) => {
                     if (i === currentIndexEdit) {
-                      return { ...item, thresholdValue: parseInt(e.target.value) };
+                      return {
+                        ...item,
+                        thresholdValue: parseInt(e.target.value),
+                      };
                     }
                     return { ...item };
                   }),
@@ -571,7 +640,9 @@ const HeadingSessionTryout = () => {
         {/* Row 3: Session Name + Document ID */}
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1.5">
-            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Judul Sesi</p>
+            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+              Judul Sesi
+            </p>
             <input
               type="text"
               placeholder="Judul sesi..."
@@ -592,7 +663,10 @@ const HeadingSessionTryout = () => {
           </div>
           <div className="flex flex-col gap-1.5">
             <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
-              Doc ID Pembahasan <span className="font-normal normal-case text-gray-400">(opsional)</span>
+              Doc ID Pembahasan{' '}
+              <span className="font-normal normal-case text-gray-400">
+                (opsional)
+              </span>
             </p>
             <input
               type="text"
@@ -615,7 +689,9 @@ const HeadingSessionTryout = () => {
 
         {/* Row 4: AI Generate */}
         <div className="flex flex-col gap-1.5">
-          <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Generate Soal dengan AI</p>
+          <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+            Generate Soal dengan AI
+          </p>
           <div className="flex gap-2">
             <textarea
               id="context-for-generate-ai-edit"
@@ -626,7 +702,9 @@ const HeadingSessionTryout = () => {
             <button
               type="button"
               className="shrink-0 self-end h-9 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold px-4 transition-colors whitespace-nowrap"
-              onClick={() => { handleGenerate(); }}
+              onClick={() => {
+                handleGenerate();
+              }}
             >
               Generate
             </button>

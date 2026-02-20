@@ -1,10 +1,10 @@
 'use client';
 
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { useParams } from 'next/navigation';
-import { CheckCircle2, BookOpen } from 'lucide-react';
+import { BookOpen, CheckCircle2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 interface CourseCategory {
@@ -73,7 +73,9 @@ export default function CourseTabDone({ onCountReady }: Props) {
   const params = useParams();
   const web = (params?.web_sub_category as string) || '';
 
-  const { data, isLoading } = useGet<CourseCategory[]>('/course/getCategoryForCard');
+  const { data, isLoading } = useGet<CourseCategory[]>(
+    '/course/getCategoryForCard',
+  );
 
   const done = (data ?? []).filter(
     (i) => i.completedChapters >= i.totalChapters && i.totalChapters > 0,
@@ -92,7 +94,10 @@ export default function CourseTabDone({ onCountReady }: Props) {
     return (
       <div className="p-6 space-y-3">
         {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className="flex gap-4 animate-pulse">
+          <div
+            key={i}
+            className="flex gap-4 animate-pulse"
+          >
             <div className="w-24 h-16 rounded-2xl bg-slate-100 flex-shrink-0" />
             <div className="flex-1 space-y-2 py-1">
               <div className="h-3 w-16 bg-slate-100 rounded-full" />
@@ -111,7 +116,9 @@ export default function CourseTabDone({ onCountReady }: Props) {
         <div className="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center mb-4">
           <CheckCircle2 className="w-8 h-8 text-emerald-300" />
         </div>
-        <p className="font-bold text-slate-700 text-base mb-1">Belum ada modul selesai</p>
+        <p className="font-bold text-slate-700 text-base mb-1">
+          Belum ada modul selesai
+        </p>
         <p className="text-sm text-slate-500">
           Selesaikan modul untuk melihatnya di sini.
         </p>
@@ -130,7 +137,11 @@ export default function CourseTabDone({ onCountReady }: Props) {
       </div>
       <div className="divide-y divide-slate-100">
         {done.map((item) => (
-          <DoneCard key={item.id} item={item} web={web} />
+          <DoneCard
+            key={item.id}
+            item={item}
+            web={web}
+          />
         ))}
       </div>
     </div>

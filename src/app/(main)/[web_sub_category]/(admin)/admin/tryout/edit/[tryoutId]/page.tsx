@@ -798,7 +798,9 @@ const NewTryOut = () => {
               'h-full overflow-y-auto bg-white border-r border-gray-200 transition-all duration-300',
               currentIndexEdit === null && 'flex-1',
               currentIndexEdit !== null && showDetailTryout && 'w-80',
-              currentIndexEdit !== null && !showDetailTryout && 'w-0 overflow-hidden',
+              currentIndexEdit !== null &&
+                !showDetailTryout &&
+                'w-0 overflow-hidden',
             )}
           >
             <TryoutOption />

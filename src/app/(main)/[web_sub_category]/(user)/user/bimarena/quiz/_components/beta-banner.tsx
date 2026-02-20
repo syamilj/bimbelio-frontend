@@ -10,10 +10,7 @@ interface BetaBannerProps {
   className?: string;
 }
 
-export function BetaBanner({
-  dismissible = true,
-  className,
-}: BetaBannerProps) {
+export function BetaBanner({ dismissible = true, className }: BetaBannerProps) {
   const [isVisible, setIsVisible] = useState(true);
   const storageKey = 'bimarena-quiz-beta-banner-dismissed';
 

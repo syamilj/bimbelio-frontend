@@ -108,9 +108,7 @@ export default function ThreeQuestions() {
             <h1 className="text-base font-bold text-gray-900">
               Halo, {firstName}!
             </h1>
-            <p className="text-gray-400 text-xs">
-              Ada yang bisa BimBot bantu?
-            </p>
+            <p className="text-gray-400 text-xs">Ada yang bisa BimBot bantu?</p>
           </div>
         </div>
 

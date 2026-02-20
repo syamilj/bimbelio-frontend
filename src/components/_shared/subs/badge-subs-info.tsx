@@ -35,7 +35,10 @@ export const BadgeSubsInfo = () => {
   // Close dropdown on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         setOpen(false);
       }
     };
@@ -44,10 +47,15 @@ export const BadgeSubsInfo = () => {
   }, [open]);
 
   const isPremiumRole =
-    userTier === 'ADMIN' || userTier === 'SUPER_ADMIN' || userTier === 'PREMIUM';
+    userTier === 'ADMIN' ||
+    userTier === 'SUPER_ADMIN' ||
+    userTier === 'PREMIUM';
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div
+      className="relative"
+      ref={dropdownRef}
+    >
       {/* Trigger Badge */}
       <button
         onClick={() => setOpen((v) => !v)}
@@ -94,8 +102,12 @@ export const BadgeSubsInfo = () => {
                   <Crown className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-black text-slate-800">{userTier}</p>
-                  <p className="text-[10px] text-slate-400 font-medium">Current Role</p>
+                  <p className="text-xs font-black text-slate-800">
+                    {userTier}
+                  </p>
+                  <p className="text-[10px] text-slate-400 font-medium">
+                    Current Role
+                  </p>
                 </div>
               </div>
             )}
@@ -154,7 +166,8 @@ export const BadgeSubsInfo = () => {
                               >
                                 {feature.type === 'DOCUMENT' && '📄 Document'}
                                 {feature.type === 'COURSE' && '📚 Course'}
-                                {feature.type === 'LIVECLASS' && '🎥 Live Class'}
+                                {feature.type === 'LIVECLASS' &&
+                                  '🎥 Live Class'}
                                 {feature.type === 'QUIZ' && '💯 Quiz'}
                               </span>
                             ))}
@@ -174,7 +187,8 @@ export const BadgeSubsInfo = () => {
                               <span className="text-xs font-black text-slate-800">
                                 {formatIDR(currentInstallment.amount)}
                               </span>
-                              {new Date(currentInstallment.dueDate) < new Date() ? (
+                              {new Date(currentInstallment.dueDate) <
+                              new Date() ? (
                                 <Badge className="bg-red-100 text-red-600 border-0 text-[9px] px-1.5 py-0 font-bold">
                                   Tertunda
                                 </Badge>
@@ -186,26 +200,48 @@ export const BadgeSubsInfo = () => {
                             </div>
                             <div className="flex gap-3 text-[9px]">
                               <div>
-                                <p className="text-amber-600 font-bold">Jatuh Tempo</p>
+                                <p className="text-amber-600 font-bold">
+                                  Jatuh Tempo
+                                </p>
                                 <p className="text-slate-700 font-bold">
-                                  {new Date(currentInstallment.dueDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                                  {new Date(
+                                    currentInstallment.dueDate,
+                                  ).toLocaleDateString('id-ID', {
+                                    day: 'numeric',
+                                    month: 'short',
+                                  })}
                                 </p>
                               </div>
                               <div>
-                                <p className="text-amber-600 font-bold">Tenggang</p>
+                                <p className="text-amber-600 font-bold">
+                                  Tenggang
+                                </p>
                                 <p className="text-emerald-600 font-bold">
-                                  {new Date(currentInstallment.gracePeriodEndDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                                  {new Date(
+                                    currentInstallment.gracePeriodEndDate,
+                                  ).toLocaleDateString('id-ID', {
+                                    day: 'numeric',
+                                    month: 'short',
+                                  })}
                                 </p>
                               </div>
                               <div>
-                                <p className="text-amber-600 font-bold">Berakhir</p>
+                                <p className="text-amber-600 font-bold">
+                                  Berakhir
+                                </p>
                                 <p className="text-slate-700 font-bold">
-                                  {new Date(currentInstallment.expiredAccessDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                                  {new Date(
+                                    currentInstallment.expiredAccessDate,
+                                  ).toLocaleDateString('id-ID', {
+                                    day: 'numeric',
+                                    month: 'short',
+                                  })}
                                 </p>
                               </div>
                             </div>
                             {currentInstallment.lateFee > 0 &&
-                              new Date(currentInstallment.dueDate) < new Date() && (
+                              new Date(currentInstallment.dueDate) <
+                                new Date() && (
                                 <p className="text-[9px] text-orange-600 font-bold mt-1 p-1 bg-orange-50 rounded">
                                   Denda: {formatIDR(currentInstallment.lateFee)}
                                 </p>
@@ -225,16 +261,25 @@ export const BadgeSubsInfo = () => {
                         currentInstallment &&
                         currentInstallment.isPaid && (
                           <div className="p-2 rounded-3xl bg-amber-50 border border-amber-200/60 mb-2">
-                            <p className="text-[9px] text-amber-600 font-bold">Akses Berakhir</p>
+                            <p className="text-[9px] text-amber-600 font-bold">
+                              Akses Berakhir
+                            </p>
                             <p className="text-xs text-slate-800 font-bold">
-                              {new Date(currentInstallment.expiredAccessDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                              {new Date(
+                                currentInstallment.expiredAccessDate,
+                              ).toLocaleDateString('id-ID', {
+                                day: 'numeric',
+                                month: 'long',
+                                year: 'numeric',
+                              })}
                             </p>
                           </div>
                         )}
 
                       {sub.paymentType === 'FULL_PAYMENT' && (
                         <p className="text-[10px] text-slate-400 font-medium">
-                          Expired: {new Date(sub.planExpire).toLocaleDateString('id-ID')}
+                          Expired:{' '}
+                          {new Date(sub.planExpire).toLocaleDateString('id-ID')}
                         </p>
                       )}
 
@@ -243,7 +288,9 @@ export const BadgeSubsInfo = () => {
                         variant="outline"
                         className="w-full mt-1 h-7 text-[11px] font-bold rounded-3xl border-slate-200"
                       >
-                        <Link href={`/price/${sub.planSlug}`}>Lihat Detail</Link>
+                        <Link href={`/price/${sub.planSlug}`}>
+                          Lihat Detail
+                        </Link>
                       </Button>
                     </div>
                   );
@@ -255,7 +302,10 @@ export const BadgeSubsInfo = () => {
                   className="w-10 h-10 rounded-3xl mx-auto mb-2 flex items-center justify-center"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
-                  <Crown className="w-5 h-5" style={{ color: mainColor }} />
+                  <Crown
+                    className="w-5 h-5"
+                    style={{ color: mainColor }}
+                  />
                 </div>
                 <p className="text-xs font-bold text-slate-500">
                   Tidak ada subscription aktif
@@ -281,56 +331,109 @@ export const BadgeSubsInfo = () => {
                       >
                         <div className="flex items-center gap-2 mb-1">
                           <span className="text-[9px] px-2 py-0.5 rounded-full text-white font-bold bg-amber-500">
-                            {subPending.planTier === 'Limitation' ? 'Koin' : subPending.planTier}
+                            {subPending.planTier === 'Limitation'
+                              ? 'Koin'
+                              : subPending.planTier}
                           </span>
                           <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold">
                             PENDING
                           </span>
                         </div>
-                        <p className="text-xs font-black text-slate-800 mb-1">{subPending.planName}</p>
-                        <p className="text-[11px] text-slate-500 mb-2 line-clamp-2">{subPending.planDescription}</p>
+                        <p className="text-xs font-black text-slate-800 mb-1">
+                          {subPending.planName}
+                        </p>
+                        <p className="text-[11px] text-slate-500 mb-2 line-clamp-2">
+                          {subPending.planDescription}
+                        </p>
 
                         {subPending.SubscriptionPendingFeature &&
                           subPending.SubscriptionPendingFeature.length > 0 && (
                             <div className="space-y-1 mb-2">
-                              {subPending.SubscriptionPendingFeature.map((feature) => (
-                                <div
-                                  key={feature.id}
-                                  className="flex items-center justify-between p-1.5 rounded-3xl bg-white border border-amber-100"
-                                >
-                                  <span className="text-[10px] font-bold text-slate-600">
-                                    {feature.type === 'DOCUMENT' && '📄 Document'}
-                                    {feature.type === 'COURSE' && '📚 Course'}
-                                    {feature.type === 'LIVECLASS' && '🎥 Live Class'}
-                                    {feature.type === 'QUIZ' && '💯 Quiz'}
-                                  </span>
-                                  <span className="text-[9px] text-emerald-600 font-medium">
-                                    {formatDateRange(feature.validFrom, feature.validUntil)}
-                                  </span>
-                                </div>
-                              ))}
+                              {subPending.SubscriptionPendingFeature.map(
+                                (feature) => (
+                                  <div
+                                    key={feature.id}
+                                    className="flex items-center justify-between p-1.5 rounded-3xl bg-white border border-amber-100"
+                                  >
+                                    <span className="text-[10px] font-bold text-slate-600">
+                                      {feature.type === 'DOCUMENT' &&
+                                        '📄 Document'}
+                                      {feature.type === 'COURSE' && '📚 Course'}
+                                      {feature.type === 'LIVECLASS' &&
+                                        '🎥 Live Class'}
+                                      {feature.type === 'QUIZ' && '💯 Quiz'}
+                                    </span>
+                                    <span className="text-[9px] text-emerald-600 font-medium">
+                                      {formatDateRange(
+                                        feature.validFrom,
+                                        feature.validUntil,
+                                      )}
+                                    </span>
+                                  </div>
+                                ),
+                              )}
                             </div>
                           )}
 
                         {subPending.SubscriptionPendingLimitation && (
                           <div className="p-2 rounded-3xl bg-white border border-amber-100 mb-2">
-                            <p className="text-[10px] font-bold text-slate-500 mb-1">Coin</p>
+                            <p className="text-[10px] font-bold text-slate-500 mb-1">
+                              Coin
+                            </p>
                             <div className="grid grid-cols-3 gap-1 text-[10px]">
                               {[
-                                { label: 'Chat', value: subPending.SubscriptionPendingLimitation.chat },
-                                { label: 'Notes', value: subPending.SubscriptionPendingLimitation.notes },
-                                { label: 'Vision', value: subPending.SubscriptionPendingLimitation.vision },
-                                { label: 'Quiz', value: subPending.SubscriptionPendingLimitation.quiz },
-                                { label: 'Tryout', value: subPending.SubscriptionPendingLimitation.tryout },
+                                {
+                                  label: 'Chat',
+                                  value:
+                                    subPending.SubscriptionPendingLimitation
+                                      .chat,
+                                },
+                                {
+                                  label: 'Notes',
+                                  value:
+                                    subPending.SubscriptionPendingLimitation
+                                      .notes,
+                                },
+                                {
+                                  label: 'Vision',
+                                  value:
+                                    subPending.SubscriptionPendingLimitation
+                                      .vision,
+                                },
+                                {
+                                  label: 'Quiz',
+                                  value:
+                                    subPending.SubscriptionPendingLimitation
+                                      .quiz,
+                                },
+                                {
+                                  label: 'Tryout',
+                                  value:
+                                    subPending.SubscriptionPendingLimitation
+                                      .tryout,
+                                },
                               ].map((item) => (
-                                <div key={item.label} className="text-center p-1 rounded-3xl bg-slate-50">
-                                  <p className="text-[9px] text-slate-400 font-bold">{item.label}</p>
-                                  <p className="text-xs font-black text-slate-700">{item.value}</p>
+                                <div
+                                  key={item.label}
+                                  className="text-center p-1 rounded-3xl bg-slate-50"
+                                >
+                                  <p className="text-[9px] text-slate-400 font-bold">
+                                    {item.label}
+                                  </p>
+                                  <p className="text-xs font-black text-slate-700">
+                                    {item.value}
+                                  </p>
                                 </div>
                               ))}
                             </div>
                             <p className="text-[9px] text-emerald-600 font-medium mt-1.5 pt-1.5 border-t border-slate-100">
-                              Aktif {formatDateRange(subPending.SubscriptionPendingLimitation.validFrom, subPending.SubscriptionPendingLimitation.validUntil)}
+                              Aktif{' '}
+                              {formatDateRange(
+                                subPending.SubscriptionPendingLimitation
+                                  .validFrom,
+                                subPending.SubscriptionPendingLimitation
+                                  .validUntil,
+                              )}
                             </p>
                           </div>
                         )}
@@ -350,7 +453,9 @@ export const BadgeSubsInfo = () => {
               className="w-full gap-2 rounded-3xl border-slate-200 hover:bg-slate-50 text-xs h-9 font-bold"
               style={{ color: mainColor }}
             >
-              <Link href={`/${website_sub_category_id_params}/user/subscription`}>
+              <Link
+                href={`/${website_sub_category_id_params}/user/subscription`}
+              >
                 <Settings className="w-3.5 h-3.5" />
                 Kelola Subscription
               </Link>

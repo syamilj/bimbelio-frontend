@@ -140,10 +140,13 @@ export default function CourseTabUpsell({ onCountReady }: Props) {
 
   useEffect(() => {
     if (!session) return;
-    getGeneral(`/course/getCategoryForCardAnotherWeb?userId=${session.user.id}`, {
-      setData: setCourses,
-      setLoading: setIsLoading,
-    });
+    getGeneral(
+      `/course/getCategoryForCardAnotherWeb?userId=${session.user.id}`,
+      {
+        setData: setCourses,
+        setLoading: setIsLoading,
+      },
+    );
   }, [session]);
 
   const onCountRef = useRef(onCountReady);
@@ -171,7 +174,10 @@ export default function CourseTabUpsell({ onCountReady }: Props) {
       <div className="p-4 md:p-6">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="rounded-2xl overflow-hidden animate-pulse border border-slate-100">
+            <div
+              key={i}
+              className="rounded-2xl overflow-hidden animate-pulse border border-slate-100"
+            >
               <div className="aspect-video bg-slate-100" />
               <div className="p-3 space-y-2">
                 <div className="h-4 bg-slate-100 rounded-full w-3/4" />
@@ -192,7 +198,9 @@ export default function CourseTabUpsell({ onCountReady }: Props) {
           <Sparkles className="w-7 h-7 text-slate-300" />
         </div>
         <p className="font-bold text-slate-600 mb-1">Tidak ada platform lain</p>
-        <p className="text-sm text-slate-400">Semua materi tersedia di platform ini.</p>
+        <p className="text-sm text-slate-400">
+          Semua materi tersedia di platform ini.
+        </p>
       </div>
     );
   }
@@ -209,7 +217,9 @@ export default function CourseTabUpsell({ onCountReady }: Props) {
                 style={{ backgroundColor: platform.main_color }}
               />
               <div>
-                <h3 className="font-black text-slate-800 text-sm">{platform.name}</h3>
+                <h3 className="font-black text-slate-800 text-sm">
+                  {platform.name}
+                </h3>
                 <p className="text-[10px] text-slate-400 font-medium">
                   {platform.courses.length} modul tersedia
                 </p>
@@ -230,7 +240,11 @@ export default function CourseTabUpsell({ onCountReady }: Props) {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {platform.courses.map((course) => (
-              <UpsellCard key={course.id} course={course} platform={platform} />
+              <UpsellCard
+                key={course.id}
+                course={course}
+                platform={platform}
+              />
             ))}
           </div>
         </section>

@@ -75,26 +75,39 @@ export default function Index() {
   const [expandedCourses, setExpandedCourses] = useState<Set<string>>(
     new Set(),
   );
-  const [togglingSubChapters, setTogglingSubChapters] = useState<Set<string>>(new Set());
+  const [togglingSubChapters, setTogglingSubChapters] = useState<Set<string>>(
+    new Set(),
+  );
 
-  const handleToggleSubChapterPremium = async (id: string, current: boolean) => {
+  const handleToggleSubChapterPremium = async (
+    id: string,
+    current: boolean,
+  ) => {
     if (togglingSubChapters.has(id)) return;
     setTogglingSubChapters((prev) => new Set(prev).add(id));
     try {
-      await axiosInstance.patch('/course/toggleSubChapterPremium', { id, premium: !current });
+      await axiosInstance.patch('/course/toggleSubChapterPremium', {
+        id,
+        premium: !current,
+      });
       await refetchCourses();
     } finally {
-      setTogglingSubChapters((prev) => { const n = new Set(prev); n.delete(id); return n; });
+      setTogglingSubChapters((prev) => {
+        const n = new Set(prev);
+        n.delete(id);
+        return n;
+      });
     }
   };
 
-  const { data: courses, isLoading: isCoursesLoading, refetch: refetchCourses } = useGet(
-    '/course/getCourseByCategoryId',
-    {
-      params: { categoryId },
-      useEffectDependencies: [categoryId],
-    },
-  );
+  const {
+    data: courses,
+    isLoading: isCoursesLoading,
+    refetch: refetchCourses,
+  } = useGet('/course/getCourseByCategoryId', {
+    params: { categoryId },
+    useEffectDependencies: [categoryId],
+  });
 
   useEffect(() => {
     if (category && category.length > 0 && !categoryId) {
@@ -170,7 +183,10 @@ export default function Index() {
             Kelola semua kursus dan materi pembelajaran
           </p>
         </div>
-        <Button asChild className="gap-2 rounded-xl">
+        <Button
+          asChild
+          className="gap-2 rounded-xl"
+        >
           <Link href={`/${website_sub_category_id}/admin/course/new`}>
             <Plus className="h-4 w-4" />
             Buat Kursus
@@ -217,7 +233,10 @@ export default function Index() {
         <div className="space-y-3">
           {isCoursesLoading ? (
             Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton key={i} className="h-24 w-full rounded-xl" />
+              <Skeleton
+                key={i}
+                className="h-24 w-full rounded-xl"
+              />
             ))
           ) : filteredCourses?.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center">
@@ -228,10 +247,15 @@ export default function Index() {
                 {searchQuery ? 'Tidak ditemukan' : 'Belum ada kursus'}
               </h3>
               <p className="text-sm text-gray-500 mb-4">
-                {searchQuery ? 'Coba kata kunci lain' : 'Buat kursus pertama Kamu'}
+                {searchQuery
+                  ? 'Coba kata kunci lain'
+                  : 'Buat kursus pertama Kamu'}
               </p>
               {!searchQuery && (
-                <Button asChild className="rounded-xl">
+                <Button
+                  asChild
+                  className="rounded-xl"
+                >
                   <Link href={`/${website_sub_category_id}/admin/course/new`}>
                     <Plus className="h-4 w-4 mr-2" />
                     Buat Kursus Baru
@@ -283,19 +307,26 @@ export default function Index() {
                             <BookOpen className="h-3 w-3" />
                             {course._count.CourseSubChapter} materi
                           </span>
-                          {course.CourseSubChapter.filter(sc => sc.type === 'DOCUMENT').length > 0 && (
+                          {course.CourseSubChapter.filter(
+                            (sc) => sc.type === 'DOCUMENT',
+                          ).length > 0 && (
                             <span className="flex items-center gap-1 bg-green-50 text-green-700 px-2 py-0.5 rounded-full font-medium">
                               <FileText className="h-3 w-3" />
-                              {course.CourseSubChapter.filter(sc => sc.type === 'DOCUMENT').length} Dok
+                              {
+                                course.CourseSubChapter.filter(
+                                  (sc) => sc.type === 'DOCUMENT',
+                                ).length
+                              }{' '}
+                              Dok
                             </span>
                           )}
                           {(() => {
-                            const videoCount =
-                              course.CourseSubChapter.filter(
-                                (sc) =>
-                                  sc.type === 'VIDEO' ||
-                                  (sc.type === 'DOCUMENT' && sc.Document?.videoId),
-                              ).length;
+                            const videoCount = course.CourseSubChapter.filter(
+                              (sc) =>
+                                sc.type === 'VIDEO' ||
+                                (sc.type === 'DOCUMENT' &&
+                                  sc.Document?.videoId),
+                            ).length;
                             return videoCount > 0 ? (
                               <span className="flex items-center gap-1 bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-medium">
                                 <Video className="h-3 w-3" />
@@ -303,10 +334,17 @@ export default function Index() {
                               </span>
                             ) : null;
                           })()}
-                          {course.CourseSubChapter.filter(sc => sc.type === 'TRYOUT').length > 0 && (
+                          {course.CourseSubChapter.filter(
+                            (sc) => sc.type === 'TRYOUT',
+                          ).length > 0 && (
                             <span className="flex items-center gap-1 bg-purple-50 text-purple-700 px-2 py-0.5 rounded-full font-medium">
                               <Play className="h-3 w-3" />
-                              {course.CourseSubChapter.filter(sc => sc.type === 'TRYOUT').length} TryOut
+                              {
+                                course.CourseSubChapter.filter(
+                                  (sc) => sc.type === 'TRYOUT',
+                                ).length
+                              }{' '}
+                              TryOut
                             </span>
                           )}
                           <span className="flex items-center gap-1">
@@ -315,8 +353,7 @@ export default function Index() {
                           </span>
                           {isCore && (
                             <span className="flex items-center gap-1">
-                              <Users className="h-3 w-3" />
-                              [{' '}
+                              <Users className="h-3 w-3" />[{' '}
                               {course.visibleAtWebSubIds.length > 0
                                 ? course.visibleAtWebSubIds.join(' | ')
                                 : sharingWebSubIds.join(' | ')}{' '}
@@ -355,7 +392,9 @@ export default function Index() {
                         asChild
                         className="gap-1.5 text-xs h-8 px-3 rounded-lg border-gray-200 hover:border-blue-300 hover:text-blue-600"
                       >
-                        <Link href={`/${website_sub_category_id}/admin/course/edit/${course.id}`}>
+                        <Link
+                          href={`/${website_sub_category_id}/admin/course/edit/${course.id}`}
+                        >
                           <Edit className="h-3.5 w-3.5" />
                           Edit
                         </Link>
@@ -374,8 +413,12 @@ export default function Index() {
                             className="flex items-center gap-1.5 text-xs text-gray-500 whitespace-nowrap bg-gray-50 rounded-lg px-2.5 py-1"
                           >
                             {getTypeIcon(sub.type)}
-                            <span className="max-w-[120px] truncate">{sub.title}</span>
-                            <span className="text-gray-400">· {sub.spendTime}m</span>
+                            <span className="max-w-[120px] truncate">
+                              {sub.title}
+                            </span>
+                            <span className="text-gray-400">
+                              · {sub.spendTime}m
+                            </span>
                           </div>
                         ))}
                         {course.CourseSubChapter.length > 4 && (
@@ -397,30 +440,58 @@ export default function Index() {
                         {/* Summary chips */}
                         <div className="flex gap-2">
                           {[
-                            { label: 'Video', type: 'VIDEO', color: 'bg-blue-50 text-blue-600' },
-                            { label: 'Dokumen', type: 'DOCUMENT', color: 'bg-green-50 text-green-600' },
-                            { label: 'TryOut', type: 'TRYOUT', color: 'bg-purple-50 text-purple-600' },
-                            { label: 'Materi', type: 'MATERI', color: 'bg-orange-50 text-orange-600' },
+                            {
+                              label: 'Video',
+                              type: 'VIDEO',
+                              color: 'bg-blue-50 text-blue-600',
+                            },
+                            {
+                              label: 'Dokumen',
+                              type: 'DOCUMENT',
+                              color: 'bg-green-50 text-green-600',
+                            },
+                            {
+                              label: 'TryOut',
+                              type: 'TRYOUT',
+                              color: 'bg-purple-50 text-purple-600',
+                            },
+                            {
+                              label: 'Materi',
+                              type: 'MATERI',
+                              color: 'bg-orange-50 text-orange-600',
+                            },
                           ]
                             .filter((s) =>
-                            s.type === 'VIDEO'
-                              ? course.CourseSubChapter.filter(
-                                  (sc) =>
-                                    sc.type === 'VIDEO' ||
-                                    (sc.type === 'DOCUMENT' && sc.Document?.videoId),
-                                ).length > 0
-                              : course.CourseSubChapter.filter((sc) => sc.type === s.type).length > 0,
-                          )
-                            .map(stat => (
-                              <span key={stat.label} className={cn('text-xs px-2 py-0.5 rounded-full font-medium', stat.color)}>
-                                {stat.type === 'VIDEO'
+                              s.type === 'VIDEO'
                                 ? course.CourseSubChapter.filter(
                                     (sc) =>
                                       sc.type === 'VIDEO' ||
-                                      (sc.type === 'DOCUMENT' && sc.Document?.videoId),
-                                  ).length
-                                : course.CourseSubChapter.filter((sc) => sc.type === stat.type).length}{' '}
-                              {stat.label}
+                                      (sc.type === 'DOCUMENT' &&
+                                        sc.Document?.videoId),
+                                  ).length > 0
+                                : course.CourseSubChapter.filter(
+                                    (sc) => sc.type === s.type,
+                                  ).length > 0,
+                            )
+                            .map((stat) => (
+                              <span
+                                key={stat.label}
+                                className={cn(
+                                  'text-xs px-2 py-0.5 rounded-full font-medium',
+                                  stat.color,
+                                )}
+                              >
+                                {stat.type === 'VIDEO'
+                                  ? course.CourseSubChapter.filter(
+                                      (sc) =>
+                                        sc.type === 'VIDEO' ||
+                                        (sc.type === 'DOCUMENT' &&
+                                          sc.Document?.videoId),
+                                    ).length
+                                  : course.CourseSubChapter.filter(
+                                      (sc) => sc.type === stat.type,
+                                    ).length}{' '}
+                                {stat.label}
                               </span>
                             ))}
                         </div>
@@ -440,12 +511,13 @@ export default function Index() {
                                 {getTypeIcon(subChapter.type)}
                                 {getTypeBadge(subChapter.type)}
                               </div>
-                              {subChapter.type === 'DOCUMENT' && subChapter.Document?.videoId && (
-                                <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-600 border border-blue-100 px-1.5 py-0.5 rounded-md text-xs font-medium ml-6">
-                                  <Video className="h-3 w-3" />
-                                  Video
-                                </span>
-                              )}
+                              {subChapter.type === 'DOCUMENT' &&
+                                subChapter.Document?.videoId && (
+                                  <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-600 border border-blue-100 px-1.5 py-0.5 rounded-md text-xs font-medium ml-6">
+                                    <Video className="h-3 w-3" />
+                                    Video
+                                  </span>
+                                )}
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="font-medium text-gray-900 text-sm truncate">
@@ -465,22 +537,38 @@ export default function Index() {
                               <div className="flex flex-col items-center gap-0.5 shrink-0">
                                 <Switch
                                   checked={subChapter.premium}
-                                  disabled={togglingSubChapters.has(subChapter.id)}
-                                  onCheckedChange={() => handleToggleSubChapterPremium(subChapter.id, subChapter.premium)}
+                                  disabled={togglingSubChapters.has(
+                                    subChapter.id,
+                                  )}
+                                  onCheckedChange={() =>
+                                    handleToggleSubChapterPremium(
+                                      subChapter.id,
+                                      subChapter.premium,
+                                    )
+                                  }
                                   className="scale-75 data-[state=checked]:bg-amber-400"
                                 />
-                                <span className={`text-[9px] font-semibold leading-none ${
-                                  subChapter.premium ? 'text-amber-600' : 'text-gray-400'
-                                }`}>
-                                  {togglingSubChapters.has(subChapter.id) ? '...' : subChapter.premium ? 'Premium' : 'Free'}
+                                <span
+                                  className={`text-[9px] font-semibold leading-none ${
+                                    subChapter.premium
+                                      ? 'text-amber-600'
+                                      : 'text-gray-400'
+                                  }`}
+                                >
+                                  {togglingSubChapters.has(subChapter.id)
+                                    ? '...'
+                                    : subChapter.premium
+                                      ? 'Premium'
+                                      : 'Free'}
                                 </span>
                               </div>
-                              {subChapter.type === 'TRYOUT' && subChapter._count && (
-                                <span className="flex items-center gap-1 text-xs text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">
-                                  <Play className="h-3 w-3" />
-                                  {subChapter._count.TryoutQuestion} soal
-                                </span>
-                              )}
+                              {subChapter.type === 'TRYOUT' &&
+                                subChapter._count && (
+                                  <span className="flex items-center gap-1 text-xs text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">
+                                    <Play className="h-3 w-3" />
+                                    {subChapter._count.TryoutQuestion} soal
+                                  </span>
+                                )}
                             </div>
                           </div>
                         ))}

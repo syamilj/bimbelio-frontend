@@ -17,8 +17,12 @@ export default function Dokumen() {
       <div className="flex flex-col gap-6">
         {/* Page header */}
         <div>
-          <h1 className="text-2xl font-black text-gray-900">Manajemen Dokumen</h1>
-          <p className="mt-0.5 text-sm text-gray-500">Kelola semua dokumen pembelajaran platform</p>
+          <h1 className="text-2xl font-black text-gray-900">
+            Manajemen Dokumen
+          </h1>
+          <p className="mt-0.5 text-sm text-gray-500">
+            Kelola semua dokumen pembelajaran platform
+          </p>
         </div>
 
         {/* Stat cards */}

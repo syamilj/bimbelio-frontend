@@ -100,7 +100,9 @@ export const PaymentTryout = ({
         <div className="overflow-hidden rounded-3xl bg-white">
           <div className="flex items-center justify-between bg-main p-6">
             <div className="flex items-center gap-[.5rem] text-white">
-              <DialogTitle className="text-white font-normal">Tryout Premium</DialogTitle>
+              <DialogTitle className="text-white font-normal">
+                Tryout Premium
+              </DialogTitle>
               <IconCrown className="text-main-yellow" />
             </div>
             <div

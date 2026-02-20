@@ -251,7 +251,9 @@ const ModalImportExcel = ({
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <><Loader2 className="animate-spin w-4 h-4" /> Memproses...</>
+                  <>
+                    <Loader2 className="animate-spin w-4 h-4" /> Memproses...
+                  </>
                 ) : (
                   'Generate Soal'
                 )}

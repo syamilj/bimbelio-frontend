@@ -1,3 +1,4 @@
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,8 +10,8 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Switch } from '@/components/ui/switch';
 import {
   Table as ShadTable,
   TableBody,
@@ -21,11 +22,9 @@ import {
 } from '@/components/ui/table';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import axiosInstance from '@/lib/axios/axiosInstance';
 import { deleteGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { storage } from '@/supabaseClient';
-import { Category, Document, Subcategory, Video } from '@/types/database';
 import {
   ChevronLeft,
   ChevronRight,
@@ -59,7 +58,11 @@ export default function Table() {
 
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [deleteData, setDeleteData] = useState({ id: '', title: '', videoTitle: '' });
+  const [deleteData, setDeleteData] = useState({
+    id: '',
+    title: '',
+    videoTitle: '',
+  });
   const [togglingIds, setTogglingIds] = useState<Set<string>>(new Set());
 
   const handleTogglePremium = async (item: (typeof documentData)[number]) => {
@@ -85,7 +88,9 @@ export default function Table() {
   const fileDownload = async (fileName: string) => {
     try {
       await storage.from('pdf').download(`document/${fileName}`);
-    } catch { /* silent */ }
+    } catch {
+      /* silent */
+    }
   };
 
   const removeDocument = async () => {
@@ -97,7 +102,9 @@ export default function Table() {
         await storage.from('pdf').remove([`document/${deleteData.title}`]);
         await storage.from('img').remove([`document/${deleteData.title}`]);
         if (deleteData.videoTitle.length > 0) {
-          await storage.from('video').remove([`document/${deleteData.videoTitle}`]);
+          await storage
+            .from('video')
+            .remove([`document/${deleteData.videoTitle}`]);
         }
       },
     });
@@ -121,17 +128,35 @@ export default function Table() {
         <ShadTable>
           <TableHeader>
             <TableRow className="bg-gray-50 hover:bg-gray-50">
-              <TableHead className="w-12 text-center font-bold text-gray-600 text-xs">No.</TableHead>
-              <TableHead className="font-bold text-gray-600 text-xs">Judul</TableHead>
-              <TableHead className="text-center font-bold text-gray-600 text-xs">Video</TableHead>
-              <TableHead className="text-center font-bold text-gray-600 text-xs">Dipilih</TableHead>
+              <TableHead className="w-12 text-center font-bold text-gray-600 text-xs">
+                No.
+              </TableHead>
+              <TableHead className="font-bold text-gray-600 text-xs">
+                Judul
+              </TableHead>
+              <TableHead className="text-center font-bold text-gray-600 text-xs">
+                Video
+              </TableHead>
+              <TableHead className="text-center font-bold text-gray-600 text-xs">
+                Dipilih
+              </TableHead>
               {isCore && (
-                <TableHead className="text-center font-bold text-gray-600 text-xs">Visible At</TableHead>
+                <TableHead className="text-center font-bold text-gray-600 text-xs">
+                  Visible At
+                </TableHead>
               )}
-              <TableHead className="text-center font-bold text-gray-600 text-xs">Status</TableHead>
-              <TableHead className="text-center font-bold text-gray-600 text-xs">Kategori</TableHead>
-              <TableHead className="text-center font-bold text-gray-600 text-xs">Sub Kategori</TableHead>
-              <TableHead className="text-center font-bold text-gray-600 text-xs">Aksi</TableHead>
+              <TableHead className="text-center font-bold text-gray-600 text-xs">
+                Status
+              </TableHead>
+              <TableHead className="text-center font-bold text-gray-600 text-xs">
+                Kategori
+              </TableHead>
+              <TableHead className="text-center font-bold text-gray-600 text-xs">
+                Sub Kategori
+              </TableHead>
+              <TableHead className="text-center font-bold text-gray-600 text-xs">
+                Aksi
+              </TableHead>
             </TableRow>
           </TableHeader>
 
@@ -139,15 +164,36 @@ export default function Table() {
             {/* Loading skeleton */}
             {isLoading &&
               Array.from({ length: SKELETON_ROWS }).map((_, i) => (
-                <TableRow key={`skel-${i}`} className="animate-pulse">
-                  <TableCell className="text-center"><Skeleton className="h-4 w-6 mx-auto rounded" /></TableCell>
-                  <TableCell><Skeleton className="h-4 w-40 rounded" /></TableCell>
-                  <TableCell className="text-center"><Skeleton className="h-6 w-14 mx-auto rounded-full" /></TableCell>
-                  <TableCell className="text-center"><Skeleton className="h-4 w-8 mx-auto rounded" /></TableCell>
-                  {isCore && <TableCell><Skeleton className="h-4 w-16 mx-auto rounded" /></TableCell>}
-                  <TableCell className="text-center"><Skeleton className="h-6 w-16 mx-auto rounded-full" /></TableCell>
-                  <TableCell className="text-center"><Skeleton className="h-6 w-20 mx-auto rounded-full" /></TableCell>
-                  <TableCell className="text-center"><Skeleton className="h-6 w-20 mx-auto rounded-full" /></TableCell>
+                <TableRow
+                  key={`skel-${i}`}
+                  className="animate-pulse"
+                >
+                  <TableCell className="text-center">
+                    <Skeleton className="h-4 w-6 mx-auto rounded" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-40 rounded" />
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Skeleton className="h-6 w-14 mx-auto rounded-full" />
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Skeleton className="h-4 w-8 mx-auto rounded" />
+                  </TableCell>
+                  {isCore && (
+                    <TableCell>
+                      <Skeleton className="h-4 w-16 mx-auto rounded" />
+                    </TableCell>
+                  )}
+                  <TableCell className="text-center">
+                    <Skeleton className="h-6 w-16 mx-auto rounded-full" />
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Skeleton className="h-6 w-20 mx-auto rounded-full" />
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Skeleton className="h-6 w-20 mx-auto rounded-full" />
+                  </TableCell>
                   <TableCell className="text-center">
                     <div className="flex justify-center gap-1">
                       <Skeleton className="h-8 w-8 rounded-lg" />
@@ -162,11 +208,18 @@ export default function Table() {
             {/* Empty state */}
             {!isLoading && documentData.length === 0 && (
               <TableRow>
-                <TableCell colSpan={isCore ? 9 : 8} className="h-48 text-center">
+                <TableCell
+                  colSpan={isCore ? 9 : 8}
+                  className="h-48 text-center"
+                >
                   <div className="flex flex-col items-center justify-center gap-3 py-8">
                     <FileX className="w-12 h-12 text-gray-300" />
-                    <p className="text-sm font-semibold text-gray-500">Tidak ada dokumen</p>
-                    <p className="text-xs text-gray-400">Belum ada dokumen yang ditambahkan</p>
+                    <p className="text-sm font-semibold text-gray-500">
+                      Tidak ada dokumen
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      Belum ada dokumen yang ditambahkan
+                    </p>
                   </div>
                 </TableCell>
               </TableRow>
@@ -175,13 +228,19 @@ export default function Table() {
             {/* Data rows */}
             {!isLoading &&
               documentData.map((item, index) => (
-                <TableRow key={item.id} className="hover:bg-gray-50/80 transition-colors">
+                <TableRow
+                  key={item.id}
+                  className="hover:bg-gray-50/80 transition-colors"
+                >
                   <TableCell className="text-center text-sm text-gray-500 font-medium">
                     {(page - 1) * 10 + (index + 1)}
                   </TableCell>
 
                   <TableCell className="max-w-[220px]">
-                    <p className="font-semibold text-gray-800 text-sm leading-tight truncate" title={item.title}>
+                    <p
+                      className="font-semibold text-gray-800 text-sm leading-tight truncate"
+                      title={item.title}
+                    >
                       {item.title}
                     </p>
                   </TableCell>
@@ -223,8 +282,14 @@ export default function Table() {
                         onCheckedChange={() => handleTogglePremium(item)}
                         className="data-[state=checked]:bg-amber-400"
                       />
-                      <span className={`text-[10px] font-semibold ${item.premium ? 'text-amber-600' : 'text-emerald-600'}`}>
-                        {togglingIds.has(item.id) ? '...' : item.premium ? 'Premium' : 'Free'}
+                      <span
+                        className={`text-[10px] font-semibold ${item.premium ? 'text-amber-600' : 'text-emerald-600'}`}
+                      >
+                        {togglingIds.has(item.id)
+                          ? '...'
+                          : item.premium
+                            ? 'Premium'
+                            : 'Free'}
                       </span>
                     </div>
                   </TableCell>
@@ -276,7 +341,11 @@ export default function Table() {
                         title="Hapus dokumen"
                         className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
                         onClick={() => {
-                          setDeleteData({ id: item.id, title: item.title, videoTitle: item.video?.title || '' });
+                          setDeleteData({
+                            id: item.id,
+                            title: item.title,
+                            videoTitle: item.video?.title || '',
+                          });
                           setDeleteOpen(true);
                         }}
                       >
@@ -294,8 +363,11 @@ export default function Table() {
       {!isLoading && documentData.length > 0 && (
         <div className="flex items-center justify-between pt-2">
           <p className="text-xs text-gray-500">
-            Halaman <span className="font-semibold text-gray-700">{page}</span> dari{' '}
-            <span className="font-semibold text-gray-700">{totalPages || 1}</span>
+            Halaman <span className="font-semibold text-gray-700">{page}</span>{' '}
+            dari{' '}
+            <span className="font-semibold text-gray-700">
+              {totalPages || 1}
+            </span>
           </p>
           <div className="flex items-center gap-1">
             <button
@@ -307,7 +379,9 @@ export default function Table() {
             </button>
             {/* Page number pills */}
             {Array.from({ length: totalPages || 1 }, (_, i) => i + 1)
-              .filter((p) => p === 1 || p === totalPages || Math.abs(p - page) <= 1)
+              .filter(
+                (p) => p === 1 || p === totalPages || Math.abs(p - page) <= 1,
+              )
               .reduce<(number | '...')[]>((acc, p, i, arr) => {
                 if (i > 0 && p - (arr[i - 1] as number) > 1) acc.push('...');
                 acc.push(p);
@@ -315,7 +389,12 @@ export default function Table() {
               }, [])
               .map((p, i) =>
                 p === '...' ? (
-                  <span key={`ellipsis-${i}`} className="w-8 text-center text-xs text-gray-400">…</span>
+                  <span
+                    key={`ellipsis-${i}`}
+                    className="w-8 text-center text-xs text-gray-400"
+                  >
+                    …
+                  </span>
                 ) : (
                   <button
                     key={p}
@@ -342,21 +421,30 @@ export default function Table() {
       )}
 
       {/* Delete confirmation dialog */}
-      <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+      <AlertDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+      >
         <AlertDialogContent className="rounded-2xl max-w-md">
           <AlertDialogHeader>
             <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 mx-auto mb-2">
               <Trash2 className="w-6 h-6 text-red-600" />
             </div>
-            <AlertDialogTitle className="text-center">Hapus Dokumen?</AlertDialogTitle>
+            <AlertDialogTitle className="text-center">
+              Hapus Dokumen?
+            </AlertDialogTitle>
             <AlertDialogDescription className="text-center">
               Dokumen{' '}
-              <span className="font-semibold text-gray-800">&quot;{deleteData.title}&quot;</span>{' '}
+              <span className="font-semibold text-gray-800">
+                &quot;{deleteData.title}&quot;
+              </span>{' '}
               akan dihapus permanen dan tidak bisa dikembalikan.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="flex-row gap-2 justify-center">
-            <AlertDialogCancel className="flex-1 rounded-xl">Batal</AlertDialogCancel>
+            <AlertDialogCancel className="flex-1 rounded-xl">
+              Batal
+            </AlertDialogCancel>
             <AlertDialogAction
               className="flex-1 rounded-xl bg-red-600 hover:bg-red-700 text-white"
               onClick={() => removeDocument()}
@@ -369,4 +457,3 @@ export default function Table() {
     </>
   );
 }
-

@@ -7,7 +7,9 @@ type Props = {
   videoTitle: string;
   setDeleteConfirmation: Dispatch<SetStateAction<boolean>>;
   loading: boolean;
-  setDeleteData: Dispatch<SetStateAction<{ id: string; title: string; videoTitle: string }>>;
+  setDeleteData: Dispatch<
+    SetStateAction<{ id: string; title: string; videoTitle: string }>
+  >;
 };
 
 export default function HapusDokumen({

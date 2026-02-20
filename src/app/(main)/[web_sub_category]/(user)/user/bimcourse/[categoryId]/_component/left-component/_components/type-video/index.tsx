@@ -71,7 +71,10 @@ const VideoType = () => {
             <span>{CourseData?.spendTime ?? 0} Menit</span>
           </div>
           <div className="flex items-center gap-1.5 text-emerald-600 text-sm font-medium">
-            <IconCheckList className="text-emerald-500" w={16} />
+            <IconCheckList
+              className="text-emerald-500"
+              w={16}
+            />
             <span>Selesai</span>
           </div>
         </div>
@@ -88,11 +91,12 @@ const VideoType = () => {
             controls
             controlsList="nodownload"
             className="h-fit w-full rounded-2xl bg-black shadow-sm"
-          >
-          </video>
+          ></video>
         </div>
       )}
-      <h2 className="text-xl font-semibold text-slate-800">{CourseData?.title}</h2>
+      <h2 className="text-xl font-semibold text-slate-800">
+        {CourseData?.title}
+      </h2>
       {/* <p className="">{CourseData?.description}</p> */}
       {/* <MarkdownPreview
         source={CourseData?.description}
@@ -109,7 +113,9 @@ const VideoType = () => {
         className="pt-2 pb-8"
       />
       <div className="flex items-center justify-between rounded-xl bg-slate-50 border border-slate-200/60 px-4 py-2.5 mb-28">
-        <span className="text-xs font-semibold text-slate-600">Berikan Rating</span>
+        <span className="text-xs font-semibold text-slate-600">
+          Berikan Rating
+        </span>
         <EmojiRating />
       </div>
     </div>

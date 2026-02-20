@@ -16,7 +16,6 @@ import {
   BookOpen,
   Bot,
   ChevronDown,
-  FileQuestion,
   Home, // Added for BimArena/TryOut
   Info, // Added for Beta info
   Medal, // Added for BimLive

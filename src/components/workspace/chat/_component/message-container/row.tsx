@@ -10,13 +10,13 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { BimBot } from '@/components/ui/bim-brand';
 import { env } from '@/env.mjs';
 import { cn } from '@/lib/utils';
+import 'katex/dist/katex.min.css';
 import { Bot, Lightbulb } from 'lucide-react';
 import Image from 'next/image';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { type MessageDataType, useProvider } from '../../provider';
 import ChatTools from '../chat-tools';
 import SubmitChatEdit from '../submit-chat-edit';
-import 'katex/dist/katex.min.css';
 
 type Props = {
   message: MessageDataType;
@@ -61,10 +61,9 @@ function preprocessContent(content: string) {
     (_: string, start: string, end: string) => {
       const s = parseInt(start);
       const e = parseInt(end);
-      return Array.from(
-        { length: e - s + 1 },
-        (_, i) => `\`📄${s + i}\``,
-      ).join(' ');
+      return Array.from({ length: e - s + 1 }, (_, i) => `\`📄${s + i}\``).join(
+        ' ',
+      );
     },
   );
   processed = processed.replace(/<PAGE#(\d+)>/g, '`📄$1`');
@@ -165,7 +164,10 @@ export default function Row({ message, index, isLast, isStreaming }: Props) {
 
   if (isUser) {
     return (
-      <Message from="user" className="items-end w-full">
+      <Message
+        from="user"
+        className="items-end w-full"
+      >
         <MessageContent
           className={cn(
             'rounded-2xl rounded-br-md px-3.5 py-2 text-[13px] text-white leading-relaxed',
@@ -190,9 +192,7 @@ export default function Row({ message, index, isLast, isStreaming }: Props) {
           ) : editMessage.index === index ? (
             <SubmitChatEdit />
           ) : (
-            <p className="whitespace-pre-wrap break-words">
-              {message.content}
-            </p>
+            <p className="whitespace-pre-wrap break-words">{message.content}</p>
           )}
         </MessageContent>
         {!editMessage.bool && message.content && (
@@ -207,7 +207,10 @@ export default function Row({ message, index, isLast, isStreaming }: Props) {
   // ── Assistant bubble (Streamdown / AI Elements) ──────────────────
 
   return (
-    <Message from="assistant" className="w-full">
+    <Message
+      from="assistant"
+      className="w-full"
+    >
       <div className="flex gap-2">
         {/* Avatar */}
         <div className="shrink-0 mt-0.5">
@@ -251,10 +254,11 @@ export default function Row({ message, index, isLast, isStreaming }: Props) {
                 ))}
               </div>
             ) : (
-              <div ref={pageContentRef} onClick={handleContentClick}>
-                <MessageResponse>
-                  {processedContent}
-                </MessageResponse>
+              <div
+                ref={pageContentRef}
+                onClick={handleContentClick}
+              >
+                <MessageResponse>{processedContent}</MessageResponse>
               </div>
             )}
           </MessageContent>

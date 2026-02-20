@@ -29,12 +29,35 @@ interface Props {
   category: Category[] | null;
 }
 
-const typeConfig: Record<string, { icon: React.ReactNode; color: string; label: string }> = {
-  VIDEO: { icon: <Video className="h-3.5 w-3.5" />, color: 'text-blue-600 bg-blue-50 border-blue-100', label: 'Video' },
-  DOCUMENT: { icon: <FileText className="h-3.5 w-3.5" />, color: 'text-green-600 bg-green-50 border-green-100', label: 'Dokumen' },
-  TRYOUT: { icon: <Play className="h-3.5 w-3.5" />, color: 'text-purple-600 bg-purple-50 border-purple-100', label: 'TryOut' },
-  MATERI: { icon: <BookOpen className="h-3.5 w-3.5" />, color: 'text-orange-600 bg-orange-50 border-orange-100', label: 'Materi' },
-  PROGRESS_TEST: { icon: <Play className="h-3.5 w-3.5" />, color: 'text-indigo-600 bg-indigo-50 border-indigo-100', label: 'Uji Progress' },
+const typeConfig: Record<
+  string,
+  { icon: React.ReactNode; color: string; label: string }
+> = {
+  VIDEO: {
+    icon: <Video className="h-3.5 w-3.5" />,
+    color: 'text-blue-600 bg-blue-50 border-blue-100',
+    label: 'Video',
+  },
+  DOCUMENT: {
+    icon: <FileText className="h-3.5 w-3.5" />,
+    color: 'text-green-600 bg-green-50 border-green-100',
+    label: 'Dokumen',
+  },
+  TRYOUT: {
+    icon: <Play className="h-3.5 w-3.5" />,
+    color: 'text-purple-600 bg-purple-50 border-purple-100',
+    label: 'TryOut',
+  },
+  MATERI: {
+    icon: <BookOpen className="h-3.5 w-3.5" />,
+    color: 'text-orange-600 bg-orange-50 border-orange-100',
+    label: 'Materi',
+  },
+  PROGRESS_TEST: {
+    icon: <Play className="h-3.5 w-3.5" />,
+    color: 'text-indigo-600 bg-indigo-50 border-indigo-100',
+    label: 'Uji Progress',
+  },
 };
 
 const ChapterOption = ({
@@ -79,7 +102,10 @@ const ChapterOption = ({
       {/* Basic Info */}
       <div className="space-y-3">
         <div>
-          <Label htmlFor="title" className="text-xs font-medium text-gray-600 uppercase tracking-wide">
+          <Label
+            htmlFor="title"
+            className="text-xs font-medium text-gray-600 uppercase tracking-wide"
+          >
             Judul Kursus *
           </Label>
           <Input
@@ -94,7 +120,10 @@ const ChapterOption = ({
         </div>
 
         <div>
-          <Label htmlFor="category" className="text-xs font-medium text-gray-600 uppercase tracking-wide">
+          <Label
+            htmlFor="category"
+            className="text-xs font-medium text-gray-600 uppercase tracking-wide"
+          >
             Kategori *
           </Label>
           <Select
@@ -108,7 +137,10 @@ const ChapterOption = ({
             </SelectTrigger>
             <SelectContent>
               {category?.map((item) => (
-                <SelectItem key={item.id} value={item.id}>
+                <SelectItem
+                  key={item.id}
+                  value={item.id}
+                >
                   {item.name}
                 </SelectItem>
               ))}
@@ -118,7 +150,10 @@ const ChapterOption = ({
 
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label htmlFor="number" className="text-xs font-medium text-gray-600 uppercase tracking-wide">
+            <Label
+              htmlFor="number"
+              className="text-xs font-medium text-gray-600 uppercase tracking-wide"
+            >
               Urutan
             </Label>
             <Input
@@ -136,7 +171,10 @@ const ChapterOption = ({
             />
           </div>
           <div>
-            <Label htmlFor="status" className="text-xs font-medium text-gray-600 uppercase tracking-wide">
+            <Label
+              htmlFor="status"
+              className="text-xs font-medium text-gray-600 uppercase tracking-wide"
+            >
               Status
             </Label>
             <Select
@@ -181,7 +219,9 @@ const ChapterOption = ({
 
           {subChapter.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-6 text-center border-2 border-dashed border-gray-200 rounded-xl">
-              <p className="text-sm text-gray-400 mb-2">Belum ada sub chapter</p>
+              <p className="text-sm text-gray-400 mb-2">
+                Belum ada sub chapter
+              </p>
               <Button
                 onClick={addSubChapter}
                 size="sm"
@@ -212,18 +252,25 @@ const ChapterOption = ({
                     }}
                   >
                     {/* Number */}
-                    <div className={cn(
-                      'w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold shrink-0',
-                      currentIndexEdit === index
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-gray-100 text-gray-500',
-                    )}>
+                    <div
+                      className={cn(
+                        'w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold shrink-0',
+                        currentIndexEdit === index
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-gray-100 text-gray-500',
+                      )}
+                    >
                       {index + 1}
                     </div>
 
                     {/* Type indicator */}
                     {tc && (
-                      <div className={cn('flex items-center justify-center w-6 h-6 rounded-lg border shrink-0', tc.color)}>
+                      <div
+                        className={cn(
+                          'flex items-center justify-center w-6 h-6 rounded-lg border shrink-0',
+                          tc.color,
+                        )}
+                      >
                         {tc.icon}
                       </div>
                     )}
@@ -244,12 +291,16 @@ const ChapterOption = ({
 
                     {/* Status chip */}
                     {item.status && (
-                      <span className={cn(
-                        'text-[10px] font-medium px-1.5 py-0.5 rounded-md shrink-0',
-                        item.status === 'PUBLISH' ? 'bg-green-100 text-green-700' :
-                        item.status === 'UPCOMING' ? 'bg-blue-100 text-blue-700' :
-                        'bg-gray-100 text-gray-500',
-                      )}>
+                      <span
+                        className={cn(
+                          'text-[10px] font-medium px-1.5 py-0.5 rounded-md shrink-0',
+                          item.status === 'PUBLISH'
+                            ? 'bg-green-100 text-green-700'
+                            : item.status === 'UPCOMING'
+                              ? 'bg-blue-100 text-blue-700'
+                              : 'bg-gray-100 text-gray-500',
+                        )}
+                      >
                         {item.status}
                       </span>
                     )}
@@ -279,7 +330,9 @@ const ChapterOption = ({
       {!chapter?.categoryId && (
         <div className="flex items-start gap-2 text-xs text-blue-700 bg-blue-50 border border-blue-100 p-3 rounded-xl">
           <span className="mt-0.5">💡</span>
-          <span>Pilih kategori terlebih dahulu untuk menambahkan sub chapter</span>
+          <span>
+            Pilih kategori terlebih dahulu untuk menambahkan sub chapter
+          </span>
         </div>
       )}
     </div>

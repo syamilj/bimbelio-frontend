@@ -28,8 +28,18 @@ export default function LeftComponent({ doc }: Props) {
             onClick={() => setSidebarMobile(true)}
             className="w-8 h-8 flex items-center justify-center hover:bg-slate-100 rounded-3xl transition-colors"
           >
-            <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            <svg
+              className="w-4 h-4 text-slate-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             </svg>
           </button>
           <h1 className="font-semibold text-sm text-slate-800 truncate flex-1 px-3">
@@ -41,7 +51,11 @@ export default function LeftComponent({ doc }: Props) {
       {/* Document Viewer */}
       <div className="flex-1 min-h-0">
         {userId ? (
-          <DocViewer doc={doc} userId={userId} canEdit={true} />
+          <DocViewer
+            doc={doc}
+            userId={userId}
+            canEdit={true}
+          />
         ) : (
           <div className="flex justify-center items-center h-full w-full">
             <Loader2 className="w-4 h-4 animate-spin text-slate-400" />

@@ -2,7 +2,6 @@
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { BimArena } from '@/components/ui/bim-brand';
 import {
   Card,
   CardContent,
@@ -916,7 +915,6 @@ const SummaryTryout = () => {
 
   return (
     <div className="space-y-4 max-w-7xl mx-auto">
-
       {/* Quick Stats Cards - BimBoard style */}
       <TryoutQuickStats
         summary={summary}

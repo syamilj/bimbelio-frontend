@@ -35,7 +35,6 @@ const SessionOption = ({
   questionIndex,
   setQuestionIndex,
 }: Props) => {
-
   const addQuestion = () => {
     if (EditSession === null) return;
     const div = document.querySelector(
@@ -160,11 +159,19 @@ const SessionOption = ({
             />
             <button
               type="button"
-              title={showDetailTryout ? 'Sembunyikan panel tryout' : 'Tampilkan panel tryout'}
+              title={
+                showDetailTryout
+                  ? 'Sembunyikan panel tryout'
+                  : 'Tampilkan panel tryout'
+              }
               onClick={() => setShowDetailTryout((prev) => !prev)}
               className="inline-flex items-center gap-1.5 text-[11px] font-medium text-gray-500 hover:text-gray-800 border border-gray-200 hover:border-gray-300 rounded-lg px-2.5 py-1.5 transition-colors"
             >
-              {showDetailTryout ? <PanelLeft className="w-3.5 h-3.5" /> : <PanelLeftOpen className="w-3.5 h-3.5" />}
+              {showDetailTryout ? (
+                <PanelLeft className="w-3.5 h-3.5" />
+              ) : (
+                <PanelLeftOpen className="w-3.5 h-3.5" />
+              )}
               {showDetailTryout ? 'Tutup Panel' : 'Buka Panel'}
             </button>
           </div>
@@ -186,7 +193,9 @@ const SessionOption = ({
           <div className="px-4 pt-4 pb-4">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-semibold text-gray-800">Daftar Soal</h3>
+                <h3 className="text-sm font-semibold text-gray-800">
+                  Daftar Soal
+                </h3>
                 <span className="inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 rounded-full bg-gray-200 text-[11px] font-semibold text-gray-600">
                   {EditSession.Questions?.length ?? 0}
                 </span>
@@ -204,7 +213,8 @@ const SessionOption = ({
               id="numberList"
               className="flex flex-wrap gap-1.5"
             >
-              {EditSession.Questions && EditSession.Questions.length > 0 &&
+              {EditSession.Questions &&
+                EditSession.Questions.length > 0 &&
                 EditSession.Questions.map((question, qIndex) => (
                   <button
                     key={qIndex}
@@ -226,7 +236,10 @@ const SessionOption = ({
       </div>
 
       {/* Right column: full-height editor */}
-      <div id="question" className="flex flex-col flex-1 overflow-y-auto bg-gray-50">
+      <div
+        id="question"
+        className="flex flex-col flex-1 overflow-y-auto bg-gray-50"
+      >
         {EditSession.Questions && EditSession.Questions.length > 0 ? (
           <QuestionSessionTryout
             EditSession={EditSession}
@@ -242,8 +255,14 @@ const SessionOption = ({
               <FileText className="h-8 w-8 text-blue-400" />
             </div>
             <div className="flex flex-col gap-1.5">
-              <p className="text-sm font-semibold text-gray-700">Belum ada soal</p>
-              <p className="text-xs text-gray-400">Klik "Tambah Soal" di panel kiri<br />untuk mulai membuat soal sesi ini</p>
+              <p className="text-sm font-semibold text-gray-700">
+                Belum ada soal
+              </p>
+              <p className="text-xs text-gray-400">
+                Klik "Tambah Soal" di panel kiri
+                <br />
+                untuk mulai membuat soal sesi ini
+              </p>
             </div>
             <button
               type="button"

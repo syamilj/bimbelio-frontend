@@ -23,7 +23,13 @@ import axiosInstanceWithToken from '@/lib/axios/axiosInstanceWithToken';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
-import { Check, ChevronsUpDown, GraduationCap, Phone, Target } from 'lucide-react';
+import {
+  Check,
+  ChevronsUpDown,
+  GraduationCap,
+  Phone,
+  Target,
+} from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -62,7 +68,11 @@ function UnivCombobox({
 }) {
   const [open, setOpen] = useState(false);
   return (
-    <Popover open={open} onOpenChange={setOpen} modal>
+    <Popover
+      open={open}
+      onOpenChange={setOpen}
+      modal
+    >
       <PopoverTrigger asChild>
         <button
           type="button"
@@ -75,11 +85,17 @@ function UnivCombobox({
           <ChevronsUpDown className="w-4 h-4 text-slate-400 ml-2 shrink-0" />
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-[350px] p-0 rounded-2xl shadow-xl" align="start" style={{ zIndex: 9999 }}>
+      <PopoverContent
+        className="w-[350px] p-0 rounded-2xl shadow-xl"
+        align="start"
+        style={{ zIndex: 9999 }}
+      >
         <Command>
-          <CommandInput placeholder={`Cari ${placeholder.replace('Pilih ', '').replace('...', '')}...`} />
+          <CommandInput
+            placeholder={`Cari ${placeholder.replace('Pilih ', '').replace('...', '')}...`}
+          />
           <CommandList className="max-h-72">
-              <CommandEmpty>Tidak ditemukan.</CommandEmpty>
+            <CommandEmpty>Tidak ditemukan.</CommandEmpty>
             <CommandGroup>
               {value && (
                 <CommandItem
@@ -103,11 +119,16 @@ function UnivCombobox({
                   }}
                 >
                   <Check
-                    className={cn('mr-2 w-4 h-4', value === u.university ? 'opacity-100' : 'opacity-0')}
+                    className={cn(
+                      'mr-2 w-4 h-4',
+                      value === u.university ? 'opacity-100' : 'opacity-0',
+                    )}
                     style={{ color: mainColor }}
                   />
                   <span className="font-bold mr-2">{u.initials}</span>
-                  <span className="text-slate-500 text-xs truncate">{u.university}</span>
+                  <span className="text-slate-500 text-xs truncate">
+                    {u.university}
+                  </span>
                 </CommandItem>
               ))}
             </CommandGroup>
@@ -137,7 +158,11 @@ function MajorCombobox({
 }) {
   const [open, setOpen] = useState(false);
   return (
-    <Popover open={open} onOpenChange={setOpen} modal>
+    <Popover
+      open={open}
+      onOpenChange={setOpen}
+      modal
+    >
       <PopoverTrigger asChild>
         <button
           type="button"
@@ -152,7 +177,11 @@ function MajorCombobox({
           <ChevronsUpDown className="w-4 h-4 text-slate-400 ml-2 shrink-0" />
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-[350px] p-0 rounded-2xl shadow-xl" align="start" style={{ zIndex: 9999 }}>
+      <PopoverContent
+        className="w-[350px] p-0 rounded-2xl shadow-xl"
+        align="start"
+        style={{ zIndex: 9999 }}
+      >
         <Command>
           <CommandInput placeholder="Cari jurusan..." />
           <CommandList className="max-h-72">
@@ -180,12 +209,17 @@ function MajorCombobox({
                   }}
                 >
                   <Check
-                    className={cn('mr-2 w-4 h-4', value === m.study ? 'opacity-100' : 'opacity-0')}
+                    className={cn(
+                      'mr-2 w-4 h-4',
+                      value === m.study ? 'opacity-100' : 'opacity-0',
+                    )}
                     style={{ color: mainColor }}
                   />
                   <span className="truncate">{m.study}</span>
                   {m.averageScore && (
-                    <span className="ml-auto text-xs text-slate-400 shrink-0">{m.averageScore}</span>
+                    <span className="ml-auto text-xs text-slate-400 shrink-0">
+                      {m.averageScore}
+                    </span>
                   )}
                 </CommandItem>
               ))}
@@ -204,16 +238,27 @@ type TargetTabProps = {
   secondaryColor: string;
 };
 
-export function TargetTab({ userId, websiteSubCategoryId, mainColor, secondaryColor }: TargetTabProps) {
+export function TargetTab({
+  userId,
+  websiteSubCategoryId,
+  mainColor,
+  secondaryColor,
+}: TargetTabProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const params = useParams<{ web_sub_category: string }>();
   // URL param is always correct (synchronous from route); context starts as "guest" before async fetch
-  const activeWebsubId = params.web_sub_category || websiteSubCategory?.id || websiteSubCategoryId || '';
+  const activeWebsubId =
+    params.web_sub_category ||
+    websiteSubCategory?.id ||
+    websiteSubCategoryId ||
+    '';
   const isKedinasan = activeWebsubId.toLowerCase().includes('kedinasan');
   // Always show the university/institution section; for Kedinasan it shows kedinasan institutions
   const showUniversitySection = true;
 
-  const [allUniversityOptions, setAllUniversityOptions] = useState<UniversityProps[]>([]);
+  const [allUniversityOptions, setAllUniversityOptions] = useState<
+    UniversityProps[]
+  >([]);
   const [isSaving, setIsSaving] = useState(false);
 
   // Form state
@@ -232,19 +277,20 @@ export function TargetTab({ userId, websiteSubCategoryId, mainColor, secondaryCo
 
   // Filter based on isKedinasan — always has correct value because of URL param fallback
   const universityOptions = useMemo(
-    () => (isKedinasan ? allUniversityOptions.filter((u) => u.isKedinasan) : allUniversityOptions),
+    () =>
+      isKedinasan
+        ? allUniversityOptions.filter((u) => u.isKedinasan)
+        : allUniversityOptions,
     [allUniversityOptions, isKedinasan],
   );
 
   // Fetch existing user tryout data
-  const { data: existingData, isLoading: isLoadingData } = useGet<UserTryoutDataType>(
-    '/user/getUserTryOut',
-    {
+  const { data: existingData, isLoading: isLoadingData } =
+    useGet<UserTryoutDataType>('/user/getUserTryOut', {
       params: { userId, website_sub_category_id: websiteSubCategoryId },
       enabled: !!userId && !!websiteSubCategoryId,
       toast: { hideError: true },
-    },
-  );
+    });
 
   // Prefill form when data loads
   useEffect(() => {
@@ -260,9 +306,11 @@ export function TargetTab({ userId, websiteSubCategoryId, mainColor, secondaryCo
   }, [existingData]);
 
   const majorsForUniv1 =
-    universityOptions.find((u) => u.university === univ1)?.studyProgramList ?? [];
+    universityOptions.find((u) => u.university === univ1)?.studyProgramList ??
+    [];
   const majorsForUniv2 =
-    universityOptions.find((u) => u.university === univ2)?.studyProgramList ?? [];
+    universityOptions.find((u) => u.university === univ2)?.studyProgramList ??
+    [];
 
   const handleSave = async () => {
     try {
@@ -279,9 +327,17 @@ export function TargetTab({ userId, websiteSubCategoryId, mainColor, secondaryCo
           univStudyChoiceTwo: major2 || null,
         },
       );
-      toaster({ title: 'Tersimpan', description: 'Target berhasil diperbarui!', condition: 'success' });
+      toaster({
+        title: 'Tersimpan',
+        description: 'Target berhasil diperbarui!',
+        condition: 'success',
+      });
     } catch {
-      toaster({ title: 'Gagal', description: 'Gagal menyimpan perubahan.', condition: 'warning' });
+      toaster({
+        title: 'Gagal',
+        description: 'Gagal menyimpan perubahan.',
+        condition: 'warning',
+      });
     } finally {
       setIsSaving(false);
     }
@@ -301,13 +357,19 @@ export function TargetTab({ userId, websiteSubCategoryId, mainColor, secondaryCo
       <div className="rounded-3xl border border-slate-200 overflow-hidden">
         <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200">
           <h3 className="text-sm font-black text-slate-700 flex items-center gap-2">
-            <Phone className="w-4 h-4" style={{ color: mainColor }} />
+            <Phone
+              className="w-4 h-4"
+              style={{ color: mainColor }}
+            />
             Nomor Handphone
           </h3>
         </div>
         <div className="p-5 space-y-4">
           <div className="space-y-1.5">
-            <Label className="text-xs font-bold uppercase tracking-wider" style={{ color: mainColor }}>
+            <Label
+              className="text-xs font-bold uppercase tracking-wider"
+              style={{ color: mainColor }}
+            >
               No. HP Kamu
             </Label>
             <Input
@@ -319,7 +381,10 @@ export function TargetTab({ userId, websiteSubCategoryId, mainColor, secondaryCo
             />
           </div>
           <div className="space-y-1.5">
-            <Label className="text-xs font-bold uppercase tracking-wider" style={{ color: mainColor }}>
+            <Label
+              className="text-xs font-bold uppercase tracking-wider"
+              style={{ color: mainColor }}
+            >
               No. HP Orang Tua
             </Label>
             <Input
@@ -335,31 +400,43 @@ export function TargetTab({ userId, websiteSubCategoryId, mainColor, secondaryCo
 
       {/* Target Nilai — only for non-Kedinasan websubs */}
       {!isKedinasan && (
-      <div className="rounded-3xl border border-slate-200 overflow-hidden">
-        <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200">
-          <h3 className="text-sm font-black text-slate-700 flex items-center gap-2">
-            <Target className="w-4 h-4" style={{ color: mainColor }} />
-            {'Target Nilai UTBK'}
-          </h3>
-        </div>
-        <div className="p-5">
-          <div className="space-y-1.5">
-            <Label className="text-xs font-bold uppercase tracking-wider" style={{ color: mainColor }}>
-              Target Skor
-            </Label>
-            <Input
-              type="number"
-              placeholder={'Contoh: 650'}
-              min={0}
-              max={1000}
-              value={targetValue}
-              onChange={(e) => setTargetValue(e.target.value === '' ? '' : Number(e.target.value))}
-              className="rounded-2xl border-slate-200 text-sm font-medium"
-            />
-            <p className="text-xs text-slate-400">Rata-rata skor UTBK berkisar antara 400–800</p>
+        <div className="rounded-3xl border border-slate-200 overflow-hidden">
+          <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200">
+            <h3 className="text-sm font-black text-slate-700 flex items-center gap-2">
+              <Target
+                className="w-4 h-4"
+                style={{ color: mainColor }}
+              />
+              {'Target Nilai UTBK'}
+            </h3>
+          </div>
+          <div className="p-5">
+            <div className="space-y-1.5">
+              <Label
+                className="text-xs font-bold uppercase tracking-wider"
+                style={{ color: mainColor }}
+              >
+                Target Skor
+              </Label>
+              <Input
+                type="number"
+                placeholder={'Contoh: 650'}
+                min={0}
+                max={1000}
+                value={targetValue}
+                onChange={(e) =>
+                  setTargetValue(
+                    e.target.value === '' ? '' : Number(e.target.value),
+                  )
+                }
+                className="rounded-2xl border-slate-200 text-sm font-medium"
+              />
+              <p className="text-xs text-slate-400">
+                Rata-rata skor UTBK berkisar antara 400–800
+              </p>
+            </div>
           </div>
         </div>
-      </div>
       )}
 
       {/* University/Institution sections */}
@@ -369,26 +446,47 @@ export function TargetTab({ userId, websiteSubCategoryId, mainColor, secondaryCo
           <div className="rounded-3xl border border-slate-200 overflow-hidden">
             <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200">
               <h3 className="text-sm font-black text-slate-700 flex items-center gap-2">
-                <GraduationCap className="w-4 h-4" style={{ color: mainColor }} />
-                {isKedinasan ? 'Pilihan Institusi Kedinasan Pertama' : 'Pilihan Universitas Pertama'}
+                <GraduationCap
+                  className="w-4 h-4"
+                  style={{ color: mainColor }}
+                />
+                {isKedinasan
+                  ? 'Pilihan Institusi Kedinasan Pertama'
+                  : 'Pilihan Universitas Pertama'}
               </h3>
             </div>
             <div className="p-5 space-y-4">
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold uppercase tracking-wider" style={{ color: mainColor }}>
+                <Label
+                  className="text-xs font-bold uppercase tracking-wider"
+                  style={{ color: mainColor }}
+                >
                   {isKedinasan ? 'Institusi Kedinasan' : 'Universitas'}
                 </Label>
                 <UnivCombobox
                   value={univ1}
-                  onChange={(v) => { setUniv1(v); setMajor1(''); }}
-                  onClear={() => { setUniv1(''); setMajor1(''); }}
+                  onChange={(v) => {
+                    setUniv1(v);
+                    setMajor1('');
+                  }}
+                  onClear={() => {
+                    setUniv1('');
+                    setMajor1('');
+                  }}
                   options={universityOptions}
-                  placeholder={isKedinasan ? 'Pilih institusi kedinasan...' : 'Pilih universitas...'}
+                  placeholder={
+                    isKedinasan
+                      ? 'Pilih institusi kedinasan...'
+                      : 'Pilih universitas...'
+                  }
                   mainColor={mainColor}
                 />
               </div>
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold uppercase tracking-wider" style={{ color: mainColor }}>
+                <Label
+                  className="text-xs font-bold uppercase tracking-wider"
+                  style={{ color: mainColor }}
+                >
                   Jurusan / Program Studi
                 </Label>
                 <MajorCombobox
@@ -396,7 +494,13 @@ export function TargetTab({ userId, websiteSubCategoryId, mainColor, secondaryCo
                   onChange={setMajor1}
                   onClear={() => setMajor1('')}
                   options={majorsForUniv1}
-                  placeholder={univ1 ? 'Pilih jurusan...' : (isKedinasan ? 'Pilih institusi dulu' : 'Pilih universitas dulu')}
+                  placeholder={
+                    univ1
+                      ? 'Pilih jurusan...'
+                      : isKedinasan
+                        ? 'Pilih institusi dulu'
+                        : 'Pilih universitas dulu'
+                  }
                   mainColor={mainColor}
                   disabled={!univ1}
                 />
@@ -408,26 +512,47 @@ export function TargetTab({ userId, websiteSubCategoryId, mainColor, secondaryCo
           <div className="rounded-3xl border border-slate-200 overflow-hidden">
             <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200">
               <h3 className="text-sm font-black text-slate-700 flex items-center gap-2">
-                <GraduationCap className="w-4 h-4" style={{ color: mainColor }} />
-                {isKedinasan ? 'Pilihan Institusi Kedinasan Kedua' : 'Pilihan Universitas Kedua'}
+                <GraduationCap
+                  className="w-4 h-4"
+                  style={{ color: mainColor }}
+                />
+                {isKedinasan
+                  ? 'Pilihan Institusi Kedinasan Kedua'
+                  : 'Pilihan Universitas Kedua'}
               </h3>
             </div>
             <div className="p-5 space-y-4">
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold uppercase tracking-wider" style={{ color: mainColor }}>
+                <Label
+                  className="text-xs font-bold uppercase tracking-wider"
+                  style={{ color: mainColor }}
+                >
                   {isKedinasan ? 'Institusi Kedinasan' : 'Universitas'}
                 </Label>
                 <UnivCombobox
                   value={univ2}
-                  onChange={(v) => { setUniv2(v); setMajor2(''); }}
-                  onClear={() => { setUniv2(''); setMajor2(''); }}
+                  onChange={(v) => {
+                    setUniv2(v);
+                    setMajor2('');
+                  }}
+                  onClear={() => {
+                    setUniv2('');
+                    setMajor2('');
+                  }}
                   options={universityOptions}
-                  placeholder={isKedinasan ? 'Pilih institusi kedinasan...' : 'Pilih universitas...'}
+                  placeholder={
+                    isKedinasan
+                      ? 'Pilih institusi kedinasan...'
+                      : 'Pilih universitas...'
+                  }
                   mainColor={mainColor}
                 />
               </div>
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold uppercase tracking-wider" style={{ color: mainColor }}>
+                <Label
+                  className="text-xs font-bold uppercase tracking-wider"
+                  style={{ color: mainColor }}
+                >
                   Jurusan / Program Studi
                 </Label>
                 <MajorCombobox
@@ -435,7 +560,13 @@ export function TargetTab({ userId, websiteSubCategoryId, mainColor, secondaryCo
                   onChange={setMajor2}
                   onClear={() => setMajor2('')}
                   options={majorsForUniv2}
-                  placeholder={univ2 ? 'Pilih jurusan...' : (isKedinasan ? 'Pilih institusi dulu' : 'Pilih universitas dulu')}
+                  placeholder={
+                    univ2
+                      ? 'Pilih jurusan...'
+                      : isKedinasan
+                        ? 'Pilih institusi dulu'
+                        : 'Pilih universitas dulu'
+                  }
                   mainColor={mainColor}
                   disabled={!univ2}
                 />
@@ -450,7 +581,9 @@ export function TargetTab({ userId, websiteSubCategoryId, mainColor, secondaryCo
         onClick={handleSave}
         disabled={isSaving}
         className="w-full rounded-3xl font-black py-5 text-white"
-        style={{ background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})` }}
+        style={{
+          background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+        }}
       >
         {isSaving ? <Spinner /> : 'Simpan Perubahan'}
       </Button>

@@ -175,26 +175,29 @@ export default function Provider({
       // inside fetchMessages) don't cause scroll jumps via StickToBottom.
       const tryClearStreaming = (attempt: number) => {
         manualTransitionRef.current = true;
-        fetchMessagesRef.current().then((res) => {
-          const savedMessages = Array.isArray(res?.data) ? res.data : [];
-          if (savedMessages.length > 0) {
-            // Atomically set final data and clear streaming in one batch
-            setMessageData([GREETING_MESSAGE, ...savedMessages]);
-            setMessages([]);
-            // Unguard after React processes the batched state updates
-            requestAnimationFrame(() => {
-              manualTransitionRef.current = false;
-            });
-            return;
-          }
-          // No saved messages yet — unguard and retry
-          manualTransitionRef.current = false;
-          if (attempt < 2) {
-            setTimeout(() => tryClearStreaming(attempt + 1), 1500);
-          }
-        }).catch(() => {
-          manualTransitionRef.current = false;
-        });
+        fetchMessagesRef
+          .current()
+          .then((res) => {
+            const savedMessages = Array.isArray(res?.data) ? res.data : [];
+            if (savedMessages.length > 0) {
+              // Atomically set final data and clear streaming in one batch
+              setMessageData([GREETING_MESSAGE, ...savedMessages]);
+              setMessages([]);
+              // Unguard after React processes the batched state updates
+              requestAnimationFrame(() => {
+                manualTransitionRef.current = false;
+              });
+              return;
+            }
+            // No saved messages yet — unguard and retry
+            manualTransitionRef.current = false;
+            if (attempt < 2) {
+              setTimeout(() => tryClearStreaming(attempt + 1), 1500);
+            }
+          })
+          .catch(() => {
+            manualTransitionRef.current = false;
+          });
       };
       setTimeout(() => tryClearStreaming(0), 2000);
       // Refresh chat history after delay for AI-generated title
@@ -204,8 +207,10 @@ export default function Provider({
     },
   });
 
-  const isLoadingMessages = statusMessages === 'streaming' || statusMessages === 'submitted';
-  const isStreamingMessages = statusMessages === 'streaming' || statusMessages === 'submitted';
+  const isLoadingMessages =
+    statusMessages === 'streaming' || statusMessages === 'submitted';
+  const isStreamingMessages =
+    statusMessages === 'streaming' || statusMessages === 'submitted';
 
   const handleInputChangeMessages = (
     e:
@@ -222,9 +227,12 @@ export default function Provider({
     }
   };
 
-  const appendMessages = async (
-    message: { content: string; role: string; id?: string; createdAt?: Date },
-  ): Promise<string | null | undefined> => {
+  const appendMessages = async (message: {
+    content: string;
+    role: string;
+    id?: string;
+    createdAt?: Date;
+  }): Promise<string | null | undefined> => {
     // Fire-and-forget: don't await so the caller can clear input immediately
     sendMessageChat({ text: message.content });
     return null;
@@ -250,42 +258,51 @@ export default function Provider({
     onFinish: () => {
       setTimeout(() => {
         manualTransitionRef.current = true;
-        fetchMessagesRef.current().then((res) => {
-          const savedMessages = Array.isArray(res?.data) ? res.data : [];
-          if (savedMessages.length > 0) {
-            setMessageData([GREETING_MESSAGE, ...savedMessages]);
-            setMessagesEdit([]);
-            requestAnimationFrame(() => {
-              manualTransitionRef.current = false;
-            });
-            return;
-          }
-          manualTransitionRef.current = false;
-          setTimeout(() => {
-            manualTransitionRef.current = true;
-            fetchMessagesRef.current().then((retryRes) => {
-              const retrySaved = Array.isArray(retryRes?.data) ? retryRes.data : [];
-              if (retrySaved.length > 0) {
-                setMessageData([GREETING_MESSAGE, ...retrySaved]);
-                setMessagesEdit([]);
-                requestAnimationFrame(() => {
+        fetchMessagesRef
+          .current()
+          .then((res) => {
+            const savedMessages = Array.isArray(res?.data) ? res.data : [];
+            if (savedMessages.length > 0) {
+              setMessageData([GREETING_MESSAGE, ...savedMessages]);
+              setMessagesEdit([]);
+              requestAnimationFrame(() => {
+                manualTransitionRef.current = false;
+              });
+              return;
+            }
+            manualTransitionRef.current = false;
+            setTimeout(() => {
+              manualTransitionRef.current = true;
+              fetchMessagesRef
+                .current()
+                .then((retryRes) => {
+                  const retrySaved = Array.isArray(retryRes?.data)
+                    ? retryRes.data
+                    : [];
+                  if (retrySaved.length > 0) {
+                    setMessageData([GREETING_MESSAGE, ...retrySaved]);
+                    setMessagesEdit([]);
+                    requestAnimationFrame(() => {
+                      manualTransitionRef.current = false;
+                    });
+                  } else {
+                    manualTransitionRef.current = false;
+                  }
+                })
+                .catch(() => {
                   manualTransitionRef.current = false;
                 });
-              } else {
-                manualTransitionRef.current = false;
-              }
-            }).catch(() => {
-              manualTransitionRef.current = false;
-            });
-          }, 1200);
-        }).catch(() => {
-          manualTransitionRef.current = false;
-        });
+            }, 1200);
+          })
+          .catch(() => {
+            manualTransitionRef.current = false;
+          });
       }, 2000);
     },
   });
 
-  const isLoadingMessagesEdit = statusMessagesEdit === 'streaming' || statusMessagesEdit === 'submitted';
+  const isLoadingMessagesEdit =
+    statusMessagesEdit === 'streaming' || statusMessagesEdit === 'submitted';
 
   const handleInputChangeMessagesEdit = (
     e:
@@ -302,22 +319,30 @@ export default function Provider({
     }
   };
 
-  const appendMessagesEdit = async (
-    message: { content: string; role: string; id?: string; createdAt?: Date },
-  ): Promise<string | null | undefined> => {
+  const appendMessagesEdit = async (message: {
+    content: string;
+    role: string;
+    id?: string;
+    createdAt?: Date;
+  }): Promise<string | null | undefined> => {
     sendMessageEditChat({ text: message.content });
     return null;
   };
 
   // Helper function untuk convert UIMessage ke MessageDataType
-  const convertToMessageDataType = (messages: UIMessage[]): MessageDataType[] => {
+  const convertToMessageDataType = (
+    messages: UIMessage[],
+  ): MessageDataType[] => {
     return messages.map((msg) => ({
       id: msg.id,
       createdAt: null,
-      content: msg.parts
-        ?.filter((p): p is { type: 'text'; text: string } => p.type === 'text')
-        .map((p) => p.text)
-        .join('') || '',
+      content:
+        msg.parts
+          ?.filter(
+            (p): p is { type: 'text'; text: string } => p.type === 'text',
+          )
+          .map((p) => p.text)
+          .join('') || '',
       role: msg.role as MessageDataType['role'],
       like: false,
       dislike: false,
@@ -467,9 +492,12 @@ type ProviderType = {
     ) => void;
     handleSubmitMessages: () => void;
     isLoadingMessages: boolean;
-    appendMessages: (
-      message: { content: string; role: string; id?: string; createdAt?: Date },
-    ) => Promise<string | null | undefined>;
+    appendMessages: (message: {
+      content: string;
+      role: string;
+      id?: string;
+      createdAt?: Date;
+    }) => Promise<string | null | undefined>;
     stopChat: () => void;
   };
   useMessagesEdit: {
@@ -482,9 +510,12 @@ type ProviderType = {
     ) => void;
     handleSubmitMessagesEdit: () => void;
     isLoadingMessagesEdit: boolean;
-    appendMessagesEdit: (
-      message: { content: string; role: string; id?: string; createdAt?: Date },
-    ) => Promise<string | null | undefined>;
+    appendMessagesEdit: (message: {
+      content: string;
+      role: string;
+      id?: string;
+      createdAt?: Date;
+    }) => Promise<string | null | undefined>;
     stopChatEdit: () => void;
   };
   firstMessage: boolean;

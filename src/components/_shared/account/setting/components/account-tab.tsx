@@ -1,7 +1,6 @@
 import male from '@/_assets/default-profile/male.png';
-import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
-import { Camera, Mail, User } from 'lucide-react';
+import { Camera, User } from 'lucide-react';
 import Image from 'next/image';
 
 export const AccountTab = ({
@@ -56,10 +55,14 @@ export const AccountTab = ({
 
         <div className="flex-1 min-w-0">
           <h3 className="text-xl font-black truncate">{session?.user?.name}</h3>
-          <p className="text-white/70 text-sm truncate mt-0.5">{session?.user.email}</p>
+          <p className="text-white/70 text-sm truncate mt-0.5">
+            {session?.user.email}
+          </p>
           <div className="flex gap-2 mt-3 flex-wrap">
             <button
-              onClick={() => document.getElementById('ubahFotoProfile')?.click()}
+              onClick={() =>
+                document.getElementById('ubahFotoProfile')?.click()
+              }
               className="flex items-center gap-1.5 px-4 py-1.5 rounded-3xl text-xs font-bold bg-white/20 hover:bg-white/30 transition-colors cursor-pointer"
             >
               <Camera className="w-3.5 h-3.5" />
@@ -95,18 +98,35 @@ export const AccountTab = ({
     <div className="rounded-3xl border border-slate-200 overflow-hidden">
       <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200">
         <h3 className="text-sm font-black text-slate-700 flex items-center gap-2">
-          <User className="w-4 h-4" style={{ color: mainColor }} />
+          <User
+            className="w-4 h-4"
+            style={{ color: mainColor }}
+          />
           Informasi Akun
         </h3>
       </div>
       <div className="divide-y divide-slate-100">
         <div className="px-5 py-3.5">
-          <p className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: mainColor }}>Nama Lengkap</p>
-          <p className="text-sm font-bold text-slate-800">{session?.user?.name}</p>
+          <p
+            className="text-[10px] font-bold uppercase tracking-wider mb-1"
+            style={{ color: mainColor }}
+          >
+            Nama Lengkap
+          </p>
+          <p className="text-sm font-bold text-slate-800">
+            {session?.user?.name}
+          </p>
         </div>
         <div className="px-5 py-3.5">
-          <p className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: mainColor }}>Email</p>
-          <p className="text-sm font-bold text-slate-800">{session?.user.email}</p>
+          <p
+            className="text-[10px] font-bold uppercase tracking-wider mb-1"
+            style={{ color: mainColor }}
+          >
+            Email
+          </p>
+          <p className="text-sm font-bold text-slate-800">
+            {session?.user.email}
+          </p>
         </div>
       </div>
     </div>

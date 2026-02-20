@@ -5,7 +5,6 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { LoadingRetro } from '@/components/ui/loading-retro';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
@@ -16,7 +15,6 @@ import {
   FileText,
   Gem,
   PlayCircle,
-  Search,
   Target,
   TrendingUp,
   Trophy,
@@ -207,7 +205,6 @@ export default function CourseOverviewPage() {
 
   return (
     <div className="container mx-auto p-4 md:p-8 max-w-7xl space-y-8 min-h-screen pb-32">
-
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* Main Content: Chapter List */}
         <div className="lg:col-span-2 space-y-8">
