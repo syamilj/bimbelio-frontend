@@ -625,7 +625,7 @@ export default function UserManagementDashboard() {
                             className="cursor-pointer"
                           >
                             {user.Subscription.length > 0
-                              ? `${user.Subscription.length} Active`
+                              ? `${user.Subscription.length} BimCircle`
                               : 'Free Tier'}
                           </Badge>
                         </DialogDetailSubscription>
