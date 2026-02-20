@@ -603,7 +603,7 @@ function TryoutProgressChart({
                       };
                       return p?.name || '';
                     }}
-                    formatter={(value, name) => {
+                    formatter={(value, name, item) => {
                       if (name === 'score') {
                         return (
                           <>
@@ -619,8 +619,7 @@ function TryoutProgressChart({
                         );
                       }
                       if (name === 'benar') {
-                        const p = (arguments[2] as { payload: ProgressItem })
-                          ?.payload;
+                        const p = (item as { payload: ProgressItem })?.payload;
                         return (
                           <>
                             <div className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-emerald-500" />

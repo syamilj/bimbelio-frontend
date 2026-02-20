@@ -283,7 +283,7 @@ export default function BimPerformanceChart({
                           const p = payload?.[0]?.payload as ProgressItem & { shortName: string };
                           return p?.name || '';
                         }}
-                        formatter={(value, name) => {
+                        formatter={(value, name, item) => {
                           if (name === 'score') {
                             return (
                               <>
@@ -294,7 +294,7 @@ export default function BimPerformanceChart({
                             );
                           }
                           if (name === 'benar') {
-                            const p = (arguments[2] as { payload: ProgressItem })?.payload;
+                            const p = (item as { payload: ProgressItem })?.payload;
                             return (
                               <>
                                 <div className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-emerald-500" />
