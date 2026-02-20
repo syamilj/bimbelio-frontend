@@ -30,7 +30,6 @@ import {
   Activity,
   BarChart2,
   Brain,
-  Medal,
   Sigma,
   Target,
   TrendingDown,
@@ -552,10 +551,30 @@ const AnalysisSubject = () => {
   const isIRT = RankingTryout?.isIRT ?? false;
 
   const subjects = useMemo(() => {
-    return [...(RankingTryout?.AnalisisCategory ?? [])]
-      .map((item) => ({
+    const items = [...(RankingTryout?.AnalisisCategory ?? [])];
+    const names = items.map((item) => item.name);
+
+    // Build unique short labels: start at 13 chars and grow until no collision
+    const makeShort = (name: string, len: number) =>
+      name.length > len + 1 ? name.slice(0, len) + '\u2026' : name;
+
+    const shortNames = names.map((name, i) => {
+      let len = 13;
+      while (len <= name.length) {
+        const candidate = makeShort(name, len);
+        const hasDuplicate = names.some(
+          (other, j) => j !== i && makeShort(other, len) === candidate,
+        );
+        if (!hasDuplicate) return candidate;
+        len++;
+      }
+      return name;
+    });
+
+    return items
+      .map((item, i) => ({
         name: item.name,
-        shortName: item.name.length > 14 ? item.name.slice(0, 13) + '\u2026' : item.name,
+        shortName: shortNames[i],
         value: isIRT
           ? parseFloat(item.avgTheta?.toFixed(3) || '0')
           : parseFloat(item.avgScore?.toFixed(1) || '0'),
@@ -569,18 +588,27 @@ const AnalysisSubject = () => {
     [subjects],
   );
 
+  // min-max normalization so that the radar fills 15–90% of the chart
+  // regardless of whether all values are negative (IRT) or positive (raw scores)
   const radarData = useMemo(() => {
+    if (subjects.length === 0) return [];
+    const vals = subjects.map((s) => s.value);
+    const lo = Math.min(...vals);
+    const hi = Math.max(...vals);
+    const range = hi - lo;
     return subjects.map((s) => ({
       subject: s.shortName,
       fullName: s.name,
-      value: isIRT
-        ? Math.min(((s.value + 4) / 8) * 100, 100)
-        : Math.min((s.value / (maxValue || 1)) * 100, 100),
+      rawValue: s.value,
+      // when all subjects have the same value, render at 60%; otherwise spread 15→90
+      value: range < 0.0001
+        ? 60
+        : Math.round(((s.value - lo) / range) * 75 + 15),
     }));
-  }, [subjects, isIRT, maxValue]);
+  }, [subjects]);
 
   const radarConfig = {
-    value: { label: isIRT ? '\u03b8 Norm.' : 'Skor Norm.', color: mainColor },
+    value: { label: isIRT ? 'θ (relatif)' : 'Skor (relatif)', color: mainColor },
   } satisfies ChartConfig;
 
   // IRT verbal interpretation
@@ -695,9 +723,11 @@ const AnalysisSubject = () => {
           )}
           {subjects.map((s, i) => {
             const interp = isIRT ? irtInterpret(s.value) : null;
-            // For IRT: bar fills from center (0), positive = right, negative = left (simplified: abs value as %)
-            const pct = maxValue > 0 ? (Math.abs(s.value) / maxValue) * 100 : 0;
-            const opacity = 0.25 + (1 - i / Math.max(subjects.length - 1, 1)) * 0.75;
+            // For IRT: diverging bar from center — each side is 0–50% of container
+            const halfPct = maxValue > 0 ? (Math.abs(s.value) / maxValue) * 50 : 0;
+            // For non-IRT: normal bar 0–100%
+            const pct = maxValue > 0 ? (s.value / maxValue) * 100 : 0;
+            const opacity = 0.30 + (1 - i / Math.max(subjects.length - 1, 1)) * 0.70;
             return (
               <div key={s.name} className="flex items-center gap-3">
                 <div
@@ -719,14 +749,18 @@ const AnalysisSubject = () => {
                   </div>
                   <div className="h-2.5 w-full bg-gray-100 rounded-full overflow-hidden relative">
                     {isIRT && (
-                      <div className="absolute inset-y-0 left-1/2 w-px bg-gray-400 z-10" />
+                      <div className="absolute inset-y-0 left-1/2 w-px bg-gray-400/60 z-10" />
                     )}
                     <div
                       className="h-full rounded-full transition-all"
                       style={{
-                        width: `${Math.min(pct, 100)}%`,
+                        width: isIRT ? `${halfPct}%` : `${Math.min(pct, 100)}%`,
                         backgroundColor: `rgba(${rgb}, ${opacity})`,
-                        marginLeft: isIRT && s.value < 0 ? `${50 - Math.min(pct / 2, 50)}%` : undefined,
+                        marginLeft: isIRT
+                          ? s.value >= 0
+                            ? '50%'
+                            : `${50 - halfPct}%`
+                          : undefined,
                       }}
                     />
                   </div>
@@ -760,12 +794,19 @@ const AnalysisSubject = () => {
                     content={({ active, payload }) => {
                       if (!active || !payload?.length) return null;
                       const d = payload[0];
-                      const full = (d.payload as { fullName?: string }).fullName ?? d.payload.subject;
+                      const pl = d.payload as { fullName?: string; rawValue?: number };
+                      const full = pl.fullName ?? d.payload.subject;
+                      const raw = pl.rawValue;
                       return (
                         <div className="rounded-xl border border-gray-200 bg-white shadow-lg px-3 py-2 space-y-1">
                           <p className="text-xs font-semibold text-gray-700">{full}</p>
-                          <p className="text-xs text-gray-500">Skor normal: <span className="font-bold" style={{ color: mainColor }}>{Number(d.value).toFixed(1)}</span> / 100</p>
-                          <p className="text-[10px] text-gray-400">Semakin besar = lebih kuat dibanding mata pelajaran lain</p>
+                          <p className="text-xs text-gray-500">
+                            {isIRT ? 'Rata-rata θ' : 'Rata-rata skor'}:{' '}
+                            <span className="font-bold" style={{ color: mainColor }}>
+                              {raw !== undefined ? (isIRT ? raw.toFixed(3) : raw.toFixed(1)) : '—'}
+                            </span>
+                          </p>
+                          <p className="text-[10px] text-gray-400">Posisi relatif terhadap mata pelajaran lain</p>
                         </div>
                       );
                     }}
@@ -777,66 +818,7 @@ const AnalysisSubject = () => {
         </div>
       )}
 
-      {/* Subject ranking table */}
-      <div className="rounded-2xl border-2 border-gray-100 overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/80 flex items-center gap-3">
-          <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ backgroundColor: `${mainColor}18` }}>
-            <Medal className="w-3.5 h-3.5" style={{ color: mainColor }} />
-          </div>
-          <p className="text-sm font-bold text-gray-800">Tabel Ranking Mata Pelajaran</p>
-        </div>
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-gray-50 border-b border-gray-200">
-                <TableHead className="w-10 text-center font-bold text-gray-700 text-xs py-3">#</TableHead>
-                <TableHead className="font-bold text-gray-700 text-xs py-3">Mata Pelajaran</TableHead>
-                <TableHead className="text-right font-bold text-xs py-3" style={{ color: mainColor }}>
-                  {isIRT ? 'Rata-rata θ' : 'Rata-rata Skor'}
-                </TableHead>
-                {isIRT && <TableHead className="text-right font-bold text-gray-600 text-xs py-3">Interpretasi</TableHead>}
-                {!isIRT && <TableHead className="text-right font-bold text-gray-600 text-xs py-3">Total Skor</TableHead>}
-                <TableHead className="text-right font-bold text-gray-700 text-xs py-3">Level</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {subjects.map((s, i) => {
-                const interp = isIRT ? irtInterpret(s.value) : null;
-                return (
-                  <TableRow key={s.name} className="hover:bg-gray-50/80 transition-colors border-b border-gray-50">
-                    <TableCell className="text-center py-3">
-                      <span className="text-xs font-black" style={{ color: medalColor(i) }}>{i + 1}</span>
-                    </TableCell>
-                    <TableCell className="font-semibold text-gray-700 text-xs py-3">{s.name}</TableCell>
-                    <TableCell className="text-right font-mono text-xs font-bold py-3" style={{ color: mainColor }}>{s.value}</TableCell>
-                    {isIRT && (
-                      <TableCell className="text-right py-3">
-                        {interp && (
-                          <span className="text-[10px] font-semibold px-2 py-1 rounded-full" style={{ color: interp.color, backgroundColor: interp.color + '15' }}>
-                            {interp.label}
-                          </span>
-                        )}
-                      </TableCell>
-                    )}
-                    {!isIRT && <TableCell className="text-right font-mono text-xs text-gray-500 py-3">{s.totalScore}</TableCell>}
-                    <TableCell className="text-right py-3">
-                      <TierBadge
-                        score={isIRT ? ((s.value + 4) / 8) * 100 : s.value}
-                        max={isIRT ? 100 : maxValue}
-                      />
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </div>
-        {isIRT && (
-          <div className="px-5 py-3 border-t border-gray-100 bg-gray-50/60">
-            <p className="text-xs text-gray-400">Level (Unggul–Lemah) dihitung berdasarkan normalisasi θ on skala 0–100. Bukan persentil, melainkan posisi relatif θ terhadap rentang skala IRT.</p>
-          </div>
-        )}
-      </div>
+
     </div>
   );
 };
