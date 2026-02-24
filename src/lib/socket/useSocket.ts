@@ -20,9 +20,8 @@ export const useSocket = (serverUrl?: string) => {
   const listenersRef = useRef<Map<string, (data: any) => void>>(new Map());
 
   useEffect(() => {
-    // ✅ Hanya connect jika session ada
+    // Only connect if session exists
     if (!session?.user?.id) {
-      disconnectSocket();
       setIsConnected(false);
       setSocketId(null);
       return;
@@ -30,26 +29,38 @@ export const useSocket = (serverUrl?: string) => {
 
     const socket = connectSocket();
 
-    socket.on('connect', () => {
+    const handleConnect = () => {
       setIsConnected(true);
       setSocketId(socket.id || null);
-    });
+      // ✅ Authenticate user into their personal room after connect
+      socket.emit('user:auth', { userId: session.user.id });
+      console.log('[AUTH] Authenticated as:', session.user.id);
+    };
 
-    socket.on('disconnect', () => {
+    socket.on('connect', handleConnect);
+
+    // ✅ If socket already connected (singleton reuse across navigations),
+    // fire user:auth immediately — 'connect' event won't fire again
+    if (socket.connected) {
+      handleConnect();
+    }
+
+    const handleDisconnect = () => {
       setIsConnected(false);
       setSocketId(null);
-    });
+    };
 
-    // // ✅ Auto authenticate saat connect
-    // socket.emit('user:auth', { userId: session.user.id });
-    // console.log('[AUTH] Authenticated as:', session.user.id);
+    socket.on('disconnect', handleDisconnect);
 
     // Re-attach listeners yang sudah terdaftar
     listenersRef.current.forEach((callback, eventName) => {
+      socket.off(eventName, callback); // remove duplicate before re-adding
       socket.on(eventName, callback);
     });
 
     return () => {
+      socket.off('connect', handleConnect);
+      socket.off('disconnect', handleDisconnect);
       // Cleanup: remove listeners saat unmount
       listenersRef.current.forEach((callback, eventName) => {
         socket.off(eventName, callback);
@@ -58,19 +69,25 @@ export const useSocket = (serverUrl?: string) => {
   }, [session?.user?.id, serverUrl]);
 
   const on = useCallback((eventName: string, callback: (data: any) => void) => {
+    // ✅ Always store in ref first — even if socket not ready yet.
+    // useSocket's effect re-attaches all listenersRef entries when socket connects.
+    const existing = listenersRef.current.get(eventName);
     const socket = getSocket();
+    if (socket && existing) {
+      socket.off(eventName, existing); // remove old to avoid duplicates
+    }
+    listenersRef.current.set(eventName, callback);
     if (socket) {
-      listenersRef.current.set(eventName, callback);
       socket.on(eventName, callback);
     }
   }, []);
 
   const off = useCallback((eventName: string) => {
-    const socket = getSocket();
     const callback = listenersRef.current.get(eventName);
-    if (socket && callback) {
-      socket.off(eventName, callback);
+    if (callback) {
       listenersRef.current.delete(eventName);
+      const socket = getSocket();
+      if (socket) socket.off(eventName, callback);
     }
   }, []);
 

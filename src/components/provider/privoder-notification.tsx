@@ -1,7 +1,9 @@
 'use client';
+import { showNotificationToast } from '@/components/_shared/notification/notification-toast';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { MutateType, useMutation } from '@/lib/fetch-helper/useMutation';
-import { useSocket } from '@/lib/socket/useSocket';
+import { notificationSound } from '@/lib/notification-sound';
+import { connectSocket } from '@/lib/socket/socket';
 import { Notification as NotificationData } from '@/types/database';
 import {
   createContext,
@@ -19,12 +21,23 @@ export default function ProviderNotification({
 }: {
   children: React.ReactNode;
 }) {
-  const [notificationPopUp, setNotificationPopUp] =
-    useState<NotificationData | null>(null as any);
+  const [notificationPopUpQueue, setNotificationPopUpQueue] = useState<NotificationData[]>([]);
+  const notificationPopUp = notificationPopUpQueue[0] ?? null;
+  const notificationPopUpQueueLength = notificationPopUpQueue.length;
+
+  const dismissCurrentPopUp = useCallback(() => {
+    setNotificationPopUpQueue((prev) => prev.slice(1));
+  }, []);
+
+  const pushToPopUpQueue = useCallback((notif: NotificationData) => {
+    setNotificationPopUpQueue((prev) => [...prev, notif]);
+  }, []);
+
   const [notifications, setNotifications] = useState<NotificationData[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
   const [filter, setFilter] = useState<'ALL' | 'UNREAD'>('ALL');
+  const [view, setView] = useState<'inbox' | 'archive'>('inbox');
 
   const [take, setTake] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
@@ -46,6 +59,7 @@ export default function ProviderNotification({
       take,
       page,
       unReadOnly: filter === 'UNREAD' ? 'true' : undefined,
+      view,
     },
     onSuccess({ data }) {
       if (data) {
@@ -65,7 +79,7 @@ export default function ProviderNotification({
       setIsLoading(false);
       setIsFirstFetching(false);
     },
-    useEffectDependencies: [take, page, filter],
+    useEffectDependencies: [take, page, filter, view],
   });
 
   const isAllLoaded = notifications.length >= totalData;
@@ -115,6 +129,17 @@ export default function ProviderNotification({
     },
   );
 
+  const { mutate: archiveNotificationMutate } = useMutation(
+    '/notification/archiveNotification',
+    'put',
+    {
+      toast: { hideSuccess: true },
+      async onError() {
+        await fetchNotification();
+      },
+    },
+  );
+
   const handleMarkAsRead = useCallback((notifId: string) => {
     setNotifications((prev) =>
       prev.map((notif) =>
@@ -138,16 +163,82 @@ export default function ProviderNotification({
     await readAllNotification();
   }, []);
 
-  notificationSocketListener({
-    setNotificationPopUp,
-    setNotifications,
-    setUnreadCount,
-  });
+  const handleArchive = useCallback((notifId: string, archive: boolean) => {
+    setNotifications((prev) => prev.filter((n) => n.id !== notifId));
+    archiveNotificationMutate({ payload: { id: notifId, archive } });
+  }, []);
+
+  const { data: session } = useSession();
+  const userId = session?.user.id;
+
+  // ✅ Direct socket listener — bypasses abstraction, most reliable approach
+  useEffect(() => {
+    if (!userId) return;
+
+    const socket = connectSocket();
+
+    const handleNotification = (data: Omit<NotificationData, 'createdAt' | 'updatedAt'>) => {
+      console.log('[NOTIF] Personal received:', data.title);
+      const newNotif: NotificationData = {
+        ...data,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      if (newNotif.isPopUp) {
+        pushToPopUpQueue(newNotif);
+      } else {
+        showNotificationToast(newNotif);
+      }
+      notificationSound.play();
+      setNotifications((prev) => [newNotif, ...prev]);
+      setUnreadCount((prev) => prev + 1);
+    };
+
+    const handleBroadcast = (data: Omit<NotificationData, 'createdAt' | 'updatedAt'>) => {
+      console.log('[NOTIF] Broadcast received:', data.title);
+      const newNotif: NotificationData = {
+        ...data,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      if (newNotif.isPopUp) {
+        pushToPopUpQueue(newNotif);
+      } else {
+        showNotificationToast(newNotif);
+      }
+      notificationSound.play();
+      setNotifications((prev) => [newNotif, ...prev]);
+      setUnreadCount((prev) => prev + 1);
+    };
+
+    const handleConnect = () => {
+      console.log('[NOTIF] Socket connected, joining room:', userId);
+      socket.emit('user:auth', { userId });
+    };
+
+    // Register listeners
+    socket.on('notification', handleNotification);
+    socket.on('notification:broadcast', handleBroadcast);
+    socket.on('connect', handleConnect);
+
+    // If already connected, auth immediately
+    if (socket.connected) {
+      console.log('[NOTIF] Already connected, joining room:', userId);
+      socket.emit('user:auth', { userId });
+    }
+
+    return () => {
+      socket.off('notification', handleNotification);
+      socket.off('notification:broadcast', handleBroadcast);
+      socket.off('connect', handleConnect);
+    };
+  }, [userId]);
 
   const Context = {
     usePopUp: {
       notificationPopUp,
-      setNotificationPopUp,
+      dismissCurrentPopUp,
+      queueLength: notificationPopUpQueueLength,
     },
     useData: {
       notifications,
@@ -166,6 +257,8 @@ export default function ProviderNotification({
       setPage,
       filter,
       setFilter,
+      view,
+      setView,
       take,
       setTake,
       isAllLoaded,
@@ -184,6 +277,7 @@ export default function ProviderNotification({
       handleMarkAsRead,
       handleDelete,
       handleMarkAllAsRead,
+      handleArchive,
     },
   };
 
@@ -197,7 +291,8 @@ export default function ProviderNotification({
 interface NotificationContextType {
   usePopUp: {
     notificationPopUp: NotificationData | null;
-    setNotificationPopUp: Dispatch<SetStateAction<NotificationData | null>>;
+    dismissCurrentPopUp: () => void;
+    queueLength: number;
   };
   useData: {
     notifications: NotificationData[];
@@ -225,6 +320,8 @@ interface NotificationContextType {
     setPage: Dispatch<SetStateAction<number>>;
     filter: 'ALL' | 'UNREAD';
     setFilter: Dispatch<SetStateAction<'ALL' | 'UNREAD'>>;
+    view: 'inbox' | 'archive';
+    setView: Dispatch<SetStateAction<'inbox' | 'archive'>>;
     take: number;
     setTake: Dispatch<SetStateAction<number>>;
     isAllLoaded: boolean;
@@ -243,6 +340,7 @@ interface NotificationContextType {
     handleMarkAsRead: (notifId: string) => void;
     handleDelete: (notifId: string) => void;
     handleMarkAllAsRead: () => Promise<void>;
+    handleArchive: (notifId: string, archive: boolean) => void;
   };
 }
 
@@ -260,73 +358,3 @@ export const useNotification = () => {
   return context;
 };
 
-const notificationSocketListener = ({
-  setNotificationPopUp,
-  setNotifications,
-  setUnreadCount,
-}: {
-  setNotificationPopUp: Dispatch<SetStateAction<NotificationData | null>>;
-  setNotifications: Dispatch<SetStateAction<NotificationData[]>>;
-  setUnreadCount: Dispatch<SetStateAction<number>>;
-}) => {
-  const { data: session } = useSession();
-  const userId = session?.user.id;
-  const role = session?.user.role;
-  const { on, emit, off } = useSocket();
-  // Listen ke socket notification
-  useEffect(() => {
-    if (!userId) return;
-    console.log('Setting up notification listener for userId:', userId);
-    console.log('Listening to event: ', `notification:${userId}`);
-    on(
-      `notification:${userId}`,
-      (data: Omit<NotificationData, 'createdAt' | 'updatedAt'>) => {
-        console.log('New notification received:', data);
-
-        const newNotif: NotificationData = {
-          ...data,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        };
-
-        if (newNotif.isPopUp) {
-          setNotificationPopUp(newNotif);
-        }
-
-        setNotifications((prev) => [newNotif, ...prev]);
-        setUnreadCount((prev) => prev + 1);
-      },
-    );
-    return () => {
-      console.log('Cleaning up notification listener for userId:', userId);
-      off(`notification:${userId}`);
-    };
-  }, [userId]);
-
-  useEffect(() => {
-    console.log('Setting up notification listener for broadcast');
-    on(
-      `notification:broadcast`,
-      (data: Omit<NotificationData, 'createdAt' | 'updatedAt'>) => {
-        console.log('New notification received:', data);
-
-        const newNotif: NotificationData = {
-          ...data,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        };
-
-        if (newNotif.isPopUp) {
-          setNotificationPopUp(newNotif);
-        }
-
-        setNotifications((prev) => [newNotif, ...prev]);
-        setUnreadCount((prev) => prev + 1);
-      },
-    );
-    return () => {
-      console.log('Cleaning up notification listener for broadcast');
-      off(`notification:broadcast`);
-    };
-  }, []);
-};
