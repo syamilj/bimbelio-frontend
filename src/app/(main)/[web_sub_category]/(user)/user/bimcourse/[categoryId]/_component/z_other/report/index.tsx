@@ -1,26 +1,14 @@
 'use client';
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LoadingRetro } from '@/components/ui/loading-retro';
-import {
-  Trophy,
-} from 'lucide-react';
+import { Trophy } from 'lucide-react';
 import { useParams } from 'next/navigation';
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import useMedia from 'use-media';
 import { CourseReportStats } from './CourseReportStats';
-
-
-
-
 
 export default function CourseReport() {
   const { data: session } = useSession();
@@ -63,7 +51,7 @@ export default function CourseReport() {
           />
           <div className="flex items-start gap-4 relative z-10">
             <div
-              className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
+              className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-sm"
               style={{ backgroundColor: mainColor }}
             >
               <Trophy className="w-6 h-6 text-white" />
@@ -83,7 +71,6 @@ export default function CourseReport() {
           <CourseReportStats report={courseReport} />
         </CardContent>
       </Card>
-
-     </div>
+    </div>
   );
 }

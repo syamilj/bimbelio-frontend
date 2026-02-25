@@ -36,7 +36,6 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import { useMemo } from 'react';
-import useMedia from 'use-media';
 import {
   Bar,
   BarChart,
@@ -52,6 +51,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import useMedia from 'use-media';
 
 type TierKey = 'unggul' | 'baik' | 'cukup' | 'rendah' | 'lemah';
 
@@ -77,7 +77,7 @@ function ProgressTooltip({ active, payload }: ProgressTooltipProps) {
   if (!current) return null;
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white shadow-lg p-3 min-w-[220px]">
+    <div className="rounded-3xl border border-gray-200 bg-white shadow-lg p-3 min-w-[220px]">
       <p className="text-sm font-bold text-gray-900 mb-2 line-clamp-1">
         {current.title}
       </p>
@@ -86,7 +86,9 @@ function ProgressTooltip({ active, payload }: ProgressTooltipProps) {
           <span className="inline-flex items-center gap-1 text-blue-700">
             <span className="w-2 h-2 rounded-full bg-blue-600" /> Skor
           </span>
-          <span className="font-semibold text-gray-900">{current.score.toFixed(1)}</span>
+          <span className="font-semibold text-gray-900">
+            {current.score.toFixed(1)}
+          </span>
         </div>
         <div className="flex items-center justify-between">
           <span className="inline-flex items-center gap-1 text-emerald-700">
@@ -357,7 +359,9 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
     report.tryoutResult.length > 0
       ? report.tryoutResult.reduce((acc, item) => {
           const accuracy =
-            item.totalQuestions > 0 ? (item.benar / item.totalQuestions) * 100 : 0;
+            item.totalQuestions > 0
+              ? (item.benar / item.totalQuestions) * 100
+              : 0;
           return acc + accuracy;
         }, 0) / report.tryoutResult.length
       : 0;
@@ -374,27 +378,33 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
             return (
               <div
                 key={item.title}
-                className="w-[170px] shrink-0 rounded-2xl border border-gray-200 p-3.5 bg-white"
+                className="w-[170px] shrink-0 rounded-3xl border border-gray-200 p-3.5 bg-white"
               >
                 <p className="text-xs text-gray-500 font-semibold flex items-center gap-1.5">
                   <Icon className="w-3.5 h-3.5" />
                   {item.title}
                 </p>
-                <p className="text-2xl font-black text-gray-900 mt-1">{item.value}</p>
+                <p className="text-2xl font-black text-gray-900 mt-1">
+                  {item.value}
+                </p>
                 <p className="text-xs text-gray-500 mt-1">{item.sub}</p>
               </div>
             );
           })}
           {/* Extra mini stats */}
-          <div className="w-[170px] shrink-0 rounded-2xl border border-gray-200 p-3.5 bg-white">
+          <div className="w-[170px] shrink-0 rounded-3xl border border-gray-200 p-3.5 bg-white">
             <p className="text-xs text-gray-500 font-semibold flex items-center gap-1.5">
               <TrendingUp className="w-3.5 h-3.5" />
               Avg Skor Kuis
             </p>
-            <p className="text-2xl font-black text-gray-900 mt-1">{avgScore.toFixed(1)}</p>
-            <p className="text-xs text-gray-500 mt-1">dari {report.tryoutResult.length} kuis</p>
+            <p className="text-2xl font-black text-gray-900 mt-1">
+              {avgScore.toFixed(1)}
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              dari {report.tryoutResult.length} kuis
+            </p>
           </div>
-          <div className="w-[170px] shrink-0 rounded-2xl border border-gray-200 p-3.5 bg-white">
+          <div className="w-[170px] shrink-0 rounded-3xl border border-gray-200 p-3.5 bg-white">
             <p className="text-xs text-gray-500 font-semibold flex items-center gap-1.5">
               <Crown className="w-3.5 h-3.5" />
               Peringkat Saya
@@ -413,38 +423,38 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
         defaultValue="overview"
         // className='w-auto'
       >
-       <TabsList
-  // Ganti w-full menjadi: w-fit max-w-full
-  className="flex w-fit max-w-full justify-start gap-1 overflow-x-auto whitespace-nowrap rounded-full bg-gray-50/80 p-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
->
-  <TabsTrigger
-    value="overview"
-    className="flex shrink-0 items-center rounded-full px-4 py-2"
-  >
-    <BookOpen className="h-3.5 w-3.5 mr-1" /> Overview
-  </TabsTrigger>
+        <TabsList
+          // Ganti w-full menjadi: w-fit max-w-full
+          className="flex w-fit max-w-full justify-start gap-1 overflow-x-auto whitespace-nowrap rounded-full bg-gray-50/80 p-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        >
+          <TabsTrigger
+            value="overview"
+            className="flex shrink-0 items-center rounded-full px-4 py-2"
+          >
+            <BookOpen className="h-3.5 w-3.5 mr-1" /> Overview
+          </TabsTrigger>
 
-  <TabsTrigger
-    value="peringkat"
-    className="flex shrink-0 items-center rounded-full px-4 py-2"
-  >
-    <Crown className="h-3.5 w-3.5 mr-1" /> Peringkat
-  </TabsTrigger>
+          <TabsTrigger
+            value="peringkat"
+            className="flex shrink-0 items-center rounded-full px-4 py-2"
+          >
+            <Crown className="h-3.5 w-3.5 mr-1" /> Peringkat
+          </TabsTrigger>
 
-  <TabsTrigger
-    value="nilai"
-    className="flex shrink-0 items-center rounded-full px-4 py-2"
-  >
-    <Activity className="h-3.5 w-3.5 mr-1" /> Nilai
-  </TabsTrigger>
+          <TabsTrigger
+            value="nilai"
+            className="flex shrink-0 items-center rounded-full px-4 py-2"
+          >
+            <Activity className="h-3.5 w-3.5 mr-1" /> Nilai
+          </TabsTrigger>
 
-  <TabsTrigger
-    value="statistik"
-    className="flex shrink-0 items-center rounded-full px-4 py-2"
-  >
-    <Sigma className="h-3.5 w-3.5 mr-1" /> Statistik
-  </TabsTrigger>
-</TabsList>
+          <TabsTrigger
+            value="statistik"
+            className="flex shrink-0 items-center rounded-full px-4 py-2"
+          >
+            <Sigma className="h-3.5 w-3.5 mr-1" /> Statistik
+          </TabsTrigger>
+        </TabsList>
 
         <TabsContent
           value="overview"
@@ -452,14 +462,16 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
         >
           {/* Progress chapter list — horizontal scroll */}
           {(learningOverview?.chapterProgress ?? []).length > 0 && (
-            <div className="rounded-2xl border border-gray-200 p-4 bg-white">
-              <p className="text-sm font-bold text-gray-900 mb-3">Progress Bab</p>
+            <div className="rounded-3xl border border-gray-200 p-4 bg-white">
+              <p className="text-sm font-bold text-gray-900 mb-3">
+                Progress Bab
+              </p>
               <div className="overflow-x-auto pb-1">
                 <div className="flex gap-3 min-w-max">
                   {(learningOverview?.chapterProgress ?? []).map((chapter) => (
                     <div
                       key={chapter.chapterId}
-                      className="w-[200px] shrink-0 rounded-xl border border-gray-100 p-3 bg-gray-50"
+                      className="w-[200px] shrink-0 rounded-3xl border border-gray-100 p-3 bg-gray-50"
                     >
                       <p className="font-semibold text-xs text-gray-900 line-clamp-2 leading-snug min-h-[32px]">
                         {chapter.chapterTitle}
@@ -474,7 +486,10 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                         />
                       </div>
                       <div className="mt-1.5 flex items-center justify-between">
-                        <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                        <Badge
+                          variant="outline"
+                          className="text-[10px] px-1.5 py-0"
+                        >
                           {chapter.finishedSubChapter}/{chapter.totalSubChapter}
                         </Badge>
                         <span className="text-[10px] text-gray-500">
@@ -490,11 +505,15 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
 
           {/* Uji Progress chart */}
           {progressTrendData.length > 0 && (
-            <div className="rounded-2xl border border-gray-200 p-4 bg-white">
+            <div className="rounded-3xl border border-gray-200 p-4 bg-white">
               <div className="flex items-start justify-between gap-2 flex-wrap">
                 <div>
-                  <p className="text-sm font-bold text-gray-900">Performa Uji Progress</p>
-                  <p className="text-xs text-gray-500 mt-0.5">Perkembangan nilai & akurasi per kuis</p>
+                  <p className="text-sm font-bold text-gray-900">
+                    Performa Uji Progress
+                  </p>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Perkembangan nilai & akurasi per kuis
+                  </p>
                 </div>
                 <Badge className="bg-emerald-100 text-emerald-700 border border-emerald-200 shrink-0">
                   {latestScore >= avgScore
@@ -526,12 +545,12 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
 
               {/* Line legend */}
               <div className="mt-3 flex flex-wrap gap-2 text-xs">
-                <div className="rounded-xl border border-blue-200 bg-blue-50 px-3 py-1.5 text-blue-700 flex items-center gap-1.5">
+                <div className="rounded-3xl border border-blue-200 bg-blue-50 px-3 py-1.5 text-blue-700 flex items-center gap-1.5">
                   <span className="w-4 border-t-2 border-blue-600 inline-block" />
                   <span className="font-semibold">Skor</span>
                   <span className="text-blue-500">— nilai akhir tiap kuis</span>
                 </div>
-                <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-emerald-700 flex items-center gap-1.5">
+                <div className="rounded-3xl border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-emerald-700 flex items-center gap-1.5">
                   <span className="w-4 border-t-2 border-dashed border-emerald-500 inline-block" />
                   <span className="font-semibold">B/S/K Index</span>
                   <span className="text-emerald-500">— % jawaban benar</span>
@@ -539,13 +558,31 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
               </div>
 
               <div className="mt-3 h-[220px] sm:h-[280px]">
-                <ChartContainer config={{}} className="h-full w-full">
-                  <ResponsiveContainer width="100%" height="100%">
+                <ChartContainer
+                  config={{}}
+                  className="h-full w-full"
+                >
+                  <ResponsiveContainer
+                    width="100%"
+                    height="100%"
+                  >
                     <LineChart data={progressTrendData}>
                       <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="label" tick={{ fontSize: 11 }} />
-                      <YAxis yAxisId="score" orientation="left" tick={{ fontSize: 11 }} />
-                      <YAxis yAxisId="accuracy" orientation="right" domain={[0, 100]} tick={{ fontSize: 11 }} />
+                      <XAxis
+                        dataKey="label"
+                        tick={{ fontSize: 11 }}
+                      />
+                      <YAxis
+                        yAxisId="score"
+                        orientation="left"
+                        tick={{ fontSize: 11 }}
+                      />
+                      <YAxis
+                        yAxisId="accuracy"
+                        orientation="right"
+                        domain={[0, 100]}
+                        tick={{ fontSize: 11 }}
+                      />
                       <Line
                         yAxisId="score"
                         type="monotone"
@@ -575,8 +612,10 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
 
           {/* Riwayat Skor — horizontal scroll cards */}
           {report.tryoutResult.length > 0 && (
-            <div className="rounded-2xl border border-gray-200 p-4 bg-white">
-              <p className="text-sm font-bold text-gray-900 mb-3">Riwayat Skor</p>
+            <div className="rounded-3xl border border-gray-200 p-4 bg-white">
+              <p className="text-sm font-bold text-gray-900 mb-3">
+                Riwayat Skor
+              </p>
               <div className="overflow-x-auto pb-1">
                 <div className="flex gap-3 min-w-max">
                   {report.tryoutResult
@@ -586,7 +625,7 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                     .map((item) => (
                       <div
                         key={item.id}
-                        className="rounded-2xl border border-gray-100 p-3 bg-gray-50 w-[200px] shrink-0"
+                        className="rounded-3xl border border-gray-100 p-3 bg-gray-50 w-[200px] shrink-0"
                       >
                         <p className="font-bold text-xs text-gray-900 line-clamp-2 leading-snug min-h-[32px]">
                           {item.title}
@@ -594,7 +633,9 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                         <div className="mt-2.5 flex items-end justify-between">
                           <div>
                             <p className="text-[10px] text-gray-500">Skor</p>
-                            <p className="text-xl font-black text-blue-600">{item.score.toFixed(1)}</p>
+                            <p className="text-xl font-black text-blue-600">
+                              {item.score.toFixed(1)}
+                            </p>
                           </div>
                           <div className="text-right">
                             <p className="text-[10px] text-gray-500">Rank</p>
@@ -606,7 +647,9 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                         <div className="mt-2 h-1.5 rounded-full bg-gray-200 overflow-hidden">
                           <div
                             className="h-full bg-blue-500 rounded-full"
-                            style={{ width: `${Math.min(item.percentile || 0, 100)}%` }}
+                            style={{
+                              width: `${Math.min(item.percentile || 0, 100)}%`,
+                            }}
                           />
                         </div>
                         <p className="text-[10px] text-gray-400 mt-1 text-right">
@@ -621,37 +664,49 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
 
           {/* Ringkasan + Tipe Belajar */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="rounded-2xl border border-gray-200 p-4 bg-white">
-              <p className="text-sm font-bold text-gray-900">Ringkasan Belajar</p>
+            <div className="rounded-3xl border border-gray-200 p-4 bg-white">
+              <p className="text-sm font-bold text-gray-900">
+                Ringkasan Belajar
+              </p>
               <div className="mt-3 space-y-2 text-sm text-gray-600">
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-gray-500">Total chapter</span>
-                  <span className="font-semibold text-gray-900">{learningOverview?.totalChapter ?? 0}</span>
+                  <span className="font-semibold text-gray-900">
+                    {learningOverview?.totalChapter ?? 0}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-gray-500">Total sub-bab</span>
-                  <span className="font-semibold text-gray-900">{learningOverview?.totalSubChapter ?? 0}</span>
+                  <span className="font-semibold text-gray-900">
+                    {learningOverview?.totalSubChapter ?? 0}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-gray-500">Estimasi durasi</span>
                   <span className="font-semibold text-gray-900">
-                    {formatMinutes(learningOverview?.totalEstimatedMinutes ?? 0)}
+                    {formatMinutes(
+                      learningOverview?.totalEstimatedMinutes ?? 0,
+                    )}
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="rounded-2xl border border-gray-200 p-4 bg-white">
+            <div className="rounded-3xl border border-gray-200 p-4 bg-white">
               <p className="text-sm font-bold text-gray-900">Tipe Belajar</p>
               <div className="mt-3 space-y-2">
                 {typeRows.length === 0 ? (
-                  <p className="text-xs text-gray-500">Belum ada data tipe belajar.</p>
+                  <p className="text-xs text-gray-500">
+                    Belum ada data tipe belajar.
+                  </p>
                 ) : (
                   typeRows.map((row) => (
                     <div key={row.type}>
                       <div className="flex items-center justify-between text-xs text-gray-600 mb-1">
                         <span className="capitalize">{row.type}</span>
-                        <span>{row.done}/{row.total}</span>
+                        <span>
+                          {row.done}/{row.total}
+                        </span>
                       </div>
                       <div className="h-1.5 rounded-full bg-gray-100 overflow-hidden">
                         <div
@@ -676,19 +731,19 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
         >
           <div className="overflow-x-auto pb-1 mb-3">
             <div className="flex gap-3 min-w-max">
-              <div className="w-[160px] shrink-0 rounded-2xl border border-gray-200 p-4 bg-white">
+              <div className="w-[160px] shrink-0 rounded-3xl border border-gray-200 p-4 bg-white">
                 <p className="text-xs text-gray-500">Peserta Aktif</p>
                 <p className="text-2xl font-black text-gray-900 mt-1">
                   {rankingData?.totalParticipants ?? 0}
                 </p>
               </div>
-              <div className="w-[160px] shrink-0 rounded-2xl border border-gray-200 p-4 bg-white">
+              <div className="w-[160px] shrink-0 rounded-3xl border border-gray-200 p-4 bg-white">
                 <p className="text-xs text-gray-500">Peringkat Kamu</p>
                 <p className="text-2xl font-black text-gray-900 mt-1">
                   {rankingData?.myRank ? `#${rankingData.myRank}` : '-'}
                 </p>
               </div>
-              <div className="w-[200px] shrink-0 rounded-2xl border border-gray-200 p-4 bg-white">
+              <div className="w-[200px] shrink-0 rounded-3xl border border-gray-200 p-4 bg-white">
                 <p className="text-xs text-gray-500">Metode Poin</p>
                 <p className="text-sm font-semibold text-gray-800 mt-1">
                   Completion 70% + Quiz 30%
@@ -697,7 +752,7 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-gray-200 p-4 bg-white">
+          <div className="rounded-3xl border border-gray-200 p-4 bg-white">
             <p className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
               <Crown className="w-4 h-4 text-amber-500" /> Top Leaderboard
             </p>
@@ -705,7 +760,7 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
               {(rankingData?.topLeaderboard ?? []).slice(0, 10).map((row) => (
                 <div
                   key={row.userId}
-                  className="flex items-center justify-between rounded-xl border border-gray-100 px-3 py-2.5"
+                  className="flex items-center justify-between rounded-3xl border border-gray-100 px-3 py-2.5"
                 >
                   <div className="flex items-center gap-2 min-w-0">
                     <span
@@ -720,7 +775,11 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                               : 'bg-gray-100 text-gray-700',
                       )}
                     >
-                      {row.rank <= 3 ? <Medal className="w-3.5 h-3.5" /> : `#${row.rank}`}
+                      {row.rank <= 3 ? (
+                        <Medal className="w-3.5 h-3.5" />
+                      ) : (
+                        `#${row.rank}`
+                      )}
                     </span>
                     <div className="min-w-0">
                       <p className="text-sm font-semibold text-gray-800 truncate max-w-[150px] sm:max-w-[260px]">
@@ -746,45 +805,57 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
           </div>
         </TabsContent>
 
-
-
         <TabsContent
           value="nilai"
           className="mt-4 space-y-3"
         >
           <div className="overflow-x-auto pb-1">
             <div className="flex gap-3 min-w-max">
-              <div className="w-[160px] shrink-0 rounded-2xl border border-gray-200 p-3 bg-white">
+              <div className="w-[160px] shrink-0 rounded-3xl border border-gray-200 p-3 bg-white">
                 <p className="text-xs text-gray-500">Rata-rata Nilai</p>
-                <p className="text-2xl font-black mt-1">{avgScore.toFixed(1)}</p>
+                <p className="text-2xl font-black mt-1">
+                  {avgScore.toFixed(1)}
+                </p>
                 <div className="mt-1">
-                  <TierBadge score={avgScore} max={bestScore || 100} />
+                  <TierBadge
+                    score={avgScore}
+                    max={bestScore || 100}
+                  />
                 </div>
               </div>
-              <div className="w-[160px] shrink-0 rounded-2xl border border-gray-200 p-3 bg-white">
+              <div className="w-[160px] shrink-0 rounded-3xl border border-gray-200 p-3 bg-white">
                 <p className="text-xs text-gray-500">Nilai Tertinggi</p>
-                <p className="text-2xl font-black mt-1">{bestScore.toFixed(1)}</p>
+                <p className="text-2xl font-black mt-1">
+                  {bestScore.toFixed(1)}
+                </p>
                 <p className="text-xs text-gray-500 mt-1">
                   dari {report.tryoutResult.length} kuis
                 </p>
               </div>
-              <div className="w-[160px] shrink-0 rounded-2xl border border-gray-200 p-3 bg-white">
+              <div className="w-[160px] shrink-0 rounded-3xl border border-gray-200 p-3 bg-white">
                 <p className="text-xs text-gray-500">Nilai Terakhir</p>
-                <p className="text-2xl font-black mt-1">{latestScore.toFixed(1)}</p>
+                <p className="text-2xl font-black mt-1">
+                  {latestScore.toFixed(1)}
+                </p>
                 <div className="mt-1">
-                  <TierBadge score={latestScore} max={100} />
+                  <TierBadge
+                    score={latestScore}
+                    max={100}
+                  />
                 </div>
               </div>
-              <div className="w-[160px] shrink-0 rounded-2xl border border-gray-200 p-3 bg-white">
+              <div className="w-[160px] shrink-0 rounded-3xl border border-gray-200 p-3 bg-white">
                 <p className="text-xs text-gray-500">Akurasi Rata-rata</p>
-                <p className="text-2xl font-black mt-1">{averageAccuracy.toFixed(1)}%</p>
+                <p className="text-2xl font-black mt-1">
+                  {averageAccuracy.toFixed(1)}%
+                </p>
                 <p className="text-xs text-gray-500 mt-1">B/S/K Index</p>
               </div>
             </div>
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-3">
-            <Card className="rounded-2xl border border-gray-200 shadow-none">
+            <Card className="rounded-3xl border border-gray-200 shadow-none">
               <CardHeader className="pb-1">
                 <CardTitle className="text-base font-bold">
                   Radar: Kamu vs Rata-rata
@@ -825,7 +896,7 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
               </CardContent>
             </Card>
 
-            <Card className="rounded-2xl border border-gray-200 shadow-none">
+            <Card className="rounded-3xl border border-gray-200 shadow-none">
               <CardHeader className="pb-1">
                 <CardTitle className="text-base font-bold">
                   Distribusi Nilai Peserta
@@ -881,7 +952,7 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
           value="statistik"
           className="mt-4"
         >
-          <Card className="rounded-2xl border border-gray-200 shadow-none">
+          <Card className="rounded-3xl border border-gray-200 shadow-none">
             <CardHeader>
               <CardTitle className="text-base font-bold">
                 Statistik Lengkap per Kuis
