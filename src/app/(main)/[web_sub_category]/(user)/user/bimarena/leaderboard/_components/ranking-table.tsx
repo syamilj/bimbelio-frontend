@@ -479,7 +479,7 @@ export function RankingTable() {
                       <TableHead className="font-bold text-gray-700 text-xs md:text-sm min-w-[140px] sticky left-[60px] z-10 bg-white">
                         Peserta
                       </TableHead>
-                      <TableHead className="font-bold text-gray-700 text-xs md:text-sm min-w-[180px] hidden md:table-cell">
+                      <TableHead className="font-bold text-gray-700 text-xs md:text-sm min-w-[180px]">
                         Target
                       </TableHead>
                       <TableHead className="text-right font-bold text-gray-700 text-xs md:text-sm min-w-[100px]">
@@ -626,7 +626,7 @@ export function RankingTable() {
                                 </div>
                               </div>
                             </TableCell>
-                            <TableCell className="py-3 md:py-4 max-w-[180px] hidden md:table-cell">
+                            <TableCell className="py-3 md:py-4 max-w-[180px]">
                               <div className="space-y-1">
                                 <div className="font-medium text-xs md:text-sm text-gray-900 truncate">
                                   {participant.univStudyChoice ||
