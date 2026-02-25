@@ -108,6 +108,22 @@ export function BimLive({
   );
 }
 
+export function BimLearning({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <BimBrand
+      suffix="Learning"
+      className={className}
+      style={style}
+    />
+  );
+}
+
 export function BimBot({
   className,
   style,

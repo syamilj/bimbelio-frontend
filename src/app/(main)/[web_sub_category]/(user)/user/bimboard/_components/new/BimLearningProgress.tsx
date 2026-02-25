@@ -1,7 +1,7 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { BimArena, BimCourse, BimLive } from '@/components/ui/bim-brand';
+import { BimArena, BimCourse, BimLearning, BimLive } from '@/components/ui/bim-brand';
 import { Input } from '@/components/ui/input';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import {
@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { EmptyStateIllustrations } from './EmptyStateIllustrations';
 
 interface BimLearningProgressProps {
@@ -71,9 +71,21 @@ export default function BimLearningProgress({
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
+  // Fixed order: Live → Try Out → Quiz → Courses; empty tabs go to the end
+  const sortedOtherTabs = useMemo(() => {
+    const others: { key: 'live' | 'tryouts' | 'quiz' | 'courses'; hasData: boolean }[] = [
+      { key: 'live', hasData: liveClasses.length > 0 },
+      { key: 'courses', hasData: courses.length > 0 },
+      { key: 'tryouts', hasData: tryouts.length > 0 },
+      { key: 'quiz', hasData: quizVolumes.length > 0 },
+    ];
+    // Stable sort: preserve relative order, just move empty tabs to end
+    return [...others].sort((a, b) => Number(b.hasData) - Number(a.hasData));
+  }, [liveClasses.length, tryouts.length, quizVolumes.length, courses.length]);
+
   const [activeTab, setActiveTab] = useState<
-    'live' | 'courses' | 'tryouts' | 'quiz'
-  >('live');
+    'learning' | 'live' | 'courses' | 'tryouts' | 'quiz'
+  >('learning');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState<
     'all' | 'completed' | 'in-progress'
@@ -147,29 +159,6 @@ export default function BimLearningProgress({
       return true;
     });
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return (
-          <span className="px-2 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">
-            Selesai
-          </span>
-        );
-      case 'in-progress':
-        return (
-          <span className="px-2 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700 border border-blue-200">
-            Sedang Berjalan
-          </span>
-        );
-      default:
-        return (
-          <span className="px-2 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
-            Belum Mulai
-          </span>
-        );
-    }
-  };
-
   return (
     <div className="w-full bg-white rounded-3xl border-2 border-slate-100 p-6 shadow-sm">
       {/* Header with Tabs */}
@@ -178,58 +167,102 @@ export default function BimLearningProgress({
 
         <div className="w-full overflow-x-auto scrollbar-hide pb-0.5">
           <div className="flex gap-1 w-max bg-slate-100 p-1 rounded-3xl">
+            {/* BimLearning — always first */}
             <button
-              onClick={() => setActiveTab('live')}
+              onClick={() => setActiveTab('learning')}
               className={`px-3 py-2 rounded-3xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
-                activeTab === 'live'
-                  ? 'bg-sky-500 text-white shadow-sm'
+                activeTab === 'learning'
+                  ? 'text-white shadow-sm'
                   : 'text-slate-500 hover:text-slate-700 hover:bg-white/60'
               }`}
-            >
-              <MonitorPlay className="w-3.5 h-3.5" />
-              <BimLive />
-            </button>
-            <button
-              onClick={() => setActiveTab('tryouts')}
-              className={`px-3 py-2 rounded-3xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
-                activeTab === 'tryouts'
-                  ? 'bg-orange-500 text-white shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700 hover:bg-white/60'
-              }`}
-            >
-              <Target className="w-3.5 h-3.5" />
-              <BimArena />
-              <span>Try Out</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('quiz')}
-              className={`px-3 py-2 rounded-3xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
-                activeTab === 'quiz'
-                  ? 'bg-violet-500 text-white shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700 hover:bg-white/60'
-              }`}
-            >
-              <Swords className="w-3.5 h-3.5" />
-              <BimArena />
-              <span>Quiz</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('courses')}
-              className={`px-3 py-2 rounded-3xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
-                activeTab === 'courses'
-                  ? 'bg-emerald-500 text-white shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700 hover:bg-white/60'
-              }`}
+              style={activeTab === 'learning' ? { backgroundColor: mainColor } : undefined}
             >
               <BookOpen className="w-3.5 h-3.5" />
-              <BimCourse />
+              <BimLearning />
+              <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-full leading-none ${activeTab === 'learning' ? 'bg-white/30 text-white' : 'bg-slate-300/70 text-slate-600'}`}>
+                {liveClasses.length + courses.length + tryouts.length + quizVolumes.length}
+              </span>
             </button>
+
+            {/* Other tabs sorted: data first, empty last */}
+            {sortedOtherTabs.map(({ key }) => {
+              if (key === 'live') return (
+                <button
+                  key="live"
+                  onClick={() => setActiveTab('live')}
+                  className={`px-3 py-2 rounded-3xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                    activeTab === 'live'
+                      ? 'bg-sky-500 text-white shadow-sm'
+                      : 'text-slate-500 hover:text-slate-700 hover:bg-white/60'
+                  }`}
+                >
+                  <MonitorPlay className="w-3.5 h-3.5" />
+                  <BimLive />
+                  <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-full leading-none ${activeTab === 'live' ? 'bg-white/30 text-white' : 'bg-slate-300/70 text-slate-600'}`}>
+                    {liveClasses.length}
+                  </span>
+                </button>
+              );
+              if (key === 'tryouts') return (
+                <button
+                  key="tryouts"
+                  onClick={() => setActiveTab('tryouts')}
+                  className={`px-3 py-2 rounded-3xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                    activeTab === 'tryouts'
+                      ? 'bg-orange-500 text-white shadow-sm'
+                      : 'text-slate-500 hover:text-slate-700 hover:bg-white/60'
+                  }`}
+                >
+                  <Target className="w-3.5 h-3.5" />
+                  <BimArena />
+                  <span>Try Out</span>
+                  <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-full leading-none ${activeTab === 'tryouts' ? 'bg-white/30 text-white' : 'bg-slate-300/70 text-slate-600'}`}>
+                    {tryouts.length}
+                  </span>
+                </button>
+              );
+              if (key === 'quiz') return (
+                <button
+                  key="quiz"
+                  onClick={() => setActiveTab('quiz')}
+                  className={`px-3 py-2 rounded-3xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                    activeTab === 'quiz'
+                      ? 'bg-violet-500 text-white shadow-sm'
+                      : 'text-slate-500 hover:text-slate-700 hover:bg-white/60'
+                  }`}
+                >
+                  <Swords className="w-3.5 h-3.5" />
+                  <BimArena />
+                  <span>Quiz</span>
+                  <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-full leading-none ${activeTab === 'quiz' ? 'bg-white/30 text-white' : 'bg-slate-300/70 text-slate-600'}`}>
+                    {quizVolumes.length}
+                  </span>
+                </button>
+              );
+              return (
+                <button
+                  key="courses"
+                  onClick={() => setActiveTab('courses')}
+                  className={`px-3 py-2 rounded-3xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                    activeTab === 'courses'
+                      ? 'bg-emerald-500 text-white shadow-sm'
+                      : 'text-slate-500 hover:text-slate-700 hover:bg-white/60'
+                  }`}
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <BimCourse />
+                  <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-full leading-none ${activeTab === 'courses' ? 'bg-white/30 text-white' : 'bg-slate-300/70 text-slate-600'}`}>
+                    {courses.length}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      {/* Search & Filter Bar */}
-      <div className="flex flex-col md:flex-row gap-3 mb-4">
+      {/* Search & Filter Bar — hidden on BimLearning summary tab */}
+      <div className={`flex flex-col md:flex-row gap-3 mb-4 ${activeTab === 'learning' ? 'hidden' : ''}`}>
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
           <Input
@@ -284,7 +317,177 @@ export default function BimLearningProgress({
 
       {/* Content - Horizontal Scroll for Mobile, Grid for Desktop */}
       <div className="max-h-[500px] overflow-y-auto scrollbar-hide">
-        {activeTab === 'live' ? (
+        {activeTab === 'learning' ? (
+          <div className="space-y-5">
+            {/* BimLive section */}
+            {liveClasses.length > 0 && (
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
+                    <MonitorPlay className="w-3.5 h-3.5 text-sky-500" />
+                    <BimLive />
+                  </span>
+                  <button onClick={() => setActiveTab('live')} className="text-[11px] font-bold text-sky-500 hover:underline">
+                    Lihat Semua →
+                  </button>
+                </div>
+                <div className="space-y-2">
+                  {liveClasses.slice(0, 3).map((lc) => {
+                    const lcStatus = getLiveClassStatus(lc.scheduleTime, lc.duration);
+                    return (
+                      <Link key={lc.id} href={`/${lc.websiteSubCategoryId}/user/bimlive/detail/${lc.id}`}
+                        className="flex items-center gap-3 p-2.5 rounded-3xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+                        <div className="w-10 h-10 rounded-xl bg-slate-800 overflow-hidden shrink-0 relative">
+                          {lc.thumbnail
+                            ? <Image src={lc.thumbnail} alt={lc.title} fill className="object-cover" />
+                            : <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: mainColor }}><MonitorPlay className="w-4 h-4 text-white/60" /></div>
+                          }
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-bold text-slate-800 truncate group-hover:text-sky-600 transition-colors">{lc.title}</p>
+                          <p className="text-[10px] text-slate-400 truncate">{lc.instructorName}</p>
+                        </div>
+                        {lcStatus === 'live'
+                          ? <span className="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-rose-500 text-white animate-pulse shrink-0">LIVE</span>
+                          : lcStatus === 'past'
+                          ? <span className="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-slate-200 text-slate-600 shrink-0">Selesai</span>
+                          : <span className="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-sky-100 text-sky-600 shrink-0">Upcoming</span>
+                        }
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* BimArena Try Out section */}
+            {tryouts.length > 0 && (
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
+                    <Target className="w-3.5 h-3.5 text-orange-500" />
+                    <BimArena /> <span className="font-bold">Try Out</span>
+                  </span>
+                  <button onClick={() => setActiveTab('tryouts')} className="text-[11px] font-bold text-orange-500 hover:underline">
+                    Lihat Semua →
+                  </button>
+                </div>
+                <div className="space-y-2">
+                  {tryouts.slice(0, 3).map((to) => (
+                    <Link key={to.id} href={`/${website_sub_category_id}/user/bimarena/try-out/${to.id}`}
+                      className="flex items-center gap-3 p-2.5 rounded-3xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+                      <div className="w-10 h-10 rounded-xl bg-slate-800 overflow-hidden shrink-0 relative">
+                        {to.thumbnail
+                          ? <Image src={to.thumbnail} alt={to.title} fill className="object-cover" />
+                          : <div className="w-full h-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#ea580c,#dc2626)' }}><Target className="w-4 h-4 text-white/60" /></div>
+                        }
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-bold text-slate-800 truncate group-hover:text-orange-600 transition-colors">{to.title}</p>
+                        <p className="text-[10px] text-slate-400">{to.totalQuestions} soal</p>
+                      </div>
+                      {to.score && to.score > 0
+                        ? <span className="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-orange-100 text-orange-600 shrink-0">{to.score}</span>
+                        : <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold shrink-0 ${to.status === 'completed' ? 'bg-emerald-100 text-emerald-600' : to.status === 'in-progress' ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-500'}`}>
+                            {to.status === 'completed' ? 'Selesai' : to.status === 'in-progress' ? 'Berlangsung' : 'Belum'}
+                          </span>
+                      }
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* BimArena Quiz section */}
+            {quizVolumes.length > 0 && (
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
+                    <Swords className="w-3.5 h-3.5 text-violet-500" />
+                    <BimArena /> <span className="font-bold">Quiz</span>
+                  </span>
+                  <button onClick={() => setActiveTab('quiz')} className="text-[11px] font-bold text-violet-500 hover:underline">
+                    Lihat Semua →
+                  </button>
+                </div>
+                <div className="space-y-2">
+                  {quizVolumes.slice(0, 3).map((qv) => {
+                    const now = new Date();
+                    const isActive = now >= new Date(qv.startDate) && now <= new Date(qv.endDate);
+                    const isPast = now > new Date(qv.endDate);
+                    return (
+                      <Link key={qv.id} href={`/${website_sub_category_id}/user/bimarena/quiz`}
+                        className="flex items-center gap-3 p-2.5 rounded-3xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+                        <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0 relative" style={{ background: 'linear-gradient(135deg,#4c1d95,#7c3aed)' }}>
+                          {qv.image
+                            ? <Image src={qv.image} alt={qv.title} fill className="object-cover opacity-60" />
+                            : <div className="w-full h-full flex items-center justify-center"><Swords className="w-4 h-4 text-white/60" /></div>
+                          }
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-bold text-slate-800 truncate group-hover:text-violet-600 transition-colors">{qv.title}</p>
+                          <p className="text-[10px] text-slate-400">Vol. {qv.number}</p>
+                        </div>
+                        {isActive
+                          ? <span className="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-violet-100 text-violet-600 shrink-0">Aktif</span>
+                          : isPast
+                          ? <span className="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-600 shrink-0">Selesai</span>
+                          : <span className="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-slate-100 text-slate-500 shrink-0">Segera</span>
+                        }
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* BimCourse section */}
+            {courses.length > 0 && (
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
+                    <BookOpen className="w-3.5 h-3.5 text-emerald-500" />
+                    <BimCourse />
+                  </span>
+                  <button onClick={() => setActiveTab('courses')} className="text-[11px] font-bold text-emerald-500 hover:underline">
+                    Lihat Semua →
+                  </button>
+                </div>
+                <div className="space-y-2">
+                  {courses.slice(0, 3).map((course) => (
+                    <Link key={course.id} href={`/${website_sub_category_id}/user/bimcourse/${course.id}`}
+                      className="flex items-center gap-3 p-2.5 rounded-3xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+                      <div className="w-10 h-10 rounded-xl bg-slate-100 overflow-hidden shrink-0 relative">
+                        {course.thumbnail
+                          ? <Image src={course.thumbnail} alt={course.name} fill className="object-cover" />
+                          : <div className="w-full h-full flex items-center justify-center" style={{ background: `linear-gradient(135deg,${mainColor},${mainColor}80)` }}><BookOpen className="w-4 h-4 text-white/60" /></div>
+                        }
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-bold text-slate-800 truncate group-hover:text-emerald-600 transition-colors">{course.name}</p>
+                        <div className="flex items-center gap-1.5 mt-1">
+                          <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                            <div className="h-full rounded-full" style={{ width: `${course.progress}%`, backgroundColor: mainColor }} />
+                          </div>
+                          <span className="text-[10px] font-bold shrink-0" style={{ color: mainColor }}>{course.progress}%</span>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* All empty state */}
+            {liveClasses.length === 0 && tryouts.length === 0 && quizVolumes.length === 0 && courses.length === 0 && (
+              <div className="text-center py-12">
+                <BookOpen className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                <p className="text-slate-500 font-medium text-sm">Belum ada aktivitas belajar</p>
+                <p className="text-slate-400 text-xs mt-1">Mulai dengan memilih program di bawah</p>
+              </div>
+            )}
+          </div>
+        ) : activeTab === 'live' ? (
           filteredLiveClasses.length > 0 ? (
             <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
               {filteredLiveClasses.map((liveClass) => {
@@ -815,7 +1018,8 @@ export default function BimLearningProgress({
       </div>
 
       {/* View All Link */}
-      {((activeTab === 'live' && filteredLiveClasses.length > 0) ||
+      {activeTab !== 'learning' &&
+       ((activeTab === 'live' && filteredLiveClasses.length > 0) ||
         (activeTab === 'courses' && filteredCourses.length > 0) ||
         (activeTab === 'quiz' && filteredQuizVolumes.length > 0) ||
         (activeTab === 'tryouts' && filteredTryouts.length > 0)) && (
