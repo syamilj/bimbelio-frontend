@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import { website_sub_category_id, website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import { cn } from '@/lib/utils';
 import {
   TryoutAnswer,
@@ -29,6 +29,7 @@ import {
   ChevronLeft,
   ChevronRight,
   FileText,
+  Gem,
   Grid3X3,
   Lightbulb,
   Trophy,
@@ -41,8 +42,28 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { SessionOptionsProps } from '..';
 import { TryoutAI } from './tryout-ai';
 
+interface CourseSubChapterRef {
+  id: string;
+  title: string;
+  type: string;
+  premium: boolean;
+}
+
+interface CourseChapterRef {
+  id: string;
+  title: string;
+  categoryId: string;
+  CourseSubChapter: CourseSubChapterRef[];
+}
+
+interface PivotCourseChapterRef {
+  id: string;
+  CourseChapter: CourseChapterRef;
+}
+
 interface QuestionWithAnswers extends TryoutQuestion {
   TryoutAnswers: TryoutAnswer[];
+  Pivot_TryoutQuestion_CourseChapter?: PivotCourseChapterRef[];
 }
 
 interface UserAnswerWithAnswerQuestion extends TryoutUserAnswer {
@@ -590,6 +611,60 @@ const QuestionView = ({
                     />
                   </div>
                 </div>
+
+                {/* Saran Baca Materi BimCourse */}
+                {UserAnswers.TryoutQuestion.Pivot_TryoutQuestion_CourseChapter &&
+                  UserAnswers.TryoutQuestion.Pivot_TryoutQuestion_CourseChapter.length > 0 && (
+                    <div className="space-y-2 md:space-y-3">
+                      <h3 className="text-sm md:text-base font-black flex items-center gap-1.5 md:gap-2">
+                        <div className="w-5 h-5 md:w-6 md:h-6 bg-emerald-100 rounded-3xl flex items-center justify-center">
+                          <BookOpen className="w-3 h-3 md:w-4 md:h-4 text-emerald-600" />
+                        </div>
+                        Saran Baca Materi
+                      </h3>
+                      <div className="bg-emerald-50 border border-emerald-200 rounded-3xl p-4 md:p-5 space-y-3">
+                        <p className="text-xs text-emerald-700 font-medium">
+                          Pelajari materi berikut di BimCourse untuk memperkuat pemahamanmu pada soal ini:
+                        </p>
+                        {UserAnswers.TryoutQuestion.Pivot_TryoutQuestion_CourseChapter.map(
+                          (pivot) => (
+                            <div
+                              key={pivot.id}
+                              className="space-y-2"
+                            >
+                              <div className="flex items-center gap-2">
+                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
+                                <span className="text-xs md:text-sm font-black text-emerald-800">
+                                  {pivot.CourseChapter.title}
+                                </span>
+                              </div>
+                              {pivot.CourseChapter.CourseSubChapter.length > 0 && (
+                                <div className="ml-3.5 flex flex-wrap gap-2">
+                                  {pivot.CourseChapter.CourseSubChapter.map(
+                                    (sub) => (
+                                      <Link
+                                        key={sub.id}
+                                        href={`/${website_sub_category_id_params}/user/bimcourse/${pivot.CourseChapter.categoryId}/study?sub=${sub.id}&tab=chat`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-emerald-200 rounded-3xl text-xs font-semibold text-emerald-700 hover:bg-emerald-100 hover:border-emerald-400 transition-all shadow-sm"
+                                      >
+                                        <BookOpen className="w-3 h-3 flex-shrink-0" />
+                                        <span className="line-clamp-1 max-w-[180px]">{sub.title}</span>
+                                        {sub.premium && (
+                                          <Gem className="w-3 h-3 text-blue-500 flex-shrink-0" />
+                                        )}
+                                      </Link>
+                                    ),
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          ),
+                        )}
+                      </div>
+                    </div>
+                  )}
               </div>
             ) : (
               <div className="text-center py-8 md:py-12">
