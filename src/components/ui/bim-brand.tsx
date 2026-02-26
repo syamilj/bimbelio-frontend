@@ -108,7 +108,7 @@ export function BimLive({
   );
 }
 
-export function BimLearning({
+export function BimLearn({
   className,
   style,
 }: {
@@ -117,7 +117,7 @@ export function BimLearning({
 }) {
   return (
     <BimBrand
-      suffix="Learning"
+      suffix="Learn"
       className={className}
       style={style}
     />

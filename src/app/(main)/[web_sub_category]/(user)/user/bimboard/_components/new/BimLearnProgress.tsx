@@ -4,7 +4,7 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import {
   BimArena,
   BimCourse,
-  BimLearning,
+  BimLearn,
   BimLive,
 } from '@/components/ui/bim-brand';
 import { Input } from '@/components/ui/input';
@@ -24,7 +24,7 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { EmptyStateIllustrations } from './EmptyStateIllustrations';
 
-interface BimLearningProgressProps {
+interface BimLearnProgressProps {
   courses: Array<{
     id: string;
     name: string;
@@ -67,12 +67,12 @@ interface BimLearningProgressProps {
   }>;
 }
 
-export default function BimLearningProgress({
+export default function BimLearnProgress({
   courses,
   tryouts,
   liveClasses,
   quizVolumes,
-}: BimLearningProgressProps) {
+}: BimLearnProgressProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
@@ -175,7 +175,7 @@ export default function BimLearningProgress({
 
         <div className="w-full overflow-x-auto scrollbar-hide pb-0.5">
           <div className="flex gap-1 w-max bg-slate-100 p-1 rounded-3xl">
-            {/* BimLearning — always first */}
+            {/* BimLearn — always first */}
             <button
               onClick={() => setActiveTab('learning')}
               className={`px-3 py-2 rounded-3xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
@@ -190,7 +190,7 @@ export default function BimLearningProgress({
               }
             >
               <BookOpen className="w-3.5 h-3.5" />
-              <BimLearning />
+              <BimLearn />
               <span
                 className={`text-[10px] font-black px-1.5 py-0.5 rounded-full leading-none ${activeTab === 'learning' ? 'bg-white/30 text-white' : 'bg-slate-300/70 text-slate-600'}`}
               >
@@ -289,7 +289,7 @@ export default function BimLearningProgress({
         </div>
       </div>
 
-      {/* Search & Filter Bar — hidden on BimLearning summary tab */}
+      {/* Search & Filter Bar — hidden on BimLearn summary tab */}
       <div
         className={`flex flex-col md:flex-row gap-3 mb-4 ${activeTab === 'learning' ? 'hidden' : ''}`}
       >

@@ -11,7 +11,7 @@ import { useCallback, useEffect, useState } from 'react';
 // import BimHeroWelcome from "./new/BimHeroWelcome";
 import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import BimAchievementBadges from './new/AchievementBadges';
-import BimLearningProgress from './new/BimLearningProgress';
+import BimLearnProgress from './new/BimLearnProgress';
 import BimPerformanceChart from './new/BimPerformanceChart';
 import BimQuickAccessMenu from './new/BimQuickAccessMenu';
 import BimQuickStatsOverview from './new/BimQuickStatsOverview';
@@ -738,7 +738,7 @@ export default function DashboardClientNew() {
           {/* Left Column - 2/3 width */}
           <div className="lg:col-span-2 flex flex-col gap-4 lg:gap-6">
             {/* Learning Progress */}
-            <BimLearningProgress
+            <BimLearnProgress
               courses={data.learningProgress.courses}
               tryouts={data.learningProgress.tryouts}
               liveClasses={data.upcomingSchedule.liveClasses}
