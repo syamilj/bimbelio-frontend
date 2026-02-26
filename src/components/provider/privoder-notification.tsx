@@ -1,4 +1,5 @@
 'use client';
+import { env } from '@/env.mjs';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { MutateType, useMutation } from '@/lib/fetch-helper/useMutation';
 import { useSocket } from '@/lib/socket/useSocket';
@@ -12,8 +13,8 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import { useSession } from './provider-session-auth';
-
 export default function ProviderNotification({
   children,
 }: {
@@ -144,6 +145,8 @@ export default function ProviderNotification({
     setUnreadCount,
   });
 
+  initiateNotificationWorker();
+
   const Context = {
     usePopUp: {
       notificationPopUp,
@@ -273,15 +276,31 @@ const notificationSocketListener = ({
   const userId = session?.user.id;
   const role = session?.user.role;
   const { on, emit, off } = useSocket();
-  // Listen ke socket notification
+
+  const playNotificationSound = (
+    soundUrl: string = '/sounds/notification2.wav',
+  ) => {
+    try {
+      const audio = new Audio(soundUrl);
+      audio.volume = 1;
+      audio.play().catch((error) => {
+        console.warn('Could not play notification sound:', error);
+      });
+    } catch (error) {
+      console.warn('Error playing notification sound:', error);
+    }
+  };
+
   useEffect(() => {
     if (!userId) return;
     console.log('Setting up notification listener for userId:', userId);
     console.log('Listening to event: ', `notification:${userId}`);
+
     on(
       `notification:${userId}`,
       (data: Omit<NotificationData, 'createdAt' | 'updatedAt'>) => {
-        console.log('New notification received:', data);
+        console.log('New notification received2:', data);
+        playNotificationSound();
 
         const newNotif: NotificationData = {
           ...data,
@@ -291,6 +310,7 @@ const notificationSocketListener = ({
 
         if (newNotif.isPopUp) {
           setNotificationPopUp(newNotif);
+          console.log('2');
         }
 
         setNotifications((prev) => [newNotif, ...prev]);
@@ -309,6 +329,7 @@ const notificationSocketListener = ({
       `notification:broadcast`,
       (data: Omit<NotificationData, 'createdAt' | 'updatedAt'>) => {
         console.log('New notification received:', data);
+        playNotificationSound();
 
         const newNotif: NotificationData = {
           ...data,
@@ -328,5 +349,143 @@ const notificationSocketListener = ({
       console.log('Cleaning up notification listener for broadcast');
       off(`notification:broadcast`);
     };
+  }, []);
+};
+
+const initiateNotificationWorker = () => {
+  const { data: session } = useSession();
+  const userId = session?.user.id;
+
+  function urlBase64ToUint8Array(base64String: string) {
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding)
+      .replace(/\-/g, '+')
+      .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  }
+  const handleResubscribe = useDebouncedCallback(async () => {
+    if ('serviceWorker' in navigator) {
+      try {
+        // Check notification permission
+        console.log(
+          'Current notification permission:',
+          Notification.permission,
+        );
+
+        if (Notification.permission === 'default') {
+          const permission = await Notification.requestPermission();
+          console.log('Requested permission:', permission);
+          if (permission !== 'granted') {
+            console.warn('❌ Notification permission not granted');
+            alert('Please enable notifications in your browser settings');
+            return;
+          }
+        } else if (Notification.permission === 'denied') {
+          console.warn(
+            '❌ Notification permission is denied. Please change it in browser settings.',
+          );
+          alert(
+            'Notification permission is denied. Please change it in browser settings.',
+          );
+          return;
+        }
+
+        // Unregister old SW and register fresh one
+        const registrations = await navigator.serviceWorker.getRegistrations();
+
+        if (registrations.length > 0) {
+          return;
+        }
+
+        console.log({ registrations });
+
+        for (let reg of registrations) {
+          await reg.unregister();
+        }
+
+        // Register service worker fresh
+        const registration = await navigator.serviceWorker.register('/sw.js', {
+          scope: '/',
+        });
+        console.log('✅ Service worker registered/updated');
+
+        // Tunggu sampai SW benar-benar active dengan polling
+        let isActive = false;
+        let attempts = 0;
+        const maxAttempts = 20;
+
+        while (!isActive && attempts < maxAttempts) {
+          if (registration.active) {
+            isActive = true;
+            console.log('✅ Service worker is now active!');
+            break;
+          }
+          attempts++;
+          console.log(
+            `Waiting for SW to activate... attempt ${attempts}/${maxAttempts}`,
+          );
+          await new Promise((resolve) => setTimeout(resolve, 100)); // Wait 100ms
+        }
+
+        if (!isActive) {
+          throw new Error(
+            'Service Worker failed to activate after multiple attempts',
+          );
+        }
+
+        // Check existing subscription
+        let subscription = await registration.pushManager.getSubscription();
+        if (subscription) {
+          console.log('Existing subscription found, deleting...');
+          await subscription.unsubscribe();
+        }
+
+        // Create new subscription
+        subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(
+            'BJthRQ5myDgc7OSXzPCMftGw-n16F7zQBEN7EUD6XxcfTTvrLGWSIG7y_JxiWtVlCFua0S8MTB5rPziBqNx1qIo',
+          ),
+        });
+
+        console.log('✅ New push subscription created:', subscription);
+
+        const payload = { userId, ...subscription.toJSON() };
+
+        // Kirim subscription ke backend
+        const res = await fetch(
+          `${env.NEXT_PUBLIC_API_URL}/notification/addNotificationWorker`,
+          {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: {
+              'content-type': 'application/json',
+            },
+          },
+        );
+
+        if (!res.ok) {
+          throw new Error(`Failed to subscribe: ${res.status}`);
+        }
+
+        const data = await res.json();
+        console.log('✅ Subscription sent to backend:', data);
+        alert('✅ Subscription successful! You can now receive notifications.');
+      } catch (error: any) {
+        console.error('❌ Error:', error);
+        alert('Error: ' + error.message);
+      }
+    }
+  }, 1000);
+
+  useEffect(() => {
+    handleResubscribe();
   }, []);
 };

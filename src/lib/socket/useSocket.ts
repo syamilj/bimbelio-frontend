@@ -33,6 +33,7 @@ export const useSocket = (serverUrl?: string) => {
     socket.on('connect', () => {
       setIsConnected(true);
       setSocketId(socket.id || null);
+      socket.emit('notification:join', { userId: session.user.id });
     });
 
     socket.on('disconnect', () => {
