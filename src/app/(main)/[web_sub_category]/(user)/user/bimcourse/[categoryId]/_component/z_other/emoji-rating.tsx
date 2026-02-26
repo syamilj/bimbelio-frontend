@@ -57,7 +57,10 @@ export default function EmojiRating() {
     return (
       <div className="flex items-center gap-0.5">
         {[1, 2, 3, 4, 5].map((star) => (
-          <div key={star} className="p-0.5">
+          <div
+            key={star}
+            className="p-0.5"
+          >
             <StarIcon className="w-4 h-4 text-slate-200" />
           </div>
         ))}
@@ -88,7 +91,9 @@ export default function EmojiRating() {
       </div>
 
       {rating !== null && (
-        <span className="text-xs text-slate-500 ml-1">{emojis[rating - 1]}</span>
+        <span className="text-xs text-slate-500 ml-1">
+          {emojis[rating - 1]}
+        </span>
       )}
 
       {isSubmitted && (

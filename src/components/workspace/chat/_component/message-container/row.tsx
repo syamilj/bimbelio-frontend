@@ -10,13 +10,13 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { BimBot } from '@/components/ui/bim-brand';
 import { env } from '@/env.mjs';
 import { cn } from '@/lib/utils';
+import 'katex/dist/katex.min.css';
 import { Bot, Lightbulb } from 'lucide-react';
 import Image from 'next/image';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { type MessageDataType, useProvider } from '../../provider';
 import ChatTools from '../chat-tools';
 import SubmitChatEdit from '../submit-chat-edit';
-import 'katex/dist/katex.min.css';
 
 type Props = {
   message: MessageDataType;
@@ -61,10 +61,9 @@ function preprocessContent(content: string) {
     (_: string, start: string, end: string) => {
       const s = parseInt(start);
       const e = parseInt(end);
-      return Array.from(
-        { length: e - s + 1 },
-        (_, i) => `\`📄${s + i}\``,
-      ).join(' ');
+      return Array.from({ length: e - s + 1 }, (_, i) => `\`📄${s + i}\``).join(
+        ' ',
+      );
     },
   );
   processed = processed.replace(/<PAGE#(\d+)>/g, '`📄$1`');
@@ -165,16 +164,19 @@ export default function Row({ message, index, isLast, isStreaming }: Props) {
 
   if (isUser) {
     return (
-      <Message from="user" className="items-end w-full">
+      <Message
+        from="user"
+        className="items-end w-full"
+      >
         <MessageContent
           className={cn(
-            'rounded-2xl rounded-br-md px-3.5 py-2 text-[13px] text-white leading-relaxed',
+            'rounded-3xl rounded-br-md px-3.5 py-2 text-[13px] text-white leading-relaxed',
             'max-w-[85%] sm:max-w-[80%]',
           )}
           style={{ backgroundColor: mainColor }}
         >
           {isBase64Image ? (
-            <div className="rounded-2xl overflow-hidden">
+            <div className="rounded-3xl overflow-hidden">
               <Image
                 src={
                   message.content.includes('data:image/png;base64')
@@ -190,9 +192,7 @@ export default function Row({ message, index, isLast, isStreaming }: Props) {
           ) : editMessage.index === index ? (
             <SubmitChatEdit />
           ) : (
-            <p className="whitespace-pre-wrap break-words">
-              {message.content}
-            </p>
+            <p className="whitespace-pre-wrap break-words">{message.content}</p>
           )}
         </MessageContent>
         {!editMessage.bool && message.content && (
@@ -207,7 +207,10 @@ export default function Row({ message, index, isLast, isStreaming }: Props) {
   // ── Assistant bubble (Streamdown / AI Elements) ──────────────────
 
   return (
-    <Message from="assistant" className="w-full">
+    <Message
+      from="assistant"
+      className="w-full"
+    >
       <div className="flex gap-2">
         {/* Avatar */}
         <div className="shrink-0 mt-0.5">
@@ -251,17 +254,18 @@ export default function Row({ message, index, isLast, isStreaming }: Props) {
                 ))}
               </div>
             ) : (
-              <div ref={pageContentRef} onClick={handleContentClick}>
-                <MessageResponse>
-                  {processedContent}
-                </MessageResponse>
+              <div
+                ref={pageContentRef}
+                onClick={handleContentClick}
+              >
+                <MessageResponse>{processedContent}</MessageResponse>
               </div>
             )}
           </MessageContent>
 
           {/* Saran Pertanyaan section */}
           {saran && saran.length > 0 && (
-            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-2xl">
+            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-3xl">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
                   <Lightbulb className="text-white w-3 h-3" />
@@ -275,7 +279,7 @@ export default function Row({ message, index, isLast, isStreaming }: Props) {
                   <button
                     key={i}
                     type="button"
-                    className="w-full text-left p-2.5 bg-white border border-blue-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 text-gray-700 text-xs leading-relaxed shadow-sm hover:shadow-md"
+                    className="w-full text-left p-2.5 bg-white border border-blue-200 rounded-3xl hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 text-gray-700 text-xs leading-relaxed shadow-sm hover:shadow-md"
                     onClick={() => handleSaranClick(q)}
                   >
                     <span className="font-medium text-blue-600 mr-1.5">

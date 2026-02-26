@@ -107,7 +107,7 @@ export default function HeaderCourse({
                 value="item-1"
                 className="border-none"
               >
-                <AccordionTrigger className="flex cursor-pointer items-start gap-2 rounded-xl px-4 py-2 text-start text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 truncate">
+                <AccordionTrigger className="flex cursor-pointer items-start gap-2 rounded-3xl px-4 py-2 text-start text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 truncate">
                   {chapter.title}
                 </AccordionTrigger>
                 <AccordionContent className="pb-0">
@@ -121,7 +121,7 @@ export default function HeaderCourse({
                           href={`/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=${sChapter.id}&tab=${tab || 'chat'}`}
                           key={sIndex}
                           className={cn(
-                            'flex flex-1 min-w-0 cursor-pointer items-center gap-2 rounded-lg px-3 py-2 transition-colors hover:bg-slate-50 w-full',
+                            'flex flex-1 min-w-0 cursor-pointer items-center gap-2 rounded-3xl px-3 py-2 transition-colors hover:bg-slate-50 w-full',
                             sChapter.id === sub && 'bg-blue-50 text-blue-600',
                           )}
                           onClick={() => {
@@ -191,9 +191,7 @@ export default function HeaderCourse({
                                       ? 'MATERI'
                                       : sChapter.type}{' '}
                               </span>
-                              <span>
-                                - {sChapter.spendTime} Menit
-                              </span>
+                              <span>- {sChapter.spendTime} Menit</span>
                             </div>
                           </div>
                         </Link>
@@ -207,7 +205,7 @@ export default function HeaderCourse({
                             )}
                           {sChapter.premium && (
                             <div
-                              className="flex items-center gap-0.5 bg-blue-500/10 text-[10px] text-blue-600 px-1.5 py-0.5 rounded-md cursor-pointer hover:bg-blue-500/20 transition-colors font-medium"
+                              className="flex items-center gap-0.5 bg-blue-500/10 text-[10px] text-blue-600 px-1.5 py-0.5 rounded-3xl cursor-pointer hover:bg-blue-500/20 transition-colors font-medium"
                               onClick={() => {
                                 if (isHide(sChapter.premium)) {
                                   setTransactionPopUp(true);
@@ -229,7 +227,7 @@ export default function HeaderCourse({
           <Link
             href={`/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=report`}
             className={cn(
-              'flex cursor-pointer items-center gap-2 text-blue-600 rounded-xl px-4 py-2 text-start text-sm font-semibold transition-colors hover:bg-slate-50',
+              'flex cursor-pointer items-center gap-2 text-blue-600 rounded-3xl px-4 py-2 text-start text-sm font-semibold transition-colors hover:bg-slate-50',
             )}
             onClick={() => {
               setShowList(false);
@@ -362,8 +360,11 @@ export default function HeaderCourse({
               <p className="font-regular hidden md:block">Upgrade</p>
             </ButtonPayment>
           ) : (
-            <div className="flex items-center rounded-xl p-1.5 bg-amber-400 text-white">
-              <IconCrown className="text-white" w={14} />
+            <div className="flex items-center rounded-3xl p-1.5 bg-amber-400 text-white">
+              <IconCrown
+                className="text-white"
+                w={14}
+              />
             </div>
           )}
         </div>
@@ -379,7 +380,7 @@ export default function HeaderCourse({
         <motion.div
           id="1"
           className={cn(
-            'bg-white py-0 px-3 rounded-2xl md:w-full max-w-[990px] justify-between items-center gap-3 left-2 right-2 sticky top-0 md:relative hidden md:flex',
+            'bg-white py-0 px-3 rounded-3xl md:w-full max-w-[990px] justify-between items-center gap-3 left-2 right-2 sticky top-0 md:relative hidden md:flex',
             isMobile && 'pointer-events-none',
           )}
           initial={{ opacity: 0, x: 0 }}
@@ -388,7 +389,7 @@ export default function HeaderCourse({
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
           <div
-            className="hover:bg-slate-100 rounded-xl p-1.5 cursor-pointer transition-colors relative"
+            className="hover:bg-slate-100 rounded-3xl p-1.5 cursor-pointer transition-colors relative"
             onClick={() => {
               setShowList((prev) => !prev);
             }}
@@ -402,10 +403,15 @@ export default function HeaderCourse({
           <div className="flex items-center justify-between px-4 w-full border-x border-slate-200/60">
             <div className="flex items-center text-sm gap-3">
               <div className="hidden md:block">
-                <BookAIcon className="text-slate-400" size={20} />
+                <BookAIcon
+                  className="text-slate-400"
+                  size={20}
+                />
               </div>
               <div className="text-start text-nowrap">
-                <p className="text-sm font-medium text-slate-800">{sub === 'report' ? 'Report' : CourseData?.chapterTitle}</p>
+                <p className="text-sm font-medium text-slate-800">
+                  {sub === 'report' ? 'Report' : CourseData?.chapterTitle}
+                </p>
                 <p className="text-xs text-slate-500">
                   {sub === 'report'
                     ? 'Report untuk course ini'
@@ -429,7 +435,7 @@ export default function HeaderCourse({
             </div>
           </div>
           <div
-            className="hover:bg-slate-100 rounded-xl p-1.5 cursor-pointer transition-colors relative"
+            className="hover:bg-slate-100 rounded-3xl p-1.5 cursor-pointer transition-colors relative"
             onClick={() => {
               const courseContainer = document.getElementById(
                 'container-course',
@@ -445,12 +451,15 @@ export default function HeaderCourse({
               }
             }}
           >
-            <CircleChevronUp className="text-slate-400" size={20} />
+            <CircleChevronUp
+              className="text-slate-400"
+              size={20}
+            />
           </div>
 
           <motion.div
             className={cn(
-              'absolute left-0 top-[calc(100%)] z-102 w-[400px] h-[700px] border border-slate-200 bg-white p-2 shadow-xl duration-100 overflow-y-auto overflow-x-hidden rounded-2xl mt-2',
+              'absolute left-0 top-[calc(100%)] z-102 w-[400px] h-[700px] border border-slate-200 bg-white p-2 shadow-xl duration-100 overflow-y-auto overflow-x-hidden rounded-3xl mt-2',
               !showList && 'w-0 h-0 p-0',
             )}
           >
@@ -462,7 +471,7 @@ export default function HeaderCourse({
         <motion.div
           id="10"
           className={cn(
-            'bg-white mr-4 ml-4 border border-slate-200/60 p-2 rounded-2xl md:w-full max-w-[990px] justify-center items-center gap-3 px-3 sticky z-120 top-4 md:relative flex md:hidden mt-4',
+            'bg-white mr-4 ml-4 border border-slate-200/60 p-2 rounded-3xl md:w-full max-w-[990px] justify-center items-center gap-3 px-3 sticky z-120 top-4 md:relative flex md:hidden mt-4',
           )}
           initial={{ opacity: 0, x: 0 }}
           animate={{ opacity: 1, x: 0 }}
@@ -470,7 +479,7 @@ export default function HeaderCourse({
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
           <div
-            className="hover:bg-slate-100 rounded-xl p-1.5 cursor-pointer transition-colors relative"
+            className="hover:bg-slate-100 rounded-3xl p-1.5 cursor-pointer transition-colors relative"
             onClick={() => {
               setShowList((prev) => !prev);
             }}
@@ -527,7 +536,7 @@ export default function HeaderCourse({
             </div>
           </div>
           <div
-            className="hover:bg-slate-100 rounded-xl p-1.5 cursor-pointer transition-colors relative"
+            className="hover:bg-slate-100 rounded-3xl p-1.5 cursor-pointer transition-colors relative"
             onClick={() => {
               const courseContainer = document.getElementById(
                 'container-course',
@@ -548,12 +557,15 @@ export default function HeaderCourse({
               strokeWidth={1}
             /> */}
 
-            <CircleChevronUp className="text-slate-400" size={18} />
+            <CircleChevronUp
+              className="text-slate-400"
+              size={18}
+            />
           </div>
 
           <motion.div
             className={cn(
-              'absolute left-4 top-[calc(100%)] mt-2 z-102 w-[300px] h-[500px] border border-slate-200 bg-white p-2 shadow-lg duration-100 overflow-y-auto overflow-x-hidden rounded-2xl',
+              'absolute left-4 top-[calc(100%)] mt-2 z-102 w-[300px] h-[500px] border border-slate-200 bg-white p-2 shadow-lg duration-100 overflow-y-auto overflow-x-hidden rounded-3xl',
               !showList && 'w-0 h-0 p-0',
             )}
           >

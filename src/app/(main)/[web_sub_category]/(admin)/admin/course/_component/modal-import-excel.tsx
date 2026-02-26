@@ -215,13 +215,13 @@ const ModalImportExcel = ({
       open={isLoading ? true : open}
       onOpenChange={setOpen}
     >
-      <DialogTrigger>
-        <div
-          className="shrink-0 cursor-pointer rounded-3xl bg-blue-100 px-4 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
+      <DialogTrigger asChild>
+        <button
+          className="shrink-0 cursor-pointer rounded-3xl bg-blue-50 border border-blue-200 px-4 py-2 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-100 active:bg-blue-50"
           onClick={() => setOpen(true)}
         >
           Import CSV
-        </div>
+        </button>
       </DialogTrigger>
       <DialogContent className="w-[400px]">
         <DialogTitle className="text-center text-lg font-semibold mb-2">
@@ -246,25 +246,27 @@ const ModalImportExcel = ({
             />
             {file ? (
               <button
-                className="w-full shrink-0 cursor-pointer rounded-3xl bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
+                className="w-full shrink-0 cursor-pointer rounded-3xl bg-blue-600 py-2.5 font-medium text-white transition-colors hover:bg-blue-700 active:bg-blue-600 disabled:opacity-60 flex items-center justify-center gap-2"
                 onClick={handleGenerate}
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <Loader2 className="animate-spin w-4 h-4 mx-auto" />
+                  <>
+                    <Loader2 className="animate-spin w-4 h-4" /> Memproses...
+                  </>
                 ) : (
-                  'Generate'
+                  'Generate Soal'
                 )}
               </button>
             ) : (
-              <div
-                className="w-full shrink-0 cursor-pointer rounded-3xl bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
+              <button
+                className="w-full shrink-0 cursor-pointer rounded-3xl bg-blue-50 border border-blue-200 py-2.5 font-medium text-blue-700 transition-colors hover:bg-blue-100 active:bg-blue-50 flex items-center justify-center gap-2"
                 onClick={() => {
                   document.getElementById('uploadCSV')?.click();
                 }}
               >
-                Upload
-              </div>
+                Upload File CSV
+              </button>
             )}
           </div>
         </div>

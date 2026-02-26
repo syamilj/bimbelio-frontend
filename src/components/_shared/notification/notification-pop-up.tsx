@@ -2,7 +2,7 @@
 
 import { useNotification } from '@/components/provider/privoder-notification';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import { LiveClass, Tryout } from '@/types/database';
 import {
@@ -222,9 +222,9 @@ export const NotificationPopUp = () => {
 
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between gap-2 mb-0.5">
-                <h2 className="text-base font-bold text-gray-900 break-words leading-tight">
+                <DialogTitle className="text-base font-bold text-gray-900 break-words leading-tight">
                   {notificationPopUp.title}
-                </h2>
+                </DialogTitle>
                 {notificationPopUp.priority !== 'NORMAL' && (
                   <div className="flex-shrink-0 mt-0.5">
                     {getPriorityIcon(notificationPopUp.priority)}

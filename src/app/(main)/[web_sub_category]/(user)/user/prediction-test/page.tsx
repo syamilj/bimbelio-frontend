@@ -41,6 +41,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
+import { getSnbtShortName } from '@/lib/utils/subtest';
 import {
   AlertCircle,
   Award,
@@ -221,14 +222,15 @@ const STEPS = [
   },
 ];
 
+// Labels use SNBT initials — see @/lib/utils/snbt for the canonical map
 const UTBK_LABELS = {
-  penalaran_umum: 'Penalaran Umum',
-  ppu: 'Pengetahuan & Pemahaman Umum',
-  pbm: 'Pemahaman Bacaan & Menulis',
-  kuantitatif: 'Penalaran Kuantitatif',
-  lit_indonesia: 'Literasi Bahasa Indonesia',
-  lit_inggris: 'Literasi Bahasa Inggris',
-  matematika: 'Matematika',
+  penalaran_umum: getSnbtShortName('Penalaran Umum'), // PU
+  ppu: getSnbtShortName('Pengetahuan dan Pemahaman Umum'), // PPU
+  pbm: getSnbtShortName('Pemahaman Bacaan dan Menulis'), // PBM
+  kuantitatif: getSnbtShortName('Pengetahuan Kuantitatif'), // PK
+  lit_indonesia: getSnbtShortName('Literasi Bahasa Indonesia'), // LBI
+  lit_inggris: getSnbtShortName('Literasi Bahasa Inggris'), // LBE
+  matematika: getSnbtShortName('Penalaran Matematika'), // PM
 };
 
 // Clean Chart Component

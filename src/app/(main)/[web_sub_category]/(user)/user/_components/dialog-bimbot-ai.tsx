@@ -1,7 +1,12 @@
 'use client';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { VisuallyHidden } from '@/components/ui/visually-hidden';
 import Chat from '@/components/workspace/chat';
 import { MessageDataType } from '@/components/workspace/chat/provider';
@@ -11,7 +16,14 @@ import { ChatHistory } from '@/types/database';
 import { motion } from 'framer-motion';
 import { BotMessageSquare, Loader2, Plus, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { Dispatch, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  Dispatch,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 const blacklistPaths = [
   '/user/bimarena/try-out',
@@ -63,7 +75,10 @@ export const DialogBimbotAI = () => {
           </span>
         </motion.div>
       </DialogTrigger>
-      <DialogContent hideClose className="overflow-hidden fixed md:left-[unset] md:right-[1rem] md:bottom-[1rem] md:top-[unset] p-0 md:translate-x-0 md:translate-y-0 flex flex-col gap-0 rounded-3xl md:max-w-2xl h-[85vh] max-h-[85vh] w-[95vw]">
+      <DialogContent
+        hideClose
+        className="overflow-hidden fixed md:left-[unset] md:right-[1rem] md:bottom-[1rem] md:top-[unset] p-0 md:translate-x-0 md:translate-y-0 flex flex-col gap-0 rounded-3xl md:max-w-2xl h-[85vh] max-h-[85vh] w-[95vw]"
+      >
         <VisuallyHidden>
           <DialogTitle>BimBot AI Chat</DialogTitle>
         </VisuallyHidden>
@@ -97,9 +112,9 @@ function ChatContent() {
     getGeneral(
       `/chat/getAllHistoryByUserId?userId=${userId}&website_sub_category_id=${websiteSubCategoryId}`,
       {
-      setData: (data: ChatHistory[]) => {
-        setChatHistory(data);
-      },
+        setData: (data: ChatHistory[]) => {
+          setChatHistory(data);
+        },
       },
     );
   }, [userId, websiteSubCategoryId]);
@@ -110,10 +125,10 @@ function ChatContent() {
     getGeneral(
       `/chat/getAllHistoryByUserId?userId=${userId}&website_sub_category_id=${websiteSubCategoryId}`,
       {
-      setData: (data: ChatHistory[]) => {
-        setChatHistory(data);
-        setIsHistoryInitialized(true);
-      },
+        setData: (data: ChatHistory[]) => {
+          setChatHistory(data);
+          setIsHistoryInitialized(true);
+        },
       },
     );
   }, [userId, websiteSubCategoryId]);
@@ -148,10 +163,7 @@ function ChatContent() {
   }, [getMessages]);
 
   // Memoize body so it doesn't recreate on every render
-  const body = useMemo(
-    () => ({ historyId, userId }),
-    [historyId, userId],
-  );
+  const body = useMemo(() => ({ historyId, userId }), [historyId, userId]);
 
   if (messageError) {
     return (
@@ -242,31 +254,31 @@ const HeaderChat = ({
     await mutateGeneral(
       `/chat/createNewChat?website_sub_category_id=${websiteSubCategoryId}`,
       {
-      payload: {
-        title: 'Chat Baru',
-        userId: session?.user.id,
+        payload: {
+          title: 'Chat Baru',
+          userId: session?.user.id,
+        },
+        type: 'post',
+        toast: {
+          errorMsg: 'Gagal membuat chat baru',
+        },
+        onError() {
+          setLoading(false);
+          hasAutoCreated.current = false; // allow retry on error
+        },
+        onSuccess({ data }) {
+          if (data?.id) {
+            setHistoryId(data.id);
+            getGeneral(
+              `/chat/getAllHistoryByUserId?userId=${session?.user.id}&website_sub_category_id=${websiteSubCategoryId}`,
+              {
+                setData: setChatHistory,
+              },
+            );
+          }
+          setLoading(false);
+        },
       },
-      type: 'post',
-      toast: {
-        errorMsg: 'Gagal membuat chat baru',
-      },
-      onError() {
-        setLoading(false);
-        hasAutoCreated.current = false; // allow retry on error
-      },
-      onSuccess({ data }) {
-        if (data?.id) {
-          setHistoryId(data.id);
-          getGeneral(
-            `/chat/getAllHistoryByUserId?userId=${session?.user.id}&website_sub_category_id=${websiteSubCategoryId}`,
-            {
-              setData: setChatHistory,
-            },
-          );
-        }
-        setLoading(false);
-      },
-    },
     );
   };
 
@@ -275,25 +287,25 @@ const HeaderChat = ({
     await mutateGeneral(
       `/chat/deleteChat?id=${chatId}&website_sub_category_id=${websiteSubCategoryId}`,
       {
-      type: 'delete',
-      toast: {
-        errorMsg: 'Gagal menghapus chat',
-      },
-      onSuccess() {
-        // Remove from local state immediately
-        const updated = chatHistory.filter((h) => h.id !== chatId);
-        setChatHistory(updated);
-        // If the deleted chat was active, switch to the first remaining or clear
-        if (historyId === chatId) {
-          if (updated.length > 0) {
-            setHistoryId(updated[0].id);
-          } else {
-            setHistoryId(undefined);
-            hasAutoCreated.current = false; // allow auto-create if no chats left
+        type: 'delete',
+        toast: {
+          errorMsg: 'Gagal menghapus chat',
+        },
+        onSuccess() {
+          // Remove from local state immediately
+          const updated = chatHistory.filter((h) => h.id !== chatId);
+          setChatHistory(updated);
+          // If the deleted chat was active, switch to the first remaining or clear
+          if (historyId === chatId) {
+            if (updated.length > 0) {
+              setHistoryId(updated[0].id);
+            } else {
+              setHistoryId(undefined);
+              hasAutoCreated.current = false; // allow auto-create if no chats left
+            }
           }
-        }
+        },
       },
-    },
     );
   };
 
@@ -326,9 +338,7 @@ const HeaderChat = ({
                     ? 'text-white shadow-sm'
                     : 'text-gray-500 hover:bg-gray-100'
                 }`}
-                style={
-                  isActive ? { backgroundColor: mainColor } : undefined
-                }
+                style={isActive ? { backgroundColor: mainColor } : undefined}
               >
                 <button
                   onClick={() => setHistoryId(history.id)}

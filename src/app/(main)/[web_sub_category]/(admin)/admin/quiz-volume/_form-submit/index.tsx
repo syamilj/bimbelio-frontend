@@ -276,7 +276,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pb-12">
+    <div className="min-h-screen pb-12">
       <LoadingPageWithText
         loading={isLoading}
         heading={

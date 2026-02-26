@@ -13,7 +13,6 @@ import {
   IconMinus,
   IconPlus,
   IconRegenerateMessage,
-  IconSearch,
   IconVision,
 } from '@/styles/icon';
 import { ChevronLeftIcon } from 'lucide-react';
@@ -142,7 +141,9 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
               onBlur={() => scrollToPage()}
             />
           </form>
-          <span className="text-xs text-slate-400 font-medium">/ {totalPage || '-'}</span>
+          <span className="text-xs text-slate-400 font-medium">
+            / {totalPage || '-'}
+          </span>
         </div>
 
         {/* Zoom Controls */}
@@ -152,7 +153,10 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
               className="w-7 h-7 rounded-3xl flex items-center justify-center hover:bg-slate-100 transition-colors"
               onClick={() => handleZoom('min')}
             >
-              <IconMinus className="text-slate-400" w={12} />
+              <IconMinus
+                className="text-slate-400"
+                w={12}
+              />
             </button>
           </ToolTip>
           <ToolTip value="Reset zoom">
@@ -160,7 +164,10 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
               className="w-7 h-7 rounded-3xl flex items-center justify-center hover:bg-slate-100 transition-colors"
               onClick={() => handleZoom('reset')}
             >
-              <IconRegenerateMessage w={14} className="text-slate-400" />
+              <IconRegenerateMessage
+                w={14}
+                className="text-slate-400"
+              />
             </button>
           </ToolTip>
           <ToolTip value="Zoom in">
@@ -168,13 +175,19 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
               className="w-7 h-7 rounded-3xl flex items-center justify-center hover:bg-slate-100 transition-colors"
               onClick={() => handleZoom('plus')}
             >
-              <IconPlus className="text-slate-400" w={12} />
+              <IconPlus
+                className="text-slate-400"
+                w={12}
+              />
             </button>
           </ToolTip>
         </div>
 
         {/* Vision Toggle */}
-        <ToolTip value="Vision" className="hidden md:flex">
+        <ToolTip
+          value="Vision"
+          className="hidden md:flex"
+        >
           <button
             className={cn(
               'w-7 h-7 rounded-3xl flex items-center justify-center transition-all duration-200 border',
@@ -184,23 +197,35 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
             )}
             onClick={() => setVision(!vision)}
           >
-            <IconVision active={vision} w={14} />
+            <IconVision
+              active={vision}
+              w={14}
+            />
           </button>
         </ToolTip>
 
         {/* Fullscreen/Minimize */}
         {mobileScreen === 'minimize' && (
-          <ToolTip value="Fullscreen" className={cn(inCourse && 'hidden md:block')}>
+          <ToolTip
+            value="Fullscreen"
+            className={cn(inCourse && 'hidden md:block')}
+          >
             <button
               className="w-7 h-7 rounded-3xl flex items-center justify-center border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 transition-colors"
               onClick={() => {
-                const chatAIContainer = document.querySelector('.chatAIContainer') as HTMLDivElement;
-                const DocumentContainer = document.querySelector('.DocumentContainer') as HTMLDivElement;
+                const chatAIContainer = document.querySelector(
+                  '.chatAIContainer',
+                ) as HTMLDivElement;
+                const DocumentContainer = document.querySelector(
+                  '.DocumentContainer',
+                ) as HTMLDivElement;
                 if (chatAIContainer && DocumentContainer) {
                   chatAIContainer.setAttribute('data-panel-size', '0.0');
-                  chatAIContainer.style.cssText = 'flex: 0 1 0px; overflow: hidden;';
+                  chatAIContainer.style.cssText =
+                    'flex: 0 1 0px; overflow: hidden;';
                   DocumentContainer.setAttribute('data-panel-size', '100.0');
-                  DocumentContainer.style.cssText = 'flex: 100.0 1 0px; overflow: hidden; position: relative;';
+                  DocumentContainer.style.cssText =
+                    'flex: 100.0 1 0px; overflow: hidden; position: relative;';
                 }
                 setMobileScreen('fullscreen');
               }}
@@ -210,17 +235,26 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
           </ToolTip>
         )}
         {mobileScreen === 'fullscreen' && (
-          <ToolTip value="Minimize" className={cn(inCourse && 'hidden md:block')}>
+          <ToolTip
+            value="Minimize"
+            className={cn(inCourse && 'hidden md:block')}
+          >
             <button
               className="w-7 h-7 rounded-3xl flex items-center justify-center border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 transition-colors"
               onClick={() => {
-                const chatAIContainer = document.querySelector('.chatAIContainer') as HTMLDivElement;
-                const DocumentContainer = document.querySelector('.DocumentContainer') as HTMLDivElement;
+                const chatAIContainer = document.querySelector(
+                  '.chatAIContainer',
+                ) as HTMLDivElement;
+                const DocumentContainer = document.querySelector(
+                  '.DocumentContainer',
+                ) as HTMLDivElement;
                 if (chatAIContainer && DocumentContainer) {
                   DocumentContainer.setAttribute('data-panel-size', '50.0');
-                  DocumentContainer.style.cssText = 'flex: 50.0 1 0px; overflow: hidden;';
+                  DocumentContainer.style.cssText =
+                    'flex: 50.0 1 0px; overflow: hidden;';
                   chatAIContainer.setAttribute('data-panel-size', '50.0');
-                  chatAIContainer.style.cssText = 'flex: 50.0 1 0px; overflow: hidden; position: relative;';
+                  chatAIContainer.style.cssText =
+                    'flex: 50.0 1 0px; overflow: hidden; position: relative;';
                 }
                 setMobileScreen('minimize');
               }}
@@ -230,9 +264,7 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
           </ToolTip>
         )}
 
-        {inCourse && sub && isCourseDone === false && (
-          <SubmitCourse />
-        )}
+        {inCourse && sub && isCourseDone === false && <SubmitCourse />}
         {inCourse && sub && isCourseDone === true && (
           <div className="flex items-center gap-1 rounded-3xl bg-emerald-500/10 px-2 py-0.5 text-[10px] text-emerald-600 font-medium">
             <IconCheckList className="text-emerald-500 w-2.5 h-2.5" />

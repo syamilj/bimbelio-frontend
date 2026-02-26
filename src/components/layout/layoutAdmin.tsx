@@ -25,7 +25,11 @@ export default function LayoutAdmin({ children }: LayoutAdminProps) {
   const [hideLayout, setHideLayout] = useState<boolean>(false);
 
   useEffect(() => {
-    if (pathname?.includes('try-out') && params && params.id) {
+    if (
+      (pathname?.includes('try-out') && params && params.id) ||
+      pathname?.includes('/admin/tryout/edit/') ||
+      pathname?.includes('/admin/tryout/new')
+    ) {
       setHideLayout(true);
     } else {
       setHideLayout(false);

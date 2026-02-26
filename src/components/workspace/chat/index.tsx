@@ -153,10 +153,7 @@ const LoadingMessages = () => {
 
 const FormMessageEdit = () => {
   const {
-    useMessagesEdit: {
-      inputMessagesEdit,
-      appendMessagesEdit,
-    },
+    useMessagesEdit: { inputMessagesEdit, appendMessagesEdit },
   } = useProvider();
 
   useEffect(() => {

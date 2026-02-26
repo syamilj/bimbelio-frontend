@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { LoadingPageStorage } from '@/components/ui/spinner';
+import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { toaster } from '@/components/ui/toaster';
@@ -472,12 +473,13 @@ const SubChapterOption = ({
                     />
                   </>
                 ) : (
-                  <div className="text-center py-8 text-gray-500 border-2 border-dashed border-gray-200 rounded-3xl">
-                    <p>Belum ada soal</p>
+                  <div className="flex flex-col items-center justify-center py-10 text-center border-2 border-dashed border-gray-200 rounded-3xl">
+                    <p className="text-gray-400 text-sm mb-2">Belum ada soal</p>
                     <Button
                       onClick={addQuestion}
                       size="sm"
-                      className="mt-2"
+                      variant="outline"
+                      className="rounded-3xl"
                     >
                       <Plus className="h-4 w-4 mr-1" />
                       Tambah Soal Pertama
@@ -497,30 +499,34 @@ const SubChapterOption = ({
             className="mt-6"
           >
             <div className="space-y-6">
-              <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id="premium"
-                    checked={EditSubChapter.premium}
-                    onChange={(e) => {
-                      setSubChapter((prev) =>
-                        prev.map((sChapter, index) => {
-                          if (index === currentIndexEdit) {
-                            return { ...sChapter, premium: e.target.checked };
-                          }
-                          return sChapter;
-                        }),
-                      );
-                    }}
-                  />
-                  <Label htmlFor="premium">Konten Premium</Label>
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-3xl border border-gray-100">
+                <div>
+                  <Label
+                    htmlFor="premium"
+                    className="text-sm font-semibold text-gray-800"
+                  >
+                    Konten Premium
+                  </Label>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    {EditSubChapter.premium
+                      ? 'Hanya bisa diakses pengguna premium'
+                      : 'Dapat diakses semua pengguna'}
+                  </p>
                 </div>
-                <p className="text-sm text-gray-500">
-                  {EditSubChapter.premium
-                    ? 'Hanya bisa diakses pengguna premium'
-                    : 'Dapat diakses semua pengguna'}
-                </p>
+                <Switch
+                  id="premium"
+                  checked={EditSubChapter.premium}
+                  onCheckedChange={(checked) => {
+                    setSubChapter((prev) =>
+                      prev.map((sChapter, index) => {
+                        if (index === currentIndexEdit) {
+                          return { ...sChapter, premium: checked };
+                        }
+                        return sChapter;
+                      }),
+                    );
+                  }}
+                />
               </div>
               {/* Status Setting */}
               <div className="space-y-2">
@@ -640,23 +646,29 @@ const VideoEditor = ({
   ) => void;
 }) => (
   <div className="space-y-4">
-    <div className="border-2 border-dashed border-gray-300 rounded-3xl p-8 text-center">
-      <Video className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+    <div className="border-2 border-dashed border-gray-200 rounded-3xl p-8 text-center hover:border-gray-300 transition-colors">
+      <div className="w-12 h-12 rounded-3xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
+        <Video className="h-6 w-6 text-blue-500" />
+      </div>
       {EditSubChapter.video ? (
         <div>
-          <p className="text-green-600 mb-2">✓ Video sudah diupload</p>
+          <p className="text-green-600 font-medium mb-3">
+            ✓ Video sudah diupload
+          </p>
           <Button
             variant="outline"
             onClick={() => document.getElementById('video-upload')?.click()}
+            className="rounded-3xl"
           >
             Ganti Video
           </Button>
         </div>
       ) : (
         <div>
-          <p className="text-gray-500 mb-4">Upload file MP4</p>
+          <p className="text-sm text-gray-500 mb-3">Upload file MP4</p>
           <Button
             onClick={() => document.getElementById('video-upload')?.click()}
+            className="rounded-3xl"
           >
             Pilih Video
           </Button>
@@ -701,28 +713,33 @@ const DocumentSelector = ({
     return (
       <div
         key={selectedDoc?.id}
-        className="p-3 border rounded-3xl cursor-pointer hover:bg-gray-50"
+        className="p-3 border border-gray-200 rounded-3xl cursor-pointer hover:bg-gray-50 bg-green-50 border-green-100"
       >
         <div className="flex items-center gap-3">
-          <FileText className="h-5 w-5 text-gray-400" />
-          <span>{selectedDoc?.title}</span>
+          <div className="w-8 h-8 rounded-3xl bg-green-100 flex items-center justify-center shrink-0">
+            <FileText className="h-4 w-4 text-green-600" />
+          </div>
+          <span className="text-sm font-medium text-gray-800">
+            {selectedDoc?.title}
+          </span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <Input
         placeholder="Cari dokumen..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        className="rounded-3xl border-gray-200"
       />
-      <div className="max-h-64 overflow-y-auto space-y-2">
+      <div className="max-h-64 overflow-y-auto space-y-1.5">
         {documents?.map((doc) => (
           <div
             key={doc.id}
-            className="p-3 border rounded-3xl cursor-pointer hover:bg-gray-50"
+            className="p-3 border border-gray-100 rounded-3xl cursor-pointer hover:bg-blue-50 hover:border-blue-200 transition-colors"
             onClick={() => {
               setSubChapter((prev) =>
                 prev.map((sChapter, sIndex) => {
@@ -739,8 +756,10 @@ const DocumentSelector = ({
             }}
           >
             <div className="flex items-center gap-3">
-              <FileText className="h-5 w-5 text-gray-400" />
-              <span>{doc.title}</span>
+              <div className="w-7 h-7 rounded-3xl bg-gray-100 flex items-center justify-center shrink-0">
+                <FileText className="h-4 w-4 text-gray-500" />
+              </div>
+              <span className="text-sm text-gray-700">{doc.title}</span>
             </div>
           </div>
         ))}

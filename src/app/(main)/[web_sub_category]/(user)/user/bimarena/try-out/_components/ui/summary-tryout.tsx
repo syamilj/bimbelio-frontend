@@ -2,7 +2,6 @@
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { BimArena } from '@/components/ui/bim-brand';
 import {
   Card,
   CardContent,
@@ -603,7 +602,7 @@ function TryoutProgressChart({
                       };
                       return p?.name || '';
                     }}
-                    formatter={(value, name) => {
+                    formatter={(value, name, item) => {
                       if (name === 'score') {
                         return (
                           <>
@@ -619,8 +618,7 @@ function TryoutProgressChart({
                         );
                       }
                       if (name === 'benar') {
-                        const p = (arguments[2] as { payload: ProgressItem })
-                          ?.payload;
+                        const p = (item as { payload: ProgressItem })?.payload;
                         return (
                           <>
                             <div className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-emerald-500" />
@@ -917,153 +915,6 @@ const SummaryTryout = () => {
 
   return (
     <div className="space-y-4 max-w-7xl mx-auto">
-      {/* Hero Card — Clean White */}
-      <div className="relative overflow-hidden rounded-3xl bg-white border border-slate-200 shadow-sm">
-        {/* Top accent bar */}
-        <div
-          className="absolute top-0 left-0 right-0 h-1"
-          style={{
-            background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
-          }}
-        />
-
-        <div className="relative z-10 p-5 md:p-6 pt-4">
-          {/* Top row: Badge + websub name */}
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <div
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border"
-                style={{
-                  backgroundColor: `${mainColor}10`,
-                  borderColor: `${mainColor}30`,
-                }}
-              >
-                <span className="relative flex h-2 w-2">
-                  <span
-                    className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
-                    style={{ backgroundColor: mainColor }}
-                  />
-                  <span
-                    className="relative inline-flex rounded-full h-2 w-2"
-                    style={{ backgroundColor: mainColor }}
-                  />
-                </span>
-                <span
-                  className="text-[10px] md:text-xs font-bold"
-                  style={{ color: mainColor }}
-                >
-                  BimArena
-                </span>
-              </div>
-              {websiteSubCategory?.name && (
-                <div
-                  className="flex items-center gap-1 px-2.5 py-1 rounded-full border"
-                  style={{
-                    backgroundColor: `${mainColor}08`,
-                    borderColor: `${mainColor}20`,
-                  }}
-                >
-                  <span className="text-[10px] md:text-xs font-bold text-slate-600">
-                    {websiteSubCategory.name}
-                  </span>
-                </div>
-              )}
-            </div>
-            {isSNBT && (
-              <div
-                className="px-2 py-0.5 rounded-full border"
-                style={{
-                  backgroundColor: `${mainColor}10`,
-                  borderColor: `${mainColor}25`,
-                }}
-              >
-                <span
-                  className="text-[9px] font-black tracking-wider"
-                  style={{ color: mainColor }}
-                >
-                  SNBT MODE
-                </span>
-              </div>
-            )}
-          </div>
-
-          {/* Title */}
-          <h1 className="text-xl md:text-2xl font-black text-slate-800 leading-tight mb-1">
-            <BimArena style={{ fontWeight: 'extra-bold' }} /> - Try Out
-          </h1>
-          <p className="text-xs md:text-sm text-slate-400 font-medium mb-4">
-            Simulasi ujian realistis untuk persiapan maksimal
-          </p>
-
-          {/* Stats Row */}
-          {!isLoading && summary ? (
-            <div className="grid grid-cols-3 gap-2">
-              <div
-                className="rounded-3xl border p-3 text-center"
-                style={{
-                  backgroundColor: `${mainColor}08`,
-                  borderColor: `${mainColor}15`,
-                }}
-              >
-                <p className="text-xl md:text-2xl font-black text-slate-800 leading-none">
-                  {summary.TryoutResult || 0}
-                </p>
-                <p className="text-[9px] md:text-[10px] font-bold uppercase mt-1 tracking-wide text-slate-400">
-                  TO Selesai
-                </p>
-              </div>
-              <div
-                className="rounded-3xl border p-3 text-center"
-                style={{
-                  backgroundColor: `${mainColor}08`,
-                  borderColor: `${mainColor}15`,
-                }}
-              >
-                <p className="text-xl md:text-2xl font-black text-slate-800 leading-none">
-                  {summary.LastRanking ? `#${summary.LastRanking}` : '-'}
-                </p>
-                <p className="text-[9px] md:text-[10px] font-bold uppercase mt-1 tracking-wide text-slate-400">
-                  Peringkat
-                </p>
-              </div>
-              <div
-                className="rounded-3xl border p-3 text-center"
-                style={{
-                  backgroundColor: `${mainColor}08`,
-                  borderColor: `${mainColor}15`,
-                }}
-              >
-                <p className="text-xl md:text-2xl font-black text-slate-800 leading-none">
-                  {adjustedProgressStats?.avg ??
-                    (() => {
-                      const raw =
-                        summary.TotalTryout > 0
-                          ? Math.round(
-                              summary.AverageScore / summary.TotalTryout,
-                            )
-                          : 0;
-                      const sc = summary.AverageSubtestCount || 1;
-                      return isSNBT && sc > 1 ? Math.round(raw / sc) : raw;
-                    })()}
-                </p>
-                <p className="text-[9px] md:text-[10px] font-bold uppercase mt-1 tracking-wide text-slate-400">
-                  {isSNBT ? 'Avg/Subtes' : 'Rata-rata'}
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-3 gap-2">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <Skeleton
-                  key={i}
-                  className="h-[68px] rounded-3xl bg-slate-100"
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
       {/* Quick Stats Cards - BimBoard style */}
       <TryoutQuickStats
         summary={summary}

@@ -76,13 +76,15 @@ export default function LeftComponent() {
         )}
       </div>
 
-      {!isLocked && !isNotYet && !isUpcoming &&
+      {!isLocked &&
+        !isNotYet &&
+        !isUpcoming &&
         CourseData?.type !== 'TRYOUT' &&
         CourseData?.type !== 'PROGRESS_TEST' && (
-        <div className="absolute bottom-5 left-1/2 z-100 hidden -translate-x-1/2 items-center justify-center md:flex">
-          <NavigationButtons />
-        </div>
-      )}
+          <div className="absolute bottom-5 left-1/2 z-100 hidden -translate-x-1/2 items-center justify-center md:flex">
+            <NavigationButtons />
+          </div>
+        )}
     </ResizablePanel>
   );
 }

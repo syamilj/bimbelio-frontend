@@ -1,6 +1,6 @@
 'use client';
 
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinner';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
@@ -184,6 +184,7 @@ const ModalDeleteBlog = ({ onClick, open, setOpen, isLoading }: Props) => {
       onOpenChange={setOpen}
     >
       <DialogContent className="w-[360px]">
+        <DialogTitle className="sr-only">Hapus Blog</DialogTitle>
         <div className="flex flex-col items-center justify-center text-center">
           <p>
             Apakah Kamu yakin akan <br />{' '}

@@ -1,23 +1,42 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Switch } from '@/components/ui/switch';
+import {
+  Table as ShadTable,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
+import axiosInstance from '@/lib/axios/axiosInstance';
 import { deleteGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { IconTailedArrowNext, IconTailedArrowPrev } from '@/styles/icon';
 import { storage } from '@/supabaseClient';
-import { Category, Document, Subcategory, Video } from '@/types/database';
-import { Download, Link } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  ExternalLink,
+  FileX,
+  Pencil,
+  Trash2,
+  Video as VideoIcon,
+} from 'lucide-react';
 import { useState } from 'react';
 import { useProvider } from '../provider';
-import HapusDokumen from './action/hapus-dokumen';
-
-type DataType = (Document & {
-  category: Category;
-  subCategory: Subcategory;
-  video: Video | null;
-  _count: {
-    userDocuments: number;
-  };
-})[];
 
 export default function Table() {
   const {
@@ -37,37 +56,46 @@ export default function Table() {
     sharingWebSubIds,
   } = useWebsiteSubCategory();
 
-  const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
-
-  const fileDownload = async (fileName: string) => {
-    try {
-      const { data } = await storage
-        .from('pdf')
-        .download(`document/${fileName}`);
-
-      // if (data) {
-      //   const blob = new Blob([data], { type: 'application/pdf' });
-      //   const url = window.URL.createObjectURL(blob);
-      //   const a = document.createElement('a');
-      //   a.href = url;
-      //   a.download = fileName;
-      //   a.click();
-      //   window.URL.revokeObjectURL(url);
-      // }
-    } catch (error) {
-      error;
-    }
-  };
-  const [loading, setLoading] = useState<boolean>(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [deleteData, setDeleteData] = useState({
     id: '',
     title: '',
     videoTitle: '',
   });
+  const [togglingIds, setTogglingIds] = useState<Set<string>>(new Set());
 
-  const deleteDocument = async () => {
+  const handleTogglePremium = async (item: (typeof documentData)[number]) => {
+    if (togglingIds.has(item.id)) return;
+    setTogglingIds((prev) => new Set(prev).add(item.id));
+    try {
+      await axiosInstance.patch('/document/togglePremium', {
+        id: item.id,
+        premium: !item.premium,
+      });
+      await fetchDocument();
+    } catch {
+      toaster({ title: 'Gagal mengubah status', condition: 'warning' });
+    } finally {
+      setTogglingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(item.id);
+        return next;
+      });
+    }
+  };
+
+  const fileDownload = async (fileName: string) => {
+    try {
+      await storage.from('pdf').download(`document/${fileName}`);
+    } catch {
+      /* silent */
+    }
+  };
+
+  const removeDocument = async () => {
     await deleteGeneral(`/document/deleteDocument?id=${deleteData.id}`, {
-      setLoading: setLoading,
+      setLoading,
       async onSuccess() {
         fetchDocument();
         setDeleteData({ id: '', title: '', videoTitle: '' });
@@ -82,313 +110,350 @@ export default function Table() {
     });
   };
 
-  const removeDocument = async () => {
-    try {
-      setDeleteConfirmation(false);
-      setLoading(true);
-      await deleteDocument();
-      setLoading(false);
-      return;
-    } catch (error) {
-      setLoading(false);
-      return;
-    }
-  };
+  if (errorMessage) return null;
 
-  const handlePagination = (parameter: string) => {
-    if (parameter === 'next') {
-      if (page < totalPages) setPage((prev) => prev + 1);
-    } else if (parameter === 'prev') {
-      if (page > 1) setPage((prev) => prev - 1);
-    }
-  };
-
-  if (errorMessage) return <div className=""></div>;
+  const SKELETON_ROWS = 8;
 
   return (
     <>
-      <div className="w-full">
-        <table className="w-full rounded-3xl shadow-sm">
-          <thead>
-            <tr className="border-b border-main-gray-input">
-              <th className="rounded-tl-[.7rem] bg-white p-[.7rem] text-center font-semibold">
+      {/* Loading ghost from hapus-dokumen is handled inline since we inlined it */}
+      {loading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-main border-t-transparent" />
+        </div>
+      )}
+
+      {/* Table */}
+      <div className="w-full overflow-x-auto rounded-3xl border border-gray-100">
+        <ShadTable>
+          <TableHeader>
+            <TableRow className="bg-gray-50 hover:bg-gray-50">
+              <TableHead className="w-12 text-center font-bold text-gray-600 text-xs">
                 No.
-              </th>
-              <th className="bg-white p-[.7rem] text-start font-semibold">
+              </TableHead>
+              <TableHead className="font-bold text-gray-600 text-xs">
                 Judul
-              </th>
-              <th className="bg-white p-[.7rem] text-start font-semibold">
-                ID
-              </th>
-              <th className="bg-white p-[.7rem] text-center font-semibold">
-                Dipilih User
-              </th>
+              </TableHead>
+              <TableHead className="text-center font-bold text-gray-600 text-xs">
+                Video
+              </TableHead>
+              <TableHead className="text-center font-bold text-gray-600 text-xs">
+                Dipilih
+              </TableHead>
               {isCore && (
-                <th className="bg-white p-[.7rem] text-center font-semibold">
+                <TableHead className="text-center font-bold text-gray-600 text-xs">
                   Visible At
-                </th>
+                </TableHead>
               )}
-              <th className="bg-white p-[.7rem] text-center font-semibold">
-                Premium
-              </th>
-              <th className="bg-white p-[.7rem] text-center font-semibold">
-                Category
-              </th>
-              <th className="bg-white p-[.7rem] text-center font-semibold">
-                Subcategory
-              </th>
-              <th className="rounded-tr-[.7rem] bg-white p-[.7rem] text-center font-semibold">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {documentData &&
-              !isLoading &&
-              documentData.map((item, index) => (
-                <tr
-                  key={index}
-                  className={`border-b border-main-gray-input ${
-                    index === documentData.length - 1 && 'border-none'
-                  }`}
-                >
-                  <td
-                    className={`bg-white p-[.5rem] text-center ${
-                      index === documentData.length - 1 && 'rounded-bl-[.7rem]'
-                    }`}
-                  >
-                    {page * 10 + (index + 1) - 10}
-                  </td>
-                  <td className="bg-white p-[.5rem]">
-                    <div className="flex items-center justify-between">
-                      <p>{item.title}</p>
-                    </div>
-                  </td>
-                  <td className="bg-white p-[.5rem]">
-                    <div className="flex items-center justify-center">
-                      <button
-                        className="rounded-3xl bg-main-gray-input px-[.5rem] py-[.2rem] duration-300 md:hover:bg-main-gray-input2 md:active:bg-main-gray-input"
-                        onClick={() => {
-                          navigator.clipboard.writeText(`${item.id}`);
-                          toaster({
-                            title: 'Success',
-                            description: `ID Document Berhasil Disalin \n (${item.id})`,
-                            duration: 3000,
-                          });
-                        }}
-                      >
-                        Copy ID
-                      </button>
-                    </div>
-                  </td>
+              <TableHead className="text-center font-bold text-gray-600 text-xs">
+                Status
+              </TableHead>
+              <TableHead className="text-center font-bold text-gray-600 text-xs">
+                Kategori
+              </TableHead>
+              <TableHead className="text-center font-bold text-gray-600 text-xs">
+                Sub Kategori
+              </TableHead>
+              <TableHead className="text-center font-bold text-gray-600 text-xs">
+                Aksi
+              </TableHead>
+            </TableRow>
+          </TableHeader>
 
-                  <td className="bg-white p-[.5rem] text-center">
-                    {item._count.userDocuments}
-                  </td>
-                  {isCore && (
-                    <td className="bg-white p-[.5rem] text-center">
-                      {item.visibleAtWebSubIds.length > 0
-                        ? item.visibleAtWebSubIds.join(', ')
-                        : sharingWebSubIds.join(',')}
-                    </td>
-                  )}
-                  <td className="bg-white p-[.5rem]">
-                    <div className="flex w-full items-center justify-center">
-                      {item.premium ? (
-                        <div className="flex w-[100px] items-center justify-center rounded-3xl bg-main py-[.2rem] text-white">
-                          Premium
-                        </div>
-                      ) : (
-                        <div className="flex w-[100px] items-center justify-center rounded-3xl bg-main py-[.2rem] text-white">
-                          Free
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  <td className="bg-white p-[.5rem]">
-                    <div className="flex w-full items-center justify-center">
-                      <div className="flex w-[76px] items-center justify-center rounded-3xl bg-main py-[.2rem] text-white">
-                        {item.category.name}
-                      </div>
-                    </div>
-                  </td>
-                  <td className="bg-white p-[.5rem]">
-                    <div className="flex w-full items-center justify-center">
-                      <div className="flex w-[76px] items-center justify-center rounded-3xl bg-bg-workspace py-[.2rem] font-medium text-black">
-                        {item.subCategory.name}
-                      </div>
-                    </div>
-                  </td>
-                  <td
-                    className={`bg-white p-[.5rem] ${
-                      index === documentData.length - 1 && 'rounded-br-[.7rem]'
-                    }`}
-                  >
-                    <div className="flex items-center justify-center gap-[.5rem]">
-                      <div className="flex items-center justify-center gap-[.5rem]">
-                        <div className="flex items-center justify-center border border-black p-[.5rem] text-[1.2rem]">
-                          <a
-                            href={`${env.NEXT_PUBLIC_SUPABASE_PDF_URL}/document/${item.url}`}
-                            target="_blank"
-                            className="flex items-center justify-center"
-                          >
-                            <Link className="w-4 h-4" />
-                          </a>
-                        </div>
-                        <div className="flex cursor-pointer items-center justify-center border border-black p-[.5rem] text-[1.2rem]">
-                          <Download
-                            className="w-4 h-4"
-                            onClick={() => fileDownload(item.title)}
-                          />
-                        </div>
-                      </div>
-                      <HapusDokumen
-                        id={item.id}
-                        title={item.title}
-                        videoTitle={item.video?.title || ''}
-                        setDeleteConfirmation={setDeleteConfirmation}
-                        setDeleteData={setDeleteData}
-                        loading={loading}
-                      />
-
-                      <button
-                        className="cursor-pointer border border-black px-4 py-[.3rem]"
-                        onClick={() => {
-                          setEditData({ ...item });
-                        }}
-                      >
-                        Edit Document
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+          <TableBody>
+            {/* Loading skeleton */}
             {isLoading &&
-              Array.from({ length: 10 }).map((_, index) => (
-                <tr
-                  key={index}
-                  id="loading"
-                  className={`select-none border-b border-main-gray-input ${
-                    index === documentData.length - 1 && 'border-none'
-                  }`}
+              Array.from({ length: SKELETON_ROWS }).map((_, i) => (
+                <TableRow
+                  key={`skel-${i}`}
+                  className="animate-pulse"
                 >
-                  <td
-                    className={`bg-transparent p-[.5rem] text-center ${
-                      index === documentData.length - 1 && 'rounded-bl-[.7rem]'
-                    }`}
-                  >
-                    1
-                  </td>
-                  <td className="bg-transparent p-[.5rem]">
-                    <div className="flex items-center justify-between">
-                      <p>UUD 1945: Pembukaan dan Batang Tubuh (Lanjutan)</p>
+                  <TableCell className="text-center">
+                    <Skeleton className="h-4 w-6 mx-auto rounded" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-40 rounded" />
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Skeleton className="h-6 w-14 mx-auto rounded-full" />
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Skeleton className="h-4 w-8 mx-auto rounded" />
+                  </TableCell>
+                  {isCore && (
+                    <TableCell>
+                      <Skeleton className="h-4 w-16 mx-auto rounded" />
+                    </TableCell>
+                  )}
+                  <TableCell className="text-center">
+                    <Skeleton className="h-6 w-16 mx-auto rounded-full" />
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Skeleton className="h-6 w-20 mx-auto rounded-full" />
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Skeleton className="h-6 w-20 mx-auto rounded-full" />
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex justify-center gap-1">
+                      <Skeleton className="h-8 w-8 rounded-3xl" />
+                      <Skeleton className="h-8 w-8 rounded-3xl" />
+                      <Skeleton className="h-8 w-8 rounded-3xl" />
+                      <Skeleton className="h-8 w-8 rounded-3xl" />
                     </div>
-                  </td>
-                  <td className="bg-transparent p-[.5rem]">1000</td>
-                  <td className="bg-transparent p-[.5rem]">
-                    <div className="w-fit rounded-3xl bg-transparent px-[.7rem] py-[.2rem] text-transparent">
-                      awdawd
-                    </div>
-                  </td>
-                  <td className="bg-transparent p-[.5rem]">
-                    <div className="w-fit rounded-3xl bg-transparent px-[.7rem] py-[.2rem] text-transparent">
-                      awdawd
-                    </div>
-                  </td>
-                  <td className="bg-transparent p-[.5rem]">
-                    <div className="w-fit rounded-3xl bg-transparent px-[.7rem] py-[.2rem] font-medium text-transparent">
-                      awdwadaw
-                    </div>
-                  </td>
-                  <td
-                    className={`bg-transparent p-[.5rem] ${
-                      index === documentData.length - 1 && 'rounded-br-[.7rem]'
-                    }`}
-                  >
-                    <div className="flex items-center justify-center gap-[.5rem]">
-                      <div className="flex items-center justify-center gap-[.5rem]">
-                        <div className="flex items-center justify-center border border-transparent p-[.5rem] text-[1.2rem]">
-                          <a
-                            href={``}
-                            target="_blank"
-                            className="flex items-center justify-center"
-                          >
-                            <i className="bx bx-link-external"></i>
-                          </a>
-                        </div>
-                        <div className="flex cursor-pointer items-center justify-center border border-transparent p-[.5rem] text-[1.2rem]">
-                          <i className="bx bx-download"></i>
-                        </div>
-                      </div>
-                      <button className="cursor-default border border-transparent px-4 py-[.3rem]">
-                        Hapus
-                      </button>
-
-                      <button className="cursor-default border border-transparent px-4 py-[.3rem]">
-                        Edit Document
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-          </tbody>
-        </table>
+
+            {/* Empty state */}
+            {!isLoading && documentData.length === 0 && (
+              <TableRow>
+                <TableCell
+                  colSpan={isCore ? 9 : 8}
+                  className="h-48 text-center"
+                >
+                  <div className="flex flex-col items-center justify-center gap-3 py-8">
+                    <FileX className="w-12 h-12 text-gray-300" />
+                    <p className="text-sm font-semibold text-gray-500">
+                      Tidak ada dokumen
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      Belum ada dokumen yang ditambahkan
+                    </p>
+                  </div>
+                </TableCell>
+              </TableRow>
+            )}
+
+            {/* Data rows */}
+            {!isLoading &&
+              documentData.map((item, index) => (
+                <TableRow
+                  key={item.id}
+                  className="hover:bg-gray-50/80 transition-colors"
+                >
+                  <TableCell className="text-center text-sm text-gray-500 font-medium">
+                    {(page - 1) * 10 + (index + 1)}
+                  </TableCell>
+
+                  <TableCell className="max-w-[220px]">
+                    <p
+                      className="font-semibold text-gray-800 text-sm leading-tight truncate"
+                      title={item.title}
+                    >
+                      {item.title}
+                    </p>
+                  </TableCell>
+
+                  <TableCell className="text-center">
+                    {item.video ? (
+                      <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-600 border border-blue-100 px-2 py-0.5 rounded-full text-xs font-medium">
+                        <VideoIcon className="w-3 h-3" />
+                        Video
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center bg-red-50 text-red-400 border border-red-100 px-2 py-0.5 rounded-full text-xs font-medium">
+                        Tdk Ada
+                      </span>
+                    )}
+                  </TableCell>
+
+                  <TableCell className="text-center">
+                    <span className="text-sm font-semibold text-gray-700">
+                      {item._count.userDocuments}
+                    </span>
+                  </TableCell>
+
+                  {isCore && (
+                    <TableCell className="text-center">
+                      <span className="text-xs text-gray-500">
+                        {item.visibleAtWebSubIds.length > 0
+                          ? item.visibleAtWebSubIds.join(', ')
+                          : sharingWebSubIds.join(',')}
+                      </span>
+                    </TableCell>
+                  )}
+
+                  <TableCell className="text-center">
+                    <div className="flex flex-col items-center gap-1">
+                      <Switch
+                        checked={!!item.premium}
+                        disabled={togglingIds.has(item.id)}
+                        onCheckedChange={() => handleTogglePremium(item)}
+                        className="data-[state=checked]:bg-amber-400"
+                      />
+                      <span
+                        className={`text-[10px] font-semibold ${item.premium ? 'text-amber-600' : 'text-emerald-600'}`}
+                      >
+                        {togglingIds.has(item.id)
+                          ? '...'
+                          : item.premium
+                            ? 'Premium'
+                            : 'Free'}
+                      </span>
+                    </div>
+                  </TableCell>
+
+                  <TableCell className="text-center">
+                    <Badge className="bg-indigo-50 text-indigo-700 border-indigo-200 border hover:bg-indigo-50 text-xs font-medium rounded-full">
+                      {item.category.name}
+                    </Badge>
+                  </TableCell>
+
+                  <TableCell className="text-center">
+                    <Badge className="bg-violet-50 text-violet-700 border-violet-200 border hover:bg-violet-50 text-xs font-medium rounded-full">
+                      {item.subCategory.name}
+                    </Badge>
+                  </TableCell>
+
+                  <TableCell>
+                    <div className="flex items-center justify-center gap-1">
+                      {/* Preview */}
+                      <a
+                        href={`${env.NEXT_PUBLIC_SUPABASE_PDF_URL}/document/${item.url}`}
+                        target="_blank"
+                        title="Lihat dokumen"
+                        className="flex items-center justify-center w-8 h-8 rounded-3xl text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+
+                      {/* Download */}
+                      <button
+                        title="Unduh dokumen"
+                        className="flex items-center justify-center w-8 h-8 rounded-3xl text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+                        onClick={() => fileDownload(item.title)}
+                      >
+                        <Download className="w-4 h-4" />
+                      </button>
+
+                      {/* Edit */}
+                      <button
+                        title="Edit dokumen"
+                        className="flex items-center justify-center w-8 h-8 rounded-3xl text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
+                        onClick={() => setEditData({ ...item })}
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </button>
+
+                      {/* Delete */}
+                      <button
+                        title="Hapus dokumen"
+                        className="flex items-center justify-center w-8 h-8 rounded-3xl text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                        onClick={() => {
+                          setDeleteData({
+                            id: item.id,
+                            title: item.title,
+                            videoTitle: item.video?.title || '',
+                          });
+                          setDeleteOpen(true);
+                        }}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </ShadTable>
       </div>
 
-      <div
-        id="pagination"
-        className="flex w-full items-center justify-between"
-      >
-        <div className="flex items-center gap-4">
-          {/* <p>Show</p>
-          <div className="bg-white rounded-3xl px-4 py-[.5rem] text-main-gray-text flex items-center gap-[.5rem]">
-            10
-            <i className="bx bx-chevron-down text-[1.5rem]" />
-          </div> */}
-        </div>
-        <div className="flex items-center gap-4">
-          <div onClick={() => handlePagination('prev')}>
-            <IconTailedArrowPrev
-              className="cursor-pointer duration-300 md:hover:-translate-x-1"
-              w={15}
-            />
-          </div>
-          <div className="flex gap-[.5rem]">
-            <p className="select-none">{page}</p>
-          </div>
-          <div onClick={() => handlePagination('next')}>
-            <IconTailedArrowNext
-              className="cursor-pointer duration-300 md:hover:translate-x-1"
-              w={15}
-            />
-          </div>
-        </div>
-      </div>
-
-      {deleteConfirmation && (
-        <div className="fixed left-0 top-0 z-100 flex h-full w-full items-center justify-center bg-[#ffffff7a]">
-          <div className="flex flex-col gap-4 rounded-3xl bg-white p-4 shadow-lg">
-            <p className="text-center">
-              Apakah kamu yakin ingin menghapus dokumen <br /> &quot;
-              {deleteData.title}&quot; ?
-            </p>
-            <div className="flex w-full justify-center gap-[.5rem]">
-              <button
-                className="rounded-3xl bg-blue-600 px-4 py-[.2rem] text-white hover:bg-blue-500"
-                onClick={() => setDeleteConfirmation(false)}
-              >
-                No
-              </button>
-              <button
-                className="rounded-3xl bg-red-600 px-4 py-[.2rem] text-white hover:bg-red-500"
-                onClick={() => removeDocument()}
-              >
-                Yes
-              </button>
-            </div>
+      {/* Pagination */}
+      {!isLoading && documentData.length > 0 && (
+        <div className="flex items-center justify-between pt-2">
+          <p className="text-xs text-gray-500">
+            Halaman <span className="font-semibold text-gray-700">{page}</span>{' '}
+            dari{' '}
+            <span className="font-semibold text-gray-700">
+              {totalPages || 1}
+            </span>
+          </p>
+          <div className="flex items-center gap-1">
+            <button
+              disabled={page <= 1}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              className="flex items-center justify-center w-8 h-8 rounded-3xl border border-gray-200 text-gray-500 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            {/* Page number pills */}
+            {Array.from({ length: totalPages || 1 }, (_, i) => i + 1)
+              .filter(
+                (p) => p === 1 || p === totalPages || Math.abs(p - page) <= 1,
+              )
+              .reduce<(number | '...')[]>((acc, p, i, arr) => {
+                if (i > 0 && p - (arr[i - 1] as number) > 1) acc.push('...');
+                acc.push(p);
+                return acc;
+              }, [])
+              .map((p, i) =>
+                p === '...' ? (
+                  <span
+                    key={`ellipsis-${i}`}
+                    className="w-8 text-center text-xs text-gray-400"
+                  >
+                    …
+                  </span>
+                ) : (
+                  <button
+                    key={p}
+                    onClick={() => setPage(p as number)}
+                    className={`w-8 h-8 rounded-3xl text-xs font-semibold transition-colors ${
+                      page === p
+                        ? 'bg-main text-white shadow-sm'
+                        : 'border border-gray-200 text-gray-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    {p}
+                  </button>
+                ),
+              )}
+            <button
+              disabled={page >= (totalPages || 1)}
+              onClick={() => setPage((p) => p + 1)}
+              className="flex items-center justify-center w-8 h-8 rounded-3xl border border-gray-200 text-gray-500 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       )}
+
+      {/* Delete confirmation dialog */}
+      <AlertDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+      >
+        <AlertDialogContent className="rounded-3xl max-w-md">
+          <AlertDialogHeader>
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 mx-auto mb-2">
+              <Trash2 className="w-6 h-6 text-red-600" />
+            </div>
+            <AlertDialogTitle className="text-center">
+              Hapus Dokumen?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-center">
+              Dokumen{' '}
+              <span className="font-semibold text-gray-800">
+                &quot;{deleteData.title}&quot;
+              </span>{' '}
+              akan dihapus permanen dan tidak bisa dikembalikan.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex-row gap-2 justify-center">
+            <AlertDialogCancel className="flex-1 rounded-3xl">
+              Batal
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="flex-1 rounded-3xl bg-red-600 hover:bg-red-700 text-white"
+              onClick={() => removeDocument()}
+            >
+              Ya, Hapus
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

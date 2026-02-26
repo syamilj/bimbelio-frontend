@@ -15,14 +15,8 @@ export function preprocessLatexInValue(value: string): string {
   let processed = value;
 
   // Step 1: Convert \[...\] → $$...$$ and \(...\) → $...$
-  processed = processed.replace(
-    /\\\[([\s\S]*?)\\\]/g,
-    (_, c) => `$$${c}$$`,
-  );
-  processed = processed.replace(
-    /\\\(([\s\S]*?)\\\)/g,
-    (_, c) => `$${c}$`,
-  );
+  processed = processed.replace(/\\\[([\s\S]*?)\\\]/g, (_, c) => `$$${c}$$`);
+  processed = processed.replace(/\\\(([\s\S]*?)\\\)/g, (_, c) => `$${c}$`);
 
   // Step 2: Find $$...$$ blocks and consolidate into single-line LaTeX.
   // When $$...$$ spans across <p>, <br>, or newlines, HTML breaks get
@@ -41,10 +35,13 @@ export function preprocessLatexInValue(value: string): string {
       // paragraphs in deep nesting: </p></div></div></div><div...><p...>
       // So </p>\s*<p> would NOT match BlockNote's internal HTML structure.
       let cleaned = content
-        .replace(/<\/p>/gi, '\n')            // every closing </p> = line break
-        .replace(/<br\s*\/?>/gi, '\n')       // <br> = line break
-        .replace(/<\/?(div|span|section|article|main|header|td|tr|th|table)[^>]*>/gi, '\n') // block-level tags = line break
-        .replace(/<\/?[a-z][^>]*>/gi, '')     // strip remaining inline tags
+        .replace(/<\/p>/gi, '\n') // every closing </p> = line break
+        .replace(/<br\s*\/?>/gi, '\n') // <br> = line break
+        .replace(
+          /<\/?(div|span|section|article|main|header|td|tr|th|table)[^>]*>/gi,
+          '\n',
+        ) // block-level tags = line break
+        .replace(/<\/?[a-z][^>]*>/gi, '') // strip remaining inline tags
         .trim();
 
       // Split into non-empty lines
@@ -625,10 +622,7 @@ export const processAllLatex = (editor: BlocknoteEditorType) => {
             const { items, hasLatex } = processLatexInText(mergedText, {});
             if (hasLatex) {
               try {
-                editor.updateBlock(
-                  { id: block.id },
-                  { content: items } as any,
-                );
+                editor.updateBlock({ id: block.id }, { content: items } as any);
                 const blockIdsToRemove: string[] = [];
                 for (let k = i + 1; k <= j; k++) {
                   blockIdsToRemove.push(blocks[k].id);
@@ -675,8 +669,7 @@ export const processAllLatex = (editor: BlocknoteEditorType) => {
 /**
  * Check if a text string has a complete $...$ or $$...$$ formula ready to convert.
  */
-const COMPLETE_FORMULA_REGEX =
-  /\$\$([\s\S]+?)\$\$|\$([^\$\n]+?)\$/;
+const COMPLETE_FORMULA_REGEX = /\$\$([\s\S]+?)\$\$|\$([^\$\n]+?)\$/;
 
 export const handleKeyDown = (
   e: KeyboardEvent,

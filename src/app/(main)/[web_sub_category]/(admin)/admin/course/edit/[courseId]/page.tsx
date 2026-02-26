@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MultiSelectVisibleAt } from '@/components/ui/multi-select-visibleAt';
 import LoadingPageWithText, { Spinner } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
@@ -436,17 +435,6 @@ const Index = () => {
     return <Spinner />;
   }
 
-  // Calculate progress
-  const getProgress = () => {
-    let progress = 0;
-    if (chapter?.title && chapter?.categoryId) progress += 25;
-    if (chapter?.number && chapter?.status) progress += 25;
-    if (subChapter.length > 0) progress += 25;
-    if (subChapter.some((sc) => sc.title && sc.spendTime && sc.type))
-      progress += 25;
-    return progress;
-  };
-
   const canSave = () => {
     return (
       chapter?.title &&
@@ -458,8 +446,6 @@ const Index = () => {
     );
   };
 
-  console.log({ subChapter });
-
   return (
     <>
       <LoadingPageWithText
@@ -467,110 +453,85 @@ const Index = () => {
         heading="Menyimpan perubahan..."
       />
 
-      <div className="bg-gray-50">
-        {/* Enhanced Header */}
-        <div className="bg-white border-b sticky top-0 z-40">
-          <div className="max-w-6xl mx-auto px-4 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => router.back()}
-                >
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Kembali
-                </Button>
-                <div>
-                  <h1 className="text-xl font-bold">
-                    Edit: {chapter?.title || 'Loading...'}
-                  </h1>
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <div className="w-32 bg-gray-200 rounded-full h-1.5">
-                      <div
-                        className="bg-blue-500 h-1.5 rounded-full transition-all"
-                        style={{ width: `${getProgress()}%` }}
-                      />
-                    </div>
-                    <span>{getProgress()}% lengkap</span>
-                  </div>
-                </div>
-              </div>
+      {/* Top Header */}
+      <div className="bg-white border-b sticky top-0 z-40 px-6 py-3 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3 min-w-0">
+          <button
+            onClick={() => router.back()}
+            className="shrink-0 w-8 h-8 rounded-3xl hover:bg-gray-100 flex items-center justify-center text-gray-500 transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </button>
+          <div className="min-w-0">
+            <h1 className="text-base font-semibold text-gray-900 truncate">
+              Edit: {chapter?.title || 'Loading...'}
+            </h1>
+            <p className="text-xs text-gray-400">Edit kursus</p>
+          </div>
+        </div>
+        <Button
+          onClick={handleSubmit}
+          disabled={!canSave() || isLoading}
+          size="sm"
+          className="shrink-0 rounded-3xl gap-2"
+        >
+          <Save className="h-3.5 w-3.5" />
+          {isLoading ? 'Menyimpan...' : 'Simpan Perubahan'}
+        </Button>
+      </div>
 
-              <Button
-                onClick={handleSubmit}
-                disabled={!canSave() || isLoading}
-                className="gap-2"
-              >
-                <Save className="h-4 w-4" />
-                {isLoading ? 'Menyimpan...' : 'Simpan Perubahan'}
-              </Button>
-            </div>
+      {/* Two-panel layout */}
+      <div className="flex h-[calc(100vh-53px)] overflow-hidden">
+        {/* Left panel — config + sub-chapter list */}
+        <div className="w-80 shrink-0 border-r border-gray-100 bg-white flex flex-col overflow-hidden">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <MultiSelectVisibleAt
+              value={visibleAtWebSubIds}
+              onValuesChange={setVisibleAtWebSubIds}
+            />
+            <ChapterOption
+              chapter={chapter}
+              subChapter={subChapter}
+              setSubChapter={setSubChapter}
+              setChapter={setChapter}
+              currentIndexEdit={currentIndexEdit}
+              setCurrentIndexEdit={setCurrentIndexEdit}
+              setQuestionIndex={setQuestionIndex}
+              isLoading={isLoading}
+              category={category}
+            />
           </div>
         </div>
 
-        {/* Main Content - Simplified Layout */}
-        <div className="max-w-6xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left: Chapter Setup */}
-          <div className="lg:col-span-1">
-            <Card className="sticky top-24">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  {chapter?.title && chapter?.categoryId ? (
-                    <Check className="h-5 w-5 text-green-500" />
-                  ) : (
-                    <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
-                  )}
-                  Edit Kursus
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <MultiSelectVisibleAt
-                  value={visibleAtWebSubIds}
-                  onValuesChange={setVisibleAtWebSubIds}
-                />
-                <ChapterOption
-                  chapter={chapter}
-                  subChapter={subChapter}
-                  setSubChapter={setSubChapter}
-                  setChapter={setChapter}
-                  currentIndexEdit={currentIndexEdit}
-                  setCurrentIndexEdit={setCurrentIndexEdit}
-                  setQuestionIndex={setQuestionIndex}
-                  isLoading={isLoading}
-                  category={category}
-                />
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Right: Sub Chapter Editor */}
-          <div className="lg:col-span-2">
-            {currentIndexEdit !== null ? (
-              <SubChapterOption
-                EditSubChapter={EditSubChapter}
-                setSubChapter={setSubChapter}
-                currentIndexEdit={currentIndexEdit}
-                setCurrentIndexEdit={setCurrentIndexEdit}
-                showDetailSubChapter={showDetailSubChapter}
-                setShowDetailSubChapter={setShowDetailSubChapter}
-                assessmentType={assessmentType}
-                questionIndex={questionIndex}
-                setQuestionIndex={setQuestionIndex}
-              />
-            ) : (
-              <Card className="h-96 flex items-center justify-center">
-                <div className="text-center text-gray-500">
-                  <h3 className="text-lg font-medium mb-2">
-                    Pilih Sub Chapter
-                  </h3>
-                  <p className="text-sm">
-                    Pilih sub chapter dari daftar untuk mulai editing
-                  </p>
+        {/* Right panel — sub-chapter editor */}
+        <div className="flex-1 overflow-y-auto bg-gray-50 p-6">
+          {currentIndexEdit !== null ? (
+            <SubChapterOption
+              EditSubChapter={EditSubChapter}
+              setSubChapter={setSubChapter}
+              currentIndexEdit={currentIndexEdit}
+              setCurrentIndexEdit={setCurrentIndexEdit}
+              showDetailSubChapter={showDetailSubChapter}
+              setShowDetailSubChapter={setShowDetailSubChapter}
+              assessmentType={assessmentType}
+              questionIndex={questionIndex}
+              setQuestionIndex={setQuestionIndex}
+            />
+          ) : (
+            <div className="h-full flex items-center justify-center">
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-3xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
+                  <Check className="h-7 w-7 text-gray-300" />
                 </div>
-              </Card>
-            )}
-          </div>
+                <h3 className="text-base font-semibold text-gray-700 mb-1">
+                  Pilih Sub Chapter
+                </h3>
+                <p className="text-sm text-gray-400">
+                  Klik sub chapter di panel kiri untuk mulai edit
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

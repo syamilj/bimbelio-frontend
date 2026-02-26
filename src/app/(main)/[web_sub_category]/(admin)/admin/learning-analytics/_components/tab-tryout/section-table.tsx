@@ -168,7 +168,7 @@ export const SectionTable = ({
                       <TableCell>
                         <button
                           onClick={() => toggleExpanded(tryout.id)}
-                          className="inline-flex items-center justify-center p-1 rounded-md hover:bg-slate-200 transition-colors"
+                          className="inline-flex items-center justify-center p-1 rounded-3xl hover:bg-slate-200 transition-colors"
                         >
                           {expandedTryouts.has(tryout.id) ? (
                             <ChevronUp className="w-4 h-4" />
@@ -252,7 +252,7 @@ export const SectionTable = ({
                               tryout.TryoutSession.map((session, idx) => (
                                 <div
                                   key={idx}
-                                  className="border border-slate-200 rounded-lg p-4 bg-white"
+                                  className="border border-slate-200 rounded-3xl p-4 bg-white"
                                 >
                                   <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-3">
                                     <div>

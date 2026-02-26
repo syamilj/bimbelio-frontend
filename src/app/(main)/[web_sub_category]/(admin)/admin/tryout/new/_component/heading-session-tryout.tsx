@@ -452,11 +452,15 @@ const HeadingSessionTryout = ({
     <>
       <div
         id="heading"
-        className="flex shrink-0 flex-col gap-4 overflow-hidden"
+        className="flex shrink-0 flex-col gap-4 pb-2"
       >
-        <div className="flex items-center justify-between">
-          <div className="flex gap-[.5rem]">
-            <div className="relative w-full overflow-visible rounded-3xl border border-transparent bg-white duration-300 md:hover:shadow-default">
+        {/* Row 1: Category + SubCategory */}
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col gap-1.5">
+            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+              Kategori Tes
+            </p>
+            <div className="relative bg-white rounded-3xl border border-gray-200 hover:border-gray-300 transition-colors">
               <input
                 type="text"
                 value={
@@ -464,8 +468,9 @@ const HeadingSessionTryout = ({
                     ? `${EditSession.categoryId}-${EditSession.category}`
                     : ''
                 }
+                readOnly
                 required
-                className="absolute bottom-0 left-4 h-1 w-1 p-0 text-transparent outline-none"
+                className="absolute bottom-0 left-4 h-px w-px p-0 opacity-0 pointer-events-none"
               />
               <Select
                 value={
@@ -477,15 +482,15 @@ const HeadingSessionTryout = ({
                   value && onChangeCategory(value);
                 }}
               >
-                <SelectTrigger className="h-full w-full rounded-3xl border-none bg-white shadow-none outline-none">
-                  <SelectValue placeholder="Tes" />
+                <SelectTrigger className="h-9 w-full rounded-3xl border-none bg-transparent shadow-none outline-none text-sm px-3">
+                  <SelectValue placeholder="Pilih Tes" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem
                     value="placeholder"
                     disabled
                   >
-                    Tes
+                    Pilih Tes
                   </SelectItem>
                   {category?.map((item) => (
                     <SelectItem
@@ -498,8 +503,13 @@ const HeadingSessionTryout = ({
                 </SelectContent>
               </Select>
             </div>
-            {EditSession.categoryId && EditSession.categoryId?.length > 0 && (
-              <div className="relative w-full overflow-visible rounded-3xl border border-transparent bg-white duration-300 md:hover:shadow-default">
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+              Sub Tes / Subtest
+            </p>
+            {EditSession.categoryId && EditSession.categoryId.length > 0 ? (
+              <div className="relative bg-white rounded-3xl border border-gray-200 hover:border-gray-300 transition-colors">
                 <input
                   type="text"
                   value={
@@ -507,8 +517,9 @@ const HeadingSessionTryout = ({
                       ? `${EditSession.subCategoryId}-${EditSession.subCategory}`
                       : ''
                   }
+                  readOnly
                   required
-                  className="absolute bottom-0 left-4 h-1 w-1 p-0 text-transparent outline-none"
+                  className="absolute bottom-0 left-4 h-px w-px p-0 opacity-0 pointer-events-none"
                 />
                 <Select
                   value={
@@ -520,15 +531,15 @@ const HeadingSessionTryout = ({
                     value && onChangeSubCategory(value);
                   }}
                 >
-                  <SelectTrigger className="h-full w-full rounded-3xl border-none bg-white shadow-none outline-none">
-                    <SelectValue placeholder="Sub Tes" />
+                  <SelectTrigger className="h-9 w-full rounded-3xl border-none bg-transparent shadow-none outline-none text-sm px-3">
+                    <SelectValue placeholder="Pilih Sub Tes" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem
                       value="placeholder"
                       disabled
                     >
-                      Sub Tes
+                      Pilih Sub Tes
                     </SelectItem>
                     {category
                       ?.find((item) => item.id === EditSession.categoryId)
@@ -543,22 +554,39 @@ const HeadingSessionTryout = ({
                   </SelectContent>
                 </Select>
               </div>
+            ) : (
+              <div className="h-9 rounded-3xl border border-dashed border-gray-200 bg-gray-50 flex items-center px-3">
+                <span className="text-sm text-gray-400">Pilih tes dulu</span>
+              </div>
             )}
+          </div>
+        </div>
+
+        {/* Row 2: Duration + Assessment + Threshold */}
+        <div className="grid grid-cols-3 gap-3">
+          <div className="flex flex-col gap-1.5">
+            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+              Durasi (mnt)
+            </p>
             <input
               type="number"
-              placeholder="Durasi waktu"
-              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] text-[.9rem] outline-none duration-100 focus:shadow-default md:hover:shadow-default"
+              placeholder="60"
+              className="h-9 w-full rounded-3xl border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
               required
               value={EditSession.duration === 0 ? '' : EditSession.duration}
               onChange={(e) => onChangeDuration(e)}
             />
-
-            <div className="w-full overflow-visible rounded-3xl border border-transparent bg-white duration-300 md:hover:shadow-default">
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+              Penilaian
+            </p>
+            <div className="relative bg-white rounded-3xl border border-gray-200 hover:border-gray-300 transition-colors">
               <input
                 type="text"
                 defaultValue={assessmentType !== '' ? `${assessmentType}` : ''}
                 required
-                className="absolute bottom-0 left-4 h-1 w-1 p-0 text-transparent outline-none"
+                className="absolute bottom-0 left-4 h-px w-px p-0 opacity-0 pointer-events-none"
               />
               <Select
                 value={
@@ -569,15 +597,15 @@ const HeadingSessionTryout = ({
                   changeQuestionAssestmentType(value);
                 }}
               >
-                <SelectTrigger className="h-full w-full rounded-3xl border-none bg-white shadow-none outline-none">
-                  <SelectValue placeholder="Kategori" />
+                <SelectTrigger className="h-9 w-full rounded-3xl border-none bg-transparent shadow-none outline-none text-sm px-3">
+                  <SelectValue placeholder="Tipe" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem
                     value="placeholder"
                     disabled
                   >
-                    Penilain
+                    Pilih Tipe
                   </SelectItem>
                   <SelectItem value="1-5">1-5</SelectItem>
                   <SelectItem value="+5/0">+5/0</SelectItem>
@@ -589,38 +617,14 @@ const HeadingSessionTryout = ({
               </Select>
             </div>
           </div>
-          <ModalDeleteSession deleteSession={deleteSession} />
-        </div>
-        <div className="grid w-full grid-cols-2 gap-4">
-          <div className="flex w-full flex-col gap-[.5rem]">
-            <p className="font-medium">Judul sesi</p>
-            <input
-              type="text"
-              placeholder="Judul sesi...."
-              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-              required
-              value={EditSession.name}
-              onChange={(e) => {
-                setSessions((prev) =>
-                  prev.map((item, i) => {
-                    if (i === currentIndexEdit) {
-                      return { ...item, name: e.target.value };
-                    }
-                    return { ...item };
-                  }),
-                );
-              }}
-            />
-          </div>
-          <div className="flex w-full flex-col gap-[.5rem]">
-            <p className="font-medium">
-              Ambang batas{' '}
-              <span className="text-main-gray-text2">(optional)</span>
+          <div className="flex flex-col gap-1.5">
+            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+              Ambang Batas
             </p>
             <input
               type="number"
-              placeholder="Ambang batas...."
-              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
+              placeholder="opsional"
+              className="h-9 w-full rounded-3xl border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
               value={
                 EditSession.thresholdValue === 0
                   ? ''
@@ -642,46 +646,83 @@ const HeadingSessionTryout = ({
             />
           </div>
         </div>
-        <div className="flex w-full flex-col gap-[.5rem]">
-          <p className="font-medium">
-            Document ID untuk pembahasan{' '}
-            <span className="text-main-gray-text2">(optional)</span>
-          </p>
-          <input
-            type="text"
-            placeholder="Document ID...."
-            className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-            value={EditSession.documentId || ''}
-            onChange={(e) => {
-              setSessions((prev) =>
-                prev.map((item, i) => {
-                  if (i === currentIndexEdit) {
-                    return { ...item, documentId: e.target.value };
-                  }
-                  return { ...item };
-                }),
-              );
-            }}
-          />
+
+        {/* Row 3: Session Name + Document ID */}
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col gap-1.5">
+            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+              Judul Sesi
+            </p>
+            <input
+              type="text"
+              placeholder="Judul sesi..."
+              className="h-9 w-full rounded-3xl border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+              required
+              value={EditSession.name}
+              onChange={(e) => {
+                setSessions((prev) =>
+                  prev.map((item, i) => {
+                    if (i === currentIndexEdit) {
+                      return { ...item, name: e.target.value };
+                    }
+                    return { ...item };
+                  }),
+                );
+              }}
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+              Doc ID Pembahasan{' '}
+              <span className="font-normal normal-case text-gray-400">
+                (opsional)
+              </span>
+            </p>
+            <input
+              type="text"
+              placeholder="Document ID..."
+              className="h-9 w-full rounded-3xl border border-gray-200 px-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300"
+              value={EditSession.documentId || ''}
+              onChange={(e) => {
+                setSessions((prev) =>
+                  prev.map((item, i) => {
+                    if (i === currentIndexEdit) {
+                      return { ...item, documentId: e.target.value };
+                    }
+                    return { ...item };
+                  }),
+                );
+              }}
+            />
+          </div>
         </div>
-        <div className="flex w-full flex-col gap-[.5rem] pb-[.8rem]">
-          <div className="flex w-full items-center justify-between">
-            <p className="font-medium">Generate soal</p>
-            <div
-              className="shrink-0 cursor-pointer rounded-3xl bg-blue-100 px-4 py-[.2rem] text-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
+
+        {/* Row 4: AI Generate */}
+        <div className="flex flex-col gap-1.5">
+          <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+            Generate Soal dengan AI
+          </p>
+          <div className="flex gap-2">
+            <textarea
+              id="context-for-generate-ai"
+              placeholder="Masukkan konteks materi untuk generate soal..."
+              rows={2}
+              className="flex-1 rounded-3xl border border-gray-200 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300 resize-none"
+            />
+            <button
+              type="button"
+              className="shrink-0 self-end h-9 rounded-3xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold px-4 transition-colors whitespace-nowrap"
               onClick={() => {
                 handleGenerate();
               }}
             >
               Generate
-            </div>
+            </button>
           </div>
-          <textarea
-            id="context-for-generate-ai"
-            placeholder="Conteks.."
-            className="w-full shrink-0 rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-          />
         </div>
+
+        {/* Row 5: Delete Session */}
+        <ModalDeleteSession deleteSession={deleteSession} />
       </div>
       {loading && (
         <Dialog open={true}>

@@ -10,66 +10,64 @@ export async function GET(req: NextRequest) {
   const image = searchParams.get('image');
 
   return new ImageResponse(
-    (
+    <div
+      style={{
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#fff',
+        backgroundImage: 'linear-gradient(to bottom right, #E0E7FF, #C7D2FE)',
+      }}
+    >
+      {image && (
+        <img
+          src={image}
+          alt="Profile"
+          style={{
+            width: 120,
+            height: 120,
+            borderRadius: 60,
+            objectFit: 'cover',
+            marginBottom: 20,
+            border: '4px solid white',
+          }}
+        />
+      )}
       <div
         style={{
-          height: '100%',
-          width: '100%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#fff',
-          backgroundImage: 'linear-gradient(to bottom right, #E0E7FF, #C7D2FE)',
+          textAlign: 'center',
+          padding: '0 40px',
         }}
       >
-        {image && (
-          <img
-            src={image}
-            alt="Profile"
-            style={{
-              width: 120,
-              height: 120,
-              borderRadius: 60,
-              objectFit: 'cover',
-              marginBottom: 20,
-              border: '4px solid white',
-            }}
-          />
-        )}
-        <div
+        <h1
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            textAlign: 'center',
-            padding: '0 40px',
+            fontSize: 60,
+            fontWeight: 'bold',
+            color: '#1F2937',
+            margin: 0,
+            marginBottom: 10,
           }}
         >
-          <h1
-            style={{
-              fontSize: 60,
-              fontWeight: 'bold',
-              color: '#1F2937',
-              margin: 0,
-              marginBottom: 10,
-            }}
-          >
-            {title}
-          </h1>
-          <p
-            style={{
-              fontSize: 30,
-              color: '#4B5563',
-              margin: 0,
-            }}
-          >
-            {description}
-          </p>
-        </div>
+          {title}
+        </h1>
+        <p
+          style={{
+            fontSize: 30,
+            color: '#4B5563',
+            margin: 0,
+          }}
+        >
+          {description}
+        </p>
       </div>
-    ),
+    </div>,
     {
       width: 1200,
       height: 630,

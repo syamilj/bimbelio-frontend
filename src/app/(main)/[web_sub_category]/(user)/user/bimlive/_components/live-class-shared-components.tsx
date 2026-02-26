@@ -57,36 +57,35 @@ interface CountdownTimerProps {
 
 export function CountdownTimer({ timeLeft }: CountdownTimerProps) {
   if (timeLeft.isExpired) {
-    return <div className="text-sm text-gray-500">Waktu telah berakhir</div>;
+    return (
+      <div className="text-xs text-slate-400 font-semibold">
+        Waktu telah berakhir
+      </div>
+    );
   }
+
+  const units = [
+    ...(timeLeft.days > 0 ? [{ value: timeLeft.days, label: 'hari' }] : []),
+    { value: timeLeft.hours, label: 'jam' },
+    { value: timeLeft.minutes, label: 'mnt' },
+    ...(timeLeft.days === 0 ? [{ value: timeLeft.seconds, label: 'dtk' }] : []),
+  ];
+
   return (
-    <div className="flex gap-1 text-center">
-      {timeLeft.days > 0 && (
-        <div className="bg-white rounded-3xl px-2 py-1 shadow-sm border-2 border-gray-100">
-          <div className="text-sm font-black text-gray-900">
-            {timeLeft.days}
-          </div>
-          <div className="text-xs text-gray-500 font-bold">hari</div>
+    <div className="flex gap-1.5 items-center">
+      {units.map(({ value, label }, i) => (
+        <div
+          key={label}
+          className="flex flex-col items-center justify-center min-w-[36px] px-2 py-1.5 rounded-3xl bg-white border border-slate-200 shadow-sm"
+        >
+          <span className="text-sm font-black leading-none text-slate-800">
+            {String(value).padStart(2, '0')}
+          </span>
+          <span className="text-[9px] font-bold text-slate-400 mt-0.5 leading-none">
+            {label}
+          </span>
         </div>
-      )}
-      <div className="bg-white rounded-3xl px-2 py-1 shadow-sm border-2 border-gray-100">
-        <div className="text-sm font-black text-gray-900">
-          {timeLeft.hours.toString().padStart(2, '0')}
-        </div>
-        <div className="text-xs text-gray-500 font-bold">jam</div>
-      </div>
-      <div className="bg-white rounded-3xl px-2 py-1 shadow-sm border-2 border-gray-100">
-        <div className="text-sm font-black text-gray-900">
-          {timeLeft.minutes.toString().padStart(2, '0')}
-        </div>
-        <div className="text-xs text-gray-500 font-bold">mnt</div>
-      </div>
-      <div className="bg-white rounded-3xl px-2 py-1 shadow-sm border-2 border-gray-100">
-        <div className="text-sm font-black text-gray-900">
-          {timeLeft.seconds.toString().padStart(2, '0')}
-        </div>
-        <div className="text-xs text-gray-500 font-bold">dtk</div>
-      </div>
+      ))}
     </div>
   );
 }

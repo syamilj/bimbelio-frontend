@@ -454,9 +454,7 @@ const DocViewerPage = () => {
           <ResizablePanel
             defaultSize={50}
             minSize={30}
-            className={cn(
-              'DocumentContainer relative bg-white',
-            )}
+            className={cn('DocumentContainer relative bg-white')}
           >
             <LeftComponent doc={doc} />
           </ResizablePanel>

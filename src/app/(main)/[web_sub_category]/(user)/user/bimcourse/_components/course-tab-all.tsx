@@ -1,7 +1,6 @@
 'use client';
 
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { useParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import {
   BookOpen,
@@ -17,6 +16,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 interface CourseCategory {
@@ -53,7 +53,10 @@ function getStatus(item: CourseCategory): Status {
 }
 
 const BADGE_CONFIG: Record<Status, { label: string; cls: string }> = {
-  'Belum Dimulai': { label: 'Belum Dimulai', cls: 'bg-slate-800/70 text-white' },
+  'Belum Dimulai': {
+    label: 'Belum Dimulai',
+    cls: 'bg-slate-800/70 text-white',
+  },
   Berlangsung: { label: 'Berlangsung', cls: 'bg-blue-500/80 text-white' },
   Selesai: { label: '✓ Selesai', cls: 'bg-emerald-500/85 text-white' },
 };
@@ -94,7 +97,7 @@ function CourseGridCard({ item, web }: { item: CourseCategory; web: string }) {
   return (
     <Link
       href={`/${web}/user/bimcourse/${item.id}`}
-      className="group flex flex-col rounded-2xl overflow-hidden border border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all duration-200 bg-white"
+      className="group flex flex-col rounded-3xl overflow-hidden border border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all duration-200 bg-white"
     >
       {/* Thumbnail */}
       <div className="relative aspect-video w-full bg-slate-100 overflow-hidden">
@@ -190,7 +193,7 @@ function CourseGridCard({ item, web }: { item: CourseCategory; web: string }) {
         {/* CTA */}
         <button
           className={cn(
-            'w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-[11px] font-black transition-all duration-150',
+            'w-full flex items-center justify-center gap-1.5 py-2 rounded-3xl text-[11px] font-black transition-all duration-150',
             BUTTON_STYLE[status],
           )}
         >
@@ -206,7 +209,9 @@ export default function CourseTabAll({ onCountReady }: Props) {
   const params = useParams();
   const web = (params?.web_sub_category as string) || '';
 
-  const { data, isLoading } = useGet<CourseCategory[]>('/course/getCategoryForCard');
+  const { data, isLoading } = useGet<CourseCategory[]>(
+    '/course/getCategoryForCard',
+  );
   const [search, setSearch] = useState('');
 
   const items = data ?? [];
@@ -233,7 +238,7 @@ export default function CourseTabAll({ onCountReady }: Props) {
           placeholder="Cari modul..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-10 pr-10 py-2.5 text-sm rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-300 transition-all"
+          className="w-full pl-10 pr-10 py-2.5 text-sm rounded-3xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-300 transition-all"
         />
         {search && (
           <button
@@ -248,7 +253,9 @@ export default function CourseTabAll({ onCountReady }: Props) {
       {/* Results count */}
       {!isLoading && filtered.length > 0 && (
         <p className="text-xs text-slate-400 font-semibold mb-3">
-          {search ? `${filtered.length} hasil` : `${items.length} modul tersedia`}
+          {search
+            ? `${filtered.length} hasil`
+            : `${items.length} modul tersedia`}
         </p>
       )}
 
@@ -256,15 +263,21 @@ export default function CourseTabAll({ onCountReady }: Props) {
       {isLoading ? (
         <>
           {/* Mobile skeleton horizontal */}
-          <div className="flex gap-3 overflow-x-auto pb-2 md:hidden" style={{ scrollbarWidth: 'none' }}>
+          <div
+            className="flex gap-3 overflow-x-auto pb-2 md:hidden"
+            style={{ scrollbarWidth: 'none' }}
+          >
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="rounded-2xl overflow-hidden animate-pulse border border-slate-100 shrink-0 w-[72vw]">
+              <div
+                key={i}
+                className="rounded-3xl overflow-hidden animate-pulse border border-slate-100 shrink-0 w-[72vw]"
+              >
                 <div className="aspect-video bg-slate-100" />
                 <div className="p-3 space-y-2">
                   <div className="h-4 bg-slate-100 rounded-full w-3/4" />
                   <div className="h-3 bg-slate-100 rounded-full w-1/2" />
                   <div className="h-1.5 bg-slate-100 rounded-full w-full" />
-                  <div className="h-7 bg-slate-100 rounded-xl w-full mt-1" />
+                  <div className="h-7 bg-slate-100 rounded-3xl w-full mt-1" />
                 </div>
               </div>
             ))}
@@ -272,13 +285,16 @@ export default function CourseTabAll({ onCountReady }: Props) {
           {/* Desktop skeleton grid */}
           <div className="hidden md:grid grid-cols-3 lg:grid-cols-4 gap-3">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="rounded-2xl overflow-hidden animate-pulse border border-slate-100">
+              <div
+                key={i}
+                className="rounded-3xl overflow-hidden animate-pulse border border-slate-100"
+              >
                 <div className="aspect-video bg-slate-100" />
                 <div className="p-3 space-y-2">
                   <div className="h-4 bg-slate-100 rounded-full w-3/4" />
                   <div className="h-3 bg-slate-100 rounded-full w-1/2" />
                   <div className="h-1.5 bg-slate-100 rounded-full w-full" />
-                  <div className="h-7 bg-slate-100 rounded-xl w-full mt-1" />
+                  <div className="h-7 bg-slate-100 rounded-3xl w-full mt-1" />
                 </div>
               </div>
             ))}
@@ -286,7 +302,7 @@ export default function CourseTabAll({ onCountReady }: Props) {
         </>
       ) : filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
+          <div className="w-16 h-16 rounded-3xl bg-slate-100 flex items-center justify-center mb-4">
             <Search className="w-7 h-7 text-slate-300" />
           </div>
           <p className="font-bold text-slate-600 mb-1">
@@ -309,15 +325,25 @@ export default function CourseTabAll({ onCountReady }: Props) {
             style={{ scrollbarWidth: 'none' }}
           >
             {filtered.map((item) => (
-              <div key={item.id} className="shrink-0 w-[72vw] snap-start">
-                <CourseGridCard item={item} web={web} />
+              <div
+                key={item.id}
+                className="shrink-0 w-[72vw] snap-start"
+              >
+                <CourseGridCard
+                  item={item}
+                  web={web}
+                />
               </div>
             ))}
           </div>
           {/* Desktop: grid */}
           <div className="hidden md:grid grid-cols-3 lg:grid-cols-4 gap-3">
             {filtered.map((item) => (
-              <CourseGridCard key={item.id} item={item} web={web} />
+              <CourseGridCard
+                key={item.id}
+                item={item}
+                web={web}
+              />
             ))}
           </div>
         </>

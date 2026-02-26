@@ -14,15 +14,26 @@ export default function Dokumen() {
       <TambahDokumen />
       <EditDocument />
 
-      <div className="flex flex-col gap-16">
-        <div className="flex justify-between gap-4">
-          <DocumentInfo />
+      <div className="flex flex-col gap-6">
+        {/* Page header */}
+        <div>
+          <h1 className="text-2xl font-black text-gray-900">
+            Manajemen Dokumen
+          </h1>
+          <p className="mt-0.5 text-sm text-gray-500">
+            Kelola semua dokumen pembelajaran platform
+          </p>
         </div>
 
-        <div className="flex flex-col gap-4">
-          <HeadingTools />
+        {/* Stat cards */}
+        <DocumentInfo />
 
-          <Table />
+        {/* Table card */}
+        <div className="rounded-3xl border border-gray-100 bg-white p-6">
+          <div className="flex flex-col gap-4">
+            <HeadingTools />
+            <Table />
+          </div>
         </div>
       </div>
     </Fragment>

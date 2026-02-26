@@ -24,11 +24,15 @@ export default function Start({ isLoading, onClick }: Props) {
               className="flex h-10 w-10 items-center justify-center rounded-3xl"
               style={{ backgroundColor: `${mainColor}15` }}
             >
-              <BookOpen className="h-5 w-5" style={{ color: mainColor }} />
+              <BookOpen
+                className="h-5 w-5"
+                style={{ color: mainColor }}
+              />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
-                Halo, <span style={{ color: mainColor }}>{session?.user.name}</span>
+                Halo,{' '}
+                <span style={{ color: mainColor }}>{session?.user.name}</span>
               </h1>
               <p className="text-sm text-gray-600">Siap belajar?</p>
             </div>
@@ -50,7 +54,10 @@ export default function Start({ isLoading, onClick }: Props) {
               {isLoading ? (
                 <Spinner width="18px" />
               ) : (
-                <Play className="h-5 w-5" style={{ color: mainColor }} />
+                <Play
+                  className="h-5 w-5"
+                  style={{ color: mainColor }}
+                />
               )}
             </div>
             <span className="text-xl font-semibold text-gray-900">
@@ -65,9 +72,14 @@ export default function Start({ isLoading, onClick }: Props) {
               className="mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-3xl"
               style={{ backgroundColor: `${mainColor}15` }}
             >
-              <Sparkles className="h-4 w-4" style={{ color: mainColor }} />
+              <Sparkles
+                className="h-4 w-4"
+                style={{ color: mainColor }}
+              />
             </div>
-            <h3 className="text-sm font-semibold text-gray-900">AI Assistant</h3>
+            <h3 className="text-sm font-semibold text-gray-900">
+              AI Assistant
+            </h3>
           </div>
 
           <div className="rounded-3xl border border-gray-200 bg-white p-4 text-center shadow-sm">
@@ -75,9 +87,14 @@ export default function Start({ isLoading, onClick }: Props) {
               className="mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-3xl"
               style={{ backgroundColor: `${mainColor}15` }}
             >
-              <BookOpen className="h-4 w-4" style={{ color: mainColor }} />
+              <BookOpen
+                className="h-4 w-4"
+                style={{ color: mainColor }}
+              />
             </div>
-            <h3 className="text-sm font-semibold text-gray-900">Materi Lengkap</h3>
+            <h3 className="text-sm font-semibold text-gray-900">
+              Materi Lengkap
+            </h3>
           </div>
 
           <div className="rounded-3xl border border-gray-200 bg-white p-4 text-center shadow-sm">
@@ -85,7 +102,10 @@ export default function Start({ isLoading, onClick }: Props) {
               className="mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-3xl"
               style={{ backgroundColor: `${mainColor}15` }}
             >
-              <Play className="h-4 w-4" style={{ color: mainColor }} />
+              <Play
+                className="h-4 w-4"
+                style={{ color: mainColor }}
+              />
             </div>
             <h3 className="text-sm font-semibold text-gray-900">Interaktif</h3>
           </div>

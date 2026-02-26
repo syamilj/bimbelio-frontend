@@ -48,10 +48,10 @@ export default function ReactMarkdownChatAI({
   // Convert LaTeX \(...\) and \[...\] notation to $...$ and $$...$$ for remark-math
   const replaceLatexNotation = (content: string) => {
     return content
-      .replace(/\\\[/g, '$$$$')  // \[ → $$ (display math) — $$$$ produces $$ in replace
-      .replace(/\\\]/g, '$$$$')  // \] → $$ (display math)
-      .replace(/\\\(/g, '$$')    // \( → $  (inline math) — $$ produces $ in replace
-      .replace(/\\\)/g, '$$');   // \) → $  (inline math)
+      .replace(/\\\[/g, '$$$$') // \[ → $$ (display math) — $$$$ produces $$ in replace
+      .replace(/\\\]/g, '$$$$') // \] → $$ (display math)
+      .replace(/\\\(/g, '$$') // \( → $  (inline math) — $$ produces $ in replace
+      .replace(/\\\)/g, '$$'); // \) → $  (inline math)
   };
 
   // Badge <PAGE#n> dan <PAGE#n-m> - Fixed to avoid nested elements

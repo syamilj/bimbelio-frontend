@@ -8,7 +8,11 @@ import { cn } from '@/lib/utils';
 import dynamic from 'next/dynamic';
 import { useDebouncedCallback } from 'use-debounce';
 import Latex, { schema } from './latex';
-import { preprocessLatexInValue, processAllLatex, autoProcessLatex } from './latex-helper';
+import {
+  autoProcessLatex,
+  preprocessLatexInValue,
+  processAllLatex,
+} from './latex-helper';
 import './style.css';
 
 async function uploadFile(file: File) {

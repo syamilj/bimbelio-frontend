@@ -625,7 +625,7 @@ const SubChapterQuestion = ({
           />
 
           {/* Image Upload Section */}
-          <div className="border-2 border-dashed border-gray-300 rounded-3xl p-4">
+          <div className="border-2 border-dashed border-gray-200 rounded-3xl p-4">
             <div className="text-center">
               <ImageIcon className="w-8 h-8 text-gray-400 mx-auto mb-2" />
               {currentQuestion.image ? (

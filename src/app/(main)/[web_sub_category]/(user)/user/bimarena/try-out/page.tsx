@@ -194,7 +194,7 @@ const Content = () => {
         setTryoutAccount({ userTryOutId });
       }}
     >
-      <div className="min-h-screen bg-slate-50/50 pb-12">
+      <div className="min-h-screen pb-12">
         <DialogRecomendation
           openExternal={open}
           setOpenExternal={setOpen}

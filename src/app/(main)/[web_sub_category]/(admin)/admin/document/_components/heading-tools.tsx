@@ -1,3 +1,5 @@
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
@@ -7,215 +9,169 @@ import {
 } from '@/components/ui/select';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
-import { IconRegenerateMessage, IconTailedArrowNext } from '@/styles/icon';
-import { SearchIcon, XIcon } from 'lucide-react';
+import { Filter, Plus, RotateCcw, Search, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useProvider } from '../provider';
 
 export default function HeadingTools() {
   const {
     setShowAddDocument,
-    filter,
     setFilter,
+    filter,
     setFilterDocument,
     filterDocument,
   } = useProvider();
 
-  const [showFilter, setShowFilter] = useState<boolean>(false);
-
-  // const { data: category } = api.category.getAllCategories.useQuery(undefined, {
-  //   refetchOnWindowFocus: false,
-  //   refetchOnMount: false,
-  // });
+  const [showFilter, setShowFilter] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
 
   const [category, setCategory] = useState<
-    {
-      name: string;
-      id: string;
-      total: number;
-    }[]
+    { name: string; id: string; total: number }[]
   >([]);
-  const fetchCategory = async () => {
-    await getGeneral('/category/getAllCategories', {
-      setData: setCategory,
-    });
-  };
-
   useEffect(() => {
-    fetchCategory();
+    getGeneral('/category/getAllCategories', { setData: setCategory });
   }, []);
 
-  const handleFilter = () => {
-    if (!filter) {
-      // toaster({
-      //   title: "Filter",
-      //   condition: "warning",
-      //   description: `Pilih Filter`,
-      //   duration: 3000
-      // })
-      return;
-    }
-    if (filter?.value === '') {
-      // toaster({
-      //   title: "Filter",
-      //   condition: "warning",
-      //   description: `Pilih ${filter.filter}`,
-      //   duration: 3000
-      // })
-      return;
-    }
-    if (filter) {
-      setFilterDocument((prev) => ({
-        filter: filter.filter,
-        filterValue: filter.value,
-        search: prev?.search || '',
-      }));
-      setShowFilter(false);
-    }
+  // Live search
+  useEffect(() => {
+    setFilterDocument((prev) => {
+      const base = prev ?? { filter: '', filterValue: '', search: '' };
+      return { ...base, search: searchValue };
+    });
+  }, [searchValue, setFilterDocument]);
+
+  const handleApplyFilter = () => {
+    if (!filter || filter.value === '') return;
+    setFilterDocument((prev) => ({
+      filter: filter.filter,
+      filterValue: filter.value,
+      search: prev?.search || '',
+    }));
+    setShowFilter(false);
   };
 
-  const handleSearch = () => {
-    const inputElement = document.getElementById(
-      'search-document',
-    ) as HTMLInputElement;
-    const value = inputElement?.value || '';
-    setFilterDocument((prev) => {
-      if (!prev)
-        return {
-          filter: '',
-          filterValue: '',
-          search: value.length > 0 ? value : '',
-        };
-      return { ...prev, search: value.length > 0 ? value : '' };
-    });
+  const handleClearFilter = () => {
+    setFilter(null);
+    setFilterDocument((prev) =>
+      prev ? { ...prev, filter: '', filterValue: '' } : null,
+    );
+    setShowFilter(false);
   };
 
-  const handleClearSearch = () => {
-    const inputElement = document.getElementById(
-      'search-document',
-    ) as HTMLInputElement;
-    if (inputElement) {
-      inputElement.value = '';
-    }
-    setFilterDocument((prev) => {
-      if (!prev) return null;
-      return { ...prev, search: '' };
-    });
-  };
+  const isFiltered =
+    !!filterDocument?.filter && filterDocument.filterValue !== '';
 
   return (
-    <div className="flex w-full justify-between">
-      <div className="flex gap-2">
-        {showFilter && (
-          <div
-            className="fixed left-0 top-0 z-1 h-full w-full"
-            onClick={() => setShowFilter(false)}
-          />
-        )}
-        <form
-          className="flex gap-2"
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-        >
+    <div className="flex flex-col sm:flex-row gap-3 w-full items-start sm:items-center justify-between">
+      {/* Left: search + filter */}
+      <div className="flex items-center gap-2 flex-1 min-w-0">
+        {/* Search */}
+        <div className="relative flex-1 max-w-xs">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
           <input
-            id="search-document"
             type="text"
-            placeholder="Cari document...."
-            className="h-full w-full rounded-3xl bg-white px-4 outline-none"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleSearch();
-              }
-            }}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            placeholder="Cari dokumen..."
+            className="w-full pl-9 pr-9 py-2 rounded-3xl border border-gray-200 bg-white text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-offset-0 focus:border-transparent transition"
+            style={
+              {
+                '--tw-ring-color': 'var(--color-main, #0091FF)',
+              } as React.CSSProperties
+            }
           />
-          {(document.getElementById('search-document') as HTMLInputElement)
-            ?.value && (
+          {searchValue && (
             <button
               type="button"
-              onClick={handleClearSearch}
-              className="rounded-3xl bg-gray-300 px-4 py-[.7rem] text-gray-700 font-medium duration-200 hover:bg-gray-400"
+              onClick={() => setSearchValue('')}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
             >
-              <XIcon className="h-4 w-4" />
+              <X className="w-3.5 h-3.5" />
             </button>
           )}
+        </div>
+
+        {/* Filter */}
+        <div className="relative">
+          {/* Backdrop — closes popup but sits BELOW Select portal so Select still works */}
+          {showFilter && (
+            <div
+              className="fixed inset-0 z-40"
+              onClick={() => setShowFilter(false)}
+            />
+          )}
+
           <button
             type="button"
-            onClick={handleSearch}
-            className="rounded-3xl bg-main px-4 py-[.7rem] text-white font-medium duration-200 hover:bg-main-hover flex items-center gap-2 whitespace-nowrap"
-          >
-            <SearchIcon className="h-4 w-4" />
-          </button>
-        </form>
-        <div className="relative">
-          <div
+            onClick={() => setShowFilter((v) => !v)}
             className={cn(
-              'font-regular relative z-2 flex cursor-pointer items-center rounded-3xl bg-white px-4 py-[.5rem] text-main-gray-text2',
-              filterDocument?.filter &&
-                filterDocument?.filterValue !== '' &&
-                'bg-main text-white',
+              'relative z-50 flex items-center gap-1.5 px-3 py-2 rounded-3xl border text-sm font-medium transition',
+              isFiltered
+                ? 'bg-main border-main text-white'
+                : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50',
             )}
-            onClick={() => setShowFilter(!showFilter)}
           >
-            <i className="bx bx-filter text-[1.5rem]" />
-            {filterDocument?.filter ? 'Filtered' : 'Filter'}
-          </div>
+            <Filter className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">
+              {isFiltered ? 'Filtered' : 'Filter'}
+            </span>
+            {isFiltered && (
+              <Badge className="bg-white/20 text-white text-[10px] px-1 py-0 h-4">
+                1
+              </Badge>
+            )}
+          </button>
+
           {showFilter && (
-            <div className="absolute left-[0] top-[calc(100%+.5rem)] z-2 flex min-w-[280px] flex-col whitespace-nowrap rounded-3xl bg-white p-[.5rem] text-[.8rem] text-main-gray-text shadow-cardSoft">
-              <div className="flex items-center justify-between gap-[.5rem]">
+            <div className="absolute left-0 top-[calc(100%+6px)] z-50 w-72 rounded-3xl bg-white border border-gray-200 shadow-xl p-4 space-y-3">
+              <p className="text-xs font-bold text-gray-700 uppercase tracking-wide">
+                Filter Dokumen
+              </p>
+
+              <div className="space-y-2">
+                <label className="text-xs font-medium text-gray-500">
+                  Filter by
+                </label>
                 <Select
-                  value={filter?.filter}
-                  onValueChange={(value) =>
-                    value &&
-                    setFilter({ type: 'option', filter: value, value: '' })
+                  value={filter?.filter || ''}
+                  onValueChange={(v) =>
+                    setFilter({ type: 'option', filter: v, value: '' })
                   }
                 >
-                  <SelectTrigger className="h-[30px] rounded-3xl py-0">
-                    <SelectValue placeholder="Filter" />
+                  <SelectTrigger className="rounded-3xl h-9 text-sm">
+                    <SelectValue placeholder="Pilih filter..." />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="category">Category</SelectItem>
+                  <SelectContent className="z-[200]">
+                    <SelectItem value="category">Kategori</SelectItem>
                     <SelectItem value="status">Status</SelectItem>
                   </SelectContent>
                 </Select>
-                <IconTailedArrowNext
-                  w={10}
-                  className="shrink-0"
-                />
-                {filter?.type === 'input' && (
-                  <div>
-                    <input
-                      type="text"
-                      placeholder="Enter value"
-                      className="h-[30px] rounded-3xl border px-[12px] outline-none"
-                    />
-                  </div>
-                )}
-                {filter?.type === 'option' && (
+              </div>
+
+              {filter?.type === 'option' && filter.filter !== '' && (
+                <div className="space-y-2">
+                  <label className="text-xs font-medium text-gray-500">
+                    {filter.filter === 'category'
+                      ? 'Pilih kategori'
+                      : 'Pilih status'}
+                  </label>
                   <Select
                     value={filter.value}
-                    onValueChange={(value) =>
-                      value &&
-                      setFilter((prev) => {
-                        if (prev) {
-                          return { ...prev, value: value };
-                        } else {
-                          return null;
-                        }
-                      })
+                    onValueChange={(v) =>
+                      setFilter((prev) => (prev ? { ...prev, value: v } : null))
                     }
                   >
-                    <SelectTrigger className="h-[30px] rounded-3xl py-0">
-                      <SelectValue placeholder={`Pilih ${filter.filter}`} />
+                    <SelectTrigger className="rounded-3xl h-9 text-sm">
+                      <SelectValue placeholder="Pilih nilai..." />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="z-[200]">
                       {filter.filter === 'category' &&
-                        category?.map((item) => (
+                        category.map((c) => (
                           <SelectItem
-                            key={item.id}
-                            value={`${item.id}`}
+                            key={c.id}
+                            value={`${c.id}`}
                           >
-                            {item.name}
+                            {c.name}
                           </SelectItem>
                         ))}
                       {filter.filter === 'status' && (
@@ -226,50 +182,62 @@ export default function HeadingTools() {
                       )}
                     </SelectContent>
                   </Select>
-                )}
-              </div>
-              <hr className="my-[.5rem]" />
-              <div className="flex items-center justify-between gap-8">
-                <div
-                  className="flex cursor-pointer items-center justify-center gap-[.5rem] rounded-3xl px-[.5rem] py-[.2rem] duration-300 active:bg-white md:hover:bg-main-gray-input"
-                  onClick={() => {
-                    setFilterDocument(null);
-                  }}
-                >
-                  <IconRegenerateMessage w={10} />
-                  <p>Clear</p>
                 </div>
-                <div
-                  className={cn(
-                    'flex cursor-pointer items-center justify-center gap-[.5rem] rounded-3xl border px-[.5rem] py-[.2rem] duration-300 active:bg-white md:hover:bg-main-gray-input',
-                    !filter &&
-                      'cursor-default bg-white text-main-gray-disabled md:hover:bg-white',
-                    filter?.value === '' &&
-                      'cursor-default bg-white text-main-gray-disabled md:hover:bg-white',
-                  )}
-                  onClick={handleFilter}
+              )}
+
+              <div className="flex items-center gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={handleClearFilter}
+                  className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700 px-2 py-1.5 rounded-3xl hover:bg-gray-100 transition"
                 >
-                  <p>Apply filter</p>
-                </div>
+                  <RotateCcw className="w-3 h-3" />
+                  Reset
+                </button>
+                <button
+                  type="button"
+                  onClick={handleApplyFilter}
+                  disabled={!filter || filter.value === ''}
+                  className="flex-1 text-xs font-semibold py-1.5 rounded-3xl bg-main text-white disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition"
+                >
+                  Terapkan
+                </button>
               </div>
             </div>
           )}
         </div>
+
+        {/* Active filter chip */}
+        {isFiltered && (
+          <div className="flex items-center gap-1.5 text-xs bg-blue-50 border border-blue-200 text-blue-700 rounded-3xl px-2.5 py-1.5 font-medium">
+            <span>
+              {filterDocument?.filter}: {filterDocument?.filterValue}
+            </span>
+            <button onClick={handleClearFilter}>
+              <X className="w-3 h-3" />
+            </button>
+          </div>
+        )}
       </div>
 
-      <div className="flex gap-4">
-        <div
-          className="cursor-pointer rounded-3xl bg-transparent px-6 py-[.7rem] font-medium text-main-gray-text duration-200"
+      {/* Right: actions */}
+      <div className="flex items-center gap-2 shrink-0">
+        <Button
+          variant="outline"
+          size="sm"
+          className="rounded-3xl text-gray-600 border-gray-200 hover:border-gray-300 text-sm font-medium"
           onClick={() => setShowAddDocument(true)}
         >
           Export CSV
-        </div>
-        <div
-          className="font-regular cursor-pointer rounded-3xl bg-main px-6 py-[.7rem] text-white duration-200 hover:bg-main-hover"
+        </Button>
+        <Button
+          size="sm"
+          className="rounded-3xl bg-main hover:opacity-90 text-white text-sm font-semibold gap-1.5"
           onClick={() => setShowAddDocument(true)}
         >
-          Tambah dokumen
-        </div>
+          <Plus className="w-4 h-4" />
+          Tambah Dokumen
+        </Button>
       </div>
     </div>
   );

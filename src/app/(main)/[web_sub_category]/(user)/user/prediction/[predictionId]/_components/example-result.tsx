@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { getSnbtShortName } from '@/lib/utils/subtest';
 import {
   AlertCircle,
   CheckCircle,
@@ -747,30 +748,43 @@ const selectedPrograms = {
   ],
 };
 
+// Labels use SNBT initials — see @/lib/utils/snbt for the canonical map
 const utbkScores = [
-  { label: 'Penalaran Umum', name: 'Penalaran Umum', score: 800 },
   {
-    label: 'Pengetahuan & Pemahaman Umum',
+    label: getSnbtShortName('Penalaran Umum'),
+    name: 'Penalaran Umum',
+    score: 800,
+  },
+  {
+    label: getSnbtShortName('Pengetahuan dan Pemahaman Umum'),
     name: 'Pengetahuan & Pemahaman Umum',
     score: 634,
   },
   {
-    label: 'Pemahaman Bacaan & Menulis',
+    label: getSnbtShortName('Pemahaman Bacaan dan Menulis'),
     name: 'Pemahaman Bacaan & Menulis',
     score: 655,
   },
-  { label: 'Penalaran Kuantitatif', name: 'Penalaran Kuantitatif', score: 812 },
   {
-    label: 'Literasi Bahasa Indonesia',
+    label: getSnbtShortName('Pengetahuan Kuantitatif'),
+    name: 'Penalaran Kuantitatif',
+    score: 812,
+  },
+  {
+    label: getSnbtShortName('Literasi Bahasa Indonesia'),
     name: 'Literasi Bahasa Indonesia',
     score: 689,
   },
   {
-    label: 'Literasi Bahasa Inggris',
+    label: getSnbtShortName('Literasi Bahasa Inggris'),
     name: 'Literasi Bahasa Inggris',
     score: 899,
   },
-  { label: 'Matematika', name: 'Matematika', score: 675 },
+  {
+    label: getSnbtShortName('Penalaran Matematika'),
+    name: 'Matematika',
+    score: 675,
+  },
 ];
 
 const simakScores = [

@@ -62,7 +62,7 @@ function UpsellCard({
   const estimatedTime = formatTime(course.totalSpendTime);
 
   return (
-    <div className="group flex flex-col rounded-2xl overflow-hidden border border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all duration-200 bg-white">
+    <div className="group flex flex-col rounded-3xl overflow-hidden border border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all duration-200 bg-white">
       {/* Thumbnail */}
       <div className="relative aspect-video w-full bg-slate-100 overflow-hidden">
         {course.image ? (
@@ -120,7 +120,7 @@ function UpsellCard({
         {/* CTA */}
         <Link
           href={`/${platform.id}/user/bimcourse`}
-          className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-[11px] font-black text-white transition-all duration-150 hover:opacity-90"
+          className="w-full flex items-center justify-center gap-1.5 py-2 rounded-3xl text-[11px] font-black text-white transition-all duration-150 hover:opacity-90"
           style={{ backgroundColor: platform.main_color }}
         >
           <ExternalLink className="w-3.5 h-3.5" />
@@ -140,10 +140,13 @@ export default function CourseTabUpsell({ onCountReady }: Props) {
 
   useEffect(() => {
     if (!session) return;
-    getGeneral(`/course/getCategoryForCardAnotherWeb?userId=${session.user.id}`, {
-      setData: setCourses,
-      setLoading: setIsLoading,
-    });
+    getGeneral(
+      `/course/getCategoryForCardAnotherWeb?userId=${session.user.id}`,
+      {
+        setData: setCourses,
+        setLoading: setIsLoading,
+      },
+    );
   }, [session]);
 
   const onCountRef = useRef(onCountReady);
@@ -171,12 +174,15 @@ export default function CourseTabUpsell({ onCountReady }: Props) {
       <div className="p-4 md:p-6">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="rounded-2xl overflow-hidden animate-pulse border border-slate-100">
+            <div
+              key={i}
+              className="rounded-3xl overflow-hidden animate-pulse border border-slate-100"
+            >
               <div className="aspect-video bg-slate-100" />
               <div className="p-3 space-y-2">
                 <div className="h-4 bg-slate-100 rounded-full w-3/4" />
                 <div className="h-3 bg-slate-100 rounded-full w-1/2" />
-                <div className="h-7 bg-slate-100 rounded-xl w-full mt-1" />
+                <div className="h-7 bg-slate-100 rounded-3xl w-full mt-1" />
               </div>
             </div>
           ))}
@@ -188,11 +194,13 @@ export default function CourseTabUpsell({ onCountReady }: Props) {
   if (platforms.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
-        <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
+        <div className="w-16 h-16 rounded-3xl bg-slate-100 flex items-center justify-center mb-4">
           <Sparkles className="w-7 h-7 text-slate-300" />
         </div>
         <p className="font-bold text-slate-600 mb-1">Tidak ada platform lain</p>
-        <p className="text-sm text-slate-400">Semua materi tersedia di platform ini.</p>
+        <p className="text-sm text-slate-400">
+          Semua materi tersedia di platform ini.
+        </p>
       </div>
     );
   }
@@ -209,7 +217,9 @@ export default function CourseTabUpsell({ onCountReady }: Props) {
                 style={{ backgroundColor: platform.main_color }}
               />
               <div>
-                <h3 className="font-black text-slate-800 text-sm">{platform.name}</h3>
+                <h3 className="font-black text-slate-800 text-sm">
+                  {platform.name}
+                </h3>
                 <p className="text-[10px] text-slate-400 font-medium">
                   {platform.courses.length} modul tersedia
                 </p>
@@ -230,7 +240,11 @@ export default function CourseTabUpsell({ onCountReady }: Props) {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {platform.courses.map((course) => (
-              <UpsellCard key={course.id} course={course} platform={platform} />
+              <UpsellCard
+                key={course.id}
+                course={course}
+                platform={platform}
+              />
             ))}
           </div>
         </section>

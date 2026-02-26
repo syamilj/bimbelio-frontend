@@ -104,7 +104,7 @@ export default function Provider({ children }: Props) {
 
   useEffect(() => {
     setCourseData(null);
-  }, [categoryId, pathname]);
+  }, [categoryId]);
 
   useEffect(() => {
     if (Course && CourseProgress) {

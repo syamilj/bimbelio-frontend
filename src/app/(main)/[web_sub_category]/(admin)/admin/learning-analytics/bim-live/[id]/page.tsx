@@ -106,7 +106,7 @@ export default function LearningAnalyticsLiveClassAdmin({
         <CardContent className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Start Date */}
-            <div className="border border-slate-200 rounded-2xl p-4">
+            <div className="border border-slate-200 rounded-3xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Calendar
                   className="w-4 h-4"
@@ -125,7 +125,7 @@ export default function LearningAnalyticsLiveClassAdmin({
             </div>
 
             {/* Duration */}
-            <div className="border border-slate-200 rounded-2xl p-4">
+            <div className="border border-slate-200 rounded-3xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Clock
                   className="w-4 h-4"
@@ -150,7 +150,7 @@ export default function LearningAnalyticsLiveClassAdmin({
             </div>
 
             {/* Max Participant */}
-            <div className="border border-slate-200 rounded-2xl p-4">
+            <div className="border border-slate-200 rounded-3xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Users
                   className="w-4 h-4"
@@ -167,7 +167,7 @@ export default function LearningAnalyticsLiveClassAdmin({
             </div>
 
             {/* Access Type */}
-            <div className="border border-slate-200 rounded-2xl p-4">
+            <div className="border border-slate-200 rounded-3xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Target
                   className="w-4 h-4"
@@ -405,7 +405,7 @@ const UserListSection = ({ liveClass }: { liveClass: DataType }) => {
 
             {/* Summary Stats */}
             <div className="flex flex-col gap-4 mb-6 shrink-0 md:col-span-1">
-              <div className="border border-blue-200 rounded-2xl p-4 bg-blue-50/50">
+              <div className="border border-blue-200 rounded-3xl p-4 bg-blue-50/50">
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircle className="w-4 h-4 text-blue-600" />
                   <p className="text-xs font-semibold text-gray-600">Hadir</p>
@@ -414,7 +414,7 @@ const UserListSection = ({ liveClass }: { liveClass: DataType }) => {
                   {liveClass.totalInvited}
                 </p>
               </div>
-              <div className="border border-green-200 rounded-2xl p-4 bg-green-50/50">
+              <div className="border border-green-200 rounded-3xl p-4 bg-green-50/50">
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircle className="w-4 h-4 text-green-600" />
                   <p className="text-xs font-semibold text-gray-600">Hadir</p>
@@ -423,7 +423,7 @@ const UserListSection = ({ liveClass }: { liveClass: DataType }) => {
                   {absence.present}
                 </p>
               </div>
-              <div className="border border-yellow-200 rounded-2xl p-4 bg-yellow-50/50">
+              <div className="border border-yellow-200 rounded-3xl p-4 bg-yellow-50/50">
                 <div className="flex items-center gap-2 mb-2">
                   <AlertCircle className="w-4 h-4 text-yellow-600" />
                   <p className="text-xs font-semibold text-gray-600">
@@ -434,7 +434,7 @@ const UserListSection = ({ liveClass }: { liveClass: DataType }) => {
                   {absence.late}
                 </p>
               </div>
-              <div className="border border-red-200 rounded-2xl p-4 bg-red-50/50">
+              <div className="border border-red-200 rounded-3xl p-4 bg-red-50/50">
                 <div className="flex items-center gap-2 mb-2">
                   <XCircle className="w-4 h-4 text-red-600" />
                   <p className="text-xs font-semibold text-gray-600">
@@ -450,7 +450,7 @@ const UserListSection = ({ liveClass }: { liveClass: DataType }) => {
         </Card>
 
         {/* Data Counter */}
-        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-3xl">
           <p className="text-sm text-blue-700 font-semibold">
             Total Data:{' '}
             <span className="text-blue-900 font-bold">{listUser.length}</span>{' '}
