@@ -205,22 +205,19 @@ const SidebarUser = ({
               <button
                 onClick={() => {
                   setIsUpgrading(true);
-                  router.push('/price');
+                  router.push(`/${website_sub_category_id_params}/user/paket-belajar`);
                 }}
                 disabled={isUpgrading}
-                style={{ backgroundColor: `${mainColor}15` }}
-                className="w-10 h-10 rounded-3xl flex items-center justify-center hover:opacity-80 transition-all shadow-sm group relative disabled:opacity-70 disabled:cursor-not-allowed"
-                title="Upgrade Plan"
+                className="w-10 h-10 rounded-3xl flex items-center justify-center hover:opacity-90 transition-all shadow-lg group relative disabled:opacity-70 disabled:cursor-not-allowed bg-amber-400"
+                title="Paket Belajar"
               >
                 {isUpgrading ? (
                   <Loader2
-                    className="w-5 h-5 animate-spin"
-                    style={{ color: mainColor }}
+                    className="w-5 h-5 animate-spin text-amber-900"
                   />
                 ) : (
                   <ShoppingBag
-                    className="w-5 h-5 group-hover:scale-110 transition-transform"
-                    style={{ color: mainColor }}
+                    className="w-5 h-5 group-hover:scale-110 transition-transform text-amber-900"
                   />
                 )}
               </button>
@@ -234,19 +231,21 @@ const SidebarUser = ({
                 onClick={() => {
                   if (!isUpgrading) {
                     setIsUpgrading(true);
-                    router.push('/price');
+                    router.push(`/${website_sub_category_id_params}/user/paket-belajar`);
                   }
                 }}
                 disabled={isUpgrading}
-                style={{ backgroundColor: `${mainColor}15`, color: mainColor }}
-                className="w-full flex items-center gap-3 px-3 py-2 rounded-3xl text-sm font-bold hover:opacity-80 transition-all group disabled:opacity-70 disabled:cursor-not-allowed text-left"
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-amber-900 hover:opacity-90 hover:shadow-lg transition-all group disabled:opacity-70 disabled:cursor-not-allowed text-left bg-amber-400 shadow-md"
               >
                 {isUpgrading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
                   <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 )}
-                <span>Upgrade Plan</span>
+                <div className="flex flex-col leading-tight">
+                  <span className="text-[10px] font-semibold text-amber-800">Mau lebih banyak akses?</span>
+                  <span>Paket Belajar</span>
+                </div>
               </button>
             </div>
           )}
@@ -440,22 +439,21 @@ const SidebarUser = ({
                 <button
                   onClick={() => {
                     setIsUpgrading(true);
-                    router.push('/price');
+                    router.push(`/${website_sub_category_id_params}/user/paket-belajar`);
                     setIsMobileSidebarOpen(false);
                   }}
                   disabled={isUpgrading}
-                  style={{
-                    backgroundColor: `${mainColor}15`,
-                    color: mainColor,
-                  }}
-                  className="w-full flex items-center gap-3 px-3 py-2 rounded-3xl text-sm font-bold hover:opacity-80 transition-all group disabled:opacity-70 disabled:cursor-not-allowed text-left"
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-amber-900 hover:opacity-90 hover:shadow-lg transition-all group disabled:opacity-70 disabled:cursor-not-allowed text-left bg-amber-400 shadow-md"
                 >
                   {isUpgrading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
                   ) : (
                     <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
                   )}
-                  <span>Upgrade Plan</span>
+                  <div className="flex flex-col leading-tight">
+                    <span className="text-[10px] font-semibold text-amber-800">Mau lebih banyak akses?</span>
+                    <span>Paket Belajar</span>
+                  </div>
                 </button>
               </div>
             )}
