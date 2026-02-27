@@ -1,6 +1,7 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { BarChart3, BookOpen, Trophy } from 'lucide-react';
@@ -22,13 +23,15 @@ export function BimArenaQuizPageMain() {
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   const {
-    useVolume: { selectedVolumeId },
+    useVolume: { selectedVolumeId, QuizVolumeListIsLoading },
     useUserStatistic: { UserStatistic },
   } = useQuizProvider();
   const userTarget = UserStatistic?.userTarget;
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
   const [activeTab, setActiveTab] = useState('library');
+
+  const isInitialLoading = QuizVolumeListIsLoading && !selectedVolumeId;
 
   const tabItems = [
     { id: 'library', label: 'Library', icon: BookOpen },
@@ -52,6 +55,27 @@ export function BimArenaQuizPageMain() {
 
         {/* Top Leaderboard */}
         <QuizTopLeaderboard />
+
+        {isInitialLoading && (
+          <div className="space-y-4">
+            <div className="bg-white rounded-3xl border-2 border-slate-100 shadow-sm p-4 md:p-6 space-y-4">
+              <Skeleton className="h-6 w-40" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <Skeleton className="h-24 w-full rounded-2xl" />
+                <Skeleton className="h-24 w-full rounded-2xl" />
+              </div>
+            </div>
+
+            <div className="bg-white rounded-3xl border-2 border-slate-100 shadow-sm p-4 md:p-6 space-y-4">
+              <div className="flex gap-2">
+                <Skeleton className="h-9 w-24 rounded-full" />
+                <Skeleton className="h-9 w-24 rounded-full" />
+                <Skeleton className="h-9 w-28 rounded-full" />
+              </div>
+              <Skeleton className="h-64 w-full rounded-2xl" />
+            </div>
+          </div>
+        )}
 
         {selectedVolumeId && <QuizStats />}
 
