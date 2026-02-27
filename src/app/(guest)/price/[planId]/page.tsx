@@ -69,16 +69,27 @@ export default function PlanDetailPage() {
     if (plan.PlanSubscription?.expireDays) {
       return `${plan.PlanSubscription.expireDays} hari akses`;
     }
-    if (plan.PlanSubscription && plan.PlanSubscription.PlanFeature.length > 0) {
+
+    const firstFeature = plan.PlanSubscription?.PlanFeature?.[0];
+    if (firstFeature?.validFrom && firstFeature?.validUntil) {
       return formatDateRange(
-        plan.PlanSubscription.PlanFeature[0].validFrom,
-        plan.PlanSubscription.PlanFeature[0].validUntil,
+        firstFeature.validFrom,
+        firstFeature.validUntil,
       );
     }
-    return formatDateRange(
-      plan.PlanLimitation.validFrom,
-      plan.PlanLimitation.validUntil,
-    );
+
+    if (plan.PlanLimitation?.validFrom && plan.PlanLimitation?.validUntil) {
+      return formatDateRange(
+        plan.PlanLimitation.validFrom,
+        plan.PlanLimitation.validUntil,
+      );
+    }
+
+    if (plan.PlanLimitation?.expireDays) {
+      return `${plan.PlanLimitation.expireDays} hari akses`;
+    }
+
+    return 'Akses sesuai ketentuan plan';
   };
 
   const courseFeature = plan.PlanSubscription?.PlanFeature.find(

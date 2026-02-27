@@ -1040,19 +1040,36 @@ export default function PricingPlans() {
                     memaksimalkan persiapanmu
                   </p>
                 </div>
-                <div className="flex flex-wrap justify-center gap-6 max-w-7xl mx-auto">
+                <div className="md:hidden overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
+                  <div
+                    className="flex gap-4"
+                    style={{ width: 'max-content' }}
+                  >
+                    {filteredAndSortedPlans
+                      .filter((plan) => plan.recommended)
+                      .map((bundle, i) => (
+                        <div
+                          key={`recommended-mobile-${i}`}
+                          className="w-[300px] flex-shrink-0"
+                        >
+                          <CardPlan
+                            plan={bundle}
+                            discount={bundle.discount}
+                          />
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
+                <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
                   {filteredAndSortedPlans
                     .filter((plan) => plan.recommended)
                     .map((bundle, i) => (
-                      <div
+                      <CardPlan
                         key={`recommended-${i}`}
-                        className="w-full max-w-md"
-                      >
-                        <CardPlan
-                          plan={bundle}
-                          discount={bundle.discount}
-                        />
-                      </div>
+                        plan={bundle}
+                        discount={bundle.discount}
+                      />
                     ))}
                 </div>
               </div>
