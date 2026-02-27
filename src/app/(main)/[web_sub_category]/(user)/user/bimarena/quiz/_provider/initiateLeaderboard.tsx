@@ -34,6 +34,7 @@ export const initiateLeaderboard = ({
         province: string;
         univChoice: string;
         majorChoice: string;
+        targetValue: number | null;
       };
       totalScore: number;
       maxScore: number;

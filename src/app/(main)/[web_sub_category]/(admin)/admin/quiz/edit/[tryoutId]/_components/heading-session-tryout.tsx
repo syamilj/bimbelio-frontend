@@ -334,6 +334,7 @@ const HeadingSessionTryout = () => {
                     ? `${EditSession.categoryId}-${EditSession.category}`
                     : ''
                 }
+                readOnly
                 required
                 className="absolute bottom-0 left-4 h-1 w-1 p-0 text-transparent outline-none"
               />
@@ -377,6 +378,7 @@ const HeadingSessionTryout = () => {
                       ? `${EditSession.subCategoryId}-${EditSession.subCategory}`
                       : ''
                   }
+                  readOnly
                   required
                   className="absolute bottom-0 left-4 h-1 w-1 p-0 text-transparent outline-none"
                 />
@@ -449,11 +451,9 @@ const HeadingSessionTryout = () => {
                   >
                     Penilain
                   </SelectItem>
-                  {/* <SelectItem value="1-5">1-5</SelectItem> */}
-                  {/* <SelectItem value="+5/0">+5/0</SelectItem> */}
-                  {/* <SelectItem value="IRT">IRT</SelectItem> */}
+                  <SelectItem value="1-5">1-5</SelectItem>
+                  <SelectItem value="+5/0">+5/0</SelectItem>
                   <SelectItem value="+4/-1/0">+4/-1/0</SelectItem>
-                  {/* <SelectItem value="+1/0">+1/0</SelectItem> */}
                   <SelectItem value="0-100">0-100</SelectItem>
                 </SelectContent>
               </Select>

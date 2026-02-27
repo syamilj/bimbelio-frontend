@@ -477,13 +477,21 @@ export function QuizLeaderboard() {
                       Target Jurusan
                     </div>
                   </th>
+                  {/* Passing Grade */}
+                  <th className="px-3 py-3 text-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    Passing Grade
+                  </th>
+                  {/* Status */}
+                  <th className="px-3 py-3 text-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    Status
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {paginatedData.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={10}
+                      colSpan={12}
                       className="px-6 py-12 text-center text-slate-400"
                     >
                       <div className="flex flex-col items-center gap-2">
@@ -498,6 +506,11 @@ export function QuizLeaderboard() {
                 ) : (
                   paginatedData.map((entry) => {
                     const isCurrentUser = entry.User.id === userId;
+                    const passingGrade = entry.User.targetValue;
+                    const passStatus =
+                      typeof passingGrade === 'number'
+                        ? entry.totalScore >= passingGrade
+                        : null;
                     return (
                       <tr
                         key={entry.rank}
@@ -617,6 +630,34 @@ export function QuizLeaderboard() {
                               {entry.User.majorChoice}
                             </span>
                           </div>
+                        </td>
+                        {/* Passing Grade */}
+                        <td className="px-3 py-3 text-center">
+                          <Badge
+                            variant="outline"
+                            className="text-[10px] font-bold whitespace-nowrap"
+                          >
+                            {typeof passingGrade === 'number'
+                              ? passingGrade.toFixed(0)
+                              : '-'}
+                          </Badge>
+                        </td>
+                        {/* Status */}
+                        <td className="px-3 py-3 text-center">
+                          {passStatus === null ? (
+                            <span className="text-xs text-slate-400">-</span>
+                          ) : (
+                            <Badge
+                              className={cn(
+                                'text-[10px] font-bold',
+                                passStatus
+                                  ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-100'
+                                  : 'bg-red-100 text-red-700 hover:bg-red-100',
+                              )}
+                            >
+                              {passStatus ? 'Lolos' : 'Tidak Lolos'}
+                            </Badge>
+                          )}
                         </td>
                       </tr>
                     );

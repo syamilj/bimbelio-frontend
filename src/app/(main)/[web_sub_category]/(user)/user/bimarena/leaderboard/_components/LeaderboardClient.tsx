@@ -46,6 +46,8 @@ export interface RankingTryoutProps {
       sessionId: string;
       category: string;
       subCategory: string;
+      assessmentType?: string;
+      thresholdValue?: number | null;
       isUnlocked: boolean;
       maxScore: number;
     }[];

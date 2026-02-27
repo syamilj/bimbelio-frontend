@@ -1,13 +1,15 @@
 'use client';
 import { Spinner } from '@/components/ui/spinner';
 
-import { useAppContext } from '@/components/provider/provider-app';
 import axiosInstance from '@/lib/axios/axiosInstance';
 import { response, responseError } from '@/lib/response';
 import { cn } from '@/lib/utils';
 import { TryoutSubCategory } from '@/types/database';
 import 'katex/dist/katex.min.css';
+import { ChevronLeft, Loader2 } from 'lucide-react';
 import LZString from 'lz-string';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import SessionOption from './_component/session-option';
@@ -156,7 +158,10 @@ const NewTryOut = () => {
       });
   }, []);
 
-  const { minimizeSidebar } = useAppContext();
+  const params = useParams();
+  const webSubCategory = Array.isArray(params?.web_sub_category)
+    ? params.web_sub_category[0]
+    : (params?.web_sub_category ?? '');
 
   const resetTryout = async () => {
     setTryout(null);
@@ -406,16 +411,32 @@ const NewTryOut = () => {
   }
 
   return (
-    <div
-      className={cn(
-        'fixed left-0 top-[80px] h-full w-full bg-workspace duration-300',
-        minimizeSidebar && 'pl-[calc(73px+1rem)]',
-        !minimizeSidebar && 'pl-[calc(254px+1rem)]',
-      )}
-    >
+    <div className="h-screen flex flex-col bg-gray-50">
+      <header className="h-[53px] shrink-0 bg-white border-b border-gray-200 flex items-center px-4 gap-3">
+        <Link
+          href={`/${webSubCategory}/admin/quiz`}
+          className="inline-flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+        >
+          <ChevronLeft className="h-4 w-4" />
+          Kembali
+        </Link>
+        <div className="flex-1 flex items-center justify-center">
+          <p className="text-sm font-semibold text-gray-800">Tambah Quiz</p>
+        </div>
+        <button
+          type="submit"
+          form="tryout-admin"
+          disabled={isLoading}
+          className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium px-4 py-2 rounded-3xl transition-colors"
+        >
+          {isLoading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+          Simpan
+        </button>
+      </header>
+
       <form
         id="tryout-admin"
-        className="flex w-full"
+        className="flex flex-1 overflow-hidden"
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
@@ -423,14 +444,17 @@ const NewTryOut = () => {
       >
         <div
           className={cn(
-            'col-span-2 h-[90vh] w-[40%] overflow-y-auto pb-4 pt-4 duration-300',
+            'h-full overflow-y-auto bg-white border-r border-gray-200 transition-all duration-300',
             currentIndexEdit === null && 'col-span-5 w-full',
-            currentIndexEdit !== null && !showDetailTryout && 'w-0',
+            currentIndexEdit !== null && showDetailTryout && 'w-80',
+            currentIndexEdit !== null && !showDetailTryout && 'w-0 overflow-hidden',
           )}
         >
           <TryoutOption
             tryout={tryout}
             setTryout={setTryout}
+            sessions={sessions}
+            setSessions={setSessions}
             startDate={startDate}
             setStartDate={setStartDate}
             startDateTime={startDateTime}
@@ -445,7 +469,8 @@ const NewTryOut = () => {
             setResultDateTime={setResultDateTime}
             currentIndexEdit={currentIndexEdit}
             setCurrentIndexEdit={setCurrentIndexEdit}
-            isLoading={isLoading}
+            setQuestionIndex={setQuestionIndex}
+            setAssesmentType={setAssesmentType}
             resetTryout={resetTryout}
             selectedQuizVolume={selectedQuizVolume}
             setSelectedQuizVolume={setSelectedQuizVolume}
@@ -453,9 +478,9 @@ const NewTryOut = () => {
         </div>
         <div
           className={cn(
-            'relative col-span-3 mt-4 h-[90vh] w-[60%] duration-300',
-            currentIndexEdit !== null && !showDetailTryout && '-ml-4 w-full',
-            currentIndexEdit === null && 'w-0',
+            'relative h-full overflow-hidden bg-gray-50 transition-all duration-300',
+            currentIndexEdit === null && 'w-0 overflow-hidden',
+            currentIndexEdit !== null && 'flex-1',
           )}
         >
           <SessionOption
