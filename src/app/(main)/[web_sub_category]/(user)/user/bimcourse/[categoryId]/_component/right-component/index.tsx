@@ -308,8 +308,19 @@ const Sidebar = ({
       <Tabs
         value={activeIndex}
         onValueChange={(value) => {
+          if (value === tab) {
+            setActiveIndex(value);
+            return;
+          }
           setActiveIndex(value);
-          router.push(`${window.location.pathname}?sub=${sub}&tab=${value}`);
+          if (!sub) return;
+
+          const targetUrl = `${window.location.pathname}?sub=${sub}&tab=${value}`;
+          const currentUrl = `${window.location.pathname}${window.location.search}`;
+
+          if (currentUrl !== targetUrl) {
+            router.replace(targetUrl);
+          }
           // push(
           //   {
           //     query: {

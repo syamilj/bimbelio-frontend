@@ -63,16 +63,24 @@ export default function Provider({ children }: Props) {
     if (!pathname || !sub) return;
 
     const isStudyPath = pathname.endsWith('/study');
+    const currentQuery = searchParams?.toString();
+    const currentUrl = currentQuery ? `${pathname}?${currentQuery}` : pathname;
 
     if (!isStudyPath) {
-      router.replace(`${pathname}/study?sub=${sub}&tab=${tab || 'chat'}`);
+      const targetUrl = `${pathname}/study?sub=${sub}&tab=${tab || 'chat'}`;
+      if (currentUrl !== targetUrl) {
+        router.replace(targetUrl);
+      }
       return;
     }
 
     if (!tab) {
-      router.replace(`${pathname}?sub=${sub}&tab=chat`);
+      const targetUrl = `${pathname}?sub=${sub}&tab=chat`;
+      if (currentUrl !== targetUrl) {
+        router.replace(targetUrl);
+      }
     }
-  }, [pathname, tab, sub, router]);
+  }, [pathname, tab, sub, router, searchParams]);
 
   // ===== Editor ================================
   const editor = useCreateBlockNote({
@@ -208,16 +216,19 @@ export default function Provider({ children }: Props) {
             CourseProgress: Course[0].CourseSubChapter[0].CourseProgress,
           });
           if (pathname?.endsWith('/study')) {
-            router.push(
-              `${pathname}?sub=${Course[0].CourseSubChapter[0].id}&tab=chat`,
-            );
+            const targetUrl = `${pathname}?sub=${Course[0].CourseSubChapter[0].id}&tab=chat`;
+            const currentQuery = searchParams?.toString();
+            const currentUrl = currentQuery ? `${pathname}?${currentQuery}` : pathname;
+            if (currentUrl !== targetUrl) {
+              router.replace(targetUrl);
+            }
           }
         } else {
           setCourseData(null);
         }
       }
     }
-  }, [Course, CourseProgress, sub, indexChapter, router, startParam, pathname]);
+  }, [Course, CourseProgress, sub, router, pathname, searchParams]);
 
   useEffect(() => {
     const chatAIContainer = document.querySelector(
