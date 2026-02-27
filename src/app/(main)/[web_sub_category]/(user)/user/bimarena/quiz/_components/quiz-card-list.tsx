@@ -231,6 +231,9 @@ export function QuizCardList() {
                 <style>{`.quiz-cards::-webkit-scrollbar { display: none; }`}</style>
                 <div className="quiz-cards flex md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 md:gap-4 min-w-max md:min-w-0">
                   {sub.quizzes.map((quiz) => {
+                    const isFreeQuiz =
+                      quiz.isFreePreview === true || quiz.quizOrder === 1;
+
                     return (
                       <div
                         key={quiz.id}
@@ -398,7 +401,7 @@ export function QuizCardList() {
                                 </Button>
                               ) : isVolumeStarted ? (
                                 <>
-                                  {isLocked && quiz.quizOrder !== 1 ? (
+                                  {isLocked && !isFreeQuiz ? (
                                     <Button
                                       size="sm"
                                       className="w-full rounded-3xl text-sm font-bold h-11 gap-2 shadow-sm transition-all bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white"

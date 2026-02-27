@@ -44,6 +44,7 @@ export const initiateVolume = () => {
         TryoutQuestionCount: number;
         TryoutResult: TryoutResult | null;
         isDone: boolean;
+        isFreePreview?: boolean;
         totalParticipant: number;
       })[];
       totalUserSubscribed: number;

@@ -18,6 +18,7 @@ export type QuizVolume = {
   website_sub_category_id: string;
   id: string;
   title: string | null;
+  image?: string | null;
   startDate: string;
   endDate: string;
   status: QuizVolumeStatusEnum;

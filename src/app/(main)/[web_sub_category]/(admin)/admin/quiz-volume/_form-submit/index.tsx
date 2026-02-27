@@ -3,6 +3,7 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { InputImage } from '@/components/ui/input-image';
 import {
   Command,
   CommandEmpty,
@@ -46,9 +47,11 @@ import {
   ChevronsUpDown,
   X,
 } from 'lucide-react';
+import { env } from '@/env.mjs';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { Dispatch, SetStateAction, useState } from 'react';
+import { storage } from '@/supabaseClient';
 
 const STATUS_OPTIONS = [
   {
@@ -82,6 +85,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
     status: 'DRAFT',
     startDate: '',
     endDate: '',
+    image: '',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -220,6 +224,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
           status: data.status,
           startDate: getDateForInputDateTime(data.startDate),
           endDate: getDateForInputDateTime(data.endDate),
+          image: data.image || '',
         });
         const sortedTryouts = normalizeOrdersBySubCategory(data.Tryout);
         setSelectedTryouts(sortedTryouts);
@@ -280,6 +285,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
           status: submitData.status,
           startDate: submitData.startDate,
           endDate: submitData.endDate,
+          image: submitData.image || null,
           TryoutIds: submitData.tryoutIds,
         },
       });
@@ -293,6 +299,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
           status: submitData.status,
           startDate: submitData.startDate,
           endDate: submitData.endDate,
+          image: submitData.image || null,
           TryoutIds: submitData.tryoutIds,
         },
       });
@@ -408,6 +415,48 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
                       {errors.volumeNumber}
                     </div>
                   )}
+                </div>
+
+                <div className="md:col-span-2">
+                  <p className="text-sm font-bold text-slate-700 mb-2">
+                    Image Volume
+                  </p>
+                  <InputImage
+                    preview={
+                      formData.image
+                        ? `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/quiz-volume/${formData.image}`
+                        : undefined
+                    }
+                    onChange={async (image) => {
+                      if (!image) return;
+
+                      const oldImage = formData.image;
+                      const filename = `quiz-volume-${crypto.randomUUID()}`;
+                      const upload = await storage
+                        .from('img')
+                        .upload(`quiz-volume/${filename}`, image);
+
+                      if (
+                        upload?.error?.message ===
+                        'The resource already exists'
+                      ) {
+                        await storage
+                          .from('img')
+                          .update(`quiz-volume/${filename}`, image);
+                      }
+
+                      if (oldImage) {
+                        await storage
+                          .from('img')
+                          .remove([`quiz-volume/${oldImage}`]);
+                      }
+
+                      setFormData((prev) => ({
+                        ...prev,
+                        image: filename,
+                      }));
+                    }}
+                  />
                 </div>
                 <div>
                   <p className="text-sm font-bold text-slate-700 mb-2">

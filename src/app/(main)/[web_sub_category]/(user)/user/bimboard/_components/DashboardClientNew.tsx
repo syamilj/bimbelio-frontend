@@ -167,7 +167,12 @@ export interface DashboardData {
 
 function getImageUrl(
   imageId: string | null | undefined,
-  type: 'tryout' | 'liveclass' | 'course' | 'document' = 'tryout',
+  type:
+    | 'tryout'
+    | 'liveclass'
+    | 'course'
+    | 'document'
+    | 'quiz-volume' = 'tryout',
 ): string | undefined {
   if (!imageId || imageId.trim() === '') return undefined;
   if (
@@ -187,6 +192,8 @@ function getImageUrl(
       return `${baseUrl}/document/${imageId}`;
     case 'course':
       return `${baseUrl}/${imageId}`;
+    case 'quiz-volume':
+      return `${baseUrl}/quiz-volume/${imageId}`;
     default:
       return `${baseUrl}/${imageId}`;
   }
@@ -376,7 +383,7 @@ export default function DashboardClientNew() {
         .map((qv: any) => ({
           id: qv.id,
           title: qv.title || 'Quiz',
-          image: getImageUrl(qv.image, 'tryout') || null,
+          image: getImageUrl(qv.image, 'quiz-volume') || null,
           startDate: qv.startDate,
           endDate: qv.endDate,
           status: qv.status as 'PUBLIC' | 'PRIVATE' | 'DRAFT',
