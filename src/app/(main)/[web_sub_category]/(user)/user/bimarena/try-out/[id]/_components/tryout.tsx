@@ -215,6 +215,7 @@ const Tryout: React.FC<Props> = ({
           {/* Main Question Area */}
           <div className="lg:col-span-3">
             <SessionQuestion
+              sessionId={sessionId}
               currentQuestionIndex={currentQuestionIndex}
               currentQuestionData={currentQuestionData}
               selectedOptions={selectedOptions}

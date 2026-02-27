@@ -34,6 +34,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import Link from 'next/link';
+import { Fragment } from 'react';
 import { useState } from 'react';
 
 const formatDate = (date: Date | string) => {
@@ -294,7 +295,7 @@ export default function QuizVolumePage() {
                     </TableRow>
                   ) : (
                     volumes.map((volume, index) => (
-                      <>
+                      <Fragment key={volume.id}>
                         <TableRow key={volume.id}>
                           <TableCell>
                             <button
@@ -462,7 +463,7 @@ export default function QuizVolumePage() {
                               </TableCell>
                             </TableRow>
                           )}
-                      </>
+                      </Fragment>
                     ))
                   )}
                 </TableBody>

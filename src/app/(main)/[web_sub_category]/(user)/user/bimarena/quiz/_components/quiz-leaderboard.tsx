@@ -5,7 +5,8 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { cn, getUniversityInitials, Provinces } from '@/lib/utils';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn, Provinces } from '@/lib/utils';
 import {
   ArrowDown,
   ArrowUp,
@@ -27,7 +28,7 @@ import {
   Trophy,
   Zap,
 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useQuizProvider } from '../_provider/_provider';
 import { BASE_ONLINE_PARTICIPANTS, formatNumber } from './quiz-dummy';
 
@@ -39,18 +40,48 @@ export function QuizLeaderboard() {
   const userId = session?.user.id;
   const { websiteSubCategory } = useWebsiteSubCategory();
   const {
-    useLeaderboard: { TopThreeUsers, UserRankingList },
-    useUserStatistic: { UserStatistic },
+    useLeaderboard: { TopThreeUsers, UserRankingList, SubCategoryLeaderboards },
   } = useQuizProvider();
-  const userStats = UserStatistic?.userStatistic;
-  const userTarget = UserStatistic?.userTarget;
-  const targetUniversity = {
-    name: getUniversityInitials(userTarget?.univChoiceOne) || '-',
-    major: userTarget?.univStudyChoiceOne || '-',
-  };
 
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const [activeLeaderboardTab, setActiveLeaderboardTab] =
+    useState<string>('overall');
+
+  const leaderboardTabs = useMemo(
+    () => [
+      {
+        id: 'overall',
+        label: 'Keseluruhan',
+        topThreeUsers: TopThreeUsers,
+        userRankingArray: UserRankingList,
+      },
+      ...SubCategoryLeaderboards.map((subCategory) => ({
+        id: subCategory.id,
+        label: subCategory.code || subCategory.name,
+        topThreeUsers: subCategory.topThreeUsers,
+        userRankingArray: subCategory.userRankingArray,
+      })),
+    ],
+    [TopThreeUsers, UserRankingList, SubCategoryLeaderboards],
+  );
+
+  const activeLeaderboard = useMemo(
+    () =>
+      leaderboardTabs.find((tab) => tab.id === activeLeaderboardTab) ||
+      leaderboardTabs[0],
+    [leaderboardTabs, activeLeaderboardTab],
+  );
+
+  const activeTopThreeUsers = activeLeaderboard?.topThreeUsers || [];
+
+  useEffect(() => {
+    if (!activeLeaderboard) {
+      setActiveLeaderboardTab('overall');
+      return;
+    }
+
+    setCurrentPage(1);
+  }, [activeLeaderboard]);
 
   // State for sorting and filtering
   const [sortField, setSortField] = useState<SortField>('rank');
@@ -77,8 +108,6 @@ export function QuizLeaderboard() {
     }
   };
 
-  const rankChange = 0;
-
   const getRankGradient = (rank: number) => {
     switch (rank) {
       case 1:
@@ -95,9 +124,22 @@ export function QuizLeaderboard() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
 
+  const formatDuration = (minutes: number) => {
+    if (!Number.isFinite(minutes) || minutes <= 0) return '-';
+
+    const roundedMinutes = Math.round(minutes);
+    const hours = Math.floor(roundedMinutes / 60);
+    const mins = roundedMinutes % 60;
+
+    if (hours <= 0) return `${mins}m`;
+    if (mins === 0) return `${hours}j`;
+
+    return `${hours}j ${mins}m`;
+  };
+
   // Filter and Sort Logic
   const filteredAndSortedData = useMemo(() => {
-    let data = [...UserRankingList];
+    let data = [...(activeLeaderboard?.userRankingArray || [])];
 
     // Filter berdasarkan search query (nama atau sekolah)
     if (searchQuery.trim()) {
@@ -142,10 +184,13 @@ export function QuizLeaderboard() {
     });
 
     return data;
-  }, [UserRankingList, sortField, sortOrder, searchQuery, selectedProvince]);
+  }, [activeLeaderboard, sortField, sortOrder, searchQuery, selectedProvince]);
 
   // Pagination Logic
-  const totalPages = Math.ceil(filteredAndSortedData.length / itemsPerPage);
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredAndSortedData.length / itemsPerPage),
+  );
   const paginatedData = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -198,12 +243,14 @@ export function QuizLeaderboard() {
               Top 3 Pejuang Terbaik
             </h3>
             <p className="text-[10px] md:text-xs text-slate-500 mt-0.5 md:mt-1">
-              Periode Volume Saat Ini
+              {activeLeaderboard?.id === 'overall'
+                ? 'Periode Volume Saat Ini'
+                : `Subtes ${activeLeaderboard?.label}`}
             </p>
           </div>
           <div className="flex justify-center items-end gap-2 md:gap-8">
             {/* 2nd Place */}
-            {TopThreeUsers[1] && (
+            {activeTopThreeUsers[1] && (
               <div className="flex flex-col items-center">
                 <div
                   className={cn(
@@ -214,13 +261,13 @@ export function QuizLeaderboard() {
                   <Medal className="w-5 h-5 md:w-7 md:h-7 text-white" />
                 </div>
                 <p className="font-bold text-slate-800 text-[10px] md:text-sm text-center truncate max-w-[70px] md:max-w-[100px]">
-                  {TopThreeUsers[1].User.name}
+                  {activeTopThreeUsers[1].User.name}
                 </p>
                 <p className="text-[8px] md:text-[10px] text-slate-500 hidden sm:block">
-                  {TopThreeUsers[1].User.name}
+                  {activeTopThreeUsers[1].User.name}
                 </p>
                 <div className="mt-1.5 md:mt-2 bg-slate-100 text-slate-700 font-black px-2 md:px-3 py-1 md:py-1.5 rounded-3xl md:rounded-3xl text-[10px] md:text-sm">
-                  {TopThreeUsers[1].totalScore.toLocaleString()}
+                  {activeTopThreeUsers[1].totalScore.toLocaleString()}
                 </div>
                 <div
                   className={cn(
@@ -231,7 +278,7 @@ export function QuizLeaderboard() {
             )}
 
             {/* 1st Place */}
-            {TopThreeUsers[0] && (
+            {activeTopThreeUsers[0] && (
               <div className="flex flex-col items-center -mt-4 md:-mt-6">
                 <div className="relative">
                   <Crown className="w-4 h-4 md:w-6 md:h-6 text-yellow-500 absolute -top-3 md:-top-5 left-1/2 -translate-x-1/2" />
@@ -245,13 +292,13 @@ export function QuizLeaderboard() {
                   </div>
                 </div>
                 <p className="font-bold text-slate-800 text-[11px] md:text-sm text-center mt-1.5 md:mt-2 truncate max-w-[80px] md:max-w-[120px]">
-                  {TopThreeUsers[0].User.name}
+                  {activeTopThreeUsers[0].User.name}
                 </p>
                 <p className="text-[8px] md:text-[10px] text-slate-500 hidden sm:block">
-                  {TopThreeUsers[0].User.name}
+                  {activeTopThreeUsers[0].User.name}
                 </p>
                 <div className="mt-1.5 md:mt-2 bg-amber-100 text-amber-700 font-black px-2.5 md:px-4 py-1 md:py-2 rounded-3xl md:rounded-3xl text-xs md:text-lg">
-                  {TopThreeUsers[0].totalScore.toLocaleString()}
+                  {activeTopThreeUsers[0].totalScore.toLocaleString()}
                 </div>
                 <div
                   className={cn(
@@ -262,7 +309,7 @@ export function QuizLeaderboard() {
             )}
 
             {/* 3rd Place */}
-            {TopThreeUsers[2] && (
+            {activeTopThreeUsers[2] && (
               <div className="flex flex-col items-center">
                 <div
                   className={cn(
@@ -273,13 +320,13 @@ export function QuizLeaderboard() {
                   <Award className="w-5 h-5 md:w-7 md:h-7 text-white" />
                 </div>
                 <p className="font-bold text-slate-800 text-[10px] md:text-sm text-center truncate max-w-[70px] md:max-w-[100px]">
-                  {TopThreeUsers[2].User.name}
+                  {activeTopThreeUsers[2].User.name}
                 </p>
                 <p className="text-[8px] md:text-[10px] text-slate-500 hidden sm:block">
-                  {TopThreeUsers[2].User.name}
+                  {activeTopThreeUsers[2].User.name}
                 </p>
                 <div className="mt-1.5 md:mt-2 bg-orange-100 text-orange-700 font-black px-2 md:px-3 py-1 md:py-1.5 rounded-3xl md:rounded-3xl text-[10px] md:text-sm">
-                  {TopThreeUsers[2].totalScore.toLocaleString()}
+                  {activeTopThreeUsers[2].totalScore.toLocaleString()}
                 </div>
                 <div
                   className={cn(
@@ -306,9 +353,32 @@ export function QuizLeaderboard() {
               </h3>
             </div>
             <div className="text-[10px] md:text-xs text-slate-500 bg-slate-100 px-2 md:px-3 py-1 md:py-1.5 rounded-full font-medium">
-              {UserRankingList.length} peserta
+              {(activeLeaderboard?.userRankingArray || []).length} peserta
             </div>
           </div>
+
+          <Tabs
+            value={activeLeaderboardTab}
+            onValueChange={setActiveLeaderboardTab}
+            className="w-full"
+          >
+            <TabsList className="inline-flex h-auto gap-1.5 bg-slate-100/80 p-1 rounded-full overflow-x-auto">
+              {leaderboardTabs.map((tab) => (
+                <TabsTrigger
+                  key={tab.id}
+                  value={tab.id}
+                  className="px-3 py-1.5 rounded-full text-[10px] md:text-xs font-bold whitespace-nowrap data-[state=active]:text-white"
+                  style={
+                    activeLeaderboardTab === tab.id
+                      ? { backgroundColor: mainColor }
+                      : {}
+                  }
+                >
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
 
           {/* Search and Filter Controls */}
           <div className="flex flex-col sm:flex-row gap-2 md:gap-3">
@@ -506,11 +576,7 @@ export function QuizLeaderboard() {
                 ) : (
                   paginatedData.map((entry) => {
                     const isCurrentUser = entry.User.id === userId;
-                    const passingGrade = entry.User.targetValue;
-                    const passStatus =
-                      typeof passingGrade === 'number'
-                        ? entry.totalScore >= passingGrade
-                        : null;
+                    const passStatus = entry.isPassed;
                     return (
                       <tr
                         key={entry.rank}
@@ -548,7 +614,7 @@ export function QuizLeaderboard() {
                                 {entry.User.name}
                               </p>
                               <p className="text-[10px] text-slate-400 truncate">
-                                {entry.User.name}
+                                {entry.User.school || 'Peserta'}
                               </p>
                             </div>
                           </div>
@@ -588,7 +654,7 @@ export function QuizLeaderboard() {
                         {/* Waktu */}
                         <td className="px-3 py-3 text-center">
                           <span className="text-sm text-slate-600 font-medium">
-                            {entry.averageTime.toFixed(1)}m
+                            {formatDuration(entry.averageTime)}
                           </span>
                         </td>
                         {/* Sekolah */}
@@ -613,7 +679,7 @@ export function QuizLeaderboard() {
                         <td className="px-3 py-3">
                           <div className="flex flex-col">
                             <span
-                              className="text-sm text-slate-700 truncate max-w-[120px]"
+                              className="text-sm text-slate-700 max-w-[220px] leading-snug"
                               title={entry.User.univChoice}
                             >
                               {entry.User.univChoice}
@@ -624,7 +690,7 @@ export function QuizLeaderboard() {
                         <td className="px-3 py-3">
                           <div className="flex flex-col">
                             <span
-                              className="text-sm text-slate-700 truncate max-w-[120px]"
+                              className="text-sm text-slate-700 max-w-[220px] leading-snug"
                               title={entry.User.majorChoice}
                             >
                               {entry.User.majorChoice}
@@ -637,9 +703,10 @@ export function QuizLeaderboard() {
                             variant="outline"
                             className="text-[10px] font-bold whitespace-nowrap"
                           >
-                            {typeof passingGrade === 'number'
-                              ? passingGrade.toFixed(0)
-                              : '-'}
+                            {entry.passingGradeText ||
+                              (typeof entry.passingGradeValue === 'number'
+                                ? entry.passingGradeValue.toFixed(0)
+                                : '-')}
                           </Badge>
                         </td>
                         {/* Status */}

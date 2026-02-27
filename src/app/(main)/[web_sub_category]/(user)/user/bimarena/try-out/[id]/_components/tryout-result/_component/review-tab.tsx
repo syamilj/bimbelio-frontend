@@ -143,19 +143,22 @@ export function ReviewTab({
       return acc;
     }, 0) || 0;
 
+  const getCorrectOptionByQuestion = (
+    question: QuestionWithAnswers | undefined,
+  ) => {
+    if (!question?.TryoutAnswers || question.TryoutAnswers.length === 0) {
+      return null;
+    }
+
+    return question.TryoutAnswers.reduce((prev, current) => {
+      return current.value > prev.value ? current : prev;
+    });
+  };
+
   const getCorrectAnswer = () => {
     if (!UserAnswers) return '....';
-    if (AssessmentType !== '+4/-1/0') {
-      const correct = UserAnswers.TryoutQuestion.TryoutAnswers.find(
-        (item) => item.value === 5,
-      );
-      return correct ? correct.answer : '....';
-    } else {
-      const correct = UserAnswers.TryoutQuestion.TryoutAnswers.find(
-        (item) => item.value === 4,
-      );
-      return correct ? correct.answer : '....';
-    }
+    const correct = getCorrectOptionByQuestion(UserAnswers.TryoutQuestion);
+    return correct?.answer || '....';
   };
 
   const getIsCorrect = (userAnswerIdx: number): boolean | null => {
@@ -163,23 +166,10 @@ export function ReviewTab({
     const userAnswer = sessionResult.TryoutUserAnswer[userAnswerIdx];
     if (!userAnswer || !userAnswer.TryoutAnswers) return null;
 
-    const value = userAnswer.TryoutAnswers.value;
+    const correctOption = getCorrectOptionByQuestion(userAnswer.TryoutQuestion);
+    if (!correctOption) return null;
 
-    if (AssessmentType === '1-5' || AssessmentType === '+5/0') {
-      return value === 5;
-    } else if (AssessmentType === 'IRT') {
-      // const weight =
-      //   sessionResult.TryoutUserAnswer.find(
-      //     (item) => item.TryoutAnswers?.value !== 0,
-      //   )?.TryoutAnswers?.value || 0;
-      return value === 5;
-    } else if (AssessmentType === '+4/-1/0') {
-      return value === 4;
-    } else if (AssessmentType === '+1/0' || AssessmentType === '0-100') {
-      return value === 1;
-    }
-
-    return null;
+    return userAnswer.TryoutAnswers.id === correctOption.id;
   };
 
   const getSessionDuration = () => {
@@ -216,17 +206,10 @@ export function ReviewTab({
   const correctAnswer = () => {
     if (!sessionResult) return 0;
     return sessionResult.TryoutUserAnswer.filter((item) => {
-      const value = item.TryoutAnswers?.value || 0;
-      if (AssessmentType === '1-5' || AssessmentType === '+5/0') {
-        return value === 5;
-      } else if (AssessmentType === 'IRT') {
-        return value === 5;
-      } else if (AssessmentType === '+4/-1/0') {
-        return value === 4;
-      } else if (AssessmentType === '+1/0' || AssessmentType === '0-100') {
-        return value === 1;
-      }
-      return false;
+      if (!item.TryoutAnswers) return false;
+      const correctOption = getCorrectOptionByQuestion(item.TryoutQuestion);
+      if (!correctOption) return false;
+      return item.TryoutAnswers.id === correctOption.id;
     }).length;
   };
 

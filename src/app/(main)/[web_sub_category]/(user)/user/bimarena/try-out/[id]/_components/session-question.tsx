@@ -17,8 +17,10 @@ import {
 import React, { useEffect } from 'react';
 import Challenge from './challenge';
 import QuestionBubble from './question-bubble';
+import SubmitTryout from './submit-tryout';
 
 interface SessionQuestionProps {
+  sessionId: string;
   currentQuestionIndex: number;
   currentQuestionData: any;
   selectedOptions: string[];
@@ -33,6 +35,7 @@ interface SessionQuestionProps {
 }
 
 const SessionQuestion: React.FC<SessionQuestionProps> = ({
+  sessionId,
   currentQuestionIndex,
   currentQuestionData,
   selectedOptions,
@@ -209,22 +212,26 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
             dari {questions.length} terjawab
           </div>
 
-          <Button
-            className={cn(
-              'w-full sm:w-auto flex items-center justify-center space-x-2 rounded-3xl text-sm font-bold shadow-sm',
-              safeCurrentQuestionIndex + 1 === questions.length &&
-                'opacity-50 cursor-not-allowed',
-            )}
-            style={{ backgroundColor: mainColor }}
-            onClick={() => {
-              if (safeCurrentQuestionIndex < questions.length - 1)
-                setCurrentQuestionIndex(safeCurrentQuestionIndex + 1);
-            }}
-            disabled={safeCurrentQuestionIndex + 1 === questions.length}
-          >
-            <span>Selanjutnya</span>
-            <ChevronRight className="w-4 h-4" />
-          </Button>
+          {safeCurrentQuestionIndex + 1 === questions.length ? (
+            <div className="w-full sm:w-auto sm:min-w-[220px]">
+              <SubmitTryout
+                sessionAnswer={sessionAnswer}
+                sessionId={sessionId}
+              />
+            </div>
+          ) : (
+            <Button
+              className="w-full sm:w-auto flex items-center justify-center space-x-2 rounded-3xl text-sm font-bold shadow-sm"
+              style={{ backgroundColor: mainColor }}
+              onClick={() => {
+                if (safeCurrentQuestionIndex < questions.length - 1)
+                  setCurrentQuestionIndex(safeCurrentQuestionIndex + 1);
+              }}
+            >
+              <span>Selanjutnya</span>
+              <ChevronRight className="w-4 h-4" />
+            </Button>
+          )}
         </CardFooter>
       </Card>
     </div>

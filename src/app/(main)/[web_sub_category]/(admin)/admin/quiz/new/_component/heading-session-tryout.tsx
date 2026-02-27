@@ -344,6 +344,7 @@ const HeadingSessionTryout = ({
                     ? `${EditSession.categoryId}-${EditSession.category}`
                     : ''
                 }
+                readOnly
                 required
                 className="absolute bottom-0 left-4 h-1 w-1 p-0 text-transparent outline-none"
               />
@@ -387,6 +388,7 @@ const HeadingSessionTryout = ({
                       ? `${EditSession.subCategoryId}-${EditSession.subCategory}`
                       : ''
                   }
+                  readOnly
                   required
                   className="absolute bottom-0 left-4 h-1 w-1 p-0 text-transparent outline-none"
                 />

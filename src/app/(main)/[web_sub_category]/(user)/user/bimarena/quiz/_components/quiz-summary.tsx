@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { cn, getUniversityInitials } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import {
   ChevronRight,
   Clock,
@@ -51,7 +51,7 @@ export function QuizSummary() {
   const userTarget = UserStatistic?.userTarget;
 
   const targetUniversity = {
-    name: getUniversityInitials(userTarget?.univChoiceOne) || '-',
+    name: userTarget?.univChoiceOne || '-',
     major: userTarget?.univStudyChoiceOne || '-',
   };
 
