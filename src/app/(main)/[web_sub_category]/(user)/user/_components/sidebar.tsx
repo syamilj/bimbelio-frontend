@@ -87,6 +87,12 @@ const SidebarUser = ({
     }
   }, [transactionPopUp, pagesSetting]);
 
+  useEffect(() => {
+    if (pathname?.includes('/user/paket-belajar')) {
+      setIsUpgrading(false);
+    }
+  }, [pathname]);
+
   // Get dynamic colors from the selected category
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
@@ -204,6 +210,10 @@ const SidebarUser = ({
             <div className="flex justify-center mb-3 px-2">
               <button
                 onClick={() => {
+                  if (pathname?.includes('/user/paket-belajar')) {
+                    setIsUpgrading(false);
+                    return;
+                  }
                   setIsUpgrading(true);
                   router.push(`/${website_sub_category_id_params}/user/paket-belajar`);
                 }}
@@ -229,6 +239,10 @@ const SidebarUser = ({
             <div className="px-5 mb-3">
               <button
                 onClick={() => {
+                  if (pathname?.includes('/user/paket-belajar')) {
+                    setIsUpgrading(false);
+                    return;
+                  }
                   if (!isUpgrading) {
                     setIsUpgrading(true);
                     router.push(`/${website_sub_category_id_params}/user/paket-belajar`);

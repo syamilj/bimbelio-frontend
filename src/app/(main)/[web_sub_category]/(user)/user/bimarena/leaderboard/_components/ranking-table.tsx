@@ -144,19 +144,52 @@ export function RankingTable() {
 
   const getThresholdValue = useCallback(
     (session: { subCategory: string; thresholdValue?: number | null }) => {
-      if (typeof session.thresholdValue === 'number') {
+      if (typeof session.thresholdValue === 'number' && session.thresholdValue > 0) {
         return session.thresholdValue;
       }
 
       const kedinasanThresholdMap: Record<string, number> = {
         'Tes Wawasan Kebangsaan': 65,
+        TWK: 65,
         'Tes Intelegensi Umum': 80,
+        TIU: 80,
         'Tes Karakteristik Pribadi': 156,
+        TKP: 156,
       };
 
       return kedinasanThresholdMap[session.subCategory] ?? null;
     },
     [],
+  );
+
+  const KEDINASAN_REQUIRED_SUBTESTS = [
+    'Tes Wawasan Kebangsaan',
+    'Tes Intelegensi Umum',
+    'Tes Karakteristik Pribadi',
+  ];
+
+  const getKedinasanPassStatus = useCallback(
+    (
+      sessionResult: Array<{
+        subCategory: string;
+        totalScore: number;
+        thresholdValue?: number | null;
+      }> = [],
+    ) => {
+      return KEDINASAN_REQUIRED_SUBTESTS.every((requiredSubtest) => {
+        const session = sessionResult.find(
+          (item) => item.subCategory === requiredSubtest,
+        );
+
+        if (!session) return false;
+
+        const threshold = getThresholdValue(session);
+        if (threshold === null) return false;
+
+        return session.totalScore >= threshold;
+      });
+    },
+    [getThresholdValue],
   );
 
   const handleSearch = useCallback(
@@ -717,21 +750,12 @@ export function RankingTable() {
                             {/* Ambang Batas cell - Kedinasan only */}
                             {isKedinasanWebsub &&
                               (() => {
-                                const sessionsWithThreshold =
-                                  participant.sessionResult?.filter(
-                                    (s) => getThresholdValue(s) !== null,
-                                  ) ?? [];
-                                if (sessionsWithThreshold.length === 0)
-                                  return (
-                                    <TableCell className="text-center py-3 md:py-4">
-                                      <span className="text-gray-400 text-xs">
-                                        -
-                                      </span>
-                                    </TableCell>
-                                  );
-                                const allLolos = sessionsWithThreshold.every(
-                                  (s) => s.totalScore >= (getThresholdValue(s) ?? 0),
-                                );
+                                const allLolos =
+                                  typeof participant.isPassed === 'boolean'
+                                    ? participant.isPassed
+                                    : getKedinasanPassStatus(
+                                        participant.sessionResult,
+                                      );
                                 return (
                                   <TableCell className="text-center py-3 md:py-4">
                                     <span

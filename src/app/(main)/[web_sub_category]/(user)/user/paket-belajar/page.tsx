@@ -162,7 +162,7 @@ export default function PaketBelajarPage() {
                   </span>
                 </div>
 
-                <div className="flex overflow-x-auto touch-pan-y gap-5 px-2 -mx-2 snap-x snap-mandatory scrollbar-hide pb-3">
+                <div className="flex overflow-x-auto touch-pan-x gap-5 px-2 -mx-2 snap-x snap-mandatory scrollbar-hide pb-3 [-webkit-overflow-scrolling:touch]">
                   {section.plans.map((plan) => (
                     <div
                       key={plan.id}
