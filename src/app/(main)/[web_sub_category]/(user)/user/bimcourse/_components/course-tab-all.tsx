@@ -23,6 +23,7 @@ interface CourseCategory {
   id: number;
   name: string;
   image: string | null;
+  resumeSubChapterId?: string | null;
   totalChapters: number;
   completedChapters: number;
   percentageProgress: number;
@@ -93,10 +94,13 @@ function CourseGridCard({ item, web }: { item: CourseCategory; web: string }) {
   const pct = Math.min(100, Math.round(item.percentageProgress));
   const Icon = ACTION_ICON[status];
   const badge = BADGE_CONFIG[status];
+  const href = item.resumeSubChapterId
+    ? `/${web}/user/bimcourse/${item.id}/study?sub=${item.resumeSubChapterId}&tab=chat`
+    : `/${web}/user/bimcourse/${item.id}/study`;
 
   return (
     <Link
-      href={`/${web}/user/bimcourse/${item.id}`}
+      href={href}
       className="group flex flex-col rounded-3xl overflow-hidden border border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all duration-200 bg-white"
     >
       {/* Thumbnail */}

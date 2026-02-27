@@ -60,10 +60,19 @@ export default function Provider({ children }: Props) {
     : params?.categoryId || null;
 
   useEffect(() => {
-    if (!tab && sub) {
-      router.push(`${window.location.pathname}?sub=${sub}&tab=chat`);
+    if (!pathname || !sub) return;
+
+    const isStudyPath = pathname.endsWith('/study');
+
+    if (!isStudyPath) {
+      router.replace(`${pathname}/study?sub=${sub}&tab=${tab || 'chat'}`);
+      return;
     }
-  }, [tab, sub, router]);
+
+    if (!tab) {
+      router.replace(`${pathname}?sub=${sub}&tab=chat`);
+    }
+  }, [pathname, tab, sub, router]);
 
   // ===== Editor ================================
   const editor = useCreateBlockNote({
@@ -176,7 +185,8 @@ export default function Provider({ children }: Props) {
           }
         }
       } else {
-        // Only auto-navigate if not showing start course
+        // Keep overview page stable when opening /bimcourse/[categoryId]
+        // and only auto-navigate when already inside /study.
         if (Course.length > 0 && Course[0].CourseSubChapter.length > 0) {
           setCourseData({
             id: Course[0].CourseSubChapter[0].id,
@@ -197,15 +207,17 @@ export default function Provider({ children }: Props) {
             TryoutSession: Course[0].CourseSubChapter[0].TryoutSession,
             CourseProgress: Course[0].CourseSubChapter[0].CourseProgress,
           });
-          router.push(
-            `${window.location.pathname}?sub=${Course[0].CourseSubChapter[0].id}&tab=chat`,
-          );
+          if (pathname?.endsWith('/study')) {
+            router.push(
+              `${pathname}?sub=${Course[0].CourseSubChapter[0].id}&tab=chat`,
+            );
+          }
         } else {
           setCourseData(null);
         }
       }
     }
-  }, [Course, CourseProgress, sub, indexChapter, router, startParam]);
+  }, [Course, CourseProgress, sub, indexChapter, router, startParam, pathname]);
 
   useEffect(() => {
     const chatAIContainer = document.querySelector(

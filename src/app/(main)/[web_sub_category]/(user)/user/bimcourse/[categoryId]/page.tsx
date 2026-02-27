@@ -192,13 +192,30 @@ export default function CourseOverviewPage() {
   }
 
   const handleStartLearning = () => {
-    // Navigate to the first available content
-    const firstChapter = Course?.[0];
-    const firstSub = firstChapter?.CourseSubChapter?.[0];
-    if (firstSub) {
-      router.push(`${pathname}/study?sub=${firstSub.id}&tab=chat`);
+    const allSubChapters =
+      Course?.flatMap((chapter) => chapter.CourseSubChapter) ?? [];
+
+    if (allSubChapters.length === 0) {
+      router.push(`${pathname}/study`);
+      return;
+    }
+
+    let resumeSubId = allSubChapters[0].id;
+    let latestProgressAt = 0;
+
+    allSubChapters.forEach((subChapter) => {
+      subChapter.CourseProgress?.forEach((progress) => {
+        const progressAt = new Date(progress.createdAt).getTime();
+        if (progressAt > latestProgressAt) {
+          latestProgressAt = progressAt;
+          resumeSubId = subChapter.id;
+        }
+      });
+    });
+
+    if (resumeSubId) {
+      router.push(`${pathname}/study?sub=${resumeSubId}&tab=chat`);
     } else {
-      // Fallback if no content
       router.push(`${pathname}/study`);
     }
   };

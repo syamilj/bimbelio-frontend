@@ -12,6 +12,7 @@ interface CourseCategory {
   id: number;
   name: string;
   image: string | null;
+  resumeSubChapterId?: string | null;
   totalChapters: number;
   completedChapters: number;
   percentageProgress: number;
@@ -41,6 +42,9 @@ const STATUS_STYLES: Record<Status, string> = {
 function CourseCard({ item, web }: { item: CourseCategory; web: string }) {
   const status = getStatus(item);
   const pct = Math.min(100, Math.round(item.percentageProgress));
+  const href = item.resumeSubChapterId
+    ? `/${web}/user/bimcourse/${item.id}/study?sub=${item.resumeSubChapterId}&tab=chat`
+    : `/${web}/user/bimcourse/${item.id}/study`;
 
   const ActionIcon =
     status === 'Belum Dimulai'
@@ -51,7 +55,7 @@ function CourseCard({ item, web }: { item: CourseCategory; web: string }) {
 
   return (
     <Link
-      href={`/${web}/user/bimcourse/${item.id}`}
+      href={href}
       className="flex items-center gap-4 p-4 hover:bg-slate-50/80 transition-colors group"
     >
       <div className="relative w-20 h-14 md:w-24 md:h-16 rounded-3xl overflow-hidden flex-shrink-0 bg-slate-100">
