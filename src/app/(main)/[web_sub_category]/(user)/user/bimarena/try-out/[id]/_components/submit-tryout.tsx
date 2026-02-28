@@ -77,8 +77,7 @@ const SubmitTryout = ({
       payload,
       type: 'post',
       toast: {
-        successMsg: 'Try out berhasil dikumpulkan',
-        errorMsg: 'Gagal mengumpulkan try out, coba lagi!',
+        errorMsg: 'Gagal mengumpulkan sesi, coba lagi!',
       },
       onSuccess() {
         localStorage.removeItem(`sessionAnswer-${sessionId}`);
