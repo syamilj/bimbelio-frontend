@@ -13,6 +13,7 @@ import { SpinnerPageCentered } from '@/components/ui/spinner';
 import { cn } from '@/lib/utils';
 import { TryoutAnswer, TryoutQuestion } from '@/types/database';
 import { BookOpen, FileText, LayoutGrid, Target, Trophy } from 'lucide-react';
+import LZString from 'lz-string';
 import { useEffect, useState } from 'react';
 import { TryoutDataType } from '../page';
 import CountDownTryout from './countdown-tryout';
@@ -22,6 +23,15 @@ import SubmitTryout from './submit-tryout';
 interface QuestionWithAnswer extends TryoutQuestion {
   TryoutAnswers: TryoutAnswer[];
 }
+
+type SessionAnswerItem = {
+  number: number;
+  questionId: string;
+  answerId: string;
+  answer: string;
+  type: string;
+  notSure: boolean;
+};
 
 interface Props {
   questions: QuestionWithAnswer[];
@@ -53,10 +63,93 @@ const Tryout: React.FC<Props> = ({
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
+  const storageKey = `sessionAnswer-${sessionId}`;
+
+  const isAnsweredItem = (item: SessionAnswerItem) => {
+    const answerId = (item?.answerId || '').trim();
+    const answerText = (item?.answer || '').trim();
+    if (answerId.length > 0) {
+      return true;
+    }
+    return answerText.length > 0;
+  };
+
+  const compactSessionAnswerForStorage = (data: SessionAnswerItem[]) => {
+    return data.map((item) => {
+      const isShortAnswer = item.type === 'SHORT_ANSWER';
+      return {
+        ...item,
+        answer: isShortAnswer ? item.answer : '',
+      };
+    });
+  };
+
+  const parseStoredSessionAnswer = (rawValue: string) => {
+    try {
+      if (rawValue.startsWith('lz:')) {
+        const decompressed = LZString.decompressFromUTF16(rawValue.slice(3));
+        if (decompressed) {
+          return JSON.parse(decompressed);
+        }
+      }
+      return JSON.parse(rawValue);
+    } catch {
+      return null;
+    }
+  };
+
+  const saveSessionAnswerToStorage = (data: SessionAnswerItem[]) => {
+    const compactPayload = compactSessionAnswerForStorage(data);
+    const compactJson = JSON.stringify(compactPayload);
+    const compressed = LZString.compressToUTF16(compactJson);
+    const payload = `lz:${compressed}`;
+
+    const writePayload = (value: string) => {
+      localStorage.setItem(storageKey, value);
+    };
+
+    try {
+      writePayload(payload);
+      return;
+    } catch (error) {
+      const isQuotaExceeded =
+        error instanceof DOMException &&
+        (error.name === 'QuotaExceededError' || error.code === 22);
+
+      if (!isQuotaExceeded) {
+        return;
+      }
+
+      const staleSessionKeys = Object.keys(localStorage).filter(
+        (key) => key.startsWith('sessionAnswer-') && key !== storageKey,
+      );
+
+      staleSessionKeys.forEach((key) => {
+        localStorage.removeItem(key);
+      });
+
+      try {
+        writePayload(payload);
+      } catch {
+        try {
+          writePayload(compactJson);
+        } catch {
+          localStorage.removeItem(storageKey);
+        }
+      }
+    }
+  };
+
   useEffect(() => {
-    const dataString = localStorage.getItem(`sessionAnswer-${sessionId}`);
+    const dataString = localStorage.getItem(storageKey);
     if (dataString) {
-      setSessionAnswer(JSON.parse(dataString));
+      const parsedData = parseStoredSessionAnswer(dataString);
+      if (parsedData) {
+        setSessionAnswer(parsedData);
+        return;
+      }
+
+      localStorage.removeItem(storageKey);
     } else {
       const initialAnswers = questions?.map((item: any) => ({
         number: item.number,
@@ -68,7 +161,7 @@ const Tryout: React.FC<Props> = ({
       }));
       setSessionAnswer(initialAnswers);
     }
-  }, [questions, sessionId]);
+  }, [questions, sessionId, storageKey]);
 
   useEffect(() => {
     if (sessionAnswer?.length > 0) {
@@ -87,15 +180,13 @@ const Tryout: React.FC<Props> = ({
         setInputValue('');
       }
     }
-    if (sessionAnswer)
-      localStorage.setItem(
-        `sessionAnswer-${sessionId}`,
-        JSON.stringify(sessionAnswer),
-      );
+    if (sessionAnswer) {
+      saveSessionAnswerToStorage(sessionAnswer);
+    }
   }, [sessionAnswer, currentQuestionIndex, questions, sessionId]);
 
   const isAnswered = (index: number) => {
-    return sessionAnswer[index].answer !== '';
+    return isAnsweredItem(sessionAnswer[index]);
   };
 
   console.log({ sessionData });
@@ -137,7 +228,7 @@ const Tryout: React.FC<Props> = ({
 
   const currentQuestionData = questions[currentQuestionIndex];
   const answeredCount = sessionAnswer.filter(
-    (item: any) => item.answer !== '',
+    (item: SessionAnswerItem) => isAnsweredItem(item),
   ).length;
   const notSureCount = sessionAnswer.filter((item: any) => item.notSure).length;
   const progressPercentage = (answeredCount / questions.length) * 100;

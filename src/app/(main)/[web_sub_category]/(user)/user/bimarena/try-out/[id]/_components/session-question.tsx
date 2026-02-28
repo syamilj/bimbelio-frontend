@@ -93,6 +93,13 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
     questions.length - 1,
   );
 
+  const answeredCount =
+    sessionAnswer?.filter((item: any) => {
+      const answerId = (item?.answerId || '').trim();
+      const answerText = (item?.answer || '').trim();
+      return answerId.length > 0 || answerText.length > 0;
+    }).length || 0;
+
   return (
     <div className="w-full">
       <Card className="rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
@@ -205,10 +212,7 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
           </Button>
 
           <div className="text-xs md:text-sm text-slate-600 text-center">
-            <span className="font-black">
-              {sessionAnswer?.filter((item: any) => item.answer !== '')
-                .length || 0}
-            </span>{' '}
+            <span className="font-black">{answeredCount}</span>{' '}
             dari {questions.length} terjawab
           </div>
 
