@@ -5,6 +5,18 @@ import { useSocket } from '@/lib/socket/useSocket';
 import { useEffect, useState } from 'react';
 
 export default function SocketInfo() {
+  const isProduction =
+    process.env.NODE_ENV === 'production' ||
+    process.env.NEXT_PUBLIC_ENV === 'production';
+
+  if (isProduction) {
+    return null;
+  }
+
+  return <SocketInfoDev />;
+}
+
+function SocketInfoDev() {
   const { isConnected, socketId, on, emit, disconnect } = useSocket();
   const [notification, setNotification] = useState<any>(null);
 

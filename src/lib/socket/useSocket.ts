@@ -29,6 +29,11 @@ export const useSocket = (serverUrl?: string) => {
     }
 
     const socket = connectSocket();
+    if (!socket) {
+      setIsConnected(false);
+      setSocketId(null);
+      return;
+    }
 
     socket.on('connect', () => {
       setIsConnected(true);

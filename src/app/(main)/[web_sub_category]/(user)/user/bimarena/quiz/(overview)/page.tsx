@@ -3,7 +3,6 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { cn } from '@/lib/utils';
 import { BarChart3, BookOpen, Trophy } from 'lucide-react';
 import { useState } from 'react';
 
@@ -117,17 +116,11 @@ export function BimArenaQuizPageMain() {
               </Tabs>
             </div>
 
-            {/* Tab Content - Keep all mounted, hide with CSS */}
+            {/* Tab Content */}
             <div className="relative">
-              <div className={cn(activeTab !== 'library' && 'hidden')}>
-                <QuizCardList />
-              </div>
-              <div className={cn(activeTab !== 'progress' && 'hidden')}>
-                <QuizProgress />
-              </div>
-              <div className={cn(activeTab !== 'leaderboard' && 'hidden')}>
-                <QuizLeaderboard />
-              </div>
+              {activeTab === 'library' && <QuizCardList />}
+              {activeTab === 'progress' && <QuizProgress />}
+              {activeTab === 'leaderboard' && <QuizLeaderboard />}
             </div>
           </div>
         )}

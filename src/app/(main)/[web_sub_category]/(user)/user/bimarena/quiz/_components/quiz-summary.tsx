@@ -257,7 +257,7 @@ export function QuizSummary() {
                 )}
               </div>
               <Select
-                value={selectedVolumeId || undefined}
+                value={selectedVolumeId ?? ''}
                 onValueChange={(value) => setSelectedVolumeId(value)}
               >
                 <SelectTrigger
