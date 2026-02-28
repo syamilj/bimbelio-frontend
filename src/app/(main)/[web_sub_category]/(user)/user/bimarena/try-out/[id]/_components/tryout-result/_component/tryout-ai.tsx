@@ -35,14 +35,17 @@ export const TryoutAI = ({
     data: Messages,
     isLoading: isLoadingPrevMessage,
     refetch: fetchMessages,
-    error: messageError,
   } = useGet<MessageDataType[]>(
     `/chatTryout/getAllMessageByParticipantId?participantId=${participantId}&userId=${session?.user.id}`,
+    {
+      enabled: !!participantId && !!session?.user?.id && !!websiteSubCategory?.id,
+      useEffectDependencies: [participantId, session?.user?.id, websiteSubCategory?.id],
+    },
   );
 
   const prevChatMessages = Messages || [];
 
-  if (!number) return 'Number is required2';
+  if (!number) return null;
 
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
