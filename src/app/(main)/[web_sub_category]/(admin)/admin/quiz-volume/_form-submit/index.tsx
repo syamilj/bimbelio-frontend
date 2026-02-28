@@ -85,6 +85,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
     status: 'DRAFT',
     startDate: '',
     endDate: '',
+    resultDate: '',
     image: '',
   });
 
@@ -193,6 +194,18 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
       newErrors.volumeNumber = 'Nomor volume harus berupa angka';
     }
 
+    if (!formData.startDate.trim()) {
+      newErrors.startDate = 'Start date harus diisi';
+    }
+
+    if (!formData.endDate.trim()) {
+      newErrors.endDate = 'End date harus diisi';
+    }
+
+    if (!formData.resultDate.trim()) {
+      newErrors.resultDate = 'Tanggal pembahasan harus diisi';
+    }
+
     // if (selectedTryouts.length === 0) {
     //   newErrors.tryouts = 'Pilih minimal 1 tryout';
     // }
@@ -210,6 +223,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
 
   const { isLoading: isLoadingGetData, refetch } = useGet<
     QuizVolume & {
+      resultDate?: string | null;
       Tryout: TryoutListType[];
     }
   >('/quizTryout/getSingleQuizVolume', {
@@ -220,10 +234,13 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
       if (data) {
         setFormData({
           name: data.title || '',
-          volumeNumber: data.number?.toString(),
-          status: data.status,
-          startDate: getDateForInputDateTime(data.startDate),
-          endDate: getDateForInputDateTime(data.endDate),
+          volumeNumber: data.number?.toString() || '',
+          status: data.status || 'DRAFT',
+          startDate: getDateForInputDateTime(data.startDate) || '',
+          endDate: getDateForInputDateTime(data.endDate) || '',
+          resultDate: getDateForInputDateTime(
+            data.resultDate || data.Tryout?.[0]?.resultDate || data.startDate,
+          ) || '',
           image: data.image || '',
         });
         const sortedTryouts = normalizeOrdersBySubCategory(data.Tryout);
@@ -285,6 +302,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
           status: submitData.status,
           startDate: submitData.startDate,
           endDate: submitData.endDate,
+          resultDate: submitData.resultDate,
           image: submitData.image || null,
           TryoutIds: submitData.tryoutIds,
         },
@@ -299,6 +317,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
           status: submitData.status,
           startDate: submitData.startDate,
           endDate: submitData.endDate,
+          resultDate: submitData.resultDate,
           image: submitData.image || null,
           TryoutIds: submitData.tryoutIds,
         },
@@ -383,7 +402,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
                   <Input
                     type="text"
                     name="name"
-                    value={formData.name}
+                    value={formData.name || ''}
                     onChange={handleInputChange}
                     placeholder="e.g., Persiapan Awal UTBK"
                     className={cn(errors.name && 'border-red-500 bg-red-50')}
@@ -402,7 +421,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
                   <Input
                     type="number"
                     name="volumeNumber"
-                    value={formData.volumeNumber}
+                    value={formData.volumeNumber || ''}
                     onChange={handleInputChange}
                     placeholder="e.g., 1"
                     className={cn(
@@ -465,7 +484,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
                   <Input
                     type="datetime-local"
                     name="startDate"
-                    value={formData.startDate}
+                    value={formData.startDate || ''}
                     onChange={handleInputChange}
                     className={cn(
                       errors.startDate && 'border-red-500 bg-red-50',
@@ -485,7 +504,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
                   <Input
                     type="datetime-local"
                     name="endDate"
-                    value={formData.endDate}
+                    value={formData.endDate || ''}
                     onChange={handleInputChange}
                     className={cn(errors.endDate && 'border-red-500 bg-red-50')}
                   />
@@ -493,6 +512,26 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
                     <div className="flex items-center gap-2 mt-2 text-red-600 text-sm">
                       <AlertCircle className="w-4 h-4" />
                       {errors.endDate}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-slate-700 mb-2">
+                    Tanggal Pembahasan *
+                  </p>
+                  <Input
+                    type="datetime-local"
+                    name="resultDate"
+                    value={formData.resultDate || ''}
+                    onChange={handleInputChange}
+                    className={cn(
+                      errors.resultDate && 'border-red-500 bg-red-50',
+                    )}
+                  />
+                  {errors.resultDate && (
+                    <div className="flex items-center gap-2 mt-2 text-red-600 text-sm">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.resultDate}
                     </div>
                   )}
                 </div>

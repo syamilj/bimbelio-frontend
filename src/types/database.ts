@@ -21,6 +21,7 @@ export type QuizVolume = {
   image?: string | null;
   startDate: string;
   endDate: string;
+  resultDate?: string | null;
   status: QuizVolumeStatusEnum;
   createdAt: string;
   updatedAt: string;
