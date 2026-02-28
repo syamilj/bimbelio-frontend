@@ -255,9 +255,15 @@ const ModalImportCSV = ({
             // Mengumpulkan jawaban dan nilai berdasarkan suffix
             const answers = answerSuffixes
               .map((suffix) => {
-                const answerText = quest[`Answer_${suffix}`];
-                const answerValue = parseInt(quest[`Value_${suffix}`]); // Pastikan nilai berupa angka
-                if (answerText && !isNaN(answerValue)) {
+                const answerText = getCsvText(quest, [
+                  `Answer_${suffix}`,
+                  `Answer ${suffix}`,
+                  suffix,
+                ]);
+                const answerValue = parseCsvNumber(
+                  getCsvCell(quest, [`Value_${suffix}`, `Value ${suffix}`]),
+                );
+                if (answerText && answerValue !== null) {
                   return {
                     answer: answerText,
                     value: answerValue,
@@ -309,12 +315,16 @@ const ModalImportCSV = ({
 
             return {
               Answers: transformedAnswers,
-              number: parseInt(quest.Number),
-              question: quest.Question,
-              subCategory: quest?.Subcategory || undefined,
-              subSubCategory: quest?.SubSubCategory || undefined,
-              categoryId: quest?.categoryId || undefined,
-              explanation: quest?.explanation || undefined,
+              number: parseCsvNumber(getCsvCell(quest, ['Number', 'No'])) || 0,
+              question: getCsvText(quest, ['Question']) || '',
+              subCategory:
+                getCsvText(quest, ['SubCategory', 'Subcategory']) || undefined,
+              subSubCategory:
+                getCsvText(quest, ['SubSubCategory', 'Sub Sub Category']) ||
+                undefined,
+              categoryId: getCsvText(quest, ['categoryId']) || undefined,
+              explanation:
+                getCsvText(quest, ['Explanation', 'explanation']) || undefined,
               courseChapterIds: quest?.courseChapterIds || [],
             };
           });
@@ -455,6 +465,70 @@ const ModalImportCSV = ({
 
 export default ModalImportCSV;
 
+const normalizeCsvKey = (value: string) =>
+  value.toLowerCase().replace(/[\s_-]/g, '');
+
+const getCsvCell = (row: Record<string, unknown>, keys: string[]) => {
+  const rowEntries = Object.entries(row || {});
+
+  for (const key of keys) {
+    const directValue = row[key];
+    if (directValue !== undefined && directValue !== null) {
+      return directValue;
+    }
+
+    const normalizedKey = normalizeCsvKey(key);
+    const found = rowEntries.find(([entryKey]) => {
+      return normalizeCsvKey(entryKey) === normalizedKey;
+    });
+
+    if (found && found[1] !== undefined && found[1] !== null) {
+      return found[1];
+    }
+  }
+
+  return undefined;
+};
+
+const getCsvText = (row: Record<string, unknown>, keys: string[]) => {
+  const value = getCsvCell(row, keys);
+  if (value === undefined || value === null) {
+    return '';
+  }
+  return String(value).trim();
+};
+
+const parseCsvNumber = (value: unknown) => {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return value;
+  }
+  if (typeof value === 'string') {
+    const parsed = Number(value.trim());
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+  return null;
+};
+
+const parseCorrectOption = (value: string) => {
+  const cleaned = value.toLowerCase().replace(/\s+/g, '');
+  if (!cleaned) {
+    return '';
+  }
+
+  const letterMatch = cleaned.match(/[abcde]/);
+  if (letterMatch) {
+    return letterMatch[0];
+  }
+
+  const numberMatch = cleaned.match(/[1-5]/);
+  if (numberMatch) {
+    const number = Number(numberMatch[0]);
+    return ['a', 'b', 'c', 'd', 'e'][number - 1] || '';
+  }
+
+  return '';
+};
+
 const handleGenerateQuestion = (
   data: any[],
   correctValue: number,
@@ -464,14 +538,36 @@ const handleGenerateQuestion = (
   try {
     // console.log('[Import CSVV] : ', { data });
     const fixData: QuestionProps[] = data.map((quest: any) => {
-      const Correct = (quest.Correct as string).toLowerCase();
+      const Correct = parseCorrectOption(
+        getCsvText(quest, ['Correct', 'Kunci', 'KunciJawaban']),
+      );
 
       const getAnswers = [
-        { answer: quest.A as string, value: 0, type: 'a' },
-        { answer: quest.B as string, value: 0, type: 'b' },
-        { answer: quest.C as string, value: 0, type: 'c' },
-        { answer: quest.D as string, value: 0, type: 'd' },
-        { answer: quest.E as string, value: 0, type: 'e' },
+        {
+          answer: getCsvText(quest, ['A', 'Answer_A', 'Answer A']),
+          value: 0,
+          type: 'a',
+        },
+        {
+          answer: getCsvText(quest, ['B', 'Answer_B', 'Answer B']),
+          value: 0,
+          type: 'b',
+        },
+        {
+          answer: getCsvText(quest, ['C', 'Answer_C', 'Answer C']),
+          value: 0,
+          type: 'c',
+        },
+        {
+          answer: getCsvText(quest, ['D', 'Answer_D', 'Answer D']),
+          value: 0,
+          type: 'd',
+        },
+        {
+          answer: getCsvText(quest, ['E', 'Answer_E', 'Answer E']),
+          value: 0,
+          type: 'e',
+        },
       ];
 
       const Answers: QuestionProps['Answers'] = getAnswers.map((item) => {
@@ -485,8 +581,8 @@ const handleGenerateQuestion = (
       let CourseData = null;
 
       if (quest?.Chapter) {
-        const CategoryName = quest?.Category || null;
-        const CourseChapterNamesArray = ((quest?.Chapter || '') as string)
+        const CategoryName = getCsvText(quest, ['Category']) || null;
+        const CourseChapterNamesArray = getCsvText(quest, ['Chapter'])
           .split('|')
           .map((name: string) => name.trim().toLowerCase());
 
@@ -494,17 +590,21 @@ const handleGenerateQuestion = (
           CategoryName,
           CourseChapterNamesArray,
           ChapterOptions || [],
-          parseInt(quest.Number),
+          parseCsvNumber(getCsvCell(quest, ['Number', 'No'])) || 0,
         );
       }
 
       return {
         Answers,
-        number: parseInt(quest.Number),
-        question: quest.Question,
-        subCategory: quest.SubCategory,
-        subSubCategory: quest.SubSubCategory,
-        explanation: quest.Explanation,
+        number: parseCsvNumber(getCsvCell(quest, ['Number', 'No'])) || 0,
+        question: getCsvText(quest, ['Question']) || '',
+        subCategory:
+          getCsvText(quest, ['SubCategory', 'Subcategory']) || undefined,
+        subSubCategory:
+          getCsvText(quest, ['SubSubCategory', 'Sub Sub Category']) ||
+          undefined,
+        explanation:
+          getCsvText(quest, ['Explanation', 'explanation']) || undefined,
         categoryId: CourseData?.categoryId || undefined,
         courseChapterIds: CourseData?.courseChapterIds || [],
       };
@@ -531,11 +631,18 @@ const ParseMarkdownToHTML = async (
 };
 
 const getCourseChapterIds = (
-  categoryName: string,
+  categoryName: string | null,
   chapterNameArray: string[],
   ChapterOptions: ChapterOptionsType,
   questionNumber: number,
 ) => {
+  if (!categoryName) {
+    throw throwError(
+      404,
+      `Kategori tidak ditemukan pada soal nomor ${questionNumber}`,
+    );
+  }
+
   const matchedCategory = ChapterOptions.find(
     (chapter) =>
       chapter.Category.name.toLowerCase() === categoryName.toLowerCase(),
