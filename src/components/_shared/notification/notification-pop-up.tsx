@@ -4,7 +4,7 @@ import { useNotification } from '@/components/provider/privoder-notification';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { env } from '@/env.mjs';
 import { cn } from '@/lib/utils';
-import { LiveClass, Tryout } from '@/types/database';
+import { LiveClass, Plan, Tryout } from '@/types/database';
 import { Clock, GraduationCap, Mic2, Trophy, Tv, Users } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -29,6 +29,7 @@ const extractHeroImage = (
     return (metadata as LiveClass).image ?? null;
   if (relatedResourceType === 'TRYOUT')
     return `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/tryout/${(metadata as Tryout).image}`;
+  if (relatedResourceType === 'PLAN') return (metadata as Plan).image ?? null;
   return null;
 };
 
@@ -76,7 +77,7 @@ export const NotificationPopUp = () => {
       <DialogContent
         showCloseButton={false}
         classOverlay="z-[10000]"
-        className="w-[calc(100vw-32px)] max-w-[420px] p-0 overflow-hidden border-0 rounded-[24px] shadow-[0_24px_64px_rgba(0,0,0,0.2),0_0_0_1px_rgba(0,0,0,0.06)] gap-0"
+        className="z-[10001] w-[calc(100vw-32px)] max-w-[420px] p-0 overflow-hidden border-0 rounded-[24px] shadow-[0_24px_64px_rgba(0,0,0,0.2),0_0_0_1px_rgba(0,0,0,0.06)] gap-0"
         onEscapeKeyDown={(e) => e.preventDefault()}
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}

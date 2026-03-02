@@ -381,6 +381,7 @@ const initiateNotificationWorker = () => {
         );
 
         if (Notification.permission === 'default') {
+          console.log('Requesting notification permission...');
           const permission = await Notification.requestPermission();
           console.log('Requested permission:', permission);
           if (permission !== 'granted') {
@@ -392,6 +393,7 @@ const initiateNotificationWorker = () => {
           console.warn(
             '❌ Notification permission is denied. Please change it in browser settings.',
           );
+
           alert(
             'Notification permission is denied. Please change it in browser settings.',
           );
@@ -400,10 +402,6 @@ const initiateNotificationWorker = () => {
 
         // Unregister old SW and register fresh one
         const registrations = await navigator.serviceWorker.getRegistrations();
-
-        if (registrations.length > 0) {
-          return;
-        }
 
         console.log({ registrations });
 

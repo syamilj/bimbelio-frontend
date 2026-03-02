@@ -105,9 +105,10 @@ export type NotificationQueueStatusEnum =
 
 export type NotificationPriorityEnum = 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT';
 
-export type NotificationRelatedTypeEnum = 'COURSE' | 'LIVE_CLASS' | 'TRYOUT';
+export type NotificationRelatedTypeEnum = 'COURSE' | 'LIVE_CLASS' | 'TRYOUT' | 'PLAN';
 
 export type NotificationCategoryEnum =
+  | 'PLAN'
   | 'PROMOTION'
   | 'ORDER'
   | 'SUBSCRIPTION'
@@ -121,6 +122,9 @@ export type NotificationCategoryEnum =
   | 'OTHER';
 
 export type NotificationTypeEnum =
+  // Plan
+  'PLAN_AVAILABLE'
+
   // Order/Transaction related
   | 'ORDER_CONFIRMATION'
   | 'ORDER_SHIPPED'
