@@ -191,34 +191,33 @@ export function QuizCardList() {
           >
             {/* Category Header */}
             <div
-              className="flex items-center gap-4 p-4 rounded-3xl border shadow-sm"
+              className="flex items-center gap-4 p-4 rounded-3xl border-2 shadow-sm"
               style={{
                 backgroundColor: `${mainColor}08`,
                 borderColor: `${mainColor}20`,
               }}
             >
               <div
-                className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-md"
+                className="w-11 h-11 rounded-2xl flex items-center justify-center shadow-md flex-shrink-0"
                 style={{ backgroundColor: mainColor }}
               >
-                <Swords className="w-6 h-6 text-white" />
+                <Swords className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-lg font-black text-slate-800">
+                <h3 className="text-base font-black text-slate-800">
                   {sub.code}
                 </h3>
-                <p className="text-sm text-slate-500 font-medium truncate">
+                <p className="text-xs text-slate-500 font-medium truncate">
                   {sub.name}
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <Badge
-                  variant="secondary"
-                  className="font-bold text-sm bg-white border border-slate-200 px-3 py-1.5"
+                <div
+                  className="text-xs font-bold px-3 py-1.5 rounded-full bg-white border-2 shadow-sm"
+                  style={{ borderColor: `${mainColor}30`, color: mainColor }}
                 >
-                  {sub.quizzes.filter((q) => q.isDone).length}/
-                  {sub.quizzes.length}
-                </Badge>
+                  {sub.quizzes.filter((q) => q.isDone).length}/{sub.quizzes.length}
+                </div>
               </div>
             </div>
 
@@ -337,7 +336,7 @@ export function QuizCardList() {
                                     Skor
                                   </p>
                                   <div className="flex items-baseline gap-1">
-                                    <p className="text-xl md:text-2xl font-black text-slate-800">
+                                    <p className="text-xl md:text-2xl font-black text-emerald-600">
                                       {quiz.TryoutResult?.totalScore || '-'}
                                     </p>
                                     {/* <div className="flex items-center gap-0.5 text-amber-600">

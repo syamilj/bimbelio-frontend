@@ -1,31 +1,39 @@
 'use client';
 
 import { useNotification } from '@/components/provider/privoder-notification';
-import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { env } from '@/env.mjs';
 import { cn } from '@/lib/utils';
-import { LiveClass, Tryout } from '@/types/database';
-import {
-  AlertCircle,
-  Bell,
-  Camera,
-  CheckCircle,
-  Clock,
-  CreditCard,
-  Dot,
-  Eye,
-  FileText,
-  Gift,
-  GraduationCap,
-  MessageSquare,
-  Mic2,
-  Music,
-  Trophy,
-  Tv,
-  Users,
-  Zap,
-} from 'lucide-react';
+import { LiveClass, Plan, Tryout } from '@/types/database';
+import { Clock, GraduationCap, Mic2, Trophy, Tv, Users } from 'lucide-react';
 import Link from 'next/link';
+import {
+  formatTimeAgo,
+  getCategoryLabel,
+  getPriorityBadgeCls,
+  getPriorityLabel,
+  getTypeHeaderGradient,
+  getTypeIcon,
+  getTypeIconBg,
+  getTypeLabel,
+} from './_utils/notification-helpers';
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+const extractHeroImage = (
+  relatedResourceType: string | null | undefined,
+  metadata: unknown,
+): string | null => {
+  if (!metadata || typeof metadata !== 'object') return null;
+  if (relatedResourceType === 'LIVE_CLASS')
+    return (metadata as LiveClass).image ?? null;
+  if (relatedResourceType === 'TRYOUT')
+    return `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/tryout/${(metadata as Tryout).image}`;
+  if (relatedResourceType === 'PLAN') return (metadata as Plan).image ?? null;
+  return null;
+};
+
+// ─── Main Popup ───────────────────────────────────────────────────────────────
 
 export const NotificationPopUp = () => {
   const {
@@ -33,513 +41,349 @@ export const NotificationPopUp = () => {
     useAction: { handleMarkAsRead },
   } = useNotification();
 
+  if (!notificationPopUp) return null;
+
   const handleClose = () => {
     setNotificationPopUp(null);
   };
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'URGENT':
-        return 'bg-red-50 border-red-200';
-      case 'HIGH':
-        return 'bg-orange-50 border-orange-200';
-      case 'NORMAL':
-        return 'bg-blue-50 border-blue-200';
-      default:
-        return 'bg-gray-50 border-gray-200';
-    }
-  };
-
-  const getPriorityIcon = (priority: string) => {
-    switch (priority) {
-      case 'URGENT':
-        return <AlertCircle className="w-5 h-5 text-red-600" />;
-      case 'HIGH':
-        return <Zap className="w-5 h-5 text-orange-600" />;
-      default:
-        return <Bell className="w-5 h-5 text-blue-600" />;
-    }
-  };
-
-  const getTypeIcon = (type: string) => {
-    const iconProps = { className: 'w-6 h-6' };
-
-    switch (type) {
-      case 'PAYMENT_SUCCESSFUL':
-      case 'PAYMENT_FAILED':
-      case 'PAYMENT_REMINDER':
-        return (
-          <CreditCard
-            {...iconProps}
-            className="text-green-600"
-          />
-        );
-
-      case 'ORDER_CONFIRMATION':
-      case 'ORDER_SHIPPED':
-      case 'ORDER_DELIVERED':
-      case 'REFUND_PROCESSED':
-        return (
-          <CheckCircle
-            {...iconProps}
-            className="text-emerald-600"
-          />
-        );
-
-      case 'SUBSCRIPTION_ACTIVATED':
-      case 'SUBSCRIPTION_RENEWED':
-      case 'SUBSCRIPTION_EXPIRING':
-      case 'SUBSCRIPTION_EXPIRED':
-      case 'INSTALLMENT_REMINDER':
-      case 'INSTALLMENT_DUE':
-        return (
-          <Clock
-            {...iconProps}
-            className="text-purple-600"
-          />
-        );
-
-      case 'COURSE_ENROLLED':
-      case 'COURSE_PROGRESS':
-      case 'COURSE_COMPLETED':
-      case 'NEW_COURSE_AVAILABLE':
-        return (
-          <FileText
-            {...iconProps}
-            className="text-blue-600"
-          />
-        );
-
-      case 'TRYOUT_STARTED':
-      case 'TRYOUT_COMPLETED':
-      case 'TRYOUT_RESULTS':
-        return (
-          <Trophy
-            {...iconProps}
-            className="text-yellow-600"
-          />
-        );
-
-      case 'NEW_MESSAGE':
-      case 'MESSAGE_REPLY':
-        return (
-          <MessageSquare
-            {...iconProps}
-            className="text-cyan-600"
-          />
-        );
-
-      case 'PROMOTION':
-      case 'SPECIAL_OFFER':
-        return (
-          <Gift
-            {...iconProps}
-            className="text-pink-600"
-          />
-        );
-
-      case 'VISION_USAGE':
-        return (
-          <Eye
-            {...iconProps}
-            className="text-indigo-600"
-          />
-        );
-
-      default:
-        return (
-          <Bell
-            {...iconProps}
-            className="text-gray-600"
-          />
-        );
-    }
-  };
-
-  const getTypeLabel = (type: string) => {
-    return type
-      .split('_')
-      .map((word) => word.charAt(0) + word.slice(1).toLowerCase())
-      .join(' ');
-  };
-
-  const formatTimeAgo = (date: string) => {
-    const now = new Date();
-    const notifDate = new Date(date);
-    const diffMs = now.getTime() - notifDate.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMins / 60);
-    const diffDays = Math.floor(diffHours / 24);
-
-    if (diffMins < 1) return 'Baru saja';
-    if (diffMins < 60) return `${diffMins}m lalu`;
-    if (diffHours < 24) return `${diffHours}h lalu`;
-    if (diffDays < 7) return `${diffDays}d lalu`;
-    return notifDate.toLocaleDateString('id-ID');
-  };
-
-  if (!notificationPopUp) return null;
+  const heroImage = extractHeroImage(
+    notificationPopUp.relatedResourceType,
+    notificationPopUp.metadata,
+  );
+  const gradient = getTypeHeaderGradient(
+    notificationPopUp.type,
+    notificationPopUp.priority,
+  );
+  const iconBg = getTypeIconBg(
+    notificationPopUp.type,
+    notificationPopUp.priority,
+  );
+  const badgeCls = getPriorityBadgeCls(notificationPopUp.priority);
+  const badgeLabel = getPriorityLabel(notificationPopUp.priority);
+  const actionUrl = notificationPopUp.actionUrl;
+  const hasAction = !!(actionUrl && actionUrl.length > 0);
 
   return (
-    <Dialog
-      open={!!notificationPopUp}
-      onOpenChange={handleClose}
-    >
+    <Dialog open={!!notificationPopUp}>
+      {' '}
+      {/* Only dismiss via explicit button */}
+      {/*
+        KEY FIX: w-[calc(100vw-32px)] max-w-[420px]
+        - On mobile (e.g. 390px): width = 358px → 16px margin each side ✓
+        - On desktop: capped at 420px ✓
+        This overrides the Dialog's default max-w-[calc(100%-2rem)] correctly.
+      */}
       <DialogContent
-        className={cn(
-          'max-w-md border-l-4 p-0 overflow-hidden shadow-2xl',
-          notificationPopUp.priority === 'URGENT' && 'border-l-red-500',
-          notificationPopUp.priority === 'HIGH' && 'border-l-orange-500',
-          notificationPopUp.priority === 'NORMAL' && 'border-l-blue-500',
-          !notificationPopUp.priority && 'border-l-gray-500',
-        )}
+        showCloseButton={false}
         classOverlay="z-[10000]"
+        className="z-[10001] w-[calc(100vw-32px)] max-w-[420px] p-0 overflow-hidden border-0 rounded-[24px] shadow-[0_24px_64px_rgba(0,0,0,0.2),0_0_0_1px_rgba(0,0,0,0.06)] gap-0"
+        onEscapeKeyDown={(e) => e.preventDefault()}
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onInteractOutside={(e) => e.preventDefault()}
       >
-        {/* Header Section */}
-        <div
-          className={cn(
-            'p-6 pb-0',
-            notificationPopUp.priority === 'URGENT' &&
-              'bg-gradient-to-br from-red-50 to-transparent',
-            notificationPopUp.priority === 'HIGH' &&
-              'bg-gradient-to-br from-orange-50 to-transparent',
-            notificationPopUp.priority === 'NORMAL' &&
-              'bg-gradient-to-br from-blue-50 to-transparent',
-            !notificationPopUp.priority &&
-              'bg-gradient-to-br from-gray-50 to-transparent',
-          )}
-        >
-          {/* Header with Icon and Title */}
-          <div className="flex gap-3 mb-3">
-            <div
-              className={cn(
-                'flex-shrink-0 w-12 h-12 rounded-3xl flex items-center justify-center border-2 shadow-sm',
-                getPriorityColor(notificationPopUp.priority),
-              )}
-            >
-              {getTypeIcon(notificationPopUp.type)}
-            </div>
+        {/* ── Queue indicator ── */}
+        {/* {queueLength > 1 && (
+          <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 bg-black/60 backdrop-blur-sm text-white text-[10px] font-bold px-3 py-1 rounded-full">
+            {queueLength - 1} notifikasi lagi
+          </div>
+        )} */}
 
-            <div className="flex-1 min-w-0">
-              <div className="flex items-start justify-between gap-2 mb-0.5">
-                <DialogTitle className="text-base font-bold text-gray-900 break-words leading-tight">
-                  {notificationPopUp.title}
-                </DialogTitle>
+        {/* ── Hero image OR gradient header ── */}
+        {heroImage ? (
+          <div className="relative w-full h-52 overflow-hidden bg-gray-900 flex-shrink-0">
+            <img
+              src={heroImage}
+              alt={notificationPopUp.title}
+              className="w-full h-full object-cover opacity-90"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 px-5 pb-4">
+              <div className="flex items-center gap-1.5 mb-2">
                 {notificationPopUp.priority !== 'NORMAL' && (
-                  <div className="flex-shrink-0 mt-0.5">
-                    {getPriorityIcon(notificationPopUp.priority)}
-                  </div>
+                  <span
+                    className={cn(
+                      'text-[10px] font-black px-2.5 py-1 rounded-full',
+                      badgeCls,
+                    )}
+                  >
+                    {badgeLabel}
+                  </span>
                 )}
+                <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-white/20 text-white backdrop-blur-sm">
+                  {getCategoryLabel(notificationPopUp.category)}
+                </span>
               </div>
+              <DialogTitle className="text-[17px] font-black text-white leading-snug">
+                {notificationPopUp.title}
+              </DialogTitle>
+            </div>
+          </div>
+        ) : (
+          <div
+            className={cn(
+              'bg-gradient-to-b pt-9 pb-6 px-5 text-center flex-shrink-0',
+              gradient,
+            )}
+          >
+            {/* Icon */}
+            <div className="flex justify-center mb-4">
+              <div
+                className={cn(
+                  'w-16 h-16 rounded-[20px] flex items-center justify-center',
+                  iconBg,
+                )}
+              >
+                {getTypeIcon(notificationPopUp.type, 'lg')}
+              </div>
+            </div>
+            <DialogTitle className="text-[17px] font-black text-gray-900 leading-snug px-2 mb-2.5">
+              {notificationPopUp.title}
+            </DialogTitle>
+            <div className="flex flex-wrap items-center justify-center gap-1.5">
+              {notificationPopUp.priority !== 'NORMAL' && (
+                <span
+                  className={cn(
+                    'text-[10px] font-black px-2.5 py-1 rounded-full',
+                    badgeCls,
+                  )}
+                >
+                  {badgeLabel}
+                </span>
+              )}
+              <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-white/80 text-slate-600 border border-slate-200">
+                {getCategoryLabel(notificationPopUp.category)}
+              </span>
               {notificationPopUp.description && (
-                <p className="text-xs text-gray-600 line-clamp-1">
+                <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-white/80 text-slate-600 border border-slate-200">
                   {notificationPopUp.description}
-                </p>
+                </span>
               )}
             </div>
           </div>
-        </div>
+        )}
 
-        {/* Content Section */}
-        <div className="px-6 py-4 space-y-3">
-          <p className="text-sm text-gray-700 leading-relaxed">
+        {/* ── Body ── */}
+        <div className="px-5 pt-4 pb-3">
+          <p className="text-[13.5px] text-gray-700 leading-relaxed">
             {notificationPopUp.content}
           </p>
-
-          {/* Meta Info */}
-          <div className="flex items-center justify-between gap-2 pt-2 border-t border-gray-200">
-            <span className="text-xs text-gray-500 font-medium">
+          <div className="flex items-center justify-between mt-2.5">
+            <span className="text-[11px] text-slate-400">
               {formatTimeAgo(notificationPopUp.createdAt)}
             </span>
-            <span className="text-xs bg-gradient-to-r from-gray-100 to-gray-50 text-gray-700 px-3 py-1 rounded-full font-semibold border border-gray-200">
+            <span className="text-[10px] bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full font-semibold">
               {getTypeLabel(notificationPopUp.type)}
             </span>
           </div>
         </div>
 
-        {getLiveClassMetadata()}
+        {/* ── Metadata cards ── */}
+        {notificationPopUp.relatedResourceType === 'LIVE_CLASS' && (
+          <LiveClassCard
+            notificationPopUp={notificationPopUp}
+            hideImage={!!heroImage}
+          />
+        )}
+        {notificationPopUp.relatedResourceType === 'TRYOUT' && (
+          <TryoutCard notificationPopUp={notificationPopUp} />
+        )}
 
-        {getTryoutMetadata()}
-
-        {/* Footer Actions */}
-        <div className="px-6 py-4 bg-gradient-to-r from-gray-50 to-gray-100/50 border-t border-gray-200 flex gap-2 justify-end">
-          <Button
-            variant="outline"
+        {/* ── Footer ── */}
+        <div className="px-5 pb-5 pt-2 flex gap-2.5">
+          {/* Dismiss */}
+          <button
             onClick={() => {
-              handleClose();
               handleMarkAsRead(notificationPopUp.id);
+              handleClose();
             }}
-            className="rounded-3xl font-medium hover:bg-gray-100 transition-colors"
+            className="flex-1 h-11 rounded-full border border-slate-200 bg-white hover:bg-slate-50 text-[13px] font-semibold text-gray-700 transition-colors cursor-pointer"
           >
-            Tandai Telah Dibaca
-          </Button>
-          {notificationPopUp.actionUrl &&
-            notificationPopUp.actionUrl.length > 0 &&
-            notificationPopUp.actionUrl.startsWith('/') && (
-              <Link
-                href={notificationPopUp.actionUrl}
-                className="inline-block"
+            Tandai Dibaca
+          </button>
+
+          {/* Action */}
+          {hasAction && actionUrl!.startsWith('/') && (
+            <Link
+              href={actionUrl!}
+              className="flex-1"
+            >
+              <button
+                onClick={() => {
+                  handleMarkAsRead(notificationPopUp.id);
+                  handleClose();
+                }}
+                className="w-full h-11 rounded-full bg-gray-900 hover:bg-gray-700 text-[13px] font-bold text-white transition-colors cursor-pointer"
               >
-                <Button
-                  onClick={() => {
-                    handleClose();
-                    handleMarkAsRead(notificationPopUp.id);
-                  }}
-                  className="rounded-3xl font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all"
-                >
-                  Lihat Selengkapnya
-                </Button>
-              </Link>
-            )}
-          {notificationPopUp.actionUrl &&
-            notificationPopUp.actionUrl.length > 0 &&
-            notificationPopUp.actionUrl.startsWith('http') && (
-              <a
-                href={notificationPopUp.actionUrl}
-                className="inline-block"
-                target="_blank"
-                rel="noopener noreferrer"
+                Lihat Selengkapnya
+              </button>
+            </Link>
+          )}
+          {hasAction && actionUrl!.startsWith('http') && (
+            <a
+              href={actionUrl!}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1"
+            >
+              <button
+                onClick={() => {
+                  handleMarkAsRead(notificationPopUp.id);
+                  handleClose();
+                }}
+                className="w-full h-11 rounded-full bg-gray-900 hover:bg-gray-700 text-[13px] font-bold text-white transition-colors cursor-pointer"
               >
-                <Button
-                  onClick={() => {
-                    handleClose();
-                    handleMarkAsRead(notificationPopUp.id);
-                  }}
-                  className="rounded-3xl font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all"
-                >
-                  Lihat Selengkapnya
-                </Button>
-              </a>
-            )}
+                Lihat Selengkapnya
+              </button>
+            </a>
+          )}
         </div>
       </DialogContent>
     </Dialog>
   );
 };
 
-const getLiveClassMetadata = () => {
-  const {
-    usePopUp: { notificationPopUp, setNotificationPopUp },
-  } = useNotification();
+// ─── Live Class metadata card ─────────────────────────────────────────────────
 
-  if (!notificationPopUp) return null;
+type PopupNotif = NonNullable<
+  ReturnType<typeof useNotification>['usePopUp']['notificationPopUp']
+>;
 
-  const metadata = notificationPopUp.metadata as LiveClass;
+const LiveClassCard = ({
+  notificationPopUp,
+  hideImage,
+}: {
+  notificationPopUp: PopupNotif;
+  hideImage?: boolean;
+}) => {
+  const m = notificationPopUp.metadata as LiveClass;
+  if (!m || typeof m !== 'object') return null;
 
   return (
-    <>
-      {notificationPopUp.relatedResourceType === 'LIVE_CLASS' &&
-        metadata &&
-        typeof metadata === 'object' && (
-          <div className="mx-6 mb-6 border border-yellow-200 rounded-3xl overflow-hidden bg-gradient-to-br from-yellow-50 via-white to-orange-50  shadow-sm hover:shadow-md transition-shadow">
-            {/* Image */}
-            {metadata.image && (
-              <div className="relative w-full h-44 overflow-hidden bg-gradient-to-br from-blue-200 to-purple-200">
-                <img
-                  src={metadata.image}
-                  alt={metadata.title}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                />
-                {metadata.isRecord && (
-                  <div className="absolute top-3 right-3 bg-red-500 text-white px-2.5 py-1 rounded-full text-[10px] font-bold flex items-center gap-1 shadow-lg">
-                    <Dot className="w-2 h-2 fill-current animate-pulse" />
-                    LIVE
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Details */}
-            <div className="p-4 space-y-3">
-              <div>
-                <h3 className="font-bold text-gray-900 text-sm leading-snug mb-1">
-                  {metadata.title}
-                </h3>
-                {metadata.description && (
-                  <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
-                    {metadata.description}
-                  </p>
-                )}
-              </div>
-
-              {/* Info Grid */}
-              <div className="space-y-2">
-                {/* Start Time */}
-                <div className="flex items-center gap-2.5 text-xs bg-white/60 backdrop-blur rounded-3xl px-3 py-2 border border-blue-200">
-                  <Clock className="w-4 h-4 text-blue-600 flex-shrink-0" />
-                  <span className="text-gray-700 font-medium">
-                    {new Date(metadata.startDate).toLocaleDateString('id-ID', {
-                      weekday: 'short',
-                      month: 'short',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </span>
-                </div>
-
-                {/* Duration & Participants */}
-                <div className="grid grid-cols-2 gap-2">
-                  {metadata.duration && (
-                    <div className="flex items-center gap-2 text-xs bg-orange-50 border border-orange-200 rounded-3xl px-2.5 py-2">
-                      <Clock className="w-3.5 h-3.5 text-orange-600 flex-shrink-0" />
-                      <span className="text-gray-700 font-medium">
-                        {metadata.duration} min
-                      </span>
-                    </div>
-                  )}
-                  {metadata.maxParticipant && (
-                    <div className="flex items-center gap-2 text-xs bg-purple-50 border border-purple-200 rounded-3xl px-2.5 py-2">
-                      <Users className="w-3.5 h-3.5 text-purple-600 flex-shrink-0" />
-                      <span className="text-gray-700 font-medium">
-                        {metadata.maxParticipant}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Type Badge */}
-                <div className="inline-flex items-center gap-2 text-xs bg-gradient-to-r from-blue-100 to-purple-100 text-gray-800 px-3 py-2 rounded-3xl font-bold border border-blue-200">
-                  {metadata.type === 'LIVECLASS' ? (
-                    <GraduationCap className="w-3.5 h-3.5" />
-                  ) : metadata.type === 'LIVESTREAM' ? (
-                    <Tv className="w-3.5 h-3.5" />
-                  ) : (
-                    <Mic2 className="w-3.5 h-3.5" />
-                  )}
-                  {metadata.type === 'LIVECLASS'
-                    ? 'Live Class'
-                    : metadata.type === 'LIVESTREAM'
-                      ? 'Livestream'
-                      : 'Webinar'}
-                </div>
-              </div>
+    <div className="mx-4 mb-2 rounded-[16px] overflow-hidden bg-slate-50 border border-slate-100">
+      {!hideImage && m.image && (
+        <div className="relative w-full h-32 overflow-hidden">
+          <img
+            src={m.image}
+            alt={m.title}
+            className="w-full h-full object-cover"
+          />
+          {m.isRecord && (
+            <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-0.5 rounded-full text-[10px] font-black flex items-center gap-1">
+              <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+              LIVE
             </div>
-          </div>
-        )}
-    </>
+          )}
+        </div>
+      )}
+      <div className="px-4 py-3 space-y-2.5">
+        <div>
+          <p className="text-[13px] font-bold text-gray-800">{m.title}</p>
+          {m.description && (
+            <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">
+              {m.description}
+            </p>
+          )}
+        </div>
+        <div className="flex items-center gap-2 bg-white rounded-xl px-3 py-2 border border-slate-100">
+          <Clock className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />
+          <span className="text-[12px] text-gray-700 font-semibold">
+            {new Date(m.startDate).toLocaleDateString('id-ID', {
+              weekday: 'short',
+              month: 'short',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </span>
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {m.duration && (
+            <span className="inline-flex items-center gap-1 text-[11px] bg-orange-50 border border-orange-100 text-orange-700 px-2.5 py-1 rounded-full font-bold">
+              <Clock className="w-2.5 h-2.5" />
+              {m.duration} mnt
+            </span>
+          )}
+          {m.maxParticipant && (
+            <span className="inline-flex items-center gap-1 text-[11px] bg-purple-50 border border-purple-100 text-purple-700 px-2.5 py-1 rounded-full font-bold">
+              <Users className="w-2.5 h-2.5" />
+              {m.maxParticipant} org
+            </span>
+          )}
+          <span className="inline-flex items-center gap-1 text-[11px] bg-blue-50 border border-blue-100 text-blue-700 px-2.5 py-1 rounded-full font-black">
+            {m.type === 'LIVECLASS' ? (
+              <GraduationCap className="w-2.5 h-2.5" />
+            ) : m.type === 'LIVESTREAM' ? (
+              <Tv className="w-2.5 h-2.5" />
+            ) : (
+              <Mic2 className="w-2.5 h-2.5" />
+            )}
+            {m.type === 'LIVECLASS'
+              ? 'Live Class'
+              : m.type === 'LIVESTREAM'
+                ? 'Livestream'
+                : 'Webinar'}
+          </span>
+        </div>
+      </div>
+    </div>
   );
 };
 
-const getTryoutMetadata = () => {
-  const {
-    usePopUp: { notificationPopUp, setNotificationPopUp },
-  } = useNotification();
+// ─── Tryout metadata card ─────────────────────────────────────────────────────
 
-  if (!notificationPopUp) return null;
+const TryoutCard = ({
+  notificationPopUp,
+}: {
+  notificationPopUp: PopupNotif;
+}) => {
+  const m = notificationPopUp.metadata as Tryout;
+  if (!m || typeof m !== 'object') return null;
 
-  const metadata = notificationPopUp.metadata as Tryout;
-
-  console.log('Tryout Metadata:', metadata);
+  const fmt = (d: string) =>
+    new Date(d).toLocaleDateString('id-ID', {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+    });
 
   return (
-    <>
-      {notificationPopUp.relatedResourceType === 'TRYOUT' &&
-        metadata &&
-        typeof metadata === 'object' && (
-          <div className="mx-6 mb-6 border border-yellow-200 rounded-3xl overflow-hidden bg-gradient-to-br from-yellow-50 via-white to-orange-50 shadow-sm hover:shadow-md transition-shadow">
-            {/* Details */}
-            <div className="p-4 space-y-3">
-              <div>
-                <h3 className="font-bold text-gray-900 text-sm leading-snug mb-1">
-                  {metadata.title}
-                </h3>
-              </div>
-
-              {/* Info Grid */}
-              <div className="space-y-2">
-                {/* Start Date */}
-                <div className="flex items-center gap-2.5 text-xs bg-white/60 backdrop-blur rounded-3xl px-3 py-2 border border-yellow-100">
-                  <Clock className="w-4 h-4 text-yellow-600 flex-shrink-0" />
-                  <span className="text-gray-700 font-medium">
-                    Mulai:{' '}
-                    {new Date(metadata.startDate).toLocaleDateString('id-ID', {
-                      weekday: 'short',
-                      month: 'short',
-                      day: 'numeric',
-                    })}
-                  </span>
-                </div>
-
-                {/* End Date & Result Date */}
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="flex items-center gap-2 text-xs bg-orange-50 border border-orange-200 rounded-3xl px-2.5 py-2">
-                    <Clock className="w-3.5 h-3.5 text-orange-600 flex-shrink-0" />
-                    <div className="flex flex-col">
-                      <span className="text-[10px] text-orange-700 font-semibold">
-                        Berakhir
-                      </span>
-                      <span className="text-gray-700 font-medium text-[11px]">
-                        {new Date(metadata.endDate).toLocaleDateString(
-                          'id-ID',
-                          {
-                            month: 'short',
-                            day: 'numeric',
-                          },
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs bg-purple-50 border border-purple-200 rounded-3xl px-2.5 py-2">
-                    <Trophy className="w-3.5 h-3.5 text-purple-600 flex-shrink-0" />
-                    <div className="flex flex-col">
-                      <span className="text-[10px] text-purple-700 font-semibold">
-                        Hasil
-                      </span>
-                      <span className="text-gray-700 font-medium text-[11px]">
-                        {new Date(metadata.resultDate).toLocaleDateString(
-                          'id-ID',
-                          {
-                            month: 'short',
-                            day: 'numeric',
-                          },
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Rest Time */}
-                {metadata.restTime && (
-                  <div className="flex items-center gap-2.5 text-xs bg-blue-50 border border-blue-200 rounded-3xl px-3 py-2">
-                    <Clock className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" />
-                    <span className="text-gray-700 font-medium">
-                      Waktu istirahat: {metadata.restTime} hari
-                    </span>
-                  </div>
-                )}
-
-                {/* Social Links */}
-                {(metadata.instagram || metadata.tiktok) && (
-                  <div className="flex items-center gap-2 pt-1">
-                    {metadata.instagram && (
-                      <a
-                        href={metadata.instagram}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs bg-gradient-to-r from-pink-100 to-purple-100 text-pink-700 px-2.5 py-1.5 rounded-3xl font-medium hover:from-pink-200 hover:to-purple-200 transition-colors border border-pink-200"
-                      >
-                        <Camera className="w-3.5 h-3.5" />
-                        Instagram
-                      </a>
-                    )}
-                    {metadata.tiktok && (
-                      <a
-                        href={metadata.tiktok}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs bg-gradient-to-r from-black/10 to-gray-100 text-gray-800 px-2.5 py-1.5 rounded-3xl font-medium hover:from-black/20 hover:to-gray-200 transition-colors border border-gray-300"
-                      >
-                        <Music className="w-3.5 h-3.5" />
-                        TikTok
-                      </a>
-                    )}
-                  </div>
-                )}
-              </div>
+    <div className="mx-4 mb-2 rounded-[16px] overflow-hidden bg-slate-50 border border-slate-100">
+      <div className="px-4 py-3 space-y-2.5">
+        <p className="text-[13px] font-bold text-gray-800">{m.title}</p>
+        <div className="bg-white rounded-xl border border-slate-100 px-3 py-2.5 space-y-2">
+          {[
+            { color: 'bg-emerald-500', label: 'Mulai', val: fmt(m.startDate) },
+            { color: 'bg-orange-500', label: 'Berakhir', val: fmt(m.endDate) },
+            { color: 'bg-purple-500', label: 'Hasil', val: fmt(m.resultDate) },
+          ].map(({ color, label, val }) => (
+            <div
+              key={label}
+              className="flex items-center gap-2"
+            >
+              <span
+                className={cn('w-1.5 h-1.5 rounded-full flex-shrink-0', color)}
+              />
+              <span className="text-[11px] text-slate-400 font-medium w-14 flex-shrink-0">
+                {label}
+              </span>
+              <span className="text-[11px] font-bold text-gray-800">{val}</span>
             </div>
-          </div>
-        )}
-    </>
+          ))}
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {m.restTime && (
+            <span className="inline-flex items-center gap-1 text-[11px] bg-blue-50 border border-blue-100 text-blue-700 px-2.5 py-1 rounded-full font-bold">
+              <Clock className="w-2.5 h-2.5" />
+              Istirahat {m.restTime}h
+            </span>
+          )}
+          <span className="inline-flex items-center gap-1 text-[11px] bg-amber-50 border border-amber-100 text-amber-700 px-2.5 py-1 rounded-full font-bold">
+            <Trophy className="w-2.5 h-2.5" />
+            Tryout Resmi
+          </span>
+        </div>
+      </div>
+    </div>
   );
 };

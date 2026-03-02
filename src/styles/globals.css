@@ -901,3 +901,9 @@ video::-webkit-media-controls-panel {
   );
   background-size: 1000px 100%;
 }
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+  }
+}

@@ -1,23 +1,7 @@
-import { NotificationPopUp } from '@/components/_shared/notification/notification-pop-up';
-import ProviderNotification from '@/components/provider/privoder-notification';
-import ProviderApp from '@/components/provider/provider-app';
-import ProviderCheckPayment from '@/components/provider/provider-check-payment';
-import ProviderLimitation from '@/components/provider/provider-limitation';
-import ProviderMaintenance from '@/components/provider/provider-maintenance';
-import ProviderPixel from '@/components/provider/provider-pixel';
-import ProviderSessionAuth from '@/components/provider/provider-session-auth';
-import ProviderWebsiteCategory from '@/components/provider/provider-website-category';
 import { siteConfig } from '@/config/site';
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import { Suspense } from 'react';
 import '../../styles/globals.css';
-const PATH_HEADER_KEYS = [
-  'x-invoke-path',
-  'x-matched-path',
-  'x-original-url',
-  'next-url',
-];
 
 export const metadata: Metadata = {
   title: {
@@ -76,17 +60,11 @@ export const metadata: Metadata = {
   },
 };
 
-interface RootLayoutProps {
+export default function GuestRootLayout({
+  children,
+}: {
   children: React.ReactNode;
-}
-
-declare global {
-  interface Window {
-    [key: string]: any;
-  }
-}
-
-export default async function RootLayout({ children }: RootLayoutProps) {
+}) {
   return (
     <html
       lang="id"
@@ -96,29 +74,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <DefaultHeadContent />
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">
-        <ProviderMaintenance>
-          <Suspense fallback={null}>
-            <ProviderSessionAuth>
-              {/* SocketInfo removed — was calling useSocket() which disconnected socket on every re-render */}
-              <ProviderPixel>
-                <ProviderWebsiteCategory>
-                  <ProviderLimitation>
-                    <ProviderApp>
-                      <ProviderNotification>
-                        <NotificationPopUp />
-                        <Suspense fallback={null}>
-                          <ProviderCheckPayment>
-                            {children}
-                          </ProviderCheckPayment>
-                        </Suspense>
-                      </ProviderNotification>
-                    </ProviderApp>
-                  </ProviderLimitation>
-                </ProviderWebsiteCategory>
-              </ProviderPixel>
-            </ProviderSessionAuth>
-          </Suspense>
-        </ProviderMaintenance>
+        {children}
       </body>
     </html>
   );
@@ -130,6 +86,10 @@ function DefaultHeadContent() {
       <link
         rel="preconnect"
         href="https://be.bimbelio.com"
+      />
+      <link
+        rel="preconnect"
+        href="https://app.midtrans.com"
       />
       <link
         rel="preconnect"
@@ -163,7 +123,7 @@ function DefaultHeadContent() {
         href="https://static.cloudflareinsights.com"
       />
 
-      <TrackingScripts lazy={false} />
+      <TrackingScripts lazy={true} />
       <StructuredData />
     </>
   );
