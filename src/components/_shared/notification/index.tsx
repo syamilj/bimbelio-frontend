@@ -2,14 +2,21 @@
 
 import {
   AlertCircle,
-  Archive,
-  ArchiveX,
   Bell,
   Check,
+  CheckCircle,
   ChevronRight,
+  Clock,
+  CreditCard,
+  Eye,
+  FileText,
+  Gift,
   Loader2,
+  MessageSquare,
   MoreVertical,
   Trash2,
+  Trophy,
+  Zap,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -25,31 +32,19 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
-import {
-  formatTimeAgo,
-  getPriorityIcon,
-  getTypeIcon,
-  getTypeIconBg,
-  getTypeLabel,
-} from './_utils/notification-helpers';
 
 export const Notification = () => {
   const { data: session } = useSession();
   const role = session?.user.role;
-  const params = useParams<{ web_sub_category: string }>();
-  const webSubCategory = params?.web_sub_category || '';
 
   const {
     useData: { notifications },
-    useAction: { handleDelete, handleMarkAllAsRead, handleMarkAsRead, handleArchive },
+    useAction: { handleDelete, handleMarkAllAsRead, handleMarkAsRead },
     useFetchRead: { isReadingAll },
     useFetchData: {
       filter,
       setFilter,
-      view,
-      setView,
       isAllLoaded,
       page,
       setPage,
@@ -120,6 +115,155 @@ export const Notification = () => {
     totalPages,
   ]);
 
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'URGENT':
+        return 'bg-red-50 border-red-200';
+      case 'HIGH':
+        return 'bg-orange-50 border-orange-200';
+      case 'NORMAL':
+        return 'bg-blue-50 border-blue-200';
+      default:
+        return 'bg-gray-50 border-gray-200';
+    }
+  };
+
+  const getPriorityIcon = (priority: string) => {
+    switch (priority) {
+      case 'URGENT':
+        return <AlertCircle className="w-4 h-4 text-red-600" />;
+      case 'HIGH':
+        return <Zap className="w-4 h-4 text-orange-600" />;
+      default:
+        return <Bell className="w-4 h-4 text-blue-600" />;
+    }
+  };
+
+  const getTypeIcon = (type: string) => {
+    const iconProps = { className: 'w-5 h-5' };
+
+    switch (type) {
+      // Payment
+      case 'PAYMENT_SUCCESSFUL':
+      case 'PAYMENT_FAILED':
+      case 'PAYMENT_REMINDER':
+        return (
+          <CreditCard
+            {...iconProps}
+            className="text-green-600"
+          />
+        );
+
+      // Order
+      case 'ORDER_CONFIRMATION':
+      case 'ORDER_SHIPPED':
+      case 'ORDER_DELIVERED':
+      case 'REFUND_PROCESSED':
+        return (
+          <CheckCircle
+            {...iconProps}
+            className="text-emerald-600"
+          />
+        );
+
+      // Subscription
+      case 'SUBSCRIPTION_ACTIVATED':
+      case 'SUBSCRIPTION_RENEWED':
+      case 'SUBSCRIPTION_EXPIRING':
+      case 'SUBSCRIPTION_EXPIRED':
+      case 'INSTALLMENT_REMINDER':
+      case 'INSTALLMENT_DUE':
+        return (
+          <Clock
+            {...iconProps}
+            className="text-purple-600"
+          />
+        );
+
+      // Course
+      case 'COURSE_ENROLLED':
+      case 'COURSE_PROGRESS':
+      case 'COURSE_COMPLETED':
+      case 'NEW_COURSE_AVAILABLE':
+        return (
+          <FileText
+            {...iconProps}
+            className="text-blue-600"
+          />
+        );
+
+      // Tryout
+      case 'TRYOUT_STARTED':
+      case 'TRYOUT_COMPLETED':
+      case 'TRYOUT_RESULTS':
+        return (
+          <Trophy
+            {...iconProps}
+            className="text-yellow-600"
+          />
+        );
+
+      // Message
+      case 'NEW_MESSAGE':
+      case 'MESSAGE_REPLY':
+        return (
+          <MessageSquare
+            {...iconProps}
+            className="text-cyan-600"
+          />
+        );
+
+      // Promo
+      case 'PROMOTION':
+      case 'SPECIAL_OFFER':
+        return (
+          <Gift
+            {...iconProps}
+            className="text-pink-600"
+          />
+        );
+
+      // Vision
+      case 'VISION_USAGE':
+        return (
+          <Eye
+            {...iconProps}
+            className="text-indigo-600"
+          />
+        );
+
+      default:
+        return (
+          <Bell
+            {...iconProps}
+            className="text-gray-600"
+          />
+        );
+    }
+  };
+
+  const getTypeLabel = (type: string) => {
+    return type
+      .split('_')
+      .map((word) => word.charAt(0) + word.slice(1).toLowerCase())
+      .join(' ');
+  };
+
+  const formatTimeAgo = (date: string) => {
+    const now = new Date();
+    const notifDate = new Date(date);
+    const diffMs = now.getTime() - notifDate.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffMins < 1) return 'Baru saja';
+    if (diffMins < 60) return `${diffMins}m lalu`;
+    if (diffHours < 24) return `${diffHours}h lalu`;
+    if (diffDays < 7) return `${diffDays}d lalu`;
+    return notifDate.toLocaleDateString('id-ID');
+  };
+
   return (
     <DropdownMenu
       open={isOpen}
@@ -144,49 +288,27 @@ export const Notification = () => {
 
       <DropdownMenuContent
         align="end"
-        className="w-[100vw] max-w-[450px] max-h-[90vh] p-0 rounded-3xl shadow-2xl border-2 border-slate-100 flex flex-col"
+        className="w-[100vw] max-w-[450px] max-h-[90vh] p-0 rounded-3xl shadow-xl border border-gray-200 flex flex-col"
       >
         {/* Header - Fixed */}
-        <div className="sticky top-0 bg-white border-b border-slate-100 px-5 py-4 rounded-t-3xl z-10">
+        <div className="sticky top-0 bg-white border-b border-gray-200 px-4 py-3 rounded-t-xl z-10">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <h3 className="text-sm font-bold text-gray-900">Notifikasi</h3>
-              {unreadCount > 0 && (
-                <span className="min-w-[20px] h-5 px-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-                  {unreadCount > 99 ? '99+' : unreadCount}
-                </span>
-              )}
-            </div>
-            <div className="flex items-center gap-1">
-              {unreadCount > 0 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-xs text-slate-500 hover:text-slate-800 hover:bg-slate-100 px-3 py-1.5 h-auto rounded-full"
-                  onClick={handleMarkAllAsRead}
-                  disabled={isReadingAll}
-                >
-                  {isReadingAll ? (
-                    <Loader2 className="animate-spin w-3.5 h-3.5" />
-                  ) : (
-                    'Tandai semua dibaca'
-                  )}
-                </Button>
-              )}
-              {webSubCategory && (
-                <Link href={`/${webSubCategory}/user/notifications`}>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-xs text-slate-500 hover:text-slate-800 hover:bg-slate-100 px-3 py-1.5 h-auto rounded-full gap-1"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Lihat semua
-                    <ChevronRight className="w-3 h-3" />
-                  </Button>
-                </Link>
-              )}
-            </div>
+            <h3 className="text-sm font-bold text-gray-900">Notifikasi</h3>
+            {unreadCount > 0 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-xs text-blue-600 hover:bg-blue-50 px-2 py-1 h-auto"
+                onClick={handleMarkAllAsRead}
+                disabled={isReadingAll}
+              >
+                {isReadingAll ? (
+                  <Loader2 className="animate-spin w-4 h-4" />
+                ) : (
+                  'Tandai semua dibaca'
+                )}
+              </Button>
+            )}
           </div>
         </div>
 
@@ -195,115 +317,87 @@ export const Notification = () => {
           ref={containerRef}
           className="overflow-y-auto flex-1 scrollbar-hide"
         >
-          <div className="sticky top-0 bg-white border-b border-slate-100 px-4 py-2.5 z-[5]">
-            <div className="flex gap-1.5 bg-slate-100/80 p-1 rounded-full w-fit">
-              {/* View tabs: Inbox / Archive */}
-              <button
-                className={cn(
-                  'text-xs font-semibold px-3.5 py-1.5 rounded-full transition-all whitespace-nowrap',
-                  view === 'inbox' && filter === 'ALL'
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-700',
-                )}
-                onClick={() => {
-                  setView('inbox');
-                  setFilter('ALL');
-                  setIsLoading(true);
-                  setPage(1);
-                  setIsViewMore(false);
-                  setIsFirstFetching(true);
-                  containerRef.current?.scrollTo({ top: 0, behavior: 'instant' });
-                }}
-              >
-                Semua
-              </button>
-              <button
-                className={cn(
-                  'text-xs font-semibold px-3.5 py-1.5 rounded-full transition-all whitespace-nowrap',
-                  filter === 'UNREAD'
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-700',
-                )}
-                onClick={() => {
-                  setView('inbox');
-                  setFilter('UNREAD');
-                  setIsLoading(true);
-                  setPage(1);
-                  setIsViewMore(false);
-                  setIsFirstFetching(true);
-                  containerRef.current?.scrollTo({ top: 0, behavior: 'instant' });
-                }}
-              >
-                Belum Dibaca
-              </button>
-              <button
-                className={cn(
-                  'text-xs font-semibold px-3.5 py-1.5 rounded-full transition-all whitespace-nowrap flex items-center gap-1',
-                  view === 'archive'
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-700',
-                )}
-                onClick={() => {
-                  setView('archive');
-                  setFilter('ALL');
-                  setIsLoading(true);
-                  setPage(1);
-                  setIsViewMore(false);
-                  setIsFirstFetching(true);
-                  containerRef.current?.scrollTo({ top: 0, behavior: 'instant' });
-                }}
-              >
-                <Archive className="w-3 h-3" />
-                Arsip
-              </button>
-            </div>
+          <div className="sticky top-0 bg-white border-b border-gray-200 px-4 py-2 flex gap-2 z-5">
+            <Button
+              variant="outline"
+              size="sm"
+              className={cn(
+                'text-xs rounded-full px-3 py-1 h-auto text-gray-600 hover:bg-gray-100',
+                filter === 'ALL' && 'border-main/50 text-main hover:bg-main/10',
+              )}
+              onClick={() => {
+                setFilter('ALL');
+                setIsLoading(true);
+                setPage(1);
+                setIsViewMore(false);
+                setIsFirstFetching(true);
+                containerRef.current?.scrollTo({ top: 0, behavior: 'instant' });
+              }}
+            >
+              Semua
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className={cn(
+                'text-xs rounded-full px-3 py-1 h-auto text-gray-600 hover:bg-gray-100',
+                filter === 'UNREAD' &&
+                  'border-main/50 text-main hover:bg-main/10',
+              )}
+              onClick={() => {
+                setFilter('UNREAD');
+                setIsLoading(true);
+                setPage(1);
+                setIsViewMore(false);
+                setIsFirstFetching(true);
+                containerRef.current?.scrollTo({ top: 0, behavior: 'instant' });
+              }}
+            >
+              Belum Dibaca
+            </Button>
           </div>
 
           {notifications.length === 0 && !isFirstFetching ? (
-            <div className="flex flex-col items-center justify-center py-14 px-4">
-              <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center mb-3">
-                <Bell className="w-7 h-7 text-slate-400" />
-              </div>
-              <p className="text-sm font-semibold text-slate-600">Tidak ada notifikasi</p>
-              <p className="text-xs text-slate-400 mt-0.5">Semua notifikasi akan tampil di sini</p>
+            <div className="flex flex-col items-center justify-center py-12 px-4">
+              <Bell className="w-12 h-12 text-gray-300 mb-2" />
+              <p className="text-sm text-gray-500">Tidak ada notifikasi</p>
             </div>
           ) : isFirstFetching ? (
-            <div className="px-4 py-[5rem] flex justify-center">
+            <div className="px-4 py-[5rem] flex justify-center border-t border-gray-100">
               <Button
                 variant="outline"
                 size="sm"
-                className="text-xs text-slate-500 hover:bg-transparent rounded-full gap-2 cursor-default border-slate-200"
+                className="text-xs text-main hover:bg-transparent rounded-3xl gap-2 cursor-default"
               >
                 <Loader2 className="animate-spin w-4 h-4" /> Memuat...
               </Button>
             </div>
           ) : (
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-gray-100">
               {notifications.map((notif, index) => (
                 <div
                   key={notif.id}
                   className={cn(
-                    'px-4 py-3.5 transition-colors duration-150 cursor-default relative',
-                    notif.isRead ? 'hover:bg-slate-50/60' : 'bg-blue-50/25 hover:bg-blue-50/40',
+                    'px-4 py-3 hover:bg-gray-50 transition-colors duration-150 cursor-default border-l-4 relative',
+                    notif.isRead ? 'border-gray-200' : 'border-blue-500',
                   )}
                   onClick={() => {
                     if (!notif.isRead) {
                       handleMarkAsRead(notif.id);
                     }
+                    // if (notif.actionUrl) {
+                    //   window.location.href = notif.actionUrl;
+                    // }
                   }}
                 >
-                  {/* Unread dot indicator */}
-                  {!notif.isRead && (
-                    <span className="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0" />
-                  )}
                   {/* <div className="absolute top-0 left-0">{index + 1}</div> */}
                   {/* Notification Content */}
-                  <div className="flex gap-3 pl-2">
+                  <div className="flex gap-3">
                     {/* Icon */}
                     <div
                       className={cn(
-                        'flex-shrink-0 w-10 h-10 rounded-2xl flex items-center justify-center',
-                        getTypeIconBg(notif.type, notif.priority),
+                        'flex-shrink-0 w-10 h-10 rounded-3xl flex items-center justify-center',
+                        getPriorityColor(notif.priority),
                       )}
                     >
                       {getTypeIcon(notif.type)}
@@ -329,9 +423,12 @@ export const Notification = () => {
                             notif.actionUrl.startsWith('/') && (
                               <div className="w-full flex justify-start">
                                 <Link href={notif.actionUrl}>
-                                  <button className="mt-2 text-[11px] font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full transition-colors">
+                                  <Button
+                                    className="py-1 px-3 h-[unset] text-xs mt-2 rounded-3xl"
+                                    variant={'outline'}
+                                  >
                                     Lihat Detail
-                                  </button>
+                                  </Button>
                                 </Link>
                               </div>
                             )}
@@ -344,9 +441,12 @@ export const Notification = () => {
                                   target="_blank"
                                   rel="noopener noreferrer"
                                 >
-                                  <button className="mt-2 text-[11px] font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full transition-colors">
+                                  <Button
+                                    className="py-1 px-3 h-[unset] text-xs mt-2 rounded-3xl"
+                                    variant={'outline'}
+                                  >
                                     Lihat Detail
-                                  </button>
+                                  </Button>
                                 </a>
                               </div>
                             )}
@@ -362,10 +462,10 @@ export const Notification = () => {
 
                       {/* Meta Info */}
                       <div className="flex items-center justify-between mt-2">
-                        <span className="text-[10px] text-slate-400 font-medium">
+                        <span className="text-xs text-gray-400">
                           {formatTimeAgo(notif.createdAt)}
                         </span>
-                        <span className="text-[10px] bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-full font-semibold border border-slate-200">
+                        <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
                           {getTypeLabel(notif.type)}
                         </span>
                       </div>
@@ -404,28 +504,6 @@ export const Notification = () => {
                               <DropdownMenuSeparator />
                             </>
                           )}
-                          {/* Archive / Unarchive */}
-                          {!notif.isBroadcast && (
-                            <DropdownMenuItem
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleArchive(notif.id, view !== 'archive');
-                              }}
-                              className="cursor-pointer"
-                            >
-                              {view === 'archive' ? (
-                                <>
-                                  <ArchiveX className="w-4 h-4 mr-2" />
-                                  Pulihkan dari arsip
-                                </>
-                              ) : (
-                                <>
-                                  <Archive className="w-4 h-4 mr-2" />
-                                  Arsipkan
-                                </>
-                              )}
-                            </DropdownMenuItem>
-                          )}
                           {(!notif.isBroadcast ||
                             role === 'ADMIN' ||
                             role === 'SUPER_ADMIN') && (
@@ -447,11 +525,11 @@ export const Notification = () => {
                 </div>
               ))}
               {!isViewMore && totalData > 10 && (
-                <div className="px-4 py-3.5 flex justify-center border-t border-slate-100">
+                <div className="px-4 py-3 flex justify-center border-t border-gray-100">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-xs text-slate-600 hover:bg-slate-50 rounded-full border-slate-200 px-5 font-semibold"
+                    className="text-xs text-blue-600 hover:bg-blue-50 rounded-3xl"
                     onClick={() => {
                       setIsViewMore(true);
                     }}
@@ -461,11 +539,11 @@ export const Notification = () => {
                 </div>
               )}
               {!isAllLoaded && isViewMore && (
-                <div className="px-4 py-3.5 flex justify-center border-t border-slate-100">
+                <div className="px-4 py-3 flex justify-center border-t border-gray-100">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-xs text-slate-500 hover:bg-transparent rounded-full gap-2 cursor-default border-slate-200"
+                    className="text-xs text-main hover:bg-transparent rounded-3xl gap-2 cursor-default"
                     onClick={() => setIsViewMore(true)}
                   >
                     <Loader2 className="animate-spin w-4 h-4" /> Memuat...
@@ -476,7 +554,7 @@ export const Notification = () => {
           )}
         </div>
 
-        {/* Footer - hidden (Lihat semua now in header) */}
+        {/* Footer - Fixed */}
         {notifications.length > 0 && false && (
           <>
             <DropdownMenuSeparator className="my-0" />
