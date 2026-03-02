@@ -74,6 +74,8 @@ self.addEventListener('notificationclick', (event) => {
 
   const url = event.notification.data?.url || '/';
 
+  console.log('[Service Worker] Navigating to URL:', url);
+
   event.waitUntil(
     clients.matchAll({ type: 'window' }).then((clientList) => {
       // Cari jika ada window yang sudah terbuka

@@ -91,6 +91,7 @@ export default function ProviderNotification({
     {
       toast: {
         hideSuccess: true,
+        hideError: true,
       },
       async onError() {
         if (page === 1) {
@@ -278,7 +279,7 @@ const notificationSocketListener = ({
   const { on, emit, off } = useSocket();
 
   const playNotificationSound = (
-    soundUrl: string = '/sounds/notification2.wav',
+    soundUrl: string = '/sounds/notification.mp3',
   ) => {
     try {
       const audio = new Audio(soundUrl);

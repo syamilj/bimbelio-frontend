@@ -2,7 +2,6 @@
 
 import { useAppContext } from '@/components/provider/provider-app';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
@@ -148,34 +147,33 @@ export function QuizCardList() {
           >
             {/* Category Header */}
             <div
-              className="flex items-center gap-4 p-4 rounded-3xl border shadow-sm"
+              className="flex items-center gap-4 p-4 rounded-3xl border-2 shadow-sm"
               style={{
                 backgroundColor: `${mainColor}08`,
                 borderColor: `${mainColor}20`,
               }}
             >
               <div
-                className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-md"
+                className="w-11 h-11 rounded-2xl flex items-center justify-center shadow-md flex-shrink-0"
                 style={{ backgroundColor: mainColor }}
               >
-                <Swords className="w-6 h-6 text-white" />
+                <Swords className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-lg font-black text-slate-800">
+                <h3 className="text-base font-black text-slate-800">
                   {sub.code}
                 </h3>
-                <p className="text-sm text-slate-500 font-medium truncate">
+                <p className="text-xs text-slate-500 font-medium truncate">
                   {sub.name}
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <Badge
-                  variant="secondary"
-                  className="font-bold text-sm bg-white border border-slate-200 px-3 py-1.5"
+                <div
+                  className="text-xs font-bold px-3 py-1.5 rounded-full bg-white border-2 shadow-sm"
+                  style={{ borderColor: `${mainColor}30`, color: mainColor }}
                 >
-                  {sub.quizzes.filter((q) => q.isDone).length}/
-                  {sub.quizzes.length}
-                </Badge>
+                  {sub.quizzes.filter((q) => q.isDone).length}/{sub.quizzes.length}
+                </div>
               </div>
             </div>
 
@@ -192,22 +190,12 @@ export function QuizCardList() {
                       <div
                         key={quiz.id}
                         className={cn(
-                          'group relative overflow-hidden rounded-3xl md:rounded-3xl border transition-all duration-200 cursor-pointer shadow-sm flex-shrink-0 w-[200px] md:w-auto',
+                          'group relative overflow-hidden rounded-3xl border-2 transition-all duration-200 cursor-pointer flex-shrink-0 w-[210px] md:w-auto',
                           quiz.isDone
-                            ? 'border-emerald-200 bg-gradient-to-br from-emerald-50/50 to-white hover:border-emerald-300 hover:shadow-lg'
-                            : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-lg',
+                            ? 'border-emerald-100 bg-gradient-to-br from-emerald-50/60 via-white to-white hover:border-emerald-200 hover:shadow-lg'
+                            : 'border-slate-100 bg-white hover:border-slate-200 hover:shadow-lg shadow-sm',
                         )}
                       >
-                        {/* Top Accent Bar */}
-                        <div
-                          className="h-1 md:h-1.5 w-full"
-                          style={{
-                            backgroundColor: quiz.isDone
-                              ? '#10b981'
-                              : mainColor,
-                          }}
-                        />
-
                         {/* Hot/Trending Badge */}
                         {!quiz.isDone && isQuizHot(quiz.id) && (
                           <div className="absolute top-3 right-2 md:top-4 md:right-3 z-10">
@@ -218,7 +206,7 @@ export function QuizCardList() {
                           </div>
                         )}
 
-                        <div className="p-3 md:p-5 space-y-2 md:space-y-3">
+                        <div className="p-4 md:p-5 space-y-3 md:space-y-3.5">
                           {/* Header with Battle Stats */}
                           <div className="flex justify-between items-center">
                             <span
@@ -238,7 +226,7 @@ export function QuizCardList() {
                                 </span>
                               </div>
                               {quiz.isDone && (
-                                <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-emerald-500 flex items-center justify-center shadow-sm">
+                                <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-emerald-500 flex items-center justify-center shadow-sm ring-2 ring-emerald-100">
                                   <CheckCircle2 className="w-3 h-3 md:w-3.5 md:h-3.5 text-white" />
                                 </div>
                               )}
@@ -247,7 +235,7 @@ export function QuizCardList() {
 
                           {/* Quiz Name */}
                           <div>
-                            <h4 className="font-bold text-sm md:text-base text-slate-800 group-hover:text-slate-900 transition-colors line-clamp-2">
+                            <h4 className="font-bold text-sm md:text-[15px] text-slate-800 group-hover:text-slate-900 transition-colors line-clamp-2 leading-snug">
                               {quiz.title}
                             </h4>
                             <div className="flex items-center gap-2 md:gap-3 text-[10px] md:text-xs text-slate-400 mt-1.5 md:mt-2 font-semibold">
@@ -257,21 +245,21 @@ export function QuizCardList() {
                               </span>
                               <span className="flex items-center gap-0.5 md:gap-1">
                                 <Clock className="w-3 h-3 md:w-3.5 md:h-3.5" />{' '}
-                                {quiz.TryoutSession.duration} Menit
+                                {quiz.TryoutSession.duration}m
                               </span>
                             </div>
                           </div>
 
                           {/* Score or Start Button */}
                           {quiz.isDone ? (
-                            <div className="pt-2 md:pt-3 border-t border-slate-100 space-y-2 md:space-y-3">
+                            <div className="pt-2.5 md:pt-3 border-t border-emerald-100 space-y-2.5 md:space-y-3">
                               <div className="flex justify-between items-center">
                                 <div>
                                   <p className="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase tracking-wider">
                                     Skor
                                   </p>
                                   <div className="flex items-baseline gap-1">
-                                    <p className="text-xl md:text-2xl font-black text-slate-800">
+                                    <p className="text-xl md:text-2xl font-black text-emerald-600">
                                       {quiz.TryoutResult?.totalScore || '-'}
                                     </p>
                                     {/* <div className="flex items-center gap-0.5 text-amber-600">
