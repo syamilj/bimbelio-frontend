@@ -1,10 +1,9 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import type { WebsiteCategory, WebsiteSubCategory } from '@/types/database';
-import { Check, Search } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../dialog';
@@ -28,7 +27,6 @@ export function DialogWebCategory({
 }: Props) {
   useWebsiteSubCategory();
   const [realValue, setRealValue] = useState<string>('');
-  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const handleValueChange = useDebouncedCallback((value: string) => {
     setRealValue(value);
@@ -39,65 +37,31 @@ export function DialogWebCategory({
     handleValueChange(value);
   }, [value, handleValueChange]);
 
-  const category = items.find((item) =>
-    item.WebsiteSubCategory.find((item2) => item2.id === realValue),
-  );
-  const subCategory = category
-    ? category.WebsiteSubCategory.find((item) => item.id === realValue)
-    : null;
-
-  // Filter categories and subcategories based on search query
-  const filteredItems = items
-    .map((cat) => ({
-      ...cat,
-      WebsiteSubCategory: cat.WebsiteSubCategory.filter((sub) =>
-        sub.name.toLowerCase().includes(searchQuery.toLowerCase()),
-      ),
-    }))
-    .filter(
-      (cat) =>
-        cat.WebsiteSubCategory.length > 0 ||
-        cat.name.toLowerCase().includes(searchQuery.toLowerCase()),
-    );
-
   return (
     <Dialog
       open={isOpen}
       onOpenChange={onOpenChange}
     >
-      <DialogContent className="md:max-w-xl w-full sm:space-x-2 p-0 overflow-hidden bg-background border shadow-xl">
+      <DialogContent className="md:max-w-2xl w-full p-0 overflow-hidden bg-background border shadow-xl rounded-3xl gap-0">
         {/* Header */}
-        <DialogHeader className="relative p-6 pb-4 border-b border-gray-200 bg-linear-to-r from-gray-50 to-gray-100 dark:to-gray-800">
+        <DialogHeader className="relative px-6 py-5 border-b border-gray-200 bg-linear-to-r from-gray-50 to-gray-100 dark:to-gray-800">
           <div className="flex items-center justify-between">
             <div>
-              <DialogTitle className="text-xl font-bold">
-                Pilih Kategori Bimbelio
+              <DialogTitle className="text-2xl font-bold tracking-tight">
+                Pilih Kategori
               </DialogTitle>
-              <p className="text-sm text-muted-foreground mt-1">
-                Pilih kategori yang sesuai dengan tujuan belajarmu
+              <p className="text-sm text-muted-foreground mt-1.5">
+                Pilih yang sesuai dengan tujuan belajarmu
               </p>
             </div>
           </div>
         </DialogHeader>
 
-        {/* Search Bar */}
-        <div className="p-4 border-b border-gray-200 dark:border-gray-800">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Cari kategori..."
-              className="pl-10 h-10 bg-muted/30 border-0 rounded-3xl focus-visible:ring-1 focus-visible:ring-offset-0"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-        </div>
-
         {/* Categories List */}
-        <div className="max-h-[70vh] overflow-y-auto">
-          {filteredItems.length > 0 ? (
-            <div className="p-4 space-y-6">
-              {filteredItems.map((cat) => (
+        <div className="max-h-[70vh] overflow-y-auto px-6 py-5">
+          {items.length > 0 ? (
+            <div className="space-y-6">
+              {items.map((cat) => (
                 <div
                   key={cat.id}
                   className="space-y-3"
@@ -105,18 +69,19 @@ export function DialogWebCategory({
                   {/* Category Header */}
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-1 h-6 rounded-full"
+                      className="w-1 h-7 rounded-full"
                       style={{ backgroundColor: cat.main_color || '#0096FF' }}
                     />
-                    <h3 className="font-bold text-lg text-foreground">
+                    <h3 className="font-bold text-2xl text-foreground tracking-tight">
                       {cat.name}
                     </h3>
                   </div>
 
                   {/* Subcategories Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 ml-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {cat.WebsiteSubCategory.map((sub) => {
                       const isSelected = realValue === sub.id;
+                      const hasImage = Boolean(sub.image);
 
                       return (
                         <button
@@ -131,80 +96,86 @@ export function DialogWebCategory({
                             }
                           }}
                           className={cn(
-                            'group relative overflow-hidden rounded-3xl p-4 text-left transition-all duration-300 hover:shadow-md border',
+                            'group relative overflow-hidden rounded-3xl p-0 text-left transition-all duration-300 border h-[112px] bg-white',
                             isSelected
-                              ? 'border-transparent shadow-lg scale-[1.02]'
-                              : 'border-gray-200 hover:border-gray-300 dark:hover:border-gray-700',
+                              ? 'border-transparent shadow-lg scale-[1.02] ring-2 ring-offset-2 ring-offset-background'
+                              : 'border-gray-200 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-md',
                           )}
                           style={{
-                            backgroundColor: isSelected
-                              ? sub.main_color
-                              : 'transparent',
+                            backgroundColor: hasImage ? undefined : `${sub.main_color}10`,
                           }}
                         >
-                          {/* Background Pattern */}
-                          <div className="absolute inset-0 opacity-5">
+                          {hasImage && (
+                            <img
+                              src={sub.image}
+                              alt={sub.name}
+                              className="absolute inset-0 h-full w-full object-contain bg-white"
+                            />
+                          )}
+
+                          <div
+                            className={cn(
+                              'absolute inset-0',
+                              hasImage
+                                ? 'bg-transparent'
+                                : 'bg-gradient-to-t from-black/20 via-transparent to-transparent',
+                            )}
+                            style={{
+                              opacity: isSelected ? 0.95 : 1,
+                              backgroundImage: hasImage
+                                ? undefined
+                                : `linear-gradient(to top, ${sub.main_color}55, transparent)`,
+                            }}
+                          />
+
+                          <div className="relative z-10 flex h-full flex-col justify-start p-3">
+                            <div className="flex justify-end">
+                              <div
+                                className={cn(
+                                  'flex items-center justify-center w-7 h-7 rounded-full border-2 transition-all duration-200',
+                                  isSelected
+                                    ? 'bg-white border-white'
+                                    : 'border-white/60 bg-white/20 backdrop-blur-xs',
+                                )}
+                              >
+                                {isSelected && (
+                                  <Check
+                                    className="w-3.5 h-3.5 text-current"
+                                    style={{ color: sub.main_color }}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                            {!hasImage && (
+                              <div className="flex-1 flex items-center justify-center px-4">
+                                <span className="text-xl font-bold text-foreground text-center leading-tight">
+                                  {sub.name}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+
+                          {isSelected && (
                             <div
-                              className="w-full h-full"
+                              className="absolute inset-0 border-2 rounded-3xl pointer-events-none"
+                              style={{ borderColor: sub.main_color }}
+                            />
+                          )}
+
+                          <div
+                            className={cn(
+                              'absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none',
+                            )}
+                          >
+                            <div
+                              className="h-full w-full"
                               style={{
-                                backgroundColor: isSelected
-                                  ? 'white'
-                                  : sub.main_color,
+                                backgroundColor: hasImage
+                                  ? 'rgba(0,0,0,0.04)'
+                                  : `${sub.main_color}14`,
                               }}
                             />
                           </div>
-
-                          {/* Content */}
-                          <div className="relative z-10 flex items-center justify-between">
-                            <div className="flex-1">
-                              <h4
-                                className={cn(
-                                  'font-semibold text-sm transition-colors',
-                                  isSelected
-                                    ? 'text-white'
-                                    : 'text-foreground group-hover:text-foreground',
-                                )}
-                              >
-                                {sub.name}
-                              </h4>
-                              <p
-                                className={cn(
-                                  'text-xs mt-1 transition-colors',
-                                  isSelected
-                                    ? 'text-white/80'
-                                    : 'text-muted-foreground',
-                                )}
-                              >
-                                Kategori pembelajaran terbaik
-                              </p>
-                            </div>
-
-                            {/* Selection Indicator */}
-                            <div
-                              className={cn(
-                                'flex items-center justify-center w-6 h-6 rounded-full border-2 transition-all duration-200',
-                                isSelected
-                                  ? 'bg-white border-white'
-                                  : 'border-gray-300 group-hover:border-gray-400',
-                              )}
-                            >
-                              {isSelected && (
-                                <Check
-                                  className="w-3 h-3 text-current"
-                                  style={{ color: sub.main_color }}
-                                />
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Hover Effect */}
-                          <div
-                            className={cn(
-                              'absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity',
-                              !isSelected && 'bg-current',
-                            )}
-                            style={{ color: sub.main_color }}
-                          />
                         </button>
                       );
                     })}
@@ -214,28 +185,18 @@ export function DialogWebCategory({
             </div>
           ) : (
             <div className="text-center py-12">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center">
-                <Search className="w-6 h-6 text-muted-foreground" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">Tidak ada hasil</h3>
+              <h3 className="font-semibold text-lg mb-2">Belum ada kategori</h3>
               <p className="text-muted-foreground text-sm">
-                Tidak ada kategori yang sesuai dengan pencarian Kamu
+                Kategori belum tersedia untuk ditampilkan
               </p>
             </div>
           )}
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-gray-200 bg-muted/30">
+        <div className="px-6 py-4 border-t border-gray-200 bg-muted/30">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>💡 Kategori dapat diubah sewaktu-waktu</span>
-            <span>
-              {filteredItems.reduce(
-                (acc, cat) => acc + cat.WebsiteSubCategory.length,
-                0,
-              )}{' '}
-              kategori tersedia
-            </span>
+            <span className="text-sm">💡 Kategori dapat diubah sewaktu-waktu</span>
           </div>
         </div>
       </DialogContent>
