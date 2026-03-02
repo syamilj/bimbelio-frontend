@@ -2,6 +2,13 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
@@ -16,6 +23,7 @@ import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { getDateString, getHours } from '@/lib/utils';
+import { getSubtestLabel } from '@/lib/utils/subtest';
 import { Tryout } from '@/types/database';
 import ExcelJS from 'exceljs';
 import {
@@ -45,6 +53,7 @@ interface TryoutData extends Tryout {
       c_guessing: number;
       subCategory: string | null;
       subSubCategory: string | null;
+      Pivot_TryoutQuestion_CourseChapter: { id: string }[];
     }[];
   }[];
   _count: {
@@ -76,6 +85,15 @@ const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
 
 export default function Page() {
   const [search, setSearch] = useState('');
+  const [aiMatchDetail, setAiMatchDetail] = useState<{
+    title: string;
+    matchedQuestions: number;
+    totalQuestions: number;
+    sessions: {
+      sessionName: string;
+      unmatchedNumbers: number[];
+    }[];
+  } | null>(null);
 
   const {
     data: tryout,
@@ -125,6 +143,99 @@ export default function Page() {
   };
 
   const STAT_ICONS = [ClipboardList, Users, BarChart2];
+
+  const isQuestionMatched = (
+    question: TryoutData['TryoutSession'][number]['TryoutQuestion'][number],
+  ) => {
+    return (
+      (question.Pivot_TryoutQuestion_CourseChapter?.length || 0) > 0 ||
+      Boolean(question.subCategory && question.subCategory.trim()) ||
+      Boolean(question.subSubCategory && question.subSubCategory.trim())
+    );
+  };
+
+  const getAIMatchDetail = (item: TryoutData) => {
+    const sessions = item.TryoutSession.map((session) => {
+      const unmatchedNumbers = session.TryoutQuestion.filter(
+        (question) => !isQuestionMatched(question),
+      )
+        .map((question, index) => question.number || index + 1)
+        .sort((a, b) => a - b);
+
+      return {
+        sessionName: getSubtestLabel(
+          session.TryoutSubCategory.name,
+          website_sub_category_id ?? undefined,
+        ),
+        unmatchedNumbers,
+      };
+    }).filter((session) => session.unmatchedNumbers.length > 0);
+
+    const totalQuestions = item.TryoutSession.reduce(
+      (acc, session) => acc + session.TryoutQuestion.length,
+      0,
+    );
+
+    const matchedQuestions = item.TryoutSession.reduce(
+      (acc, session) =>
+        acc +
+        session.TryoutQuestion.filter((question) => isQuestionMatched(question))
+          .length,
+      0,
+    );
+
+    return {
+      title: item.title,
+      matchedQuestions,
+      totalQuestions,
+      sessions,
+    };
+  };
+
+  const getAIMatchStatus = (
+    sessions: TryoutData['TryoutSession'],
+  ): {
+    label: string;
+    className: string;
+    title: string;
+  } => {
+    const questions = sessions.flatMap((session) => session.TryoutQuestion);
+    const totalQuestions = questions.length;
+
+    if (totalQuestions === 0) {
+      return {
+        label: 'Belum Dicek',
+        className: 'bg-gray-100 text-gray-600 border-gray-200',
+        title: 'Belum ada soal untuk dicek AI Match.',
+      };
+    }
+
+    const matchedQuestions = questions.filter(
+      (question) => isQuestionMatched(question),
+    ).length;
+
+    if (matchedQuestions === totalQuestions) {
+      return {
+        label: 'Siap',
+        className: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+        title: `Semua soal sudah memiliki hasil AI Match (${matchedQuestions}/${totalQuestions}).`,
+      };
+    }
+
+    if (matchedQuestions > 0) {
+      return {
+        label: 'Sebagian',
+        className: 'bg-amber-50 text-amber-700 border-amber-200',
+        title: `Sebagian soal sudah di-match (${matchedQuestions}/${totalQuestions}).`,
+      };
+    }
+
+    return {
+      label: 'Belum',
+      className: 'bg-rose-50 text-rose-700 border-rose-200',
+      title: 'Belum ada soal yang di-match AI.',
+    };
+  };
 
   return (
     <div className="space-y-6">
@@ -238,6 +349,9 @@ export default function Page() {
                   Sesi
                 </TableHead>
                 <TableHead className="text-center font-bold text-gray-600 text-xs">
+                  AI Match
+                </TableHead>
+                <TableHead className="text-center font-bold text-gray-600 text-xs">
                   Status
                 </TableHead>
                 <TableHead className="text-center font-bold text-gray-600 text-xs">
@@ -275,6 +389,9 @@ export default function Page() {
                       <Skeleton className="h-6 w-16 mx-auto rounded-full" />
                     </TableCell>
                     <TableCell className="text-center">
+                      <Skeleton className="h-6 w-16 mx-auto rounded-full" />
+                    </TableCell>
+                    <TableCell className="text-center">
                       <div className="flex justify-center gap-1">
                         <Skeleton className="h-8 w-8 rounded-3xl" />
                         <Skeleton className="h-8 w-8 rounded-3xl" />
@@ -288,7 +405,7 @@ export default function Page() {
               {!isLoading && filtered?.length === 0 && (
                 <TableRow>
                   <TableCell
-                    colSpan={8}
+                    colSpan={9}
                     className="h-48 text-center"
                   >
                     <div className="flex flex-col items-center justify-center gap-3 py-8">
@@ -317,6 +434,8 @@ export default function Page() {
                     label: item.status,
                     className: 'bg-gray-100 text-gray-600 border-gray-200',
                   };
+                  const aiMatchStatus = getAIMatchStatus(item.TryoutSession);
+                  const aiDetail = getAIMatchDetail(item);
 
                   return (
                     <TableRow
@@ -396,10 +515,28 @@ export default function Page() {
                               className="inline-flex items-center gap-1 bg-indigo-50 text-indigo-700 border border-indigo-100 px-2 py-0.5 rounded-full text-xs font-medium hover:bg-indigo-100 transition-colors"
                             >
                               <FileSpreadsheet className="w-3 h-3" />
-                              {s.TryoutSubCategory.name}
+                              {getSubtestLabel(
+                                s.TryoutSubCategory.name,
+                                website_sub_category_id ?? undefined,
+                              )}
                             </button>
                           ))}
                         </div>
+                      </TableCell>
+
+                      <TableCell className="text-center">
+                        <button
+                          type="button"
+                          title={aiMatchStatus.title}
+                          onClick={() => setAiMatchDetail(aiDetail)}
+                          className="inline-flex"
+                        >
+                          <Badge
+                            className={`border text-xs font-semibold rounded-full hover:opacity-80 cursor-pointer ${aiMatchStatus.className}`}
+                          >
+                            {aiMatchStatus.label}
+                          </Badge>
+                        </button>
                       </TableCell>
 
                       <TableCell className="text-center">
@@ -458,6 +595,46 @@ export default function Page() {
           </p>
         )}
       </div>
+
+      <Dialog
+        open={Boolean(aiMatchDetail)}
+        onOpenChange={(open) => {
+          if (!open) setAiMatchDetail(null);
+        }}
+      >
+        <DialogContent className="sm:max-w-xl">
+          <DialogHeader>
+            <DialogTitle>Detail AI Match</DialogTitle>
+            <DialogDescription>
+              {aiMatchDetail
+                ? `${aiMatchDetail.title} • ${aiMatchDetail.matchedQuestions}/${aiMatchDetail.totalQuestions} soal sudah match`
+                : 'Detail soal yang belum AI Match'}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="max-h-[60vh] overflow-y-auto space-y-3 pr-1">
+            {aiMatchDetail?.sessions.length ? (
+              aiMatchDetail.sessions.map((session) => (
+                <div
+                  key={session.sessionName}
+                  className="rounded-xl border border-gray-100 p-3"
+                >
+                  <p className="text-sm font-semibold text-gray-800">
+                    {session.sessionName}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Soal belum match: {session.unmatchedNumbers.join(', ')}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <div className="rounded-xl border border-emerald-100 bg-emerald-50 p-3 text-sm text-emerald-700 font-medium">
+                Semua soal sudah terdeteksi AI Match.
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

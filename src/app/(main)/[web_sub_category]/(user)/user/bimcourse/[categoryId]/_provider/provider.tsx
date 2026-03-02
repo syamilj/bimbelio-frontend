@@ -60,10 +60,27 @@ export default function Provider({ children }: Props) {
     : params?.categoryId || null;
 
   useEffect(() => {
-    if (!tab && sub) {
-      router.push(`${window.location.pathname}?sub=${sub}&tab=chat`);
+    if (!pathname || !sub) return;
+
+    const isStudyPath = pathname.endsWith('/study');
+    const currentQuery = searchParams?.toString();
+    const currentUrl = currentQuery ? `${pathname}?${currentQuery}` : pathname;
+
+    if (!isStudyPath) {
+      const targetUrl = `${pathname}/study?sub=${sub}&tab=${tab || 'chat'}`;
+      if (currentUrl !== targetUrl) {
+        router.replace(targetUrl);
+      }
+      return;
     }
-  }, [tab, sub, router]);
+
+    if (!tab) {
+      const targetUrl = `${pathname}?sub=${sub}&tab=chat`;
+      if (currentUrl !== targetUrl) {
+        router.replace(targetUrl);
+      }
+    }
+  }, [pathname, tab, sub, router, searchParams]);
 
   // ===== Editor ================================
   const editor = useCreateBlockNote({
@@ -176,7 +193,8 @@ export default function Provider({ children }: Props) {
           }
         }
       } else {
-        // Only auto-navigate if not showing start course
+        // Keep overview page stable when opening /bimcourse/[categoryId]
+        // and only auto-navigate when already inside /study.
         if (Course.length > 0 && Course[0].CourseSubChapter.length > 0) {
           setCourseData({
             id: Course[0].CourseSubChapter[0].id,
@@ -197,15 +215,20 @@ export default function Provider({ children }: Props) {
             TryoutSession: Course[0].CourseSubChapter[0].TryoutSession,
             CourseProgress: Course[0].CourseSubChapter[0].CourseProgress,
           });
-          router.push(
-            `${window.location.pathname}?sub=${Course[0].CourseSubChapter[0].id}&tab=chat`,
-          );
+          if (pathname?.endsWith('/study')) {
+            const targetUrl = `${pathname}?sub=${Course[0].CourseSubChapter[0].id}&tab=chat`;
+            const currentQuery = searchParams?.toString();
+            const currentUrl = currentQuery ? `${pathname}?${currentQuery}` : pathname;
+            if (currentUrl !== targetUrl) {
+              router.replace(targetUrl);
+            }
+          }
         } else {
           setCourseData(null);
         }
       }
     }
-  }, [Course, CourseProgress, sub, indexChapter, router, startParam]);
+  }, [Course, CourseProgress, sub, router, pathname, searchParams]);
 
   useEffect(() => {
     const chatAIContainer = document.querySelector(

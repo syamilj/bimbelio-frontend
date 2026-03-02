@@ -3,6 +3,7 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { InputImage } from '@/components/ui/input-image';
 import {
   Command,
   CommandEmpty,
@@ -38,15 +39,19 @@ import {
 } from '@/types/database';
 import {
   AlertCircle,
+  ArrowDown,
+  ArrowUp,
   BookOpen,
   Check,
   ChevronLeft,
   ChevronsUpDown,
   X,
 } from 'lucide-react';
+import { env } from '@/env.mjs';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { Dispatch, SetStateAction, useState } from 'react';
+import { storage } from '@/supabaseClient';
 
 const STATUS_OPTIONS = [
   {
@@ -80,11 +85,66 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
     status: 'DRAFT',
     startDate: '',
     endDate: '',
+    resultDate: '',
+    image: '',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const [selectedTryouts, setSelectedTryouts] = useState<TryoutListType[]>([]);
+
+  const normalizeOrdersBySubCategory = (tryoutData: TryoutListType[]) => {
+    if (!SubCategory || SubCategory.length === 0) return tryoutData;
+
+    let normalizedTryouts: TryoutListType[] = [];
+    for (const sub of SubCategory) {
+      const grouped = tryoutData
+        .filter((tryout) => tryout.TryoutSubCategory.id === sub.id)
+        .sort((a, b) => (a.quizOrder || 10000) - (b.quizOrder || 10000))
+        .map((tryout, index) => ({
+          ...tryout,
+          quizOrder: index + 1,
+        }));
+
+      normalizedTryouts = [...normalizedTryouts, ...grouped];
+    }
+
+    return normalizedTryouts;
+  };
+
+  const reorderTryoutWithinSubCategory = ({
+    data,
+    subCategoryId,
+    tryoutId,
+    targetOrder,
+  }: {
+    data: TryoutListType[];
+    subCategoryId: string;
+    tryoutId: string;
+    targetOrder: number;
+  }) => {
+    const group = data
+      .filter((item) => item.TryoutSubCategory.id === subCategoryId)
+      .sort((a, b) => (a.quizOrder || 10000) - (b.quizOrder || 10000));
+
+    const movingIndex = group.findIndex((item) => item.id === tryoutId);
+    if (movingIndex < 0) return data;
+
+    const [movingItem] = group.splice(movingIndex, 1);
+    const boundedOrder = Math.max(1, Math.min(targetOrder, group.length + 1));
+    group.splice(boundedOrder - 1, 0, movingItem);
+
+    const reorderedGroup = group.map((item, index) => ({
+      ...item,
+      quizOrder: index + 1,
+    }));
+
+    const otherGroups = data.filter(
+      (item) => item.TryoutSubCategory.id !== subCategoryId,
+    );
+
+    return [...otherGroups, ...reorderedGroup];
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -113,9 +173,11 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
     setSelectedTryouts((prev) => {
       const isExsist = prev.find((item) => item.id === tryout.id);
       if (isExsist) {
-        return handleSortTryouts(prev);
+        return normalizeOrdersBySubCategory(
+          prev.filter((item) => item.id !== tryout.id),
+        );
       }
-      return handleSortTryouts([...prev, tryout]);
+      return normalizeOrdersBySubCategory([...prev, tryout]);
     });
   };
 
@@ -132,6 +194,18 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
       newErrors.volumeNumber = 'Nomor volume harus berupa angka';
     }
 
+    if (!formData.startDate.trim()) {
+      newErrors.startDate = 'Start date harus diisi';
+    }
+
+    if (!formData.endDate.trim()) {
+      newErrors.endDate = 'End date harus diisi';
+    }
+
+    if (!formData.resultDate.trim()) {
+      newErrors.resultDate = 'Tanggal pembahasan harus diisi';
+    }
+
     // if (selectedTryouts.length === 0) {
     //   newErrors.tryouts = 'Pilih minimal 1 tryout';
     // }
@@ -140,40 +214,16 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSortTryouts = (tryoutData: TryoutListType[]) => {
-    if (SubCategory && SubCategory.length > 0) {
-      let sortedTryouts: TryoutListType[] = [];
-      for (const sub of SubCategory) {
-        const filteredTryouts = tryoutData
-          .filter((tryout) => tryout.TryoutSubCategory.id === sub.id)
-          .sort((a, b) => (a.quizOrder || 10000) - (b.quizOrder || 10000))
-          .map((tryout, index) => ({
-            ...tryout,
-            quizOrder: index + 1,
-          }));
-
-        sortedTryouts = [...sortedTryouts, ...filteredTryouts];
-        console.log({ tryoutData, filteredTryouts, sortedTryouts });
-      }
-      return sortedTryouts;
-    }
-    return tryoutData;
-  };
-
-  console.log({ selectedTryouts });
+  const handleSortTryouts = (tryoutData: TryoutListType[]) =>
+    normalizeOrdersBySubCategory(tryoutData);
 
   const { data: SubCategory, isLoading: SubCategoryIsLoading } = useGet<
     TryoutSubCategory[]
   >('/tryoutCategory/getSubCategory');
 
-  console.log({
-    SubCategoryIsLoading,
-    enabled:
-      mode === 'edit' && !!id && !!SubCategory && SubCategory?.length > 0,
-  });
-
   const { isLoading: isLoadingGetData, refetch } = useGet<
     QuizVolume & {
+      resultDate?: string | null;
       Tryout: TryoutListType[];
     }
   >('/quizTryout/getSingleQuizVolume', {
@@ -181,16 +231,19 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
     enabled:
       mode === 'edit' && !!id && !!SubCategory && SubCategory?.length > 0,
     onSuccess: ({ data }) => {
-      console.log({ data });
       if (data) {
         setFormData({
           name: data.title || '',
-          volumeNumber: data.number?.toString(),
-          status: data.status,
-          startDate: getDateForInputDateTime(data.startDate),
-          endDate: getDateForInputDateTime(data.endDate),
+          volumeNumber: data.number?.toString() || '',
+          status: data.status || 'DRAFT',
+          startDate: getDateForInputDateTime(data.startDate) || '',
+          endDate: getDateForInputDateTime(data.endDate) || '',
+          resultDate: getDateForInputDateTime(
+            data.resultDate || data.Tryout?.[0]?.resultDate || data.startDate,
+          ) || '',
+          image: data.image || '',
         });
-        const sortedTryouts = handleSortTryouts(data.Tryout);
+        const sortedTryouts = normalizeOrdersBySubCategory(data.Tryout);
         setSelectedTryouts(sortedTryouts);
       }
     },
@@ -224,8 +277,6 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
 
   const isLoading = isLoadingCreate || isLoadingUpdate;
 
-  console.log({ SubCategory });
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -234,14 +285,15 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
     }
 
     // Here you would typically send the data to your API
+    const normalizedTryouts = normalizeOrdersBySubCategory(selectedTryouts);
+
     const submitData = {
       ...formData,
-      tryoutIds: selectedTryouts.map((tryout) => ({
+      tryoutIds: normalizedTryouts.map((tryout) => ({
         id: tryout.id,
         quizOrder: tryout.quizOrder,
       })),
     };
-    console.log('Submitting:', submitData);
     if (mode === 'create') {
       await createQuizVolume({
         payload: {
@@ -250,6 +302,8 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
           status: submitData.status,
           startDate: submitData.startDate,
           endDate: submitData.endDate,
+          resultDate: submitData.resultDate,
+          image: submitData.image || null,
           TryoutIds: submitData.tryoutIds,
         },
       });
@@ -263,13 +317,13 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
           status: submitData.status,
           startDate: submitData.startDate,
           endDate: submitData.endDate,
+          resultDate: submitData.resultDate,
+          image: submitData.image || null,
           TryoutIds: submitData.tryoutIds,
         },
       });
     }
   };
-
-  console.log({ TryoutList });
 
   if (isLoadingGetData && mode === 'edit' && id) {
     return <LoadingComponentWithText heading="Mengambil Data Quiz Volume..." />;
@@ -348,7 +402,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
                   <Input
                     type="text"
                     name="name"
-                    value={formData.name}
+                    value={formData.name || ''}
                     onChange={handleInputChange}
                     placeholder="e.g., Persiapan Awal UTBK"
                     className={cn(errors.name && 'border-red-500 bg-red-50')}
@@ -367,7 +421,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
                   <Input
                     type="number"
                     name="volumeNumber"
-                    value={formData.volumeNumber}
+                    value={formData.volumeNumber || ''}
                     onChange={handleInputChange}
                     placeholder="e.g., 1"
                     className={cn(
@@ -381,6 +435,48 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
                     </div>
                   )}
                 </div>
+
+                <div className="md:col-span-2">
+                  <p className="text-sm font-bold text-slate-700 mb-2">
+                    Image Volume
+                  </p>
+                  <InputImage
+                    preview={
+                      formData.image
+                        ? `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/quiz-volume/${formData.image}`
+                        : undefined
+                    }
+                    onChange={async (image) => {
+                      if (!image) return;
+
+                      const oldImage = formData.image;
+                      const filename = `quiz-volume-${crypto.randomUUID()}`;
+                      const upload = await storage
+                        .from('img')
+                        .upload(`quiz-volume/${filename}`, image);
+
+                      if (
+                        upload?.error?.message ===
+                        'The resource already exists'
+                      ) {
+                        await storage
+                          .from('img')
+                          .update(`quiz-volume/${filename}`, image);
+                      }
+
+                      if (oldImage) {
+                        await storage
+                          .from('img')
+                          .remove([`quiz-volume/${oldImage}`]);
+                      }
+
+                      setFormData((prev) => ({
+                        ...prev,
+                        image: filename,
+                      }));
+                    }}
+                  />
+                </div>
                 <div>
                   <p className="text-sm font-bold text-slate-700 mb-2">
                     Start Date *
@@ -388,7 +484,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
                   <Input
                     type="datetime-local"
                     name="startDate"
-                    value={formData.startDate}
+                    value={formData.startDate || ''}
                     onChange={handleInputChange}
                     className={cn(
                       errors.startDate && 'border-red-500 bg-red-50',
@@ -408,7 +504,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
                   <Input
                     type="datetime-local"
                     name="endDate"
-                    value={formData.endDate}
+                    value={formData.endDate || ''}
                     onChange={handleInputChange}
                     className={cn(errors.endDate && 'border-red-500 bg-red-50')}
                   />
@@ -416,6 +512,26 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
                     <div className="flex items-center gap-2 mt-2 text-red-600 text-sm">
                       <AlertCircle className="w-4 h-4" />
                       {errors.endDate}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-slate-700 mb-2">
+                    Tanggal Pembahasan *
+                  </p>
+                  <Input
+                    type="datetime-local"
+                    name="resultDate"
+                    value={formData.resultDate || ''}
+                    onChange={handleInputChange}
+                    className={cn(
+                      errors.resultDate && 'border-red-500 bg-red-50',
+                    )}
+                  />
+                  {errors.resultDate && (
+                    <div className="flex items-center gap-2 mt-2 text-red-600 text-sm">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.resultDate}
                     </div>
                   )}
                 </div>
@@ -549,6 +665,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
                     setSelectedTryouts={setSelectedTryouts}
                     sub={item}
                     handleSortTryouts={handleSortTryouts}
+                    reorderTryoutWithinSubCategory={reorderTryoutWithinSubCategory}
                   />
                 ))}
               </div>
@@ -587,11 +704,18 @@ const TryoutItem = ({
   setSelectedTryouts,
   sub,
   handleSortTryouts,
+  reorderTryoutWithinSubCategory,
 }: {
   sub: TryoutSubCategory;
   selectedTryouts: TryoutListType[];
   setSelectedTryouts: Dispatch<SetStateAction<TryoutListType[]>>;
   handleSortTryouts: (data: TryoutListType[]) => TryoutListType[];
+  reorderTryoutWithinSubCategory: (data: {
+    data: TryoutListType[];
+    subCategoryId: string;
+    tryoutId: string;
+    targetOrder: number;
+  }) => TryoutListType[];
 }) => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -599,19 +723,18 @@ const TryoutItem = ({
     .filter((tryout) => tryout.TryoutSubCategory.id === sub.id)
     .sort((a, b) => (a.quizOrder || 10000) - (b.quizOrder || 10000));
 
-  console.log({ tryouts });
-
   return (
     <div className="space-y-2">
       <p className="text-base font-bold text-slate-700 px-1">{sub.name}</p>
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 gap-3">
         {tryouts.map((tryout, index) => (
           <div
             key={tryout.id}
-            className="flex justify-between p-3 rounded-3xl w-full"
+            className="flex justify-between p-3 rounded-3xl w-full border"
             style={{
               background: `${mainColor}10`,
               borderLeft: `4px solid ${mainColor}`,
+              borderColor: `${mainColor}30`,
             }}
           >
             <div className="flex-1">
@@ -619,28 +742,12 @@ const TryoutItem = ({
                 <Select
                   value={tryout.quizOrder?.toString() || ''}
                   onValueChange={(value) => {
-                    const checkIfThereOrderExist = tryouts.find(
-                      (t) => t.quizOrder === Number(value),
-                    );
-                    console.log({ checkIfThereOrderExist });
                     setSelectedTryouts((prev) =>
-                      prev.map((t) => {
-                        if (t.id === tryout.id) {
-                          return {
-                            ...t,
-                            quizOrder: Number(value),
-                          };
-                        }
-                        if (
-                          checkIfThereOrderExist &&
-                          t.id === checkIfThereOrderExist.id
-                        ) {
-                          return {
-                            ...t,
-                            quizOrder: index + 1,
-                          };
-                        }
-                        return t;
+                      reorderTryoutWithinSubCategory({
+                        data: prev,
+                        subCategoryId: sub.id,
+                        tryoutId: tryout.id,
+                        targetOrder: Number(value),
                       }),
                     );
                   }}
@@ -662,6 +769,46 @@ const TryoutItem = ({
                     })}
                   </SelectContent>
                 </Select>
+                <div className="flex flex-col gap-1">
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="ghost"
+                    className="h-5 w-5"
+                    disabled={index === 0}
+                    onClick={() =>
+                      setSelectedTryouts((prev) =>
+                        reorderTryoutWithinSubCategory({
+                          data: prev,
+                          subCategoryId: sub.id,
+                          tryoutId: tryout.id,
+                          targetOrder: (tryout.quizOrder || index + 1) - 1,
+                        }),
+                      )
+                    }
+                  >
+                    <ArrowUp className="w-3 h-3" />
+                  </Button>
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="ghost"
+                    className="h-5 w-5"
+                    disabled={index === tryouts.length - 1}
+                    onClick={() =>
+                      setSelectedTryouts((prev) =>
+                        reorderTryoutWithinSubCategory({
+                          data: prev,
+                          subCategoryId: sub.id,
+                          tryoutId: tryout.id,
+                          targetOrder: (tryout.quizOrder || index + 1) + 1,
+                        }),
+                      )
+                    }
+                  >
+                    <ArrowDown className="w-3 h-3" />
+                  </Button>
+                </div>
                 <p className="font-bold text-slate-900 text-sm line-clamp-2">
                   {tryout.title}
                 </p>

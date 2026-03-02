@@ -23,24 +23,19 @@ import {
 } from '@/components/ui/select';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn, getDateForInputDateTime } from '@/lib/utils';
-import {
-  IconDown,
-  IconFullscreen,
-  IconMinimizeScreen,
-  IconUp,
-} from '@/styles/icon';
 import { storage } from '@/supabaseClient';
 import { QuizVolume } from '@/types/database';
-import { Check, ChevronsUpDown, Loader2 } from 'lucide-react';
-import React, { SetStateAction, useState } from 'react';
-import { TryoutProps } from '../page';
-// import Image from 'next/image';
-// import { env } from '@/env.mjs';
-// import { supabase } from '@/servers/supabase/supabaseClient';
+import { Check, ChevronsUpDown, Sparkles } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import React, { SetStateAction, useMemo, useState } from 'react';
+import DialogAIMatch from '../../../tryout/_component/DialogAIMatch';
+import { SessionProps, TryoutProps } from '../page';
 
 interface Props {
   tryout: TryoutProps | null;
   setTryout: React.Dispatch<SetStateAction<TryoutProps | null>>;
+  sessions: SessionProps;
+  setSessions: React.Dispatch<SetStateAction<SessionProps>>;
   startDate: string;
   setStartDate: React.Dispatch<SetStateAction<string>>;
   startDateTime: string;
@@ -55,7 +50,8 @@ interface Props {
   setResultDateTime: React.Dispatch<SetStateAction<string>>;
   currentIndexEdit: number | null;
   setCurrentIndexEdit: React.Dispatch<SetStateAction<number | null>>;
-  isLoading: boolean;
+  setQuestionIndex: React.Dispatch<SetStateAction<number>>;
+  setAssesmentType: React.Dispatch<SetStateAction<string>>;
   resetTryout: () => void;
   selectedQuizVolume: {
     id: string;
@@ -72,6 +68,8 @@ interface Props {
 const TryoutOption = ({
   tryout,
   setTryout,
+  sessions,
+  setSessions,
   startDate,
   setStartDate,
   startDateTime,
@@ -84,62 +82,19 @@ const TryoutOption = ({
   setResultDate,
   resultDateTime,
   setResultDateTime,
-  currentIndexEdit,
   setCurrentIndexEdit,
-  isLoading,
+  setQuestionIndex,
+  setAssesmentType,
   resetTryout,
   selectedQuizVolume,
   setSelectedQuizVolume,
 }: Props) => {
-  const [dateTryoutHeight, setDateTryoutHeight] = useState<number>(0);
-  const [showDateTryout, setShowDateTryout] = useState<boolean>(true);
-  const [prevIndexEdit, setPrevIndexEdit] = useState<number | null>(null);
-  // const [thumbnail, setThumbnail] = useState<File | undefined>();
-  // const [thumbnailName, setThumbnailName] = useState<string>('');
-
-  // const addSesi = () => {
-  //   setSessions((prev) => {
-  //     return [
-  //       ...prev,
-  //       {
-  //         categoryId: '',
-  //         name: '',
-  //         description: '',
-  //         duration: 0,
-  //         thresholdValue: 0,
-  //         assessmentType: '1-5',
-  //         Questions: [],
-  //       },
-  //     ];
-  //   });
-  // };
-
-  // const saveImage = async (filename: string, file: File) => {
-  //   let isSaved = false;
-  //   while (!isSaved) {
-  //     if (tryout?.image) {
-  //       await supabase.storage.from('img').remove([`tryout/${tryout.image}`]);
-  //     }
-  //     const save = await supabase.storage
-  //       .from('img')
-  //       .upload(`tryout/${filename}`, file);
-  //     if (save.data) isSaved = true;
-  //     if (save.error) isSaved = false;
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (thumbnail) {
-  //     const name = `tryout-${crypto.randomUUID()}`;
-  //     saveImage(name, thumbnail);
-  //     setThumbnailName(name);
-  //     setTryout(prev => ({ ...prev, image: name }));
-  //   }
-  // }, [thumbnail]);
-
-  // useEffect(() => {
-  //   if (tryout && tryout.image) setThumbnailName(tryout.image);
-  // }, [tryout]);
+  const params = useParams();
+  const website_sub_category_id = useMemo(() => {
+    const raw = params?.web_sub_category;
+    if (Array.isArray(raw)) return raw[0] ?? '';
+    return raw ?? '';
+  }, [params]);
 
   const [searchQuizVolume, setSearchQuizVolume] = useState<string>('');
 
@@ -158,124 +113,129 @@ const TryoutOption = ({
   );
 
   return (
-    <div className="flex w-full flex-col gap-4 p-4 text-[.9rem]">
-      <div className="flex w-full items-center justify-between">
-        <div className="flex items-center gap-4">
-          <h1 className="text-[1.2rem] font-medium">Detail Quiz</h1>
-          {currentIndexEdit !== null ? (
-            <div
-              className="font-regular relative mr-[.5rem] cursor-pointer rounded-3xl border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
-              onClick={() => {
-                setCurrentIndexEdit(null);
-                if (currentIndexEdit !== null)
-                  setPrevIndexEdit(currentIndexEdit);
+    <div className="w-full p-4 sm:p-6 space-y-6">
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-gray-900">Detail Quiz</h2>
+          <div className="flex items-center gap-2">
+            <DialogAIMatch
+              sessions={[sessions] as any}
+              setSessions={(updater: any) => {
+                setSessions((prev) => {
+                  const next = typeof updater === 'function' ? updater([prev]) : updater;
+                  return next?.[0] ?? prev;
+                });
               }}
+              currentWebsubId={website_sub_category_id}
             >
-              <IconFullscreen w={15} />
-            </div>
-          ) : (
-            <div
-              className="font-regular relative mr-[.5rem] cursor-pointer rounded-3xl border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border border-violet-200 bg-violet-50 text-violet-700 hover:bg-violet-100 transition-colors disabled:opacity-60"
+                disabled={!sessions?.Questions || sessions.Questions.length === 0}
+              >
+                <Sparkles className="h-3.5 w-3.5" />
+                AI Match
+              </button>
+            </DialogAIMatch>
+            <button
+              type="button"
               onClick={() => {
-                if (prevIndexEdit !== null) setCurrentIndexEdit(prevIndexEdit);
-                else setCurrentIndexEdit(0);
+                setCurrentIndexEdit(0);
+                setQuestionIndex(0);
+                if (sessions?.assessmentType) {
+                  setAssesmentType(sessions.assessmentType);
+                }
               }}
+              className="inline-flex items-center rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50"
             >
-              <IconMinimizeScreen w={15} />
-            </div>
-          )}
+              Edit Sesi
+            </button>
+          </div>
         </div>
-        <div
-          className="cursor-pointer text-main-gray-text duration-300 md:hover:text-black"
-          onClick={() => {
-            const div = document.querySelector(
-              '#tryout-admin #date',
-            ) as HTMLDivElement;
-            if (div) {
-              if (div.clientHeight !== 0) {
-                div.style.height = `${div.clientHeight}px`;
-                setDateTryoutHeight(div.clientHeight);
-                setShowDateTryout(false);
-              } else {
-                setShowDateTryout(true);
-              }
-              div.style.height =
-                div.clientHeight === 0 ? `${dateTryoutHeight}px` : '0px';
-              div.style.overflow = 'hidden';
-              div.style.transition = 'height 0.3s ease';
-            }
-          }}
-        >
-          {showDateTryout ? <IconUp /> : <IconDown />}
-        </div>
-      </div>
-      <div
-        id="date"
-        className="flex flex-col gap-4"
-      >
-        <div className="flex flex-col gap-[.5rem]">
-          <p className="font-medium">Judul Quiz</p>
+
+        <div className="space-y-2">
+          <label className="text-xs font-medium text-gray-600">Judul Quiz</label>
           <input
             type="text"
-            placeholder="Judul try out"
-            className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+            placeholder="Judul quiz"
+            className="w-full h-11 rounded-xl border border-gray-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300"
             required
-            value={tryout?.title ? tryout?.title : ''}
+            value={tryout?.title ?? ''}
             onChange={(e) => {
               setTryout((prev) => ({ ...prev, title: e.target.value }));
             }}
           />
         </div>
-        <div className="flex flex-col gap-[.5rem]">
-          <p className="font-medium">
-            Pilih Quiz Volume
-            <span className="text-gray-500">(optional)</span>
-          </p>
+
+        <div className="space-y-2">
+          <label className="text-xs font-medium text-gray-600">Status</label>
+          <Select
+            value={tryout?.status ? `${tryout.status}` : 'placeholder'}
+            onValueChange={(value) => {
+              setTryout((prev) => ({
+                ...prev,
+                status: value as 'PUBLIC' | 'PRIVATE' | 'DRAFT',
+              }));
+            }}
+          >
+            <SelectTrigger className="h-11 rounded-xl border border-gray-200 bg-white text-sm">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="placeholder" disabled>
+                Status
+              </SelectItem>
+              <SelectItem value="PUBLIC">PUBLIC</SelectItem>
+              <SelectItem value="PRIVATE">PRIVATE</SelectItem>
+              <SelectItem value="DRAFT">DRAFT</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-xs font-medium text-gray-600">
+            Pilih Quiz Volume <span className="text-gray-400">(optional)</span>
+          </label>
           <Popover>
             <PopoverTrigger asChild>
               <Button
+                type="button"
                 variant="outline"
                 role="combobox"
-                className="min-w-[200px] w-fit justify-between"
+                className="w-full h-11 justify-between rounded-xl border-gray-200"
               >
-                {selectedQuizVolume?.name || 'Pilih Quiz Volume....'}
+                {selectedQuizVolume?.name || 'Pilih Quiz Volume...'}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="min-w-[200px] w-fit p-0">
+            <PopoverContent className="w-[360px] p-0" align="start">
               <Command>
                 <CommandInput
-                  placeholder="Search Tags..."
+                  placeholder="Cari Quiz Volume..."
                   value={searchQuizVolume}
                   onValueChange={(value) => setSearchQuizVolume(value)}
                 />
                 <CommandList>
-                  <CommandEmpty>No quiz found.</CommandEmpty>
+                  <CommandEmpty>Tidak ada quiz volume.</CommandEmpty>
                   <CommandGroup>
                     {(QuizVolumeList || []).map((volume) => {
-                      const isExsist = selectedQuizVolume?.id === volume.id;
+                      const isSelected = selectedQuizVolume?.id === volume.id;
                       return (
                         <CommandItem
-                          key={volume.title}
+                          key={volume.id}
                           value={volume.id}
-                          onSelect={(currentValue) => {
-                            if (isExsist) {
+                          onSelect={() => {
+                            if (isSelected) {
                               setSelectedQuizVolume(null);
-                              localStorage.removeItem(
-                                'temporary-selectedQuizVolume',
-                              );
+                              localStorage.removeItem('temporary-selectedQuizVolume');
                               return;
                             }
                             setSelectedQuizVolume({
                               id: volume.id,
                               name: volume.title || '',
                             });
-                            const startDateSplit = getDateForInputDateTime(
-                              volume.startDate,
-                            ).split('T');
-                            const endDateSplit = getDateForInputDateTime(
-                              volume.endDate,
-                            ).split('T');
+                            const startDateSplit = getDateForInputDateTime(volume.startDate).split('T');
+                            const endDateSplit = getDateForInputDateTime(volume.endDate).split('T');
                             setStartDate(startDateSplit[0]);
                             setStartDateTime(startDateSplit[1]);
                             setEndDate(endDateSplit[0]);
@@ -283,15 +243,11 @@ const TryoutOption = ({
                             setResultDate(startDateSplit[0]);
                             setResultDateTime(startDateSplit[1]);
                           }}
-                          className={
-                            cn()
-                            // isExsist && 'opacity-50  pointer-events-none',
-                          }
                         >
                           <Check
                             className={cn(
                               'mr-2 h-4 w-4',
-                              isExsist ? 'opacity-100' : 'opacity-0',
+                              isSelected ? 'opacity-100' : 'opacity-0',
                             )}
                           />
                           {volume.title}
@@ -304,409 +260,111 @@ const TryoutOption = ({
             </PopoverContent>
           </Popover>
         </div>
-        <div className="flex flex-col gap-[.5rem]">
-          <p className="font-medium">
-            Waktu mulai quiz <br />
-            {selectedQuizVolume !== null && (
-              <span className="text-sm text-gray-500 font-normal">
-                ( Otomatis disesuaikan dengan timeline quiz volume )
+      </section>
+
+      <section className="space-y-4 border-t border-gray-100 pt-6">
+        <div className="space-y-2">
+          <label className="text-xs font-medium text-gray-600">
+            Waktu mulai quiz
+            {selectedQuizVolume && (
+              <span className="ml-1 text-[11px] text-gray-400">
+                (otomatis dari quiz volume)
               </span>
             )}
-          </p>
-          <div className="grid w-full grid-cols-2 gap-4">
+          </label>
+          <div className="grid grid-cols-2 gap-3">
             <input
               type="date"
-              placeholder="Judul try out"
-              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="h-11 rounded-xl border border-gray-200 px-3 text-sm"
               required
               value={startDate}
-              onChange={(e) => {
-                setStartDate(e.target.value);
-              }}
+              onChange={(e) => setStartDate(e.target.value)}
               disabled={selectedQuizVolume !== null}
             />
             <input
               type="time"
-              placeholder="Judul try out"
-              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="h-11 rounded-xl border border-gray-200 px-3 text-sm"
               required
               value={startDateTime}
-              onChange={(e) => {
-                setStartDateTime(e.target.value);
-              }}
+              onChange={(e) => setStartDateTime(e.target.value)}
               disabled={selectedQuizVolume !== null}
             />
           </div>
         </div>
-        <div className="flex flex-col gap-[.5rem]">
-          <p className="font-medium">
-            Pelaksanaan berakhir <br />
-            {selectedQuizVolume !== null && (
-              <span className="text-sm text-gray-500 font-normal">
-                ( Otomatis disesuaikan dengan timeline quiz volume )
+
+        <div className="space-y-2">
+          <label className="text-xs font-medium text-gray-600">
+            Pelaksanaan berakhir
+            {selectedQuizVolume && (
+              <span className="ml-1 text-[11px] text-gray-400">
+                (otomatis dari quiz volume)
               </span>
             )}
-          </p>
-          <div className="grid w-full grid-cols-2 gap-4">
+          </label>
+          <div className="grid grid-cols-2 gap-3">
             <input
               type="date"
-              placeholder="Judul try out"
-              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="h-11 rounded-xl border border-gray-200 px-3 text-sm"
               required
               value={endDate}
-              onChange={(e) => {
-                setEndDate(e.target.value);
-              }}
+              onChange={(e) => setEndDate(e.target.value)}
               disabled={selectedQuizVolume !== null}
             />
             <input
               type="time"
-              placeholder="Judul try out"
-              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="h-11 rounded-xl border border-gray-200 px-3 text-sm"
               required
               value={endDateTime}
-              onChange={(e) => {
-                setEndDateTime(e.target.value);
-              }}
+              onChange={(e) => setEndDateTime(e.target.value)}
               disabled={selectedQuizVolume !== null}
             />
           </div>
         </div>
-        <div className="flex flex-col gap-[.5rem]">
-          <p className="font-medium">
-            Waktu pembagian hasil quiz <br />
-            {selectedQuizVolume !== null && (
-              <span className="text-sm text-gray-500 font-normal">
-                ( Otomatis disesuaikan dengan timeline quiz volume )
+
+        <div className="space-y-2">
+          <label className="text-xs font-medium text-gray-600">
+            Waktu pembagian hasil quiz
+            {selectedQuizVolume && (
+              <span className="ml-1 text-[11px] text-gray-400">
+                (otomatis dari quiz volume)
               </span>
             )}
-          </p>
-          <div className="grid w-full grid-cols-2 gap-4">
+          </label>
+          <div className="grid grid-cols-2 gap-3">
             <input
               type="date"
-              placeholder="Judul try out"
-              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="h-11 rounded-xl border border-gray-200 px-3 text-sm"
               required
               value={resultDate}
-              onChange={(e) => {
-                setResultDate(e.target.value);
-              }}
+              onChange={(e) => setResultDate(e.target.value)}
               disabled={selectedQuizVolume !== null}
             />
             <input
               type="time"
-              placeholder="Judul try out"
-              className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="h-11 rounded-xl border border-gray-200 px-3 text-sm"
               required
               value={resultDateTime}
-              onChange={(e) => {
-                setResultDateTime(e.target.value);
-              }}
+              onChange={(e) => setResultDateTime(e.target.value)}
               disabled={selectedQuizVolume !== null}
             />
           </div>
         </div>
-      </div>
-      {/* <div id="thumbnail" className="w-[300px]">
-        <UploadImage
-          heading="Thumbnail Tryout"
-          inputId="tryoutThumbnail"
-          file={thumbnail}
-          image
-          fileName={thumbnailName}
-          setFile={setThumbnail}
-        />
-      </div> */}
-      {/* <div className="my-4 h-px w-full bg-main-gray-disabled/60" />
-      <div
-        id="session"
-        className="flex flex-col gap-[.5rem]"
-      >
-        <div className="flex items-center justify-between">
-          <h1 className="text-[1.1rem] font-medium">Sesi Tryout</h1>
-          <div
-            className="cursor-pointer rounded-3xl bg-main px-4 py-[.8rem] text-white duration-300 hover:bg-main/85 md:active:bg-main"
-            onClick={addSesi}
-          >
-            Tambah sesi
-          </div>
-        </div>
-        {sessions?.map((item, sessionIndex: number) => (
-          <div
-            key={sessionIndex}
-            className="flex w-full gap-4"
-          >
-            <div className="overflow-visible rounded-3xl border border-transparent bg-white duration-300 md:hover:shadow-default">
-              <input
-                type="text"
-                defaultValue={`${sessionIndex + 1}`}
-                required
-                className="absolute bottom-0 left-4 h-1 w-1 p-0 text-transparent outline-none"
-              />
-              <Select
-                value={`${sessionIndex + 1}`}
-                onValueChange={(value) => {
-                  const fixValue = parseInt(value) - 1;
+      </section>
 
-                  const currentSessions = [...sessions];
-
-                  const [movedSession] = currentSessions.splice(
-                    sessionIndex,
-                    1,
-                  );
-
-                  currentSessions.splice(fixValue, 0, movedSession);
-
-                  setSessions([...currentSessions]);
-                }}
-              >
-                <SelectTrigger className="h-full min-w-[63px] rounded-3xl border-none bg-white shadow-none outline-none">
-                  <SelectValue placeholder="Kategori" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem
-                    value="placeholder"
-                    disabled
-                  >
-                    Urutan Sesi
-                  </SelectItem>
-                  {Array.from({ length: sessions.length }).map((_, index) => (
-                    <SelectItem
-                      key={index}
-                      value={`${index + 1}`}
-                    >
-                      {index + 1}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex w-full items-center justify-between rounded-3xl bg-white px-4 py-[.8rem]">
-              {item.categoryId !== '' ? (
-                <div className="flex items-center">
-                  <div className="rounded-3xl bg-main px-[.5rem] py-[.2rem] text-[.8rem] text-white">
-                    <p>
-                      {item.category === 'Tes Potensi Skolastik (TPS)' && 'TPS'}
-                      {item.category === 'Tes Literasi Bahasa' && 'Literasi'}
-                      {item.category === 'Tes Penalaran Matematika' &&
-                        'Matematika'}
-                    </p>
-                  </div>
-                  <div className="rounded-3xl bg-main-gray-input2 px-[.5rem] py-[.2rem] text-[.8rem] text-black ml-2">
-                    <p>{item.subCategory}</p>
-                  </div>
-                </div>
-              ) : (
-                <p>.....</p>
-              )}
-              <p>{item.Questions ? item.Questions.length : 0} soal</p>
-              <p>{item.duration === '' ? 0 : item.duration} menit</p>
-            </div>
-            <div
-              className="shrink-0 cursor-pointer px-4 py-[.8rem] text-main-gray-text duration-300 md:hover:text-black"
-              onClick={() => {
-                setCurrentIndexEdit(sessionIndex);
-                setQuestionIndex(0);
-                if (item.assessmentType) setAssesmentType(item.assessmentType);
-              }}
-            >
-              Edit
-            </div>
-          </div>
-        ))}
-        <div className="flex w-full items-center gap-4">
-          <div className="flex w-full items-center justify-between py-[.8rem] font-medium">
-            Waktu istirahat (menit)
-          </div>
-          <input
-            type="number"
-            placeholder="Durasi istirahat"
-            className="w-full rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
-            value={tryout?.restTime ? tryout?.restTime : ''}
-            onChange={(e) => {
-              setTryout((prev) => ({
-                ...prev,
-                restTime: parseInt(e.target.value),
-              }));
-            }}
-          />
-        </div>
-      </div> */}
-      <div className="my-4 h-px w-full bg-main-gray-disabled/60" />
-      <div className="grid w-full grid-cols-2 gap-4">
-        <div
-          className="flex w-full shrink-0 cursor-pointer items-center justify-center rounded-3xl bg-red-100 py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100"
+      <section className="border-t border-gray-100 pt-6">
+        <button
+          type="button"
+          className="w-full h-11 rounded-xl bg-red-50 text-red-600 text-sm font-medium hover:bg-red-100"
           onClick={async () => {
             await resetTryout();
             await storage.from('img').remove([`tryout/${tryout?.image}`]);
           }}
         >
           Hapus
-        </div>
-        <div className="relative w-full overflow-visible rounded-3xl border border-transparent bg-white duration-300 md:hover:shadow-default">
-          <input
-            type="text"
-            defaultValue={tryout?.status ? `${tryout?.status}` : ''}
-            required
-            className="absolute bottom-0 left-4 h-1 w-1 p-0 text-transparent outline-none"
-          />
-          <Select
-            value={tryout?.status ? `${tryout?.status}` : 'placeholder'}
-            onValueChange={(value) => {
-              setTryout((prev) => ({
-                ...prev,
-                status: value as 'PUBLIC' | 'PRIVATE' | 'DRAFT',
-              }));
-            }}
-          >
-            <SelectTrigger className="h-full w-full rounded-3xl border-none bg-white shadow-none outline-none">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem
-                value="placeholder"
-                disabled
-              >
-                Status
-              </SelectItem>
-              <SelectItem value="PUBLIC">PUBLIC</SelectItem>
-              <SelectItem value="PRIVATE">PRIVATE</SelectItem>
-              <SelectItem value="DRAFT">DRAFT</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-      <div className="flex h-[45px] w-full items-center justify-center">
-        {isLoading ? (
-          <Loader2 className="h-6 w-6 animate-spin" />
-        ) : (
-          <button
-            type="submit"
-            className="h-full w-full rounded-3xl bg-main text-white duration-300 hover:bg-main/85 md:active:bg-main"
-          >
-            Simpan
-          </button>
-        )}
-      </div>
+        </button>
+      </section>
     </div>
   );
 };
 
 export default TryoutOption;
-
-// const UploadImage = ({ file, setFile, heading, inputId, fileName }: any) => {
-//   const [previewHover, setPreviewHover] = useState<boolean>(false);
-//   const [previewImage, setPreviewImage] = useState<string>('');
-
-//   useEffect(() => {
-//     setPreviewImage('');
-//     if (file) {
-//       const reader = new FileReader();
-
-//       reader.onloadend = () => {
-//         const result = reader.result as string;
-//         setPreviewImage(result);
-//       };
-
-//       reader.readAsDataURL(file);
-//     } else {
-//       setPreviewImage(`${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/tryout/${fileName}`);
-//     }
-//   }, [file, fileName]);
-
-//   return (
-//     <div className="relative">
-//       <p className="font-medium text-[.9rem] mb-[.5rem]">{heading}</p>
-//       <div className="absolute -bottom-4 left-4">
-//         <input
-//           id={`${inputId}`}
-//           type="file"
-//           onChange={(e: any) => {
-//             setFile(e.target.files[0]);
-//           }}
-//           className="border-transparent p-0 w-0 h-0 bg-transparent text-transparent"
-//         />
-//         <input
-//           type="text"
-//           value={fileName}
-//           className="border-transparent p-0 w-1 h-1 bg-transparent text-transparent outline-none"
-//           required
-//         />
-//         <div className="absolute top-0 left-0 w-full h-full bg-workspace" />
-//       </div>
-//       <div className="border-2 border-main-gray-input border-dashed rounded-3xl overflow-hidden p-4 flex flex-col gap-4 relative">
-//         {!previewImage ? (
-//           <>
-//             <div className={`relative ${previewHover ? 'z-4' : 'z-6'}`}>
-//               <Image
-//                 src={previewImage}
-//                 alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
-//                 layout="responsive"
-//                 width={500}
-//                 height={300}
-//                 onMouseOver={() => {
-//                   if (previewImage) {
-//                     setPreviewHover(true);
-//                   }
-//                 }}
-//               />
-//             </div>
-//             <div className="absolute top-0 left-0 w-full h-full bg-[#ffffffc4] flex justify-center items-center z-5 p-4">
-//               <div
-//                 className="w-full h-full flex justify-center items-center"
-//                 onClick={() => {
-//                   document.getElementById(`${inputId}`)?.click();
-//                 }}
-//                 onMouseLeave={() => {
-//                   if (previewImage) {
-//                     setPreviewHover(false);
-//                   }
-//                 }}
-//               >
-//                 <div className="flex flex-col items-center text-center text-main-gray-text">
-//                   <i className="bx bx-upload text-[1.5rem]" />
-//                   <p>Ganti Thumbnail</p>
-//                 </div>
-//               </div>
-//             </div>
-//           </>
-//         ) : (
-//           <>
-//             <div className={`relative ${previewHover ? 'z-4' : 'z-6'}`}>
-//               <Image
-//                 src={previewImage}
-//                 alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
-//                 layout="responsive"
-//                 width={500}
-//                 height={300}
-//                 onMouseOver={() => {
-//                   if (previewImage) {
-//                     setPreviewHover(true);
-//                   }
-//                 }}
-//               />
-//             </div>
-//             <div className="absolute top-0 left-0 w-full h-full bg-[#ffffffc4] flex justify-center items-center z-5 p-4">
-//               <div
-//                 className="w-full h-full flex justify-center items-center"
-//                 onClick={() => {
-//                   document.getElementById(`${inputId}`)?.click();
-//                 }}
-//                 onMouseLeave={() => {
-//                   if (previewImage) {
-//                     setPreviewHover(false);
-//                   }
-//                 }}
-//               >
-//                 <div className="flex flex-col items-center text-center text-main-gray-text">
-//                   <i className="bx bx-upload text-[1.5rem]" />
-//                   <p>Ganti Thumbnail</p>
-//                 </div>
-//               </div>
-//             </div>
-//           </>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };

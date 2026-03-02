@@ -52,9 +52,15 @@ const SubmitTryout = ({
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const [open, setOpen] = useState(false);
-  const unAnswered = sessionAnswer?.filter((item) => item.answer === '');
+  const isAnsweredItem = (item: SessionAnswer) => {
+    const answerId = (item.answerId || '').trim();
+    const answerText = (item.answer || '').trim();
+    return answerId.length > 0 || answerText.length > 0;
+  };
+
+  const unAnswered = sessionAnswer?.filter((item) => !isAnsweredItem(item));
   const notSure = sessionAnswer?.filter((item) => item.notSure === true);
-  const answered = sessionAnswer?.filter((item) => item.answer !== '');
+  const answered = sessionAnswer?.filter((item) => isAnsweredItem(item));
 
   const [step, setStep] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
@@ -71,8 +77,7 @@ const SubmitTryout = ({
       payload,
       type: 'post',
       toast: {
-        successMsg: 'Try out berhasil dikumpulkan',
-        errorMsg: 'Gagal mengumpulkan try out, coba lagi!',
+        errorMsg: 'Gagal mengumpulkan sesi, coba lagi!',
       },
       onSuccess() {
         localStorage.removeItem(`sessionAnswer-${sessionId}`);

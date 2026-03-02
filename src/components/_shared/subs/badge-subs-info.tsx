@@ -65,7 +65,7 @@ export const BadgeSubsInfo = () => {
         }}
       >
         <Crown className="w-4 h-4" />
-        <span>{isPremiumRole ? 'Premium' : userTier || 'Free Tier'}</span>
+        <span>{isPremiumRole ? 'Premium' : userTier || 'Gratis'}</span>
         <ChevronDown
           className={`w-3.5 h-3.5 opacity-70 transition-transform ${open ? 'rotate-180' : ''}`}
         />

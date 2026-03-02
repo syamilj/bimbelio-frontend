@@ -317,6 +317,10 @@ export default function DialogAIMatch({
                   ? {
                       ...q,
                       categoryId: m.categoryId,
+                      subCategory:
+                        m.categoryName && m.categoryName.trim().length > 0
+                          ? m.categoryName
+                          : q.subCategory,
                       courseChapterIds: m.courseChapterIds,
                     }
                   : q;

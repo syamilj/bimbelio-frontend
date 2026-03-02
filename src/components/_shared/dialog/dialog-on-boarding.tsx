@@ -125,7 +125,7 @@ export const DialogOnBoarding = ({
               <li className="flex items-start gap-2">
                 <Crown className="w-4 h-4 mt-1 flex-shrink-0" />
                 <span>
-                  <strong>Free Tier:</strong> Akses terbatas ke fitur dasar
+                  <strong>Gratis:</strong> Akses terbatas ke fitur dasar
                   dengan batasan penggunaan
                 </span>
               </li>
@@ -254,7 +254,7 @@ export const DialogOnBoarding = ({
                 </p>
                 <p className="text-xs text-gray-600 mt-1">
                   Di header kanan atas, ada button dengan badge yang menunjukkan
-                  tier kamu saat ini (Free Tier/Premium)
+                  tier kamu saat ini (Gratis/Premium)
                 </p>
               </div>
             </div>

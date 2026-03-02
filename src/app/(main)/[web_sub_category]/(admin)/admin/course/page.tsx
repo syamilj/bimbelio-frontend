@@ -3,6 +3,13 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Switch } from '@/components/ui/switch';
@@ -39,8 +46,17 @@ interface SubChapter {
   description: string;
   premium: boolean;
   Document?: { videoId: string | null } | null;
+  CourseProgress?: {
+    userId: string;
+    User: {
+      id: string;
+      name: string;
+      email: string;
+    };
+  }[];
   _count?: {
     TryoutQuestion: number;
+    CourseProgress: number;
   };
 }
 
@@ -75,9 +91,29 @@ export default function Index() {
   const [expandedCourses, setExpandedCourses] = useState<Set<string>>(
     new Set(),
   );
+  const [openCompletedUsers, setOpenCompletedUsers] = useState<{
+    subChapterTitle: string;
+    users: {
+      id: string;
+      name: string;
+      email: string;
+    }[];
+  } | null>(null);
   const [togglingSubChapters, setTogglingSubChapters] = useState<Set<string>>(
     new Set(),
   );
+
+  const getCompletedUsers = (subChapter: SubChapter) => {
+    const users = (subChapter.CourseProgress || [])
+      .map((progress) => progress.User)
+      .filter(Boolean);
+
+    const uniqueUsers = Array.from(
+      new Map(users.map((user) => [user.id, user])).values(),
+    );
+
+    return uniqueUsers;
+  };
 
   const handleToggleSubChapterPremium = async (
     id: string,
@@ -530,6 +566,21 @@ export default function Index() {
                               )}
                             </div>
                             <div className="flex items-center gap-2 shrink-0">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const users = getCompletedUsers(subChapter);
+                                  setOpenCompletedUsers({
+                                    subChapterTitle: subChapter.title,
+                                    users,
+                                  });
+                                }}
+                                className="flex items-center gap-1 text-xs text-gray-500 hover:text-blue-600 transition-colors"
+                                title="Lihat user yang sudah selesai"
+                              >
+                                <Users className="h-3 w-3" />
+                                {subChapter._count?.CourseProgress || 0}
+                              </button>
                               <span className="flex items-center gap-1 text-xs text-gray-400">
                                 <Clock className="h-3 w-3" />
                                 {subChapter.spendTime}m
@@ -588,6 +639,62 @@ export default function Index() {
           </div>
         )}
       </div>
+
+      <Dialog
+        open={Boolean(openCompletedUsers)}
+        onOpenChange={(open) => {
+          if (!open) setOpenCompletedUsers(null);
+        }}
+      >
+        <DialogContent className="sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>User Sudah Selesai</DialogTitle>
+            <DialogDescription>
+              {openCompletedUsers
+                ? `Materi: ${openCompletedUsers.subChapterTitle}`
+                : 'Daftar user yang sudah menyelesaikan materi.'}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="max-h-[60vh] overflow-auto rounded-xl border border-gray-100">
+            {openCompletedUsers?.users.length ? (
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 border-b border-gray-100">
+                  <tr>
+                    <th className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider w-16">
+                      No
+                    </th>
+                    <th className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                      Nama
+                    </th>
+                    <th className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                      Email
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {openCompletedUsers.users.map((user, index) => (
+                    <tr
+                      key={user.id}
+                      className="border-b border-gray-100 last:border-0"
+                    >
+                      <td className="px-4 py-2.5 text-gray-500">{index + 1}</td>
+                      <td className="px-4 py-2.5 font-medium text-gray-800">
+                        {user.name}
+                      </td>
+                      <td className="px-4 py-2.5 text-gray-600">{user.email}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div className="p-6 text-sm text-gray-500 text-center">
+                Belum ada user yang menyelesaikan materi ini.
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

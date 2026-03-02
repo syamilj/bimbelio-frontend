@@ -133,10 +133,6 @@ function DefaultHeadContent() {
       />
       <link
         rel="preconnect"
-        href="https://app.midtrans.com"
-      />
-      <link
-        rel="preconnect"
         href="https://fonts.googleapis.com"
       />
       <link

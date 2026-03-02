@@ -7,12 +7,19 @@ import {
   TryoutSession,
   TryoutSubCategory,
 } from '@/types/database';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+const getCacheKey = () => {
+  if (typeof window === 'undefined') return 'bimarena:quiz:selectedVolume:unknown';
+
+  const pathSegment = window.location.pathname.split('/')[1] || 'unknown';
+  return `bimarena:quiz:selectedVolume:${pathSegment}`;
+};
 
 export const initiateVolume = () => {
   const [selectedVolumeId, setSelectedVolumeId] = useState<string | null>(null);
 
-  const { data: QuizVolumeList } = useGet<QuizVolume[]>(
+  const { data: QuizVolumeList, isLoading: QuizVolumeListIsLoading } = useGet<QuizVolume[]>(
     '/quizTryout/getQuizVolumeList',
     {
       params: {
@@ -20,12 +27,35 @@ export const initiateVolume = () => {
         page: 1,
       },
       onSuccess({ data }) {
-        if (selectedVolumeId === null && data && data[0]) {
+        if (!data || data.length === 0) return;
+
+        const isSelectedStillAvailable = selectedVolumeId
+          ? data.some((vol) => vol.id === selectedVolumeId)
+          : false;
+
+        if (!isSelectedStillAvailable) {
           setSelectedVolumeId(data[0]?.id || null);
         }
       },
     },
   );
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const cacheKey = getCacheKey();
+    const cached = localStorage.getItem(cacheKey);
+    if (cached && cached !== selectedVolumeId) {
+      setSelectedVolumeId(cached);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const cacheKey = getCacheKey();
+    if (selectedVolumeId) {
+      localStorage.setItem(cacheKey, selectedVolumeId);
+    }
+  }, [selectedVolumeId]);
 
   const {
     data: SingleQuizVolume,
@@ -44,6 +74,7 @@ export const initiateVolume = () => {
         TryoutQuestionCount: number;
         TryoutResult: TryoutResult | null;
         isDone: boolean;
+        isFreePreview?: boolean;
         totalParticipant: number;
       })[];
       totalUserSubscribed: number;
@@ -78,6 +109,7 @@ export const initiateVolume = () => {
     selectedVolumeId,
     setSelectedVolumeId,
     QuizVolumeList,
+    QuizVolumeListIsLoading,
     SingleQuizVolume,
     SingleQuizVolumeIsLoading,
     SingleQuizVolumeRefetch,

@@ -558,7 +558,7 @@ export default function UserManagementDashboard() {
                   <SelectContent>
                     <SelectItem value="ALL">Semua Subscription</SelectItem>
                     <SelectItem value="HAS">Premium Subscription</SelectItem>
-                    <SelectItem value="NOT">Free Tier Subscription</SelectItem>
+                    <SelectItem value="NOT">Gratis Subscription</SelectItem>
                   </SelectContent>
                 </Select>
 
@@ -631,7 +631,7 @@ export default function UserManagementDashboard() {
                           >
                             {user.Subscription.length > 0
                               ? `${user.Subscription.length} BimCircle`
-                              : 'Free Tier'}
+                              : 'Gratis'}
                           </Badge>
                         </DialogDetailSubscription>
                       </TableCell>

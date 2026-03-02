@@ -5,22 +5,28 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { LoadingRetro } from '@/components/ui/loading-retro';
 import { Progress } from '@/components/ui/progress';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
 import { differenceInCalendarDays } from 'date-fns';
 import {
   BarChart3,
   BookOpen,
+  Crown,
   FileText,
   Gem,
+  Medal,
   PlayCircle,
+  Search,
+  Sigma,
   Target,
   TrendingUp,
   Trophy,
   Zap,
 } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
   Bar,
@@ -31,7 +37,10 @@ import {
   Tooltip,
   XAxis,
 } from 'recharts';
+import { CourseReportStats } from './_component/z_other/report/CourseReportStats';
 import { useProvider } from './_provider/provider';
+
+type CourseReportData = Parameters<typeof CourseReportStats>[0]['report'];
 
 export default function CourseOverviewPage() {
   const {
@@ -45,6 +54,20 @@ export default function CourseOverviewPage() {
 
   const router = useRouter();
   const pathname = usePathname();
+  const params = useParams();
+  const categoryId = Array.isArray(params?.categoryId)
+    ? params.categoryId[0]
+    : params?.categoryId || '';
+
+  const { data: courseReport } = useGet<CourseReportData>(
+    '/course/getReportByCategory',
+    {
+      params: { categoryId },
+      enabled: !!categoryId,
+      useEffectDependencies: [categoryId],
+    },
+  );
+
   const [searchQuery, setSearchQuery] = useState('');
 
   if (CourseLoading) return <LoadingRetro />;
@@ -154,6 +177,22 @@ export default function CourseOverviewPage() {
       ? Math.round((completedCount / totalSubChapters) * 100)
       : 0;
 
+  const leaderboard = courseReport?.courseRanking?.topLeaderboard || [];
+  const totalParticipants = courseReport?.courseRanking?.totalParticipants || 0;
+  const myRank = courseReport?.courseRanking?.myRank;
+  const latestScore =
+    scoreData.length > 0 ? Math.round(scoreData[scoreData.length - 1].score) : 0;
+  const averageScore =
+    scoreData.length > 0
+      ? Math.round(
+          scoreData.reduce((acc, curr) => acc + curr.score, 0) /
+            Math.max(scoreData.length, 1),
+        )
+      : 0;
+  const percentile =
+    courseReport?.tryoutResult?.find((item) => item.percentile !== null)
+      ?.percentile || null;
+
   // Real Streak Calculation
   let currentStreak = 0;
   if (Array.isArray(CourseProgress) && CourseProgress.length > 0) {
@@ -192,13 +231,30 @@ export default function CourseOverviewPage() {
   }
 
   const handleStartLearning = () => {
-    // Navigate to the first available content
-    const firstChapter = Course?.[0];
-    const firstSub = firstChapter?.CourseSubChapter?.[0];
-    if (firstSub) {
-      router.push(`${pathname}/study?sub=${firstSub.id}&tab=chat`);
+    const allSubChapters =
+      Course?.flatMap((chapter) => chapter.CourseSubChapter) ?? [];
+
+    if (allSubChapters.length === 0) {
+      router.push(`${pathname}/study`);
+      return;
+    }
+
+    let resumeSubId = allSubChapters[0].id;
+    let latestProgressAt = 0;
+
+    allSubChapters.forEach((subChapter) => {
+      subChapter.CourseProgress?.forEach((progress) => {
+        const progressAt = new Date(progress.createdAt).getTime();
+        if (progressAt > latestProgressAt) {
+          latestProgressAt = progressAt;
+          resumeSubId = subChapter.id;
+        }
+      });
+    });
+
+    if (resumeSubId) {
+      router.push(`${pathname}/study?sub=${resumeSubId}&tab=chat`);
     } else {
-      // Fallback if no content
       router.push(`${pathname}/study`);
     }
   };
@@ -366,9 +422,35 @@ export default function CourseOverviewPage() {
                 >
                   Lanjut Belajar
                 </Button>
+
+                <div className="relative max-w-xl">
+                  <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Input
+                    value={searchQuery}
+                    onChange={(event) => setSearchQuery(event.target.value)}
+                    placeholder="Cari chapter atau subchapter..."
+                    className="pl-9 rounded-3xl border-slate-200"
+                  />
+                </div>
               </div>
             </div>
           </div>
+
+          {courseReport && (
+            <Card className="rounded-3xl border-2 border-slate-100 shadow-sm p-4 md:p-6">
+              <div className="mb-5">
+                <h3 className="text-xl font-black text-slate-800 flex items-center gap-2">
+                  <BarChart3 className="w-5 h-5 text-emerald-600" />
+                  Analisis Performa
+                </h3>
+                <p className="text-sm text-slate-500 mt-1">
+                  Ringkasan lengkap performa, distribusi nilai, dan rekomendasi
+                  belajar per kategori.
+                </p>
+              </div>
+              <CourseReportStats report={courseReport} />
+            </Card>
+          )}
 
           {/* Chapter Accordions */}
           {filteredCourse?.map((chapter, index) => (

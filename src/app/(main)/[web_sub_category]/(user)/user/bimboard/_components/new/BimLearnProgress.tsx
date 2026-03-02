@@ -4,11 +4,12 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import {
   BimArena,
   BimCourse,
-  BimLearning,
+  BimLearn,
   BimLive,
 } from '@/components/ui/bim-brand';
 import { Input } from '@/components/ui/input';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import { cn } from '@/lib/utils';
 import {
   BookOpen,
   Calendar,
@@ -24,7 +25,7 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { EmptyStateIllustrations } from './EmptyStateIllustrations';
 
-interface BimLearningProgressProps {
+interface BimLearnProgressProps {
   courses: Array<{
     id: string;
     name: string;
@@ -67,12 +68,12 @@ interface BimLearningProgressProps {
   }>;
 }
 
-export default function BimLearningProgress({
+export default function BimLearnProgress({
   courses,
   tryouts,
   liveClasses,
   quizVolumes,
-}: BimLearningProgressProps) {
+}: BimLearnProgressProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
@@ -175,7 +176,7 @@ export default function BimLearningProgress({
 
         <div className="w-full overflow-x-auto scrollbar-hide pb-0.5">
           <div className="flex gap-1 w-max bg-slate-100 p-1 rounded-3xl">
-            {/* BimLearning — always first */}
+            {/* BimLearn — always first */}
             <button
               onClick={() => setActiveTab('learning')}
               className={`px-3 py-2 rounded-3xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
@@ -190,7 +191,7 @@ export default function BimLearningProgress({
               }
             >
               <BookOpen className="w-3.5 h-3.5" />
-              <BimLearning />
+              <BimLearn />
               <span
                 className={`text-[10px] font-black px-1.5 py-0.5 rounded-full leading-none ${activeTab === 'learning' ? 'bg-white/30 text-white' : 'bg-slate-300/70 text-slate-600'}`}
               >
@@ -289,7 +290,7 @@ export default function BimLearningProgress({
         </div>
       </div>
 
-      {/* Search & Filter Bar — hidden on BimLearning summary tab */}
+      {/* Search & Filter Bar — hidden on BimLearn summary tab */}
       <div
         className={`flex flex-col md:flex-row gap-3 mb-4 ${activeTab === 'learning' ? 'hidden' : ''}`}
       >
@@ -955,12 +956,13 @@ export default function BimLearningProgress({
                     href={`/${website_sub_category_id}/user/bimarena/quiz`}
                     className="group relative rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 flex-shrink-0 w-[280px] md:w-auto aspect-[4/5]"
                   >
-                    {/* Violet gradient base */}
+                    {/* Base background */}
                     <div
                       className="absolute inset-0"
                       style={{
-                        background:
-                          'linear-gradient(135deg, #4c1d95, #6d28d9, #7c3aed)',
+                        background: qv.image
+                          ? 'linear-gradient(135deg, #111827, #312e81)'
+                          : 'linear-gradient(135deg, #4c1d95, #6d28d9, #7c3aed)',
                       }}
                     />
 
@@ -970,12 +972,19 @@ export default function BimLearningProgress({
                         src={qv.image}
                         alt={qv.title}
                         fill
-                        className="object-cover opacity-40 group-hover:opacity-50 transition-opacity duration-500"
+                        className="object-cover opacity-90 group-hover:opacity-95 transition-opacity duration-500"
                       />
                     )}
 
                     {/* Top gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-violet-950/30 to-transparent" />
+                    <div
+                      className={cn(
+                        'absolute inset-0',
+                        qv.image
+                          ? 'bg-gradient-to-t from-black/65 via-black/15 to-transparent'
+                          : 'bg-gradient-to-t from-black/80 via-violet-950/30 to-transparent',
+                      )}
+                    />
 
                     {/* Top left: Quiz chip */}
                     <div className="absolute top-3 left-3 z-10">
@@ -1002,9 +1011,11 @@ export default function BimLearningProgress({
                     </div>
 
                     {/* Center: faint swords decoration */}
-                    <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-                      <Swords className="w-24 h-24 text-white/10" />
-                    </div>
+                    {!qv.image && (
+                      <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                        <Swords className="w-24 h-24 text-white/10" />
+                      </div>
+                    )}
 
                     {/* Bottom content */}
                     <div className="absolute bottom-0 left-0 right-0 p-5 z-20">

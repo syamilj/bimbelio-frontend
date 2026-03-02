@@ -11,6 +11,7 @@ interface CourseCategory {
   id: number;
   name: string;
   image: string | null;
+  resumeSubChapterId?: string | null;
   totalChapters: number;
   completedChapters: number;
   percentageProgress: number;
@@ -23,9 +24,13 @@ interface Props {
 }
 
 function DoneCard({ item, web }: { item: CourseCategory; web: string }) {
+  const href = item.resumeSubChapterId
+    ? `/${web}/user/bimcourse/${item.id}/study?sub=${item.resumeSubChapterId}&tab=chat`
+    : `/${web}/user/bimcourse/${item.id}/study`;
+
   return (
     <Link
-      href={`/${web}/user/bimcourse/${item.id}`}
+      href={href}
       className="flex items-center gap-4 p-4 hover:bg-slate-50/80 transition-colors group"
     >
       {/* Thumbnail with done overlay */}

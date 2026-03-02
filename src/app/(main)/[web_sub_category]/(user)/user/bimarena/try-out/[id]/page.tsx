@@ -51,8 +51,11 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
 
   const getTryoutById = async () => {
     if (!sessionUser) return;
+
+    const volumeParam = volumeId ? `&volumeId=${volumeId}` : '';
+
     getGeneral(
-      `/tryout/getTryoutById?userId=${sessionUser?.user.id}&tryoutId=${tryoutId}`,
+      `/tryout/getTryoutById?userId=${sessionUser?.user.id}&tryoutId=${tryoutId}${volumeParam}`,
       {
         setData: setTryoutData,
         setLoading: setIsLoading,
@@ -288,7 +291,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     isQuizLocked &&
     isTryoutStarted &&
     !isResult &&
-    tryoutData.quizOrder !== 1
+    tryoutData.isFirstQuizInVolume !== true
   ) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -558,6 +561,7 @@ export type TryoutDataType =
       updateAt: Date;
       title: string;
       quizOrder: number | null;
+      isFirstQuizInVolume?: boolean | null;
       restTime: number;
       status: TryoutStatusEnum;
       startDate: Date;

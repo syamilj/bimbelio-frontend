@@ -31,6 +31,7 @@ export interface RankingTryoutProps {
     targetValue: number | null | undefined;
     image: string | null;
     isBimbelioStudent: boolean;
+    isPassed?: boolean | null;
     benar: number;
     salah: number;
     kosong: number;
@@ -46,6 +47,8 @@ export interface RankingTryoutProps {
       sessionId: string;
       category: string;
       subCategory: string;
+      assessmentType?: string;
+      thresholdValue?: number | null;
       isUnlocked: boolean;
       maxScore: number;
     }[];

@@ -11,7 +11,7 @@ import { useCallback, useEffect, useState } from 'react';
 // import BimHeroWelcome from "./new/BimHeroWelcome";
 import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import BimAchievementBadges from './new/AchievementBadges';
-import BimLearningProgress from './new/BimLearningProgress';
+import BimLearnProgress from './new/BimLearnProgress';
 import BimPerformanceChart from './new/BimPerformanceChart';
 import BimQuickAccessMenu from './new/BimQuickAccessMenu';
 import BimQuickStatsOverview from './new/BimQuickStatsOverview';
@@ -167,7 +167,12 @@ export interface DashboardData {
 
 function getImageUrl(
   imageId: string | null | undefined,
-  type: 'tryout' | 'liveclass' | 'course' | 'document' = 'tryout',
+  type:
+    | 'tryout'
+    | 'liveclass'
+    | 'course'
+    | 'document'
+    | 'quiz-volume' = 'tryout',
 ): string | undefined {
   if (!imageId || imageId.trim() === '') return undefined;
   if (
@@ -187,6 +192,8 @@ function getImageUrl(
       return `${baseUrl}/document/${imageId}`;
     case 'course':
       return `${baseUrl}/${imageId}`;
+    case 'quiz-volume':
+      return `${baseUrl}/quiz-volume/${imageId}`;
     default:
       return `${baseUrl}/${imageId}`;
   }
@@ -376,7 +383,7 @@ export default function DashboardClientNew() {
         .map((qv: any) => ({
           id: qv.id,
           title: qv.title || 'Quiz',
-          image: getImageUrl(qv.image, 'tryout') || null,
+          image: getImageUrl(qv.image, 'quiz-volume') || null,
           startDate: qv.startDate,
           endDate: qv.endDate,
           status: qv.status as 'PUBLIC' | 'PRIVATE' | 'DRAFT',
@@ -738,7 +745,7 @@ export default function DashboardClientNew() {
           {/* Left Column - 2/3 width */}
           <div className="lg:col-span-2 flex flex-col gap-4 lg:gap-6">
             {/* Learning Progress */}
-            <BimLearningProgress
+            <BimLearnProgress
               courses={data.learningProgress.courses}
               tryouts={data.learningProgress.tryouts}
               liveClasses={data.upcomingSchedule.liveClasses}

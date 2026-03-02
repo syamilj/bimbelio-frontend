@@ -2,10 +2,12 @@ import { env } from '@/env.mjs';
 import io, { Socket } from 'socket.io-client';
 
 let socket: Socket | null = null;
+let hasLoggedSocketSkip = false;
 
 const serverUrl = env.NEXT_PUBLIC_SOCKET_URL;
 
 export const connectSocket = () => {
+
   if (!socket) {
     socket = io(serverUrl, {
       transports: ['websocket'],
