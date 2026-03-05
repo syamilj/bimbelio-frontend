@@ -39,6 +39,7 @@ import {
   Video,
   Wallet,
 } from 'lucide-react';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 type PaymentPremium =
@@ -76,6 +77,10 @@ type PricingDataType = {
 export function Payment() {
   const { transactionPopUp, setTransactionPopUp } = useAppContext();
   const { websiteSubCategory, webCategoryData } = useWebsiteSubCategory();
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useParams();
+  const webSub = (params?.web_sub_category as string) || '';
 
   const filterDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -106,6 +111,20 @@ export function Payment() {
       });
     }
   }, [transactionPopUp, PricingData]);
+
+  useEffect(() => {
+    if (!transactionPopUp) return;
+
+    setTransactionPopUp(false);
+
+    if (pathname?.includes('/user/paket-belajar')) {
+      return;
+    }
+
+    if (webSub) {
+      router.push(`/${webSub}/user/paket-belajar`);
+    }
+  }, [transactionPopUp, pathname, webSub, router, setTransactionPopUp]);
 
   // Search and Filter State
   const [searchQuery, setSearchQuery] = useState('');
@@ -356,6 +375,10 @@ export function Payment() {
     );
   }
 
+  if (transactionPopUp) {
+    return null;
+  }
+
   return (
     <>
       <Dialog
@@ -363,7 +386,7 @@ export function Payment() {
         onOpenChange={setTransactionPopUp}
       >
         <DialogContent
-          className="md:max-w-[95vw] h-[95vh] p-0"
+          className="w-[96vw] max-w-[96vw] md:max-w-[95vw] h-[92dvh] md:h-[95vh] p-0 overflow-hidden"
           classOverlay="z-10000"
         >
           {isLoading && (
@@ -371,7 +394,7 @@ export function Payment() {
               <Loader2Icon className="h-8 w-8 animate-spin text-main" />
             </div>
           )}
-          <ScrollArea className="max-h-[85vh]">
+          <ScrollArea className="h-[calc(92dvh-2rem)] md:h-[85vh]">
             <div className="space-y-8 p-6 sm:p-8">
               <DialogHeader>
                 <DialogTitle className="text-center text-3xl font-black leading-tight tracking-tight sm:text-4xl text-gray-900">

@@ -82,13 +82,13 @@ export const DialogBimbotAI = () => {
         <VisuallyHidden>
           <DialogTitle>BimBot AI Chat</DialogTitle>
         </VisuallyHidden>
-        <ChatContent />
+        <ChatContent onRequestClose={() => setIsOpen(false)} />
       </DialogContent>
     </Dialog>
   );
 };
 
-function ChatContent() {
+function ChatContent({ onRequestClose }: { onRequestClose: () => void }) {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
 
@@ -184,6 +184,7 @@ function ChatContent() {
         chatHistory={chatHistory}
         setChatHistory={setChatHistory}
         isHistoryInitialized={isHistoryInitialized}
+        onRequestClose={onRequestClose}
       />
 
       {historyId ? (
@@ -213,12 +214,14 @@ const HeaderChat = ({
   chatHistory,
   setChatHistory,
   isHistoryInitialized,
+  onRequestClose,
 }: {
   historyId: string | undefined;
   setHistoryId: Dispatch<React.SetStateAction<string | undefined>>;
   chatHistory: ChatHistory[];
   setChatHistory: Dispatch<React.SetStateAction<ChatHistory[]>>;
   isHistoryInitialized: boolean;
+  onRequestClose: () => void;
 }) => {
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
@@ -367,6 +370,16 @@ const HeaderChat = ({
             );
           })}
         </div>
+
+        <button
+          type="button"
+          onClick={onRequestClose}
+          className="md:hidden w-7 h-7 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors shrink-0"
+          title="Tutup chat"
+          aria-label="Tutup chat"
+        >
+          <X className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );

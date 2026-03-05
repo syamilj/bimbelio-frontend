@@ -202,7 +202,7 @@ const SidebarUser = ({
 
         <SidebarFooter className="pt-2 pb-4">
           {/* Upgrade Button (Minimized) */}
-          {!session?.user.tier && minimizeSidebar && (
+          {minimizeSidebar && (
             <div className="flex justify-center mb-3 px-2">
               <button
                 onClick={() => {
@@ -231,7 +231,7 @@ const SidebarUser = ({
           )}
 
           {/* Upgrade Button (Expanded & Mobile) - Replaces Card */}
-          {!session?.user.tier && !minimizeSidebar && (
+          {!minimizeSidebar && (
             <div className="px-5 mb-3">
               <button
                 onClick={() => {
@@ -441,7 +441,7 @@ const SidebarUser = ({
             </div>
 
             {/* Mobile Premium Card */}
-            {!session?.user.tier && (
+            {
               <div className="px-5 mb-4">
                 <button
                   onClick={() => {
@@ -463,7 +463,7 @@ const SidebarUser = ({
                   </div>
                 </button>
               </div>
-            )}
+            }
 
             {/* Mobile User Profile */}
             <div className="border-t-2 border-slate-200/50 p-4">
