@@ -702,6 +702,10 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
                     liveClassIds: liveClassIds.map((item) => item.value),
                   },
                   { type: privateTalk ? 'PRIVATE' : null },
+                  {
+                    type: quiz ? 'QUIZ' : null,
+                    quizVolumeIds: quizVolumeIds.map((item) => item.value),
+                  },
                 ].filter((item) => item.type),
               }
             : undefined,
