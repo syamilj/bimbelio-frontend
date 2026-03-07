@@ -42,13 +42,16 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
+import { useSocket } from '@/lib/socket/useSocket';
 import { cn, formatSchoolName } from '@/lib/utils';
 
 import { Subscription, UserRoleEnum } from '@/types/database';
 import ExcelJS from 'exceljs';
 import {
+  ArrowRight,
   ChevronDown,
   ChevronRight,
   Crown,
@@ -68,7 +71,8 @@ import {
   SortDesc,
   Users,
 } from 'lucide-react';
-import { Fragment, ReactNode, useState } from 'react';
+import Link from 'next/link';
+import { Fragment, ReactNode, useEffect, useState } from 'react';
 import {
   Bar,
   BarChart,
@@ -83,6 +87,7 @@ import {
 
 export default function UserManagementDashboard() {
   const { data: session } = useSession();
+  const { isConnected, emit } = useSocket();
 
   const sessionRole = session?.user?.role;
 
@@ -101,6 +106,20 @@ export default function UserManagementDashboard() {
   const [hasSubscription, setHasSubscription] = useState<'HAS' | 'NOT' | 'ALL'>(
     'ALL',
   );
+
+  const [onlineCount, setOnlineCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    emit(
+      'users:get:active:count',
+      (response: { success: boolean; count: number }) => {
+        console.log('[SOCKET] Received active users count:', response);
+        if (response.success) {
+          setOnlineCount(response.count);
+        }
+      },
+    );
+  }, [emit, isConnected]);
 
   const { data: usersData, totalPages } = useGet<UserDataType[]>(
     '/user/getAllUsers',
@@ -320,41 +339,66 @@ export default function UserManagementDashboard() {
         </TabsList>
 
         <TabsContent value="overview">
-          <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-            <Card>
+          <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
+            <Card className="border-l-4 border-l-main hover:shadow-lg transition-shadow duration-300">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Admin</CardTitle>
-                <Crown className="h-4 w-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium">Online</CardTitle>
+                <Crown className="h-4 w-4 text-main" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
+                <div className="flex items-end gap-3 justify-between w-full">
+                  <div className="text-3xl font-bold text-main">
+                    {onlineCount || '-'}
+                  </div>
+                  <Link href={`/${website_sub_category_id}/admin/users/online`}>
+                    <Button
+                      variant="default"
+                      size="sm"
+                      className="w-full bg-main text-white shadow-md hover:shadow-lg transition-all duration-300 rounded-3xl"
+                    >
+                      <span className="flex items-center gap-2">
+                        Lihat Detail
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </span>
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="border-l-4 border-l-main hover:shadow-lg transition-shadow duration-300">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Admin</CardTitle>
+                <Crown className="h-4 w-4 text-main" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-main">
                   {overviewData?.totalAdmin || '-'}
                 </div>
               </CardContent>
             </Card>
             {/* Total Users */}
-            <Card>
+            <Card className="border-l-4 border-l-main hover:shadow-lg transition-shadow duration-300">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Users</CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
+                <Users className="h-4 w-4 text-main" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
+                <div className="text-3xl font-bold text-main">
                   {overviewData?.totalUsers || '-'}
                 </div>
               </CardContent>
             </Card>
 
             {/* Tryout Users */}
-            <Card>
+            <Card className="border-l-4 border-l-main hover:shadow-lg transition-shadow duration-300">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Verified Users
                 </CardTitle>
-                <GraduationCap className="h-4 w-4 text-muted-foreground" />
+                <GraduationCap className="h-4 w-4 text-main" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
+                <div className="text-3xl font-bold text-main">
                   {overviewData?.totalVerifiedUsers || '-'}
                 </div>
               </CardContent>
@@ -363,15 +407,15 @@ export default function UserManagementDashboard() {
             {/* Premium Users */}
 
             {/* Tryout Users Count */}
-            <Card>
+            <Card className="border-l-4 border-l-main hover:shadow-lg transition-shadow duration-300">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Tryout Premium
                 </CardTitle>
-                <GraduationCap className="h-4 w-4 text-muted-foreground" />
+                <GraduationCap className="h-4 w-4 text-main" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
+                <div className="text-3xl font-bold text-main">
                   {overviewData?.totalTryoutUnlock || '-'}
                 </div>
               </CardContent>

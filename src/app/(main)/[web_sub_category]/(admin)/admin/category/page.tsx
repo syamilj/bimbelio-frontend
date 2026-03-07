@@ -45,8 +45,16 @@ export default function Kategori() {
     name: string;
     open: boolean;
     categoryId: string;
+    image: string | null;
     visibleAtWebSubIds: string[];
-  }>({ id: '', name: '', open: false, categoryId: '', visibleAtWebSubIds: [] });
+  }>({
+    id: '',
+    name: '',
+    open: false,
+    categoryId: '',
+    image: null,
+    visibleAtWebSubIds: [],
+  });
 
   // const {
   //   data: categories,
@@ -86,7 +94,7 @@ export default function Kategori() {
   };
 
   const [subcategories, setSubcategories] = useState<
-    (Subcategory & { category: Category })[]
+    (Subcategory & { category: Category; image: string | null })[]
   >([]);
 
   const fetchSubCategories = async () => {
@@ -188,6 +196,7 @@ export default function Kategori() {
           />
           <ModalEditSubKategori
             refetchSubCategories={fetchSubCategories}
+            image={editSubKategoriData.image}
             id={editSubKategoriData.id}
             name={editSubKategoriData.name}
             open={editSubKategoriData.open}
@@ -303,6 +312,7 @@ export default function Kategori() {
                     setEditSubKategoriData({
                       id: cat.id,
                       name: cat.name,
+                      image: cat.image,
                       open: true,
                       categoryId: cat.categoryId,
                       visibleAtWebSubIds: cat.visibleAtWebSubIds,

@@ -26,7 +26,7 @@ import { motion } from 'framer-motion';
 import { BotMessageSquare, Loader2 } from 'lucide-react';
 import { useMedia } from 'use-media';
 import { useProvider } from '../../_provider/provider';
-import OnBoarding from '../z_other/onboarding';
+// import OnBoarding from '../z_other/onboarding';
 import ChatContent from './_components/chat-content';
 import NotesContent from './_components/notes-content';
 // import Editor from './editor';
@@ -241,13 +241,13 @@ const Sidebar = ({
         className,
       )}
     >
-      {tab === 'chat' ? (
+      {/* {tab === 'chat' ? (
         <OnBoarding type="chat" />
       ) : tab === 'notes' ? (
         <OnBoarding type="notes" />
       ) : tab === 'quiz' ? (
         <OnBoarding type="quiz" />
-      ) : null}
+      ) : null} */}
       {isResetModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
           <div className="flex w-[380px] flex-col items-center rounded-3xl bg-white p-7 text-center shadow-xl">
