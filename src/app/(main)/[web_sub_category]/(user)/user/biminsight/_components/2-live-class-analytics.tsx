@@ -11,6 +11,11 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/components/ui/chart';
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -34,27 +39,25 @@ import {
 import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
 import ExcelJS from 'exceljs';
-import { BookOpen, Download, Users } from 'lucide-react';
+import {
+  BookOpen,
+  Calendar,
+  CheckCircle2,
+  Clock,
+  Download,
+  Users,
+  XCircle,
+} from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
-import {
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-} from 'recharts';
+import { Cell, Label, Pie, PieChart, ResponsiveContainer } from 'recharts';
 import { SectionTitle } from './section-title';
 
 export const LiveClassAnalytics = () => {
   const { id } = useParams<{ id: string | undefined }>();
-
   const { data: session } = useSession();
-
   const role = session?.user.role;
-
-  const { mainColor, secondaryColor } = useWebsiteSubCategory();
+  const { mainColor } = useWebsiteSubCategory();
 
   const [selectedProgramId, setSelectedProgramId] = useState<string>('all');
   const [showExportDialog, setShowExportDialog] = useState<boolean>(false);
@@ -69,7 +72,6 @@ export const LiveClassAnalytics = () => {
     });
 
   if (LiveClassDataIsLoading) return <LoadingPage />;
-
   if (!LiveClassData) return null;
 
   const handleExportPerProgram = async () => {
@@ -184,6 +186,8 @@ export const LiveClassAnalytics = () => {
                 ? 'Hadir'
                 : liveClass.presenceStatus === 'LATE'
                   ? 'Terlambat'
+                  : liveClass.presenceStatus === 'UPCOMING'
+                    ? 'Akan Datang'
                   : 'No Status',
         });
       });
@@ -230,324 +234,224 @@ export const LiveClassAnalytics = () => {
 
   const presenceData = LiveClassData.Present;
   const listData = LiveClassData.List;
-  const chartData = [
+
+  const pieData = [
     { name: 'Hadir', value: presenceData.present, color: '#10B981' },
     { name: 'Terlambat', value: presenceData.late, color: '#F59E0B' },
     { name: 'Absen', value: presenceData.absent, color: '#EF4444' },
   ];
 
-  const COLORS = ['#10B981', '#F59E0B', '#EF4444'];
-
-  console.log({ LiveClassData });
+  const attendanceRate =
+    presenceData.totalInvited > 0
+      ? Math.round(((presenceData.present + presenceData.late) / presenceData.totalInvited) * 100)
+      : 0;
 
   return (
     <div>
-      <SectionTitle
-        icon={BookOpen}
-        title="BimLive"
-      />
-      <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
-        {/* Card Grafik (2 kolom) */}
-        <div className="lg:col-span-2">
-          <Card className="bg-white shadow-lg border-0 rounded-3xl overflow-hidden">
-            <CardHeader
-              className="pb-4 relative overflow-hidden"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-              }}
-            >
-              <div className="relative z-10 space-y-3">
-                <div className="flex items-center justify-between gap-4">
-                  <CardTitle
-                    className="text-xl font-bold flex items-center gap-3"
-                    style={{ color: mainColor }}
-                  >
-                    <div
-                      className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm"
-                      style={{ backgroundColor: `${mainColor}15` }}
-                    >
-                      <Users
-                        className="w-5 h-5"
-                        style={{ color: mainColor }}
-                      />
-                    </div>
-                    Jumlah Kehadiran Siswa pada BimLive
-                  </CardTitle>
-                </div>
-                <div className="flex justify-between gap-2">
-                  <Select
-                    value={selectedProgramId}
-                    onValueChange={setSelectedProgramId}
-                  >
-                    <SelectTrigger
-                      className="w-full border-2"
-                      style={{
-                        borderColor: `${mainColor}30`,
-                        backgroundColor: `${mainColor}05`,
-                      }}
-                    >
-                      <SelectValue placeholder="Pilih Program" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Semua Program</SelectItem>
-                      {LiveClassData.ListProgram.map((program) => (
-                        <SelectItem
-                          key={program.id}
-                          value={program.id}
-                        >
-                          {program.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+      <SectionTitle icon={BookOpen} title="BimLive" description="Riwayat kehadiranmu di kelas langsung" />
 
-                  {(role === 'ADMIN' || role === 'SUPER_ADMIN') && (
-                    <button
-                      onClick={() => setShowExportDialog(true)}
-                      className="flex items-center gap-2 px-4 py-2 rounded-3xl font-medium text-white transition-all hover:opacity-90 whitespace-nowrap shrink-0"
-                      style={{ backgroundColor: mainColor }}
-                    >
-                      <Download className="w-4 h-4" />
-                      Export
-                    </button>
-                  )}
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
+        {/* Left: Chart card */}
+        <div className="lg:col-span-2">
+          <Card className="w-full border-2">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-10 h-10 rounded-3xl flex items-center justify-center"
+                    style={{ backgroundColor: mainColor }}
+                  >
+                    <Users className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl font-black text-slate-800">Rekap Kehadiran</CardTitle>
+                    <CardDescription>Distribusi kehadiran per status</CardDescription>
+                  </div>
+                </div>
+                {(role === 'ADMIN' || role === 'SUPER_ADMIN') && (
+                  <button
+                    onClick={() => setShowExportDialog(true)}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold text-white transition-all hover:opacity-90"
+                    style={{ backgroundColor: mainColor }}
+                  >
+                    <Download className="w-3 h-3" />
+                    Export
+                  </button>
+                )}
+              </div>
+
+              {/* Filter */}
+              <div className="mt-3">
+                <Select value={selectedProgramId} onValueChange={setSelectedProgramId}>
+                  <SelectTrigger
+                    className="h-9 rounded-full border-2 text-xs"
+                    style={{ borderColor: `${mainColor}30`, backgroundColor: `${mainColor}05` }}
+                  >
+                    <SelectValue placeholder="Pilih Program" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Semua Program</SelectItem>
+                    {LiveClassData.ListProgram.map((program) => (
+                      <SelectItem key={program.id} value={program.id}>{program.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Stat badges */}
+              <div className="flex gap-2 mt-3 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-100 flex-shrink-0">
+                  <Users className="w-3 h-3 text-slate-500" />
+                  <span className="text-[10px] font-bold text-slate-700">Total: {presenceData.totalInvited}</span>
+                </div>
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 flex-shrink-0">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                  <span className="text-[10px] font-bold text-emerald-700">Hadir: {presenceData.present}</span>
+                </div>
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-100 flex-shrink-0">
+                  <Clock className="w-3 h-3 text-amber-500" />
+                  <span className="text-[10px] font-bold text-amber-700">Terlambat: {presenceData.late}</span>
+                </div>
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 border border-red-100 flex-shrink-0">
+                  <XCircle className="w-3 h-3 text-red-400" />
+                  <span className="text-[10px] font-bold text-red-600">Absen: {presenceData.absent}</span>
                 </div>
               </div>
-              <div
-                className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
-                style={{ backgroundColor: mainColor }}
-              />
             </CardHeader>
 
-            <CardContent className="p-6">
-              <div className="w-full h-80">
-                <ResponsiveContainer
-                  width="100%"
-                  height="100%"
-                >
-                  <PieChart>
-                    <Pie
-                      data={chartData}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ name, value }) => `${name}: ${value}`}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {chartData.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip formatter={(value) => `${value} siswa`} />
-                    <Legend
-                      verticalAlign="bottom"
-                      height={36}
-                      formatter={(value) => {
-                        const item = chartData.find((d) => d.name === value);
-                        return item ? `${item.name}: ${item.value}` : value;
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-
-              {/* Summary Stats */}
-              <div className="mt-8 grid grid-cols-2 gap-3">
-                <div
-                  className="text-center p-3 rounded-3xl"
-                  style={{ backgroundColor: `${mainColor}08` }}
-                >
-                  <p className="text-xs text-gray-500 mb-1">Total Undangan</p>
-                  <p
-                    className="text-2xl font-bold"
-                    style={{ color: mainColor }}
+            <CardContent>
+              {presenceData.totalInvited === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-3">
+                    <BookOpen className="w-8 h-8 text-slate-300" />
+                  </div>
+                  <h3 className="text-lg font-black text-slate-800 mb-1">Belum Ada Data Kehadiran</h3>
+                  <p className="text-sm text-slate-500">
+                    {listData.length > 0
+                      ? 'Kelas yang terdaftar belum berlangsung atau belum selesai.'
+                      : 'Kamu belum terdaftar di program BimLive manapun'}
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <ChartContainer
+                    config={{
+                      hadir: { label: 'Hadir', color: '#10B981' },
+                      terlambat: { label: 'Terlambat', color: '#F59E0B' },
+                      absen: { label: 'Absen', color: '#EF4444' },
+                    }}
+                    className="h-[260px] w-full"
                   >
-                    {presenceData.totalInvited}
-                  </p>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={pieData}
+                          cx="50%"
+                          cy="50%"
+                          outerRadius={100}
+                          innerRadius={65}
+                          dataKey="value"
+                          paddingAngle={3}
+                          stroke="white"
+                          strokeWidth={2}
+                          isAnimationActive
+                        >
+                          {pieData.map((entry, index) => (
+                            <Cell key={index} fill={entry.color} />
+                          ))}
+                          <Label
+                            content={({ viewBox }) => {
+                              const vb = viewBox as { cx?: number; cy?: number };
+                              if (!vb?.cx || !vb?.cy) return null;
+                              return (
+                                <text textAnchor="middle">
+                                  <tspan x={vb.cx} y={vb.cy - 6} fontSize={30} fontWeight={900} fill="#1e293b">{attendanceRate}%</tspan>
+                                  <tspan x={vb.cx} y={vb.cy + 14} fontSize={11} fontWeight={600} fill="#94a3b8">Kehadiran</tspan>
+                                </text>
+                              );
+                            }}
+                          />
+                        </Pie>
+                        <ChartTooltip
+                          content={
+                            <ChartTooltipContent
+                              nameKey="name"
+                              formatter={(value, name) => (
+                                <>
+                                  <span className="text-muted-foreground">{name}</span>
+                                  <span className="ml-auto font-mono font-bold tabular-nums">{value} sesi</span>
+                                </>
+                              )}
+                            />
+                          }
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </ChartContainer>
                 </div>
-                <div
-                  className="text-center p-3 rounded-3xl"
-                  style={{ backgroundColor: '#D1FAE5' }}
-                >
-                  <p className="text-xs text-gray-500 mb-1">Hadir</p>
-                  <p className="text-2xl font-bold text-green-600">
-                    {presenceData.present}
-                  </p>
-                </div>
-                <div
-                  className="text-center p-3 rounded-3xl"
-                  style={{ backgroundColor: '#FEF3C7' }}
-                >
-                  <p className="text-xs text-gray-500 mb-1">Terlambat</p>
-                  <p className="text-2xl font-bold text-yellow-600">
-                    {presenceData.late}
-                  </p>
-                </div>
-                <div
-                  className="text-center p-3 rounded-3xl"
-                  style={{ backgroundColor: '#FEE2E2' }}
-                >
-                  <p className="text-xs text-gray-500 mb-1">Absen</p>
-                  <p className="text-2xl font-bold text-red-600">
-                    {presenceData.absent}
-                  </p>
-                </div>
-              </div>
+              )}
             </CardContent>
           </Card>
         </div>
 
-        {/* Card List Data (1 kolom) */}
+        {/* Right: List card */}
         <div>
-          <Card className="bg-white shadow-lg border-0 rounded-3xl overflow-hidden h-full">
-            <CardHeader
-              className="pb-4 relative overflow-hidden"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-              }}
-            >
-              <div className="relative z-10">
-                <CardTitle
-                  className="text-lg font-bold"
-                  style={{ color: mainColor }}
+          <Card className="w-full border-2 h-full">
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-3">
+                <div
+                  className="w-10 h-10 rounded-3xl flex items-center justify-center"
+                  style={{ backgroundColor: mainColor }}
                 >
-                  Jadwal BimLive
-                </CardTitle>
-                <CardDescription className="text-gray-600 mt-1 text-xs">
-                  Daftar kelas langsung terbaru
-                </CardDescription>
+                  <Calendar className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-xl font-black text-slate-800">Jadwal BimLive</CardTitle>
+                  <CardDescription>Daftar kelas langsung terbaru</CardDescription>
+                </div>
               </div>
-              <div
-                className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
-                style={{ backgroundColor: mainColor }}
-              />
             </CardHeader>
 
-            <CardContent className="p-6">
-              <div className="space-y-3 max-h-[500px] overflow-y-auto">
+            <CardContent>
+              <div className="space-y-2.5 max-h-[420px] overflow-y-auto pr-1">
                 {listData && listData.length > 0 ? (
                   listData.map((item) => {
-                    const getTypeColor = (type: string) => {
-                      switch (type) {
-                        case 'LIVECLASS':
-                          return { bg: 'bg-blue-100', text: 'text-blue-700' };
-                        case 'LIVESTREAM':
-                          return {
-                            bg: 'bg-purple-100',
-                            text: 'text-purple-700',
-                          };
-                        case 'WEBINAR':
-                          return { bg: 'bg-green-100', text: 'text-green-700' };
-                        default:
-                          return { bg: 'bg-gray-100', text: 'text-gray-700' };
-                      }
-                    };
-
-                    const getAccessColor = (access: string) => {
-                      switch (access) {
-                        case 'PREMIUM':
-                          return { bg: '#FFD700', text: '#333' };
-                        case 'FREE_WITH_REGISTRATION':
-                          return { bg: '#90EE90', text: '#333' };
-                        case 'FREE_NO_REGISTRATION':
-                          return { bg: '#87CEEB', text: '#fff' };
-                        default:
-                          return { bg: '#808080', text: '#fff' };
-                      }
-                    };
-
-                    const typeColor = getTypeColor(item.type);
-                    const accessColor = getAccessColor(item.accessType);
                     const startDate = new Date(item.startDate);
                     const endDate = new Date(item.endDate);
+                    const statusStyle =
+                      item.presenceStatus === 'PRESENT'
+                        ? { bg: 'bg-emerald-50 border-emerald-100', text: 'text-emerald-700', dot: '#10B981' }
+                        : item.presenceStatus === 'LATE'
+                          ? { bg: 'bg-amber-50 border-amber-100', text: 'text-amber-700', dot: '#F59E0B' }
+                          : item.presenceStatus === 'ABSENT'
+                            ? { bg: 'bg-red-50 border-red-100', text: 'text-red-600', dot: '#EF4444' }
+                            : item.presenceStatus === 'UPCOMING'
+                              ? { bg: 'bg-blue-50 border-blue-100', text: 'text-blue-600', dot: '#3B82F6' }
+                              : { bg: 'bg-slate-50 border-slate-100', text: 'text-slate-500', dot: '#9CA3AF' };
 
                     return (
-                      <div
-                        key={item.id}
-                        className="p-3 rounded-3xl border border-gray-200 hover:shadow-md transition-all"
-                      >
-                        {/* Title */}
-                        <p className="font-semibold text-sm text-gray-900 truncate mb-2">
-                          {item.title}
-                        </p>
-
-                        {/* Type & Access Badges */}
-                        <div className="flex gap-2 mb-2 flex-wrap">
-                          <span
-                            className={`text-xs font-semibold px-2 py-1 rounded-full ${typeColor.bg} ${typeColor.text}`}
-                          >
-                            {item.type === 'LIVECLASS'
-                              ? 'Live Class'
-                              : item.type === 'LIVESTREAM'
-                                ? 'Live Stream'
-                                : 'Webinar'}
-                          </span>
-                          <span
-                            className="text-xs font-semibold px-2 py-1 rounded-full text-white"
-                            style={{
-                              backgroundColor: accessColor.bg,
-                              color: accessColor.text,
-                            }}
-                          >
-                            {item.accessType === 'PREMIUM'
-                              ? 'Premium'
-                              : item.accessType === 'FREE_WITH_REGISTRATION'
-                                ? 'Gratis'
-                                : 'Publik'}
-                          </span>
+                      <div key={item.id} className={`p-3 rounded-2xl border ${statusStyle.bg} transition-all hover:shadow-sm`}>
+                        <div className="flex items-start justify-between gap-2 mb-1">
+                          <p className="font-bold text-xs text-slate-800 line-clamp-2 flex-1">{item.title}</p>
+                          <div className="flex items-center gap-1 flex-shrink-0">
+                            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: statusStyle.dot }} />
+                            <span className={`text-[10px] font-bold ${statusStyle.text}`}>
+                              {item.presenceStatus === 'PRESENT' ? 'Hadir' : item.presenceStatus === 'LATE' ? 'Terlambat' : item.presenceStatus === 'ABSENT' ? 'Absen' : item.presenceStatus === 'UPCOMING' ? 'Akan Datang' : 'Pending'}
+                            </span>
+                          </div>
                         </div>
-
-                        {/* Date & Time */}
-                        <div className="text-xs text-gray-600 mb-2">
-                          <p>
-                            {format(startDate, 'dd MMM yyyy', {
-                              locale: localeId,
-                            })}
-                          </p>
-                          <p className="text-gray-500">
-                            {format(startDate, 'HH:mm', { locale: localeId })} -{' '}
-                            {format(endDate, 'HH:mm', { locale: localeId })}
-                          </p>
-                        </div>
-
-                        {/* Duration */}
-                        <div className="text-xs text-gray-500 mb-2 pb-2 border-b">
-                          Durasi: {Math.round(item.duration / 60)} menit
-                        </div>
-
-                        {/* Presence Status */}
-                        <p
-                          className="text-xs font-semibold px-3 py-2 rounded-full text-white text-center"
-                          style={{
-                            backgroundColor:
-                              item.presenceStatus === 'PRESENT'
-                                ? '#10B981'
-                                : item.presenceStatus === 'LATE'
-                                  ? '#3B82F6'
-                                  : item.presenceStatus === 'ABSENT'
-                                    ? '#EF4444'
-                                    : '#9CA3AF',
-                          }}
-                        >
-                          {item.presenceStatus === 'PRESENT'
-                            ? '✓ Hadir'
-                            : item.presenceStatus === 'LATE'
-                              ? '⏱ Terlambat'
-                              : item.presenceStatus === 'ABSENT'
-                                ? '✗ Absen'
-                                : 'Belum dimulai'}
+                        <p className="text-[10px] text-slate-500">
+                          {format(startDate, 'dd MMM yyyy', { locale: localeId })} · {format(startDate, 'HH:mm')}–{format(endDate, 'HH:mm')} · {Math.round(item.duration / 60)} mnt
                         </p>
                       </div>
                     );
                   })
                 ) : (
-                  <div className="text-center py-8">
-                    <p className="text-sm text-gray-500">Belum ada jadwal</p>
+                  <div className="flex flex-col items-center justify-center py-8 text-center">
+                    <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-2">
+                      <Calendar className="w-6 h-6 text-slate-300" />
+                    </div>
+                    <p className="text-sm font-bold text-slate-600">Belum ada jadwal</p>
                   </div>
                 )}
               </div>
@@ -557,30 +461,17 @@ export const LiveClassAnalytics = () => {
       </div>
 
       {/* Export Dialog */}
-      <Dialog
-        open={showExportDialog}
-        onOpenChange={setShowExportDialog}
-      >
+      <Dialog open={showExportDialog} onOpenChange={setShowExportDialog}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
             <DialogTitle>Pilih Format Export</DialogTitle>
-            <DialogDescription>
-              Pilih cara Anda ingin mengekspor data analitik BimLive
-            </DialogDescription>
+            <DialogDescription>Pilih cara Anda ingin mengekspor data analitik BimLive</DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-3">
-            <Button
-              onClick={handleExportPerProgram}
-              className="w-full"
-              style={{ backgroundColor: mainColor }}
-            >
+            <Button onClick={handleExportPerProgram} className="w-full" style={{ backgroundColor: mainColor }}>
               Export Per Program
             </Button>
-            <Button
-              onClick={handleExportPerLiveClass}
-              className="w-full"
-              variant="outline"
-            >
+            <Button onClick={handleExportPerLiveClass} className="w-full" variant="outline">
               Export Per LiveClass
             </Button>
           </div>
@@ -590,17 +481,12 @@ export const LiveClassAnalytics = () => {
   );
 };
 
-const LoadingPage = () => {
-  return (
-    <div>
-      <SectionTitle
-        icon={BookOpen}
-        title="BimLive"
-      />
-      <Skeleton className="w-full h-[1200px] md:h-[670px]" />
-    </div>
-  );
-};
+const LoadingPage = () => (
+  <div>
+    <SectionTitle icon={BookOpen} title="BimLive" />
+    <Skeleton className="w-full h-[400px] rounded-3xl" />
+  </div>
+);
 
 type DataType = {
   ListProgram: Plan[];

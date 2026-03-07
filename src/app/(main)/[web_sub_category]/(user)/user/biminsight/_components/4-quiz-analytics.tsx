@@ -29,11 +29,11 @@ import {
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { QuizVolume } from '@/types/database';
+import { getSubtestLabel } from '@/lib/utils/subtest';
 import { ChevronDown, ChevronUp, HelpCircle, Target } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
+import { CartesianGrid, Line, LineChart, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { SectionTitle } from './section-title';
 
 const ColorList = [
@@ -72,7 +72,7 @@ export const QuizAnalyticsTable = () => {
 
 const ByAllTab = () => {
   const { id } = useParams<{ id: string | undefined }>();
-  const { mainColor, secondaryColor } = useWebsiteSubCategory();
+  const { mainColor } = useWebsiteSubCategory();
   const [isExpanded, setIsExpanded] = useState(false);
   const INITIAL_ROWS = 5;
 
@@ -108,7 +108,7 @@ const ByAllTab = () => {
 
     SubCategory?.forEach((sub, index) => {
       config[sub.id] = {
-        label: sub.initial,
+        label: getSubtestLabel(sub.name, sub.website_sub_category_id),
         color: ColorList[index % ColorList.length],
       };
     });
@@ -117,7 +117,7 @@ const ByAllTab = () => {
   }, [SubCategory]);
 
   if (QuizDataIsLoading)
-    return <Skeleton className="w-full h-[1200px] md:h-[670px]" />;
+    return <Skeleton className="w-full h-[400px] rounded-3xl" />;
   if (!QuizData || !SubCategory) return null;
 
   if (QuizDataError) {
@@ -132,105 +132,100 @@ const ByAllTab = () => {
   };
   const lineChartData = QuizData.chartData;
 
-  console.log({
-    lineChartData,
-  });
-
   const displayedData = isExpanded
     ? QuizData.data
     : QuizData.data.slice(0, INITIAL_ROWS);
   const hasMoreData = QuizData.data.length > INITIAL_ROWS;
 
   return (
-    <Card className="bg-white shadow-lg border-0 rounded-3xl overflow-hidden">
-      <CardHeader
-        className="pb-4 relative overflow-hidden"
-        style={{
-          background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-        }}
-      >
-        <div className="relative z-10">
-          <CardTitle
-            className="text-xl font-bold flex items-center gap-3"
-            style={{ color: mainColor }}
+    <Card className="w-full border-2">
+      <CardHeader className="pb-3">
+        <div className="flex items-center gap-3">
+          <div
+            className="w-10 h-10 rounded-3xl flex items-center justify-center"
+            style={{ backgroundColor: mainColor }}
           >
-            <div
-              className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm"
-              style={{ backgroundColor: `${mainColor}15` }}
-            >
-              <HelpCircle
-                className="w-5 h-5"
-                style={{ color: mainColor }}
-              />
-            </div>
-            Performa Quiz per Subkategori
-          </CardTitle>
-          <CardDescription className="text-gray-600 mt-2">
-            Skor total berdasarkan masing-masing quiz dan subkategorinya
-          </CardDescription>
+            <HelpCircle className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <CardTitle className="text-xl font-black text-slate-800">Performa Quiz per Subkategori</CardTitle>
+            <CardDescription>Skor berdasarkan masing-masing quiz dan subkategorinya</CardDescription>
+          </div>
         </div>
-        <div
-          className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
-          style={{ backgroundColor: mainColor }}
-        />
       </CardHeader>
 
-      <CardContent className="p-6">
+      <CardContent>
+        <div className="overflow-x-auto pb-2 mb-3" style={{ scrollbarWidth: 'none' }}>
+          <div className="flex gap-1.5 min-w-max flex-wrap">
+            {SubCategory.map((sub, index) => (
+              <button
+                key={index}
+                onClick={() => setSelectedSubtests(prev => prev.includes(sub.id) ? prev.filter(c => c !== sub.id) : [...prev, sub.id])}
+                className={`px-2.5 py-1 rounded-full text-[10px] font-bold transition-all border flex-shrink-0 ${selectedSubtests.includes(sub.id) ? 'text-white border-transparent' : 'bg-white text-slate-400 border-slate-200 hover:border-slate-300'}`}
+                style={selectedSubtests.includes(sub.id) ? { backgroundColor: sub.color } : {}}
+              >
+                {getSubtestLabel(sub.name, sub.website_sub_category_id)}
+              </button>
+            ))}
+          </div>
+        </div>
         <ChartContainer
           config={chartConfigBySub}
-          className="h-[280px] md:h-[350px] w-full"
+          className="h-[240px] md:h-[280px] w-full"
         >
-          <LineChart
-            data={lineChartData}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-          >
-            <CartesianGrid
-              strokeDasharray="3 3"
-              stroke="#e2e8f0"
-            />
-            <XAxis
-              dataKey="volume"
-              tick={{ fontSize: 12, fill: '#64748b', fontWeight: 600 }}
-              tickLine={false}
-              axisLine={{ stroke: '#e2e8f0' }}
-            />
-            <YAxis
-              domain={[0, 100]}
-              tick={{ fontSize: 11, fill: '#64748b' }}
-              tickLine={false}
-              axisLine={{ stroke: '#e2e8f0' }}
-            />
-            <ChartTooltip content={<ChartTooltipContent />} />
-            <ChartLegend content={<ChartLegendContent />} />
-
-            {SubCategory.filter((sub) => {
-              return selectedSubtests.includes(sub.id);
-              // return true;
-            }).map((sub, index) => (
-              <Line
-                key={index}
-                type="monotone"
-                dataKey={sub.id}
-                stroke={sub.color}
-                strokeWidth={2}
-                dot={{ r: 4, fill: sub.color }}
-                activeDot={{ r: 6 }}
-                connectNulls
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={lineChartData}
+              margin={{ top: 10, right: 10, left: -20, bottom: 5 }}
+            >
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="#E5E7EB"
               />
-            ))}
-          </LineChart>
+              <XAxis
+                interval={0}
+                angle={-20}
+                textAnchor="end"
+                height={50}
+                dataKey="volume"
+                tick={{ fontSize: 10, fill: '#6B7280' }}
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis
+                domain={[0, 100]}
+                tick={{ fontSize: 10, fill: '#9CA3AF' }}
+                tickLine={false}
+                axisLine={false}
+                width={40}
+              />
+              <ChartTooltip content={<ChartTooltipContent />} />
+              <ChartLegend content={<ChartLegendContent />} />
+
+              {SubCategory.filter((sub) => selectedSubtests.includes(sub.id)).map((sub, index) => (
+                <Line
+                  key={index}
+                  type="monotone"
+                  dataKey={sub.id}
+                  stroke={sub.color}
+                  strokeWidth={2.5}
+                  dot={{ r: 4, fill: sub.color, strokeWidth: 2, stroke: '#fff' }}
+                  activeDot={{ r: 6, fill: sub.color, stroke: '#fff', strokeWidth: 2 }}
+                  connectNulls
+                />
+              ))}
+            </LineChart>
+          </ResponsiveContainer>
         </ChartContainer>
-        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-3xl">
-          <p className="text-sm text-blue-700 mb-2">
-            <span className="font-semibold">Keterangan Inisial:</span>
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+        <div className="mt-4 mb-3 p-3 bg-slate-50 border border-slate-100 rounded-2xl">
+          <p className="text-xs font-bold text-slate-700 mb-2">Keterangan Inisial:</p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-1.5">
             {QuizData.subCategories.map((subCat) => (
               <div
                 key={subCat.id}
                 className="text-xs"
               >
-                <span className="font-semibold">{subCat.initial}</span> ={' '}
+                <span className="font-semibold">{getSubtestLabel(subCat.name, subCat.website_sub_category_id)}</span> ={' '}
                 {subCat.name}
               </div>
             ))}
@@ -239,17 +234,17 @@ const ByAllTab = () => {
         <div className="w-full overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow style={{ backgroundColor: `${mainColor}08` }}>
-                <TableHead className="font-bold text-gray-800 py-3">
+              <TableRow className="bg-slate-50">
+                <TableHead className="font-bold text-slate-700 py-3">
                   Quiz
                 </TableHead>
                 {QuizData.subCategories.map((subCat) => (
                   <TableHead
                     key={subCat.id}
-                    className="font-bold text-gray-800 text-center py-3 hover:underline cursor-help"
+                    className="font-bold text-slate-700 text-center py-3 hover:underline cursor-help"
                     title={subCat.name}
                   >
-                    {subCat.initial}
+                    {getSubtestLabel(subCat.name, subCat.website_sub_category_id)}
                   </TableHead>
                 ))}
               </TableRow>
@@ -268,9 +263,9 @@ const ByAllTab = () => {
                 displayedData.map((quiz) => (
                   <TableRow
                     key={quiz.id}
-                    className="hover:bg-gray-50 transition-colors"
+                    className="hover:bg-slate-50 transition-colors"
                   >
-                    <TableCell className="font-semibold text-gray-900 py-4 whitespace-nowrap">
+                    <TableCell className="font-semibold text-slate-800 py-4 whitespace-nowrap">
                       {quiz.title}
                     </TableCell>
                     {QuizData.subCategories.map((subCat) => {
@@ -339,13 +334,9 @@ const ByAllTab = () => {
 
 const ByVolumeTab = () => {
   const { id } = useParams<{ id: string | undefined }>();
-  const { mainColor, secondaryColor } = useWebsiteSubCategory();
+  const { mainColor } = useWebsiteSubCategory();
   const [isExpanded, setIsExpanded] = useState(false);
   const INITIAL_ROWS = 5;
-
-  const [selectedVolume, setSelectedVolume] = useState<QuizVolume | null>(null);
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
 
   const {
     data: QuizData,
@@ -387,7 +378,7 @@ const ByVolumeTab = () => {
   }, [Volumes]);
 
   if (QuizDataIsLoading)
-    return <Skeleton className="w-full h-[1200px] md:h-[670px]" />;
+    return <Skeleton className="w-full h-[400px] rounded-3xl" />;
   if (!QuizData || !Volumes) return null;
 
   if (QuizDataError) {
@@ -402,99 +393,94 @@ const ByVolumeTab = () => {
   };
   const lineChartData = QuizData.chartData;
 
-  console.log({
-    lineChartData,
-  });
-
   const displayedData = isExpanded
     ? QuizData.data
     : QuizData.data.slice(0, INITIAL_ROWS);
   const hasMoreData = QuizData.data.length > INITIAL_ROWS;
 
   return (
-    <Card className="bg-white shadow-lg border-0 rounded-3xl overflow-hidden">
-      <CardHeader
-        className="pb-4 relative overflow-hidden"
-        style={{
-          background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-        }}
-      >
-        <div className="relative z-10">
-          <CardTitle
-            className="text-xl font-bold flex items-center gap-3"
-            style={{ color: mainColor }}
+    <Card className="w-full border-2">
+      <CardHeader className="pb-3">
+        <div className="flex items-center gap-3">
+          <div
+            className="w-10 h-10 rounded-3xl flex items-center justify-center"
+            style={{ backgroundColor: mainColor }}
           >
-            <div
-              className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm"
-              style={{ backgroundColor: `${mainColor}15` }}
-            >
-              <HelpCircle
-                className="w-5 h-5"
-                style={{ color: mainColor }}
-              />
-            </div>
-            Performa Quiz per Subkategori
-          </CardTitle>
-          <CardDescription className="text-gray-600 mt-2">
-            Skor total berdasarkan masing-masing quiz dan subkategorinya
-          </CardDescription>
+            <HelpCircle className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <CardTitle className="text-xl font-black text-slate-800">Performa Quiz per Volume</CardTitle>
+            <CardDescription>Skor berdasarkan masing-masing quiz dan volume-nya</CardDescription>
+          </div>
         </div>
-        <div
-          className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
-          style={{ backgroundColor: mainColor }}
-        />
       </CardHeader>
 
-      <CardContent className="p-6">
+      <CardContent>
+        <div className="overflow-x-auto pb-2 mb-3" style={{ scrollbarWidth: 'none' }}>
+          <div className="flex gap-1.5 min-w-max flex-wrap">
+            {Volumes.map((vol, index) => (
+              <button
+                key={index}
+                onClick={() => setSelectedSubtests(prev => prev.includes(vol.volId) ? prev.filter(c => c !== vol.volId) : [...prev, vol.volId])}
+                className={`px-2.5 py-1 rounded-full text-[10px] font-bold transition-all border flex-shrink-0 ${selectedSubtests.includes(vol.volId) ? 'text-white border-transparent' : 'bg-white text-slate-400 border-slate-200 hover:border-slate-300'}`}
+                style={selectedSubtests.includes(vol.volId) ? { backgroundColor: vol.color } : {}}
+              >
+                {vol.initial}
+              </button>
+            ))}
+          </div>
+        </div>
         <ChartContainer
           config={chartConfigBySub}
-          className="h-[280px] md:h-[350px] w-full"
+          className="h-[240px] md:h-[280px] w-full"
         >
-          <LineChart
-            data={lineChartData}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-          >
-            <CartesianGrid
-              strokeDasharray="3 3"
-              stroke="#e2e8f0"
-            />
-            <XAxis
-              dataKey="volume"
-              tick={{ fontSize: 12, fill: '#64748b', fontWeight: 600 }}
-              tickLine={false}
-              axisLine={{ stroke: '#e2e8f0' }}
-            />
-            <YAxis
-              domain={[0, 100]}
-              tick={{ fontSize: 11, fill: '#64748b' }}
-              tickLine={false}
-              axisLine={{ stroke: '#e2e8f0' }}
-            />
-            <ChartTooltip content={<ChartTooltipContent />} />
-            <ChartLegend content={<ChartLegendContent />} />
-
-            {Volumes.filter((vol) => {
-              return selectedSubtests.includes(vol.volId);
-              // return true;
-            }).map((vol, index) => (
-              <Line
-                key={index}
-                type="monotone"
-                dataKey={vol.volId}
-                stroke={vol.color}
-                strokeWidth={2}
-                dot={{ r: 4, fill: vol.color }}
-                activeDot={{ r: 6 }}
-                connectNulls
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={lineChartData}
+              margin={{ top: 10, right: 10, left: -20, bottom: 5 }}
+            >
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="#E5E7EB"
               />
-            ))}
-          </LineChart>
+              <XAxis
+                interval={0}
+                angle={-20}
+                textAnchor="end"
+                height={50}
+                dataKey="volume"
+                tick={{ fontSize: 10, fill: '#6B7280' }}
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis
+                domain={[0, 100]}
+                tick={{ fontSize: 10, fill: '#9CA3AF' }}
+                tickLine={false}
+                axisLine={false}
+                width={40}
+              />
+              <ChartTooltip content={<ChartTooltipContent />} />
+              <ChartLegend content={<ChartLegendContent />} />
+
+              {Volumes.filter((vol) => selectedSubtests.includes(vol.volId)).map((vol, index) => (
+                <Line
+                  key={index}
+                  type="monotone"
+                  dataKey={vol.volId}
+                  stroke={vol.color}
+                  strokeWidth={2.5}
+                  dot={{ r: 4, fill: vol.color, strokeWidth: 2, stroke: '#fff' }}
+                  activeDot={{ r: 6, fill: vol.color, stroke: '#fff', strokeWidth: 2 }}
+                  connectNulls
+                />
+              ))}
+            </LineChart>
+          </ResponsiveContainer>
         </ChartContainer>
-        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-3xl">
-          <p className="text-sm text-blue-700 mb-2">
-            <span className="font-semibold">Keterangan Inisial:</span>
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+        <div className="mt-4 mb-3 p-3 bg-slate-50 border border-slate-100 rounded-2xl">
+          <p className="text-xs font-bold text-slate-700 mb-2">Keterangan Inisial:</p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-1.5">
             {QuizData.quizVolumes.map((vol) => (
               <div
                 key={vol.volId}
@@ -509,14 +495,14 @@ const ByVolumeTab = () => {
         <div className="w-full overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow style={{ backgroundColor: `${mainColor}08` }}>
-                <TableHead className="font-bold text-gray-800 py-3">
+              <TableRow className="bg-slate-50">
+                <TableHead className="font-bold text-slate-700 py-3">
                   Quiz
                 </TableHead>
                 {QuizData.quizVolumes.map((vol) => (
                   <TableHead
                     key={vol.volId}
-                    className="font-bold text-gray-800 text-center py-3 hover:underline cursor-help"
+                    className="font-bold text-slate-700 text-center py-3 hover:underline cursor-help"
                     title={vol.volName || ''}
                   >
                     {vol.initial}
@@ -538,9 +524,9 @@ const ByVolumeTab = () => {
                 displayedData.map((quiz) => (
                   <TableRow
                     key={quiz.title}
-                    className="hover:bg-gray-50 transition-colors"
+                    className="hover:bg-slate-50 transition-colors"
                   >
-                    <TableCell className="font-semibold text-gray-900 py-4 whitespace-nowrap">
+                    <TableCell className="font-semibold text-slate-800 py-4 whitespace-nowrap">
                       {quiz.title}
                     </TableCell>
                     {QuizData.quizVolumes.map((vol) => {

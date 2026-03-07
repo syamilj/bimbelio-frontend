@@ -14,83 +14,18 @@ export const SectionTitle = ({
   const Icon = icon;
 
   return (
-    <div className="py-6">
-      <div className="flex md:hidden items-center gap-4 flex-1 mb-4">
-        <div
-          className="w-2 h-2 rounded-full"
-          style={{ backgroundColor: mainColor }}
-        />
-        <div
-          className="flex-1 h-px rounded-full"
-          style={{
-            background: `${mainColor}40`,
-          }}
-        />
-        <div
-          className="w-2 h-2 rounded-full"
-          style={{ backgroundColor: mainColor }}
-        />
-        <div
-          className="flex-1 h-px rounded-full"
-          style={{
-            background: `${mainColor}40`,
-          }}
-        />
-        <div
-          className="w-2 h-2 rounded-full"
-          style={{ backgroundColor: mainColor }}
-        />
+    <div className="flex items-center gap-3 mb-4">
+      <div
+        className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
+        style={{ backgroundColor: mainColor }}
+      >
+        <Icon className="w-5 h-5 text-white" />
       </div>
-      <div className="relative z-10 flex items-center gap-4">
-        <div
-          className="w-12 h-12 rounded-3xl flex items-center justify-center border shadow-lg"
-          style={{
-            backgroundColor: `${mainColor}15`,
-            borderColor: `${mainColor}30`,
-          }}
-        >
-          <Icon
-            className="w-6 h-6"
-            style={{ color: mainColor }}
-          />
-        </div>
-        <div className="flex flex-col">
-          <h2
-            className="text-3xl font-black tracking-tight"
-            style={{ color: mainColor }}
-          >
-            {title}
-          </h2>
-          {description && (
-            <p className="text-gray-600 text-sm">{description}</p>
-          )}
-        </div>
-        <div className="hidden md:flex items-center gap-4 flex-1 ml-6">
-          <div
-            className="w-2 h-2 rounded-full"
-            style={{ backgroundColor: mainColor }}
-          />
-          <div
-            className="flex-1 h-px rounded-full"
-            style={{
-              background: `${mainColor}40`,
-            }}
-          />
-          <div
-            className="w-2 h-2 rounded-full"
-            style={{ backgroundColor: mainColor }}
-          />
-          <div
-            className="flex-1 h-px rounded-full"
-            style={{
-              background: `${mainColor}40`,
-            }}
-          />
-          <div
-            className="w-2 h-2 rounded-full"
-            style={{ backgroundColor: mainColor }}
-          />
-        </div>
+      <div>
+        <h2 className="text-xl font-black text-slate-800">{title}</h2>
+        {description && (
+          <p className="text-xs text-slate-500">{description}</p>
+        )}
       </div>
     </div>
   );

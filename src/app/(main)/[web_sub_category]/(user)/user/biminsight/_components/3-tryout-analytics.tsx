@@ -38,12 +38,17 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   Area,
   AreaChart,
+  Bar,
+  BarChart,
   CartesianGrid,
+  LabelList,
   Line,
   LineChart,
   XAxis,
   YAxis,
+  ResponsiveContainer,
 } from 'recharts';
+import { getSubtestLabel } from '@/lib/utils/subtest';
 import { SectionTitle } from './section-title';
 
 const ColorList = [
@@ -110,7 +115,7 @@ const ByAllTab = ({
 }: {
   fetchingData: FetchReturnType<DataType, any>;
 }) => {
-  const { mainColor, secondaryColor } = useWebsiteSubCategory();
+  const { mainColor } = useWebsiteSubCategory();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const { data: TryoutData } = fetchingData;
@@ -120,20 +125,14 @@ const ByAllTab = ({
   const chartData = useMemo(() => {
     return performanceAll?.map((item, index) => ({
       index: index + 1,
-      name: `Tryout-${index + 1}`,
+      name: item.tryoutTitle,
+      shortName: item.tryoutTitle.length > 12 ? `TO ${index + 1}` : item.tryoutTitle,
       score: item.score,
       rank: item.rank,
-      title: item.tryoutTitle,
       date: item.date,
-      // Calculate trend line (simple linear regression)
-      trend:
-        performanceAll.length > 1
-          ? ((performanceAll[performanceAll.length - 1].score -
-              performanceAll[0].score) /
-              (performanceAll.length - 1)) *
-              index +
-            performanceAll[0].score
-          : item.score,
+      benar: item.benar,
+      salah: item.salah,
+      kosong: item.kosong,
     }));
   }, [performanceAll]);
 
@@ -147,9 +146,9 @@ const ByAllTab = ({
       label: 'Skor',
       color: mainColor,
     },
-    trend: {
-      label: 'Trend',
-      color: '#94a3b8',
+    benar: {
+      label: 'Benar',
+      color: '#10B981',
     },
   };
 
@@ -158,84 +157,53 @@ const ByAllTab = ({
     : performanceAll.slice(-INITIAL_ROWS);
 
   return (
-    <Card className="bg-white shadow-lg border-0 rounded-3xl overflow-hidden">
-      <CardHeader
-        className="pb-4 relative overflow-hidden"
-        style={{
-          background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-        }}
-      >
-        <div className="relative z-10">
-          <CardTitle
-            className="text-xl font-bold flex items-center gap-3"
-            style={{ color: mainColor }}
+    <Card className="w-full border-2">
+      <CardHeader className="pb-3">
+        <div className="flex items-center gap-3">
+          <div
+            className="w-10 h-10 rounded-3xl flex items-center justify-center"
+            style={{ backgroundColor: mainColor }}
           >
-            <div
-              className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm"
-              style={{ backgroundColor: `${mainColor}15` }}
-            >
-              <BookOpen
-                className="w-5 h-5"
-                style={{ color: mainColor }}
-              />
-            </div>
-            Performa Tryout
-          </CardTitle>
-          <CardDescription className="text-gray-600 mt-2">
-            Skor total berdasarkan masing-masing tryout
-          </CardDescription>
+            <BookOpen className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <CardTitle className="text-xl font-black text-slate-800">Performa Tryout</CardTitle>
+            <CardDescription>Skor total berdasarkan masing-masing tryout</CardDescription>
+          </div>
         </div>
-        <div
-          className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
-          style={{ backgroundColor: mainColor }}
-        />
+        {performanceAll.length > 0 && (
+          <div className="flex gap-2 mt-3 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 flex-shrink-0">
+              <Target className="w-3 h-3 text-emerald-500" />
+              <span className="text-[10px] font-bold text-emerald-700">Rata-rata: {performanceAllStats.avg}</span>
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 flex-shrink-0">
+              <Trophy className="w-3 h-3 text-blue-500" />
+              <span className="text-[10px] font-bold text-blue-700">Tertinggi: {performanceAllStats.highest}</span>
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-100 flex-shrink-0">
+              <ChevronDown className="w-3 h-3 text-slate-500" />
+              <span className="text-[10px] font-bold text-slate-700">Terendah: {performanceAllStats.lowest}</span>
+            </div>
+          </div>
+        )}
       </CardHeader>
 
-      <CardContent className="p-6">
+      <CardContent>
         {performanceAll.length > 0 ? (
-          <div className="space-y-6">
-            <div className="grid grid-cols-3 gap-3">
-              <div className="p-4 rounded-3xl border-2 border-emerald-100 bg-emerald-50">
-                <div className="text-xs font-bold text-emerald-600 uppercase tracking-wide mb-1">
-                  Rata-rata
-                </div>
-                <div className="text-2xl font-black text-emerald-700">
-                  {performanceAllStats.avg}
-                </div>
-              </div>
-              <div className="p-4 rounded-3xl border-2 border-blue-100 bg-blue-50">
-                <div className="text-xs font-bold text-blue-600 uppercase tracking-wide mb-1">
-                  Tertinggi
-                </div>
-                <div className="text-2xl font-black text-blue-700 flex items-center gap-1">
-                  <Trophy className="w-5 h-5" />
-                  {performanceAllStats.highest}
-                </div>
-              </div>
-              <div className="p-4 rounded-3xl border-2 border-slate-100 bg-slate-50">
-                <div className="text-xs font-bold text-slate-600 uppercase tracking-wide mb-1">
-                  Terendah
-                </div>
-                <div className="text-2xl font-black text-slate-700">
-                  {performanceAllStats.lowest}
-                </div>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-sm font-bold text-slate-700">
-                Grafik Skor & Trend
-              </h3>
-              <ChartContainer
-                config={chartConfigAll}
-                className="h-[250px] w-full"
-              >
+          <div className="space-y-4">
+            <ChartContainer
+              config={chartConfigAll}
+              className="h-[240px] md:h-[280px] w-full"
+            >
+              <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
                   data={chartData}
-                  margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                  margin={{ top: 20, right: 35, left: -10, bottom: 10 }}
                 >
                   <defs>
                     <linearGradient
-                      id="scoreGradient"
+                      id="biminsightTryoutScoreGradient"
                       x1="0"
                       y1="0"
                       x2="0"
@@ -255,180 +223,286 @@ const ByAllTab = ({
                   </defs>
                   <CartesianGrid
                     strokeDasharray="3 3"
-                    className="stroke-slate-200"
+                    stroke="#E5E7EB"
                   />
                   <XAxis
-                    dataKey="name"
-                    className="text-xs"
-                    tick={{ fill: '#64748b', fontSize: 12 }}
+                    dataKey="shortName"
+                    tick={{ fontSize: 10, fill: '#6B7280' }}
+                    tickLine={false}
+                    axisLine={false}
+                    interval={0}
+                    angle={-20}
+                    textAnchor="end"
+                    height={50}
                   />
                   <YAxis
-                    className="text-xs"
-                    tick={{ fill: '#64748b', fontSize: 12 }}
-                    domain={[
-                      performanceAllStats.lowest - 50,
-                      performanceAllStats.highest + 50,
-                    ]}
+                    yAxisId="left"
+                    tick={{ fontSize: 10, fill: '#9CA3AF' }}
+                    tickLine={false}
+                    axisLine={false}
+                    width={40}
                   />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-
-                  <Line
-                    type="monotone"
-                    dataKey="trend"
-                    stroke="#94a3b8"
-                    strokeWidth={2}
-                    strokeDasharray="5 5"
-                    dot={false}
-                    name="Trend"
+                  <YAxis
+                    yAxisId="right"
+                    orientation="right"
+                    tick={{ fontSize: 10, fill: '#10B981' }}
+                    tickLine={false}
+                    axisLine={false}
+                    width={30}
                   />
-
+                  <ChartTooltip
+                    trigger="click"
+                    content={
+                      <ChartTooltipContent
+                        labelFormatter={(_, payload) => {
+                          const p = payload?.[0]?.payload as {
+                            name?: string;
+                            shortName?: string;
+                          };
+                          return p?.name || '';
+                        }}
+                        formatter={(value, name, item) => {
+                          if (name === 'score') {
+                            return (
+                              <>
+                                <div
+                                  className="h-2.5 w-2.5 shrink-0 rounded-[2px]"
+                                  style={{ backgroundColor: mainColor }}
+                                />
+                                <span className="text-muted-foreground">
+                                  Skor
+                                </span>
+                                <span className="ml-auto font-mono font-medium tabular-nums">
+                                  {value}
+                                </span>
+                              </>
+                            );
+                          }
+                          if (name === 'benar') {
+                            const p = (item as {
+                              payload: {
+                                benar?: number;
+                                salah?: number;
+                                kosong?: number;
+                              };
+                            })?.payload;
+                            return (
+                              <>
+                                <div className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-emerald-500" />
+                                <span className="text-muted-foreground">
+                                  B/S/K
+                                </span>
+                                <span className="ml-auto font-mono font-medium tabular-nums">
+                                  <span className="text-emerald-600">
+                                    {p?.benar ?? value}
+                                  </span>
+                                  <span className="text-muted-foreground">
+                                    /
+                                  </span>
+                                  <span className="text-red-500">
+                                    {p?.salah ?? 0}
+                                  </span>
+                                  <span className="text-muted-foreground">
+                                    /
+                                  </span>
+                                  <span className="text-gray-400">
+                                    {p?.kosong ?? 0}
+                                  </span>
+                                </span>
+                              </>
+                            );
+                          }
+                          return null;
+                        }}
+                      />
+                    }
+                  />
                   <Area
+                    yAxisId="left"
                     type="monotone"
                     dataKey="score"
                     stroke={mainColor}
                     strokeWidth={3}
-                    fill="url(#scoreGradient)"
-                    name="Skor"
-                  />
+                    fill="url(#biminsightTryoutScoreGradient)"
+                    dot={{
+                      fill: mainColor,
+                      r: 4,
+                      strokeWidth: 2,
+                      stroke: '#fff',
+                    }}
+                    activeDot={{
+                      r: 6,
+                      fill: mainColor,
+                      stroke: '#fff',
+                      strokeWidth: 2,
+                    }}
+                  >
+                    <LabelList
+                      position="top"
+                      offset={10}
+                      className="fill-gray-700 font-bold text-[10px] md:text-xs"
+                    />
+                  </Area>
+                  <Line
+                    yAxisId="right"
+                    type="monotone"
+                    dataKey="benar"
+                    stroke="#10B981"
+                    strokeWidth={2}
+                    strokeDasharray="5 3"
+                    dot={{
+                      fill: '#10B981',
+                      r: 3,
+                      strokeWidth: 2,
+                      stroke: '#fff',
+                    }}
+                    activeDot={{
+                      r: 5,
+                      fill: '#10B981',
+                      stroke: '#fff',
+                      strokeWidth: 2,
+                    }}
+                  >
+                    <LabelList
+                      position="bottom"
+                      offset={8}
+                      className="fill-emerald-600 font-bold text-[9px] md:text-[10px]"
+                      formatter={(v: unknown) => `✓${v}`}
+                    />
+                  </Line>
                 </AreaChart>
-              </ChartContainer>
-            </div>
+              </ResponsiveContainer>
+            </ChartContainer>
 
             <div className="space-y-2">
               <h3 className="text-sm font-bold text-slate-700">
                 Riwayat Skor & Peringkat
               </h3>
-              <div className="w-full overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow style={{ backgroundColor: `${mainColor}08` }}>
-                      <TableHead className="font-bold text-gray-800 py-3">
-                        TO
-                      </TableHead>
-                      <TableHead className="font-bold text-gray-800 py-3">
-                        Nama Tryout
-                      </TableHead>
-                      <TableHead className="font-bold text-gray-800 text-center py-3">
-                        Tanggal
-                      </TableHead>
-                      <TableHead className="font-bold text-gray-800 text-center py-3">
-                        Skor
-                      </TableHead>
-                      <TableHead className="font-bold text-gray-800 text-center py-3">
-                        Peringkat
-                      </TableHead>
-                      <TableHead className="font-bold text-gray-800 text-center py-3">
-                        Perubahan
-                      </TableHead>
-                      <TableHead className="font-bold text-gray-800 text-center py-3">
-                        Percentile
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {[...displayedData].reverse().map((item, index) => {
-                      const rankPercentile =
-                        item.totalParticipants > 0
-                          ? Math.round(
-                              ((item.totalParticipants - item.rank + 1) /
-                                item.totalParticipants) *
-                                100,
-                            )
-                          : 0;
-
-                      return (
-                        <TableRow
-                          key={index}
-                          className="hover:bg-gray-50 transition-colors"
-                        >
-                          <TableCell className="font-semibold text-gray-900 py-4">
-                            TO {performanceAll.length - index}
-                          </TableCell>
-                          <TableCell className="font-semibold text-gray-900 py-4">
+              <div className="flex gap-3 overflow-x-auto pb-3" style={{ scrollbarWidth: 'none' }}>
+                {[...displayedData].reverse().map((item, index) => {
+                  const rankPercentile =
+                    item.totalParticipants > 0
+                      ? Math.round(
+                          ((item.totalParticipants - item.rank + 1) /
+                            item.totalParticipants) *
+                            100,
+                        )
+                      : 0;
+                  return (
+                    <div
+                      key={index}
+                      className="flex-shrink-0 w-[300px] p-2.5 rounded-3xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all"
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex-1 min-w-0">
+                          <p className="font-bold text-sm text-slate-800 truncate">
                             {item.tryoutTitle}
-                          </TableCell>
-                          <TableCell className="text-center py-4 text-sm text-gray-600">
+                          </p>
+                          <p className="text-xs text-slate-500">
                             {format(new Date(item.date), 'dd MMM yyyy', {
                               locale: localeId,
                             })}
-                          </TableCell>
-                          <TableCell className="text-center py-4">
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 flex-1">
+                          <div
+                            className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                            style={{ backgroundColor: `${mainColor}15` }}
+                          >
+                            <Target
+                              className="w-5 h-5"
+                              style={{ color: mainColor }}
+                            />
+                          </div>
+                          <div>
+                            <div className="text-xs text-slate-500 font-medium">Skor</div>
                             <div
-                              className="inline-flex items-center gap-1 px-3 py-1 rounded-full font-bold"
-                              style={{
-                                backgroundColor: `${mainColor}15`,
-                                color: mainColor,
-                              }}
+                              className="text-lg font-black"
+                              style={{ color: mainColor }}
                             >
                               {Math.round(item.score)}
                             </div>
-                          </TableCell>
-                          <TableCell className="text-center py-4">
-                            <div className="flex items-center justify-center gap-1">
-                              <Trophy
-                                className={`w-4 h-4 ${
-                                  item.rank <= 3
-                                    ? 'text-yellow-600'
-                                    : 'text-blue-600'
-                                }`}
-                              />
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 flex-1">
+                          <div
+                            className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                              item.rank <= 3 ? 'bg-yellow-100' : 'bg-blue-50'
+                            }`}
+                          >
+                            <Trophy
+                              className={`w-5 h-5 ${
+                                item.rank <= 3 ? 'text-yellow-600' : 'text-blue-600'
+                              }`}
+                            />
+                          </div>
+                          <div>
+                            <div className="text-xs text-slate-500 font-medium">Peringkat</div>
+                            <div className="flex items-center gap-1">
                               <span
-                                className={`font-bold ${
-                                  item.rank <= 3
-                                    ? 'text-yellow-600'
-                                    : 'text-blue-600'
+                                className={`text-lg font-black ${
+                                  item.rank <= 3 ? 'text-yellow-600' : 'text-blue-600'
                                 }`}
                               >
                                 #{item.rank}
                               </span>
-                              <span className="text-xs text-gray-500">
+                              <span className="text-xs text-slate-500">
                                 / {item.totalParticipants}
                               </span>
+                              {item.rankChange !== 0 && (
+                                <span
+                                  className={`text-xs font-bold ml-1 ${
+                                    item.rankChange > 0
+                                      ? 'text-emerald-600'
+                                      : 'text-red-600'
+                                  }`}
+                                >
+                                  {item.rankChange > 0 ? '↑' : '↓'}
+                                  {Math.abs(item.rankChange)}
+                                </span>
+                              )}
                             </div>
-                          </TableCell>
-                          <TableCell className="text-center py-4">
-                            {item.rankChange !== 0 && (
-                              <span
-                                className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold ${
-                                  item.rankChange > 0
-                                    ? 'bg-emerald-100 text-emerald-600'
-                                    : 'bg-red-100 text-red-600'
-                                }`}
-                              >
-                                {item.rankChange > 0 ? '↑' : '↓'}
-                                {Math.abs(item.rankChange)}
-                              </span>
-                            )}
-                          </TableCell>
-                          <TableCell className="text-center py-4">
-                            <div className="flex flex-col items-center gap-2">
-                              <span className="text-sm font-bold">
-                                Top {rankPercentile}%
-                              </span>
-                              <div className="w-24 bg-slate-200 rounded-full h-2 overflow-hidden">
-                                <div
-                                  className="h-full rounded-full transition-all duration-300"
-                                  style={{
-                                    width: `${rankPercentile}%`,
-                                    backgroundColor:
-                                      item.rankChange > 0
-                                        ? '#10b981'
-                                        : item.rankChange < 0
-                                          ? '#ef4444'
-                                          : mainColor,
-                                  }}
-                                />
-                              </div>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mt-3 space-y-1">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-slate-500">Top {rankPercentile}%</span>
+                          <span className="text-slate-600 font-bold">
+                            {item.totalParticipants - item.rank} peserta dibawah
+                          </span>
+                        </div>
+                        <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-300"
+                            style={{
+                              width: `${rankPercentile}%`,
+                              backgroundColor:
+                                item.rankChange > 0
+                                  ? '#10b981'
+                                  : item.rankChange < 0
+                                    ? '#ef4444'
+                                    : mainColor,
+                            }}
+                          />
+                        </div>
+                      </div>
+                      {/* B/S/K */}
+                      {(item.benar != null) && (
+                        <div className="mt-2 flex items-center gap-1.5 text-[11px] font-bold">
+                          <span className="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">{item.benar}B</span>
+                          <span className="text-red-500 bg-red-50 px-2 py-0.5 rounded-full">{item.salah}S</span>
+                          <span className="text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{item.kosong}K</span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
               {performanceAll.length > INITIAL_ROWS && (
-                <div className="mt-4 flex justify-center">
+                <div className="mt-2 flex justify-center">
                   <Button
                     onClick={() => setIsExpanded(!isExpanded)}
                     variant="outline"
@@ -451,8 +525,12 @@ const ByAllTab = ({
             </div>
           </div>
         ) : (
-          <div className="text-center py-8">
-            <p className="text-sm text-gray-500">Data belum ada</p>
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-3">
+              <BookOpen className="w-8 h-8 text-slate-300" />
+            </div>
+            <h3 className="text-lg font-black text-slate-800 mb-1">Belum Ada Data</h3>
+            <p className="text-sm text-slate-500">Belum ada tryout yang dikerjakan</p>
           </div>
         )}
       </CardContent>
@@ -465,7 +543,7 @@ const BySubCategoryTab = ({
 }: {
   fetchingData: FetchReturnType<DataType, any>;
 }) => {
-  const { mainColor, secondaryColor } = useWebsiteSubCategory();
+  const { mainColor } = useWebsiteSubCategory();
 
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -499,7 +577,7 @@ const BySubCategoryTab = ({
 
     performanceBySubCategory?.subCategories.forEach((sub, index) => {
       config[sub.id] = {
-        label: sub.initial,
+        label: getSubtestLabel(sub.name, sub.website_sub_category_id),
         color: ColorList[index % ColorList.length],
       };
     });
@@ -541,40 +619,23 @@ const BySubCategoryTab = ({
     : performanceBySubCategory.data.slice(0, INITIAL_ROWS);
   const hasMoreData = performanceBySubCategory.data.length > INITIAL_ROWS;
   return (
-    <Card className="bg-white shadow-lg border-0 rounded-3xl overflow-hidden">
-      <CardHeader
-        className="pb-4 relative overflow-hidden"
-        style={{
-          background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-        }}
-      >
-        <div className="relative z-10">
-          <CardTitle
-            className="text-xl font-bold flex items-center gap-3"
-            style={{ color: mainColor }}
+    <Card className="w-full border-2">
+      <CardHeader className="pb-3">
+        <div className="flex items-center gap-3">
+          <div
+            className="w-10 h-10 rounded-3xl flex items-center justify-center"
+            style={{ backgroundColor: mainColor }}
           >
-            <div
-              className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm"
-              style={{ backgroundColor: `${mainColor}15` }}
-            >
-              <BookOpen
-                className="w-5 h-5"
-                style={{ color: mainColor }}
-              />
-            </div>
-            Performa Tryout per Subkategori
-          </CardTitle>
-          <CardDescription className="text-gray-600 mt-2">
-            Skor total berdasarkan masing-masing tryout dan subkategorinya
-          </CardDescription>
+            <BookOpen className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <CardTitle className="text-xl font-black text-slate-800">Performa Tryout per Subtest</CardTitle>
+            <CardDescription>Skor berdasarkan masing-masing tryout dan subkategorinya</CardDescription>
+          </div>
         </div>
-        <div
-          className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
-          style={{ backgroundColor: mainColor }}
-        />
       </CardHeader>
 
-      <CardContent className="p-6">
+      <CardContent>
         <div className="relative">
           <div
             className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-2 md:pb-0"
@@ -604,7 +665,7 @@ const BySubCategoryTab = ({
                       : {}
                   }
                 >
-                  {sub.initial}
+                  {getSubtestLabel(sub.name, sub.website_sub_category_id)}
                 </button>
               ))}
             </div>
@@ -612,53 +673,69 @@ const BySubCategoryTab = ({
         </div>
         <ChartContainer
           config={chartConfigBySub}
-          className="h-[280px] md:h-[350px] w-full"
+          className="h-[260px] md:h-[300px] w-full"
         >
-          <LineChart
-            data={lineChartData}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-          >
-            <CartesianGrid
-              strokeDasharray="3 3"
-              stroke="#e2e8f0"
-            />
-            <XAxis
-              dataKey="tryout"
-              tick={{ fontSize: 12, fill: '#64748b', fontWeight: 600 }}
-              tickLine={false}
-              axisLine={{ stroke: '#e2e8f0' }}
-            />
-            <YAxis
-              domain={[0, 1000]}
-              tick={{ fontSize: 11, fill: '#64748b' }}
-              tickLine={false}
-              axisLine={{ stroke: '#e2e8f0' }}
-            />
-            <ChartTooltip content={<ChartTooltipContent />} />
-            <ChartLegend content={<ChartLegendContent />} />
-
-            {SubCategory.filter((sub) => {
-              return selectedSubtests.includes(sub.id);
-              // return true;
-            }).map((sub, index) => (
-              <Line
-                key={index}
-                type="monotone"
-                dataKey={sub.id}
-                stroke={sub.color}
-                strokeWidth={2}
-                dot={{ r: 4, fill: sub.color }}
-                activeDot={{ r: 6 }}
-                connectNulls
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={lineChartData}
+              margin={{ top: 10, right: 10, left: -20, bottom: 5 }}
+              barCategoryGap="20%"
+              barGap={2}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" vertical={false} />
+              <XAxis
+                dataKey="tryout"
+                tick={{ fontSize: 10, fill: '#6B7280' }}
+                tickLine={false}
+                axisLine={false}
+                interval={0}
+                angle={-20}
+                textAnchor="end"
+                height={50}
               />
-            ))}
-          </LineChart>
+              <YAxis
+                domain={['auto', 'auto']}
+                tick={{ fontSize: 10, fill: '#9CA3AF' }}
+                tickLine={false}
+                axisLine={false}
+                width={40}
+              />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    labelFormatter={(label) => String(label)}
+                    formatter={(value, name) => {
+                      const sub = SubCategory.find((s) => s.id === name);
+                      const label = sub ? getSubtestLabel(sub.name, sub.website_sub_category_id) : String(name);
+                      const color = sub?.color ?? '#888';
+                      return (
+                        <>
+                          <div className="h-2.5 w-2.5 shrink-0 rounded-[2px]" style={{ backgroundColor: color }} />
+                          <span className="text-muted-foreground">{label}</span>
+                          <span className="ml-auto font-mono font-medium tabular-nums">{value}</span>
+                        </>
+                      );
+                    }}
+                  />
+                }
+              />
+              <ChartLegend content={<ChartLegendContent />} />
+
+              {SubCategory.filter((sub) => selectedSubtests.includes(sub.id)).map((sub, index) => (
+                <Bar
+                  key={index}
+                  dataKey={sub.id}
+                  fill={sub.color}
+                  maxBarSize={18}
+                  radius={[3, 3, 0, 0]}
+                />
+              ))}
+            </BarChart>
+          </ResponsiveContainer>
         </ChartContainer>
-        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-3xl">
-          <p className="text-sm text-blue-700 mb-2">
-            <span className="font-semibold">Keterangan Inisial:</span>
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+        <div className="mt-4 mb-3 p-3 bg-slate-50 border border-slate-100 rounded-2xl">
+          <p className="text-xs font-bold text-slate-700 mb-2">Keterangan Inisial:</p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-1.5">
             {SubCategory.map((subCat) => (
               <div
                 key={subCat.id}
@@ -668,7 +745,7 @@ const BySubCategoryTab = ({
                   className="inline-block w-3 h-3 mr-2 rounded-full"
                   style={{ backgroundColor: subCat.color }}
                 ></span>
-                <span className="font-semibold">{subCat.initial}</span> ={' '}
+                <span className="font-semibold">{getSubtestLabel(subCat.name, subCat.website_sub_category_id)}</span> ={' '}
                 {subCat.name}
               </div>
             ))}
@@ -677,23 +754,23 @@ const BySubCategoryTab = ({
         <div className="w-full overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow style={{ backgroundColor: `${mainColor}08` }}>
-                <TableHead className="font-bold text-gray-800 py-3">
+              <TableRow className="bg-slate-50">
+                <TableHead className="font-bold text-slate-700 py-3">
                   To
                 </TableHead>
-                <TableHead className="font-bold text-gray-800 py-3">
+                <TableHead className="font-bold text-slate-700 py-3">
                   Tryout
                 </TableHead>
-                <TableHead className="font-bold text-gray-800 py-3 text-center">
+                <TableHead className="font-bold text-slate-700 py-3 text-center">
                   Final Score
                 </TableHead>
                 {performanceBySubCategory.subCategories.map((subCat) => (
                   <TableHead
                     key={subCat.id}
-                    className="font-bold text-gray-800 text-center py-3 hover:underline cursor-help"
+                    className="font-bold text-slate-700 text-center py-3 hover:underline cursor-help"
                     title={subCat.name}
                   >
-                    {subCat.initial}
+                    {getSubtestLabel(subCat.name, subCat.website_sub_category_id)}
                   </TableHead>
                 ))}
               </TableRow>
@@ -775,17 +852,12 @@ const BySubCategoryTab = ({
   );
 };
 
-const LoadingPage = () => {
-  return (
-    <div>
-      <SectionTitle
-        icon={BookOpen}
-        title="BimArena - Tryout"
-      />
-      <Skeleton className="w-full h-[1200px] md:h-[670px]" />
-    </div>
-  );
-};
+const LoadingPage = () => (
+  <div>
+    <SectionTitle icon={BookOpen} title="BimArena - Tryout" />
+    <Skeleton className="w-full h-[400px] rounded-3xl" />
+  </div>
+);
 
 type DataType = {
   overall: {
@@ -802,6 +874,9 @@ type DataType = {
       rank: number;
       totalParticipants: number;
       rankChange: number;
+      benar: number;
+      salah: number;
+      kosong: number;
     }[];
   };
   bySubCategory: {
