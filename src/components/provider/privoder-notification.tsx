@@ -1,9 +1,12 @@
 'use client';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { env } from '@/env.mjs';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { MutateType, useMutation } from '@/lib/fetch-helper/useMutation';
 import { useSocket } from '@/lib/socket/useSocket';
 import { Notification as NotificationData } from '@/types/database';
+import { motion } from 'framer-motion';
+import { Bell, X } from 'lucide-react';
 import {
   createContext,
   Dispatch,
@@ -15,6 +18,7 @@ import {
 } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { useSession } from './provider-session-auth';
+
 export default function ProviderNotification({
   children,
 }: {
@@ -23,6 +27,9 @@ export default function ProviderNotification({
   const [notificationPopUp, setNotificationPopUp] =
     useState<NotificationData | null>(null as any);
   const [notifications, setNotifications] = useState<NotificationData[]>([]);
+  const [notificationsPopUpQueue, setNotificationsPopUpQueue] = useState<
+    NotificationData[]
+  >([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
   const [filter, setFilter] = useState<'ALL' | 'UNREAD'>('ALL');
@@ -58,6 +65,17 @@ export default function ProviderNotification({
           setNotifications((prev) => [...prev, ...newData]);
           setIsLoading(false);
         }
+
+        setNotificationsPopUpQueue(
+          newData
+            .filter((notif) => notif.isPopUp && !notif.isRead)
+            .filter(
+              (notif, index, arr) =>
+                arr.findIndex((n) => n.title === notif.title) === index,
+            )
+            .slice(0, 5),
+        );
+
         setUnreadCount(data.unreadCount);
       }
       setIsFirstFetching(false);
@@ -67,6 +85,34 @@ export default function ProviderNotification({
       setIsFirstFetching(false);
     },
     useEffectDependencies: [take, page, filter],
+  });
+
+  const [lastQueuedPopUpId, setLastQueuedPopUpId] = useState<string | null>(
+    null,
+  );
+  useEffect(() => {
+    if (
+      notificationsPopUpQueue.length > 0 &&
+      !notificationPopUp &&
+      !lastQueuedPopUpId
+    ) {
+      const nextPopUp = notificationsPopUpQueue[0];
+      if (!nextPopUp) return;
+      setNotificationPopUp(nextPopUp);
+      setLastQueuedPopUpId(nextPopUp.id);
+    }
+    if (!notificationPopUp && lastQueuedPopUpId) {
+      setNotificationsPopUpQueue((prev) =>
+        prev.filter((notif) => notif.id !== lastQueuedPopUpId),
+      );
+      setLastQueuedPopUpId(null);
+    }
+  }, [notificationsPopUpQueue, notificationPopUp, lastQueuedPopUpId]);
+
+  console.log({
+    notificationPopUp,
+    lastQueuedPopUpId,
+    notificationsPopUpQueue,
   });
 
   const isAllLoaded = notifications.length >= totalData;
@@ -194,6 +240,7 @@ export default function ProviderNotification({
   return (
     <NotificationContext.Provider value={Context}>
       {children}
+      <FloatingNotificationAlert />
     </NotificationContext.Provider>
   );
 }
@@ -386,7 +433,7 @@ const initiateNotificationWorker = () => {
           console.log('Requested permission:', permission);
           if (permission !== 'granted') {
             console.warn('❌ Notification permission not granted');
-            alert('Please enable notifications in your browser settings');
+            // alert('Please enable notifications in your browser settings');
             return;
           }
         } else if (Notification.permission === 'denied') {
@@ -394,9 +441,9 @@ const initiateNotificationWorker = () => {
             '❌ Notification permission is denied. Please change it in browser settings.',
           );
 
-          alert(
-            'Notification permission is denied. Please change it in browser settings.',
-          );
+          // alert(
+          //   'Notification permission is denied. Please change it in browser settings.',
+          // );
           return;
         }
 
@@ -487,4 +534,305 @@ const initiateNotificationWorker = () => {
   useEffect(() => {
     handleResubscribe();
   }, []);
+};
+
+const FloatingNotificationAlert = () => {
+  const [permission, setPermission] = useState<NotificationPermission>(
+    typeof Notification !== 'undefined' ? Notification.permission : 'default',
+  );
+  const [isDismissed, setIsDismissed] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
+  const { websiteSubCategory } = useWebsiteSubCategory();
+
+  // Dynamic colors from website sub category
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
+  // Detect browser
+  const getBrowserName = ():
+    | 'chrome'
+    | 'firefox'
+    | 'safari'
+    | 'edge'
+    | 'other' => {
+    const ua = navigator.userAgent;
+    if (ua.includes('Edg/')) return 'edge';
+    if (ua.includes('Chrome/')) return 'chrome';
+    if (ua.includes('Firefox/')) return 'firefox';
+    if (ua.includes('Safari/')) return 'safari';
+    return 'other';
+  };
+
+  const handleRequestPermission = async () => {
+    try {
+      if (permission === 'denied') {
+        // Tidak bisa request lagi, arahkan ke settings browser
+        handleOpenBrowserSettings();
+        return;
+      }
+      const result = await Notification.requestPermission();
+      setPermission(result);
+    } catch (error) {
+      console.warn('Error requesting notification permission:', error);
+    } finally {
+      setIsDialogOpen(false);
+    }
+  };
+
+  const handleOpenBrowserSettings = () => {
+    const browser = getBrowserName();
+
+    if (browser === 'chrome' || browser === 'edge' || browser === 'firefox') {
+      setIsDialogOpen(false);
+      setIsGuideOpen(true);
+    } else {
+      setIsDialogOpen(false);
+      setIsGuideOpen(true);
+    }
+  };
+
+  const handleDismiss = () => {
+    setIsDialogOpen(false);
+    setIsDismissed(true);
+  };
+
+  // Show when permission is 'default' or 'denied', and not dismissed, and granted
+  if (permission === 'granted' || isDismissed) return null;
+
+  return (
+    <>
+      {/* Floating Bell Button */}
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 2 }}
+        className="fixed bottom-24 right-6 z-50"
+      >
+        <motion.button
+          onClick={() => setIsDialogOpen(true)}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="relative w-12 h-12 rounded-full shadow-xl flex items-center justify-center text-white focus:outline-none"
+          style={{
+            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+          }}
+          aria-label="Aktifkan notifikasi"
+        >
+          {/* Pulse ring */}
+          <motion.div
+            className="absolute inset-0 rounded-full"
+            style={{ backgroundColor: mainColor }}
+            animate={{ scale: [1, 1.6, 1], opacity: [0.3, 0, 0.3] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          {/* Bell icon with shake */}
+          <motion.div
+            animate={{ rotate: [0, -15, 15, -10, 10, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
+          >
+            <Bell className="w-6 h-6 relative z-10" />
+          </motion.div>
+        </motion.button>
+      </motion.div>
+
+      {/* Permission Dialog */}
+      {isDialogOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+          onClick={(e) =>
+            e.target === e.currentTarget && setIsDialogOpen(false)
+          }
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            className="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden"
+          >
+            {/* Top gradient bar */}
+            <div
+              className="h-1 w-full"
+              style={{
+                background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
+              }}
+            />
+
+            <div className="p-6">
+              {/* Close button */}
+              <button
+                onClick={() => setIsDialogOpen(false)}
+                className="absolute top-4 right-4 w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                aria-label="Tutup"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              {/* Icon */}
+              <div className="flex justify-center mb-4">
+                <div
+                  className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
+                  style={{
+                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                  }}
+                >
+                  <Bell className="w-8 h-8 text-white" />
+                </div>
+              </div>
+
+              {/* Text */}
+              <h2 className="text-center text-lg font-bold text-gray-900 mb-1">
+                Aktifkan Notifikasi
+              </h2>
+
+              {/* Teks berbeda tergantung status permission */}
+              {permission === 'denied' ? (
+                <p className="text-center text-sm text-gray-500 leading-relaxed mb-6">
+                  Notifikasi diblokir. Klik{' '}
+                  <span className="font-semibold text-gray-700">"Izinkan"</span>{' '}
+                  untuk melihat cara mengaktifkannya di pengaturan browser.
+                </p>
+              ) : (
+                <p className="text-center text-sm text-gray-500 leading-relaxed mb-6">
+                  Dapatkan info tryout, pengumuman nilai, dan promo eksklusif
+                  langsung di perangkatmu.
+                </p>
+              )}
+
+              {/* Action buttons */}
+              <div className="flex gap-3">
+                <button
+                  onClick={handleDismiss}
+                  className="flex-1 py-2.5 px-4 rounded-xl text-sm font-medium text-gray-500 bg-gray-100 hover:bg-gray-200 transition-colors"
+                >
+                  Nanti saja
+                </button>
+                <button
+                  onClick={handleRequestPermission}
+                  className="flex-1 py-2.5 px-4 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90 hover:shadow-md"
+                  style={{
+                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                  }}
+                >
+                  Izinkan
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+
+      {/* Guide Dialog — muncul ketika permission 'denied' */}
+      {isGuideOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+          onClick={(e) => e.target === e.currentTarget && setIsGuideOpen(false)}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            className="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden"
+          >
+            <div
+              className="h-1 w-full"
+              style={{
+                background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
+              }}
+            />
+            <div className="p-6">
+              <button
+                onClick={() => setIsGuideOpen(false)}
+                className="absolute top-4 right-4 w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              <div className="flex justify-center mb-4">
+                <div
+                  className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
+                  style={{
+                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                  }}
+                >
+                  <Bell className="w-8 h-8 text-white" />
+                </div>
+              </div>
+
+              <h2 className="text-center text-lg font-bold text-gray-900 mb-3">
+                Cara Mengaktifkan Notifikasi
+              </h2>
+
+              {/* Step by step */}
+              <ol className="text-sm text-gray-600 space-y-2 mb-6 text-left list-none">
+                <li className="flex gap-2">
+                  <span
+                    className="w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold"
+                    style={{ backgroundColor: mainColor }}
+                  >
+                    1
+                  </span>
+                  <span>
+                    Klik ikon{' '}
+                    <span className="font-semibold">🔒 gembok / ⓘ info</span> di
+                    address bar browser
+                  </span>
+                </li>
+                <li className="flex gap-2">
+                  <span
+                    className="w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold"
+                    style={{ backgroundColor: mainColor }}
+                  >
+                    2
+                  </span>
+                  <span>
+                    Pilih <span className="font-semibold">"Izin situs"</span>{' '}
+                    atau <span className="font-semibold">"Site settings"</span>
+                  </span>
+                </li>
+                <li className="flex gap-2">
+                  <span
+                    className="w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold"
+                    style={{ backgroundColor: mainColor }}
+                  >
+                    3
+                  </span>
+                  <span>
+                    Cari <span className="font-semibold">"Notifikasi"</span>{' '}
+                    lalu ubah ke{' '}
+                    <span className="font-semibold text-green-600">
+                      "Izinkan"
+                    </span>
+                  </span>
+                </li>
+                <li className="flex gap-2">
+                  <span
+                    className="w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold"
+                    style={{ backgroundColor: mainColor }}
+                  >
+                    4
+                  </span>
+                  <span>Muat ulang halaman ini</span>
+                </li>
+              </ol>
+
+              <button
+                onClick={() => window.location.reload()}
+                className="w-full py-2.5 px-4 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90"
+                style={{
+                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                }}
+              >
+                Muat Ulang Halaman
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </>
+  );
 };

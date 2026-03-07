@@ -39,6 +39,7 @@ export const useSocket = (serverUrl?: string) => {
       setIsConnected(true);
       setSocketId(socket.id || null);
       socket.emit('notification:join', { userId: session.user.id });
+      socket.emit('user:auth', { userId: session.user.id, email: session.user.email, image: session.user.image });
     });
 
     socket.on('disconnect', () => {

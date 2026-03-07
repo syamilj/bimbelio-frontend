@@ -14,7 +14,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Done from './_components/done';
 import Terbaru from './_components/terbaru';
 import DialogRecomendation from './_components/ui/dialog-recomendation';
-import OnBoarding from './_components/ui/onboarding';
+// import OnBoarding from './_components/ui/onboarding';
 import SummaryTryout from './_components/ui/summary-tryout';
 import Upcoming from './_components/upcoming';
 import UpcomingOtherWeb from './_components/upcoming-other-web';
@@ -199,7 +199,7 @@ const Content = () => {
           openExternal={open}
           setOpenExternal={setOpen}
         />
-        <OnBoarding type="tryout" />
+        {/* <OnBoarding type="tryout" /> */}
 
         {/* Hero Summary */}
         <div className="p-4 md:p-6">

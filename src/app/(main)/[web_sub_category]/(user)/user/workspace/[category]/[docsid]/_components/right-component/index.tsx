@@ -10,7 +10,7 @@ import { useAppContext } from '@/components/provider/provider-app';
 import { useUserOnBoarding } from '@/components/provider/provider-on-boarding';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
-import OnBoarding from '@/components/workspace/_component/onboarding';
+// import OnBoarding from '@/components/workspace/_component/onboarding';
 import Quiz from '@/components/workspace/quiz';
 import { deleteGeneral, getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
@@ -149,13 +149,13 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
 
   return (
     <div className="absolute left-0 top-0 h-full w-full bg-slate-50/80 md:relative">
-      {tab === 'chat' ? (
+      {/* {tab === 'chat' ? (
         <OnBoarding type="chat" />
       ) : tab === 'notes' ? (
         <OnBoarding type="notes" />
       ) : tab === 'quiz' ? (
         <OnBoarding type="quiz" />
-      ) : null}
+      ) : null} */}
 
       {/* Reset Confirmation Modal */}
       {(isLoading ? true : isResetModalOpen) && (

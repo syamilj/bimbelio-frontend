@@ -77,7 +77,7 @@ export const NotificationPopUp = () => {
       <DialogContent
         showCloseButton={false}
         classOverlay="z-[10000]"
-        className="z-[10001] w-[calc(100vw-32px)] max-w-[420px] p-0 overflow-hidden border-0 rounded-[24px] shadow-[0_24px_64px_rgba(0,0,0,0.2),0_0_0_1px_rgba(0,0,0,0.06)] gap-0"
+        className="z-[10001] w-[calc(100vw-32px)] max-w-[420px] max-h-[90vh] p-0 overflow-x-hidden overflow-y-auto border-0 rounded-[24px] shadow-[0_24px_64px_rgba(0,0,0,0.2),0_0_0_1px_rgba(0,0,0,0.06)] gap-0"
         onEscapeKeyDown={(e) => e.preventDefault()}
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
@@ -91,11 +91,11 @@ export const NotificationPopUp = () => {
 
         {/* ── Hero image OR gradient header ── */}
         {heroImage ? (
-          <div className="relative w-full h-52 overflow-hidden bg-gray-900 flex-shrink-0">
+          <div className="relative w-full h-fit overflow-hidden bg-gray-900 flex-shrink-0">
             <img
               src={heroImage}
               alt={notificationPopUp.title}
-              className="w-full h-full object-cover opacity-90"
+              className="w-full h-full object-contain opacity-90"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 px-5 pb-4">
