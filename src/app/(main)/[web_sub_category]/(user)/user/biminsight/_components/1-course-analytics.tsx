@@ -15,7 +15,6 @@ import {
   BookOpen,
   Brain,
   Clock3,
-  GraduationCap,
   Layers3,
   Target,
 } from "lucide-react";
@@ -36,10 +35,11 @@ import {
   EmptyState,
   HeroBanner,
   InsightCard,
+  ScrollRow,
   SectionLabel,
   StatPill,
 } from "./_primitives";
-import { SectionTitle } from "./section-title";
+
 
 type CourseCategory = {
   id: number;
@@ -275,11 +275,6 @@ export const CourseAnalytics = () => {
   if (!categories || categories.length === 0) {
     return (
       <div>
-        <SectionTitle
-          icon={GraduationCap}
-          title="BimCourse"
-          description="Ringkasan progres dan pola belajar materi course"
-        />
         <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm overflow-hidden p-6">
           <EmptyState
             icon={BookOpen}
@@ -293,12 +288,6 @@ export const CourseAnalytics = () => {
 
   return (
     <div>
-      <SectionTitle
-        icon={GraduationCap}
-        title="BimCourse"
-        description="Ringkasan progres dan pola belajar materi course"
-      />
-
       <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
         {/* Hero */}
         <HeroBanner color={mainColor}>
@@ -306,7 +295,7 @@ export const CourseAnalytics = () => {
             title="Analitik Course"
             sub="Ringkasan lintas kategori dan detail per kategori"
           />
-          <div className="grid grid-cols-3 gap-2 mt-3">
+          <ScrollRow>
             <StatPill
               label="Kategori"
               value={`${completedCategory}/${totalCategory}`}
@@ -328,37 +317,48 @@ export const CourseAnalytics = () => {
               icon={<Brain className="h-3.5 w-3.5" />}
               color="#22c55e"
             />
-          </div>
+          </ScrollRow>
         </HeroBanner>
 
         {/* Insights */}
-        <div className="px-5 pt-5 grid gap-3 xl:grid-cols-3">
-          <InsightCard
-            title="Kategori Terdepan"
-            value={bestProgressCategory?.name ?? "-"}
-            sub={
-              bestProgressCategory
-                ? `${bestProgressCategory.percentageProgress}% selesai`
-                : "Belum ada data"
-            }
-            tone="emerald"
-          />
-          <InsightCard
-            title="Butuh Perhatian"
-            value={needsAttentionCategory?.name ?? "-"}
-            sub={
-              needsAttentionCategory
-                ? `${needsAttentionCategory.percentageProgress}% progress`
-                : "Belum ada data"
-            }
-            tone="amber"
-          />
-          <InsightCard
-            title="Aktivitas 7 Hari"
-            value={`${totalRecentActiveDays}`}
-            sub="akumulasi hari aktif lintas kategori"
-            tone="blue"
-          />
+        <div
+          className="px-5 pt-5 overflow-x-auto -mx-4 md:mx-0 md:overflow-visible"
+          style={{ scrollbarWidth: "none" }}
+        >
+          <div className="flex gap-3 min-w-max px-4 md:px-0 md:min-w-0 md:grid xl:grid-cols-3">
+            <div className="w-[200px] flex-shrink-0 md:w-auto">
+              <InsightCard
+                title="Kategori Terdepan"
+                value={bestProgressCategory?.name ?? "-"}
+                sub={
+                  bestProgressCategory
+                    ? `${bestProgressCategory.percentageProgress}% selesai`
+                    : "Belum ada data"
+                }
+                tone="emerald"
+              />
+            </div>
+            <div className="w-[200px] flex-shrink-0 md:w-auto">
+              <InsightCard
+                title="Butuh Perhatian"
+                value={needsAttentionCategory?.name ?? "-"}
+                sub={
+                  needsAttentionCategory
+                    ? `${needsAttentionCategory.percentageProgress}% progress`
+                    : "Belum ada data"
+                }
+                tone="amber"
+              />
+            </div>
+            <div className="w-[200px] flex-shrink-0 md:w-auto">
+              <InsightCard
+                title="Aktivitas 7 Hari"
+                value={`${totalRecentActiveDays}`}
+                sub="akumulasi hari aktif lintas kategori"
+                tone="blue"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Overview charts */}
@@ -700,19 +700,14 @@ const CategorySummaryCard = ({
 
 const LoadingState = () => (
   <div>
-    <SectionTitle
-      icon={GraduationCap}
-      title="BimCourse"
-      description="Ringkasan progres dan pola belajar materi course"
-    />
     <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
       <div className="p-5 space-y-3">
         <Skeleton className="h-5 w-48" />
-        <div className="grid grid-cols-3 gap-2">
+        <ScrollRow>
           <Skeleton className="h-16 rounded-xl" />
           <Skeleton className="h-16 rounded-xl" />
           <Skeleton className="h-16 rounded-xl" />
-        </div>
+        </ScrollRow>
         <Skeleton className="h-[260px] w-full rounded-xl" />
         <Skeleton className="h-[260px] w-full rounded-xl" />
       </div>

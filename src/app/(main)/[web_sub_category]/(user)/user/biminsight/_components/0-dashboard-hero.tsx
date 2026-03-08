@@ -12,7 +12,7 @@ import {
   Video,
 } from "lucide-react";
 import { useParams } from "next/navigation";
-import { StatPill } from "./_primitives";
+import { ScrollRow, StatPill } from "./_primitives";
 
 interface UserData {
   name: string;
@@ -71,7 +71,7 @@ export function DashboardHero() {
         </div>
 
         {/* Quick stats */}
-        <div className="grid grid-cols-3 gap-2">
+        <ScrollRow>
           <StatPill
             label="Tryout"
             value={String(data.summaryCount.tryout)}
@@ -93,7 +93,7 @@ export function DashboardHero() {
             icon={<Video className="h-3.5 w-3.5" />}
             color="#22c55e"
           />
-        </div>
+        </ScrollRow>
       </div>
 
       {/* Target & choice info */}
@@ -145,11 +145,11 @@ function LoadingState() {
           <Skeleton className="h-3 w-56" />
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-2">
+      <ScrollRow>
         <Skeleton className="h-16 rounded-3xl" />
         <Skeleton className="h-16 rounded-3xl" />
         <Skeleton className="h-16 rounded-3xl" />
-      </div>
+      </ScrollRow>
     </div>
   );
 }

@@ -55,10 +55,11 @@ import {
 import {
   ChangeCard,
   InsightCard,
+  ScrollRow,
   SectionLabel,
   StatPill,
 } from "./_primitives";
-import { SectionTitle } from "./section-title";
+
 
 // --- Types -------------------------------------------------------------------
 
@@ -198,7 +199,6 @@ export const ScorePrediction = () => {
   if (data.insufficient) {
     return (
       <div className="space-y-3">
-        <SectionTitle icon={Brain} title="Prediksi Skor" />
         <Card className="w-full border-0 shadow-lg shadow-slate-200/60">
           <CardContent className="py-12">
             <div className="flex flex-col items-center justify-center text-center">
@@ -248,8 +248,6 @@ function PredictionCard({ data }: { data: PredictionResponse }) {
 
   return (
     <div className="space-y-3">
-      <SectionTitle icon={Brain} title="Prediksi Skor" />
-
       <Card className="w-full overflow-hidden border-0 shadow-lg shadow-slate-200/60">
         {/* -- 1. Hero banner -- */}
         <HeroBanner prediction={p} insights={ins} mainColor={mainColor} />
@@ -603,7 +601,7 @@ function ProjectionsRow({
   return (
     <div>
       <SectionLabel title="Proyeksi Skor" />
-      <div className="grid grid-cols-3 gap-3 mt-3">
+      <ScrollRow className="mt-3">
         {projections.map((proj) => {
           const diff = proj.blended - proj.wls;
           return (
@@ -633,7 +631,7 @@ function ProjectionsRow({
             </div>
           );
         })}
-      </div>
+      </ScrollRow>
     </div>
   );
 }
@@ -731,10 +729,17 @@ function InsightsGrid({
   return (
     <div>
       <SectionLabel title="Insight" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 mt-3">
-        {insights.map((item) => (
-          <InsightCard key={item.title} {...item} />
-        ))}
+      <div
+        className="overflow-x-auto -mx-4 px-4 pb-1 md:mx-0 md:px-0 md:overflow-visible mt-3"
+        style={{ scrollbarWidth: "none" }}
+      >
+        <div className="flex gap-3 min-w-max md:min-w-0 md:grid md:grid-cols-2 xl:grid-cols-3">
+          {insights.map((item) => (
+            <div key={item.title} className="w-[200px] flex-shrink-0 md:w-auto">
+              <InsightCard {...item} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -1238,7 +1243,6 @@ function PercentileChart({
 function LoadingState() {
   return (
     <div className="space-y-3">
-      <SectionTitle icon={Brain} title="Prediksi Skor" />
       <div className="space-y-4">
         <Skeleton className="h-[180px] w-full rounded-3xl" />
         <Skeleton className="h-[320px] w-full rounded-3xl" />

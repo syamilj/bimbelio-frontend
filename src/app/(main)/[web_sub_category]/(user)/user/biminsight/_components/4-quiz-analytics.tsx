@@ -23,7 +23,7 @@ import {
 import { useGet } from "@/lib/fetch-helper/useGet";
 import { cn } from "@/lib/utils";
 import { getSubtestLabel } from "@/lib/utils/subtest";
-import { BookOpen, ChevronDown, ChevronUp, HelpCircle } from "lucide-react";
+import { BookOpen, ChevronDown, ChevronUp } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { CartesianGrid, LabelList, Line, LineChart, XAxis, YAxis } from "recharts";
@@ -33,7 +33,7 @@ import {
   HeroBanner,
   SectionLabel,
 } from "./_primitives";
-import { SectionTitle } from "./section-title";
+
 
 const ColorList = [
   "#0091FF",
@@ -76,7 +76,6 @@ export const QuizAnalyticsTable = () => {
 
   return (
     <div>
-      <SectionTitle icon={HelpCircle} title="BimArena - Quiz" />
       <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
         {!hasData ? (
           <div className="p-6">
@@ -630,7 +629,6 @@ function VolumeSection({ data }: { data: DataTypeQuiz }) {
 
 const LoadingPage = () => (
   <div>
-    <SectionTitle icon={HelpCircle} title="BimArena - Quiz" />
     <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
       <div className="p-5 space-y-3">
         <Skeleton className="h-5 w-48" />

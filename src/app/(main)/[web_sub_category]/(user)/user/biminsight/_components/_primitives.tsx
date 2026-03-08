@@ -286,3 +286,27 @@ export function EmptyState({
     </div>
   );
 }
+
+// --- ScrollRow ----------------------------------------------------------------
+
+export function ScrollRow({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "overflow-x-auto -mx-4 px-4 pb-1 md:mx-0 md:px-0 md:overflow-visible",
+        className,
+      )}
+      style={{ scrollbarWidth: "none" }}
+    >
+      <div className="flex gap-2 min-w-max md:min-w-0 md:grid md:grid-cols-3">
+        {children}
+      </div>
+    </div>
+  );
+}

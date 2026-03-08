@@ -47,7 +47,7 @@ import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { Bar, BarChart, CartesianGrid, Cell, Label, LabelList, Pie, PieChart, XAxis, YAxis } from 'recharts';
 import { HeroBanner, SectionLabel, StatPill, EmptyState } from './_primitives';
-import { SectionTitle } from './section-title';
+
 
 export const LiveClassAnalytics = () => {
   const { id } = useParams<{ id: string | undefined }>();
@@ -249,8 +249,6 @@ export const LiveClassAnalytics = () => {
 
   return (
     <div>
-      <SectionTitle icon={BookOpen} title="BimLive" description="Riwayat kehadiranmu di kelas langsung" />
-
       {/* ── Hero Banner ──────────────────────────────────────────────── */}
       <HeroBanner color={mainColor}>
         <div className="flex items-center justify-between flex-wrap gap-2">
@@ -520,7 +518,6 @@ export const LiveClassAnalytics = () => {
 
 const LoadingPage = () => (
   <div>
-    <SectionTitle icon={BookOpen} title="BimLive" />
     <Skeleton className="h-[400px] w-full rounded-3xl" />
   </div>
 );

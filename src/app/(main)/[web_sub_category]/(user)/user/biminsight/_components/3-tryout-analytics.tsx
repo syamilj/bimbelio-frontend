@@ -49,10 +49,11 @@ import {
   EmptyState,
   getScoreBadgeColor,
   HeroBanner,
+  ScrollRow,
   SectionLabel,
   StatPill,
 } from "./_primitives";
-import { SectionTitle } from "./section-title";
+
 
 const ColorList = [
   "#0091FF",
@@ -92,7 +93,6 @@ export const TryoutAnalyticsTable = () => {
 
   return (
     <div>
-      <SectionTitle icon={Target} title="BimArena - Tryout" />
       <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
         <OverallSection fetchingData={fetchingData} />
         <div className="border-t border-slate-100" />
@@ -166,7 +166,7 @@ const OverallSection = ({
       {/* Hero */}
       <HeroBanner color={mainColor}>
         <SectionLabel title="Performa Tryout" sub="Skor total berdasarkan masing-masing tryout" />
-        <div className="grid grid-cols-3 gap-2 mt-3">
+        <ScrollRow className="mt-3">
           <StatPill
             label="Rata-rata"
             value={String(stats.avg)}
@@ -188,7 +188,7 @@ const OverallSection = ({
             icon={<ChevronDown className="h-3.5 w-3.5" />}
             color="#ef4444"
           />
-        </div>
+        </ScrollRow>
       </HeroBanner>
 
       {/* Chart */}
@@ -832,15 +832,14 @@ const SubtestSection = ({
 
 const LoadingPage = () => (
   <div>
-    <SectionTitle icon={Target} title="BimArena - Tryout" />
     <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
       <div className="p-5 space-y-3">
         <Skeleton className="h-5 w-48" />
-        <div className="grid grid-cols-3 gap-2">
+        <ScrollRow>
           <Skeleton className="h-16 rounded-xl" />
           <Skeleton className="h-16 rounded-xl" />
           <Skeleton className="h-16 rounded-xl" />
-        </div>
+        </ScrollRow>
         <Skeleton className="h-[260px] w-full rounded-xl" />
       </div>
     </div>

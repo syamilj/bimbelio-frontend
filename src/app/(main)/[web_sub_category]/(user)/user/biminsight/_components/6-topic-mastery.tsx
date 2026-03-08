@@ -20,7 +20,6 @@ import {
   ChevronDown,
   ChevronRight,
   Flame,
-  Layers3,
   ShieldAlert,
   Sparkles,
   Target,
@@ -45,7 +44,7 @@ import {
   YAxis,
 } from 'recharts';
 import { SectionLabel, StatPill } from './_primitives';
-import { SectionTitle } from './section-title';
+
 
 // --- Types -------------------------------------------------------------------
 
@@ -142,7 +141,6 @@ export const TopicMastery = () => {
 
   return (
     <div className="space-y-6">
-      <SectionTitle icon={Layers3} title="Penguasaan Topik" />
       {data.map((group) => (
         <TopicMasteryCard
           key={group.webSubId}
@@ -854,7 +852,6 @@ function FocusItem({
 function LoadingState() {
   return (
     <div>
-      <SectionTitle icon={Layers3} title="Penguasaan Topik" />
       <div className="space-y-4">
         <Skeleton className="h-[180px] w-full rounded-3xl" />
         <Skeleton className="h-[300px] w-full rounded-3xl" />
