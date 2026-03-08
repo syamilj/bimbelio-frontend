@@ -1,32 +1,24 @@
-'use client';
+"use client";
 
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { Badge } from '@/components/ui/badge';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from '@/components/ui/chart';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useGet } from '@/lib/fetch-helper/useGet';
-import { cn } from '@/lib/utils';
-import { getSubtestLabel } from '@/lib/utils/subtest';
+} from "@/components/ui/chart";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useGet } from "@/lib/fetch-helper/useGet";
+import { cn } from "@/lib/utils";
+import { getSubtestLabel } from "@/lib/utils/subtest";
 import {
   ArrowDown,
   ArrowRight,
   ArrowUp,
   Brain,
   CheckCircle2,
-  Flame,
   Gauge,
   Minus,
   Rocket,
@@ -36,30 +28,33 @@ import {
   Trophy,
   XCircle,
   Zap,
-} from 'lucide-react';
-import { useParams } from 'next/navigation';
-import { useMemo } from 'react';
+} from "lucide-react";
+import { useParams } from "next/navigation";
+import { useMemo } from "react";
 import {
   Area,
   AreaChart,
   Bar,
   BarChart,
   CartesianGrid,
+  Cell,
+  ComposedChart,
+  Label,
   LabelList,
   Line,
-  ComposedChart,
+  Pie,
+  PieChart,
+  PolarAngleAxis,
+  PolarGrid,
+  PolarRadiusAxis,
   Radar,
   RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  ResponsiveContainer,
   XAxis,
   YAxis,
-} from 'recharts';
-import { SectionTitle } from './section-title';
+} from "recharts";
+import { SectionTitle } from "./section-title";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// --- Types -------------------------------------------------------------------
 
 interface SubtestData {
   id: string;
@@ -69,9 +64,9 @@ interface SubtestData {
   recentAvg: number;
   latestScore: number;
   predicted: number;
-  trend: 'improving' | 'declining' | 'stable';
+  trend: "improving" | "declining" | "stable";
   slope: number;
-  strength: 'strong' | 'moderate' | 'weak';
+  strength: "strong" | "moderate" | "weak";
   dataPoints: number;
   history: { index: number; score: number }[];
 }
@@ -83,7 +78,7 @@ interface PredictionResponse {
   prediction?: {
     nextScore: number;
     confidence: { low: number; high: number };
-    trend: 'improving' | 'declining' | 'stable';
+    trend: "improving" | "declining" | "stable";
     trendSlope: number;
     rSquared: number;
     mae: number;
@@ -110,8 +105,16 @@ interface PredictionResponse {
     efficiency: number;
   }[];
   insights?: {
-    strongestSubtest: { name: string; avgScore: number; initial: string } | null;
-    weakestSubtest: { name: string; avgScore: number; initial: string } | null;
+    strongestSubtest: {
+      name: string;
+      avgScore: number;
+      initial: string;
+    } | null;
+    weakestSubtest: {
+      name: string;
+      avgScore: number;
+      initial: string;
+    } | null;
     consistency: number;
     learningVelocity: number;
     scoringEfficiency: number;
@@ -139,21 +142,44 @@ interface PredictionResponse {
   }[];
 }
 
-// ─── Colors ───────────────────────────────────────────────────────────────────
+// --- Strength palette --------------------------------------------------------
+
+const STRENGTH = {
+  strong: {
+    label: "Kuat",
+    color: "#22c55e",
+    badge: "border-emerald-200 text-emerald-700 bg-emerald-50",
+  },
+  moderate: {
+    label: "Sedang",
+    color: "#f59e0b",
+    badge: "border-amber-200 text-amber-700 bg-amber-50",
+  },
+  weak: {
+    label: "Lemah",
+    color: "#ef4444",
+    badge: "border-red-200 text-red-600 bg-red-50",
+  },
+} as const;
 
 const SUB_COLORS = [
-  '#0091FF', '#22c55e', '#eab308', '#ef4444',
-  '#6366f1', '#a855f7', '#f97316', '#14b8a6',
+  "#0091FF",
+  "#22c55e",
+  "#eab308",
+  "#ef4444",
+  "#6366f1",
+  "#a855f7",
+  "#f97316",
+  "#14b8a6",
 ];
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+// --- Main export -------------------------------------------------------------
 
 export const ScorePrediction = () => {
   const { id } = useParams<{ id: string | undefined }>();
-  const { mainColor } = useWebsiteSubCategory();
 
   const { data, isLoading } = useGet<PredictionResponse>(
-    '/learningAnalytics/getScorePrediction',
+    "/learningAnalytics/getScorePrediction",
     {
       params: { userId: id ? id : undefined },
       useEffectDependencies: [id],
@@ -165,24 +191,28 @@ export const ScorePrediction = () => {
 
   if (data.insufficient) {
     return (
-      <div>
+      <div className="space-y-3">
         <SectionTitle icon={Brain} title="Prediksi Skor" />
-        <Card className="w-full border-2">
+        <Card className="w-full border-0 shadow-lg shadow-slate-200/60">
           <CardContent className="py-12">
             <div className="flex flex-col items-center justify-center text-center">
-              <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-                <Brain className="w-8 h-8 text-slate-300" />
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 mb-4">
+                <Brain className="h-8 w-8 text-slate-300" />
               </div>
-              <h3 className="text-lg font-black text-slate-800 mb-1">Data Belum Cukup</h3>
+              <h3 className="text-lg font-black text-slate-800 mb-1">
+                Data Belum Cukup
+              </h3>
               <p className="text-sm text-slate-500 max-w-md">
-                Dibutuhkan minimal {data.minimumRequired ?? 2} tryout untuk prediksi.
-                Saat ini baru {data.totalTryouts ?? 0} tryout selesai.
+                Dibutuhkan minimal {data.minimumRequired ?? 2} tryout untuk
+                prediksi. Saat ini baru {data.totalTryouts ?? 0} tryout selesai.
               </p>
               <div className="mt-4 flex items-center gap-2">
                 <div className="w-full max-w-[200px] bg-slate-200 rounded-full h-2 overflow-hidden">
                   <div
                     className="h-full bg-violet-500 rounded-full transition-all"
-                    style={{ width: `${Math.min(100, ((data.totalTryouts ?? 0) / (data.minimumRequired ?? 2)) * 100)}%` }}
+                    style={{
+                      width: `${Math.min(100, ((data.totalTryouts ?? 0) / (data.minimumRequired ?? 2)) * 100)}%`,
+                    }}
                   />
                 </div>
                 <span className="text-xs font-bold text-slate-500">
@@ -196,594 +226,829 @@ export const ScorePrediction = () => {
     );
   }
 
+  return <PredictionCard data={data} />;
+};
+
+// =============================================================================
+// PredictionCard --- single scrollable flow (no tabs)
+// =============================================================================
+
+function PredictionCard({ data }: { data: PredictionResponse }) {
+  const { mainColor } = useWebsiteSubCategory();
   const p = data.prediction!;
   const ins = data.insights!;
 
-  const trendLabel = p.trend === 'improving' ? 'Meningkat' : p.trend === 'declining' ? 'Menurun' : 'Stabil';
   const scoreDiff = p.nextScore - Math.round(ins.latestScore);
 
   return (
-    <div>
+    <div className="space-y-3">
       <SectionTitle icon={Brain} title="Prediksi Skor" />
 
-      <Card className="w-full border-2">
-        <CardHeader className="pb-4">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-            <div className="flex items-center gap-3">
-              <div
-                className="flex h-10 w-10 items-center justify-center rounded-3xl"
-                style={{ backgroundColor: mainColor }}
-              >
-                <Brain className="h-5 w-5 text-white" />
-              </div>
-              <div>
-                <CardTitle className="text-xl font-black text-slate-800">
-                  Prediksi Skor Tryout
-                </CardTitle>
-                <CardDescription>
-                  Analisis tren &amp; prediksi berbasis Weighted Regression + EMA
-                </CardDescription>
-              </div>
-            </div>
+      <Card className="w-full overflow-hidden border-0 shadow-lg shadow-slate-200/60">
+        {/* -- 1. Hero banner -- */}
+        <HeroBanner prediction={p} insights={ins} mainColor={mainColor} />
 
-            <div className="flex gap-2 flex-wrap">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 flex-shrink-0">
-                <Target className="w-3 h-3 text-slate-500" />
-                <span className="text-[10px] font-bold text-slate-700">Prediksi: {p.nextScore}</span>
-              </div>
-              <div className={cn(
-                'flex items-center gap-1.5 px-3 py-1.5 rounded-full border flex-shrink-0',
-                p.trend === 'improving' ? 'bg-emerald-50 border-emerald-100' : p.trend === 'declining' ? 'bg-red-50 border-red-100' : 'bg-slate-50 border-slate-200',
-              )}>
-                {p.trend === 'improving' ? <TrendingUp className="w-3 h-3 text-emerald-500" /> : p.trend === 'declining' ? <TrendingDown className="w-3 h-3 text-red-500" /> : <Minus className="w-3 h-3 text-slate-500" />}
-                <span className={cn(
-                  'text-[10px] font-bold',
-                  p.trend === 'improving' ? 'text-emerald-700' : p.trend === 'declining' ? 'text-red-700' : 'text-slate-700',
-                )}>
-                  {trendLabel} ({scoreDiff > 0 ? '+' : ''}{scoreDiff})
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-violet-50 border border-violet-100 flex-shrink-0">
-                <span className="text-[10px] font-bold text-violet-700">R² {p.rSquared}%</span>
-              </div>
-            </div>
-          </div>
-        </CardHeader>
+        <CardContent className="space-y-5 px-5 py-5">
+          {/* -- 2. Score trend chart -- */}
+          {data.history && data.history.length > 0 && (
+            <ScoreTrendChart history={data.history} mainColor={mainColor} />
+          )}
 
-        <CardContent className="space-y-5">
-          <Tabs defaultValue="overview">
-            <div className="space-y-3">
-              <h3 className="text-sm font-black text-slate-800">Detail Analisis</h3>
-              <div className="overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                <TabsList className="inline-flex h-auto w-max min-w-max justify-start gap-1.5 rounded-full bg-slate-100 p-1">
-                  <TabsTrigger value="overview" className="shrink-0 rounded-full px-3 py-2 text-xs font-bold sm:px-4">
-                    Prediksi
-                  </TabsTrigger>
-                  <TabsTrigger value="trend" className="shrink-0 rounded-full px-3 py-2 text-xs font-bold sm:px-4">
-                    Tren Skor
-                  </TabsTrigger>
-                  <TabsTrigger value="subtest" className="shrink-0 rounded-full px-3 py-2 text-xs font-bold sm:px-4">
-                    Per Subtes
-                  </TabsTrigger>
-                  <TabsTrigger value="efficiency" className="shrink-0 rounded-full px-3 py-2 text-xs font-bold sm:px-4">
-                    Efisiensi
-                  </TabsTrigger>
-                </TabsList>
-              </div>
-            </div>
+          {/* -- 3. Projections -- */}
+          {data.projections && data.projections.length > 0 && (
+            <ProjectionsRow projections={data.projections} />
+          )}
 
-            <TabsContent value="overview" className="mt-4 space-y-4">
-              <OverviewTab prediction={p} insights={ins} projections={data.projections!} />
-            </TabsContent>
-            <TabsContent value="trend" className="mt-4 space-y-4">
-              <TrendTab history={data.history!} />
-            </TabsContent>
-            <TabsContent value="subtest" className="mt-4 space-y-4">
-              <SubtestTab perSubtest={data.perSubtest!} />
-            </TabsContent>
-            <TabsContent value="efficiency" className="mt-4 space-y-4">
-              <EfficiencyTab insights={ins} bskTrend={data.bskTrend!} />
-            </TabsContent>
-          </Tabs>
+          {/* -- 4. Insights grid -- */}
+          <InsightsGrid prediction={p} insights={ins} />
+
+          {/* -- 5. Per subtest -- */}
+          {data.perSubtest && data.perSubtest.length > 0 && (
+            <SubtestSection perSubtest={data.perSubtest} mainColor={mainColor} />
+          )}
+
+          {/* -- 6. Efficiency -- */}
+          {data.bskTrend && data.bskTrend.length > 0 && (
+            <EfficiencySection
+              insights={ins}
+              bskTrend={data.bskTrend}
+              mainColor={mainColor}
+            />
+          )}
+
+          {/* -- 7. Percentile chart -- */}
+          {data.history && (
+            <PercentileChart history={data.history} />
+          )}
         </CardContent>
       </Card>
     </div>
   );
-};
+}
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// TAB 1: OVERVIEW
-// ═══════════════════════════════════════════════════════════════════════════════
+// =============================================================================
+// 1. Hero Banner
+// =============================================================================
 
-function OverviewTab({
+function HeroBanner({
   prediction: p,
   insights: ins,
-  projections,
+  mainColor,
 }: {
-  prediction: NonNullable<PredictionResponse['prediction']>;
-  insights: NonNullable<PredictionResponse['insights']>;
-  projections: NonNullable<PredictionResponse['projections']>;
+  prediction: NonNullable<PredictionResponse["prediction"]>;
+  insights: NonNullable<PredictionResponse["insights"]>;
+  mainColor: string;
 }) {
-  const { mainColor } = useWebsiteSubCategory();
-
   const scoreDiff = p.nextScore - Math.round(ins.latestScore);
+  const trendLabel =
+    p.trend === "improving"
+      ? "Meningkat"
+      : p.trend === "declining"
+        ? "Menurun"
+        : "Stabil";
 
-  const momentumLabel =
-    p.momentum > 3 ? 'Kuat Naik' : p.momentum > 0 ? 'Naik Perlahan'
-      : p.momentum < -3 ? 'Turun Tajam' : p.momentum < 0 ? 'Sedikit Turun' : 'Netral';
-
-  return (
-    <>
-      {/* Summary stat cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <SummaryCard label="Prediksi Berikutnya">
-          <span className="text-2xl font-black" style={{ color: mainColor }}>{p.nextScore}</span>
-          <span className={cn(
-            'text-xs font-bold',
-            scoreDiff > 0 ? 'text-emerald-600' : scoreDiff < 0 ? 'text-red-500' : 'text-slate-500',
-          )}>
-            {scoreDiff > 0 ? '+' : ''}{scoreDiff} dari terakhir
-          </span>
-        </SummaryCard>
-        <SummaryCard label="Skor Terakhir">
-          <span className="text-2xl font-black text-slate-800">{Math.round(ins.latestScore)}</span>
-          <span className="text-xs text-slate-500">Rata-rata: {ins.averageScore}</span>
-        </SummaryCard>
-        <SummaryCard label="Confidence 80%">
-          <span className="text-2xl font-black text-slate-800">{p.confidence.low} – {p.confidence.high}</span>
-          <span className="text-xs text-slate-500">MAE: ±{p.mae}</span>
-        </SummaryCard>
-        <SummaryCard label="Total Tryout">
-          <span className="text-2xl font-black text-slate-800">{ins.totalTryouts}</span>
-          <span className="text-xs text-slate-500">Efisiensi: {ins.scoringEfficiency}%</span>
-        </SummaryCard>
-      </div>
-
-      {/* Projections */}
-      <div>
-        <h4 className="text-sm font-black text-slate-800 mb-2">Proyeksi Skor</h4>
-        <div className="grid grid-cols-3 gap-3">
-          {projections.map((proj) => (
-            <div key={proj.stepsAhead} className="rounded-3xl border border-slate-200 bg-white p-4">
-              <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
-                {proj.stepsAhead === 1 ? 'TO Berikutnya' : `${proj.stepsAhead} TO Lagi`}
-              </p>
-              <p className="mt-1 text-2xl font-black text-slate-800">{proj.blended}</p>
-              <div className="mt-1 flex gap-2">
-                <span className="text-[10px] text-slate-400">WLS: {proj.wls}</span>
-                <span className="text-[10px] text-slate-400">EMA: {proj.ema}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Insights grid */}
-      <div>
-        <h4 className="text-sm font-black text-slate-800 mb-2">Insight</h4>
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
-          <InsightCard
-            title="Momentum"
-            value={momentumLabel}
-            subtitle={`${p.momentum > 0 ? '+' : ''}${p.momentum} poin/TO (3 terakhir)`}
-            tone={p.momentum > 0 ? 'emerald' : p.momentum < 0 ? 'amber' : 'slate'}
-          />
-          <InsightCard
-            title="Pertumbuhan"
-            value={`${ins.growthPercent > 0 ? '+' : ''}${ins.growthPercent}%`}
-            subtitle="Paruh akhir vs paruh awal"
-            tone={ins.growthPercent >= 0 ? 'emerald' : 'amber'}
-          />
-          <InsightCard
-            title="Konsistensi"
-            value={ins.consistency < 10 ? 'Sangat Konsisten' : ins.consistency < 20 ? 'Cukup Konsisten' : 'Berfluktuasi'}
-            subtitle={`CV = ${ins.consistency}%`}
-            tone={ins.consistency < 10 ? 'emerald' : ins.consistency < 20 ? 'amber' : 'amber'}
-          />
-          <InsightCard
-            title="Performa Terbaik"
-            value={`${Math.round(ins.bestPerformance.score)}`}
-            subtitle={ins.bestPerformance.title}
-            tone="emerald"
-          />
-          <InsightCard
-            title="Performa Terendah"
-            value={`${Math.round(ins.worstPerformance.score)}`}
-            subtitle={ins.worstPerformance.title}
-            tone="amber"
-          />
-          {ins.projectedMilestone && (
-            <InsightCard
-              title={`Target Skor ${ins.projectedMilestone.target}`}
-              value={`~${ins.projectedMilestone.triesNeeded} TO lagi`}
-              subtitle={`Dengan tren +${ins.learningVelocity}/TO`}
-              tone="blue"
-            />
-          )}
-          {ins.strongestSubtest && (
-            <InsightCard
-              title="Subtes Terkuat"
-              value={ins.strongestSubtest.name}
-              subtitle={`Rata-rata: ${Math.round(ins.strongestSubtest.avgScore)}`}
-              tone="emerald"
-            />
-          )}
-          {ins.weakestSubtest && (
-            <InsightCard
-              title="Perlu Ditingkatkan"
-              value={ins.weakestSubtest.name}
-              subtitle={`Rata-rata: ${Math.round(ins.weakestSubtest.avgScore)}`}
-              tone="amber"
-            />
-          )}
-        </div>
-      </div>
-    </>
+  const gaugeData = useMemo(
+    () => [
+      { name: "score", value: Math.min(p.nextScore, 1000), fill: mainColor },
+      {
+        name: "remaining",
+        value: Math.max(0, 1000 - p.nextScore),
+        fill: "#e2e8f0",
+      },
+    ],
+    [p.nextScore, mainColor],
   );
-}
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// TAB 2: TREND
-// ═══════════════════════════════════════════════════════════════════════════════
-
-function TrendTab({
-  history,
-}: {
-  history: NonNullable<PredictionResponse['history']>;
-}) {
-  const { mainColor } = useWebsiteSubCategory();
-
-  const chartData = useMemo(() => {
-    return history.map((h) => ({
-      name: h.actual == null ? 'Prediksi' : `TO-${h.index}`,
-      fullName: h.tryoutTitle,
-      actual: h.actual,
-      predicted: h.predicted,
-      ema: h.ema,
-      isPrediction: h.actual == null,
-    }));
-  }, [history]);
-
-  const percentileData = useMemo(() => {
-    return history
-      .filter((h) => h.percentile != null && h.actual != null)
-      .map((h) => ({
-        name: `TO-${h.index}`,
-        fullName: h.tryoutTitle,
-        percentile: h.percentile,
-        rank: h.rank,
-        total: h.totalParticipants,
-      }));
-  }, [history]);
-
-  const scoreChartConfig: ChartConfig = {
-    actual: { label: 'Skor Aktual', color: mainColor },
-    predicted: { label: 'WLS Regression', color: '#a855f7' },
-    ema: { label: 'EMA Smoothed', color: '#f59e0b' },
-  };
-
-  const percentileChartConfig: ChartConfig = {
-    percentile: { label: 'Persentil', color: '#22c55e' },
+  const gaugeConfig: ChartConfig = {
+    score: { label: "Prediksi", color: mainColor },
+    remaining: { label: "", color: "#e2e8f0" },
   };
 
   return (
-    <>
-      {/* Score trend chart */}
-      <div className="rounded-3xl border border-slate-200 bg-white p-4">
-        <div className="mb-3">
-          <h3 className="text-sm font-black text-slate-800">Tren Skor: Aktual vs Model</h3>
-          <p className="text-xs text-slate-500">
-            Area = skor aktual · Ungu = regresi WLS · Kuning = EMA · Titik terakhir = prediksi
-          </p>
-        </div>
-        <ChartContainer config={scoreChartConfig} className="h-[260px] md:h-[320px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart data={chartData} margin={{ top: 20, right: 20, left: -10, bottom: 10 }}>
-              <defs>
-                <linearGradient id="predScoreGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={mainColor} stopOpacity={0.25} />
-                  <stop offset="95%" stopColor={mainColor} stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-              <XAxis
-                dataKey="name"
-                tick={{ fontSize: 10, fill: '#6B7280' }}
-                tickLine={false}
-                axisLine={false}
-                interval={0}
-                angle={-20}
-                textAnchor="end"
-                height={50}
-              />
-              <YAxis tick={{ fontSize: 10, fill: '#9CA3AF' }} tickLine={false} axisLine={false} width={45} />
-              <ChartTooltip
-                content={
-                  <ChartTooltipContent
-                    labelFormatter={(_, payload) => {
-                      const d = payload?.[0]?.payload as { fullName?: string };
-                      return d?.fullName || '';
-                    }}
-                  />
-                }
-              />
-              <Area
-                type="monotone"
-                dataKey="actual"
-                stroke={mainColor}
-                strokeWidth={2.5}
-                fill="url(#predScoreGrad)"
-                dot={(props: any) => {
-                  const { cx, cy, payload } = props;
-                  if (payload.isPrediction || payload.actual == null) return <g key={`a-${cx}`} />;
-                  return <circle key={`a-${cx}`} cx={cx} cy={cy} r={5} fill={mainColor} stroke="#fff" strokeWidth={2} />;
-                }}
-                connectNulls={false}
-              />
-              <Line
-                type="monotone"
-                dataKey="ema"
-                stroke="#f59e0b"
-                strokeWidth={2}
-                strokeDasharray="3 3"
-                dot={false}
-                connectNulls={false}
-              />
-              <Line
-                type="monotone"
-                dataKey="predicted"
-                stroke="#a855f7"
-                strokeWidth={2}
-                strokeDasharray="6 4"
-                dot={(props: any) => {
-                  const { cx, cy, payload } = props;
-                  if (!payload.isPrediction) return <g key={`p-${cx}`} />;
-                  return <circle key={`p-${cx}`} cx={cx} cy={cy} r={8} fill="#a855f7" stroke="#fff" strokeWidth={3} />;
-                }}
-              />
-            </ComposedChart>
-          </ResponsiveContainer>
-        </ChartContainer>
-      </div>
+    <div
+      className="relative px-5 pt-6 pb-5"
+      style={{
+        background: `linear-gradient(135deg, ${mainColor}08 0%, ${mainColor}18 100%)`,
+      }}
+    >
+      {/* Top accent line */}
+      <div
+        className="absolute inset-x-0 top-0 h-1 rounded-t-2xl"
+        style={{
+          background: `linear-gradient(90deg, ${mainColor}, ${mainColor}80)`,
+        }}
+      />
 
-      {/* Percentile chart */}
-      {percentileData.length > 0 && (
-        <div className="rounded-3xl border border-slate-200 bg-white p-4">
-          <div className="mb-3">
-            <h3 className="text-sm font-black text-slate-800">Tren Peringkat (Persentil)</h3>
-            <p className="text-xs text-slate-500">
-              Persentil = posisi dibanding peserta lain. Semakin tinggi = semakin baik.
-            </p>
-          </div>
-          <ChartContainer config={percentileChartConfig} className="h-[200px] md:h-[260px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={percentileData} margin={{ top: 20, right: 20, left: -10, bottom: 10 }}>
-                <defs>
-                  <linearGradient id="pctlGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#22c55e" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#22c55e" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#6B7280' }} tickLine={false} axisLine={false} interval={0} />
-                <YAxis domain={[0, 100]} tick={{ fontSize: 10, fill: '#9CA3AF' }} tickLine={false} axisLine={false} width={35} tickFormatter={(v) => `${v}%`} />
-                <ChartTooltip
-                  content={
-                    <ChartTooltipContent
-                      labelFormatter={(_, payload) => {
-                        const d = payload?.[0]?.payload as { fullName?: string; rank?: number; total?: number };
-                        return `${d?.fullName || ''} · #${d?.rank}/${d?.total}`;
-                      }}
-                      formatter={(value) => (
-                        <>
-                          <div className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-emerald-500" />
-                          <span className="text-muted-foreground">Top</span>
-                          <span className="ml-auto font-mono font-medium">{value}%</span>
-                        </>
-                      )}
-                    />
-                  }
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+        {/* Score gauge */}
+        <div className="flex-shrink-0">
+          <ChartContainer
+            config={gaugeConfig}
+            className="h-[120px] w-[120px]"
+          >
+            <PieChart>
+              <Pie
+                data={gaugeData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                innerRadius={40}
+                outerRadius={54}
+                startAngle={90}
+                endAngle={-270}
+                paddingAngle={0}
+                stroke="none"
+              >
+                {gaugeData.map((d, i) => (
+                  <Cell key={i} fill={d.fill} />
+                ))}
+                <Label
+                  content={({ viewBox }) => {
+                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                      return (
+                        <text
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                        >
+                          <tspan
+                            x={viewBox.cx}
+                            y={(viewBox.cy || 0) - 4}
+                            className="fill-slate-800 text-xl font-black"
+                          >
+                            {p.nextScore}
+                          </tspan>
+                          <tspan
+                            x={viewBox.cx}
+                            y={(viewBox.cy || 0) + 14}
+                            className="fill-slate-400 text-[9px] font-semibold uppercase tracking-wider"
+                          >
+                            Prediksi
+                          </tspan>
+                        </text>
+                      );
+                    }
+                    return null;
+                  }}
                 />
-                <Area
-                  type="monotone"
-                  dataKey="percentile"
-                  stroke="#22c55e"
-                  strokeWidth={2.5}
-                  fill="url(#pctlGrad)"
-                  dot={{ fill: '#22c55e', r: 4, stroke: '#fff', strokeWidth: 2 }}
-                >
-                  <LabelList
-                    position="top"
-                    offset={8}
-                    className="fill-emerald-700 font-bold text-[10px]"
-                    formatter={(v: unknown) => `${Math.round(Number(v))}%`}
-                  />
-                </Area>
-              </AreaChart>
-            </ResponsiveContainer>
+              </Pie>
+            </PieChart>
           </ChartContainer>
         </div>
-      )}
-    </>
+
+        {/* Stat pills */}
+        <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-2.5 w-full">
+          <StatPill
+            label="Skor Terakhir"
+            value={`${Math.round(ins.latestScore)}`}
+            sub={`Rata-rata: ${ins.averageScore}`}
+            icon={<Target className="w-3.5 h-3.5" />}
+            color="#64748b"
+          />
+          <StatPill
+            label="Tren"
+            value={trendLabel}
+            sub={`${scoreDiff > 0 ? "+" : ""}${scoreDiff} poin`}
+            icon={
+              p.trend === "improving" ? (
+                <TrendingUp className="w-3.5 h-3.5" />
+              ) : p.trend === "declining" ? (
+                <TrendingDown className="w-3.5 h-3.5" />
+              ) : (
+                <Minus className="w-3.5 h-3.5" />
+              )
+            }
+            color={
+              p.trend === "improving"
+                ? "#22c55e"
+                : p.trend === "declining"
+                  ? "#ef4444"
+                  : "#64748b"
+            }
+          />
+          <StatPill
+            label="Confidence 80%"
+            value={`${p.confidence.low}\u2013${p.confidence.high}`}
+            sub={`MAE: \u00b1${p.mae}`}
+            icon={<Gauge className="w-3.5 h-3.5" />}
+            color={mainColor}
+          />
+          <StatPill
+            label="Total Tryout"
+            value={`${ins.totalTryouts}`}
+            sub={`R\u00b2 ${p.rSquared}%`}
+            icon={<Zap className="w-3.5 h-3.5" />}
+            color="#6366f1"
+          />
+        </div>
+      </div>
+    </div>
   );
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// TAB 3: PER SUBTEST
-// ═══════════════════════════════════════════════════════════════════════════════
+// =============================================================================
+// 2. Score trend chart
+// =============================================================================
 
-function SubtestTab({
-  perSubtest,
+function ScoreTrendChart({
+  history,
+  mainColor,
 }: {
-  perSubtest: NonNullable<PredictionResponse['perSubtest']>;
+  history: NonNullable<PredictionResponse["history"]>;
+  mainColor: string;
 }) {
-  const { mainColor, id: webSubId } = useWebsiteSubCategory();
+  const chartData = useMemo(
+    () =>
+      history.map((h) => ({
+        name: h.actual == null ? "Prediksi" : `TO-${h.index}`,
+        fullName: h.tryoutTitle,
+        actual: h.actual,
+        predicted: h.predicted,
+        ema: h.ema,
+        isPrediction: h.actual == null,
+      })),
+    [history],
+  );
 
-  const radarData = useMemo(() => {
-    return perSubtest.map((sub) => ({
-      subject: getSubtestLabel(sub.name, webSubId),
-      fullName: sub.name,
-      current: Math.round(sub.currentAvg),
-      predicted: sub.predicted,
-    }));
-  }, [perSubtest, webSubId]);
-
-  if (perSubtest.length === 0) return null;
+  const chartConfig: ChartConfig = {
+    actual: { label: "Skor Aktual", color: mainColor },
+    predicted: { label: "WLS Regression", color: "#a855f7" },
+    ema: { label: "EMA Smoothed", color: "#f59e0b" },
+  };
 
   return (
-    <>
+    <div className="rounded-2xl border border-slate-100 bg-white p-4">
+      <SectionLabel
+        title="Tren Skor: Aktual vs Model"
+        sub="Area = skor aktual \u00b7 Ungu = regresi WLS \u00b7 Kuning = EMA \u00b7 Titik terakhir = prediksi"
+      />
+      <ChartContainer
+        config={chartConfig}
+        className="h-[260px] md:h-[320px] w-full mt-3"
+      >
+        <ComposedChart
+          data={chartData}
+          margin={{ top: 20, right: 20, left: -10, bottom: 10 }}
+        >
+          <defs>
+            <linearGradient id="predScoreGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor={mainColor} stopOpacity={0.25} />
+              <stop offset="95%" stopColor={mainColor} stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+          <XAxis
+            dataKey="name"
+            tick={{ fontSize: 10, fill: "#94a3b8" }}
+            tickLine={false}
+            axisLine={false}
+            interval={0}
+            angle={-20}
+            textAnchor="end"
+            height={50}
+          />
+          <YAxis
+            tick={{ fontSize: 10, fill: "#94a3b8" }}
+            tickLine={false}
+            axisLine={false}
+            width={45}
+          />
+          <ChartTooltip
+            content={
+              <ChartTooltipContent
+                labelFormatter={(_, payload) => {
+                  const d = payload?.[0]?.payload as { fullName?: string };
+                  return d?.fullName || "";
+                }}
+              />
+            }
+          />
+          <Area
+            type="monotone"
+            dataKey="actual"
+            stroke={mainColor}
+            strokeWidth={2.5}
+            fill="url(#predScoreGrad)"
+            dot={(props: any) => {
+              const { cx, cy, payload } = props;
+              if (payload.isPrediction || payload.actual == null)
+                return <g key={`a-${cx}`} />;
+              return (
+                <circle
+                  key={`a-${cx}`}
+                  cx={cx}
+                  cy={cy}
+                  r={5}
+                  fill={mainColor}
+                  stroke="#fff"
+                  strokeWidth={2}
+                />
+              );
+            }}
+            connectNulls={false}
+          />
+          <Line
+            type="monotone"
+            dataKey="ema"
+            stroke="#f59e0b"
+            strokeWidth={2}
+            strokeDasharray="3 3"
+            dot={false}
+            connectNulls={false}
+          />
+          <Line
+            type="monotone"
+            dataKey="predicted"
+            stroke="#a855f7"
+            strokeWidth={2}
+            strokeDasharray="6 4"
+            dot={(props: any) => {
+              const { cx, cy, payload } = props;
+              if (!payload.isPrediction) return <g key={`p-${cx}`} />;
+              return (
+                <circle
+                  key={`p-${cx}`}
+                  cx={cx}
+                  cy={cy}
+                  r={8}
+                  fill="#a855f7"
+                  stroke="#fff"
+                  strokeWidth={3}
+                />
+              );
+            }}
+          />
+        </ComposedChart>
+      </ChartContainer>
+    </div>
+  );
+}
+
+// =============================================================================
+// 3. Projections row
+// =============================================================================
+
+function ProjectionsRow({
+  projections,
+}: {
+  projections: NonNullable<PredictionResponse["projections"]>;
+}) {
+  return (
+    <div>
+      <SectionLabel title="Proyeksi Skor" />
+      <div className="grid grid-cols-3 gap-3 mt-3">
+        {projections.map((proj) => {
+          const diff = proj.blended - proj.wls;
+          return (
+            <div
+              key={proj.stepsAhead}
+              className="rounded-2xl border border-slate-100 bg-white p-4"
+            >
+              <div className="flex items-center gap-1.5 mb-1">
+                <Rocket className="w-3 h-3 text-slate-400" />
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  {proj.stepsAhead === 1
+                    ? "TO Berikutnya"
+                    : `${proj.stepsAhead} TO Lagi`}
+                </p>
+              </div>
+              <p className="text-2xl font-black text-slate-800">
+                {proj.blended}
+              </p>
+              <div className="mt-1 flex gap-2">
+                <span className="text-[10px] text-slate-400">
+                  WLS: {proj.wls}
+                </span>
+                <span className="text-[10px] text-slate-400">
+                  EMA: {proj.ema}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// =============================================================================
+// 4. Insights grid
+// =============================================================================
+
+function InsightsGrid({
+  prediction: p,
+  insights: ins,
+}: {
+  prediction: NonNullable<PredictionResponse["prediction"]>;
+  insights: NonNullable<PredictionResponse["insights"]>;
+}) {
+  const momentumLabel =
+    p.momentum > 3
+      ? "Kuat Naik"
+      : p.momentum > 0
+        ? "Naik Perlahan"
+        : p.momentum < -3
+          ? "Turun Tajam"
+          : p.momentum < 0
+            ? "Sedikit Turun"
+            : "Netral";
+
+  const insights: {
+    title: string;
+    value: string;
+    sub: string;
+    tone: "emerald" | "amber" | "blue" | "slate";
+  }[] = [
+    {
+      title: "Momentum",
+      value: momentumLabel,
+      sub: `${p.momentum > 0 ? "+" : ""}${p.momentum} poin/TO (3 terakhir)`,
+      tone: p.momentum > 0 ? "emerald" : p.momentum < 0 ? "amber" : "slate",
+    },
+    {
+      title: "Pertumbuhan",
+      value: `${ins.growthPercent > 0 ? "+" : ""}${ins.growthPercent}%`,
+      sub: "Paruh akhir vs paruh awal",
+      tone: ins.growthPercent >= 0 ? "emerald" : "amber",
+    },
+    {
+      title: "Konsistensi",
+      value:
+        ins.consistency < 10
+          ? "Sangat Konsisten"
+          : ins.consistency < 20
+            ? "Cukup Konsisten"
+            : "Berfluktuasi",
+      sub: `CV = ${ins.consistency}%`,
+      tone: ins.consistency < 20 ? "emerald" : "amber",
+    },
+    {
+      title: "Performa Terbaik",
+      value: `${Math.round(ins.bestPerformance.score)}`,
+      sub: ins.bestPerformance.title,
+      tone: "emerald",
+    },
+    {
+      title: "Performa Terendah",
+      value: `${Math.round(ins.worstPerformance.score)}`,
+      sub: ins.worstPerformance.title,
+      tone: "amber",
+    },
+  ];
+
+  if (ins.projectedMilestone) {
+    insights.push({
+      title: `Target Skor ${ins.projectedMilestone.target}`,
+      value: `~${ins.projectedMilestone.triesNeeded} TO lagi`,
+      sub: `Dengan tren +${ins.learningVelocity}/TO`,
+      tone: "blue",
+    });
+  }
+  if (ins.strongestSubtest) {
+    insights.push({
+      title: "Subtes Terkuat",
+      value: ins.strongestSubtest.name,
+      sub: `Rata-rata: ${Math.round(ins.strongestSubtest.avgScore)}`,
+      tone: "emerald",
+    });
+  }
+  if (ins.weakestSubtest) {
+    insights.push({
+      title: "Perlu Ditingkatkan",
+      value: ins.weakestSubtest.name,
+      sub: `Rata-rata: ${Math.round(ins.weakestSubtest.avgScore)}`,
+      tone: "amber",
+    });
+  }
+
+  return (
+    <div>
+      <SectionLabel title="Insight" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 mt-3">
+        {insights.map((item) => (
+          <InsightCard key={item.title} {...item} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function InsightCard({
+  title,
+  value,
+  sub,
+  tone,
+}: {
+  title: string;
+  value: string;
+  sub: string;
+  tone: "emerald" | "amber" | "blue" | "slate";
+}) {
+  const toneClass =
+    tone === "emerald"
+      ? "border-emerald-200 bg-emerald-50/60 text-emerald-900"
+      : tone === "amber"
+        ? "border-amber-200 bg-amber-50/60 text-amber-900"
+        : tone === "blue"
+          ? "border-blue-200 bg-blue-50/60 text-blue-900"
+          : "border-slate-200 bg-slate-50/60 text-slate-900";
+
+  return (
+    <div className={cn("rounded-2xl border p-4", toneClass)}>
+      <p className="text-[10px] font-bold uppercase tracking-wider opacity-70">
+        {title}
+      </p>
+      <p className="mt-1 text-xl font-black">{value}</p>
+      <p className="mt-1 text-xs opacity-80">{sub}</p>
+    </div>
+  );
+}
+
+// =============================================================================
+// 5. Per subtest section
+// =============================================================================
+
+function SubtestSection({
+  perSubtest,
+  mainColor,
+}: {
+  perSubtest: NonNullable<PredictionResponse["perSubtest"]>;
+  mainColor: string;
+}) {
+  const { id: webSubId } = useWebsiteSubCategory();
+
+  const radarData = useMemo(
+    () =>
+      perSubtest.map((sub) => ({
+        subject: getSubtestLabel(sub.name, webSubId),
+        fullName: sub.name,
+        current: Math.round(sub.currentAvg),
+        predicted: sub.predicted,
+      })),
+    [perSubtest, webSubId],
+  );
+
+  const radarConfig: ChartConfig = {
+    current: { label: "Saat Ini", color: mainColor },
+    predicted: { label: "Prediksi", color: "#a855f7" },
+  };
+
+  return (
+    <div className="space-y-4">
       {/* Radar chart */}
       {perSubtest.length >= 3 && (
-        <div className="rounded-3xl border border-slate-200 bg-white p-4">
-          <div className="mb-3">
-            <h3 className="text-sm font-black text-slate-800">Radar Kemampuan</h3>
-            <p className="text-xs text-slate-500">Biru = rata-rata saat ini · Ungu = prediksi</p>
-          </div>
-          <div className="h-[280px] md:h-[340px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <RadarChart data={radarData} cx="50%" cy="50%" outerRadius="70%">
-                <PolarGrid stroke="#E5E7EB" />
-                <PolarAngleAxis dataKey="subject" tick={{ fontSize: 11, fill: '#374151', fontWeight: 700 }} />
-                <PolarRadiusAxis tick={{ fontSize: 9, fill: '#9CA3AF' }} orientation="middle" angle={90} />
-                <Radar name="Saat Ini" dataKey="current" stroke={mainColor} fill={mainColor} fillOpacity={0.2} strokeWidth={2} />
-                <Radar name="Prediksi" dataKey="predicted" stroke="#a855f7" fill="#a855f7" fillOpacity={0.1} strokeWidth={2} strokeDasharray="4 4" />
-              </RadarChart>
-            </ResponsiveContainer>
-          </div>
+        <div className="rounded-2xl border border-slate-100 bg-white p-4">
+          <SectionLabel
+            title="Radar Kemampuan"
+            sub="Biru = rata-rata saat ini \u00b7 Ungu = prediksi"
+          />
+          <ChartContainer
+            config={radarConfig}
+            className="h-[280px] md:h-[340px] w-full mt-2"
+          >
+            <RadarChart
+              data={radarData}
+              cx="50%"
+              cy="50%"
+              outerRadius="70%"
+            >
+              <PolarGrid stroke="#e2e8f0" />
+              <PolarAngleAxis
+                dataKey="subject"
+                tick={{ fontSize: 11, fill: "#374151", fontWeight: 700 }}
+              />
+              <PolarRadiusAxis
+                tick={{ fontSize: 9, fill: "#9CA3AF" }}
+                orientation="middle"
+                angle={90}
+              />
+              <Radar
+                name="Saat Ini"
+                dataKey="current"
+                stroke={mainColor}
+                fill={mainColor}
+                fillOpacity={0.2}
+                strokeWidth={2}
+              />
+              <Radar
+                name="Prediksi"
+                dataKey="predicted"
+                stroke="#a855f7"
+                fill="#a855f7"
+                fillOpacity={0.1}
+                strokeWidth={2}
+                strokeDasharray="4 4"
+              />
+            </RadarChart>
+          </ChartContainer>
         </div>
       )}
 
       {/* Subtest detail cards */}
       <div>
-        <h4 className="text-sm font-black text-slate-800 mb-2">Detail Per Subtes</h4>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {perSubtest.map((sub, i) => {
-            const color = SUB_COLORS[i % SUB_COLORS.length];
-            const diff = sub.predicted - Math.round(sub.currentAvg);
-            const isUp = diff > 0;
-
-            return (
-              <div
-                key={sub.id}
-                className="flex items-center gap-3 p-3 rounded-3xl border border-slate-200 bg-white hover:shadow-sm transition-shadow"
-              >
-                <div
-                  className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 text-xs font-black text-white"
-                  style={{ backgroundColor: color }}
-                >
-                  {getSubtestLabel(sub.name, webSubId)}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-slate-800 truncate">{sub.name}</p>
-                  <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                    <span className="text-xs text-slate-500">{Math.round(sub.currentAvg)}</span>
-                    <ArrowRight className="w-3 h-3 text-slate-400 flex-shrink-0" />
-                    <span className="text-xs font-bold text-violet-600">{sub.predicted}</span>
-                    <span className={cn(
-                      'text-[10px] font-bold px-1.5 py-0.5 rounded-full',
-                      isUp ? 'text-emerald-700 bg-emerald-50' : diff < 0 ? 'text-red-600 bg-red-50' : 'text-slate-500 bg-slate-100',
-                    )}>
-                      {isUp ? '+' : ''}{Math.round(diff)}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex-shrink-0 text-right">
-                  <Badge
-                    variant="outline"
-                    className={cn(
-                      'text-[10px] font-bold',
-                      sub.strength === 'strong'
-                        ? 'border-emerald-200 text-emerald-700 bg-emerald-50'
-                        : sub.strength === 'weak'
-                          ? 'border-red-200 text-red-600 bg-red-50'
-                          : 'border-slate-200 text-slate-600 bg-slate-50',
-                    )}
-                  >
-                    {sub.strength === 'strong' ? 'Kuat' : sub.strength === 'weak' ? 'Lemah' : 'Sedang'}
-                  </Badge>
-                  <div className="flex items-center gap-0.5 justify-end mt-1">
-                    {sub.trend === 'improving' ? (
-                      <ArrowUp className="w-3 h-3 text-emerald-500" />
-                    ) : sub.trend === 'declining' ? (
-                      <ArrowDown className="w-3 h-3 text-red-500" />
-                    ) : (
-                      <Minus className="w-3 h-3 text-slate-400" />
-                    )}
-                    <span className="text-[10px] text-slate-500">
-                      {sub.slope > 0 ? '+' : ''}{sub.slope}/TO
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        <SectionLabel title="Detail Per Subtes" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
+          {perSubtest.map((sub, i) => (
+            <SubtestCard
+              key={sub.id}
+              sub={sub}
+              color={SUB_COLORS[i % SUB_COLORS.length]}
+              webSubId={webSubId}
+            />
+          ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// TAB 4: EFFICIENCY
-// ═══════════════════════════════════════════════════════════════════════════════
+function SubtestCard({
+  sub,
+  color,
+  webSubId,
+}: {
+  sub: SubtestData;
+  color: string;
+  webSubId: string | undefined;
+}) {
+  const diff = sub.predicted - Math.round(sub.currentAvg);
+  const isUp = diff > 0;
+  const s = STRENGTH[sub.strength];
 
-function EfficiencyTab({
+  return (
+    <div className="flex items-center gap-3 p-3 rounded-2xl border border-slate-100 bg-white hover:shadow-sm transition-shadow">
+      <div
+        className="flex h-9 w-9 items-center justify-center rounded-xl flex-shrink-0 text-xs font-black text-white"
+        style={{ backgroundColor: color }}
+      >
+        {getSubtestLabel(sub.name, webSubId)}
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-bold text-slate-800 truncate">{sub.name}</p>
+        <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+          <span className="text-xs text-slate-500">
+            {Math.round(sub.currentAvg)}
+          </span>
+          <ArrowRight className="w-3 h-3 text-slate-400 flex-shrink-0" />
+          <span className="text-xs font-bold text-violet-600">
+            {sub.predicted}
+          </span>
+          <span
+            className={cn(
+              "text-[10px] font-bold px-1.5 py-0.5 rounded-full",
+              isUp
+                ? "text-emerald-700 bg-emerald-50"
+                : diff < 0
+                  ? "text-red-600 bg-red-50"
+                  : "text-slate-500 bg-slate-100",
+            )}
+          >
+            {isUp ? "+" : ""}
+            {Math.round(diff)}
+          </span>
+        </div>
+      </div>
+      <div className="flex-shrink-0 text-right">
+        <Badge
+          variant="outline"
+          className={cn("text-[10px] font-bold", s.badge)}
+        >
+          {s.label}
+        </Badge>
+        <div className="flex items-center gap-0.5 justify-end mt-1">
+          {sub.trend === "improving" ? (
+            <ArrowUp className="w-3 h-3 text-emerald-500" />
+          ) : sub.trend === "declining" ? (
+            <ArrowDown className="w-3 h-3 text-red-500" />
+          ) : (
+            <Minus className="w-3 h-3 text-slate-400" />
+          )}
+          <span className="text-[10px] text-slate-500">
+            {sub.slope > 0 ? "+" : ""}
+            {sub.slope}/TO
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =============================================================================
+// 6. Efficiency section
+// =============================================================================
+
+function EfficiencySection({
   insights,
   bskTrend,
+  mainColor,
 }: {
-  insights: NonNullable<PredictionResponse['insights']>;
-  bskTrend: NonNullable<PredictionResponse['bskTrend']>;
+  insights: NonNullable<PredictionResponse["insights"]>;
+  bskTrend: NonNullable<PredictionResponse["bskTrend"]>;
+  mainColor: string;
 }) {
-  const { mainColor } = useWebsiteSubCategory();
-
-  const bskChartData = useMemo(() => {
-    return bskTrend.map((d) => ({
-      name: `TO-${d.index}`,
-      benar: d.benar,
-      salah: d.salah,
-      kosong: d.kosong,
-    }));
-  }, [bskTrend]);
+  const bskChartData = useMemo(
+    () =>
+      bskTrend.map((d) => ({
+        name: `TO-${d.index}`,
+        benar: d.benar,
+        salah: d.salah,
+        kosong: d.kosong,
+      })),
+    [bskTrend],
+  );
 
   const bskConfig: ChartConfig = {
-    benar: { label: 'Benar', color: '#22c55e' },
-    salah: { label: 'Salah', color: '#ef4444' },
-    kosong: { label: 'Kosong', color: '#94a3b8' },
+    benar: { label: "Benar", color: "#22c55e" },
+    salah: { label: "Salah", color: "#ef4444" },
+    kosong: { label: "Kosong", color: "#94a3b8" },
   };
 
   const latestBsk = bskTrend[bskTrend.length - 1];
   const firstBsk = bskTrend[0];
-  const benarChange = latestBsk && firstBsk ? latestBsk.benar - firstBsk.benar : 0;
-  const salahChange = latestBsk && firstBsk ? latestBsk.salah - firstBsk.salah : 0;
-  const kosongChange = latestBsk && firstBsk ? latestBsk.kosong - firstBsk.kosong : 0;
+  const benarChange =
+    latestBsk && firstBsk ? latestBsk.benar - firstBsk.benar : 0;
+  const salahChange =
+    latestBsk && firstBsk ? latestBsk.salah - firstBsk.salah : 0;
+  const kosongChange =
+    latestBsk && firstBsk ? latestBsk.kosong - firstBsk.kosong : 0;
+
+  // Efficiency gauge data
+  const effData = useMemo(
+    () => [
+      {
+        name: "filled",
+        value: insights.scoringEfficiency,
+        fill: mainColor,
+      },
+      {
+        name: "empty",
+        value: 100 - insights.scoringEfficiency,
+        fill: "#e2e8f0",
+      },
+    ],
+    [insights.scoringEfficiency, mainColor],
+  );
+
+  const effConfig: ChartConfig = {
+    filled: { label: "Efisiensi", color: mainColor },
+    empty: { label: "", color: "#e2e8f0" },
+  };
 
   return (
-    <>
-      {/* Efficiency summary */}
+    <div className="space-y-4">
+      <SectionLabel title="Efisiensi Jawab" />
+
+      {/* Efficiency gauge + change cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div className="rounded-3xl border border-slate-200 bg-white p-4 text-center col-span-2 md:col-span-1">
-          <div className="relative w-20 h-20 mx-auto mb-2">
-            <svg viewBox="0 0 36 36" className="w-full h-full">
-              <path
-                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                fill="none"
-                stroke="#e5e7eb"
-                strokeWidth="3"
-              />
-              <path
-                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                fill="none"
-                stroke={mainColor}
-                strokeWidth="3"
-                strokeDasharray={`${insights.scoringEfficiency}, 100`}
-                strokeLinecap="round"
-              />
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-lg font-black text-slate-800">{Math.round(insights.scoringEfficiency)}%</span>
-            </div>
-          </div>
-          <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">Efisiensi Jawab</p>
+        <div className="rounded-2xl border border-slate-100 bg-white p-3 text-center col-span-2 md:col-span-1 flex flex-col items-center justify-center">
+          <ChartContainer
+            config={effConfig}
+            className="h-[90px] w-[90px]"
+          >
+            <PieChart>
+              <Pie
+                data={effData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                innerRadius={30}
+                outerRadius={42}
+                startAngle={90}
+                endAngle={-270}
+                paddingAngle={0}
+                stroke="none"
+              >
+                {effData.map((d, i) => (
+                  <Cell key={i} fill={d.fill} />
+                ))}
+                <Label
+                  content={({ viewBox }) => {
+                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                      return (
+                        <text
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                        >
+                          <tspan className="fill-slate-800 text-base font-black">
+                            {Math.round(insights.scoringEfficiency)}%
+                          </tspan>
+                        </text>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+              </Pie>
+            </PieChart>
+          </ChartContainer>
+          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">
+            Efisiensi
+          </p>
         </div>
 
         <ChangeCard
@@ -809,65 +1074,57 @@ function EfficiencyTab({
         />
       </div>
 
-      {/* BSK Stacked bar chart */}
-      <div className="rounded-3xl border border-slate-200 bg-white p-4">
-        <div className="mb-3">
-          <h3 className="text-sm font-black text-slate-800">Tren Benar / Salah / Kosong</h3>
-          <p className="text-xs text-slate-500">Distribusi jawaban per tryout. Idealnya hijau naik, merah &amp; abu turun.</p>
-        </div>
-        <ChartContainer config={bskConfig} className="h-[220px] md:h-[280px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={bskChartData} margin={{ top: 10, right: 10, left: -10, bottom: 10 }} barCategoryGap="18%">
-              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-              <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#6B7280' }} tickLine={false} axisLine={false} interval={0} />
-              <YAxis tick={{ fontSize: 10, fill: '#9CA3AF' }} tickLine={false} axisLine={false} width={35} />
-              <ChartTooltip content={<ChartTooltipContent />} />
-              <Bar dataKey="benar" fill="#22c55e" radius={[3, 3, 0, 0]} stackId="bsk" />
-              <Bar dataKey="salah" fill="#ef4444" radius={[0, 0, 0, 0]} stackId="bsk" />
-              <Bar dataKey="kosong" fill="#94a3b8" radius={[3, 3, 0, 0]} stackId="bsk" />
-            </BarChart>
-          </ResponsiveContainer>
+      {/* BSK stacked bar chart */}
+      <div className="rounded-2xl border border-slate-100 bg-white p-4">
+        <SectionLabel
+          title="Tren Benar / Salah / Kosong"
+          sub="Distribusi jawaban per tryout. Idealnya hijau naik, merah & abu turun."
+        />
+        <ChartContainer
+          config={bskConfig}
+          className="h-[220px] md:h-[280px] w-full mt-3"
+        >
+          <BarChart
+            data={bskChartData}
+            margin={{ top: 10, right: 10, left: -10, bottom: 10 }}
+            barCategoryGap="18%"
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+            <XAxis
+              dataKey="name"
+              tick={{ fontSize: 10, fill: "#94a3b8" }}
+              tickLine={false}
+              axisLine={false}
+              interval={0}
+            />
+            <YAxis
+              tick={{ fontSize: 10, fill: "#94a3b8" }}
+              tickLine={false}
+              axisLine={false}
+              width={35}
+            />
+            <ChartTooltip content={<ChartTooltipContent />} />
+            <Bar
+              dataKey="benar"
+              fill="#22c55e"
+              radius={[3, 3, 0, 0]}
+              stackId="bsk"
+            />
+            <Bar
+              dataKey="salah"
+              fill="#ef4444"
+              radius={[0, 0, 0, 0]}
+              stackId="bsk"
+            />
+            <Bar
+              dataKey="kosong"
+              fill="#94a3b8"
+              radius={[3, 3, 0, 0]}
+              stackId="bsk"
+            />
+          </BarChart>
         </ChartContainer>
       </div>
-    </>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// SHARED COMPONENTS
-// ═══════════════════════════════════════════════════════════════════════════════
-
-function SummaryCard({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-4">
-      <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">{label}</p>
-      <div className="mt-1 flex flex-col">{children}</div>
-    </div>
-  );
-}
-
-function InsightCard({
-  title,
-  value,
-  subtitle,
-  tone,
-}: {
-  title: string;
-  value: string;
-  subtitle: string;
-  tone: 'emerald' | 'amber' | 'blue' | 'slate';
-}) {
-  const toneClass =
-    tone === 'emerald' ? 'border-emerald-200 bg-emerald-50/60 text-emerald-900'
-      : tone === 'amber' ? 'border-amber-200 bg-amber-50/60 text-amber-900'
-        : tone === 'blue' ? 'border-blue-200 bg-blue-50/60 text-blue-900'
-          : 'border-slate-200 bg-slate-50/60 text-slate-900';
-
-  return (
-    <div className={cn('rounded-3xl border p-4', toneClass)}>
-      <p className="text-[10px] font-bold uppercase tracking-wide opacity-70">{title}</p>
-      <p className="mt-1 text-xl font-black">{value}</p>
-      <p className="mt-1 text-xs opacity-80">{subtitle}</p>
     </div>
   );
 }
@@ -888,18 +1145,30 @@ function ChangeCard({
   const isGood = inverseGood ? change <= 0 : change >= 0;
 
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-4">
+    <div className="rounded-2xl border border-slate-100 bg-white p-4">
       <div className="flex items-center gap-2 mb-2">
         {icon}
-        <span className="text-[10px] font-bold text-slate-500 uppercase">{label}</span>
+        <span className="text-[10px] font-bold text-slate-500 uppercase">
+          {label}
+        </span>
       </div>
       <div className="text-2xl font-black text-slate-800">{current}</div>
       <div className="flex items-center gap-1 mt-1">
         {change !== 0 ? (
           <>
-            {isGood ? <ArrowUp className="w-3 h-3 text-emerald-500" /> : <ArrowDown className="w-3 h-3 text-red-500" />}
-            <span className={cn('text-[10px] font-bold', isGood ? 'text-emerald-600' : 'text-red-500')}>
-              {change > 0 ? '+' : ''}{change} vs awal
+            {isGood ? (
+              <ArrowUp className="w-3 h-3 text-emerald-500" />
+            ) : (
+              <ArrowDown className="w-3 h-3 text-red-500" />
+            )}
+            <span
+              className={cn(
+                "text-[10px] font-bold",
+                isGood ? "text-emerald-600" : "text-red-500",
+              )}
+            >
+              {change > 0 ? "+" : ""}
+              {change} vs awal
             </span>
           </>
         ) : (
@@ -910,13 +1179,178 @@ function ChangeCard({
   );
 }
 
-// ─── Loading State ────────────────────────────────────────────────────────────
+// =============================================================================
+// 7. Percentile chart
+// =============================================================================
+
+function PercentileChart({
+  history,
+}: {
+  history: NonNullable<PredictionResponse["history"]>;
+}) {
+  const percentileData = useMemo(
+    () =>
+      history
+        .filter((h) => h.percentile != null && h.actual != null)
+        .map((h) => ({
+          name: `TO-${h.index}`,
+          fullName: h.tryoutTitle,
+          percentile: h.percentile,
+          rank: h.rank,
+          total: h.totalParticipants,
+        })),
+    [history],
+  );
+
+  if (percentileData.length === 0) return null;
+
+  const chartConfig: ChartConfig = {
+    percentile: { label: "Persentil", color: "#22c55e" },
+  };
+
+  return (
+    <div className="rounded-2xl border border-slate-100 bg-white p-4">
+      <SectionLabel
+        title="Tren Peringkat (Persentil)"
+        sub="Persentil = posisi dibanding peserta lain. Semakin tinggi = semakin baik."
+      />
+      <ChartContainer
+        config={chartConfig}
+        className="h-[200px] md:h-[260px] w-full mt-3"
+      >
+        <AreaChart
+          data={percentileData}
+          margin={{ top: 20, right: 20, left: -10, bottom: 10 }}
+        >
+          <defs>
+            <linearGradient id="pctlGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#22c55e" stopOpacity={0.3} />
+              <stop offset="95%" stopColor="#22c55e" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+          <XAxis
+            dataKey="name"
+            tick={{ fontSize: 10, fill: "#94a3b8" }}
+            tickLine={false}
+            axisLine={false}
+            interval={0}
+          />
+          <YAxis
+            domain={[0, 100]}
+            tick={{ fontSize: 10, fill: "#94a3b8" }}
+            tickLine={false}
+            axisLine={false}
+            width={35}
+            tickFormatter={(v) => `${v}%`}
+          />
+          <ChartTooltip
+            content={
+              <ChartTooltipContent
+                labelFormatter={(_, payload) => {
+                  const d = payload?.[0]?.payload as {
+                    fullName?: string;
+                    rank?: number;
+                    total?: number;
+                  };
+                  return `${d?.fullName || ""} \u00b7 #${d?.rank}/${d?.total}`;
+                }}
+                formatter={(value) => (
+                  <>
+                    <div className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-emerald-500" />
+                    <span className="text-muted-foreground">Top</span>
+                    <span className="ml-auto font-mono font-medium">
+                      {value}%
+                    </span>
+                  </>
+                )}
+              />
+            }
+          />
+          <Area
+            type="monotone"
+            dataKey="percentile"
+            stroke="#22c55e"
+            strokeWidth={2.5}
+            fill="url(#pctlGrad)"
+            dot={{
+              fill: "#22c55e",
+              r: 4,
+              stroke: "#fff",
+              strokeWidth: 2,
+            }}
+          >
+            <LabelList
+              position="top"
+              offset={8}
+              className="fill-emerald-700 font-bold text-[10px]"
+              formatter={(v: unknown) => `${Math.round(Number(v))}%`}
+            />
+          </Area>
+        </AreaChart>
+      </ChartContainer>
+    </div>
+  );
+}
+
+// =============================================================================
+// Shared primitives
+// =============================================================================
+
+function StatPill({
+  label,
+  value,
+  sub,
+  icon,
+  color,
+}: {
+  label: string;
+  value: string;
+  sub: string;
+  icon: React.ReactNode;
+  color: string;
+}) {
+  return (
+    <div className="rounded-xl border border-slate-100 bg-white/80 backdrop-blur-sm px-3 py-2.5">
+      <div className="flex items-center gap-1.5 mb-1">
+        <span style={{ color }} className="opacity-60">
+          {icon}
+        </span>
+        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+          {label}
+        </span>
+      </div>
+      <p className="text-lg font-black leading-none" style={{ color }}>
+        {value}
+      </p>
+      <p className="text-[10px] text-slate-400 mt-0.5">{sub}</p>
+    </div>
+  );
+}
+
+function SectionLabel({ title, sub }: { title: string; sub?: string }) {
+  return (
+    <div>
+      <h3 className="text-sm font-black text-slate-800">{title}</h3>
+      {sub && <p className="text-xs text-slate-400">{sub}</p>}
+    </div>
+  );
+}
 
 function LoadingState() {
   return (
-    <div>
+    <div className="space-y-3">
       <SectionTitle icon={Brain} title="Prediksi Skor" />
-      <Skeleton className="h-[640px] w-full rounded-3xl" />
+      <div className="space-y-4">
+        <Skeleton className="h-[180px] w-full rounded-2xl" />
+        <Skeleton className="h-[320px] w-full rounded-2xl" />
+        <div className="grid grid-cols-3 gap-3">
+          <Skeleton className="h-[100px] rounded-2xl" />
+          <Skeleton className="h-[100px] rounded-2xl" />
+          <Skeleton className="h-[100px] rounded-2xl" />
+        </div>
+        <Skeleton className="h-[260px] w-full rounded-2xl" />
+      </div>
     </div>
   );
 }
