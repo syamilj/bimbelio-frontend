@@ -52,6 +52,12 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import {
+  ChangeCard,
+  InsightCard,
+  SectionLabel,
+  StatPill,
+} from "./_primitives";
 import { SectionTitle } from "./section-title";
 
 // --- Types -------------------------------------------------------------------
@@ -326,19 +332,11 @@ function HeroBanner({
 
   return (
     <div
-      className="relative px-5 pt-6 pb-5"
+      className="px-5 pt-6 pb-5"
       style={{
         background: `linear-gradient(135deg, ${mainColor}08 0%, ${mainColor}18 100%)`,
       }}
     >
-      {/* Top accent line */}
-      <div
-        className="absolute inset-x-0 top-0 h-1 rounded-t-2xl"
-        style={{
-          background: `linear-gradient(90deg, ${mainColor}, ${mainColor}80)`,
-        }}
-      />
-
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
         {/* Score gauge */}
         <div className="flex-shrink-0">
@@ -479,10 +477,10 @@ function ScoreTrendChart({
   };
 
   return (
-    <div className="rounded-2xl border border-slate-100 bg-white p-4">
+    <div className="rounded-3xl border border-slate-100 bg-white p-4">
       <SectionLabel
         title="Tren Skor: Aktual vs Model"
-        sub="Area = skor aktual \u00b7 Ungu = regresi WLS \u00b7 Kuning = EMA \u00b7 Titik terakhir = prediksi"
+        sub="Area = skor aktual · Ungu = regresi WLS · Kuning = EMA · Titik terakhir = prediksi"
       />
       <ChartContainer
         config={chartConfig}
@@ -490,7 +488,7 @@ function ScoreTrendChart({
       >
         <ComposedChart
           data={chartData}
-          margin={{ top: 20, right: 20, left: -10, bottom: 10 }}
+          margin={{ top: 20, right: 20, left: 0, bottom: 10 }}
         >
           <defs>
             <linearGradient id="predScoreGrad" x1="0" y1="0" x2="0" y2="1">
@@ -548,7 +546,14 @@ function ScoreTrendChart({
               );
             }}
             connectNulls={false}
-          />
+          >
+            <LabelList
+              position="top"
+              offset={10}
+              className="fill-slate-700 font-bold text-[10px]"
+              formatter={(v: unknown) => v != null ? String(Math.round(Number(v))) : ''}
+            />
+          </Area>
           <Line
             type="monotone"
             dataKey="ema"
@@ -604,7 +609,7 @@ function ProjectionsRow({
           return (
             <div
               key={proj.stepsAhead}
-              className="rounded-2xl border border-slate-100 bg-white p-4"
+              className="rounded-3xl border border-slate-100 bg-white p-4"
             >
               <div className="flex items-center gap-1.5 mb-1">
                 <Rocket className="w-3 h-3 text-slate-400" />
@@ -735,37 +740,6 @@ function InsightsGrid({
   );
 }
 
-function InsightCard({
-  title,
-  value,
-  sub,
-  tone,
-}: {
-  title: string;
-  value: string;
-  sub: string;
-  tone: "emerald" | "amber" | "blue" | "slate";
-}) {
-  const toneClass =
-    tone === "emerald"
-      ? "border-emerald-200 bg-emerald-50/60 text-emerald-900"
-      : tone === "amber"
-        ? "border-amber-200 bg-amber-50/60 text-amber-900"
-        : tone === "blue"
-          ? "border-blue-200 bg-blue-50/60 text-blue-900"
-          : "border-slate-200 bg-slate-50/60 text-slate-900";
-
-  return (
-    <div className={cn("rounded-2xl border p-4", toneClass)}>
-      <p className="text-[10px] font-bold uppercase tracking-wider opacity-70">
-        {title}
-      </p>
-      <p className="mt-1 text-xl font-black">{value}</p>
-      <p className="mt-1 text-xs opacity-80">{sub}</p>
-    </div>
-  );
-}
-
 // =============================================================================
 // 5. Per subtest section
 // =============================================================================
@@ -799,10 +773,10 @@ function SubtestSection({
     <div className="space-y-4">
       {/* Radar chart */}
       {perSubtest.length >= 3 && (
-        <div className="rounded-2xl border border-slate-100 bg-white p-4">
+        <div className="rounded-3xl border border-slate-100 bg-white p-4">
           <SectionLabel
             title="Radar Kemampuan"
-            sub="Biru = rata-rata saat ini \u00b7 Ungu = prediksi"
+            sub="Biru = rata-rata saat ini · Ungu = prediksi"
           />
           <ChartContainer
             config={radarConfig}
@@ -878,7 +852,7 @@ function SubtestCard({
   const s = STRENGTH[sub.strength];
 
   return (
-    <div className="flex items-center gap-3 p-3 rounded-2xl border border-slate-100 bg-white hover:shadow-sm transition-shadow">
+    <div className="flex items-center gap-3 p-3 rounded-3xl border border-slate-100 bg-white hover:shadow-sm transition-shadow">
       <div
         className="flex h-9 w-9 items-center justify-center rounded-xl flex-shrink-0 text-xs font-black text-white"
         style={{ backgroundColor: color }}
@@ -1002,7 +976,7 @@ function EfficiencySection({
 
       {/* Efficiency gauge + change cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div className="rounded-2xl border border-slate-100 bg-white p-3 text-center col-span-2 md:col-span-1 flex flex-col items-center justify-center">
+        <div className="rounded-3xl border border-slate-100 bg-white p-3 text-center col-span-2 md:col-span-1 flex flex-col items-center justify-center">
           <ChartContainer
             config={effConfig}
             className="h-[90px] w-[90px]"
@@ -1075,7 +1049,7 @@ function EfficiencySection({
       </div>
 
       {/* BSK stacked bar chart */}
-      <div className="rounded-2xl border border-slate-100 bg-white p-4">
+      <div className="rounded-3xl border border-slate-100 bg-white p-4">
         <SectionLabel
           title="Tren Benar / Salah / Kosong"
           sub="Distribusi jawaban per tryout. Idealnya hijau naik, merah & abu turun."
@@ -1086,7 +1060,7 @@ function EfficiencySection({
         >
           <BarChart
             data={bskChartData}
-            margin={{ top: 10, right: 10, left: -10, bottom: 10 }}
+            margin={{ top: 10, right: 10, left: 0, bottom: 10 }}
             barCategoryGap="18%"
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
@@ -1101,7 +1075,7 @@ function EfficiencySection({
               tick={{ fontSize: 10, fill: "#94a3b8" }}
               tickLine={false}
               axisLine={false}
-              width={35}
+              width={40}
             />
             <ChartTooltip content={<ChartTooltipContent />} />
             <Bar
@@ -1109,71 +1083,39 @@ function EfficiencySection({
               fill="#22c55e"
               radius={[3, 3, 0, 0]}
               stackId="bsk"
-            />
+            >
+              <LabelList
+                position="center"
+                className="fill-white font-bold text-[9px]"
+                formatter={(v: unknown) => Number(v) > 0 ? String(v) : ''}
+              />
+            </Bar>
             <Bar
               dataKey="salah"
               fill="#ef4444"
               radius={[0, 0, 0, 0]}
               stackId="bsk"
-            />
+            >
+              <LabelList
+                position="center"
+                className="fill-white font-bold text-[9px]"
+                formatter={(v: unknown) => Number(v) > 0 ? String(v) : ''}
+              />
+            </Bar>
             <Bar
               dataKey="kosong"
               fill="#94a3b8"
               radius={[3, 3, 0, 0]}
               stackId="bsk"
-            />
+            >
+              <LabelList
+                position="center"
+                className="fill-white font-bold text-[9px]"
+                formatter={(v: unknown) => Number(v) > 0 ? String(v) : ''}
+              />
+            </Bar>
           </BarChart>
         </ChartContainer>
-      </div>
-    </div>
-  );
-}
-
-function ChangeCard({
-  icon,
-  label,
-  current,
-  change,
-  inverseGood,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  current: number;
-  change: number;
-  inverseGood: boolean;
-}) {
-  const isGood = inverseGood ? change <= 0 : change >= 0;
-
-  return (
-    <div className="rounded-2xl border border-slate-100 bg-white p-4">
-      <div className="flex items-center gap-2 mb-2">
-        {icon}
-        <span className="text-[10px] font-bold text-slate-500 uppercase">
-          {label}
-        </span>
-      </div>
-      <div className="text-2xl font-black text-slate-800">{current}</div>
-      <div className="flex items-center gap-1 mt-1">
-        {change !== 0 ? (
-          <>
-            {isGood ? (
-              <ArrowUp className="w-3 h-3 text-emerald-500" />
-            ) : (
-              <ArrowDown className="w-3 h-3 text-red-500" />
-            )}
-            <span
-              className={cn(
-                "text-[10px] font-bold",
-                isGood ? "text-emerald-600" : "text-red-500",
-              )}
-            >
-              {change > 0 ? "+" : ""}
-              {change} vs awal
-            </span>
-          </>
-        ) : (
-          <span className="text-[10px] text-slate-400">Tidak berubah</span>
-        )}
       </div>
     </div>
   );
@@ -1209,7 +1151,7 @@ function PercentileChart({
   };
 
   return (
-    <div className="rounded-2xl border border-slate-100 bg-white p-4">
+    <div className="rounded-3xl border border-slate-100 bg-white p-4">
       <SectionLabel
         title="Tren Peringkat (Persentil)"
         sub="Persentil = posisi dibanding peserta lain. Semakin tinggi = semakin baik."
@@ -1253,7 +1195,7 @@ function PercentileChart({
                     rank?: number;
                     total?: number;
                   };
-                  return `${d?.fullName || ""} \u00b7 #${d?.rank}/${d?.total}`;
+                  return `${d?.fullName || ""} · #${d?.rank}/${d?.total}`;
                 }}
                 formatter={(value) => (
                   <>
@@ -1293,63 +1235,19 @@ function PercentileChart({
   );
 }
 
-// =============================================================================
-// Shared primitives
-// =============================================================================
-
-function StatPill({
-  label,
-  value,
-  sub,
-  icon,
-  color,
-}: {
-  label: string;
-  value: string;
-  sub: string;
-  icon: React.ReactNode;
-  color: string;
-}) {
-  return (
-    <div className="rounded-xl border border-slate-100 bg-white/80 backdrop-blur-sm px-3 py-2.5">
-      <div className="flex items-center gap-1.5 mb-1">
-        <span style={{ color }} className="opacity-60">
-          {icon}
-        </span>
-        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-          {label}
-        </span>
-      </div>
-      <p className="text-lg font-black leading-none" style={{ color }}>
-        {value}
-      </p>
-      <p className="text-[10px] text-slate-400 mt-0.5">{sub}</p>
-    </div>
-  );
-}
-
-function SectionLabel({ title, sub }: { title: string; sub?: string }) {
-  return (
-    <div>
-      <h3 className="text-sm font-black text-slate-800">{title}</h3>
-      {sub && <p className="text-xs text-slate-400">{sub}</p>}
-    </div>
-  );
-}
-
 function LoadingState() {
   return (
     <div className="space-y-3">
       <SectionTitle icon={Brain} title="Prediksi Skor" />
       <div className="space-y-4">
-        <Skeleton className="h-[180px] w-full rounded-2xl" />
-        <Skeleton className="h-[320px] w-full rounded-2xl" />
+        <Skeleton className="h-[180px] w-full rounded-3xl" />
+        <Skeleton className="h-[320px] w-full rounded-3xl" />
         <div className="grid grid-cols-3 gap-3">
-          <Skeleton className="h-[100px] rounded-2xl" />
-          <Skeleton className="h-[100px] rounded-2xl" />
-          <Skeleton className="h-[100px] rounded-2xl" />
+          <Skeleton className="h-[100px] rounded-3xl" />
+          <Skeleton className="h-[100px] rounded-3xl" />
+          <Skeleton className="h-[100px] rounded-3xl" />
         </div>
-        <Skeleton className="h-[260px] w-full rounded-2xl" />
+        <Skeleton className="h-[260px] w-full rounded-3xl" />
       </div>
     </div>
   );

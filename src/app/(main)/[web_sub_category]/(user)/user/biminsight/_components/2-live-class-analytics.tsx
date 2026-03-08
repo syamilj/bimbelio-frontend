@@ -4,13 +4,6 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -43,14 +36,17 @@ import {
   BookOpen,
   Calendar,
   CheckCircle2,
+  ChevronDown,
   Clock,
   Download,
+  Flame,
   Users,
   XCircle,
 } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
-import { Cell, Label, Pie, PieChart, ResponsiveContainer } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Cell, Label, LabelList, Pie, PieChart, XAxis, YAxis } from 'recharts';
+import { HeroBanner, SectionLabel, StatPill, EmptyState } from './_primitives';
 import { SectionTitle } from './section-title';
 
 export const LiveClassAnalytics = () => {
@@ -61,6 +57,7 @@ export const LiveClassAnalytics = () => {
 
   const [selectedProgramId, setSelectedProgramId] = useState<string>('all');
   const [showExportDialog, setShowExportDialog] = useState<boolean>(false);
+  const [showAllSchedule, setShowAllSchedule] = useState(false);
 
   const { data: LiveClassData, isLoading: LiveClassDataIsLoading } =
     useGet<DataType>('/learningAnalytics/getUserAnalyticsLiveClass', {
@@ -234,6 +231,8 @@ export const LiveClassAnalytics = () => {
 
   const presenceData = LiveClassData.Present;
   const listData = LiveClassData.List;
+  const weeklyTrend = LiveClassData.WeeklyTrend ?? [];
+  const streak = LiveClassData.Streak ?? 0;
 
   const pieData = [
     { name: 'Hadir', value: presenceData.present, color: '#10B981' },
@@ -246,221 +245,259 @@ export const LiveClassAnalytics = () => {
       ? Math.round(((presenceData.present + presenceData.late) / presenceData.totalInvited) * 100)
       : 0;
 
+  const visibleSchedule = showAllSchedule ? listData : listData.slice(0, 5);
+
   return (
     <div>
       <SectionTitle icon={BookOpen} title="BimLive" description="Riwayat kehadiranmu di kelas langsung" />
 
-      <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
-        {/* Left: Chart card */}
-        <div className="lg:col-span-2">
-          <Card className="w-full border-2">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-10 h-10 rounded-3xl flex items-center justify-center"
-                    style={{ backgroundColor: mainColor }}
-                  >
-                    <Users className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-xl font-black text-slate-800">Rekap Kehadiran</CardTitle>
-                    <CardDescription>Distribusi kehadiran per status</CardDescription>
-                  </div>
-                </div>
-                {(role === 'ADMIN' || role === 'SUPER_ADMIN') && (
-                  <button
-                    onClick={() => setShowExportDialog(true)}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold text-white transition-all hover:opacity-90"
-                    style={{ backgroundColor: mainColor }}
-                  >
-                    <Download className="w-3 h-3" />
-                    Export
-                  </button>
-                )}
-              </div>
-
-              {/* Filter */}
-              <div className="mt-3">
-                <Select value={selectedProgramId} onValueChange={setSelectedProgramId}>
-                  <SelectTrigger
-                    className="h-9 rounded-full border-2 text-xs"
-                    style={{ borderColor: `${mainColor}30`, backgroundColor: `${mainColor}05` }}
-                  >
-                    <SelectValue placeholder="Pilih Program" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Semua Program</SelectItem>
-                    {LiveClassData.ListProgram.map((program) => (
-                      <SelectItem key={program.id} value={program.id}>{program.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Stat badges */}
-              <div className="flex gap-2 mt-3 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-100 flex-shrink-0">
-                  <Users className="w-3 h-3 text-slate-500" />
-                  <span className="text-[10px] font-bold text-slate-700">Total: {presenceData.totalInvited}</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 flex-shrink-0">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-500" />
-                  <span className="text-[10px] font-bold text-emerald-700">Hadir: {presenceData.present}</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-100 flex-shrink-0">
-                  <Clock className="w-3 h-3 text-amber-500" />
-                  <span className="text-[10px] font-bold text-amber-700">Terlambat: {presenceData.late}</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 border border-red-100 flex-shrink-0">
-                  <XCircle className="w-3 h-3 text-red-400" />
-                  <span className="text-[10px] font-bold text-red-600">Absen: {presenceData.absent}</span>
-                </div>
-              </div>
-            </CardHeader>
-
-            <CardContent>
-              {presenceData.totalInvited === 0 ? (
-                <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-3">
-                    <BookOpen className="w-8 h-8 text-slate-300" />
-                  </div>
-                  <h3 className="text-lg font-black text-slate-800 mb-1">Belum Ada Data Kehadiran</h3>
-                  <p className="text-sm text-slate-500">
-                    {listData.length > 0
-                      ? 'Kelas yang terdaftar belum berlangsung atau belum selesai.'
-                      : 'Kamu belum terdaftar di program BimLive manapun'}
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <ChartContainer
-                    config={{
-                      hadir: { label: 'Hadir', color: '#10B981' },
-                      terlambat: { label: 'Terlambat', color: '#F59E0B' },
-                      absen: { label: 'Absen', color: '#EF4444' },
-                    }}
-                    className="h-[260px] w-full"
-                  >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={pieData}
-                          cx="50%"
-                          cy="50%"
-                          outerRadius={100}
-                          innerRadius={65}
-                          dataKey="value"
-                          paddingAngle={3}
-                          stroke="white"
-                          strokeWidth={2}
-                          isAnimationActive
-                        >
-                          {pieData.map((entry, index) => (
-                            <Cell key={index} fill={entry.color} />
-                          ))}
-                          <Label
-                            content={({ viewBox }) => {
-                              const vb = viewBox as { cx?: number; cy?: number };
-                              if (!vb?.cx || !vb?.cy) return null;
-                              return (
-                                <text textAnchor="middle">
-                                  <tspan x={vb.cx} y={vb.cy - 6} fontSize={30} fontWeight={900} fill="#1e293b">{attendanceRate}%</tspan>
-                                  <tspan x={vb.cx} y={vb.cy + 14} fontSize={11} fontWeight={600} fill="#94a3b8">Kehadiran</tspan>
-                                </text>
-                              );
-                            }}
-                          />
-                        </Pie>
-                        <ChartTooltip
-                          content={
-                            <ChartTooltipContent
-                              nameKey="name"
-                              formatter={(value, name) => (
-                                <>
-                                  <span className="text-muted-foreground">{name}</span>
-                                  <span className="ml-auto font-mono font-bold tabular-nums">{value} sesi</span>
-                                </>
-                              )}
-                            />
-                          }
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </ChartContainer>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+      {/* ── Hero Banner ──────────────────────────────────────────────── */}
+      <HeroBanner color={mainColor}>
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <SectionLabel title="Rekap Kehadiran" sub="Distribusi kehadiran per status" />
+          <div className="flex items-center gap-2">
+            <Select value={selectedProgramId} onValueChange={setSelectedProgramId}>
+              <SelectTrigger className="h-8 rounded-full border-slate-200 bg-white/80 text-xs text-slate-700 backdrop-blur-sm min-w-[140px]">
+                <SelectValue placeholder="Pilih Program" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Semua Program</SelectItem>
+                {LiveClassData.ListProgram.map((program) => (
+                  <SelectItem key={program.id} value={program.id}>{program.name}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {(role === 'ADMIN' || role === 'SUPER_ADMIN') && (
+              <button
+                onClick={() => setShowExportDialog(true)}
+                className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 text-xs font-bold text-slate-600 backdrop-blur-sm transition-all hover:bg-white"
+              >
+                <Download className="h-3 w-3" />
+                Export
+              </button>
+            )}
+          </div>
         </div>
+        <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <StatPill label="Total" value={String(presenceData.totalInvited)} sub="sesi" icon={<Users className="h-3 w-3" />} color={mainColor} />
+          <StatPill label="Hadir" value={String(presenceData.present)} sub="sesi" icon={<CheckCircle2 className="h-3 w-3" />} color="#10B981" />
+          <StatPill label="Terlambat" value={String(presenceData.late)} sub="sesi" icon={<Clock className="h-3 w-3" />} color="#F59E0B" />
+          <StatPill label="Absen" value={String(presenceData.absent)} sub="sesi" icon={<XCircle className="h-3 w-3" />} color="#EF4444" />
+        </div>
+      </HeroBanner>
 
-        {/* Right: List card */}
-        <div>
-          <Card className="w-full border-2 h-full">
-            <CardHeader className="pb-3">
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-10 h-10 rounded-3xl flex items-center justify-center"
-                  style={{ backgroundColor: mainColor }}
+      {/* ── Attendance Section ───────────────────────────────────────── */}
+      {presenceData.totalInvited === 0 ? (
+        <EmptyState
+          icon={BookOpen}
+          title="Belum Ada Data Kehadiran"
+          description={
+            listData.length > 0
+              ? 'Kelas yang terdaftar belum berlangsung atau belum selesai.'
+              : 'Kamu belum terdaftar di program BimLive manapun'
+          }
+        />
+      ) : (
+        <>
+          {/* ── Row 1: Donut + Streak side-by-side ────────────────── */}
+          <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
+            <div className="rounded-3xl border border-slate-200/80 bg-white p-5 shadow-sm lg:col-span-2">
+              <SectionLabel title="Distribusi Kehadiran" />
+              <div className="flex flex-col items-center sm:flex-row sm:items-center sm:gap-6">
+                <ChartContainer
+                  config={{
+                    hadir: { label: 'Hadir', color: '#10B981' },
+                    terlambat: { label: 'Terlambat', color: '#F59E0B' },
+                    absen: { label: 'Absen', color: '#EF4444' },
+                  }}
+                  className="h-[180px] w-[180px] flex-shrink-0"
                 >
-                  <Calendar className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <CardTitle className="text-xl font-black text-slate-800">Jadwal BimLive</CardTitle>
-                  <CardDescription>Daftar kelas langsung terbaru</CardDescription>
+                  <PieChart>
+                    <Pie
+                      data={pieData}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={75}
+                      innerRadius={50}
+                      dataKey="value"
+                      paddingAngle={3}
+                      stroke="white"
+                      strokeWidth={2}
+                      isAnimationActive
+                    >
+                      {pieData.map((entry, index) => (
+                        <Cell key={index} fill={entry.color} />
+                      ))}
+                      <Label
+                        content={({ viewBox }) => {
+                          const vb = viewBox as { cx?: number; cy?: number };
+                          if (!vb?.cx || !vb?.cy) return null;
+                          return (
+                            <text textAnchor="middle">
+                              <tspan x={vb.cx} y={vb.cy - 4} fontSize={24} fontWeight={900} fill="#1e293b">{attendanceRate}%</tspan>
+                              <tspan x={vb.cx} y={vb.cy + 12} fontSize={10} fontWeight={600} fill="#94a3b8">Kehadiran</tspan>
+                            </text>
+                          );
+                        }}
+                      />
+                    </Pie>
+                    <ChartTooltip
+                      content={
+                        <ChartTooltipContent
+                          nameKey="name"
+                          formatter={(value, name) => (
+                            <>
+                              <span className="text-muted-foreground">{name}</span>
+                              <span className="ml-auto font-mono font-bold tabular-nums">{value} sesi</span>
+                            </>
+                          )}
+                        />
+                      }
+                    />
+                  </PieChart>
+                </ChartContainer>
+
+                {/* Legend + summary */}
+                <div className="mt-3 flex flex-col gap-2.5 sm:mt-0">
+                  {pieData.map((item) => (
+                    <div key={item.name} className="flex items-center gap-2">
+                      <div className="h-3 w-3 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
+                      <span className="text-sm font-semibold text-slate-700 w-20">{item.name}</span>
+                      <span className="text-sm font-bold tabular-nums text-slate-900">{item.value}</span>
+                      <span className="text-xs text-slate-400">sesi</span>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </CardHeader>
+            </div>
 
-            <CardContent>
-              <div className="space-y-2.5 max-h-[420px] overflow-y-auto pr-1">
-                {listData && listData.length > 0 ? (
-                  listData.map((item) => {
+            {/* ── Streak Card ──────────────────────────────────── */}
+            <div className="rounded-3xl border border-slate-200/80 bg-white p-5 shadow-sm flex flex-col items-center justify-center text-center">
+              <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-3xl" style={{ backgroundColor: `${mainColor}15` }}>
+                <Flame className="h-6 w-6" style={{ color: mainColor }} />
+              </div>
+              <p className="text-3xl font-black text-slate-900 tabular-nums">{streak}</p>
+              <p className="text-sm font-bold text-slate-600">Streak Kehadiran</p>
+              <p className="mt-1 text-xs text-slate-400">Kelas berturut-turut hadir</p>
+            </div>
+          </div>
+
+          {/* ── Row 2: Weekly Trend ───────────────────────────────── */}
+          {weeklyTrend.length > 0 && (
+            <div className="mt-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-sm">
+              <SectionLabel title="Tren Kehadiran Mingguan" />
+              <p className="mb-3 text-xs text-slate-400">8 minggu terakhir</p>
+              <ChartContainer
+                config={{
+                  hadir: { label: 'Hadir', color: '#10B981' },
+                  terlambat: { label: 'Terlambat', color: '#F59E0B' },
+                  absen: { label: 'Absen', color: '#EF4444' },
+                }}
+                className="h-[160px] w-full"
+              >
+                <BarChart data={weeklyTrend} barGap={1} barCategoryGap="20%">
+                  <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="week" tickLine={false} axisLine={false} fontSize={10} tick={{ fill: '#94a3b8' }} />
+                  <YAxis tickLine={false} axisLine={false} fontSize={10} tick={{ fill: '#94a3b8' }} allowDecimals={false} width={28} />
+                  <ChartTooltip
+                    content={
+                      <ChartTooltipContent
+                        formatter={(value, name) => (
+                          <>
+                            <span className="text-muted-foreground capitalize">{String(name)}</span>
+                            <span className="ml-auto font-mono font-bold tabular-nums">{value}</span>
+                          </>
+                        )}
+                      />
+                    }
+                  />
+                  <Bar dataKey="hadir" stackId="a" fill="#10B981" radius={[0, 0, 0, 0]}>
+                    <LabelList
+                      position="center"
+                      className="fill-white font-bold text-[9px]"
+                      formatter={(v: unknown) => Number(v) > 0 ? String(v) : ''}
+                    />
+                  </Bar>
+                  <Bar dataKey="terlambat" stackId="a" fill="#F59E0B" radius={[0, 0, 0, 0]}>
+                    <LabelList
+                      position="center"
+                      className="fill-white font-bold text-[9px]"
+                      formatter={(v: unknown) => Number(v) > 0 ? String(v) : ''}
+                    />
+                  </Bar>
+                  <Bar dataKey="absen" stackId="a" fill="#EF4444" radius={[4, 4, 0, 0]}>
+                    <LabelList
+                      position="center"
+                      className="fill-white font-bold text-[9px]"
+                      formatter={(v: unknown) => Number(v) > 0 ? String(v) : ''}
+                    />
+                  </Bar>
+                </BarChart>
+              </ChartContainer>
+            </div>
+          )}
+
+          {/* ── Row 3: Schedule List (compact) ───────────────────── */}
+          <div className="mt-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-sm">
+            <SectionLabel title="Jadwal BimLive" />
+            <p className="mb-3 text-xs text-slate-400">Daftar kelas langsung terbaru</p>
+
+            {listData.length > 0 ? (
+              <>
+                <div className="space-y-2">
+                  {visibleSchedule.map((item) => {
                     const startDate = new Date(item.startDate);
                     const endDate = new Date(item.endDate);
                     const statusStyle =
                       item.presenceStatus === 'PRESENT'
-                        ? { bg: 'bg-emerald-50 border-emerald-100', text: 'text-emerald-700', dot: '#10B981' }
+                        ? { bg: 'bg-emerald-50 border-emerald-100', text: 'text-emerald-700', dot: '#10B981', label: 'Hadir' }
                         : item.presenceStatus === 'LATE'
-                          ? { bg: 'bg-amber-50 border-amber-100', text: 'text-amber-700', dot: '#F59E0B' }
+                          ? { bg: 'bg-amber-50 border-amber-100', text: 'text-amber-700', dot: '#F59E0B', label: 'Terlambat' }
                           : item.presenceStatus === 'ABSENT'
-                            ? { bg: 'bg-red-50 border-red-100', text: 'text-red-600', dot: '#EF4444' }
+                            ? { bg: 'bg-red-50 border-red-100', text: 'text-red-600', dot: '#EF4444', label: 'Absen' }
                             : item.presenceStatus === 'UPCOMING'
-                              ? { bg: 'bg-blue-50 border-blue-100', text: 'text-blue-600', dot: '#3B82F6' }
-                              : { bg: 'bg-slate-50 border-slate-100', text: 'text-slate-500', dot: '#9CA3AF' };
+                              ? { bg: 'bg-blue-50 border-blue-100', text: 'text-blue-600', dot: '#3B82F6', label: 'Akan Datang' }
+                              : { bg: 'bg-slate-50 border-slate-100', text: 'text-slate-500', dot: '#9CA3AF', label: 'Pending' };
 
                     return (
-                      <div key={item.id} className={`p-3 rounded-2xl border ${statusStyle.bg} transition-all hover:shadow-sm`}>
-                        <div className="flex items-start justify-between gap-2 mb-1">
-                          <p className="font-bold text-xs text-slate-800 line-clamp-2 flex-1">{item.title}</p>
-                          <div className="flex items-center gap-1 flex-shrink-0">
-                            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: statusStyle.dot }} />
-                            <span className={`text-[10px] font-bold ${statusStyle.text}`}>
-                              {item.presenceStatus === 'PRESENT' ? 'Hadir' : item.presenceStatus === 'LATE' ? 'Terlambat' : item.presenceStatus === 'ABSENT' ? 'Absen' : item.presenceStatus === 'UPCOMING' ? 'Akan Datang' : 'Pending'}
-                            </span>
-                          </div>
+                      <div key={item.id} className={`flex items-center justify-between gap-3 rounded-2xl border px-3 py-2.5 transition-all hover:shadow-sm ${statusStyle.bg}`}>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-bold text-slate-800 truncate">{item.title}</p>
+                          <p className="text-[10px] text-slate-500">
+                            {format(startDate, 'dd MMM yyyy', { locale: localeId })} · {format(startDate, 'HH:mm')}–{format(endDate, 'HH:mm')} · {Math.round(item.duration / 60)} mnt
+                          </p>
                         </div>
-                        <p className="text-[10px] text-slate-500">
-                          {format(startDate, 'dd MMM yyyy', { locale: localeId })} · {format(startDate, 'HH:mm')}–{format(endDate, 'HH:mm')} · {Math.round(item.duration / 60)} mnt
-                        </p>
+                        <div className="flex flex-shrink-0 items-center gap-1">
+                          <div className="h-2 w-2 rounded-full" style={{ backgroundColor: statusStyle.dot }} />
+                          <span className={`text-[10px] font-bold ${statusStyle.text}`}>{statusStyle.label}</span>
+                        </div>
                       </div>
                     );
-                  })
-                ) : (
-                  <div className="flex flex-col items-center justify-center py-8 text-center">
-                    <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-2">
-                      <Calendar className="w-6 h-6 text-slate-300" />
-                    </div>
-                    <p className="text-sm font-bold text-slate-600">Belum ada jadwal</p>
-                  </div>
+                  })}
+                </div>
+                {listData.length > 5 && (
+                  <button
+                    onClick={() => setShowAllSchedule(!showAllSchedule)}
+                    className="mt-3 flex w-full items-center justify-center gap-1 rounded-2xl border border-slate-200 bg-slate-50 py-2 text-xs font-bold text-slate-600 transition-all hover:bg-slate-100"
+                  >
+                    {showAllSchedule ? 'Tutup' : `Lihat semua (${listData.length})`}
+                    <ChevronDown className={`h-3.5 w-3.5 transition-transform ${showAllSchedule ? 'rotate-180' : ''}`} />
+                  </button>
                 )}
+              </>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-6 text-center">
+                <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-slate-100">
+                  <Calendar className="h-5 w-5 text-slate-300" />
+                </div>
+                <p className="text-sm font-bold text-slate-600">Belum ada jadwal</p>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+            )}
+          </div>
+        </>
+      )}
 
-      {/* Export Dialog */}
+      {/* ── Export Dialog ─────────────────────────────────────────────── */}
       <Dialog open={showExportDialog} onOpenChange={setShowExportDialog}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
@@ -484,7 +521,7 @@ export const LiveClassAnalytics = () => {
 const LoadingPage = () => (
   <div>
     <SectionTitle icon={BookOpen} title="BimLive" />
-    <Skeleton className="w-full h-[400px] rounded-3xl" />
+    <Skeleton className="h-[400px] w-full rounded-3xl" />
   </div>
 );
 
@@ -504,6 +541,14 @@ type DataType = {
     title: string;
     type: LiveClassTypeEnum;
     accessType: LiveClassAccessTypeEnum;
-    presenceStatus: 'ABSENT' | 'PRESENT' | 'LATE';
+    presenceStatus: 'ABSENT' | 'PRESENT' | 'LATE' | 'UPCOMING';
+    checkInAt: Date | null;
   }[];
+  WeeklyTrend?: {
+    week: string;
+    hadir: number;
+    terlambat: number;
+    absen: number;
+  }[];
+  Streak?: number;
 };

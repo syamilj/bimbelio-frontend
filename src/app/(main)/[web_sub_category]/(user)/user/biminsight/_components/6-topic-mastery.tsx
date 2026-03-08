@@ -44,6 +44,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import { SectionLabel, StatPill } from './_primitives';
 import { SectionTitle } from './section-title';
 
 // --- Types -------------------------------------------------------------------
@@ -171,19 +172,11 @@ function TopicMasteryCard({
     <Card className="w-full overflow-hidden border-0 shadow-lg shadow-slate-200/60">
       {/* -- 1. Hero banner -- */}
       <div
-        className="relative px-5 pt-6 pb-5"
+        className="px-5 pt-6 pb-5"
         style={{
           background: `linear-gradient(135deg, ${mainColor}08 0%, ${mainColor}18 100%)`,
         }}
       >
-        {/* subtle top accent line */}
-        <div
-          className="absolute inset-x-0 top-0 h-1 rounded-t-2xl"
-          style={{
-            background: `linear-gradient(90deg, ${mainColor}, ${mainColor}80)`,
-          }}
-        />
-
         {showLabel && (
           <p
             className="text-[11px] font-bold uppercase tracking-widest mb-3"
@@ -378,7 +371,7 @@ function CategoryBarChart({
   const chartHeight = Math.max(180, data.length * 44);
 
   return (
-    <div className="rounded-2xl border border-slate-100 bg-white p-4">
+    <div className="rounded-3xl border border-slate-100 bg-white p-4">
       <SectionLabel
         title="Akurasi Per Kategori"
         sub={`${categories.length} kategori \u00b7 diurutkan dari tertinggi`}
@@ -496,7 +489,7 @@ function CategoryCard({ category: cat }: { category: CategoryData }) {
   return (
     <div
       className={cn(
-        'rounded-2xl border bg-white overflow-hidden transition-all',
+        'rounded-3xl border bg-white overflow-hidden transition-all',
         m.border,
       )}
     >
@@ -775,7 +768,7 @@ function FocusColumn({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-slate-100 overflow-hidden bg-gradient-to-b to-white',
+        'rounded-3xl border border-slate-100 overflow-hidden bg-gradient-to-b to-white',
         gradientFrom,
       )}
     >
@@ -858,60 +851,16 @@ function FocusItem({
   );
 }
 
-// =============================================================================
-// Shared primitives
-// =============================================================================
-
-function StatPill({
-  label,
-  value,
-  sub,
-  icon,
-  color,
-}: {
-  label: string;
-  value: string;
-  sub: string;
-  icon: React.ReactNode;
-  color: string;
-}) {
-  return (
-    <div className="rounded-xl border border-slate-100 bg-white/80 backdrop-blur-sm px-3 py-2.5">
-      <div className="flex items-center gap-1.5 mb-1">
-        <span style={{ color }} className="opacity-60">
-          {icon}
-        </span>
-        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-          {label}
-        </span>
-      </div>
-      <p className="text-lg font-black leading-none" style={{ color }}>
-        {value}
-      </p>
-      <p className="text-[10px] text-slate-400 mt-0.5">{sub}</p>
-    </div>
-  );
-}
-
-function SectionLabel({ title, sub }: { title: string; sub?: string }) {
-  return (
-    <div>
-      <h3 className="text-sm font-black text-slate-800">{title}</h3>
-      {sub && <p className="text-xs text-slate-400">{sub}</p>}
-    </div>
-  );
-}
-
 function LoadingState() {
   return (
     <div>
       <SectionTitle icon={Layers3} title="Penguasaan Topik" />
       <div className="space-y-4">
-        <Skeleton className="h-[180px] w-full rounded-2xl" />
-        <Skeleton className="h-[300px] w-full rounded-2xl" />
+        <Skeleton className="h-[180px] w-full rounded-3xl" />
+        <Skeleton className="h-[300px] w-full rounded-3xl" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Skeleton className="h-[200px] rounded-2xl" />
-          <Skeleton className="h-[200px] rounded-2xl" />
+          <Skeleton className="h-[200px] rounded-3xl" />
+          <Skeleton className="h-[200px] rounded-3xl" />
         </div>
       </div>
     </div>
