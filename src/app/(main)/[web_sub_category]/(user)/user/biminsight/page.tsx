@@ -4,6 +4,8 @@ import { CourseAnalytics } from './_components/1-course-analytics';
 import { LiveClassAnalytics } from './_components/2-live-class-analytics';
 import { TryoutAnalyticsTable } from './_components/3-tryout-analytics';
 import { QuizAnalyticsTable } from './_components/4-quiz-analytics';
+import { ScorePrediction } from './_components/5-score-prediction';
+import { TopicMastery } from './_components/6-topic-mastery';
 
 export default function BimInsight() {
   return (
@@ -13,6 +15,8 @@ export default function BimInsight() {
         <LiveClassAnalytics />
         <TryoutAnalyticsTable />
         <QuizAnalyticsTable />
+        <ScorePrediction />
+        <TopicMastery />
       </div>
     </div>
   );
