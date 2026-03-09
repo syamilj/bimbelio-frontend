@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { cn } from '@/lib/utils';
+import { cn, formatTwoDecimals, getUniversityInitials } from '@/lib/utils';
 import {
   ChevronRight,
   Clock,
@@ -201,7 +201,7 @@ export function QuizSummary() {
                   Skor Total
                 </p>
                 <p className="text-base font-black text-white">
-                  {userStats?.totalScore?.toLocaleString() || '0'}
+                  {formatTwoDecimals(userStats?.totalScore ?? 0)}
                 </p>
               </div>
             </div>
@@ -217,7 +217,7 @@ export function QuizSummary() {
                   Target PTN
                 </p>
                 <p className="text-base font-black text-white line-clamp-1 max-w-[160px]">
-                  {targetUniversity?.name || 'Belum dipilih'}
+                  {getUniversityInitials(targetUniversity?.name) || 'Belum dipilih'}
                 </p>
               </div>
             </div>

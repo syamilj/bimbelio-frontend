@@ -84,6 +84,7 @@ const navSections: NavSection[] = [
         title: 'BimInsight',
         url: (subCategoryId: string) => `/${subCategoryId}/user/biminsight`,
         icon: BarChart3,
+        isBeta: true,
       },
     ],
   },
@@ -542,12 +543,14 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                 }}
                               />
 
-                              {(item.isNew || item.isAI) && (
+                              {(item.isNew || item.isAI || item.isBeta) && (
                                 <div
                                   className={cn(
                                     'absolute top-2 right-2 w-1.5 h-1.5 rounded-full ring-1 ring-white',
                                     item.isAI
                                       ? 'bg-purple-500'
+                                      : item.isBeta
+                                        ? 'bg-sky-500'
                                       : 'bg-emerald-500',
                                   )}
                                 />
@@ -644,16 +647,18 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                       </div>
 
                       <div className="flex items-center gap-2">
-                        {item.badge && (
+                        {(item.badge || item.isBeta) && (
                           <span
                             className={cn(
                               'text-[10px] px-1.5 py-0.5 rounded-full font-bold uppercase',
                               item.badge === 'AI'
                                 ? 'bg-purple-100 text-purple-600'
-                                : 'bg-slate-100 text-slate-600',
+                                : item.isBeta
+                                  ? 'bg-sky-100 text-sky-600'
+                                  : 'bg-slate-100 text-slate-600',
                             )}
                           >
-                            {item.badge}
+                            {item.badge ?? 'Beta'}
                           </span>
                         )}
 
@@ -792,7 +797,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                 icon: Swords,
                                 isBeta: true,
                                 betaTooltip:
-                                  'Beta: Fitur masih dalam tahap testing',
+                                  'Fitur masih dalam tahap testing',
                               },
                             ] as SubMenuItem[]
                           ).map((sub) => {

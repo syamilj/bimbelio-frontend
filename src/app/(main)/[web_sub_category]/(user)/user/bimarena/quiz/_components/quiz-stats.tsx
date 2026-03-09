@@ -1,7 +1,7 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { cn } from '@/lib/utils';
+import { cn, formatTwoDecimals } from '@/lib/utils';
 import {
   CheckCircle2,
   Swords,
@@ -61,7 +61,7 @@ export function QuizStats() {
     },
     {
       title: 'Total Skor',
-      value: formatNumber(userStats?.totalScore || 0),
+      value: formatTwoDecimals(userStats?.totalScore || 0),
       subtitle: `Gap rank atas: -`,
       icon: Zap,
       color: mainColor,
@@ -86,7 +86,7 @@ export function QuizStats() {
     },
     {
       title: 'Akurasi Tempur',
-      value: `${accuracy.toFixed(1)}%`,
+      value: `${formatTwoDecimals(accuracy)}%`,
       subtitle: `${accuracy} hit`,
       icon: CheckCircle2,
       color: '#22c55e',

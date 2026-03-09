@@ -523,10 +523,10 @@ const initiateNotificationWorker = () => {
 
         const data = await res.json();
         console.log('✅ Subscription sent to backend:', data);
-        alert('✅ Subscription successful! You can now receive notifications.');
+        // alert('✅ Subscription successful! You can now receive notifications.');
       } catch (error: any) {
         console.error('❌ Error:', error);
-        alert('Error: ' + error.message);
+        // alert('Error: ' + error.message);
       }
     }
   }, 1000);

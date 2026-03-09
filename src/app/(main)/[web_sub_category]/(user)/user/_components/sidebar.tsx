@@ -40,7 +40,6 @@ import {
   LogOut,
   Settings,
   ShoppingBag,
-  Stars,
   User,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -162,28 +161,25 @@ const SidebarUser = ({
           {!minimizeSidebar && (
             <div className="px-3 pt-2 pb-1">
               <button
-                className="w-full flex items-center justify-between p-2.5 rounded-3xl bg-white border-2 border-slate-100 hover:border-slate-200 hover:bg-slate-50 transition-all text-left group shadow-sm"
+                className="w-full flex items-center justify-between p-1.5 rounded-3xl border-2 bg-white hover:bg-slate-50 transition-all text-left group shadow-sm"
                 onClick={() => setIsWebCategoryDialogOpen(true)}
               >
                 <div className="flex items-center gap-3 w-full overflow-hidden">
-                  <div
-                    className="w-10 h-10 rounded-3xl flex items-center justify-center shrink-0 border border-slate-100"
-                    style={{ backgroundColor: `${mainColor}10` }}
-                  >
-                    <Stars
-                      className="w-5 h-5"
-                      style={{ color: mainColor }}
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-black text-slate-800 truncate mb-0.5">
-                      {websiteSubCategory?.name || 'Pilih Kategori'}
-                    </p>
-                    <p className="text-[10px] font-semibold text-slate-500 truncate">
-                      {websiteSubCategory
-                        ? 'Platform Belajar'
-                        : 'Pilih tujuan belajar'}
-                    </p>
+                  <div className="h-11 flex-1 rounded-2xl overflow-hidden shrink-0 bg-white">
+                    {websiteSubCategory?.image ? (
+                      <img
+                        src={websiteSubCategory.image}
+                        alt={websiteSubCategory.name}
+                        className="w-full h-full object-contain"
+                      />
+                    ) : (
+                      <div
+                        className="w-full h-full flex items-center justify-center text-sm font-black px-3 text-center"
+                        style={{ color: mainColor, backgroundColor: `${mainColor}14` }}
+                      >
+                        {websiteSubCategory?.name || 'Pilih Kategori'}
+                      </div>
+                    )}
                   </div>
                   <div className="w-7 h-7 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-slate-100 transition-colors">
                     <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-colors shrink-0" />
@@ -206,7 +202,7 @@ const SidebarUser = ({
 
         <SidebarFooter className="pt-2 pb-4">
           {/* Upgrade Button (Minimized) */}
-          {!session?.user.tier && minimizeSidebar && (
+          {minimizeSidebar && (
             <div className="flex justify-center mb-3 px-2">
               <button
                 onClick={() => {
@@ -235,7 +231,7 @@ const SidebarUser = ({
           )}
 
           {/* Upgrade Button (Expanded & Mobile) - Replaces Card */}
-          {!session?.user.tier && !minimizeSidebar && (
+          {!minimizeSidebar && (
             <div className="px-5 mb-3">
               <button
                 onClick={() => {
@@ -405,31 +401,28 @@ const SidebarUser = ({
             {websiteSubCategory && (
               <div className="px-3 py-4">
                 <button
-                  className="w-full flex items-center justify-between p-2 rounded-3xl bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all text-left group shadow-sm"
+                  className="w-full flex items-center justify-between p-1.5 rounded-3xl bg-white hover:bg-slate-50 transition-all text-left group shadow-sm"
                   onClick={() => {
                     setIsWebCategoryDialogOpen(true);
                     setIsMobileSidebarOpen(false);
                   }}
                 >
                   <div className="flex items-center gap-3 w-full overflow-hidden">
-                    <div
-                      className="w-8 h-8 rounded-3xl flex items-center justify-center shrink-0"
-                      style={{ backgroundColor: `${mainColor}15` }}
-                    >
-                      <Stars
-                        className="w-4 h-4"
-                        style={{ color: mainColor }}
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold text-slate-800 truncate">
-                        {websiteSubCategory?.name || 'Pilih Kategori'}
-                      </p>
-                      <p className="text-[10px] text-slate-500 truncate">
-                        {websiteSubCategory
-                          ? 'Platform Belajar'
-                          : 'Pilih tujuan belajar'}
-                      </p>
+                    <div className="h-11 flex-1 rounded-2xl overflow-hidden shrink-0 bg-white">
+                      {websiteSubCategory?.image ? (
+                        <img
+                          src={websiteSubCategory.image}
+                          alt={websiteSubCategory.name}
+                          className="w-full h-full object-contain"
+                        />
+                      ) : (
+                        <div
+                          className="w-full h-full flex items-center justify-center text-sm font-black px-3 text-center"
+                          style={{ color: mainColor, backgroundColor: `${mainColor}14` }}
+                        >
+                          {websiteSubCategory?.name || 'Pilih Kategori'}
+                        </div>
+                      )}
                     </div>
                     <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-colors shrink-0" />
                   </div>
@@ -448,7 +441,7 @@ const SidebarUser = ({
             </div>
 
             {/* Mobile Premium Card */}
-            {!session?.user.tier && (
+            {
               <div className="px-5 mb-4">
                 <button
                   onClick={() => {
@@ -470,7 +463,7 @@ const SidebarUser = ({
                   </div>
                 </button>
               </div>
-            )}
+            }
 
             {/* Mobile User Profile */}
             <div className="border-t-2 border-slate-200/50 p-4">

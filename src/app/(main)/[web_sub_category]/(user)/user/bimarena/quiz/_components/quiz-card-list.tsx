@@ -2,12 +2,12 @@
 
 import { useAppContext } from '@/components/provider/provider-app';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { env } from '@/env.mjs';
-import { useGet } from '@/lib/fetch-helper/useGet';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
+import { env } from '@/env.mjs';
+import { useGet } from '@/lib/fetch-helper/useGet';
+import { cn, formatTwoDecimals } from '@/lib/utils';
 import {
   CheckCircle2,
   Clock,
@@ -216,7 +216,8 @@ export function QuizCardList() {
                   className="text-xs font-bold px-3 py-1.5 rounded-full bg-white border-2 shadow-sm"
                   style={{ borderColor: `${mainColor}30`, color: mainColor }}
                 >
-                  {sub.quizzes.filter((q) => q.isDone).length}/{sub.quizzes.length}
+                  {sub.quizzes.filter((q) => q.isDone).length}/
+                  {sub.quizzes.length}
                 </div>
               </div>
             </div>
@@ -283,7 +284,9 @@ export function QuizCardList() {
                                     ) || quiz.TryoutCategory?.image,
                                   ) || ''
                                 }
-                                alt={quiz.TryoutSubCategory?.name || 'Subcategory'}
+                                alt={
+                                  quiz.TryoutSubCategory?.name || 'Subcategory'
+                                }
                                 className="w-full h-full object-cover"
                               />
                             ) : (
@@ -309,21 +312,27 @@ export function QuizCardList() {
                               <p className="text-xs font-bold text-blue-700 leading-none">
                                 {quiz.TryoutQuestionCount || 0}
                               </p>
-                              <p className="text-[10px] text-blue-600 mt-0.5">Soal</p>
+                              <p className="text-[10px] text-blue-600 mt-0.5">
+                                Soal
+                              </p>
                             </div>
                             <div className="flex flex-col items-center justify-center py-2 rounded-3xl border bg-purple-50/60 border-purple-100">
                               <Clock className="w-3.5 h-3.5 text-purple-600 mb-1" />
                               <p className="text-xs font-bold text-purple-700 leading-none">
                                 {quiz.TryoutSession.duration}
                               </p>
-                              <p className="text-[10px] text-purple-600 mt-0.5">Menit</p>
+                              <p className="text-[10px] text-purple-600 mt-0.5">
+                                Menit
+                              </p>
                             </div>
                             <div className="flex flex-col items-center justify-center py-2 rounded-3xl border bg-emerald-50/60 border-emerald-100">
                               <Swords className="w-3.5 h-3.5 text-emerald-600 mb-1" />
                               <p className="text-xs font-bold text-emerald-700 leading-none">
                                 #{quiz.quizOrder || '-'}
                               </p>
-                              <p className="text-[10px] text-emerald-600 mt-0.5">Urutan</p>
+                              <p className="text-[10px] text-emerald-600 mt-0.5">
+                                Urutan
+                              </p>
                             </div>
                           </div>
 
@@ -337,7 +346,9 @@ export function QuizCardList() {
                                   </p>
                                   <div className="flex items-baseline gap-1">
                                     <p className="text-xl md:text-2xl font-black text-emerald-600">
-                                      {quiz.TryoutResult?.totalScore || '-'}
+                                        {formatTwoDecimals(
+                                          quiz.TryoutResult?.totalScore,
+                                        )}
                                     </p>
                                     {/* <div className="flex items-center gap-0.5 text-amber-600">
                                       <Trophy className="w-3 h-3 md:w-3.5 md:h-3.5" />

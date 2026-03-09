@@ -73,10 +73,51 @@ export default function PaketBelajarPage() {
     });
   }, [categoryPlans, pricingData]);
 
-  const recommendedPlans = useMemo(
-    () => visiblePlans.filter((plan) => plan.recommended),
-    [visiblePlans],
-  );
+  const recommendedPlans = useMemo(() => {
+    const sortByPrice = (plans: PlanDataType[]) =>
+      [...plans].sort((a, b) => (a.price || 0) - (b.price || 0));
+
+    const currentWebSubRecommended =
+      pricingData?.webSubCategory
+        ?.filter(
+          (item) => item.webSubCategoryId.toLowerCase() === webSub.toLowerCase(),
+        )
+        .flatMap((item) => [
+          ...sortByPrice(
+            (item.subscriptions || []).filter((plan) => plan.recommended),
+          ),
+          ...sortByPrice((item.bundles || []).filter((plan) => plan.recommended)),
+        ]) || [];
+
+    const otherWebSubRecommended =
+      pricingData?.webSubCategory
+        ?.filter(
+          (item) => item.webSubCategoryId.toLowerCase() !== webSub.toLowerCase(),
+        )
+        .flatMap((item) => [
+          ...sortByPrice(
+            (item.subscriptions || []).filter((plan) => plan.recommended),
+          ),
+          ...sortByPrice((item.bundles || []).filter((plan) => plan.recommended)),
+        ]) || [];
+
+    const toppingRecommended = sortByPrice(
+      (pricingData?.topping || []).filter((plan) => plan.recommended),
+    );
+
+    const deduped = new Map<string, PlanDataType>();
+    [
+      ...currentWebSubRecommended,
+      ...otherWebSubRecommended,
+      ...toppingRecommended,
+    ].forEach((plan) => {
+      if (!deduped.has(plan.id)) {
+        deduped.set(plan.id, plan);
+      }
+    });
+
+    return Array.from(deduped.values());
+  }, [pricingData, webSub]);
 
   const topUpPlans = useMemo(() => pricingData?.topping || [], [pricingData]);
 

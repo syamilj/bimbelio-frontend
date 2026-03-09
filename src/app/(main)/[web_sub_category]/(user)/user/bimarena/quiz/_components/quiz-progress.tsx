@@ -10,7 +10,7 @@ import {
   type ChartConfig,
 } from '@/components/ui/chart';
 import { Progress } from '@/components/ui/progress';
-import { cn } from '@/lib/utils';
+import { cn, formatTwoDecimals } from '@/lib/utils';
 import {
   ArrowDown,
   ArrowUp,
@@ -65,15 +65,17 @@ export function QuizProgress() {
 
   // Filter state for chart
   const [selectedSubtests, setSelectedSubtests] = useState<string[]>(
-    SubCategory.map((s) => s.code),
+    SubCategory.map((sub) => sub.id),
   );
   const [showUserAvg, setShowUserAvg] = useState(true);
   const [showAllStudentsAvg, setShowAllStudentsAvg] = useState(true);
 
   // Toggle subtest filter
-  const toggleSubtest = (code: string) => {
+  const toggleSubtest = (subtestId: string) => {
     setSelectedSubtests((prev) =>
-      prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code],
+      prev.includes(subtestId)
+        ? prev.filter((id) => id !== subtestId)
+        : [...prev, subtestId],
     );
   };
 
@@ -253,16 +255,16 @@ export function QuizProgress() {
                 <div className="filter-chips flex gap-1.5 md:gap-2 mb-3 md:mb-4 min-w-max md:min-w-0 md:flex-wrap">
                   {SubCategory.map((sub, index) => (
                     <button
-                      key={index}
-                      onClick={() => toggleSubtest(sub.code)}
+                      key={sub.id}
+                      onClick={() => toggleSubtest(sub.id)}
                       className={cn(
                         'px-2 md:px-3 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold transition-all border flex-shrink-0',
-                        selectedSubtests.includes(sub.code)
+                        selectedSubtests.includes(sub.id)
                           ? 'text-white border-transparent'
                           : 'bg-white text-slate-400 border-slate-200 hover:border-slate-300',
                       )}
                       style={
-                        selectedSubtests.includes(sub.code)
+                        selectedSubtests.includes(sub.id)
                           ? { backgroundColor: sub.color }
                           : {}
                       }
@@ -325,10 +327,10 @@ export function QuizProgress() {
                 <ChartLegend content={<ChartLegendContent />} />
 
                 {SubCategory.filter((sub) =>
-                  selectedSubtests.includes(sub.code),
+                  selectedSubtests.includes(sub.id),
                 ).map((sub, index) => (
                   <Line
-                    key={sub.code}
+                    key={sub.id}
                     type="monotone"
                     dataKey={sub.id}
                     stroke={sub.color}
@@ -465,11 +467,11 @@ export function QuizProgress() {
               </h3>
               <div className="text-center mb-4 md:mb-6">
                 <div className="text-4xl md:text-6xl font-black tracking-tight mb-1 md:mb-2">
-                  {userStats?.averageScore.toFixed(1) || '-'}
+                  {formatTwoDecimals(userStats?.averageScore)}
                 </div>
                 <div className="text-white/80 font-bold text-xs md:text-sm bg-white/20 px-3 md:px-4 py-1 md:py-1.5 rounded-full inline-flex items-center gap-1 md:gap-1.5">
                   <TrendingUp className="w-3 h-3 md:w-3.5 md:h-3.5" /> Akurasi{' '}
-                  {userStats?.accuracy.toFixed(0) || '-'}%
+                  {formatTwoDecimals(userStats?.accuracy)}%
                 </div>
               </div>
               <p className="text-white/70 text-xs md:text-sm text-center leading-relaxed mb-4 md:mb-6">
@@ -647,7 +649,7 @@ export function QuizProgress() {
                         Kamu
                       </p>
                       <p className="text-lg md:text-2xl font-black text-slate-800">
-                        {compareToTop.averageScore.user.toFixed(1)}
+                        {formatTwoDecimals(compareToTop.averageScore.user)}
                       </p>
                     </div>
                     <div className="text-center px-1 md:px-3">
@@ -663,7 +665,7 @@ export function QuizProgress() {
                         Top {compareToTop.topNumber}
                       </p>
                       <p className="text-lg md:text-2xl font-black text-amber-600">
-                        {compareToTop.averageScore.top.toFixed(1)}
+                        {formatTwoDecimals(compareToTop.averageScore.top)}
                       </p>
                     </div>
                   </div>
@@ -678,7 +680,7 @@ export function QuizProgress() {
                         Kamu
                       </p>
                       <p className="text-lg md:text-2xl font-black text-slate-800">
-                        {compareToTop.totalScore.user}
+                        {formatTwoDecimals(compareToTop.totalScore.user)}
                       </p>
                     </div>
                     <div className="text-center px-1 md:px-3">
@@ -694,7 +696,7 @@ export function QuizProgress() {
                         Top {compareToTop.topNumber}
                       </p>
                       <p className="text-lg md:text-2xl font-black text-amber-600">
-                        {compareToTop.totalScore.top}
+                        {formatTwoDecimals(compareToTop.totalScore.top)}
                       </p>
                     </div>
                   </div>
@@ -710,7 +712,7 @@ export function QuizProgress() {
                         Kamu
                       </p>
                       <p className="text-lg md:text-2xl font-black text-slate-800">
-                        {compareToTop.accuracy.user.toFixed(0)}%
+                        {formatTwoDecimals(compareToTop.accuracy.user)}%
                       </p>
                     </div>
                     <div className="text-center px-1 md:px-3">
@@ -726,7 +728,7 @@ export function QuizProgress() {
                         Top {compareToTop.topNumber}
                       </p>
                       <p className="text-lg md:text-2xl font-black text-amber-600">
-                        {compareToTop.accuracy.top.toFixed(0)}%
+                        {formatTwoDecimals(compareToTop.accuracy.top)}%
                       </p>
                     </div>
                   </div>
@@ -757,7 +759,7 @@ export function QuizProgress() {
 
               <div className="overflow-x-auto -mx-3 px-3 md:mx-0 md:px-0 pb-2 md:pb-0">
                 <div className="space-y-4 md:space-y-6 min-w-max md:min-w-0">
-                  {compareToTop.subTesGap.map((item) => {
+                  {compareToTop.subTesGap.map((item, index) => {
                     const accuracyGap =
                       item.gap.accuracy.user - item.gap.accuracy.top;
                     const avgGap =
@@ -766,7 +768,7 @@ export function QuizProgress() {
                       item.gap.totalScore.user - item.gap.totalScore.top;
 
                     return (
-                      <div key={item.code}>
+                      <div key={`${item.code}-${item.name}-${index}`}>
                         {/* Subtest Header */}
                         <p className="text-[10px] md:text-xs font-bold text-slate-700 mb-2 md:mb-3">
                           {item.code} - {item.name}
@@ -785,7 +787,7 @@ export function QuizProgress() {
                                   Kamu
                                 </p>
                                 <p className="text-lg md:text-2xl font-black text-slate-800">
-                                  {item.gap.totalScore.user.toFixed(0)}
+                                  {formatTwoDecimals(item.gap.totalScore.user)}
                                 </p>
                               </div>
                               <div className="text-center px-1 md:px-3">
@@ -801,7 +803,7 @@ export function QuizProgress() {
                                   Top {compareToTop.topNumber}
                                 </p>
                                 <p className="text-lg md:text-2xl font-black text-blue-600">
-                                  {item.gap.totalScore.top.toFixed(0)}
+                                  {formatTwoDecimals(item.gap.totalScore.top)}
                                 </p>
                               </div>
                             </div>
@@ -818,7 +820,7 @@ export function QuizProgress() {
                                   Kamu
                                 </p>
                                 <p className="text-lg md:text-2xl font-black text-slate-800">
-                                  {item.gap.averageScore.user.toFixed(1)}
+                                  {formatTwoDecimals(item.gap.averageScore.user)}
                                 </p>
                               </div>
                               <div className="text-center px-1 md:px-3">
@@ -834,7 +836,7 @@ export function QuizProgress() {
                                   Top {compareToTop.topNumber}
                                 </p>
                                 <p className="text-lg md:text-2xl font-black text-purple-600">
-                                  {item.gap.averageScore.top.toFixed(1)}
+                                  {formatTwoDecimals(item.gap.averageScore.top)}
                                 </p>
                               </div>
                             </div>
@@ -851,7 +853,7 @@ export function QuizProgress() {
                                   Kamu
                                 </p>
                                 <p className="text-lg md:text-2xl font-black text-slate-800">
-                                  {item.gap.accuracy.user.toFixed(0)}%
+                                  {formatTwoDecimals(item.gap.accuracy.user)}%
                                 </p>
                               </div>
                               <div className="text-center px-1 md:px-3">
@@ -867,7 +869,7 @@ export function QuizProgress() {
                                   Top {compareToTop.topNumber}
                                 </p>
                                 <p className="text-lg md:text-2xl font-black text-amber-600">
-                                  {item.gap.accuracy.top.toFixed(0)}%
+                                  {formatTwoDecimals(item.gap.accuracy.top)}%
                                 </p>
                               </div>
                             </div>

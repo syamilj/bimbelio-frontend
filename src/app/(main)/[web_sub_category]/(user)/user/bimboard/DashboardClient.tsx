@@ -8,16 +8,16 @@ import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useCallback, useEffect, useState } from 'react';
 
 // Bim Components
-// import BimHeroWelcome from "./new/BimHeroWelcome";
+// import BimHeroWelcome from "./BimHeroWelcome";
 import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
-import BimAchievementBadges from './new/AchievementBadges';
-import BimLearnProgress from './new/BimLearnProgress';
-import BimPerformanceChart from './new/BimPerformanceChart';
-import BimQuickAccessMenu from './new/BimQuickAccessMenu';
-import BimQuickStatsOverview from './new/BimQuickStatsOverview';
-import BimRecentActivity from './new/RecentActivity';
-import BimRecommendedContent from './new/RecommendedContent';
-import BimUpcomingSchedule from './new/UpcomingSchedule';
+import BimAchievementBadges from './_components/AchievementBadges';
+import BimLearnProgress from './_components/BimLearnProgress';
+import BimPerformanceChart from './_components/BimPerformanceChart';
+import BimQuickAccessMenu from './_components/BimQuickAccessMenu';
+import BimQuickStatsOverview from './_components/BimQuickStatsOverview';
+import BimRecentActivity from './_components/RecentActivity';
+import BimRecommendedContent from './_components/RecommendedContent';
+import BimUpcomingSchedule from './_components/UpcomingSchedule';
 
 // Types
 export interface DashboardData {
@@ -199,7 +199,7 @@ function getImageUrl(
   }
 }
 
-export default function DashboardClientNew() {
+export default function DashboardClient() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<DashboardData | null>(null);
 

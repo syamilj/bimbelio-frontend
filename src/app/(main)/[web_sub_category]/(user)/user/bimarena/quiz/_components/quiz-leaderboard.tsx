@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { cn, Provinces } from '@/lib/utils';
+import { cn, formatTwoDecimals, Provinces } from '@/lib/utils';
 import {
   ArrowDown,
   ArrowUp,
@@ -267,7 +267,7 @@ export function QuizLeaderboard() {
                   {activeTopThreeUsers[1].User.name}
                 </p>
                 <div className="mt-1.5 md:mt-2 bg-slate-100 text-slate-700 font-black px-2 md:px-3 py-1 md:py-1.5 rounded-3xl md:rounded-3xl text-[10px] md:text-sm">
-                  {activeTopThreeUsers[1].totalScore.toLocaleString()}
+                  {formatTwoDecimals(activeTopThreeUsers[1].totalScore)}
                 </div>
                 <div
                   className={cn(
@@ -298,7 +298,7 @@ export function QuizLeaderboard() {
                   {activeTopThreeUsers[0].User.name}
                 </p>
                 <div className="mt-1.5 md:mt-2 bg-amber-100 text-amber-700 font-black px-2.5 md:px-4 py-1 md:py-2 rounded-3xl md:rounded-3xl text-xs md:text-lg">
-                  {activeTopThreeUsers[0].totalScore.toLocaleString()}
+                  {formatTwoDecimals(activeTopThreeUsers[0].totalScore)}
                 </div>
                 <div
                   className={cn(
@@ -326,7 +326,7 @@ export function QuizLeaderboard() {
                   {activeTopThreeUsers[2].User.name}
                 </p>
                 <div className="mt-1.5 md:mt-2 bg-orange-100 text-orange-700 font-black px-2 md:px-3 py-1 md:py-1.5 rounded-3xl md:rounded-3xl text-[10px] md:text-sm">
-                  {activeTopThreeUsers[2].totalScore.toLocaleString()}
+                  {formatTwoDecimals(activeTopThreeUsers[2].totalScore)}
                 </div>
                 <div
                   className={cn(
@@ -622,7 +622,7 @@ export function QuizLeaderboard() {
                         {/* Skor */}
                         <td className="px-3 py-3 text-right">
                           <span className="font-black text-slate-900 text-sm">
-                            {entry.totalScore.toLocaleString()}
+                            {formatTwoDecimals(entry.totalScore)}
                           </span>
                         </td>
                         {/* Quiz */}
@@ -648,7 +648,7 @@ export function QuizLeaderboard() {
                                     : 'text-slate-600',
                             )}
                           >
-                            {entry.accuracy.toFixed(1)}%
+                            {formatTwoDecimals(entry.accuracy)}%
                           </span>
                         </td>
                         {/* Waktu */}
