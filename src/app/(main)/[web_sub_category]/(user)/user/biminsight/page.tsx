@@ -37,7 +37,7 @@ export default function BimInsight() {
           <div className="sticky top-0 z-30 py-3 bg-white/90 backdrop-blur-md">
             <div className="overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
               <TabsList
-                className="inline-flex w-max min-w-full justify-start h-auto gap-1 p-1 rounded-[2rem]"
+                className="inline-flex w-fit min-w-fit justify-start h-auto gap-1 p-1 rounded-[2rem]"
               >
                 {tabs.map((tab) => {
                   const Icon = tab.icon;
