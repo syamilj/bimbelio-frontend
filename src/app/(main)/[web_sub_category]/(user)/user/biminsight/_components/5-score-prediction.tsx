@@ -336,7 +336,8 @@ function ScoreTrendChart({
 
   const chartConfig: ChartConfig = {
     actual: { label: "Skor Aktual", color: mainColor },
-    predicted: { label: "Prediksi Tren", color: "#a855f7" },
+    predicted: { label: "Prediksi V1", color: "#a855f7" },
+    ema: { label: "Prediksi V2", color: "#f59e0b" },
   };
 
   return (
