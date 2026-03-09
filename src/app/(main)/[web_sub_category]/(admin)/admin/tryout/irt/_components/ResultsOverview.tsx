@@ -185,6 +185,11 @@ export default function ResultsOverview({ result, sessionLabel }: Props) {
   const q3 = quantile(sorted, 0.75);
   const iqr = q3 - q1;
 
+  // Population stats (dari synthetic/pooled mode) atau fallback ke sample
+  const isSyntheticMode = overallStats.transformMode === 'synthetic' || overallStats.transformMode === 'pooled';
+  const displayMean = isSyntheticMode && overallStats.populationMean != null ? overallStats.populationMean : overallStats.averageScores;
+  const displaySd = isSyntheticMode && overallStats.populationSd != null ? overallStats.populationSd : sd;
+
   // Item parameter analysis (filter nulls)
   const validQuestions = question.filter(
     (q) => q.a !== null && q.b !== null && q.c !== null,
@@ -306,10 +311,10 @@ export default function ResultsOverview({ result, sessionLabel }: Props) {
         />
         <StatCard
           label="Rata-rata"
-          value={overallStats.averageScores.toFixed(1)}
+          value={displayMean.toFixed(1)}
           icon={Activity}
           accent="purple"
-          sub="Skor SNBT"
+          sub={isSyntheticMode ? `Populasi (Sampel: ${overallStats.averageScores.toFixed(1)})` : 'Skor SNBT'}
         />
         <StatCard
           label="Tertinggi"
@@ -333,8 +338,8 @@ export default function ResultsOverview({ result, sessionLabel }: Props) {
         />
         <StatCard
           label="Std. Deviasi"
-          value={sd.toFixed(1)}
-          sub="Sebaran skor"
+          value={displaySd.toFixed(1)}
+          sub={isSyntheticMode ? `Populasi (Sampel: ${sd.toFixed(1)})` : 'Sebaran skor'}
           accent="default"
         />
         <StatCard

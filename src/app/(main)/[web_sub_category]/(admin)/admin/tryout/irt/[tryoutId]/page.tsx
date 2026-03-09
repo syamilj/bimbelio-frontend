@@ -53,6 +53,11 @@ export type OverallStatsProps = {
   medianScores: number;
   minTheta: number;
   maxTheta: number;
+  transformMode?: string;
+  populationMean?: number;
+  populationSd?: number;
+  totalPopulation?: number;
+  syntheticCount?: number;
 };
 
 export type DataIRTProps = {
