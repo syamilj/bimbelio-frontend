@@ -13,15 +13,17 @@ interface SocketEvent {
   callback: (data: any) => void;
 }
 
-export const useSocket = (serverUrl?: string) => {
+export const useSocket = () => {
   const { data: session } = useSession();
   const [isConnected, setIsConnected] = useState(false);
   const [socketId, setSocketId] = useState<string | null>(null);
   const listenersRef = useRef<Map<string, (data: any) => void>>(new Map());
 
   useEffect(() => {
+    console.log('[SOCKET] useEffect triggered');
     // ✅ Hanya connect jika session ada
     if (!session?.user?.id) {
+      console.log('[SOCKET] Session not found, skipping socket connection');
       disconnectSocket();
       setIsConnected(false);
       setSocketId(null);
@@ -30,9 +32,16 @@ export const useSocket = (serverUrl?: string) => {
 
     const socket = connectSocket();
     if (!socket) {
+      console.log('[SOCKET] Socket connection failed');
       setIsConnected(false);
       setSocketId(null);
       return;
+    }
+
+    if (socket.connected) {
+      setIsConnected(true);
+      setSocketId(socket.id || null);
+      return
     }
 
     socket.on('connect', () => {
@@ -43,13 +52,10 @@ export const useSocket = (serverUrl?: string) => {
     });
 
     socket.on('disconnect', () => {
+      console.log('[SOCKET] Disconnected');
       setIsConnected(false);
       setSocketId(null);
     });
-
-    // // ✅ Auto authenticate saat connect
-    // socket.emit('user:auth', { userId: session.user.id });
-    // console.log('[AUTH] Authenticated as:', session.user.id);
 
     // Re-attach listeners yang sudah terdaftar
     listenersRef.current.forEach((callback, eventName) => {
@@ -62,7 +68,7 @@ export const useSocket = (serverUrl?: string) => {
         socket.off(eventName, callback);
       });
     };
-  }, [session?.user?.id, serverUrl]);
+  }, [session?.user?.id]);
 
   const on = useCallback((eventName: string, callback: (data: any) => void) => {
     const socket = getSocket();
@@ -107,9 +113,7 @@ export const useSocket = (serverUrl?: string) => {
     listenersRef.current.clear();
   }, []);
 
-  if (isConnected) {
-    console.log('useSocket:', { isConnected, socketId });
-  }
+  console.log('useSocket:', { isConnected, socketId });
 
   return {
     isConnected,
