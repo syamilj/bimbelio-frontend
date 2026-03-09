@@ -11,17 +11,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import { useGet } from "@/lib/fetch-helper/useGet";
 import { getSubtestLabel } from "@/lib/utils/subtest";
 import { BookOpen, ChevronDown, ChevronUp } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   EmptyState,
   FilterChip,
   HeatmapCell,
   HeroBanner,
   InsightBanner,
+  ScrollWrapper,
   SectionLabel,
   SubtestTooltipHeader,
 } from "./_primitives";
@@ -132,6 +140,30 @@ function SubtestSection({ data }: { data: DataTypeAll }) {
     : data.data.slice(0, INITIAL_ROWS);
   const hasMoreData = data.data.length > INITIAL_ROWS;
 
+  const chartConfig = useMemo(() => {
+    const cfg: ChartConfig = {};
+    SubCategory.forEach((sub) => {
+      cfg[sub.id] = {
+        label: getSubtestLabel(sub.name, sub.website_sub_category_id),
+        color: sub.color,
+      };
+    });
+    return cfg;
+  }, [SubCategory]);
+
+  const filteredChartData = useMemo(() => {
+    if (!data.chartData?.length) return [];
+    return data.chartData.map((row) => {
+      const filtered: Record<string, string | number> = { volume: row.volume };
+      SubCategory.filter((s) => selectedSubtests.includes(s.id)).forEach(
+        (sub) => {
+          filtered[sub.id] = row[sub.id] ?? 0;
+        },
+      );
+      return filtered;
+    });
+  }, [data.chartData, SubCategory, selectedSubtests]);
+
   return (
     <div className="space-y-4 px-5 py-5">
       <SectionLabel
@@ -140,10 +172,7 @@ function SubtestSection({ data }: { data: DataTypeAll }) {
       />
 
       {/* Filter chips */}
-      <div
-        className="-mx-5 overflow-x-auto px-5 pb-1"
-        style={{ scrollbarWidth: "none" }}
-      >
+      <ScrollWrapper className="-mx-5 px-5 pb-1">
         <div className="flex min-w-max gap-1.5 md:min-w-0 md:flex-wrap">
           {SubCategory.map((sub, index) => (
             <FilterChip
@@ -161,11 +190,58 @@ function SubtestSection({ data }: { data: DataTypeAll }) {
             />
           ))}
         </div>
-      </div>
+      </ScrollWrapper>
+
+      {/* Chart */}
+      {filteredChartData.length > 0 && (
+        <div className="rounded-2xl border border-slate-100 bg-white p-3">
+          <SectionLabel title="Grafik Skor per Volume" sub="Rata-rata skor per subkategori di setiap volume" />
+          <ChartContainer
+            config={chartConfig}
+            className="aspect-auto h-[220px] md:h-[260px] w-full mt-2"
+          >
+            <BarChart
+              data={filteredChartData}
+              margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+              <XAxis
+                dataKey="volume"
+                tick={{ fontSize: 10, fill: "#94a3b8" }}
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis
+                tick={{ fontSize: 10, fill: "#94a3b8" }}
+                tickLine={false}
+                axisLine={false}
+                width={45}
+              />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent />
+                }
+              />
+              {SubCategory.filter((s) => selectedSubtests.includes(s.id)).map(
+                (sub, i) => (
+                  <Bar
+                    key={sub.id}
+                    dataKey={sub.id}
+                    fill={sub.color}
+                    radius={[4, 4, 0, 0]}
+                    barSize={18}
+                    fillOpacity={0.85}
+                  />
+                ),
+              )}
+            </BarChart>
+          </ChartContainer>
+        </div>
+      )}
 
       {/* Heatmap score table */}
-      <div className="w-full overflow-x-auto rounded-3xl border border-slate-200/80">
-        <Table>
+      <ScrollWrapper className="w-full rounded-3xl border border-slate-200/80">
+        <Table className="min-w-max" classNameWrapper="overflow-visible">
           <TableHeader>
             <TableRow className="bg-slate-50/80">
               <TableHead className="py-3 font-bold text-slate-700">
@@ -229,7 +305,7 @@ function SubtestSection({ data }: { data: DataTypeAll }) {
             )}
           </TableBody>
         </Table>
-      </div>
+      </ScrollWrapper>
       {hasMoreData && (
         <div className="flex justify-center">
           <Button
@@ -284,6 +360,30 @@ function VolumeSection({ data }: { data: DataTypeQuiz }) {
     : data.data.slice(0, INITIAL_ROWS);
   const hasMoreData = data.data.length > INITIAL_ROWS;
 
+  const volChartConfig = useMemo(() => {
+    const cfg: ChartConfig = {};
+    Volumes.forEach((vol) => {
+      cfg[vol.volId] = {
+        label: vol.volName || `Volume ${vol.volNumber}`,
+        color: vol.color,
+      };
+    });
+    return cfg;
+  }, [Volumes]);
+
+  const filteredVolChartData = useMemo(() => {
+    if (!data.chartData?.length) return [];
+    return data.chartData.map((row) => {
+      const filtered: Record<string, string | number> = { volume: row.volume };
+      Volumes.filter((v) => selectedVolumes.includes(v.volId)).forEach(
+        (vol) => {
+          filtered[vol.volId] = row[vol.volId] ?? 0;
+        },
+      );
+      return filtered;
+    });
+  }, [data.chartData, Volumes, selectedVolumes]);
+
   return (
     <div className="space-y-4 px-5 py-5">
       <SectionLabel
@@ -292,10 +392,7 @@ function VolumeSection({ data }: { data: DataTypeQuiz }) {
       />
 
       {/* Filter chips */}
-      <div
-        className="-mx-5 overflow-x-auto px-5 pb-1"
-        style={{ scrollbarWidth: "none" }}
-      >
+      <ScrollWrapper className="-mx-5 px-5 pb-1">
         <div className="flex min-w-max gap-1.5 md:min-w-0 md:flex-wrap">
           {Volumes.map((vol, index) => (
             <FilterChip
@@ -313,11 +410,58 @@ function VolumeSection({ data }: { data: DataTypeQuiz }) {
             />
           ))}
         </div>
-      </div>
+      </ScrollWrapper>
+
+      {/* Chart */}
+      {filteredVolChartData.length > 0 && (
+        <div className="rounded-2xl border border-slate-100 bg-white p-3">
+          <SectionLabel title="Grafik Skor per Quiz" sub="Skor total per volume di setiap quiz" />
+          <ChartContainer
+            config={volChartConfig}
+            className="aspect-auto h-[220px] md:h-[260px] w-full mt-2"
+          >
+            <BarChart
+              data={filteredVolChartData}
+              margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+              <XAxis
+                dataKey="volume"
+                tick={{ fontSize: 10, fill: "#94a3b8" }}
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis
+                tick={{ fontSize: 10, fill: "#94a3b8" }}
+                tickLine={false}
+                axisLine={false}
+                width={45}
+              />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent />
+                }
+              />
+              {Volumes.filter((v) => selectedVolumes.includes(v.volId)).map(
+                (vol) => (
+                  <Bar
+                    key={vol.volId}
+                    dataKey={vol.volId}
+                    fill={vol.color}
+                    radius={[4, 4, 0, 0]}
+                    barSize={18}
+                    fillOpacity={0.85}
+                  />
+                ),
+              )}
+            </BarChart>
+          </ChartContainer>
+        </div>
+      )}
 
       {/* Heatmap score table */}
-      <div className="w-full overflow-x-auto rounded-3xl border border-slate-200/80">
-        <Table>
+      <ScrollWrapper className="w-full rounded-3xl border border-slate-200/80">
+        <Table className="min-w-max" classNameWrapper="overflow-visible">
           <TableHeader>
             <TableRow className="bg-slate-50/80">
               <TableHead className="py-3 font-bold text-slate-700">
@@ -381,7 +525,7 @@ function VolumeSection({ data }: { data: DataTypeQuiz }) {
             )}
           </TableBody>
         </Table>
-      </div>
+      </ScrollWrapper>
       {hasMoreData && (
         <div className="flex justify-center">
           <Button
