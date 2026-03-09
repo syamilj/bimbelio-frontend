@@ -245,11 +245,11 @@ function PredictionCard({ data }: { data: PredictionResponse }) {
 
   return (
     <div>
-      <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
+      <div className="rounded-3xl border border-slate-200/60 bg-white shadow-xl shadow-slate-200/20 overflow-hidden mb-4">
         {/* -- 1. Hero banner -- */}
-        <HeroBanner prediction={p} insights={ins} mainColor={mainColor} />
+        {/* <HeroBanner prediction={p} insights={ins} mainColor={mainColor} /> */}
 
-        <div className="space-y-5 px-5 py-5">
+        <div className="space-y-5 px-5 py-5 md:px-7 md:py-6">
           {/* Insight */}
           <InsightBanner
             tone={
@@ -271,7 +271,11 @@ function PredictionCard({ data }: { data: PredictionResponse }) {
 
           {/* -- 2. Score trend chart -- */}
           {data.history && data.history.length > 0 && (
-            <ScoreTrendChart history={data.history} mainColor={mainColor} />
+            <ScoreTrendChart
+              history={data.history}
+              projections={data.projections}
+              mainColor={mainColor}
+            />
           )}
 
           {/* -- 3. Projections -- */}
@@ -310,150 +314,168 @@ function PredictionCard({ data }: { data: PredictionResponse }) {
 // 1. Hero Banner
 // =============================================================================
 
-function HeroBanner({
-  prediction: p,
-  insights: ins,
-  mainColor,
-}: {
-  prediction: NonNullable<PredictionResponse["prediction"]>;
-  insights: NonNullable<PredictionResponse["insights"]>;
-  mainColor: string;
-}) {
-  const scoreDiff = p.nextScore - Math.round(ins.latestScore);
-  const trendLabel =
-    p.trend === "improving"
-      ? "Meningkat"
-      : p.trend === "declining"
-        ? "Menurun"
-        : "Stabil";
+// function HeroBanner({
+//   prediction: p,
+//   insights: ins,
+//   mainColor,
+// }: {
+//   prediction: NonNullable<PredictionResponse["prediction"]>;
+//   insights: NonNullable<PredictionResponse["insights"]>;
+//   mainColor: string;
+// }) {
+//   const scoreDiff = p.nextScore - Math.round(ins.latestScore);
+//   const trendLabel =
+//     p.trend === "improving"
+//       ? "Meningkat"
+//       : p.trend === "declining"
+//         ? "Menurun"
+//         : "Stabil";
 
-  const gaugeData = useMemo(
-    () => [
-      { name: "score", value: Math.min(p.nextScore, 1000), fill: mainColor },
-      {
-        name: "remaining",
-        value: Math.max(0, 1000 - p.nextScore),
-        fill: "#e2e8f0",
-      },
-    ],
-    [p.nextScore, mainColor],
-  );
+//   const gaugeData = useMemo(
+//     () => [
+//       { name: "score", value: Math.min(p.nextScore, 1000), fill: mainColor },
+//       {
+//         name: "remaining",
+//         value: Math.max(0, 1000 - p.nextScore),
+//         fill: "#e2e8f0",
+//       },
+//     ],
+//     [p.nextScore, mainColor],
+//   );
 
-  const gaugeConfig: ChartConfig = {
-    score: { label: "Prediksi", color: mainColor },
-    remaining: { label: "", color: "#e2e8f0" },
-  };
+//   const gaugeConfig: ChartConfig = {
+//     score: { label: "Prediksi", color: mainColor },
+//     remaining: { label: "", color: "#e2e8f0" },
+//   };
 
-  return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-5 md:p-6 shadow-sm mb-4">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
-        {/* Score gauge */}
-        <div className="flex-shrink-0">
-          <ChartContainer
-            config={gaugeConfig}
-            className="h-[120px] w-[120px]"
-          >
-            <PieChart>
-              <Pie
-                data={gaugeData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                innerRadius={40}
-                outerRadius={54}
-                startAngle={90}
-                endAngle={-270}
-                paddingAngle={0}
-                stroke="none"
-              >
-                {gaugeData.map((d, i) => (
-                  <Cell key={i} fill={d.fill} />
-                ))}
-                <Label
-                  content={({ viewBox }) => {
-                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                      return (
-                        <text
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
-                        >
-                          <tspan
-                            x={viewBox.cx}
-                            y={(viewBox.cy || 0) - 4}
-                            className="fill-slate-800 text-xl font-black"
-                          >
-                            {p.nextScore}
-                          </tspan>
-                          <tspan
-                            x={viewBox.cx}
-                            y={(viewBox.cy || 0) + 14}
-                            className="fill-slate-400 text-[9px] font-semibold uppercase tracking-wider"
-                          >
-                            Prediksi
-                          </tspan>
-                        </text>
-                      );
-                    }
-                    return null;
-                  }}
-                />
-              </Pie>
-            </PieChart>
-          </ChartContainer>
-        </div>
+//   return (
+//     <div className="relative overflow-hidden border-b border-slate-200/60 bg-white p-5 md:p-7 shadow-sm">
+//       {/* Decorative Background Elements */}
+//       <div
+//         className="absolute top-0 right-0 -mt-16 -mr-16 w-64 h-64 rounded-full opacity-[0.04] blur-3xl pointer-events-none"
+//         style={{ backgroundColor: mainColor }}
+//       />
+//       <div className="absolute bottom-0 left-0 -mb-16 -ml-16 w-48 h-48 rounded-full bg-violet-500 opacity-[0.03] blur-2xl pointer-events-none" />
 
-        {/* Stat pills */}
-        <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-2.5 w-full">
-          <StatPill
-            label="Skor Terakhir"
-            value={`${Math.round(ins.latestScore)}`}
-            sub={`Rata-rata: ${ins.averageScore}`}
-            icon={<Target className="w-3.5 h-3.5" />}
-            color="#64748b"
-          />
-          <StatPill
-            label="Tren"
-            value={trendLabel}
-            sub={`${scoreDiff > 0 ? "+" : ""}${scoreDiff} poin`}
-            icon={
-              p.trend === "improving" ? (
-                <TrendingUp className="w-3.5 h-3.5" />
-              ) : p.trend === "declining" ? (
-                <TrendingDown className="w-3.5 h-3.5" />
-              ) : (
-                <Minus className="w-3.5 h-3.5" />
-              )
-            }
-            color={
-              p.trend === "improving"
-                ? "#22c55e"
-                : p.trend === "declining"
-                  ? "#ef4444"
-                  : "#64748b"
-            }
-          />
-          <StatPill
-            label="Confidence 80%"
-            value={`${p.confidence.low}\u2013${p.confidence.high}`}
-            sub={`MAE: \u00b1${p.mae}`}
-            icon={<Gauge className="w-3.5 h-3.5" />}
-            color={mainColor}
-          />
-          <StatPill
-            label="Total Tryout"
-            value={`${ins.totalTryouts}`}
-            sub={`R\u00b2 ${p.rSquared}%`}
-            icon={<Zap className="w-3.5 h-3.5" />}
-            color="#6366f1"
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
+//       <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
+//         {/* Score gauge */}
+//         <div className="flex-shrink-0 relative">
+//           <ChartContainer
+//             config={gaugeConfig}
+//             className="h-[140px] w-[140px] drop-shadow-sm"
+//           >
+//             <PieChart>
+//               <Pie
+//                 data={gaugeData}
+//                 dataKey="value"
+//                 nameKey="name"
+//                 cx="50%"
+//                 cy="50%"
+//                 innerRadius={45}
+//                 outerRadius={60}
+//                 startAngle={90}
+//                 endAngle={-270}
+//                 paddingAngle={0}
+//                 stroke="none"
+//               >
+//                 {gaugeData.map((d, i) => (
+//                   <Cell key={i} fill={d.fill} />
+//                 ))}
+//                 <Label
+//                   content={({ viewBox }) => {
+//                     if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+//                       return (
+//                         <text
+//                           x={viewBox.cx}
+//                           y={viewBox.cy}
+//                           textAnchor="middle"
+//                           dominantBaseline="middle"
+//                         >
+//                           <tspan
+//                             x={viewBox.cx}
+//                             y={(viewBox.cy || 0) - 6}
+//                             className="fill-slate-800 text-3xl font-black"
+//                           >
+//                             {p.nextScore}
+//                           </tspan>
+//                           <tspan
+//                             x={viewBox.cx}
+//                             y={(viewBox.cy || 0) + 16}
+//                             className="fill-slate-400 text-[10px] font-bold uppercase tracking-wider"
+//                           >
+//                             Prediksi
+//                           </tspan>
+//                         </text>
+//                       );
+//                     }
+//                     return null;
+//                   }}
+//                 />
+//               </Pie>
+//             </PieChart>
+//           </ChartContainer>
+
+//           {/* Target Milestone Indicator */}
+//           {ins.projectedMilestone && (
+//              <div className="absolute -bottom-1 -right-1 bg-white border border-slate-200 shadow-sm rounded-full p-1.5 flex items-center justify-center">
+//                <div className="bg-blue-50 text-blue-600 rounded-full h-7 w-7 flex items-center justify-center">
+//                   <Rocket className="w-3.5 h-3.5" />
+//                </div>
+//              </div>
+//           )}
+//         </div>
+
+//         {/* Stat pills (Scrollable on mobile) */}
+//         {/* <div className="flex-1 w-full bg-slate-50/50 rounded-2xl md:p-3 relative overflow-hidden">
+//           <ScrollRow cols={4}>
+//             <StatPill
+//               label="Skor Terakhir"
+//               value={`${Math.round(ins.latestScore)}`}
+//               sub={`Rata-rata: ${Math.round(ins.averageScore)}`}
+//               icon={<Target className="w-4 h-4" />}
+//               color="#64748b"
+//             />
+//             <StatPill
+//               label="Tren"
+//               value={trendLabel}
+//               sub={`${scoreDiff > 0 ? "+" : ""}${scoreDiff} poin`}
+//               icon={
+//                 p.trend === "improving" ? (
+//                   <TrendingUp className="w-4 h-4" />
+//                 ) : p.trend === "declining" ? (
+//                   <TrendingDown className="w-4 h-4" />
+//                 ) : (
+//                   <Minus className="w-4 h-4" />
+//                 )
+//               }
+//               color={
+//                 p.trend === "improving"
+//                   ? "#22c55e"
+//                   : p.trend === "declining"
+//                     ? "#ef4444"
+//                     : "#64748b"
+//               }
+//             />
+//             <StatPill
+//               label="Confidence"
+//               value={`${p.confidence.low}\u2013${p.confidence.high}`}
+//               sub={`MAE: \u00b1${Math.round(p.mae)}`}
+//               icon={<Gauge className="w-4 h-4" />}
+//               color={mainColor}
+//             />
+//             <StatPill
+//               label="Total Tryout"
+//               value={`${ins.totalTryouts}`}
+//               sub={`R\u00b2 ${Math.round(p.rSquared)}%`}
+//               icon={<Zap className="w-4 h-4" />}
+//               color="#6366f1"
+//             />
+//           </ScrollRow>
+//         </div> */}
+//       </div>
+//     </div>
+//   );
+// }
 
 // =============================================================================
 // 2. Score trend chart
@@ -462,42 +484,43 @@ function HeroBanner({
 function ScoreTrendChart({
   history,
   mainColor,
+  projections,
 }: {
   history: NonNullable<PredictionResponse["history"]>;
   mainColor: string;
+  projections?: PredictionResponse["projections"];
 }) {
-  const chartData = useMemo(
-    () =>
-      history.map((h) => ({
-        name: h.actual == null ? "Prediksi" : `TO-${h.index}`,
-        fullName: h.tryoutTitle,
-        actual: h.actual,
-        predicted: h.predicted,
-        ema: h.ema,
-        isPrediction: h.actual == null,
-      })),
-    [history],
-  );
+  const chartData = useMemo(() => {
+    const projEma = projections && projections.length > 0 ? projections[0].ema : null;
+
+    return history.map((h) => ({
+      name: h.actual == null ? "Prediksi" : `TO-${h.index}`,
+      fullName: h.tryoutTitle,
+      actual: h.actual,
+      predicted: h.predicted,
+      ema: h.ema ?? (h.actual == null ? (projEma ?? h.predicted) : null),
+      isPrediction: h.actual == null,
+    }));
+  }, [history, projections]);
 
   const chartConfig: ChartConfig = {
     actual: { label: "Skor Aktual", color: mainColor },
-    predicted: { label: "WLS Regression", color: "#a855f7" },
-    ema: { label: "EMA Smoothed", color: "#f59e0b" },
+    predicted: { label: "Prediksi Tren", color: "#a855f7" },
   };
 
   return (
     <div className="rounded-3xl border border-slate-100 bg-white p-4">
       <SectionLabel
         title="Tren Skor: Aktual vs Model"
-        sub="Area = skor aktual · Ungu = regresi WLS · Kuning = EMA · Titik terakhir = prediksi"
+        sub="Area = skor aktual · Ungu = proyeksi tren belajar"
       />
       <ChartContainer
         config={chartConfig}
-        className="h-[260px] md:h-[320px] w-full mt-3"
+        className="h-[260px] md:h-[320px] w-full mt-5"
       >
         <ComposedChart
           data={chartData}
-          margin={{ top: 20, right: 20, left: 0, bottom: 40 }}
+          margin={{ top: 35, right: 30, left: -5, bottom: 10 }}
         >
           <defs>
             <linearGradient id="predScoreGrad" x1="0" y1="0" x2="0" y2="1">
@@ -514,13 +537,14 @@ function ScoreTrendChart({
             interval={0}
             angle={-30}
             textAnchor="end"
-            height={60}
+            height={40}
           />
           <YAxis
+            domain={['dataMin - 50', 'dataMax + 50']}
             tick={{ fontSize: 10, fill: "#94a3b8" }}
             tickLine={false}
             axisLine={false}
-            width={45}
+            width={35}
           />
           <ChartTooltip
             content={
@@ -569,8 +593,43 @@ function ScoreTrendChart({
             stroke="#f59e0b"
             strokeWidth={2}
             strokeDasharray="3 3"
-            dot={false}
             connectNulls={false}
+            dot={(props: any) => {
+              const { cx, cy, payload } = props;
+              if (!payload.isPrediction || payload.ema == null) return <g key={`e-${cx}`} />;
+              const pVal = Math.round(payload.ema);
+              return (
+                <g key={`e-${cx}`} className="overflow-visible">
+                  {/* Glowing/pulsing ring */}
+                  <circle cx={cx} cy={cy} r={6} fill="#f59e0b" stroke="none">
+                    <animate attributeName="r" values="6;20" dur="2.2s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.6;0" dur="2.2s" repeatCount="indefinite" />
+                  </circle>
+
+                  {/* Solid inner dot */}
+                  <circle cx={cx} cy={cy} r={6} fill="#f59e0b" stroke="#fff" strokeWidth={2} />
+
+                  {/* Floating animated badge below the dot (to avoid overlapping WLS) */}
+                  <g>
+                    <animateTransform
+                      attributeName="transform"
+                      type="translate"
+                      values="0,0; 0,4; 0,0"
+                      dur="2.2s"
+                      repeatCount="indefinite"
+                    />
+                    {/* Tail pointing up */}
+                    <path d={`M${cx - 6} ${cy + 12} L${cx + 6} ${cy + 12} L${cx} ${cy + 5} Z`} fill="#d97706" />
+                    {/* Tooltip box */}
+                    <rect x={cx - 30} y={cy + 12} width={60} height={24} rx={12} fill="#d97706" className="drop-shadow-md" />
+                    {/* Text value */}
+                    <text x={cx} y={cy + 28} textAnchor="middle" fill="#ffffff" fontSize="11" fontWeight="900" className="drop-shadow-sm">
+                      ✨ {pVal}
+                    </text>
+                  </g>
+                </g>
+              );
+            }}
           />
           <Line
             type="monotone"
@@ -581,16 +640,37 @@ function ScoreTrendChart({
             dot={(props: any) => {
               const { cx, cy, payload } = props;
               if (!payload.isPrediction) return <g key={`p-${cx}`} />;
+              const pVal = Math.round(payload.predicted);
               return (
-                <circle
-                  key={`p-${cx}`}
-                  cx={cx}
-                  cy={cy}
-                  r={8}
-                  fill="#a855f7"
-                  stroke="#fff"
-                  strokeWidth={3}
-                />
+                <g key={`p-${cx}`} className="overflow-visible">
+                  {/* Glowing/pulsing ring */}
+                  <circle cx={cx} cy={cy} r={6} fill="#a855f7" stroke="none">
+                    <animate attributeName="r" values="6;20" dur="2s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.6;0" dur="2s" repeatCount="indefinite" />
+                  </circle>
+
+                  {/* Solid inner dot */}
+                  <circle cx={cx} cy={cy} r={6} fill="#a855f7" stroke="#fff" strokeWidth={2} />
+
+                  {/* Floating animated badge above the dot */}
+                  <g>
+                    <animateTransform
+                      attributeName="transform"
+                      type="translate"
+                      values="0,0; 0,-4; 0,0"
+                      dur="2s"
+                      repeatCount="indefinite"
+                    />
+                    {/* Tail of the tooltip */}
+                    <path d={`M${cx - 6} ${cy - 12} L${cx + 6} ${cy - 12} L${cx} ${cy - 5} Z`} fill="#9333ea" />
+                    {/* Tooltip box */}
+                    <rect x={cx - 30} y={cy - 36} width={60} height={24} rx={12} fill="#9333ea" className="drop-shadow-md" />
+                    {/* Text value */}
+                    <text x={cx} y={cy - 19} textAnchor="middle" fill="#ffffff" fontSize="11" fontWeight="900" className="drop-shadow-sm">
+                      🎯 {pVal}
+                    </text>
+                  </g>
+                </g>
               );
             }}
           />
@@ -740,18 +820,13 @@ function InsightsGrid({
   return (
     <div>
       <SectionLabel title="Insight" />
-      <div
-        className="overflow-x-auto -mx-4 px-4 pb-1 md:mx-0 md:px-0 md:overflow-visible mt-3"
-        style={{ scrollbarWidth: "none" }}
-      >
-        <div className="flex gap-3 min-w-max md:min-w-0 md:grid md:grid-cols-2 xl:grid-cols-3">
-          {insights.map((item) => (
-            <div key={item.title} className="w-[200px] flex-shrink-0 md:w-auto">
-              <InsightCard {...item} />
-            </div>
-          ))}
-        </div>
-      </div>
+      <ScrollRow className="mt-3" cols={3}>
+        {insights.map((item) => (
+          <div key={item.title} className="w-[200px] flex-shrink-0 md:w-auto">
+            <InsightCard {...item} />
+          </div>
+        ))}
+      </ScrollRow>
     </div>
   );
 }
@@ -792,7 +867,7 @@ function SubtestSection({
         <div className="rounded-3xl border border-slate-100 bg-white p-4">
           <SectionLabel
             title="Radar Kemampuan"
-            sub="Biru = rata-rata saat ini · Ungu = prediksi"
+            sub="Area Biru = Rata-rata skor saat ini · Garis Ungu = Proyeksi ke depan"
           />
           <ChartContainer
             config={radarConfig}
@@ -804,6 +879,10 @@ function SubtestSection({
               cy="50%"
               outerRadius="70%"
             >
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent indicator="line" />}
+              />
               <PolarGrid stroke="#e2e8f0" />
               <PolarAngleAxis
                 dataKey="subject"
@@ -868,57 +947,66 @@ function SubtestCard({
   const s = STRENGTH[sub.strength];
 
   return (
-    <div className="flex items-center gap-3 p-3 rounded-3xl border border-slate-100 bg-white hover:shadow-sm transition-shadow">
-      <div
-        className="flex h-9 w-9 items-center justify-center rounded-3xl flex-shrink-0 text-xs font-black text-white"
-        style={{ backgroundColor: color }}
-      >
-        {getSubtestLabel(sub.name, webSubId)}
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-bold text-slate-800 truncate">{sub.name}</p>
-        <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-          <span className="text-xs text-slate-500">
-            {Math.round(sub.currentAvg)}
-          </span>
-          <ArrowRight className="w-3 h-3 text-slate-400 flex-shrink-0" />
-          <span className="text-xs font-bold text-violet-600">
-            {sub.predicted}
-          </span>
-          <span
-            className={cn(
-              "text-[10px] font-bold px-1.5 py-0.5 rounded-full",
-              isUp
-                ? "text-emerald-700 bg-emerald-50"
-                : diff < 0
-                  ? "text-red-600 bg-red-50"
-                  : "text-slate-500 bg-slate-100",
-            )}
-          >
-            {isUp ? "+" : ""}
-            {Math.round(diff)}
-          </span>
+    <div className="flex flex-col gap-3 p-4 rounded-3xl border border-slate-100 bg-white hover:shadow-sm transition-shadow">
+      <div className="flex items-center gap-3">
+        <div
+          className="flex h-10 w-10 items-center justify-center rounded-2xl flex-shrink-0 text-[10px] font-black text-white"
+          style={{ backgroundColor: color }}
+        >
+          {getSubtestLabel(sub.name, webSubId)}
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-bold text-slate-800 leading-tight">{sub.name}</p>
+          <div className="flex items-center gap-1.5 mt-1">
+            <Badge
+              variant="outline"
+              className={cn("text-[9px] px-1.5 py-0 uppercase tracking-widest", s.badge)}
+            >
+              {s.label}
+            </Badge>
+            <div className="flex items-center gap-0.5 text-slate-500">
+              {sub.trend === "improving" ? (
+                <ArrowUp className="w-3 h-3 text-emerald-500" />
+              ) : sub.trend === "declining" ? (
+                <ArrowDown className="w-3 h-3 text-red-500" />
+              ) : (
+                <Minus className="w-3 h-3 text-slate-400" />
+              )}
+              <span className="text-[10px] font-medium">
+                {sub.slope > 0 ? "+" : ""}
+                {sub.slope % 1 === 0 ? sub.slope : sub.slope.toFixed(1)} Poin/TO
+              </span>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="flex-shrink-0 text-right">
-        <Badge
-          variant="outline"
-          className={cn("text-[10px] font-bold", s.badge)}
-        >
-          {s.label}
-        </Badge>
-        <div className="flex items-center gap-0.5 justify-end mt-1">
-          {sub.trend === "improving" ? (
-            <ArrowUp className="w-3 h-3 text-emerald-500" />
-          ) : sub.trend === "declining" ? (
-            <ArrowDown className="w-3 h-3 text-red-500" />
-          ) : (
-            <Minus className="w-3 h-3 text-slate-400" />
-          )}
-          <span className="text-[10px] text-slate-500">
-            {sub.slope > 0 ? "+" : ""}
-            {sub.slope}/TO
-          </span>
+
+      <div className="flex items-center bg-slate-50/70 p-2.5 rounded-2xl gap-3">
+        <div className="flex-1">
+          <p className="text-[10px] font-bold text-slate-400 mb-0.5 uppercase tracking-wider">Rata-rata</p>
+          <p className="text-base font-bold text-slate-700">{Math.round(sub.currentAvg)}</p>
+        </div>
+        <div className="flex items-center justify-center text-slate-300">
+          <ArrowRight className="w-4 h-4" />
+        </div>
+        <div className="flex-1 text-right">
+          <p className="text-[10px] font-bold text-violet-500/70 mb-0.5 uppercase tracking-wider">Prediksi</p>
+          <div className="flex items-center justify-end gap-1.5">
+            <span className="text-base font-black text-violet-600">{sub.predicted}</span>
+             <span
+              className={cn(
+                "text-[10px] font-bold px-1.5 py-0.5 rounded-full",
+                isUp
+                  ? "text-emerald-700 bg-emerald-100/50"
+                  : diff < 0
+                    ? "text-red-700 bg-red-100/50"
+                    : "text-slate-500 bg-slate-200/50",
+              )}
+            >
+              {isUp ? "+" : ""}
+              {Math.round(diff)}
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -945,6 +1033,7 @@ function EfficiencySection({
         benar: d.benar,
         salah: d.salah,
         kosong: d.kosong,
+        benarLine: d.benar,
       })),
     [bskTrend],
   );
@@ -987,15 +1076,16 @@ function EfficiencySection({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="rounded-[1.5rem] border border-slate-100 bg-white p-4 space-y-5">
       <SectionLabel title="Efisiensi Jawab" />
 
       {/* Efficiency gauge + change cards */}
-      <div className="space-y-3">
-        <div className="mx-auto w-fit rounded-3xl border border-slate-100 bg-white p-3 text-center">
+      <ScrollRow cols={4} className="mt-4">
+        {/* Gauge Card */}
+        <div className="w-[150px] md:w-auto rounded-3xl border border-slate-100 bg-white shadow-sm p-4 shrink-0 flex flex-col items-center justify-center">
           <ChartContainer
             config={effConfig}
-            className="h-[90px] w-[90px]"
+            className="h-[80px] w-[80px] drop-shadow-sm mb-1"
           >
             <PieChart>
               <Pie
@@ -1004,8 +1094,8 @@ function EfficiencySection({
                 nameKey="name"
                 cx="50%"
                 cy="50%"
-                innerRadius={30}
-                outerRadius={42}
+                innerRadius={28}
+                outerRadius={40}
                 startAngle={90}
                 endAngle={-270}
                 paddingAngle={0}
@@ -1024,7 +1114,7 @@ function EfficiencySection({
                           textAnchor="middle"
                           dominantBaseline="middle"
                         >
-                          <tspan className="fill-slate-800 text-base font-black">
+                          <tspan className="fill-slate-800 text-lg font-black tracking-tight" dy="2">
                             {Math.round(insights.scoringEfficiency)}%
                           </tspan>
                         </text>
@@ -1036,35 +1126,41 @@ function EfficiencySection({
               </Pie>
             </PieChart>
           </ChartContainer>
-          <p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-2">
             Efisiensi
           </p>
         </div>
 
-        <div className="grid grid-cols-3 gap-3">
+        <div className="w-[150px] md:w-auto h-full [&>div]:h-full">
           <ChangeCard
-          icon={<CheckCircle2 className="w-4 h-4 text-emerald-500" />}
-          label="Benar"
-          current={latestBsk?.benar ?? 0}
-          change={benarChange}
-          inverseGood={false}
-        />
-        <ChangeCard
-          icon={<XCircle className="w-4 h-4 text-red-500" />}
-          label="Salah"
-          current={latestBsk?.salah ?? 0}
-          change={salahChange}
-          inverseGood
-        />
-          <ChangeCard
-          icon={<Minus className="w-4 h-4 text-slate-400" />}
-          label="Kosong"
-          current={latestBsk?.kosong ?? 0}
-          change={kosongChange}
-          inverseGood
-        />
+            icon={<CheckCircle2 className="w-5 h-5 text-emerald-500" />}
+            label="BENAR"
+            current={latestBsk?.benar ?? 0}
+            change={benarChange}
+            inverseGood={false}
+          />
         </div>
-      </div>
+        <div className="w-[150px] md:w-auto h-full [&>div]:h-full">
+          <ChangeCard
+            icon={<XCircle className="w-5 h-5 text-red-500" />}
+            label="SALAH"
+            current={latestBsk?.salah ?? 0}
+            change={salahChange}
+            inverseGood
+          />
+        </div>
+        <div className="w-[150px] md:w-auto h-full [&>div]:h-full">
+          <ChangeCard
+            icon={
+              <div className="w-4 h-4 rounded-full border-[2.5px] border-slate-300" />
+            }
+            label="KOSONG"
+            current={latestBsk?.kosong ?? 0}
+            change={kosongChange}
+            inverseGood
+          />
+        </div>
+      </ScrollRow>
 
       {/* BSK stacked bar chart */}
       <div className="rounded-3xl border border-slate-100 bg-white p-4">
@@ -1076,7 +1172,7 @@ function EfficiencySection({
           config={bskConfig}
           className="h-[220px] md:h-[280px] w-full mt-3"
         >
-          <BarChart
+          <ComposedChart
             data={bskChartData}
             margin={{ top: 10, right: 10, left: 0, bottom: 10 }}
             barCategoryGap="18%"
@@ -1132,7 +1228,16 @@ function EfficiencySection({
                 formatter={(v: unknown) => Number(v) > 0 ? String(v) : ''}
               />
             </Bar>
-          </BarChart>
+            <Line
+              type="monotone"
+              dataKey="benarLine"
+              stroke="#16a34a"
+              strokeWidth={2}
+              dot={{ r: 3, fill: "#16a34a", strokeWidth: 2, stroke: "#fff" }}
+              activeDot={{ r: 5 }}
+              tooltipType="none"
+            />
+          </ComposedChart>
         </ChartContainer>
       </div>
     </div>
@@ -1165,8 +1270,6 @@ function PercentileChart({
 
   if (percentileData.length === 0) return null;
 
-  const maxRank = Math.max(...percentileData.map((d) => d.total ?? d.rank ?? 1));
-
   const chartConfig: ChartConfig = {
     percentile: { label: "Persentil", color: "#22c55e" },
     rank: { label: "Peringkat", color: "#6366f1" },
@@ -1184,7 +1287,7 @@ function PercentileChart({
       >
         <ComposedChart
           data={percentileData}
-          margin={{ top: 20, right: 20, left: -10, bottom: 10 }}
+          margin={{ top: 20, right: 10, left: -10, bottom: 10 }}
         >
           <defs>
             <linearGradient id="pctlGrad" x1="0" y1="0" x2="0" y2="1">
@@ -1212,11 +1315,12 @@ function PercentileChart({
           <YAxis
             yAxisId="right"
             orientation="right"
-            domain={[maxRank, 0]}
+            domain={['dataMin', 'dataMax']}
+            reversed={true}
             tick={{ fontSize: 10, fill: "#a5b4fc" }}
             tickLine={false}
             axisLine={false}
-            width={30}
+            width={24}
             tickFormatter={(v) => `#${v}`}
             allowDecimals={false}
           />

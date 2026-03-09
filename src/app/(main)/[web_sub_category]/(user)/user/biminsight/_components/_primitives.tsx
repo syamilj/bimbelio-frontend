@@ -37,20 +37,24 @@ export function StatPill({
   color: string;
 }) {
   return (
-    <div className="rounded-3xl p-3 bg-white border border-slate-200/80 shadow-sm">
-      <div
-        className="w-7 h-7 rounded-3xl flex items-center justify-center text-white mb-2"
-        style={{ backgroundColor: color }}
-      >
-        {icon}
+    <div className="rounded-[1.5rem] p-4 bg-white border border-slate-200/80 shadow-sm flex-[1_0_auto] flex flex-col items-center justify-center text-center max-w-[160px] md:max-w-none">
+      <div className="flex items-center justify-center gap-2 mb-2 w-full">
+        <div
+          className="w-7 h-7 md:w-8 md:h-8 rounded-[0.7rem] flex items-center justify-center text-white flex-shrink-0"
+          style={{ backgroundColor: color }}
+        >
+          {icon}
+        </div>
+        <p className="text-[10px] md:text-[11px] font-bold uppercase tracking-wider text-slate-500 whitespace-nowrap overflow-hidden text-ellipsis">
+          {label}
+        </p>
       </div>
-      <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-        {label}
-      </p>
-      <p className="text-lg font-black leading-none text-slate-800 mt-0.5">
-        {value}
-      </p>
-      <p className="text-[10px] text-slate-500 mt-0.5">{sub}</p>
+      <div className="mt-1 flex items-baseline justify-center gap-1.5 w-full">
+        <p className="text-xl md:text-2xl font-black leading-none text-slate-800 truncate">
+          {value}
+        </p>
+      </div>
+      <p className="text-[10px] md:text-[11px] text-slate-500 mt-1.5 pb-0.5 line-clamp-2 md:line-clamp-1">{sub}</p>
     </div>
   );
 }
@@ -96,15 +100,15 @@ export function InsightCard({
   return (
     <div
       className={cn(
-        "rounded-3xl p-4 border border-slate-200 shadow-sm",
+        "rounded-3xl p-4 border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center",
         t.bg,
       )}
     >
-      <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+      <p className="text-[10px] md:text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
         {title}
       </p>
-      <p className={cn("mt-1 text-xl font-black", t.text)}>{value}</p>
-      <p className="mt-1 text-xs text-slate-500">{sub}</p>
+      <p className={cn("text-xl md:text-2xl font-black w-full truncate", t.text)}>{value}</p>
+      <p className="mt-1 text-[10px] md:text-[11px] text-slate-500 w-full line-clamp-2">{sub}</p>
     </div>
   );
 }
@@ -127,25 +131,27 @@ export function ChangeCard({
   const isGood = inverseGood ? change <= 0 : change >= 0;
 
   return (
-    <div className="rounded-3xl bg-white border border-slate-200 shadow-sm p-4">
-      <div className="flex items-center gap-2 mb-2">
-        <div className="w-7 h-7 rounded-3xl bg-slate-500 flex items-center justify-center [&_svg]:text-white [&_svg]:w-3.5 [&_svg]:h-3.5">{icon}</div>
-        <span className="text-[10px] font-bold text-slate-500 uppercase">
+    <div className="rounded-3xl bg-white border border-slate-200 shadow-sm p-4 flex flex-col items-center justify-center text-center">
+      <div className="flex items-center justify-center gap-2 mb-2 w-full">
+        <div className="w-7 h-7 rounded-3xl bg-slate-500 flex items-center justify-center [&_svg]:text-white [&_svg]:w-3.5 [&_svg]:h-3.5 flex-shrink-0">
+          {icon}
+        </div>
+        <span className="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase whitespace-nowrap overflow-hidden text-ellipsis">
           {label}
         </span>
       </div>
-      <div className="text-2xl font-black text-slate-800">{current}</div>
-      <div className="flex items-center gap-1 mt-1">
+      <div className="text-xl md:text-2xl font-black text-slate-800 truncate w-full">{current}</div>
+      <div className="flex items-center justify-center gap-1 mt-1.5 w-full">
         {change !== 0 ? (
           <>
             {isGood ? (
-              <ArrowUp className="w-3 h-3 text-emerald-500" />
+              <ArrowUp className="w-3 h-3 text-emerald-500 flex-shrink-0" />
             ) : (
-              <ArrowDown className="w-3 h-3 text-red-500" />
+              <ArrowDown className="w-3 h-3 text-red-500 flex-shrink-0" />
             )}
             <span
               className={cn(
-                "text-[10px] font-bold",
+                "text-[10px] text-left md:text-[11px] font-bold leading-tight",
                 isGood ? "text-emerald-600" : "text-red-500",
               )}
             >
@@ -154,7 +160,7 @@ export function ChangeCard({
             </span>
           </>
         ) : (
-          <span className="text-[10px] text-slate-400">Tidak berubah</span>
+          <span className="text-[10px] md:text-[11px] text-slate-400">Tidak berubah</span>
         )}
       </div>
     </div>
@@ -343,22 +349,24 @@ export function ScrollRow({
     <div className={cn("relative", className)}>
       <div
         ref={scrollRef}
-        className="overflow-x-auto -mx-4 px-4 pb-1 md:mx-0 md:px-0 md:overflow-visible"
+        className="overflow-x-auto -mx-4 px-4 pb-2 pt-1 md:mx-0 md:px-0 md:overflow-visible"
         style={{ scrollbarWidth: "none" }}
       >
         <div
           className={cn(
-            "flex gap-2 min-w-max md:min-w-0 md:grid",
+            "flex gap-3 md:gap-4 min-w-max md:min-w-0 md:grid",
             gridCols,
           )}
         >
           {children}
         </div>
       </div>
-      {/* Scroll fade hint */}
+      {/* Scroll hint without white gradient overlay */}
       {canScrollRight && (
-        <div className="absolute right-0 top-0 bottom-1 w-8 bg-gradient-to-l from-white/90 to-transparent pointer-events-none flex items-center justify-end md:hidden">
-          <ChevronRight className="w-4 h-4 text-slate-400 animate-pulse" />
+        <div className="absolute right-0 top-0 bottom-2 w-8 pointer-events-none flex items-center justify-end md:hidden">
+          <div className="bg-white/90 backdrop-blur-sm text-slate-500 shadow-sm border border-slate-200/50 rounded-full p-1 animate-pulse mr-1">
+            <ChevronRight className="w-3.5 h-3.5" />
+          </div>
         </div>
       )}
     </div>

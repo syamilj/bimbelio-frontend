@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Report | Bimbelio',
+  title: 'BimInsight | Bimbelio',
   description: 'Lihat laporan lengkap progres belajar kamu',
 };
 
