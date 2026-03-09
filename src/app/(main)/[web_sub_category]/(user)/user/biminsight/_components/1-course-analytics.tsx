@@ -40,6 +40,7 @@ import {
   InsightBanner,
   InsightCard,
   ScrollRow,
+  ScrollWrapper,
   SectionLabel,
   StatPill,
 } from "./_primitives";
@@ -299,7 +300,7 @@ export const CourseAnalytics = () => {
             title="Analitik Course"
             sub="Ringkasan lintas kategori dan detail per kategori"
           />
-          <ScrollRow>
+          <ScrollRow noGrid>
             <StatPill
               label="Kategori"
               value={`${completedCategory}/${totalCategory}`}
@@ -325,12 +326,9 @@ export const CourseAnalytics = () => {
         </HeroBanner>
 
         {/* Insights */}
-        <div
-          className="px-5 pt-5 overflow-x-auto -mx-4 md:mx-0 md:overflow-visible"
-          style={{ scrollbarWidth: "none" }}
-        >
-          <div className="flex gap-3 min-w-max px-4 md:px-0 md:min-w-0 md:grid xl:grid-cols-3">
-            <div className="w-[200px] flex-shrink-0 md:w-auto">
+        <ScrollWrapper className="-mx-5 px-5 pt-5 pb-2">
+          <div className="flex gap-3 min-w-max md:min-w-0 md:grid xl:grid-cols-3">
+            <div className="w-[180px] flex-shrink-0 md:w-auto">
               <InsightCard
                 title="Kategori Terdepan"
                 value={bestProgressCategory?.name ?? "-"}
@@ -342,7 +340,7 @@ export const CourseAnalytics = () => {
                 tone="emerald"
               />
             </div>
-            <div className="w-[200px] flex-shrink-0 md:w-auto">
+            <div className="w-[180px] flex-shrink-0 md:w-auto">
               <InsightCard
                 title="Butuh Perhatian"
                 value={needsAttentionCategory?.name ?? "-"}
@@ -354,7 +352,7 @@ export const CourseAnalytics = () => {
                 tone="amber"
               />
             </div>
-            <div className="w-[200px] flex-shrink-0 md:w-auto">
+            <div className="w-[180px] flex-shrink-0 md:w-auto">
               <InsightCard
                 title="Aktivitas 7 Hari"
                 value={`${totalRecentActiveDays}`}
@@ -363,7 +361,7 @@ export const CourseAnalytics = () => {
               />
             </div>
           </div>
-        </div>
+        </ScrollWrapper>
 
         {/* Overview charts */}
         <div className="px-5 pt-4 grid gap-4 xl:grid-cols-2">
@@ -377,11 +375,11 @@ export const CourseAnalytics = () => {
               config={{
                 progress: { label: "Progress", color: mainColor },
               }}
-              className="min-h-[320px] w-full mt-2"
+              className="aspect-auto h-[220px] md:h-[260px] w-full mt-2"
             >
               <BarChart
                 data={overviewChartData}
-                margin={{ top: 20, right: 10, left: 0, bottom: 40 }}
+                margin={{ top: 20, right: 10, left: -20, bottom: 0 }}
               >
                 <CartesianGrid
                   strokeDasharray="3 3"
@@ -457,11 +455,11 @@ export const CourseAnalytics = () => {
               config={{
                 avgQuiz: { label: "Avg Quiz", color: "#10B981" },
               }}
-              className="min-h-[320px] w-full mt-2"
+              className="aspect-auto h-[220px] md:h-[260px] w-full mt-2"
             >
               <LineChart
                 data={overviewChartData}
-                margin={{ top: 20, right: 10, left: 0, bottom: 40 }}
+                margin={{ top: 20, right: 10, left: -20, bottom: 0 }}
               >
                 <CartesianGrid
                   strokeDasharray="3 3"
@@ -567,10 +565,7 @@ export const CourseAnalytics = () => {
               />
 
               {/* Category chips */}
-              <div
-                className="-mx-5 overflow-x-auto px-5 pb-1"
-                style={{ scrollbarWidth: "none" }}
-              >
+              <ScrollWrapper className="-mx-5 px-5 pb-2">
                 <div className="flex min-w-max gap-1.5 md:min-w-0 md:flex-wrap">
                   {overviewCards.map((item) => (
                     <FilterChip
@@ -588,13 +583,13 @@ export const CourseAnalytics = () => {
                     />
                   ))}
                 </div>
-              </div>
+              </ScrollWrapper>
 
               {/* Category detail */}
               {featuredCategory && (
                 <div className="space-y-4">
                   {/* Summary stat pills */}
-                  <ScrollRow cols={4}>
+                  <ScrollRow noGrid>
                     <StatPill
                       label="Progress"
                       value={`${featuredCategory.percentageProgress}%`}

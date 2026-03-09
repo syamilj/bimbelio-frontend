@@ -318,9 +318,9 @@ export const LiveClassAnalytics = () => {
         <>
           {/* ── Row 1: Donut + Streak side-by-side ────────────────── */}
           <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
-            <div className="rounded-3xl border border-slate-200/80 bg-white p-5 shadow-sm lg:col-span-2">
+            <div className="rounded-3xl border border-slate-100 bg-white p-5 shadow-sm lg:col-span-2 flex flex-col justify-center">
               <SectionLabel title="Distribusi Kehadiran" />
-              <div className="flex flex-col items-center sm:flex-row sm:items-center sm:gap-6">
+              <div className="mt-2 flex flex-col items-center sm:flex-row sm:items-center sm:gap-8 sm:justify-around w-full">
                 <ChartContainer
                   config={{
                     hadir: { label: 'Hadir', color: '#10B981' },
@@ -337,7 +337,7 @@ export const LiveClassAnalytics = () => {
                       outerRadius={75}
                       innerRadius={50}
                       dataKey="value"
-                      paddingAngle={3}
+                      paddingAngle={4}
                       stroke="white"
                       strokeWidth={2}
                       isAnimationActive
@@ -351,8 +351,8 @@ export const LiveClassAnalytics = () => {
                           if (!vb?.cx || !vb?.cy) return null;
                           return (
                             <text textAnchor="middle">
-                              <tspan x={vb.cx} y={vb.cy - 4} fontSize={24} fontWeight={900} fill="#1e293b">{attendanceRate}%</tspan>
-                              <tspan x={vb.cx} y={vb.cy + 12} fontSize={10} fontWeight={600} fill="#94a3b8">Kehadiran</tspan>
+                              <tspan x={vb.cx} y={vb.cy - 2} fontSize={28} fontWeight={900} fill="#1e293b">{attendanceRate}%</tspan>
+                              <tspan x={vb.cx} y={vb.cy + 16} fontSize={11} fontWeight={600} fill="#64748b">Kehadiran</tspan>
                             </text>
                           );
                         }}
@@ -364,8 +364,8 @@ export const LiveClassAnalytics = () => {
                           nameKey="name"
                           formatter={(value, name) => (
                             <>
-                              <span className="text-muted-foreground">{name}</span>
-                              <span className="ml-auto font-mono font-bold tabular-nums">{value} sesi</span>
+                              <span className="text-slate-500 font-medium">{String(name)}</span>
+                              <span className="ml-auto font-mono font-bold text-slate-800">{String(value)} sesi</span>
                             </>
                           )}
                         />
@@ -375,13 +375,13 @@ export const LiveClassAnalytics = () => {
                 </ChartContainer>
 
                 {/* Legend + summary */}
-                <div className="mt-3 flex flex-col gap-2.5 sm:mt-0">
+                <div className="mt-4 sm:mt-0 flex flex-col gap-3">
                   {pieData.map((item) => (
-                    <div key={item.name} className="flex items-center gap-2">
-                      <div className="h-3 w-3 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
-                      <span className="text-sm font-semibold text-slate-700 w-20">{item.name}</span>
-                      <span className="text-sm font-bold tabular-nums text-slate-900">{item.value}</span>
-                      <span className="text-xs text-slate-400">sesi</span>
+                    <div key={item.name} className="flex items-center gap-3 bg-slate-50/50 px-4 py-2.5 rounded-2xl border border-slate-100">
+                      <div className="h-3 w-3 rounded-full flex-shrink-0 shadow-sm" style={{ backgroundColor: item.color }} />
+                      <span className="text-sm font-semibold text-slate-600 w-20">{item.name}</span>
+                      <span className="text-base font-bold text-slate-800">{item.value}</span>
+                      <span className="text-[11px] font-medium text-slate-400">sesi</span>
                     </div>
                   ))}
                 </div>
@@ -389,21 +389,21 @@ export const LiveClassAnalytics = () => {
             </div>
 
             {/* ── Streak Card ──────────────────────────────────── */}
-            <div className="rounded-3xl border border-slate-200/80 bg-white p-5 shadow-sm flex flex-col items-center justify-center text-center">
-              <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-3xl" style={{ backgroundColor: `${mainColor}15` }}>
-                <Flame className="h-6 w-6" style={{ color: mainColor }} />
+            <div className="rounded-3xl border border-slate-100 bg-white p-5 shadow-sm flex flex-col items-center justify-center text-center">
+              <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-[1.25rem] bg-slate-50/80 border border-slate-100">
+                <Flame className="h-7 w-7" style={{ color: mainColor }} />
               </div>
-              <p className="text-3xl font-black text-slate-900 tabular-nums">{streak}</p>
-              <p className="text-sm font-bold text-slate-600">Streak Kehadiran</p>
-              <p className="mt-1 text-xs text-slate-400">Kelas berturut-turut hadir</p>
+              <p className="text-4xl font-black text-slate-800 tabular-nums tracking-tight">{streak}</p>
+              <p className="text-sm font-bold text-slate-600 mt-1">Streak Kehadiran</p>
+              <p className="mt-1.5 text-xs text-slate-400 font-medium">Kelas berturut-turut hadir</p>
             </div>
           </div>
 
           {/* ── Row 2: Weekly Trend ───────────────────────────────── */}
           {weeklyTrend.length > 0 && (
-            <div className="mt-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-sm">
+            <div className="mt-4 rounded-3xl border border-slate-100 bg-white p-5 shadow-sm">
               <SectionLabel title="Tren Kehadiran Mingguan" />
-              <p className="mb-3 text-xs text-slate-400">8 minggu terakhir</p>
+              <p className="mb-5 text-xs font-medium text-slate-500">8 minggu terakhir</p>
               <ChartContainer
                 config={{
                   hadir: { label: 'Hadir', color: '#10B981' },
@@ -413,16 +413,16 @@ export const LiveClassAnalytics = () => {
                 className="h-[160px] w-full"
               >
                 <BarChart data={weeklyTrend} barGap={1} barCategoryGap="20%">
-                  <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis dataKey="week" tickLine={false} axisLine={false} fontSize={10} tick={{ fill: '#94a3b8' }} />
-                  <YAxis tickLine={false} axisLine={false} fontSize={10} tick={{ fill: '#94a3b8' }} allowDecimals={false} width={28} />
+                  <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#f1f5f9" />
+                  <XAxis dataKey="week" tickLine={false} axisLine={false} tick={{ fontSize: 10, fill: '#64748b' }} tickMargin={10} />
+                  <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 10, fill: '#64748b' }} allowDecimals={false} width={30} />
                   <ChartTooltip
                     content={
                       <ChartTooltipContent
                         formatter={(value, name) => (
                           <>
-                            <span className="text-muted-foreground capitalize">{String(name)}</span>
-                            <span className="ml-auto font-mono font-bold tabular-nums">{value}</span>
+                            <span className="text-slate-500 font-medium capitalize">{String(name)}</span>
+                            <span className="ml-auto font-mono font-bold text-slate-800 tabular-nums">{String(value)}</span>
                           </>
                         )}
                       />
@@ -455,37 +455,37 @@ export const LiveClassAnalytics = () => {
           )}
 
           {/* ── Row 3: Schedule List (compact) ───────────────────── */}
-          <div className="mt-4 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-sm">
+          <div className="mt-4 rounded-3xl border border-slate-100 bg-white p-5 shadow-sm">
             <SectionLabel title="Jadwal BimLive" />
-            <p className="mb-3 text-xs text-slate-400">Daftar kelas langsung terbaru</p>
+            <p className="mb-2 text-xs font-medium text-slate-500">Daftar kelas langsung terbaru</p>
 
             {listData.length > 0 ? (
               <>
-                <div className="space-y-2">
+                <div className="space-y-0 text-sm mt-3">
                   {visibleSchedule.map((item) => {
                     const startDate = new Date(item.startDate);
                     const endDate = new Date(item.endDate);
                     const statusStyle =
                       item.presenceStatus === 'PRESENT'
-                        ? { bg: 'bg-emerald-50 border-emerald-100', text: 'text-emerald-700', dot: '#10B981', label: 'Hadir' }
+                        ? { bg: '#ecfdf5', text: 'text-emerald-700', dot: 'bg-emerald-500', label: 'Hadir' }
                         : item.presenceStatus === 'LATE'
-                          ? { bg: 'bg-amber-50 border-amber-100', text: 'text-amber-700', dot: '#F59E0B', label: 'Terlambat' }
+                          ? { bg: '#fffbeb', text: 'text-amber-700', dot: 'bg-amber-500', label: 'Terlambat' }
                           : item.presenceStatus === 'ABSENT'
-                            ? { bg: 'bg-red-50 border-red-100', text: 'text-red-600', dot: '#EF4444', label: 'Absen' }
+                            ? { bg: '#fef2f2', text: 'text-red-700', dot: 'bg-red-500', label: 'Absen' }
                             : item.presenceStatus === 'UPCOMING'
-                              ? { bg: 'bg-blue-50 border-blue-100', text: 'text-blue-600', dot: '#3B82F6', label: 'Akan Datang' }
-                              : { bg: 'bg-slate-50 border-slate-100', text: 'text-slate-500', dot: '#9CA3AF', label: 'Pending' };
+                              ? { bg: '#eff6ff', text: 'text-blue-700', dot: 'bg-blue-500', label: 'Akan Datang' }
+                              : { bg: '#f8fafc', text: 'text-slate-600', dot: 'bg-slate-400', label: 'Pending' };
 
                     return (
-                      <div key={item.id} className={`flex items-center justify-between gap-3 rounded-3xl border px-3 py-2.5 transition-all hover:shadow-sm ${statusStyle.bg}`}>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs font-bold text-slate-800 truncate">{item.title}</p>
-                          <p className="text-[10px] text-slate-500">
-                            {format(startDate, 'dd MMM yyyy', { locale: localeId })} · {format(startDate, 'HH:mm')}–{format(endDate, 'HH:mm')} · {Math.round(item.duration / 60)} mnt
+                      <div key={item.id} className="flex items-center justify-between border-b border-slate-100 py-3.5 last:border-0 hover:bg-slate-50/50 transition-colors px-2 rounded-xl -mx-2">
+                        <div className="flex-1 min-w-0 pr-4">
+                          <p className="text-sm font-bold text-slate-800 truncate">{item.title}</p>
+                          <p className="text-[11px] font-medium text-slate-500 mt-1">
+                            {format(startDate, 'dd MMM yyyy', { locale: localeId })} <span className="opacity-50 mx-1">•</span> {format(startDate, 'HH:mm')}–{format(endDate, 'HH:mm')} <span className="opacity-50 mx-1">•</span> {Math.round(item.duration / 60)} mnt
                           </p>
                         </div>
-                        <div className="flex flex-shrink-0 items-center gap-1">
-                          <div className="h-2 w-2 rounded-full" style={{ backgroundColor: statusStyle.dot }} />
+                        <div className="flex flex-shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1" style={{ backgroundColor: statusStyle.bg }}>
+                          <div className={`h-1.5 w-1.5 rounded-full ${statusStyle.dot}`} />
                           <span className={`text-[10px] font-bold ${statusStyle.text}`}>{statusStyle.label}</span>
                         </div>
                       </div>
@@ -495,7 +495,7 @@ export const LiveClassAnalytics = () => {
                 {listData.length > 5 && (
                   <button
                     onClick={() => setShowAllSchedule(!showAllSchedule)}
-                    className="mt-3 flex w-full items-center justify-center gap-1 rounded-3xl border border-slate-200 bg-slate-50 py-2 text-xs font-bold text-slate-600 transition-all hover:bg-slate-100"
+                    className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-full border border-slate-200 bg-white py-2 text-xs font-bold text-slate-600 transition-all hover:bg-slate-50 hover:text-slate-900 shadow-sm"
                   >
                     {showAllSchedule ? 'Tutup' : `Lihat semua (${listData.length})`}
                     <ChevronDown className={`h-3.5 w-3.5 transition-transform ${showAllSchedule ? 'rotate-180' : ''}`} />
