@@ -2,6 +2,7 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
 import {
   GraduationCap,
   Layers3,
@@ -29,57 +30,60 @@ export default function BimInsight() {
   const { mainColor } = useWebsiteSubCategory();
 
   return (
-    <div className="min-h-screen">
-      <div className="container mx-auto max-w-7xl px-3 py-4 md:px-4 md:py-6">
+    <div className="min-h-screen pb-12">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
         <Tabs defaultValue="overview" className="w-full">
           {/* ── Tab navigation ─────────────────────────────────── */}
-          <div
-            className="overflow-x-auto -mx-3 px-3 md:mx-0 md:px-0 mb-4"
-            style={{ scrollbarWidth: 'none' }}
-          >
-            <TabsList className="inline-flex w-max md:w-full h-11 gap-1 rounded-3xl bg-slate-100/80 p-1">
-              {tabs.map((tab) => {
-                const Icon = tab.icon;
-                return (
-                  <TabsTrigger
-                    key={tab.value}
-                    value={tab.value}
-                    className="rounded-3xl px-3 py-2 text-xs font-bold text-slate-500 data-[state=active]:text-white data-[state=active]:shadow-sm gap-1.5 whitespace-nowrap"
-                    style={
-                      { '--tab-active-bg': mainColor } as React.CSSProperties
-                    }
-                    isActiveClassName="!bg-[var(--tab-active-bg)]"
-                  >
-                    <Icon className="h-3.5 w-3.5" />
-                    {tab.label}
+          <div className="sticky top-0 z-30 py-3 bg-white/90 backdrop-blur-md">
+            <div className="overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+              <TabsList
+                className="inline-flex w-max min-w-full justify-start h-auto gap-1 p-1 rounded-[2rem]"
+              >
+                {tabs.map((tab) => {
+                  const Icon = tab.icon;
+                  return (
+                    <TabsTrigger
+                      key={tab.value}
+                      value={tab.value}
+                      className="flex items-center gap-1.5 px-4 py-2.5 rounded-[2rem] font-bold text-xs md:text-sm whitespace-nowrap flex-shrink-0"
+                      style={
+                        // Inject active styling directly via CSS var if they rely on mainColor
+                        { '--tw-ring-color': mainColor } as React.CSSProperties
+                      }
+                    >
+                    <Icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                    <span>{tab.label}</span>
                   </TabsTrigger>
                 );
               })}
-            </TabsList>
+              </TabsList>
+            </div>
           </div>
 
           {/* ── Tab panels ──────────────────────────────────────── */}
-          <TabsContent value="overview" className="space-y-6 mt-0">
-            <DashboardHero />
-            <ScorePrediction />
-          </TabsContent>
+          <div className="mt-2 text-left">
+            <TabsContent value="overview" className="space-y-4 m-0">
+              <DashboardHero />
+              <ScorePrediction />
+            </TabsContent>
 
-          <TabsContent value="mastery" className="mt-0">
-            <TopicMastery />
-          </TabsContent>
+            <TabsContent value="mastery" className="m-0">
+              <TopicMastery />
+            </TabsContent>
 
-          <TabsContent value="arena" className="space-y-6 mt-0">
-            <TryoutAnalyticsTable />
-            <QuizAnalyticsTable />
-          </TabsContent>
+            <TabsContent value="arena" className="space-y-4 m-0">
+              <TryoutAnalyticsTable />
+              <QuizAnalyticsTable />
+            </TabsContent>
 
-          <TabsContent value="course" className="mt-0">
-            <CourseAnalytics />
-          </TabsContent>
+            <TabsContent value="course" className="m-0">
+              <CourseAnalytics />
+            </TabsContent>
 
-          <TabsContent value="live" className="mt-0">
-            <LiveClassAnalytics />
-          </TabsContent>
+            <TabsContent value="live" className="m-0">
+              <LiveClassAnalytics />
+            </TabsContent>
+          </div>
         </Tabs>
       </div>
     </div>

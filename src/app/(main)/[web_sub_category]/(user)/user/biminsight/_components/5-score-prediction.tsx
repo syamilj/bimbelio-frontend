@@ -2,7 +2,6 @@
 
 import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
@@ -33,7 +32,6 @@ import { useParams } from "next/navigation";
 import { useMemo } from "react";
 import {
   Area,
-  AreaChart,
   Bar,
   BarChart,
   CartesianGrid,
@@ -54,6 +52,7 @@ import {
 } from "recharts";
 import {
   ChangeCard,
+  InsightBanner,
   InsightCard,
   ScrollRow,
   SectionLabel,
@@ -198,11 +197,10 @@ export const ScorePrediction = () => {
 
   if (data.insufficient) {
     return (
-      <div className="space-y-3">
-        <Card className="w-full border-0 shadow-lg shadow-slate-200/60">
-          <CardContent className="py-12">
+      <div>
+        <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm overflow-hidden py-12">
             <div className="flex flex-col items-center justify-center text-center">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 mb-4">
+              <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-slate-100 mb-4">
                 <Brain className="h-8 w-8 text-slate-300" />
               </div>
               <h3 className="text-lg font-black text-slate-800 mb-1">
@@ -226,9 +224,8 @@ export const ScorePrediction = () => {
                 </span>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </div>
     );
   }
 
@@ -247,12 +244,31 @@ function PredictionCard({ data }: { data: PredictionResponse }) {
   const scoreDiff = p.nextScore - Math.round(ins.latestScore);
 
   return (
-    <div className="space-y-3">
-      <Card className="w-full overflow-hidden border-0 shadow-lg shadow-slate-200/60">
+    <div>
+      <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
         {/* -- 1. Hero banner -- */}
         <HeroBanner prediction={p} insights={ins} mainColor={mainColor} />
 
-        <CardContent className="space-y-5 px-5 py-5">
+        <div className="space-y-5 px-5 py-5">
+          {/* Insight */}
+          <InsightBanner
+            tone={
+              p.trend === "improving"
+                ? "success"
+                : p.trend === "declining"
+                  ? "warning"
+                  : "info"
+            }
+          >
+            {`Prediksi skor ${p.nextScore.toFixed(0)} (interval ${p.confidence.low.toFixed(0)}–${p.confidence.high.toFixed(0)}) dengan tren ${
+              p.trend === "improving"
+                ? "naik — momentum belajarmu sedang bagus!"
+                : p.trend === "declining"
+                  ? "menurun — perlu strategi baru."
+                  : "stabil — tetap konsisten untuk peningkatan."
+            }`}
+          </InsightBanner>
+
           {/* -- 2. Score trend chart -- */}
           {data.history && data.history.length > 0 && (
             <ScoreTrendChart history={data.history} mainColor={mainColor} />
@@ -284,8 +300,8 @@ function PredictionCard({ data }: { data: PredictionResponse }) {
           {data.history && (
             <PercentileChart history={data.history} />
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }
@@ -329,12 +345,7 @@ function HeroBanner({
   };
 
   return (
-    <div
-      className="px-5 pt-6 pb-5"
-      style={{
-        background: `linear-gradient(135deg, ${mainColor}08 0%, ${mainColor}18 100%)`,
-      }}
-    >
+    <div className="rounded-3xl border border-slate-200 bg-white p-5 md:p-6 shadow-sm mb-4">
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
         {/* Score gauge */}
         <div className="flex-shrink-0">
@@ -486,7 +497,7 @@ function ScoreTrendChart({
       >
         <ComposedChart
           data={chartData}
-          margin={{ top: 20, right: 20, left: 0, bottom: 10 }}
+          margin={{ top: 20, right: 20, left: 0, bottom: 40 }}
         >
           <defs>
             <linearGradient id="predScoreGrad" x1="0" y1="0" x2="0" y2="1">
@@ -501,9 +512,9 @@ function ScoreTrendChart({
             tickLine={false}
             axisLine={false}
             interval={0}
-            angle={-20}
+            angle={-30}
             textAnchor="end"
-            height={50}
+            height={60}
           />
           <YAxis
             tick={{ fontSize: 10, fill: "#94a3b8" }}
@@ -607,24 +618,24 @@ function ProjectionsRow({
           return (
             <div
               key={proj.stepsAhead}
-              className="rounded-3xl border border-slate-100 bg-white p-4"
+              className="rounded-3xl p-4 bg-white border border-slate-200 shadow-sm"
             >
-              <div className="flex items-center gap-1.5 mb-1">
-                <Rocket className="w-3 h-3 text-slate-400" />
-                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              <div className="w-7 h-7 rounded-3xl bg-purple-500 text-white flex items-center justify-center mb-2">
+                <Rocket className="w-3.5 h-3.5" />
+              </div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
                   {proj.stepsAhead === 1
                     ? "TO Berikutnya"
                     : `${proj.stepsAhead} TO Lagi`}
                 </p>
-              </div>
               <p className="text-2xl font-black text-slate-800">
                 {proj.blended}
               </p>
               <div className="mt-1 flex gap-2">
-                <span className="text-[10px] text-slate-400">
+                <span className="text-[10px] text-slate-500">
                   WLS: {proj.wls}
                 </span>
-                <span className="text-[10px] text-slate-400">
+                <span className="text-[10px] text-slate-500">
                   EMA: {proj.ema}
                 </span>
               </div>
@@ -859,7 +870,7 @@ function SubtestCard({
   return (
     <div className="flex items-center gap-3 p-3 rounded-3xl border border-slate-100 bg-white hover:shadow-sm transition-shadow">
       <div
-        className="flex h-9 w-9 items-center justify-center rounded-xl flex-shrink-0 text-xs font-black text-white"
+        className="flex h-9 w-9 items-center justify-center rounded-3xl flex-shrink-0 text-xs font-black text-white"
         style={{ backgroundColor: color }}
       >
         {getSubtestLabel(sub.name, webSubId)}
@@ -980,8 +991,8 @@ function EfficiencySection({
       <SectionLabel title="Efisiensi Jawab" />
 
       {/* Efficiency gauge + change cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div className="rounded-3xl border border-slate-100 bg-white p-3 text-center col-span-2 md:col-span-1 flex flex-col items-center justify-center">
+      <div className="space-y-3">
+        <div className="mx-auto w-fit rounded-3xl border border-slate-100 bg-white p-3 text-center">
           <ChartContainer
             config={effConfig}
             className="h-[90px] w-[90px]"
@@ -1025,12 +1036,13 @@ function EfficiencySection({
               </Pie>
             </PieChart>
           </ChartContainer>
-          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">
+          <p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
             Efisiensi
           </p>
         </div>
 
-        <ChangeCard
+        <div className="grid grid-cols-3 gap-3">
+          <ChangeCard
           icon={<CheckCircle2 className="w-4 h-4 text-emerald-500" />}
           label="Benar"
           current={latestBsk?.benar ?? 0}
@@ -1044,13 +1056,14 @@ function EfficiencySection({
           change={salahChange}
           inverseGood
         />
-        <ChangeCard
+          <ChangeCard
           icon={<Minus className="w-4 h-4 text-slate-400" />}
           label="Kosong"
           current={latestBsk?.kosong ?? 0}
           change={kosongChange}
           inverseGood
         />
+        </div>
       </div>
 
       {/* BSK stacked bar chart */}
@@ -1145,14 +1158,18 @@ function PercentileChart({
           percentile: h.percentile,
           rank: h.rank,
           total: h.totalParticipants,
+          rankLabel: `#${h.rank}/${h.totalParticipants}`,
         })),
     [history],
   );
 
   if (percentileData.length === 0) return null;
 
+  const maxRank = Math.max(...percentileData.map((d) => d.total ?? d.rank ?? 1));
+
   const chartConfig: ChartConfig = {
     percentile: { label: "Persentil", color: "#22c55e" },
+    rank: { label: "Peringkat", color: "#6366f1" },
   };
 
   return (
@@ -1165,7 +1182,7 @@ function PercentileChart({
         config={chartConfig}
         className="h-[200px] md:h-[260px] w-full mt-3"
       >
-        <AreaChart
+        <ComposedChart
           data={percentileData}
           margin={{ top: 20, right: 20, left: -10, bottom: 10 }}
         >
@@ -1184,12 +1201,24 @@ function PercentileChart({
             interval={0}
           />
           <YAxis
+            yAxisId="left"
             domain={[0, 100]}
             tick={{ fontSize: 10, fill: "#94a3b8" }}
             tickLine={false}
             axisLine={false}
             width={35}
             tickFormatter={(v) => `${v}%`}
+          />
+          <YAxis
+            yAxisId="right"
+            orientation="right"
+            domain={[maxRank, 0]}
+            tick={{ fontSize: 10, fill: "#a5b4fc" }}
+            tickLine={false}
+            axisLine={false}
+            width={30}
+            tickFormatter={(v) => `#${v}`}
+            allowDecimals={false}
           />
           <ChartTooltip
             content={
@@ -1202,19 +1231,36 @@ function PercentileChart({
                   };
                   return `${d?.fullName || ""} · #${d?.rank}/${d?.total}`;
                 }}
-                formatter={(value) => (
-                  <>
-                    <div className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-emerald-500" />
-                    <span className="text-muted-foreground">Top</span>
-                    <span className="ml-auto font-mono font-medium">
-                      {value}%
-                    </span>
-                  </>
-                )}
+                formatter={(value, name) => {
+                  if (name === "rank") {
+                    const entry = percentileData.find(
+                      (d) => d.rank === value,
+                    );
+                    return (
+                      <>
+                        <div className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-indigo-500" />
+                        <span className="text-muted-foreground">Peringkat</span>
+                        <span className="ml-auto font-mono font-medium">
+                          #{value}/{entry?.total}
+                        </span>
+                      </>
+                    );
+                  }
+                  return (
+                    <>
+                      <div className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-emerald-500" />
+                      <span className="text-muted-foreground">Top</span>
+                      <span className="ml-auto font-mono font-medium">
+                        {value}%
+                      </span>
+                    </>
+                  );
+                }}
               />
             }
           />
           <Area
+            yAxisId="left"
             type="monotone"
             dataKey="percentile"
             stroke="#22c55e"
@@ -1234,7 +1280,28 @@ function PercentileChart({
               formatter={(v: unknown) => `${Math.round(Number(v))}%`}
             />
           </Area>
-        </AreaChart>
+          <Line
+            yAxisId="right"
+            type="monotone"
+            dataKey="rank"
+            stroke="#6366f1"
+            strokeWidth={2}
+            strokeDasharray="5 3"
+            dot={{
+              fill: "#6366f1",
+              r: 3.5,
+              stroke: "#fff",
+              strokeWidth: 2,
+            }}
+          >
+            <LabelList
+              dataKey="rankLabel"
+              position="bottom"
+              offset={8}
+              className="fill-indigo-600 font-bold text-[10px]"
+            />
+          </Line>
+        </ComposedChart>
       </ChartContainer>
     </div>
   );

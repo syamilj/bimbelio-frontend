@@ -5,8 +5,20 @@ import {
   ChartConfig,
   ChartContainer,
 } from "@/components/ui/chart";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ChevronRight,
+  Lightbulb,
+} from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Cell, Label, Pie, PieChart } from "recharts";
 
 // --- StatPill -----------------------------------------------------------------
@@ -25,19 +37,20 @@ export function StatPill({
   color: string;
 }) {
   return (
-    <div className="rounded-3xl border border-slate-100 bg-white/80 backdrop-blur-sm px-3 py-2.5">
-      <div className="flex items-center gap-1.5 mb-1">
-        <span style={{ color }} className="opacity-60">
-          {icon}
-        </span>
-        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-          {label}
-        </span>
+    <div className="rounded-3xl p-3 bg-white border border-slate-200/80 shadow-sm">
+      <div
+        className="w-7 h-7 rounded-3xl flex items-center justify-center text-white mb-2"
+        style={{ backgroundColor: color }}
+      >
+        {icon}
       </div>
-      <p className="text-lg font-black leading-none" style={{ color }}>
+      <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+        {label}
+      </p>
+      <p className="text-lg font-black leading-none text-slate-800 mt-0.5">
         {value}
       </p>
-      <p className="text-[10px] text-slate-400 mt-0.5">{sub}</p>
+      <p className="text-[10px] text-slate-500 mt-0.5">{sub}</p>
     </div>
   );
 }
@@ -72,22 +85,26 @@ export function InsightCard({
   sub: string;
   tone: "emerald" | "amber" | "blue" | "slate";
 }) {
-  const toneClass =
-    tone === "emerald"
-      ? "border-emerald-200 bg-emerald-50/60 text-emerald-900"
-      : tone === "amber"
-        ? "border-amber-200 bg-amber-50/60 text-amber-900"
-        : tone === "blue"
-          ? "border-blue-200 bg-blue-50/60 text-blue-900"
-          : "border-slate-200 bg-slate-50/60 text-slate-900";
+  const toneMap = {
+    emerald: { bg: "bg-emerald-50", iconBg: "bg-emerald-500", text: "text-slate-800" },
+    amber: { bg: "bg-amber-50", iconBg: "bg-amber-500", text: "text-slate-800" },
+    blue: { bg: "bg-blue-50", iconBg: "bg-blue-500", text: "text-slate-800" },
+    slate: { bg: "bg-slate-50", iconBg: "bg-slate-500", text: "text-slate-800" },
+  } as const;
+  const t = toneMap[tone];
 
   return (
-    <div className={cn("rounded-3xl border p-4", toneClass)}>
-      <p className="text-[10px] font-bold uppercase tracking-wider opacity-70">
+    <div
+      className={cn(
+        "rounded-3xl p-4 border border-slate-200 shadow-sm",
+        t.bg,
+      )}
+    >
+      <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
         {title}
       </p>
-      <p className="mt-1 text-xl font-black">{value}</p>
-      <p className="mt-1 text-xs opacity-80">{sub}</p>
+      <p className={cn("mt-1 text-xl font-black", t.text)}>{value}</p>
+      <p className="mt-1 text-xs text-slate-500">{sub}</p>
     </div>
   );
 }
@@ -110,9 +127,9 @@ export function ChangeCard({
   const isGood = inverseGood ? change <= 0 : change >= 0;
 
   return (
-    <div className="rounded-3xl border border-slate-100 bg-white p-4">
+    <div className="rounded-3xl bg-white border border-slate-200 shadow-sm p-4">
       <div className="flex items-center gap-2 mb-2">
-        {icon}
+        <div className="w-7 h-7 rounded-3xl bg-slate-500 flex items-center justify-center [&_svg]:text-white [&_svg]:w-3.5 [&_svg]:h-3.5">{icon}</div>
         <span className="text-[10px] font-bold text-slate-500 uppercase">
           {label}
         </span>
@@ -254,12 +271,7 @@ export function HeroBanner({
   color: string;
 }) {
   return (
-    <div
-      className="px-5 pt-6 pb-5"
-      style={{
-        background: `linear-gradient(135deg, ${color}08 0%, ${color}18 100%)`,
-      }}
-    >
+    <div className="px-5 pt-6 pb-5">
       {children}
     </div>
   );
@@ -292,21 +304,207 @@ export function EmptyState({
 export function ScrollRow({
   children,
   className,
+  cols = 3,
 }: {
   children: React.ReactNode;
   className?: string;
+  cols?: 2 | 3 | 4;
 }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const checkScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollRight(el.scrollWidth - el.scrollLeft - el.clientWidth > 4);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    checkScroll();
+    el.addEventListener("scroll", checkScroll, { passive: true });
+    const ro = new ResizeObserver(checkScroll);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener("scroll", checkScroll);
+      ro.disconnect();
+    };
+  }, [checkScroll]);
+
+  const gridCols =
+    cols === 2
+      ? "md:grid-cols-2"
+      : cols === 4
+        ? "md:grid-cols-4"
+        : "md:grid-cols-3";
+
+  return (
+    <div className={cn("relative", className)}>
+      <div
+        ref={scrollRef}
+        className="overflow-x-auto -mx-4 px-4 pb-1 md:mx-0 md:px-0 md:overflow-visible"
+        style={{ scrollbarWidth: "none" }}
+      >
+        <div
+          className={cn(
+            "flex gap-2 min-w-max md:min-w-0 md:grid",
+            gridCols,
+          )}
+        >
+          {children}
+        </div>
+      </div>
+      {/* Scroll fade hint */}
+      {canScrollRight && (
+        <div className="absolute right-0 top-0 bottom-1 w-8 bg-gradient-to-l from-white/90 to-transparent pointer-events-none flex items-center justify-end md:hidden">
+          <ChevronRight className="w-4 h-4 text-slate-400 animate-pulse" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+// --- InsightBanner ------------------------------------------------------------
+
+const INSIGHT_TONES = {
+  info: {
+    bg: "bg-blue-50/80 border-blue-100",
+    icon: "bg-blue-100 text-blue-600",
+    text: "text-blue-800",
+  },
+  success: {
+    bg: "bg-emerald-50/80 border-emerald-100",
+    icon: "bg-emerald-100 text-emerald-600",
+    text: "text-emerald-800",
+  },
+  warning: {
+    bg: "bg-amber-50/80 border-amber-100",
+    icon: "bg-amber-100 text-amber-600",
+    text: "text-amber-800",
+  },
+  neutral: {
+    bg: "bg-slate-50/80 border-slate-200",
+    icon: "bg-slate-100 text-slate-500",
+    text: "text-slate-700",
+  },
+} as const;
+
+export function InsightBanner({
+  children,
+  tone = "info",
+}: {
+  children: React.ReactNode;
+  tone?: keyof typeof INSIGHT_TONES;
+}) {
+  const t = INSIGHT_TONES[tone];
   return (
     <div
       className={cn(
-        "overflow-x-auto -mx-4 px-4 pb-1 md:mx-0 md:px-0 md:overflow-visible",
-        className,
+        "flex items-start gap-2.5 rounded-3xl border px-3.5 py-3 text-xs leading-relaxed",
+        t.bg,
       )}
-      style={{ scrollbarWidth: "none" }}
     >
-      <div className="flex gap-2 min-w-max md:min-w-0 md:grid md:grid-cols-3">
-        {children}
+      <div
+        className={cn(
+          "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-3xl",
+          t.icon,
+        )}
+      >
+        <Lightbulb className="h-3.5 w-3.5" />
       </div>
+      <span className={cn("font-medium pt-0.5", t.text)}>{children}</span>
     </div>
+  );
+}
+
+// --- FilterChip ---------------------------------------------------------------
+
+export function FilterChip({
+  label,
+  active,
+  color,
+  onClick,
+}: {
+  label: string;
+  active: boolean;
+  color: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "px-4 py-2 rounded-full text-xs font-bold transition-all border flex-shrink-0 cursor-pointer shadow-sm hover:-translate-y-0.5 hover:shadow-md",
+        active
+          ? "text-white border-transparent"
+          : "bg-slate-50 text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-100",
+      )}
+      style={active ? { backgroundColor: color } : undefined}
+    >
+      {label}
+    </button>
+  );
+}
+
+// --- HeatmapCell --------------------------------------------------------------
+
+export function HeatmapCell({
+  score,
+  label,
+}: {
+  score: number | null | undefined;
+  label?: string;
+}) {
+  if (score == null)
+    return (
+      <td className="px-2 py-2.5 text-center text-xs text-slate-300">—</td>
+    );
+
+  const bg =
+    score >= 80
+      ? "bg-emerald-100 text-emerald-800"
+      : score >= 60
+        ? "bg-blue-100 text-blue-800"
+        : score >= 40
+          ? "bg-amber-100 text-amber-800"
+          : "bg-red-100 text-red-800";
+
+  return (
+    <td className="px-1.5 py-2 text-center">
+      <span
+        className={cn(
+          "inline-block min-w-[3rem] rounded-3xl px-2 py-1 text-xs font-bold tabular-nums",
+          bg,
+        )}
+      >
+        {label ?? score.toFixed(0)}
+      </span>
+    </td>
+  );
+}
+
+// --- SubtestTooltipHeader -----------------------------------------------------
+
+export function SubtestTooltipHeader({
+  initial,
+  fullName,
+}: {
+  initial: string;
+  fullName: string;
+}) {
+  return (
+    <TooltipProvider delayDuration={200}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <th className="px-2 py-2.5 text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 cursor-help whitespace-nowrap">
+            {initial}
+          </th>
+        </TooltipTrigger>
+        <TooltipContent side="top" className="text-xs">
+          {fullName}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }

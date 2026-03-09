@@ -14,9 +14,11 @@ import { cn } from "@/lib/utils";
 import {
   BookOpen,
   Brain,
+  CalendarDays,
   Clock3,
   Layers3,
   Target,
+  TrendingUp,
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -33,7 +35,9 @@ import {
 import { CourseReportStats } from "../../bimcourse/[categoryId]/_component/z_other/report/CourseReportStats";
 import {
   EmptyState,
+  FilterChip,
   HeroBanner,
+  InsightBanner,
   InsightCard,
   ScrollRow,
   SectionLabel,
@@ -373,11 +377,11 @@ export const CourseAnalytics = () => {
               config={{
                 progress: { label: "Progress", color: mainColor },
               }}
-              className="h-[260px] w-full mt-2"
+              className="min-h-[320px] w-full mt-2"
             >
               <BarChart
                 data={overviewChartData}
-                margin={{ top: 20, right: 10, left: 0, bottom: 5 }}
+                margin={{ top: 20, right: 10, left: 0, bottom: 40 }}
               >
                 <CartesianGrid
                   strokeDasharray="3 3"
@@ -390,6 +394,10 @@ export const CourseAnalytics = () => {
                   tickLine={false}
                   axisLine={false}
                   interval={0}
+                  angle={-20}
+                  textAnchor="end"
+                  height={60}
+                  tickMargin={10}
                 />
                 <YAxis
                   domain={[0, 100]}
@@ -449,11 +457,11 @@ export const CourseAnalytics = () => {
               config={{
                 avgQuiz: { label: "Avg Quiz", color: "#10B981" },
               }}
-              className="h-[260px] w-full mt-2"
+              className="min-h-[320px] w-full mt-2"
             >
               <LineChart
                 data={overviewChartData}
-                margin={{ top: 20, right: 10, left: 0, bottom: 5 }}
+                margin={{ top: 20, right: 10, left: 0, bottom: 40 }}
               >
                 <CartesianGrid
                   strokeDasharray="3 3"
@@ -466,6 +474,10 @@ export const CourseAnalytics = () => {
                   tickLine={false}
                   axisLine={false}
                   interval={0}
+                  angle={-20}
+                  textAnchor="end"
+                  height={60}
+                  tickMargin={10}
                 />
                 <YAxis
                   domain={[0, 100]}
@@ -556,13 +568,16 @@ export const CourseAnalytics = () => {
 
               {/* Category chips */}
               <div
-                className="overflow-x-auto -mx-5 px-5 pb-1"
+                className="-mx-5 overflow-x-auto px-5 pb-1"
                 style={{ scrollbarWidth: "none" }}
               >
-                <div className="flex gap-1.5 min-w-max md:min-w-0 md:flex-wrap">
+                <div className="flex min-w-max gap-1.5 md:min-w-0 md:flex-wrap">
                   {overviewCards.map((item) => (
-                    <button
+                    <FilterChip
                       key={item.id}
+                      label={getShortCategoryLabel(item.name)}
+                      active={activeCategory === String(item.id)}
+                      color={mainColor}
                       onClick={() =>
                         setActiveCategory(
                           activeCategory === String(item.id)
@@ -570,20 +585,7 @@ export const CourseAnalytics = () => {
                             : String(item.id),
                         )
                       }
-                      className={cn(
-                        "px-3 py-1.5 rounded-full text-xs font-bold transition-all border flex-shrink-0",
-                        activeCategory === String(item.id)
-                          ? "text-white border-transparent"
-                          : "bg-white text-slate-500 border-slate-200 hover:border-slate-300",
-                      )}
-                      style={
-                        activeCategory === String(item.id)
-                          ? { backgroundColor: mainColor }
-                          : {}
-                      }
-                    >
-                      {getShortCategoryLabel(item.name)}
-                    </button>
+                    />
                   ))}
                 </div>
               </div>
@@ -591,46 +593,58 @@ export const CourseAnalytics = () => {
               {/* Category detail */}
               {featuredCategory && (
                 <div className="space-y-4">
-                  {/* Summary cards */}
-                  <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-                    <CategorySummaryCard
+                  {/* Summary stat pills */}
+                  <ScrollRow cols={4}>
+                    <StatPill
                       label="Progress"
                       value={`${featuredCategory.percentageProgress}%`}
-                      subtitle={`${featuredCategory.completedChapters}/${featuredCategory.totalChapters} materi selesai`}
+                      sub={`${featuredCategory.completedChapters}/${featuredCategory.totalChapters} materi selesai`}
+                      icon={<TrendingUp className="h-3.5 w-3.5" />}
+                      color="emerald"
                     />
-                    <CategorySummaryCard
+                    <StatPill
                       label="Quiz"
                       value={`${featuredCategory.totalTryout}`}
-                      subtitle="total tryout course"
+                      sub="total tryout course"
+                      icon={<BookOpen className="h-3.5 w-3.5" />}
+                      color="blue"
                     />
-                    <CategorySummaryCard
+                    <StatPill
                       label="Hari Aktif"
                       value={`${featuredCategory.activeDays}`}
-                      subtitle={`7 hari terakhir: ${featuredCategory.recentDays}`}
+                      sub={`7 hari terakhir: ${featuredCategory.recentDays}`}
+                      icon={<CalendarDays className="h-3.5 w-3.5" />}
+                      color="purple"
                     />
-                    <CategorySummaryCard
+                    <StatPill
                       label="Durasi"
                       value={formatMinutes(featuredCategory.completedMinutes)}
-                      subtitle={
+                      sub={
                         featuredCategory.report
                           ? `avg quiz ${featuredCategory.avgQuiz.toFixed(1)}`
                           : "report belum tersedia"
                       }
+                      icon={<Clock3 className="h-3.5 w-3.5" />}
+                      color="amber"
                     />
-                  </div>
+                  </ScrollRow>
 
-                  {/* Badges */}
-                  <div className="flex flex-wrap gap-2">
-                    <Badge className="rounded-full border border-slate-200 bg-white text-[10px] font-bold text-slate-600">
-                      7 hari aktif: {featuredCategory.recentDays}
-                    </Badge>
-                    <Badge className="rounded-full border border-blue-200 bg-blue-50 text-[10px] font-bold text-blue-700">
-                      total quiz: {featuredCategory.totalTryout}
-                    </Badge>
-                    <Badge className="rounded-full border border-amber-200 bg-amber-50 text-[10px] font-bold text-amber-700">
-                      avg quiz: {featuredCategory.avgQuiz.toFixed(1)}
-                    </Badge>
-                  </div>
+                  {/* Insight */}
+                  <InsightBanner
+                    tone={
+                      featuredCategory.percentageProgress >= 70
+                        ? "success"
+                        : featuredCategory.percentageProgress >= 40
+                          ? "info"
+                          : "warning"
+                    }
+                  >
+                    {featuredCategory.percentageProgress >= 70
+                      ? `Progres ${featuredCategory.name} sudah ${featuredCategory.percentageProgress}% — pertahankan momentum belajarmu!`
+                      : featuredCategory.percentageProgress >= 40
+                        ? `${featuredCategory.name} sudah ${featuredCategory.percentageProgress}%, tingkatkan konsistensi belajar harianmu.`
+                        : `${featuredCategory.name} baru ${featuredCategory.percentageProgress}% — mulai kejar materi yang tertinggal.`}
+                  </InsightBanner>
 
                   {/* CourseReportStats */}
                   <div className="rounded-3xl border border-slate-100 bg-slate-50/70 p-4 md:p-5">
@@ -680,23 +694,7 @@ export const CourseAnalytics = () => {
 // Sub-components
 // =============================================================================
 
-const CategorySummaryCard = ({
-  label,
-  value,
-  subtitle,
-}: {
-  label: string;
-  value: string;
-  subtitle: string;
-}) => (
-  <div className="rounded-3xl border border-slate-100 bg-white p-4">
-    <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
-      {label}
-    </p>
-    <p className="mt-1 text-2xl font-black text-slate-800">{value}</p>
-    <p className="mt-1 text-xs text-slate-500">{subtitle}</p>
-  </div>
-);
+
 
 const LoadingState = () => (
   <div>
@@ -704,12 +702,12 @@ const LoadingState = () => (
       <div className="p-5 space-y-3">
         <Skeleton className="h-5 w-48" />
         <ScrollRow>
-          <Skeleton className="h-16 rounded-xl" />
-          <Skeleton className="h-16 rounded-xl" />
-          <Skeleton className="h-16 rounded-xl" />
+          <Skeleton className="h-16 rounded-3xl" />
+          <Skeleton className="h-16 rounded-3xl" />
+          <Skeleton className="h-16 rounded-3xl" />
         </ScrollRow>
-        <Skeleton className="h-[260px] w-full rounded-xl" />
-        <Skeleton className="h-[260px] w-full rounded-xl" />
+        <Skeleton className="h-[260px] w-full rounded-3xl" />
+        <Skeleton className="h-[260px] w-full rounded-3xl" />
       </div>
     </div>
   </div>

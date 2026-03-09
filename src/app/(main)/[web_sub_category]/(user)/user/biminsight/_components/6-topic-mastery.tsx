@@ -43,7 +43,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { SectionLabel, StatPill } from './_primitives';
+import { InsightBanner, SectionLabel, StatPill } from './_primitives';
 
 
 // --- Types -------------------------------------------------------------------
@@ -167,12 +167,12 @@ function TopicMasteryCard({
   const s = group.summary;
 
   return (
-    <Card className="w-full overflow-hidden border-0 shadow-lg shadow-slate-200/60">
+    <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
       {/* -- 1. Hero banner -- */}
       <div
         className="px-5 pt-6 pb-5"
         style={{
-          background: `linear-gradient(135deg, ${mainColor}08 0%, ${mainColor}18 100%)`,
+          background: `linear-gradient(135deg, ${mainColor}15 0%, ${mainColor}10 100%)`,
         }}
       >
         {showLabel && (
@@ -222,7 +222,20 @@ function TopicMasteryCard({
         </div>
       </div>
 
-      <CardContent className="space-y-5 px-5 py-5">
+      {/* Insight */}
+      <div className="px-5 pt-3">
+        <InsightBanner
+          tone={s.overallAccuracy >= 70 ? "success" : s.overallAccuracy >= 50 ? "info" : "warning"}
+        >
+          {s.overallAccuracy >= 70
+            ? `Akurasi ${s.overallAccuracy}% dengan ${s.strongCount} topik kuat — pemahaman materi sangat baik!`
+            : s.overallAccuracy >= 50
+              ? `Akurasi ${s.overallAccuracy}% — fokuslah pada ${s.weakCount} topik yang masih lemah.`
+              : `Akurasi ${s.overallAccuracy}% — perlu perbaikan di ${s.weakCount} topik lemah, mulai dari yang paling sering diujikan.`}
+        </InsightBanner>
+      </div>
+
+      <div className="space-y-5 px-5 py-5">
         {/* -- 2. Category overview bar chart -- */}
         <CategoryBarChart categories={group.categories} mainColor={mainColor} />
 
@@ -245,8 +258,8 @@ function TopicMasteryCard({
           />
         )}
 
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
@@ -567,7 +580,7 @@ function CategoryCard({ category: cat }: { category: CategoryData }) {
         <div className="px-4 pb-4 space-y-3 border-t border-slate-100 pt-3">
           {/* Mini chapter bar chart */}
           {showChart && (
-            <div className="rounded-xl bg-slate-50/80 p-3">
+            <div className="rounded-3xl bg-slate-50/80 p-3">
               <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">
                 Akurasi Chapter (top {chapterChartData.length})
               </p>
@@ -666,7 +679,7 @@ function ChapterRow({ chapter: ch }: { chapter: ChapterData }) {
   const pct = ch.total > 0 ? (ch.benar / ch.total) * 100 : 0;
 
   return (
-    <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-50/80 transition-colors">
+    <div className="flex items-center gap-2.5 px-3 py-2 rounded-3xl hover:bg-slate-50/80 transition-colors">
       {/* Tiny mastery dot */}
       <div
         className="w-1.5 h-1.5 rounded-full flex-shrink-0"
@@ -766,14 +779,13 @@ function FocusColumn({
   return (
     <div
       className={cn(
-        'rounded-3xl border border-slate-100 overflow-hidden bg-gradient-to-b to-white',
-        gradientFrom,
+        'rounded-3xl border border-slate-200 overflow-hidden bg-white shadow-sm'
       )}
     >
       {/* Header */}
       <div className="flex items-center gap-2 px-4 pt-3 pb-2">
         <div
-          className="flex h-6 w-6 items-center justify-center rounded-lg text-white"
+          className="flex h-6 w-6 items-center justify-center rounded-3xl text-white"
           style={{ backgroundColor: accentColor }}
         >
           {icon}
@@ -804,10 +816,10 @@ function FocusItem({
   const pct = ch.total > 0 ? (ch.benar / ch.total) * 100 : 0;
 
   return (
-    <div className="flex items-center gap-2 px-2 py-2 rounded-xl bg-white/70 hover:bg-white transition-colors">
+    <div className="flex items-center gap-2 px-2 py-2 rounded-3xl bg-white/70 hover:bg-white transition-colors">
       <span
         className={cn(
-          'text-[10px] font-black w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0',
+          'text-[10px] font-black w-5 h-5 rounded-3xl flex items-center justify-center flex-shrink-0',
           type === 'strong'
             ? 'bg-emerald-100 text-emerald-700'
             : 'bg-red-100 text-red-600',

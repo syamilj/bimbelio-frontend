@@ -46,7 +46,7 @@ import {
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { Bar, BarChart, CartesianGrid, Cell, Label, LabelList, Pie, PieChart, XAxis, YAxis } from 'recharts';
-import { HeroBanner, SectionLabel, StatPill, EmptyState } from './_primitives';
+import { EmptyState, HeroBanner, InsightBanner, SectionLabel, StatPill } from './_primitives';
 
 
 export const LiveClassAnalytics = () => {
@@ -255,7 +255,7 @@ export const LiveClassAnalytics = () => {
           <SectionLabel title="Rekap Kehadiran" sub="Distribusi kehadiran per status" />
           <div className="flex items-center gap-2">
             <Select value={selectedProgramId} onValueChange={setSelectedProgramId}>
-              <SelectTrigger className="h-8 rounded-full border-slate-200 bg-white/80 text-xs text-slate-700 backdrop-blur-sm min-w-[140px]">
+              <SelectTrigger className="h-8 rounded-full border-slate-200 bg-white text-xs text-slate-700 min-w-[140px]">
                 <SelectValue placeholder="Pilih Program" />
               </SelectTrigger>
               <SelectContent>
@@ -268,7 +268,7 @@ export const LiveClassAnalytics = () => {
             {(role === 'ADMIN' || role === 'SUPER_ADMIN') && (
               <button
                 onClick={() => setShowExportDialog(true)}
-                className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 text-xs font-bold text-slate-600 backdrop-blur-sm transition-all hover:bg-white"
+                className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-600 transition-all hover:bg-slate-50"
               >
                 <Download className="h-3 w-3" />
                 Export
@@ -283,6 +283,25 @@ export const LiveClassAnalytics = () => {
           <StatPill label="Absen" value={String(presenceData.absent)} sub="sesi" icon={<XCircle className="h-3 w-3" />} color="#EF4444" />
         </div>
       </HeroBanner>
+
+      {/* Insight */}
+      {presenceData.totalInvited > 0 && (
+        <InsightBanner
+          tone={
+            presenceData.present / presenceData.totalInvited >= 0.8
+              ? "success"
+              : presenceData.present / presenceData.totalInvited >= 0.5
+                ? "info"
+                : "warning"
+          }
+        >
+          {presenceData.present / presenceData.totalInvited >= 0.8
+            ? `Kehadiranmu ${Math.round((presenceData.present / presenceData.totalInvited) * 100)}% — konsistensi yang luar biasa!`
+            : presenceData.present / presenceData.totalInvited >= 0.5
+              ? `Kehadiranmu ${Math.round((presenceData.present / presenceData.totalInvited) * 100)}% — usahakan hadir lebih rutin.`
+              : `Kehadiranmu hanya ${Math.round((presenceData.present / presenceData.totalInvited) * 100)}% — pastikan kamu tidak tertinggal materi.`}
+        </InsightBanner>
+      )}
 
       {/* ── Attendance Section ───────────────────────────────────────── */}
       {presenceData.totalInvited === 0 ? (
@@ -458,7 +477,7 @@ export const LiveClassAnalytics = () => {
                               : { bg: 'bg-slate-50 border-slate-100', text: 'text-slate-500', dot: '#9CA3AF', label: 'Pending' };
 
                     return (
-                      <div key={item.id} className={`flex items-center justify-between gap-3 rounded-2xl border px-3 py-2.5 transition-all hover:shadow-sm ${statusStyle.bg}`}>
+                      <div key={item.id} className={`flex items-center justify-between gap-3 rounded-3xl border px-3 py-2.5 transition-all hover:shadow-sm ${statusStyle.bg}`}>
                         <div className="flex-1 min-w-0">
                           <p className="text-xs font-bold text-slate-800 truncate">{item.title}</p>
                           <p className="text-[10px] text-slate-500">
@@ -476,7 +495,7 @@ export const LiveClassAnalytics = () => {
                 {listData.length > 5 && (
                   <button
                     onClick={() => setShowAllSchedule(!showAllSchedule)}
-                    className="mt-3 flex w-full items-center justify-center gap-1 rounded-2xl border border-slate-200 bg-slate-50 py-2 text-xs font-bold text-slate-600 transition-all hover:bg-slate-100"
+                    className="mt-3 flex w-full items-center justify-center gap-1 rounded-3xl border border-slate-200 bg-slate-50 py-2 text-xs font-bold text-slate-600 transition-all hover:bg-slate-100"
                   >
                     {showAllSchedule ? 'Tutup' : `Lihat semua (${listData.length})`}
                     <ChevronDown className={`h-3.5 w-3.5 transition-transform ${showAllSchedule ? 'rotate-180' : ''}`} />

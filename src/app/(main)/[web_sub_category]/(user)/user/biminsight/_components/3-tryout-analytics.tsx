@@ -1,13 +1,10 @@
 "use client";
 
 import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   ChartConfig,
   ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
@@ -21,7 +18,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { FetchReturnType, useGet } from "@/lib/fetch-helper/useGet";
-import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { id as localeId } from "date-fns/locale";
 import {
@@ -36,8 +32,6 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Area,
   AreaChart,
-  Bar,
-  BarChart,
   CartesianGrid,
   LabelList,
   Line,
@@ -47,11 +41,14 @@ import {
 import { getSubtestLabel } from "@/lib/utils/subtest";
 import {
   EmptyState,
-  getScoreBadgeColor,
+  FilterChip,
+  HeatmapCell,
   HeroBanner,
+  InsightBanner,
   ScrollRow,
   SectionLabel,
   StatPill,
+  SubtestTooltipHeader,
 } from "./_primitives";
 
 
@@ -191,6 +188,19 @@ const OverallSection = ({
         </ScrollRow>
       </HeroBanner>
 
+      {/* Insight */}
+      <div className="px-5 pt-3">
+        <InsightBanner
+          tone={stats.trend > 0 ? "success" : stats.trend < 0 ? "warning" : "neutral"}
+        >
+          {stats.trend > 0
+            ? `Skor rata-rata ${stats.avg.toFixed(0)} dengan tren naik +${stats.trend.toFixed(0)} — pertahankan momentum!`
+            : stats.trend < 0
+              ? `Skor rata-rata ${stats.avg.toFixed(0)} dengan tren turun ${stats.trend.toFixed(0)} — evaluasi strategi belajarmu.`
+              : `Skor rata-rata ${stats.avg.toFixed(0)} — konsistensi stabil, coba tingkatkan di area yang lemah.`}
+        </InsightBanner>
+      </div>
+
       {/* Chart */}
       <div className="px-5 pt-4 pb-2">
         <SectionLabel title="Grafik Skor" sub="Klik titik untuk detail B/S/K" />
@@ -200,7 +210,7 @@ const OverallSection = ({
         >
           <AreaChart
             data={chartData}
-            margin={{ top: 20, right: 35, left: 0, bottom: 10 }}
+            margin={{ top: 20, right: 35, left: 0, bottom: 40 }}
           >
             <defs>
               <linearGradient
@@ -221,9 +231,9 @@ const OverallSection = ({
               tickLine={false}
               axisLine={false}
               interval={0}
-              angle={-20}
+              angle={-30}
               textAnchor="end"
-              height={50}
+              height={60}
             />
             <YAxis
               yAxisId="left"
@@ -361,7 +371,7 @@ const OverallSection = ({
       <div className="px-5 pb-5">
         <SectionLabel title="Riwayat Skor & Peringkat" />
         <div
-          className="flex gap-3 overflow-x-auto pb-3 mt-3"
+          className="flex gap-2.5 overflow-x-auto pb-3 mt-3"
           style={{ scrollbarWidth: "none" }}
         >
           {[...displayedData].reverse().map((item, index) => {
@@ -376,14 +386,14 @@ const OverallSection = ({
             return (
               <div
                 key={index}
-                className="flex-shrink-0 w-[300px] p-2.5 rounded-3xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all"
+                className="w-[240px] flex-shrink-0 rounded-3xl border border-slate-200/80 bg-white p-3 shadow-sm transition-all hover:shadow-md md:w-[260px]"
               >
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-sm text-slate-800 truncate">
+                <div className="mb-2 flex items-start justify-between">
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-bold text-slate-800">
                       {item.tryoutTitle}
                     </p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-[11px] text-slate-400">
                       {format(new Date(item.date), "dd MMM yyyy", {
                         locale: localeId,
                       })}
@@ -391,36 +401,36 @@ const OverallSection = ({
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-2 flex-1">
+                  <div className="flex flex-1 items-center gap-2">
                     <div
-                      className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                      className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-3xl"
                       style={{ backgroundColor: `${mainColor}15` }}
                     >
                       <Target
-                        className="w-5 h-5"
+                        className="h-4 w-4"
                         style={{ color: mainColor }}
                       />
                     </div>
                     <div>
-                      <div className="text-xs text-slate-500 font-medium">
+                      <div className="text-[10px] font-medium text-slate-400">
                         Skor
                       </div>
                       <div
-                        className="text-lg font-black"
+                        className="text-base font-black"
                         style={{ color: mainColor }}
                       >
                         {Math.round(item.score)}
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 flex-1">
+                  <div className="flex flex-1 items-center gap-2">
                     <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                      className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-3xl ${
                         item.rank <= 3 ? "bg-yellow-100" : "bg-blue-50"
                       }`}
                     >
                       <Trophy
-                        className={`w-5 h-5 ${
+                        className={`h-4 w-4 ${
                           item.rank <= 3
                             ? "text-yellow-600"
                             : "text-blue-600"
@@ -428,12 +438,12 @@ const OverallSection = ({
                       />
                     </div>
                     <div>
-                      <div className="text-xs text-slate-500 font-medium">
+                      <div className="text-[10px] font-medium text-slate-400">
                         Peringkat
                       </div>
                       <div className="flex items-center gap-1">
                         <span
-                          className={`text-lg font-black ${
+                          className={`text-base font-black ${
                             item.rank <= 3
                               ? "text-yellow-600"
                               : "text-blue-600"
@@ -441,12 +451,12 @@ const OverallSection = ({
                         >
                           #{item.rank}
                         </span>
-                        <span className="text-xs text-slate-500">
+                        <span className="text-[10px] text-slate-400">
                           / {item.totalParticipants}
                         </span>
                         {item.rankChange !== 0 && (
                           <span
-                            className={`text-xs font-bold ml-1 ${
+                            className={`ml-0.5 text-[10px] font-bold ${
                               item.rankChange > 0
                                 ? "text-emerald-600"
                                 : "text-red-600"
@@ -460,16 +470,16 @@ const OverallSection = ({
                     </div>
                   </div>
                 </div>
-                <div className="mt-3 space-y-1">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-500">
+                <div className="mt-2.5 space-y-1">
+                  <div className="flex items-center justify-between text-[10px]">
+                    <span className="text-slate-400">
                       Top {rankPercentile}%
                     </span>
-                    <span className="text-slate-600 font-bold">
+                    <span className="font-bold text-slate-500">
                       {item.totalParticipants - item.rank} peserta dibawah
                     </span>
                   </div>
-                  <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
                     <div
                       className="h-full rounded-full transition-all duration-300"
                       style={{
@@ -485,14 +495,14 @@ const OverallSection = ({
                   </div>
                 </div>
                 {item.benar != null && (
-                  <div className="mt-2 flex items-center gap-1.5 text-[11px] font-bold">
-                    <span className="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                  <div className="mt-2 flex items-center gap-1 text-[10px] font-bold">
+                    <span className="rounded-full bg-emerald-50 px-1.5 py-0.5 text-emerald-600">
                       {item.benar}B
                     </span>
-                    <span className="text-red-500 bg-red-50 px-2 py-0.5 rounded-full">
+                    <span className="rounded-full bg-red-50 px-1.5 py-0.5 text-red-500">
                       {item.salah}S
                     </span>
-                    <span className="text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
+                    <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-slate-400">
                       {item.kosong}K
                     </span>
                   </div>
@@ -561,21 +571,9 @@ const SubtestSection = ({
     }
   }, [SubCategory]);
 
-  const chartConfigBySub: ChartConfig = useMemo(() => {
-    const config: ChartConfig = {};
-    performanceBySubCategory?.subCategories.forEach((sub, index) => {
-      config[sub.id] = {
-        label: getSubtestLabel(sub.name, sub.website_sub_category_id),
-        color: ColorList[index % ColorList.length],
-      };
-    });
-    return config;
-  }, [performanceBySubCategory?.subCategories]);
-
   if (!TryoutData || !performanceBySubCategory || !SubCategory) return null;
 
   const INITIAL_ROWS = 5;
-  const lineChartData = performanceBySubCategory.chartData;
 
   const displayedData = isExpanded
     ? performanceBySubCategory.data
@@ -590,172 +588,57 @@ const SubtestSection = ({
       />
 
       {/* Filter chips */}
-      <div className="relative">
-        <div
-          className="overflow-x-auto -mx-5 px-5 pb-1"
-          style={{ scrollbarWidth: "none" }}
-        >
-          <div className="flex gap-1.5 min-w-max md:min-w-0 md:flex-wrap">
-            {SubCategory.map((sub, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setSelectedSubtests((prev) =>
-                    prev.includes(sub.id)
-                      ? prev.filter((c) => c !== sub.id)
-                      : [...prev, sub.id],
-                  );
-                }}
-                className={cn(
-                  "px-2.5 py-1 rounded-full text-[10px] md:text-xs font-bold transition-all border flex-shrink-0",
-                  selectedSubtests.includes(sub.id)
-                    ? "text-white border-transparent"
-                    : "bg-white text-slate-400 border-slate-200 hover:border-slate-300",
-                )}
-                style={
-                  selectedSubtests.includes(sub.id)
-                    ? { backgroundColor: sub.color }
-                    : {}
-                }
-              >
-                {getSubtestLabel(sub.name, sub.website_sub_category_id)}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Bar chart */}
-      <ChartContainer
-        config={chartConfigBySub}
-        className="h-[260px] md:h-[300px] w-full"
-      >
-        <BarChart
-          data={lineChartData}
-          margin={{ top: 10, right: 10, left: 0, bottom: 5 }}
-          barCategoryGap="20%"
-          barGap={2}
-        >
-          <CartesianGrid
-            strokeDasharray="3 3"
-            stroke="#f1f5f9"
-            vertical={false}
-          />
-          <XAxis
-            dataKey="tryout"
-            tick={{ fontSize: 10, fill: "#94a3b8" }}
-            tickLine={false}
-            axisLine={false}
-            interval={0}
-            angle={-20}
-            textAnchor="end"
-            height={50}
-          />
-          <YAxis
-            domain={["auto", "auto"]}
-            tick={{ fontSize: 10, fill: "#94a3b8" }}
-            tickLine={false}
-            axisLine={false}
-            width={40}
-          />
-          <ChartTooltip
-            content={
-              <ChartTooltipContent
-                labelFormatter={(label) => String(label)}
-                formatter={(value, name) => {
-                  const sub = SubCategory.find((s) => s.id === name);
-                  const label = sub
-                    ? getSubtestLabel(sub.name, sub.website_sub_category_id)
-                    : String(name);
-                  const color = sub?.color ?? "#888";
-                  return (
-                    <>
-                      <div
-                        className="h-2.5 w-2.5 shrink-0 rounded-[2px]"
-                        style={{ backgroundColor: color }}
-                      />
-                      <span className="text-muted-foreground">{label}</span>
-                      <span className="ml-auto font-mono font-medium tabular-nums">
-                        {value}
-                      </span>
-                    </>
-                  );
-                }}
-              />
-            }
-          />
-          <ChartLegend content={<ChartLegendContent />} />
-          {SubCategory.filter((sub) =>
-            selectedSubtests.includes(sub.id),
-          ).map((sub, index) => (
-            <Bar
+      <div className="-mx-5 overflow-x-auto px-5 pb-1" style={{ scrollbarWidth: "none" }}>
+        <div className="flex min-w-max gap-1.5 md:min-w-0 md:flex-wrap">
+          {SubCategory.map((sub, index) => (
+            <FilterChip
               key={index}
-              dataKey={sub.id}
-              fill={sub.color}
-              maxBarSize={18}
-              radius={[3, 3, 0, 0]}
+              label={getSubtestLabel(sub.name, sub.website_sub_category_id)}
+              active={selectedSubtests.includes(sub.id)}
+              color={sub.color}
+              onClick={() => {
+                setSelectedSubtests((prev) =>
+                  prev.includes(sub.id)
+                    ? prev.filter((c) => c !== sub.id)
+                    : [...prev, sub.id],
+                );
+              }}
             />
           ))}
-        </BarChart>
-      </ChartContainer>
-
-      {/* Legend table */}
-      <div className="p-3 bg-slate-50 border border-slate-100 rounded-3xl">
-        <p className="text-xs font-bold text-slate-700 mb-2">
-          Keterangan Inisial:
-        </p>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-1.5">
-          {SubCategory.map((subCat) => (
-            <div key={subCat.id} className="text-xs">
-              <span
-                className="inline-block w-3 h-3 mr-2 rounded-full"
-                style={{ backgroundColor: subCat.color }}
-              ></span>
-              <span className="font-semibold">
-                {getSubtestLabel(subCat.name, subCat.website_sub_category_id)}
-              </span>{" "}
-              = {subCat.name}
-            </div>
-          ))}
         </div>
       </div>
 
-      {/* Score table */}
-      <div className="w-full overflow-x-auto rounded-3xl border border-slate-100">
+      {/* Heatmap score table */}
+      <div className="w-full overflow-x-auto rounded-3xl border border-slate-200/80">
         <Table>
           <TableHeader>
-            <TableRow className="bg-slate-50">
-              <TableHead className="font-bold text-slate-700 py-3">
-                To
+            <TableRow className="bg-slate-50/80">
+              <TableHead className="py-3 font-bold text-slate-700">
+                TO
               </TableHead>
-              <TableHead className="font-bold text-slate-700 py-3">
+              <TableHead className="py-3 font-bold text-slate-700">
                 Tryout
               </TableHead>
-              <TableHead className="font-bold text-slate-700 py-3 text-center">
-                Final Score
+              <TableHead className="py-3 text-center font-bold text-slate-700">
+                Total
               </TableHead>
-              {performanceBySubCategory.subCategories.map((subCat) => (
-                <TableHead
-                  key={subCat.id}
-                  className="font-bold text-slate-700 text-center py-3 hover:underline cursor-help"
-                  title={subCat.name}
-                >
-                  {getSubtestLabel(
-                    subCat.name,
-                    subCat.website_sub_category_id,
-                  )}
-                </TableHead>
-              ))}
+              {performanceBySubCategory.subCategories
+                .filter((s) => selectedSubtests.includes(s.id))
+                .map((subCat) => (
+                  <SubtestTooltipHeader
+                    key={subCat.id}
+                    initial={getSubtestLabel(subCat.name, subCat.website_sub_category_id)}
+                    fullName={subCat.name}
+                  />
+                ))}
             </TableRow>
           </TableHeader>
           <TableBody>
             {displayedData.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={
-                    performanceBySubCategory.subCategories.length + 3
-                  }
-                  className="text-center py-8 text-gray-500"
+                  colSpan={selectedSubtests.length + 3}
+                  className="py-8 text-center text-gray-500"
                 >
                   <p className="text-sm">Data belum ada</p>
                 </TableCell>
@@ -764,37 +647,28 @@ const SubtestSection = ({
               [...displayedData].reverse().map((tryout, index) => (
                 <TableRow
                   key={tryout.id}
-                  className="hover:bg-gray-50 transition-colors"
+                  className="transition-colors hover:bg-slate-50/50"
                 >
-                  <TableCell className="font-semibold text-gray-900 py-4 whitespace-nowrap">
+                  <TableCell className="whitespace-nowrap py-3 font-semibold text-slate-800">
                     TO {displayedData.length - index}
                   </TableCell>
-                  <TableCell className="font-semibold text-gray-900 py-4 whitespace-nowrap">
+                  <TableCell className="max-w-[140px] truncate py-3 text-sm text-slate-600">
                     {tryout.title}
                   </TableCell>
-                  <TableCell className="text-center py-4">
-                    {tryout.totalScore.toFixed(2)}
-                  </TableCell>
-                  {performanceBySubCategory.subCategories.map((subCat) => {
-                    const subCatData = tryout.subCategories.find(
-                      (s) => s.id === subCat.id,
-                    );
-                    const score = subCatData?.totalScore || 0;
-                    const badgeColor = getScoreBadgeColor(score);
-
-                    return (
-                      <TableCell
-                        key={`${tryout.id}-${subCat.id}`}
-                        className="text-center py-4"
-                      >
-                        <Badge
-                          className={`${badgeColor.bg} ${badgeColor.text} border-0 font-semibold`}
-                        >
-                          {score.toFixed(2)}
-                        </Badge>
-                      </TableCell>
-                    );
-                  })}
+                  <HeatmapCell score={tryout.totalScore} />
+                  {performanceBySubCategory.subCategories
+                    .filter((s) => selectedSubtests.includes(s.id))
+                    .map((subCat) => {
+                      const subCatData = tryout.subCategories.find(
+                        (s) => s.id === subCat.id,
+                      );
+                      return (
+                        <HeatmapCell
+                          key={`${tryout.id}-${subCat.id}`}
+                          score={subCatData?.totalScore || 0}
+                        />
+                      );
+                    })}
                 </TableRow>
               ))
             )}
@@ -836,11 +710,11 @@ const LoadingPage = () => (
       <div className="p-5 space-y-3">
         <Skeleton className="h-5 w-48" />
         <ScrollRow>
-          <Skeleton className="h-16 rounded-xl" />
-          <Skeleton className="h-16 rounded-xl" />
-          <Skeleton className="h-16 rounded-xl" />
+          <Skeleton className="h-16 rounded-3xl" />
+          <Skeleton className="h-16 rounded-3xl" />
+          <Skeleton className="h-16 rounded-3xl" />
         </ScrollRow>
-        <Skeleton className="h-[260px] w-full rounded-xl" />
+        <Skeleton className="h-[260px] w-full rounded-3xl" />
       </div>
     </div>
   </div>

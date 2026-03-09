@@ -1,16 +1,7 @@
 "use client";
 
 import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
@@ -21,17 +12,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useGet } from "@/lib/fetch-helper/useGet";
-import { cn } from "@/lib/utils";
 import { getSubtestLabel } from "@/lib/utils/subtest";
 import { BookOpen, ChevronDown, ChevronUp } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { CartesianGrid, LabelList, Line, LineChart, XAxis, YAxis } from "recharts";
 import {
   EmptyState,
-  getScoreBadgeColor,
+  FilterChip,
+  HeatmapCell,
   HeroBanner,
+  InsightBanner,
   SectionLabel,
+  SubtestTooltipHeader,
 } from "./_primitives";
 
 
@@ -135,24 +127,13 @@ function SubtestSection({ data }: { data: DataTypeAll }) {
     setSelectedSubtests(SubCategory.map((sub) => sub.id));
   }, [SubCategory]);
 
-  const chartConfig: ChartConfig = useMemo(() => {
-    const config: ChartConfig = {};
-    SubCategory.forEach((sub) => {
-      config[sub.id] = {
-        label: getSubtestLabel(sub.name, sub.website_sub_category_id),
-        color: sub.color,
-      };
-    });
-    return config;
-  }, [SubCategory]);
-
   const displayedData = isExpanded
     ? data.data
     : data.data.slice(0, INITIAL_ROWS);
   const hasMoreData = data.data.length > INITIAL_ROWS;
 
   return (
-    <div className="px-5 py-5 space-y-4">
+    <div className="space-y-4 px-5 py-5">
       <SectionLabel
         title="Per Subkategori"
         sub="Skor berdasarkan masing-masing quiz dan subkategorinya"
@@ -160,13 +141,16 @@ function SubtestSection({ data }: { data: DataTypeAll }) {
 
       {/* Filter chips */}
       <div
-        className="overflow-x-auto -mx-5 px-5 pb-1"
+        className="-mx-5 overflow-x-auto px-5 pb-1"
         style={{ scrollbarWidth: "none" }}
       >
-        <div className="flex gap-1.5 min-w-max md:min-w-0 md:flex-wrap">
+        <div className="flex min-w-max gap-1.5 md:min-w-0 md:flex-wrap">
           {SubCategory.map((sub, index) => (
-            <button
+            <FilterChip
               key={index}
+              label={getSubtestLabel(sub.name, sub.website_sub_category_id)}
+              active={selectedSubtests.includes(sub.id)}
+              color={sub.color}
               onClick={() =>
                 setSelectedSubtests((prev) =>
                   prev.includes(sub.id)
@@ -174,124 +158,36 @@ function SubtestSection({ data }: { data: DataTypeAll }) {
                     : [...prev, sub.id],
                 )
               }
-              className={cn(
-                "px-2.5 py-1 rounded-full text-[10px] md:text-xs font-bold transition-all border flex-shrink-0",
-                selectedSubtests.includes(sub.id)
-                  ? "text-white border-transparent"
-                  : "bg-white text-slate-400 border-slate-200 hover:border-slate-300",
-              )}
-              style={
-                selectedSubtests.includes(sub.id)
-                  ? { backgroundColor: sub.color }
-                  : {}
-              }
-            >
-              {getSubtestLabel(sub.name, sub.website_sub_category_id)}
-            </button>
+            />
           ))}
         </div>
       </div>
 
-      {/* Line chart */}
-      <ChartContainer
-        config={chartConfig}
-        className="h-[240px] md:h-[280px] w-full"
-      >
-        <LineChart
-          data={data.chartData}
-          margin={{ top: 20, right: 10, left: 0, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-          <XAxis
-            interval={0}
-            angle={-20}
-            textAnchor="end"
-            height={50}
-            dataKey="volume"
-            tick={{ fontSize: 10, fill: "#94a3b8" }}
-            tickLine={false}
-            axisLine={false}
-          />
-          <YAxis
-            domain={[0, 100]}
-            tick={{ fontSize: 10, fill: "#94a3b8" }}
-            tickLine={false}
-            axisLine={false}
-            width={40}
-          />
-          <ChartTooltip content={<ChartTooltipContent />} />
-          <ChartLegend content={<ChartLegendContent />} />
-          {SubCategory.filter((sub) =>
-            selectedSubtests.includes(sub.id),
-          ).map((sub, index) => (
-            <Line
-              key={index}
-              type="monotone"
-              dataKey={sub.id}
-              stroke={sub.color}
-              strokeWidth={2.5}
-              dot={{ r: 4, fill: sub.color, strokeWidth: 2, stroke: "#fff" }}
-              activeDot={{
-                r: 6,
-                fill: sub.color,
-                stroke: "#fff",
-                strokeWidth: 2,
-              }}
-              connectNulls
-            >
-              <LabelList
-                position="top"
-                offset={8}
-                className="fill-slate-600 font-bold text-[10px]"
-                formatter={(v: unknown) => v != null ? String(Math.round(Number(v))) : ''}
-              />
-            </Line>
-          ))}
-        </LineChart>
-      </ChartContainer>
-
-      {/* Legend */}
-      <div className="p-3 bg-slate-50 border border-slate-100 rounded-3xl">
-        <p className="text-xs font-bold text-slate-700 mb-2">
-          Keterangan Inisial:
-        </p>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-1.5">
-          {data.subCategories.map((subCat) => (
-            <div key={subCat.id} className="text-xs">
-              <span className="font-semibold">
-                {getSubtestLabel(subCat.name, subCat.website_sub_category_id)}
-              </span>{" "}
-              = {subCat.name}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Score table */}
-      <div className="w-full overflow-x-auto rounded-3xl border border-slate-100">
+      {/* Heatmap score table */}
+      <div className="w-full overflow-x-auto rounded-3xl border border-slate-200/80">
         <Table>
           <TableHeader>
-            <TableRow className="bg-slate-50">
-              <TableHead className="font-bold text-slate-700 py-3">
+            <TableRow className="bg-slate-50/80">
+              <TableHead className="py-3 font-bold text-slate-700">
                 Quiz
               </TableHead>
-              {data.subCategories.map((subCat) => (
-                <TableHead
-                  key={subCat.id}
-                  className="font-bold text-slate-700 text-center py-3 hover:underline cursor-help"
-                  title={subCat.name}
-                >
-                  {getSubtestLabel(subCat.name, subCat.website_sub_category_id)}
-                </TableHead>
-              ))}
+              {data.subCategories
+                .filter((s) => selectedSubtests.includes(s.id))
+                .map((subCat) => (
+                  <SubtestTooltipHeader
+                    key={subCat.id}
+                    initial={getSubtestLabel(subCat.name, subCat.website_sub_category_id)}
+                    fullName={subCat.name}
+                  />
+                ))}
             </TableRow>
           </TableHeader>
           <TableBody>
             {displayedData.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={data.subCategories.length + 1}
-                  className="text-center py-8 text-gray-500"
+                  colSpan={selectedSubtests.length + 1}
+                  className="py-8 text-center text-gray-500"
                 >
                   <p className="text-sm">Data belum ada</p>
                 </TableCell>
@@ -300,43 +196,34 @@ function SubtestSection({ data }: { data: DataTypeAll }) {
               displayedData.map((quiz) => (
                 <TableRow
                   key={quiz.id}
-                  className="hover:bg-slate-50 transition-colors"
+                  className="transition-colors hover:bg-slate-50/50"
                 >
-                  <TableCell className="font-semibold text-slate-800 py-4 whitespace-nowrap">
+                  <TableCell className="whitespace-nowrap py-3 font-semibold text-slate-800">
                     {quiz.title}
                   </TableCell>
-                  {data.subCategories.map((subCat) => {
-                    const subCatData = quiz.subCategories.find(
-                      (s) => s.id === subCat.id,
-                    );
-
-                    if (!subCatData) {
-                      return (
-                        <TableCell
-                          key={`${quiz.id}-${subCat.id}`}
-                          className="text-center py-4"
-                        >
-                          -
-                        </TableCell>
+                  {data.subCategories
+                    .filter((s) => selectedSubtests.includes(s.id))
+                    .map((subCat) => {
+                      const subCatData = quiz.subCategories.find(
+                        (s) => s.id === subCat.id,
                       );
-                    }
-
-                    const score = subCatData.averageScore || 0;
-                    const badgeColor = getScoreBadgeColor(score);
-
-                    return (
-                      <TableCell
-                        key={`${quiz.id}-${subCat.id}`}
-                        className="text-center py-4"
-                      >
-                        <Badge
-                          className={`${badgeColor.bg} ${badgeColor.text} border-0 font-semibold`}
-                        >
-                          {score.toFixed(2)}
-                        </Badge>
-                      </TableCell>
-                    );
-                  })}
+                      if (!subCatData) {
+                        return (
+                          <TableCell
+                            key={`${quiz.id}-${subCat.id}`}
+                            className="py-3 text-center text-slate-300"
+                          >
+                            -
+                          </TableCell>
+                        );
+                      }
+                      return (
+                        <HeatmapCell
+                          key={`${quiz.id}-${subCat.id}`}
+                          score={subCatData.averageScore || 0}
+                        />
+                      );
+                    })}
                 </TableRow>
               ))
             )}
@@ -392,24 +279,13 @@ function VolumeSection({ data }: { data: DataTypeQuiz }) {
     setSelectedVolumes(Volumes.map((vol) => vol.volId));
   }, [Volumes]);
 
-  const chartConfig: ChartConfig = useMemo(() => {
-    const config: ChartConfig = {};
-    Volumes.forEach((vol) => {
-      config[vol.volId] = {
-        label: vol.initial,
-        color: vol.color,
-      };
-    });
-    return config;
-  }, [Volumes]);
-
   const displayedData = isExpanded
     ? data.data
     : data.data.slice(0, INITIAL_ROWS);
   const hasMoreData = data.data.length > INITIAL_ROWS;
 
   return (
-    <div className="px-5 py-5 space-y-4">
+    <div className="space-y-4 px-5 py-5">
       <SectionLabel
         title="Per Volume"
         sub="Skor berdasarkan volume quiz"
@@ -417,13 +293,16 @@ function VolumeSection({ data }: { data: DataTypeQuiz }) {
 
       {/* Filter chips */}
       <div
-        className="overflow-x-auto -mx-5 px-5 pb-1"
+        className="-mx-5 overflow-x-auto px-5 pb-1"
         style={{ scrollbarWidth: "none" }}
       >
-        <div className="flex gap-1.5 min-w-max md:min-w-0 md:flex-wrap">
+        <div className="flex min-w-max gap-1.5 md:min-w-0 md:flex-wrap">
           {Volumes.map((vol, index) => (
-            <button
+            <FilterChip
               key={index}
+              label={vol.initial}
+              active={selectedVolumes.includes(vol.volId)}
+              color={vol.color}
               onClick={() =>
                 setSelectedVolumes((prev) =>
                   prev.includes(vol.volId)
@@ -431,122 +310,36 @@ function VolumeSection({ data }: { data: DataTypeQuiz }) {
                     : [...prev, vol.volId],
                 )
               }
-              className={cn(
-                "px-2.5 py-1 rounded-full text-[10px] md:text-xs font-bold transition-all border flex-shrink-0",
-                selectedVolumes.includes(vol.volId)
-                  ? "text-white border-transparent"
-                  : "bg-white text-slate-400 border-slate-200 hover:border-slate-300",
-              )}
-              style={
-                selectedVolumes.includes(vol.volId)
-                  ? { backgroundColor: vol.color }
-                  : {}
-              }
-            >
-              {vol.initial}
-            </button>
+            />
           ))}
         </div>
       </div>
 
-      {/* Line chart */}
-      <ChartContainer
-        config={chartConfig}
-        className="h-[240px] md:h-[280px] w-full"
-      >
-        <LineChart
-          data={data.chartData}
-          margin={{ top: 20, right: 10, left: 0, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-          <XAxis
-            interval={0}
-            angle={-20}
-            textAnchor="end"
-            height={50}
-            dataKey="volume"
-            tick={{ fontSize: 10, fill: "#94a3b8" }}
-            tickLine={false}
-            axisLine={false}
-          />
-          <YAxis
-            domain={[0, 100]}
-            tick={{ fontSize: 10, fill: "#94a3b8" }}
-            tickLine={false}
-            axisLine={false}
-            width={40}
-          />
-          <ChartTooltip content={<ChartTooltipContent />} />
-          <ChartLegend content={<ChartLegendContent />} />
-          {Volumes.filter((vol) =>
-            selectedVolumes.includes(vol.volId),
-          ).map((vol, index) => (
-            <Line
-              key={index}
-              type="monotone"
-              dataKey={vol.volId}
-              stroke={vol.color}
-              strokeWidth={2.5}
-              dot={{ r: 4, fill: vol.color, strokeWidth: 2, stroke: "#fff" }}
-              activeDot={{
-                r: 6,
-                fill: vol.color,
-                stroke: "#fff",
-                strokeWidth: 2,
-              }}
-              connectNulls
-            >
-              <LabelList
-                position="top"
-                offset={8}
-                className="fill-slate-600 font-bold text-[10px]"
-                formatter={(v: unknown) => v != null ? String(Math.round(Number(v))) : ''}
-              />
-            </Line>
-          ))}
-        </LineChart>
-      </ChartContainer>
-
-      {/* Legend */}
-      <div className="p-3 bg-slate-50 border border-slate-100 rounded-3xl">
-        <p className="text-xs font-bold text-slate-700 mb-2">
-          Keterangan Inisial:
-        </p>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-1.5">
-          {data.quizVolumes.map((vol) => (
-            <div key={vol.volId} className="text-xs">
-              <span className="font-semibold">{vol.initial}</span> ={" "}
-              {vol.volName}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Score table */}
-      <div className="w-full overflow-x-auto rounded-3xl border border-slate-100">
+      {/* Heatmap score table */}
+      <div className="w-full overflow-x-auto rounded-3xl border border-slate-200/80">
         <Table>
           <TableHeader>
-            <TableRow className="bg-slate-50">
-              <TableHead className="font-bold text-slate-700 py-3">
+            <TableRow className="bg-slate-50/80">
+              <TableHead className="py-3 font-bold text-slate-700">
                 Quiz
               </TableHead>
-              {data.quizVolumes.map((vol) => (
-                <TableHead
-                  key={vol.volId}
-                  className="font-bold text-slate-700 text-center py-3 hover:underline cursor-help"
-                  title={vol.volName || ""}
-                >
-                  {vol.initial}
-                </TableHead>
-              ))}
+              {data.quizVolumes
+                .filter((v) => selectedVolumes.includes(v.volId))
+                .map((vol) => (
+                  <SubtestTooltipHeader
+                    key={vol.volId}
+                    initial={vol.initial}
+                    fullName={vol.volName || `Volume ${vol.volNumber}`}
+                  />
+                ))}
             </TableRow>
           </TableHeader>
           <TableBody>
             {displayedData.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={data.quizVolumes.length + 1}
-                  className="text-center py-8 text-gray-500"
+                  colSpan={selectedVolumes.length + 1}
+                  className="py-8 text-center text-gray-500"
                 >
                   <p className="text-sm">Data belum ada</p>
                 </TableCell>
@@ -555,43 +348,34 @@ function VolumeSection({ data }: { data: DataTypeQuiz }) {
               displayedData.map((quiz) => (
                 <TableRow
                   key={quiz.title}
-                  className="hover:bg-slate-50 transition-colors"
+                  className="transition-colors hover:bg-slate-50/50"
                 >
-                  <TableCell className="font-semibold text-slate-800 py-4 whitespace-nowrap">
+                  <TableCell className="whitespace-nowrap py-3 font-semibold text-slate-800">
                     {quiz.title}
                   </TableCell>
-                  {data.quizVolumes.map((vol) => {
-                    const volData = quiz.quizVolume.find(
-                      (s) => s.volId === vol.volId,
-                    );
-
-                    if (!volData) {
-                      return (
-                        <TableCell
-                          key={`${quiz.title}-${vol.volId}`}
-                          className="text-center py-4"
-                        >
-                          -
-                        </TableCell>
+                  {data.quizVolumes
+                    .filter((v) => selectedVolumes.includes(v.volId))
+                    .map((vol) => {
+                      const volData = quiz.quizVolume.find(
+                        (s) => s.volId === vol.volId,
                       );
-                    }
-
-                    const score = volData.totalScore || 0;
-                    const badgeColor = getScoreBadgeColor(score);
-
-                    return (
-                      <TableCell
-                        key={`${quiz.title}-${vol.volId}`}
-                        className="text-center py-4"
-                      >
-                        <Badge
-                          className={`${badgeColor.bg} ${badgeColor.text} border-0 font-semibold`}
-                        >
-                          {score.toFixed(2)}
-                        </Badge>
-                      </TableCell>
-                    );
-                  })}
+                      if (!volData) {
+                        return (
+                          <TableCell
+                            key={`${quiz.title}-${vol.volId}`}
+                            className="py-3 text-center text-slate-300"
+                          >
+                            -
+                          </TableCell>
+                        );
+                      }
+                      return (
+                        <HeatmapCell
+                          key={`${quiz.title}-${vol.volId}`}
+                          score={volData.totalScore || 0}
+                        />
+                      );
+                    })}
                 </TableRow>
               ))
             )}
@@ -632,8 +416,8 @@ const LoadingPage = () => (
     <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
       <div className="p-5 space-y-3">
         <Skeleton className="h-5 w-48" />
-        <Skeleton className="h-[260px] w-full rounded-xl" />
-        <Skeleton className="h-[200px] w-full rounded-xl" />
+        <Skeleton className="h-[260px] w-full rounded-3xl" />
+        <Skeleton className="h-[200px] w-full rounded-3xl" />
       </div>
     </div>
   </div>
