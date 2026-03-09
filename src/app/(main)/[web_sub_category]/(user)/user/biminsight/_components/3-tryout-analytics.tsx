@@ -46,6 +46,7 @@ import {
   HeroBanner,
   InsightBanner,
   ScrollRow,
+  ScrollWrapper,
   SectionLabel,
   StatPill,
   SubtestTooltipHeader,
@@ -202,15 +203,15 @@ const OverallSection = ({
       </div>
 
       {/* Chart */}
-      <div className="px-5 pt-4 pb-2">
+      <div className="px-5 pt-3 pb-0 w-full min-w-0">
         <SectionLabel title="Grafik Skor" sub="Klik titik untuk detail B/S/K" />
         <ChartContainer
           config={chartConfigAll}
-          className="h-[240px] md:h-[280px] w-full mt-2"
+          className="aspect-auto h-[200px] md:h-[240px] w-full mt-2"
         >
           <AreaChart
             data={chartData}
-            margin={{ top: 20, right: 35, left: 0, bottom: 40 }}
+            margin={{ top: 20, right: 0, left: -20, bottom: 0 }}
           >
             <defs>
               <linearGradient
@@ -231,9 +232,9 @@ const OverallSection = ({
               tickLine={false}
               axisLine={false}
               interval={0}
-              angle={-30}
+              angle={-25}
               textAnchor="end"
-              height={60}
+              height={30}
             />
             <YAxis
               yAxisId="left"
@@ -288,17 +289,17 @@ const OverallSection = ({
                       return (
                         <>
                           <div className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-emerald-500" />
-                          <span className="text-muted-foreground">B/S/K</span>
-                          <span className="ml-auto font-mono font-medium tabular-nums">
-                            <span className="text-emerald-600">
+                          <span className="text-muted-foreground font-semibold">B/S/K</span>
+                          <span className="ml-auto font-mono font-medium flex items-center gap-1">
+                            <span className="text-emerald-600 dark:text-emerald-500">
                               {p?.benar ?? value}
                             </span>
-                            <span className="text-muted-foreground">/</span>
-                            <span className="text-red-500">
+                            <span className="text-slate-400">/</span>
+                            <span className="text-red-500 dark:text-red-400">
                               {p?.salah ?? 0}
                             </span>
-                            <span className="text-muted-foreground">/</span>
-                            <span className="text-gray-400">
+                            <span className="text-slate-400">/</span>
+                            <span className="text-slate-400 dark:text-slate-500">
                               {p?.kosong ?? 0}
                             </span>
                           </span>
@@ -368,12 +369,9 @@ const OverallSection = ({
       </div>
 
       {/* Rank cards */}
-      <div className="px-5 pb-5">
+      <div className="px-5 pb-5 w-full min-w-0 flex flex-col relative">
         <SectionLabel title="Riwayat Skor & Peringkat" />
-        <div
-          className="flex gap-2.5 overflow-x-auto pb-3 mt-3"
-          style={{ scrollbarWidth: "none" }}
-        >
+        <ScrollRow className="mt-3" noGrid>
           {[...displayedData].reverse().map((item, index) => {
             const rankPercentile =
               item.totalParticipants > 0
@@ -386,7 +384,7 @@ const OverallSection = ({
             return (
               <div
                 key={index}
-                className="w-[240px] flex-shrink-0 rounded-3xl border border-slate-200/80 bg-white p-3 shadow-sm transition-all hover:shadow-md md:w-[260px]"
+                className="w-[260px] flex-[0_0_auto] rounded-3xl border border-slate-200/80 bg-white p-3 shadow-sm transition-all hover:shadow-md"
               >
                 <div className="mb-2 flex items-start justify-between">
                   <div className="min-w-0 flex-1">
@@ -510,7 +508,7 @@ const OverallSection = ({
               </div>
             );
           })}
-        </div>
+        </ScrollRow>
         {performanceAll.length > INITIAL_ROWS && (
           <div className="mt-2 flex justify-center">
             <Button
@@ -588,7 +586,7 @@ const SubtestSection = ({
       />
 
       {/* Filter chips */}
-      <div className="-mx-5 overflow-x-auto px-5 pb-1" style={{ scrollbarWidth: "none" }}>
+      <ScrollWrapper className="-mx-5 px-5 pb-1">
         <div className="flex min-w-max gap-1.5 md:min-w-0 md:flex-wrap">
           {SubCategory.map((sub, index) => (
             <FilterChip
@@ -606,11 +604,11 @@ const SubtestSection = ({
             />
           ))}
         </div>
-      </div>
+      </ScrollWrapper>
 
       {/* Heatmap score table */}
-      <div className="w-full overflow-x-auto rounded-3xl border border-slate-200/80">
-        <Table>
+      <ScrollWrapper className="w-full rounded-3xl border border-slate-200/80">
+        <Table className="min-w-max" classNameWrapper="overflow-visible">
           <TableHeader>
             <TableRow className="bg-slate-50/80">
               <TableHead className="py-3 font-bold text-slate-700">
@@ -674,7 +672,7 @@ const SubtestSection = ({
             )}
           </TableBody>
         </Table>
-      </div>
+      </ScrollWrapper>
       {hasMoreData && (
         <div className="flex justify-center">
           <Button

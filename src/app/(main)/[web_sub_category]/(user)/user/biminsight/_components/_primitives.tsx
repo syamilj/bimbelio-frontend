@@ -311,10 +311,12 @@ export function ScrollRow({
   children,
   className,
   cols = 3,
+  noGrid = false,
 }: {
   children: React.ReactNode;
   className?: string;
   cols?: 2 | 3 | 4;
+  noGrid?: boolean;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -349,13 +351,16 @@ export function ScrollRow({
     <div className={cn("relative", className)}>
       <div
         ref={scrollRef}
-        className="overflow-x-auto -mx-4 px-4 pb-2 pt-1 md:mx-0 md:px-0 md:overflow-visible"
+        className={cn(
+          "overflow-x-auto -mx-4 px-4 pb-2 pt-1",
+          !noGrid && "md:mx-0 md:px-0 md:overflow-visible"
+        )}
         style={{ scrollbarWidth: "none" }}
       >
         <div
           className={cn(
-            "flex gap-3 md:gap-4 min-w-max md:min-w-0 md:grid",
-            gridCols,
+            "flex gap-3 md:gap-4 min-w-max",
+            !noGrid && ["md:min-w-0 md:grid", gridCols]
           )}
         >
           {children}
@@ -363,7 +368,61 @@ export function ScrollRow({
       </div>
       {/* Scroll hint without white gradient overlay */}
       {canScrollRight && (
-        <div className="absolute right-0 top-0 bottom-2 w-8 pointer-events-none flex items-center justify-end md:hidden">
+        <div className={cn(
+          "absolute right-0 top-0 bottom-2 w-8 pointer-events-none flex items-center justify-end",
+          !noGrid && "md:hidden"
+        )}>
+          <div className="bg-white/90 backdrop-blur-sm text-slate-500 shadow-sm border border-slate-200/50 rounded-full p-1 animate-pulse mr-1">
+            <ChevronRight className="w-3.5 h-3.5" />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// --- ScrollWrapper ------------------------------------------------------------
+
+export function ScrollWrapper({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const checkScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollRight(el.scrollWidth - el.scrollLeft - el.clientWidth > 4);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    checkScroll();
+    el.addEventListener("scroll", checkScroll, { passive: true });
+    const ro = new ResizeObserver(checkScroll);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener("scroll", checkScroll);
+      ro.disconnect();
+    };
+  }, [checkScroll]);
+
+  return (
+    <div className="relative group">
+      <div
+        ref={scrollRef}
+        className={cn("overflow-x-auto", className)}
+        style={{ scrollbarWidth: "none" }}
+      >
+        {children}
+      </div>
+      {canScrollRight && (
+        <div className="absolute right-0 top-0 bottom-2 w-8 pointer-events-none flex items-center justify-end">
           <div className="bg-white/90 backdrop-blur-sm text-slate-500 shadow-sm border border-slate-200/50 rounded-full p-1 animate-pulse mr-1">
             <ChevronRight className="w-3.5 h-3.5" />
           </div>
