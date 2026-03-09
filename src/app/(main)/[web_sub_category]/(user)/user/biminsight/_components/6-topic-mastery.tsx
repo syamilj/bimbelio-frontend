@@ -34,6 +34,7 @@ import {
   CartesianGrid,
   Cell,
   Label,
+  LabelList,
   Pie,
   PieChart,
   PolarAngleAxis,
@@ -43,7 +44,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { InsightBanner, SectionLabel, StatPill } from './_primitives';
+import { InsightBanner, SectionLabel, StatPill, ScrollRow } from './_primitives';
 
 
 // --- Types -------------------------------------------------------------------
@@ -169,55 +170,84 @@ function TopicMasteryCard({
   return (
     <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
       {/* -- 1. Hero banner -- */}
-      <div
-        className="px-5 pt-6 pb-5"
-        style={{
-          background: `linear-gradient(135deg, ${mainColor}15 0%, ${mainColor}10 100%)`,
-        }}
-      >
-        {showLabel && (
-          <p
-            className="text-[11px] font-bold uppercase tracking-widest mb-3"
-            style={{ color: mainColor }}
-          >
-            {group.webSubName}
-          </p>
-        )}
+      <div className="relative overflow-hidden px-5 pt-8 pb-5 mb-2">
+        {/* Dekorasi Background */}
+        <div
+          className="absolute inset-0 bg-gradient-to-br opacity-5"
+          style={{
+            backgroundImage: `linear-gradient(to bottom right, ${mainColor}, transparent)`,
+          }}
+        />
+        <div
+          className="absolute -top-24 -right-24 h-48 w-48 rounded-full blur-3xl opacity-[0.04]"
+          style={{ backgroundColor: mainColor }}
+        />
+        <div
+          className="absolute top-1/2 -left-12 h-32 w-32 -translate-y-1/2 rounded-full blur-2xl opacity-[0.06]"
+          style={{ backgroundColor: mainColor }}
+        />
 
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
-          {/* Accuracy gauge */}
-          <AccuracyGauge accuracy={s.overallAccuracy} mainColor={mainColor} />
+        <div className="relative z-10">
+          <div className="mb-4">
+            {showLabel && (
+              <p
+                className="text-[11px] font-bold uppercase tracking-widest mb-1.5"
+                style={{ color: mainColor }}
+              >
+                {group.webSubName}
+              </p>
+            )}
+            <h2 className="text-xl font-bold flex items-center gap-2">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-white shadow-sm border border-slate-100/50">
+                <Target className="w-4 h-4" style={{ color: mainColor }} />
+              </div>
+              Tingkat Penguasaan
+            </h2>
+            <p className="text-sm text-slate-500 mt-1 max-w-[90%]">
+              Evaluasi akurasi jawaban dan pemahaman per topik materi.
+            </p>
+          </div>
 
-          {/* Stat pills */}
-          <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-2.5 w-full">
-            <StatPill
-              label="Total Soal"
-              value={`${s.totalQuestions}`}
-              sub={`${s.totalCategories} kategori`}
-              icon={<BookOpen className="w-3.5 h-3.5" />}
-              color="#64748b"
-            />
-            <StatPill
-              label="Akurasi"
-              value={`${s.overallAccuracy}%`}
-              sub={`${s.totalBenar}/${s.totalQuestions}`}
-              icon={<Target className="w-3.5 h-3.5" />}
-              color={mainColor}
-            />
-            <StatPill
-              label="Topik Kuat"
-              value={`${s.strongCount}`}
-              sub={'\u2265 80%'}
-              icon={<Sparkles className="w-3.5 h-3.5" />}
-              color="#22c55e"
-            />
-            <StatPill
-              label="Perlu Fokus"
-              value={`${s.weakCount}`}
-              sub="< 50%"
-              icon={<ShieldAlert className="w-3.5 h-3.5" />}
-              color="#ef4444"
-            />
+          <div className="mt-6 w-full">
+            {/* Stat pills */}
+            <ScrollRow cols={4}>
+              <div className="w-[140px] md:w-auto shrink-0 h-full [&>div]:h-full [&>div]:border-0 [&>div]:shadow-none [&>div]:bg-white border border-slate-100 rounded-[1.5rem] bg-white shadow-sm overflow-hidden p-0 m-0">
+                <StatPill
+                  label="Total Soal"
+                  value={`${s.totalQuestions}`}
+                  sub={`${s.totalCategories} kategori`}
+                  icon={<BookOpen className="w-4 h-4" />}
+                  color="#64748b"
+                />
+              </div>
+              <div className="w-[140px] md:w-auto shrink-0 h-full [&>div]:h-full [&>div]:border-0 [&>div]:shadow-none [&>div]:bg-white border border-slate-100 rounded-[1.5rem] bg-white shadow-sm overflow-hidden p-0 m-0">
+                <StatPill
+                  label="Akurasi"
+                  value={`${s.overallAccuracy}%`}
+                  sub={`${s.totalBenar}/${s.totalQuestions}`}
+                  icon={<Target className="w-4 h-4" />}
+                  color={mainColor}
+                />
+              </div>
+              <div className="w-[140px] md:w-auto shrink-0 h-full [&>div]:h-full [&>div]:border-0 [&>div]:shadow-none [&>div]:bg-white border border-slate-100 rounded-[1.5rem] bg-white shadow-sm overflow-hidden p-0 m-0">
+                <StatPill
+                  label="Topik Kuat"
+                  value={`${s.strongCount}`}
+                  sub={'\u2265 80%'}
+                  icon={<Sparkles className="w-4 h-4" />}
+                  color="#22c55e"
+                />
+              </div>
+              <div className="w-[140px] md:w-auto shrink-0 h-full [&>div]:h-full [&>div]:border-0 [&>div]:shadow-none [&>div]:bg-white border border-slate-100 rounded-[1.5rem] bg-white shadow-sm overflow-hidden p-0 m-0">
+                <StatPill
+                  label="Perlu Fokus"
+                  value={`${s.weakCount}`}
+                  sub="< 50%"
+                  icon={<ShieldAlert className="w-4 h-4" />}
+                  color="#ef4444"
+                />
+              </div>
+            </ScrollRow>
           </div>
         </div>
       </div>
@@ -264,87 +294,6 @@ function TopicMasteryCard({
 }
 
 // =============================================================================
-// 1. Accuracy Gauge --- radial progress ring
-// =============================================================================
-
-function AccuracyGauge({
-  accuracy,
-  mainColor,
-}: {
-  accuracy: number;
-  mainColor: string;
-}) {
-  const gaugeData = useMemo(
-    () => [
-      { name: 'filled', value: accuracy, fill: mainColor },
-      { name: 'empty', value: 100 - accuracy, fill: '#e2e8f0' },
-    ],
-    [accuracy, mainColor],
-  );
-
-  const gaugeConfig: ChartConfig = {
-    filled: { label: 'Akurasi', color: mainColor },
-    empty: { label: '', color: '#e2e8f0' },
-  };
-
-  return (
-    <div className="flex-shrink-0">
-      <ChartContainer config={gaugeConfig} className="h-[120px] w-[120px]">
-        <PieChart>
-          <Pie
-            data={gaugeData}
-            dataKey="value"
-            nameKey="name"
-            cx="50%"
-            cy="50%"
-            innerRadius={40}
-            outerRadius={54}
-            startAngle={90}
-            endAngle={-270}
-            paddingAngle={0}
-            stroke="none"
-          >
-            {gaugeData.map((d, i) => (
-              <Cell key={i} fill={d.fill} />
-            ))}
-            <Label
-              content={({ viewBox }) => {
-                if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
-                  return (
-                    <text
-                      x={viewBox.cx}
-                      y={viewBox.cy}
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                    >
-                      <tspan
-                        x={viewBox.cx}
-                        y={(viewBox.cy || 0) - 4}
-                        className="fill-slate-800 text-xl font-black"
-                      >
-                        {accuracy}%
-                      </tspan>
-                      <tspan
-                        x={viewBox.cx}
-                        y={(viewBox.cy || 0) + 14}
-                        className="fill-slate-400 text-[9px] font-semibold uppercase tracking-wider"
-                      >
-                        Akurasi
-                      </tspan>
-                    </text>
-                  );
-                }
-                return null;
-              }}
-            />
-          </Pie>
-        </PieChart>
-      </ChartContainer>
-    </div>
-  );
-}
-
-// =============================================================================
 // 2. Category horizontal bar chart --- accuracy per category
 // =============================================================================
 
@@ -367,6 +316,9 @@ function CategoryBarChart({
           fullName: cat.categoryName,
           accuracy: cat.accuracy,
           total: cat.total,
+          benar: cat.benar,
+          salah: cat.salah,
+          kosong: cat.kosong,
           mastery: cat.mastery,
           fill: MASTERY[cat.mastery].color,
         })),
@@ -428,17 +380,19 @@ function CategoryBarChart({
                   };
                   return `${d?.fullName} \u2014 ${d?.total} soal`;
                 }}
-                formatter={(value, _, item) => {
-                  const d = item.payload as { fill: string };
+                formatter={(_, __, item) => {
+                  const d = item.payload as { benar: number; salah: number; kosong: number; fill: string };
                   return (
                     <>
                       <div
                         className="h-2.5 w-2.5 shrink-0 rounded-[2px]"
                         style={{ backgroundColor: d.fill }}
                       />
-                      <span className="text-muted-foreground">Akurasi</span>
+                      <span className="text-muted-foreground font-semibold">B/S/K</span>
                       <span className="ml-auto font-mono font-medium">
-                        {value}%
+                        <span className="text-emerald-600">{d.benar}</span>/
+                        <span className="text-red-500">{d.salah}</span>/
+                        <span className="text-slate-400">{d.kosong}</span>
                       </span>
                     </>
                   );
@@ -450,6 +404,12 @@ function CategoryBarChart({
             {data.map((entry) => (
               <Cell key={entry.fullName} fill={entry.fill} fillOpacity={0.85} />
             ))}
+            <LabelList
+              dataKey="accuracy"
+              position="right"
+              formatter={(v: unknown) => `${v}%`}
+              className="fill-slate-500 font-bold text-[11px]"
+            />
           </Bar>
         </BarChart>
       </ChartContainer>
@@ -485,6 +445,9 @@ function CategoryCard({ category: cat }: { category: CategoryData }) {
           fullName: ch.chapterTitle,
           accuracy: ch.accuracy,
           total: ch.total,
+          benar: ch.benar,
+          salah: ch.salah,
+          kosong: ch.kosong,
           fill: MASTERY[ch.mastery].color,
         })),
     [cat.chapters],
@@ -621,9 +584,11 @@ function CategoryCard({ category: cat }: { category: CategoryData }) {
                           };
                           return d?.fullName || '';
                         }}
-                        formatter={(value, _, item) => {
+                        formatter={(_, __, item) => {
                           const d = item.payload as {
-                            total: number;
+                            benar: number;
+                            salah: number;
+                            kosong: number;
                             fill: string;
                           };
                           return (
@@ -632,11 +597,21 @@ function CategoryCard({ category: cat }: { category: CategoryData }) {
                                 className="h-2.5 w-2.5 shrink-0 rounded-[2px]"
                                 style={{ backgroundColor: d.fill }}
                               />
-                              <span className="text-muted-foreground">
-                                Akurasi
+                              <span className="text-muted-foreground font-semibold">
+                                B/S/K
                               </span>
-                              <span className="ml-auto font-mono font-medium">
-                                {value}% {'\u00b7'} {d.total} soal
+                              <span className="ml-auto font-mono font-medium flex items-center gap-1">
+                                <span className="text-emerald-600 dark:text-emerald-500">
+                                  {d.benar}
+                                </span>
+                                <span className="text-slate-400">/</span>
+                                <span className="text-red-500 dark:text-red-400">
+                                  {d.salah}
+                                </span>
+                                <span className="text-slate-400">/</span>
+                                <span className="text-slate-400 dark:text-slate-500">
+                                  {d.kosong}
+                                </span>
                               </span>
                             </>
                           );
@@ -656,6 +631,12 @@ function CategoryCard({ category: cat }: { category: CategoryData }) {
                         fillOpacity={0.8}
                       />
                     ))}
+                    <LabelList
+                      dataKey="accuracy"
+                      position="right"
+                      formatter={(v: unknown) => `${v}%`}
+                      className="fill-slate-500 font-bold text-[10px]"
+                    />
                   </Bar>
                 </BarChart>
               </ChartContainer>
