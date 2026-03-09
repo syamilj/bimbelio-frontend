@@ -124,6 +124,14 @@ export const getInitials = (
   return initials.join('');
 };
 
+export const formatTwoDecimals = (
+  value: number | null | undefined,
+): string => {
+  if (value == null || Number.isNaN(value)) return '-';
+
+  return Number(value).toFixed(2);
+};
+
 // export function formatPhoneNumber(phone: string): string {
 //   // Remove any non-digit characters
 //   const cleaned = phone.replace(/\D/g, '');
