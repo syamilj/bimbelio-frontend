@@ -5,6 +5,7 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn, formatTwoDecimals, Provinces } from '@/lib/utils';
 import {
@@ -362,22 +363,24 @@ export function QuizLeaderboard() {
             onValueChange={setActiveLeaderboardTab}
             className="w-full"
           >
-            <TabsList className="inline-flex h-auto gap-1.5 bg-slate-100/80 p-1 rounded-full overflow-x-auto">
-              {leaderboardTabs.map((tab) => (
-                <TabsTrigger
-                  key={tab.id}
-                  value={tab.id}
-                  className="px-3 py-1.5 rounded-full text-[10px] md:text-xs font-bold whitespace-nowrap data-[state=active]:text-white"
-                  style={
-                    activeLeaderboardTab === tab.id
-                      ? { backgroundColor: mainColor }
-                      : {}
-                  }
-                >
-                  {tab.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
+            <ScrollWrapper className="overflow-x-auto">
+              <TabsList className="inline-flex h-auto gap-1.5 bg-slate-100/80 p-1 rounded-full">
+                {leaderboardTabs.map((tab) => (
+                  <TabsTrigger
+                    key={tab.id}
+                    value={tab.id}
+                    className="px-3 py-1.5 rounded-full text-[10px] md:text-xs font-bold whitespace-nowrap data-[state=active]:text-white"
+                    style={
+                      activeLeaderboardTab === tab.id
+                        ? { backgroundColor: mainColor }
+                        : {}
+                    }
+                  >
+                    {tab.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </ScrollWrapper>
           </Tabs>
 
           {/* Search and Filter Controls */}
@@ -419,7 +422,7 @@ export function QuizLeaderboard() {
           </div>
 
           {/* Sort Chips - Horizontal scroll on mobile */}
-          <div className="overflow-x-auto -mx-3 px-3 md:mx-0 md:px-0 pb-1">
+          <ScrollWrapper className="overflow-x-auto -mx-3 px-3 md:mx-0 md:px-0 pb-1">
             <div className="flex gap-1.5 md:gap-2 items-center min-w-max md:min-w-0">
               <span className="text-[10px] md:text-xs text-slate-500 font-medium flex items-center gap-1 md:gap-1.5 bg-slate-50 px-2 md:px-3 py-1 md:py-1.5 rounded-full flex-shrink-0">
                 <Filter className="w-3 h-3 md:w-3.5 md:h-3.5" />
@@ -450,7 +453,7 @@ export function QuizLeaderboard() {
                 </button>
               ))}
             </div>
-          </div>
+          </ScrollWrapper>
         </div>
 
         <div className="bg-white rounded-3xl md:rounded-3xl border border-slate-200 overflow-hidden shadow-sm">

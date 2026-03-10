@@ -9,8 +9,9 @@ import {
   TrendingDown,
   TrendingUp,
   Trophy,
-  Zap,
+  Zap
 } from 'lucide-react';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { useQuizProvider } from '../_provider/_provider';
 import {
   calculateBeatenPercentage,
@@ -97,7 +98,7 @@ export function QuizStats() {
   return (
     <div className="relative">
       {/* Stats - Horizontal scroll on mobile with hidden scrollbar */}
-      <div
+      <ScrollWrapper
         className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-1"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
@@ -167,7 +168,7 @@ export function QuizStats() {
             );
           })}
         </div>
-      </div>
+      </ScrollWrapper>
     </div>
   );
 }

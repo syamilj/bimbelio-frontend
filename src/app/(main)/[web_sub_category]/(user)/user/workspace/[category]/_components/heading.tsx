@@ -1,6 +1,7 @@
 'use client';
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 
 import { useParams, usePathname } from 'next/navigation';
@@ -61,7 +62,7 @@ export default function HeadingBahanAjar({
         onValueChange={setSubCategoryId}
         className="w-full md:w-auto"
       >
-        <div className="w-full overflow-x-auto heading-scrollbar py-[.7rem]">
+        <ScrollWrapper className="w-full overflow-x-auto heading-scrollbar py-[.7rem]">
           <TabsList className="flex w-fit gap-2 bg-transparent p-2">
             <TabsTrigger
               value=""
@@ -88,7 +89,7 @@ export default function HeadingBahanAjar({
                   </TabsTrigger>
                 ))}
           </TabsList>
-        </div>
+        </ScrollWrapper>
       </Tabs>
       <div className="flex h-full w-full items-center justify-end gap-2 md:w-auto">
         {/* <UrutkanDocs

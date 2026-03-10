@@ -10,6 +10,7 @@ import {
   type ChartConfig,
 } from '@/components/ui/chart';
 import { Progress } from '@/components/ui/progress';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { cn, formatTwoDecimals } from '@/lib/utils';
 import {
   ArrowDown,
@@ -637,7 +638,7 @@ export function QuizProgress() {
               </h3>
             </div>
 
-            <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-2 md:pb-0">
+            <ScrollWrapper className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-2 md:pb-0">
               <div className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-5 min-w-max md:min-w-0">
                 <div className="bg-white rounded-3xl md:rounded-3xl p-3 md:p-5 border border-amber-100 shadow-sm flex-shrink-0 w-[140px] md:w-auto">
                   <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase mb-2 md:mb-3">
@@ -751,13 +752,13 @@ export function QuizProgress() {
                   </div>
                 </div>
               </div>
-            </div>
+            </ScrollWrapper>
             <div className="bg-white rounded-3xl md:rounded-3xl p-3 md:p-5 border border-amber-100 shadow-sm">
               <p className="text-[10px] md:text-xs font-bold text-slate-600 mb-3 md:mb-4">
                 Gap per Subtes
               </p>
 
-              <div className="overflow-x-auto -mx-3 px-3 md:mx-0 md:px-0 pb-2 md:pb-0">
+              <ScrollWrapper className="overflow-x-auto -mx-3 px-3 md:mx-0 md:px-0 pb-2 md:pb-0">
                 <div className="space-y-4 md:space-y-6 min-w-max md:min-w-0">
                   {compareToTop.subTesGap.map((item, index) => {
                     const accuracyGap =
@@ -879,7 +880,7 @@ export function QuizProgress() {
                     );
                   })}
                 </div>
-              </div>
+              </ScrollWrapper>
             </div>
           </div>
         </div>
@@ -897,7 +898,7 @@ export function QuizProgress() {
           Progress per Subtes
         </h3>
         {/* Horizontal scroll on mobile */}
-        <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-2 md:pb-0">
+        <ScrollWrapper className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-2 md:pb-0">
           <div className="flex md:grid md:grid-cols-4 lg:grid-cols-7 gap-3 md:gap-4 min-w-max md:min-w-0">
             {progress?.subCategories.map((sub, index) => {
               return (
@@ -935,7 +936,7 @@ export function QuizProgress() {
               );
             })}
           </div>
-        </div>
+        </ScrollWrapper>
       </div>
     </div>
   );

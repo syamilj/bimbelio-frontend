@@ -15,6 +15,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 
 import { EmptyPlan } from '@/components/_shared/empty/empty-plan';
 import { CardPlan } from '@/components/_shared/other/card-plan';
@@ -531,7 +532,7 @@ export function Payment() {
                                 onValueChange={setFilterTabActive}
                                 className="w-full"
                               >
-                                <div className="overflow-x-auto">
+                                <ScrollWrapper className="overflow-x-auto">
                                   <TabsList className="w-full sm:grid sm:grid-cols-5 flex p-2 bg-gray-50 rounded-none min-w-max sm:min-w-0">
                                     <TabsTrigger
                                       value="type"
@@ -569,7 +570,7 @@ export function Payment() {
                                       Fitur
                                     </TabsTrigger>
                                   </TabsList>
-                                </div>
+                                </ScrollWrapper>
 
                                 <TabsContent
                                   value="type"

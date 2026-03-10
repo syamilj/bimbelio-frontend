@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { cn } from '@/lib/utils';
 import { getSnbtShortName } from '@/lib/utils/subtest';
 import {
@@ -447,7 +448,7 @@ const BySimakScore = ({
           </div>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
+          <ScrollWrapper className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b">
@@ -641,7 +642,7 @@ const BySimakScore = ({
                 })}
               </tbody>
             </table>
-          </div>
+          </ScrollWrapper>
 
           <div className="space-y-4 py-4">
             <h4 className="text-base font-semibold text-gray-800">

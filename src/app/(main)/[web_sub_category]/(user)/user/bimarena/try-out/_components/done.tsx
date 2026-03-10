@@ -11,8 +11,9 @@ import {
   Target,
   TrendingUp,
 } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import CardTryOut, { CardTryoutProps } from './ui/card-tryout';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 
 export default function Done({
   id,
@@ -198,7 +199,7 @@ export default function Done({
 
       {/* Cards - Horizontal Scroll Mobile / Grid Desktop */}
       {!isLoading && filteredCards && filteredCards.length > 0 && (
-        <div
+        <ScrollWrapper
           className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
@@ -207,7 +208,7 @@ export default function Done({
             userTryOutId={id}
             refresh={getData}
           />
-        </div>
+        </ScrollWrapper>
       )}
 
       {!isLoading && filteredCards?.length === 0 && (
@@ -226,7 +227,7 @@ export default function Done({
       )}
 
       {isLoading && (
-        <div
+        <ScrollWrapper
           className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
@@ -236,7 +237,7 @@ export default function Done({
               className="h-[420px] min-w-[80%] sm:min-w-[320px] md:min-w-0 md:w-full rounded-3xl shrink-0 snap-center"
             />
           ))}
-        </div>
+        </ScrollWrapper>
       )}
     </div>
   );

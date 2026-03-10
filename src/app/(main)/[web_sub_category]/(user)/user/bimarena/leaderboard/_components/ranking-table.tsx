@@ -16,6 +16,7 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import {
   Table,
   TableBody,
@@ -509,7 +510,7 @@ export function RankingTable() {
                   ))}
                 </div>
               </div>
-              <div className="overflow-x-auto">
+              <ScrollWrapper className="overflow-x-auto">
                 <Table className="min-w-full">
                   <TableHeader>
                     <TableRow
@@ -843,7 +844,7 @@ export function RankingTable() {
                     )}
                   </TableBody>
                 </Table>
-              </div>
+              </ScrollWrapper>
             </div>
           ) : (
             <Skeleton className="h-96 w-full rounded-3xl" />

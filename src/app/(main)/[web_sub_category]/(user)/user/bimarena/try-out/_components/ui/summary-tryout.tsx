@@ -15,6 +15,7 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
@@ -162,7 +163,7 @@ function TryoutQuickStats({
           ))}
         </div>
         {/* Mobile */}
-        <div
+        <ScrollWrapper
           className="md:hidden flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory"
           style={{ scrollbarWidth: 'none' }}
         >
@@ -172,7 +173,7 @@ function TryoutQuickStats({
               className="h-28 w-40 flex-shrink-0 rounded-3xl snap-start"
             />
           ))}
-        </div>
+        </ScrollWrapper>
       </div>
     );
   }
@@ -221,7 +222,7 @@ function TryoutQuickStats({
       </div>
 
       {/* Mobile: Horizontal Scroll */}
-      <div
+      <ScrollWrapper
         className="md:hidden flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory"
         style={{ scrollbarWidth: 'none' }}
       >
@@ -258,7 +259,7 @@ function TryoutQuickStats({
             </div>
           );
         })}
-      </div>
+      </ScrollWrapper>
     </div>
   );
 }
@@ -541,7 +542,7 @@ function TryoutProgressChart({
           >
             <AreaChart
               data={chartData}
-              margin={{ top: 20, right: 35, left: -10, bottom: 10 }}
+              margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
             >
               <defs>
                 <linearGradient
@@ -696,7 +697,7 @@ function TryoutProgressChart({
             <h3 className="text-sm font-bold text-slate-700">
               Riwayat Skor & Peringkat
             </h3>
-            <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide">
+            <ScrollWrapper className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide">
               {scoreHistory
                 .slice(-5)
                 .reverse()
@@ -833,7 +834,7 @@ function TryoutProgressChart({
                     </div>
                   );
                 })}
-            </div>
+            </ScrollWrapper>
           </div>
         )}
       </CardContent>

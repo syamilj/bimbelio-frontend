@@ -573,7 +573,7 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                     width="100%"
                     height="100%"
                   >
-                    <LineChart data={progressTrendData}>
+                    <LineChart data={progressTrendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
                       <XAxis
                         dataKey="label"
@@ -889,7 +889,7 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                     width="100%"
                     height="100%"
                   >
-                    <RadarChart data={radarData}>
+                    <RadarChart data={radarData} margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
                       <PolarGrid stroke="#f1f5f9" />
                       <PolarAngleAxis
                         dataKey="name"
@@ -930,7 +930,7 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                     width="100%"
                     height="100%"
                   >
-                    <BarChart data={report.DistributionScore}>
+                    <BarChart data={report.DistributionScore} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
                       <XAxis
                         dataKey="range"

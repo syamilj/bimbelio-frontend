@@ -5,6 +5,7 @@ import { BimBrand } from '@/components/ui/bim-brand';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { BookOpen, Bot, Medal, MonitorPlay, Trophy } from 'lucide-react';
 import Link from 'next/link';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 
 export default function BimQuickAccessMenu() {
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -77,7 +78,7 @@ export default function BimQuickAccessMenu() {
       </div>
 
       {/* Mobile: Horizontal Scroll */}
-      <div className="md:hidden flex gap-2 overflow-x-auto pb-3 snap-x snap-mandatory scrollbar-hide">
+      <ScrollWrapper className="md:hidden flex gap-2 overflow-x-auto pb-3 snap-x snap-mandatory scrollbar-hide">
         {quickActions.map((action, idx) => {
           const Icon = action.icon;
           return (
@@ -98,7 +99,7 @@ export default function BimQuickAccessMenu() {
             </Link>
           );
         })}
-      </div>
+      </ScrollWrapper>
     </div>
   );
 }

@@ -352,7 +352,7 @@ function ScoreTrendChart({
       >
         <ComposedChart
           data={chartData}
-          margin={{ top: 35, right: 30, left: -5, bottom: 10 }}
+          margin={{ top: 15, right: 45, left: -15, bottom: 0 }}
         >
           <defs>
             <linearGradient id="predScoreGrad" x1="0" y1="0" x2="0" y2="1">
@@ -1119,7 +1119,7 @@ function PercentileChart({
       >
         <ComposedChart
           data={percentileData}
-          margin={{ top: 20, right: 10, left: -10, bottom: 10 }}
+          margin={{ top: 5, right: 5, left: -20, bottom: 0 }}
         >
           <defs>
             <linearGradient id="pctlGrad" x1="0" y1="0" x2="0" y2="1">

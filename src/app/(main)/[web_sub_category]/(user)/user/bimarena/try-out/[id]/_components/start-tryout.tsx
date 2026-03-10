@@ -4,6 +4,7 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
@@ -166,11 +167,9 @@ const StartTryout = ({
             </div>
 
             {/* Stats Row - Horizontal Scroll on Mobile */}
-            <div
+            <ScrollWrapper
               className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-1"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              <style>{`.stats-scroll::-webkit-scrollbar { display: none; }`}</style>
               <div className="stats-scroll flex md:grid md:grid-cols-3 gap-3 md:gap-4 min-w-max md:min-w-0">
                 {[
                   {
@@ -213,7 +212,7 @@ const StartTryout = ({
                   );
                 })}
               </div>
-            </div>
+            </ScrollWrapper>
           </div>
         </motion.div>
 

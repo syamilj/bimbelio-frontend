@@ -16,6 +16,7 @@ import {
   ChartTooltip,
 } from '@/components/ui/chart';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import {
   Table,
   TableBody,
@@ -727,7 +728,7 @@ const Statistics = () => {
           ))}
         </div>
 
-        <div className="overflow-x-auto">
+        <ScrollWrapper className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow className="bg-gray-50 border-b border-gray-200">
@@ -858,7 +859,7 @@ const Statistics = () => {
               ))}
             </TableBody>
           </Table>
-        </div>
+        </ScrollWrapper>
 
         {/* Table footnote */}
         <div className="px-5 py-3 border-t border-gray-100 bg-gray-50/60 flex flex-wrap gap-x-4 gap-y-1">
@@ -905,7 +906,7 @@ const Statistics = () => {
               >
                 <BarChart
                   data={RankingTryout?.DistributionScore}
-                  margin={{ top: 24, right: 16, left: 0, bottom: 8 }}
+                  margin={{ top: 10, right: 10, left: -10, bottom: 0 }}
                   barCategoryGap="25%"
                 >
                   <CartesianGrid
@@ -1316,7 +1317,7 @@ const AnalysisSubject = () => {
               >
                 <RadarChart
                   data={radarData}
-                  margin={{ top: 16, right: 32, bottom: 16, left: 32 }}
+                  margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
                 >
                   <PolarGrid stroke="#e5e7eb" />
                   <PolarAngleAxis

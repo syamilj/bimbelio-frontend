@@ -1,6 +1,7 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { BimArena, BimCourse } from '@/components/ui/bim-brand';
 import {
   Award,
@@ -197,7 +198,7 @@ export default function BimQuickStatsOverview({
       </div>
 
       {/* Mobile: Horizontal Scroll */}
-      <div className="md:hidden flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
+      <ScrollWrapper className="md:hidden flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
         {statCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
@@ -234,7 +235,7 @@ export default function BimQuickStatsOverview({
             </div>
           );
         })}
-      </div>
+      </ScrollWrapper>
     </div>
   );
 }

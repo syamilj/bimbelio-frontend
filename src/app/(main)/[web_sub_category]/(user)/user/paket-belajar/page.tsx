@@ -4,6 +4,7 @@ import { CardPlan } from '@/components/_shared/other/card-plan';
 import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/types';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useGet } from '@/lib/fetch-helper/useGet';
@@ -167,7 +168,7 @@ export default function PaketBelajarPage() {
 
       <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden p-4 md:p-6">
         {isLoading ? (
-          <div className="flex gap-5 overflow-x-auto pb-3">
+          <ScrollWrapper className="flex gap-5 overflow-x-auto pb-3">
             {Array.from({ length: 3 }).map((_, index) => (
               <div
                 key={index}
@@ -178,7 +179,7 @@ export default function PaketBelajarPage() {
                 <div className="h-3 bg-slate-100 rounded w-1/2" />
               </div>
             ))}
-          </div>
+          </ScrollWrapper>
         ) : visiblePlans.length === 0 ? (
           <Card className="rounded-3xl border border-slate-200 p-6 bg-slate-50/70">
             <div className="flex items-center gap-2 text-slate-700 font-bold">
@@ -203,7 +204,7 @@ export default function PaketBelajarPage() {
                   </span>
                 </div>
 
-                <div className="flex overflow-x-auto touch-auto gap-5 px-2 -mx-2 snap-x snap-mandatory scrollbar-hide pb-3 [-webkit-overflow-scrolling:touch]">
+                <ScrollWrapper className="flex overflow-x-auto touch-auto gap-5 px-2 -mx-2 snap-x snap-mandatory scrollbar-hide pb-3 [-webkit-overflow-scrolling:touch]">
                   {section.plans.map((plan) => (
                     <div
                       key={plan.id}
@@ -212,7 +213,7 @@ export default function PaketBelajarPage() {
                       <CardPlan plan={plan} />
                     </div>
                   ))}
-                </div>
+                </ScrollWrapper>
               </div>
             ))}
           </div>

@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import {
   Award,
   BookOpen,
@@ -93,7 +94,7 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
   return (
     <div className="space-y-5">
       {/* Summary Cards - Horizontal Scroll on Mobile - More Compact */}
-      <div className="overflow-x-auto no-scrollbar pb-3">
+      <ScrollWrapper className="overflow-x-auto no-scrollbar pb-3">
         <div className="flex lg:grid lg:grid-cols-4 gap-3 lg:gap-4 min-w-max lg:min-w-0">
           {summaryCards.map((card, index) => {
             const IconComponent = card.icon;
@@ -140,7 +141,7 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
             );
           })}
         </div>
-      </div>
+      </ScrollWrapper>
 
       {/* Additional Detailed Stats Card */}
       {unlockTryout && (

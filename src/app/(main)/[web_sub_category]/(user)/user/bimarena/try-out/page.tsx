@@ -3,6 +3,7 @@
 import { RegistrationUserTryout } from '@/components/_shared/account/registration-user-tryout';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
@@ -211,9 +212,8 @@ const Content = () => {
           <div className="max-w-7xl mx-auto px-4 md:px-6 space-y-0">
             {/* Sleek Tab Navigation */}
             <div className="sticky top-0 z-30 bg-slate-50/80 backdrop-blur-xl py-2">
-              <div
+              <ScrollWrapper
                 className="flex gap-1.5 p-1 bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-x-auto"
-                style={{ scrollbarWidth: 'none' }}
               >
                 {tabItems.map((tab) => {
                   const Icon = tab.icon;
@@ -256,7 +256,7 @@ const Content = () => {
                     </button>
                   );
                 })}
-              </div>
+              </ScrollWrapper>
             </div>
 
             {/* Tab Content Card */}

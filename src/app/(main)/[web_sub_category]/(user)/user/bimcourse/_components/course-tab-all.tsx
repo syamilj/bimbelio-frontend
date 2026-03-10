@@ -18,6 +18,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 
 interface CourseCategory {
   id: number;
@@ -267,7 +268,7 @@ export default function CourseTabAll({ onCountReady }: Props) {
       {isLoading ? (
         <>
           {/* Mobile skeleton horizontal */}
-          <div
+          <ScrollWrapper
             className="flex gap-3 overflow-x-auto pb-2 md:hidden"
             style={{ scrollbarWidth: 'none' }}
           >
@@ -285,7 +286,7 @@ export default function CourseTabAll({ onCountReady }: Props) {
                 </div>
               </div>
             ))}
-          </div>
+          </ScrollWrapper>
           {/* Desktop skeleton grid */}
           <div className="hidden md:grid grid-cols-3 lg:grid-cols-4 gap-3">
             {Array.from({ length: 8 }).map((_, i) => (
@@ -324,7 +325,7 @@ export default function CourseTabAll({ onCountReady }: Props) {
       ) : (
         <>
           {/* Mobile: horizontal snap scroll */}
-          <div
+          <ScrollWrapper
             className="flex gap-3 overflow-x-auto pb-2 md:hidden snap-x snap-mandatory"
             style={{ scrollbarWidth: 'none' }}
           >
@@ -339,7 +340,7 @@ export default function CourseTabAll({ onCountReady }: Props) {
                 />
               </div>
             ))}
-          </div>
+          </ScrollWrapper>
           {/* Desktop: grid */}
           <div className="hidden md:grid grid-cols-3 lg:grid-cols-4 gap-3">
             {filtered.map((item) => (

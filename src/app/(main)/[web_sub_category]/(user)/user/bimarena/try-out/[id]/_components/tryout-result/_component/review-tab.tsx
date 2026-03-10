@@ -6,6 +6,7 @@ import BlocknoteEditor from '@/components/ui/blocknote-editor';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import {
   Select,
   SelectContent,
@@ -326,7 +327,7 @@ export function ReviewTab({
         </div>
 
         {/* Quick Stats Bar - Horizontal Scroll on Mobile - More Compact */}
-        <div className="overflow-x-auto no-scrollbar mt-4 md:mt-6 pt-3 md:pt-4 border-t border-slate-200">
+        <ScrollWrapper className="overflow-x-auto no-scrollbar mt-4 md:mt-6 pt-3 md:pt-4 border-t border-slate-200">
           <div className="flex lg:grid lg:grid-cols-5 gap-3 md:gap-4 min-w-max lg:min-w-0">
             <div className="text-center min-w-[100px] md:min-w-[120px] lg:min-w-0">
               <div
@@ -372,7 +373,7 @@ export function ReviewTab({
               </div>
             </div>
           </div>
-        </div>
+        </ScrollWrapper>
       </div>
 
       {/* Main Content */}

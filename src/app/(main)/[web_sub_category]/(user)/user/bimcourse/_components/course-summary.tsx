@@ -3,6 +3,7 @@
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { Award, BookOpen, Clock, Flame, TrendingUp } from 'lucide-react';
 
@@ -208,7 +209,7 @@ export default function CourseSummary() {
           </div>
 
           {/* Mobile Horizontal Scroll */}
-          <div
+          <ScrollWrapper
             className="md:hidden flex gap-3 overflow-x-auto pb-1 -mx-4 px-4"
             style={{ scrollbarWidth: 'none' }}
           >
@@ -238,7 +239,7 @@ export default function CourseSummary() {
                 </div>
               );
             })}
-          </div>
+          </ScrollWrapper>
         </>
       ) : (
         <>
@@ -250,7 +251,7 @@ export default function CourseSummary() {
               />
             ))}
           </div>
-          <div
+          <ScrollWrapper
             className="md:hidden flex gap-3 overflow-x-auto pb-1 -mx-4 px-4"
             style={{ scrollbarWidth: 'none' }}
           >
@@ -260,7 +261,7 @@ export default function CourseSummary() {
                 className="h-28 w-36 flex-shrink-0 rounded-3xl"
               />
             ))}
-          </div>
+          </ScrollWrapper>
         </>
       )}
     </div>

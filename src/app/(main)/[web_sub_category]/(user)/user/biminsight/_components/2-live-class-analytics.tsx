@@ -412,7 +412,7 @@ export const LiveClassAnalytics = () => {
                 }}
                 className="h-[160px] w-full"
               >
-                <BarChart data={weeklyTrend} barGap={1} barCategoryGap="20%">
+                <BarChart data={weeklyTrend} barGap={1} barCategoryGap="20%" margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#f1f5f9" />
                   <XAxis dataKey="week" tickLine={false} axisLine={false} tick={{ fontSize: 10, fill: '#64748b' }} tickMargin={10} />
                   <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 10, fill: '#64748b' }} allowDecimals={false} width={30} />

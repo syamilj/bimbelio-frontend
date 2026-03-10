@@ -1,5 +1,6 @@
 'use client';
 
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import {
@@ -209,7 +210,7 @@ const SearchDeskstop = () => {
       </form>
 
       {/* Mobile Category Filter */}
-      <div className="mt-4 overflow-x-auto">
+      <ScrollWrapper className="mt-4 overflow-x-auto">
         <div className="flex items-center gap-2 pb-2">
           <button
             className={cn(
@@ -243,7 +244,7 @@ const SearchDeskstop = () => {
             </button>
           ))}
         </div>
-      </div>
+      </ScrollWrapper>
 
       {/* Search Tips - Only show on desktop */}
       {!isMobile && (

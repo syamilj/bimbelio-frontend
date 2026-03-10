@@ -8,6 +8,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { VisuallyHidden } from '@/components/ui/visually-hidden';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import Chat from '@/components/workspace/chat';
 import { MessageDataType } from '@/components/workspace/chat/provider';
 import { env } from '@/env.mjs';
@@ -330,7 +331,7 @@ const HeaderChat = ({
         </button>
 
         {/* Scrollable tabs */}
-        <div className="flex items-center gap-1 flex-1 min-w-0 overflow-x-auto scrollbar-none">
+        <ScrollWrapper className="flex items-center gap-1 flex-1 min-w-0 overflow-x-auto scrollbar-none">
           {chatHistory.map((history) => {
             const isActive = historyId === history.id;
             return (
@@ -369,7 +370,7 @@ const HeaderChat = ({
               </div>
             );
           })}
-        </div>
+        </ScrollWrapper>
 
         <button
           type="button"

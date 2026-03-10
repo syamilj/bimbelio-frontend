@@ -347,7 +347,7 @@ function CategoryBarChart({
         <BarChart
           data={data}
           layout="vertical"
-          margin={{ top: 0, right: 48, left: 8, bottom: 0 }}
+          margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
         >
           <CartesianGrid
             strokeDasharray="3 3"
@@ -557,7 +557,7 @@ function CategoryCard({ category: cat }: { category: CategoryData }) {
                 <BarChart
                   data={chapterChartData}
                   layout="vertical"
-                  margin={{ top: 0, right: 40, left: 4, bottom: 0 }}
+                  margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
                 >
                   <XAxis
                     type="number"

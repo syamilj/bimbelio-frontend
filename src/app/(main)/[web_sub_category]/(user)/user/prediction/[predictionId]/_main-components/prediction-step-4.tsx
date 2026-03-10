@@ -5,6 +5,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import {
   Card,
   CardContent,
@@ -370,7 +371,7 @@ const BySimakScore = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
+          <ScrollWrapper className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b">
@@ -564,7 +565,7 @@ const BySimakScore = () => {
                 })}
               </tbody>
             </table>
-          </div>
+          </ScrollWrapper>
 
           <div className="space-y-4 py-4">
             <h4 className="text-base font-semibold text-gray-800">

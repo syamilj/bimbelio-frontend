@@ -6,6 +6,7 @@ import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { BookOpen, Clock, Layers, Play, Zap } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import CardTryOut, { CardTryoutProps } from './ui/card-tryout';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 
 export default function Terbaru({
   id,
@@ -133,7 +134,7 @@ export default function Terbaru({
 
       {/* Cards - Horizontal Scroll Mobile / Grid Desktop */}
       {!isLoading && cards && cards.length > 0 && (
-        <div
+        <ScrollWrapper
           className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
@@ -142,7 +143,7 @@ export default function Terbaru({
             userTryOutId={id}
             refresh={getData}
           />
-        </div>
+        </ScrollWrapper>
       )}
 
       {!isLoading && cards?.length === 0 && (
@@ -161,7 +162,7 @@ export default function Terbaru({
       )}
 
       {isLoading && (
-        <div
+        <ScrollWrapper
           className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
@@ -171,7 +172,7 @@ export default function Terbaru({
               className="h-[420px] min-w-[80%] sm:min-w-[320px] md:min-w-0 md:w-full rounded-3xl shrink-0 snap-center"
             />
           ))}
-        </div>
+        </ScrollWrapper>
       )}
     </div>
   );

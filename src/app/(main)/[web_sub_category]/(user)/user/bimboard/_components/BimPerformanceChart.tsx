@@ -2,6 +2,7 @@
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { BimArena } from '@/components/ui/bim-brand';
 import {
   Card,
@@ -195,9 +196,8 @@ export default function BimPerformanceChart({
 
         {/* Score summary badges */}
         {stats && (
-          <div
+          <ScrollWrapper
             className="flex gap-2 mt-3 overflow-x-auto pb-1"
-            style={{ scrollbarWidth: 'none' }}
           >
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 flex-shrink-0">
               <TrendingUp className="w-3 h-3 text-emerald-500" />
@@ -229,7 +229,7 @@ export default function BimPerformanceChart({
                 Terendah: {stats.min}
               </span>
             </div>
-          </div>
+          </ScrollWrapper>
         )}
       </CardHeader>
 
@@ -258,7 +258,7 @@ export default function BimPerformanceChart({
               >
                 <AreaChart
                   data={chartData}
-                  margin={{ top: 20, right: 35, left: -10, bottom: 10 }}
+                  margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
                 >
                   <defs>
                     <linearGradient
@@ -433,7 +433,7 @@ export default function BimPerformanceChart({
                 <h3 className="text-sm font-bold text-slate-700">
                   Riwayat Skor & Peringkat
                 </h3>
-                <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide">
+                <ScrollWrapper className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide">
                   {filteredScores
                     .slice(-5)
                     .reverse()
@@ -572,7 +572,7 @@ export default function BimPerformanceChart({
                         </div>
                       );
                     })}
-                </div>
+                </ScrollWrapper>
               </div>
             )}
           </div>

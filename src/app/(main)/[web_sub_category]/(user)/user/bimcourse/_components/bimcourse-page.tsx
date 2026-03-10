@@ -4,6 +4,7 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { cn } from '@/lib/utils';
 import { Globe, Layers, Sparkles } from 'lucide-react';
 import { useCallback, useState } from 'react';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import CourseSummary from './course-summary';
 import CourseTabAll from './course-tab-all';
 import CourseTabUpsell from './course-tab-upsell';
@@ -36,7 +37,7 @@ export default function BimCoursePage() {
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-xl py-2">
           {/* Tab Pills */}
-          <div
+          <ScrollWrapper
             className="flex gap-1.5 p-1 rounded-3xl overflow-x-auto"
             style={{
               background: `color-mix(in srgb, ${mainColor} 8%, white)`,
@@ -101,7 +102,7 @@ export default function BimCoursePage() {
                 )}
               </div>
             </button>
-          </div>
+          </ScrollWrapper>
         </div>
 
         {/* Tab Content */}

@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { Skeleton } from '@/components/ui/skeleton';
 import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
@@ -1094,7 +1095,7 @@ export default function ModulPembelajaranSection() {
             </div>
           </div>
         ) : (
-          <div className="w-full overflow-x-auto pb-4">
+          <ScrollWrapper className="w-full overflow-x-auto pb-4">
             <div
               className="flex gap-4 snap-x snap-mandatory scrollbar-hide"
               style={{
@@ -1414,7 +1415,7 @@ export default function ModulPembelajaranSection() {
                 );
               })}
             </div>
-          </div>
+          </ScrollWrapper>
         )
       ) : (
         <div className="container mx-auto max-w-7xl px-4 md:px-6 lg:px-8">

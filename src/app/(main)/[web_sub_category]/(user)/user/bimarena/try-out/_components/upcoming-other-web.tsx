@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import CardTryOut, { CardTryoutProps } from './ui/card-tryout';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 
 interface GroupedTryout {
   webSubName: string;
@@ -289,7 +290,7 @@ export default function UpcomingOtherWeb({
               </div>
 
               {/* Cards for this group */}
-              <div
+              <ScrollWrapper
                 className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
@@ -300,7 +301,7 @@ export default function UpcomingOtherWeb({
                   refresh={getData}
                   reloadHref
                 />
-              </div>
+              </ScrollWrapper>
             </div>
           ))}
         </div>
@@ -337,7 +338,7 @@ export default function UpcomingOtherWeb({
             ))}
           </div>
           <Skeleton className="h-16 w-full rounded-3xl" />
-          <div
+          <ScrollWrapper
             className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
@@ -347,7 +348,7 @@ export default function UpcomingOtherWeb({
                 className="h-[420px] min-w-[80%] sm:min-w-[320px] md:min-w-0 md:w-full rounded-3xl shrink-0 snap-center"
               />
             ))}
-          </div>
+          </ScrollWrapper>
         </div>
       )}
     </div>

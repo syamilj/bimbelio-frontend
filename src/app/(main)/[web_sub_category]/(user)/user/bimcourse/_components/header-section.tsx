@@ -4,6 +4,7 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import {
   Award,
@@ -192,7 +193,7 @@ export default function HeaderSection() {
               scrollbar-width: none;
             }
           `}</style>
-          <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+          <ScrollWrapper className="overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
             <div className="flex gap-3 md:grid md:grid-cols-5 md:gap-4 min-w-max md:min-w-0">
               {/* Sub Chapter */}
               <div className="group bg-white hover:bg-gradient-to-br hover:from-blue-50 hover:to-blue-100 border-2 border-blue-200 rounded-3xl md:rounded-3xl p-4 md:p-6 text-center relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105 flex-shrink-0 w-40 md:w-auto">
@@ -332,10 +333,10 @@ export default function HeaderSection() {
                 </div>
               </div>
             </div>
-          </div>
+          </ScrollWrapper>
         </div>
       ) : (
-        <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+        <ScrollWrapper className="overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
           <div className="flex gap-3 md:grid md:grid-cols-5 md:gap-4 min-w-max md:min-w-0">
             {Array.from({ length: 5 }).map((_, i) => (
               <Skeleton
@@ -344,7 +345,7 @@ export default function HeaderSection() {
               />
             ))}
           </div>
-        </div>
+        </ScrollWrapper>
       )}
     </section>
   );

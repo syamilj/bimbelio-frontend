@@ -12,14 +12,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import {
-  ArrowDown,
-  ArrowUp,
-  ChevronRight,
-  Lightbulb,
-} from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronRight, Lightbulb } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Cell, Label, Pie, PieChart } from "recharts";
+import { ScrollWrapper } from "@/components/ui/scroll-wrapper";
 
 // --- StatPill -----------------------------------------------------------------
 
@@ -318,28 +314,6 @@ export function ScrollRow({
   cols?: 2 | 3 | 4;
   noGrid?: boolean;
 }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollRight, setCanScrollRight] = useState(false);
-
-  const checkScroll = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    setCanScrollRight(el.scrollWidth - el.scrollLeft - el.clientWidth > 4);
-  }, []);
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    checkScroll();
-    el.addEventListener("scroll", checkScroll, { passive: true });
-    const ro = new ResizeObserver(checkScroll);
-    ro.observe(el);
-    return () => {
-      el.removeEventListener("scroll", checkScroll);
-      ro.disconnect();
-    };
-  }, [checkScroll]);
-
   const gridCols =
     cols === 2
       ? "md:grid-cols-2"
@@ -349,13 +323,11 @@ export function ScrollRow({
 
   return (
     <div className={cn("relative", className)}>
-      <div
-        ref={scrollRef}
+      <ScrollWrapper
         className={cn(
-          "overflow-x-auto -mx-4 px-4 pb-2 pt-1",
+          "-mx-4 px-4 pb-2 pt-1",
           !noGrid && "md:mx-0 md:px-0 md:overflow-visible"
         )}
-        style={{ scrollbarWidth: "none" }}
       >
         <div
           className={cn(
@@ -365,23 +337,11 @@ export function ScrollRow({
         >
           {children}
         </div>
-      </div>
-      {/* Scroll hint without white gradient overlay */}
-      {canScrollRight && (
-        <div className={cn(
-          "absolute right-0 top-0 bottom-2 w-8 pointer-events-none flex items-center justify-end",
-          !noGrid && "md:hidden"
-        )}>
-          <div className="bg-white/90 backdrop-blur-sm text-slate-500 shadow-sm border border-slate-200/50 rounded-full p-1 animate-pulse mr-1">
-            <ChevronRight className="w-3.5 h-3.5" />
-          </div>
-        </div>
-      )}
+      </ScrollWrapper>
     </div>
   );
 }
 
-import { ScrollWrapper } from "@/components/ui/scroll-wrapper";
 export { ScrollWrapper };
 
 // --- InsightBanner ------------------------------------------------------------

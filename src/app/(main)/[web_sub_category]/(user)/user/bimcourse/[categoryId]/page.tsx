@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { LoadingRetro } from '@/components/ui/loading-retro';
 import { Progress } from '@/components/ui/progress';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
 import { differenceInCalendarDays } from 'date-fns';
@@ -305,7 +306,7 @@ export default function CourseOverviewPage() {
                           width="100%"
                           height="100%"
                         >
-                          <BarChart data={scoreData.slice(-5)}>
+                          <BarChart data={scoreData.slice(-5)} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                             <CartesianGrid
                               strokeDasharray="3 3"
                               vertical={false}
@@ -468,7 +469,7 @@ export default function CourseOverviewPage() {
               </div>
 
               {/* Subchapter List: Horizontal Scroll on Mobile, Grid on Desktop */}
-              <div className="flex flex-row overflow-x-auto pb-6 -mx-4 px-4 gap-4 snap-x snap-mandatory md:grid md:grid-cols-2 md:gap-4 md:pb-0 md:overflow-visible md:mx-0 md:px-0">
+              <ScrollWrapper className="flex flex-row overflow-x-auto pb-6 -mx-4 px-4 gap-4 snap-x snap-mandatory md:grid md:grid-cols-2 md:gap-4 md:pb-0 md:overflow-visible md:mx-0 md:px-0">
                 {chapter.CourseSubChapter.map((sub) => {
                   // Only use progressSet to avoid counting duplicates
                   const isSubCompleted = progressSet.has(sub.id);
@@ -590,7 +591,7 @@ export default function CourseOverviewPage() {
                     </div>
                   );
                 })}
-              </div>
+              </ScrollWrapper>
             </div>
           ))}
         </div>

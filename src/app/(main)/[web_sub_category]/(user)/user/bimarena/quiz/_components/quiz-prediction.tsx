@@ -18,6 +18,7 @@ import {
   TrendingUp,
   Users,
 } from 'lucide-react';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import {
   SCORE_CHANGE_LAST_WEEK,
   TOTAL_PARTICIPANTS,
@@ -117,7 +118,7 @@ export function QuizPrediction({
 
           {/* Horizontal scroll on mobile */}
           <div className="relative">
-            <div
+            <ScrollWrapper
               className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-2 md:pb-0"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
@@ -175,7 +176,7 @@ export function QuizPrediction({
                   </p>
                 </div>
               </div>
-            </div>
+            </ScrollWrapper>
           </div>
         </div>
       </div>

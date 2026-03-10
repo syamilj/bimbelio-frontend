@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import {
   website_sub_category_id,
   website_sub_category_id_params,
@@ -375,9 +376,8 @@ export default function LiveLearningDashboard({
 
         {/* Attendance pills */}
         {summary && summary.total > 0 && (
-          <div
-            className="flex items-center gap-2 overflow-x-auto pb-1"
-            style={{ scrollbarWidth: 'none' }}
+          <ScrollWrapper
+            className="flex items-center gap-2 pb-1"
           >
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 flex-shrink-0">
               <CheckCircle2 className="w-3 h-3 text-emerald-600" />
@@ -403,7 +403,7 @@ export default function LiveLearningDashboard({
                 {summary.attendanceRate}% Kehadiran
               </span>
             </div>
-          </div>
+          </ScrollWrapper>
         )}
       </div>
 
@@ -490,9 +490,8 @@ export default function LiveLearningDashboard({
 
         {/* ─── Sticky Tab Navigation — identical to bimarena ─────────────────── */}
         <div className="sticky top-0 z-30 bg-slate-50/80 backdrop-blur-xl py-2">
-          <div
-            className="flex gap-1.5 p-1 bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-x-auto"
-            style={{ scrollbarWidth: 'none' }}
+          <ScrollWrapper
+            className="flex gap-1.5 p-1 bg-white rounded-3xl border border-slate-200/80 shadow-sm"
           >
             {tabItems.map((tab) => {
               const Icon = tab.icon;
@@ -533,7 +532,7 @@ export default function LiveLearningDashboard({
                 </button>
               );
             })}
-          </div>
+          </ScrollWrapper>
         </div>
 
         {/* ─── Tab Content Card — identical frame to bimarena ────────────────── */}
@@ -692,14 +691,8 @@ function LiveClassSection({
 
       {/* Loading skeletons */}
       {isLoading && (
-        <div
-          className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3"
-          style={
-            {
-              scrollbarWidth: 'none',
-              msOverflowStyle: 'none',
-            } as React.CSSProperties
-          }
+        <ScrollWrapper
+          className="flex gap-4 pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3"
         >
           {Array.from({ length: 3 }).map((_, i) => (
             <Skeleton
@@ -707,7 +700,7 @@ function LiveClassSection({
               className="h-[520px] min-w-[80%] sm:min-w-[320px] md:min-w-0 md:w-full rounded-3xl shrink-0 snap-center"
             />
           ))}
-        </div>
+        </ScrollWrapper>
       )}
 
       {/* Calendar view */}
@@ -722,14 +715,8 @@ function LiveClassSection({
 
       {/* Grid view */}
       {!isLoading && !hasError && viewMode === 'grid' && data.length > 0 && (
-        <div
-          className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3 xl:grid-cols-4"
-          style={
-            {
-              scrollbarWidth: 'none',
-              msOverflowStyle: 'none',
-            } as React.CSSProperties
-          }
+        <ScrollWrapper
+          className="flex gap-4 pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3 xl:grid-cols-4"
         >
           {data.map((lc) => (
             <LiveClassCard
@@ -741,7 +728,7 @@ function LiveClassSection({
               onFinishRegistered={onFinishRegistered}
             />
           ))}
-        </div>
+        </ScrollWrapper>
       )}
 
       {/* Empty state */}

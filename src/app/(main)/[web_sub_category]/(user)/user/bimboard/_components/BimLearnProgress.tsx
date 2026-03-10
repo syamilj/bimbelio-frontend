@@ -8,6 +8,7 @@ import {
   BimLive,
 } from '@/components/ui/bim-brand';
 import { Input } from '@/components/ui/input';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { cn } from '@/lib/utils';
 import {
@@ -174,7 +175,7 @@ export default function BimLearnProgress({
       <div className="flex flex-col gap-4 mb-6">
         <h2 className="text-lg font-black text-slate-800">Progress Belajar</h2>
 
-        <div className="w-full overflow-x-auto scrollbar-hide pb-0.5">
+        <ScrollWrapper className="w-full overflow-x-auto scrollbar-hide pb-0.5">
           <div className="flex gap-1 w-max bg-slate-100 p-1 rounded-3xl">
             {/* BimLearn — always first */}
             <button
@@ -287,7 +288,7 @@ export default function BimLearnProgress({
               );
             })}
           </div>
-        </div>
+        </ScrollWrapper>
       </div>
 
       {/* Search & Filter Bar — hidden on BimLearn summary tab */}
@@ -312,7 +313,7 @@ export default function BimLearnProgress({
           />
         </div>
 
-        <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0">
+        <ScrollWrapper className="flex gap-2 overflow-x-auto pb-2 md:pb-0">
           <button
             onClick={() => setFilterStatus('all')}
             className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
@@ -343,7 +344,7 @@ export default function BimLearnProgress({
           >
             Berlangsung
           </button>
-        </div>
+        </ScrollWrapper>
       </div>
 
       {/* Content - Horizontal Scroll for Mobile, Grid for Desktop */}
@@ -656,7 +657,7 @@ export default function BimLearnProgress({
           </div>
         ) : activeTab === 'live' ? (
           filteredLiveClasses.length > 0 ? (
-            <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
+            <ScrollWrapper className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
               {filteredLiveClasses.map((liveClass) => {
                 const lcStatus = getLiveClassStatus(
                   liveClass.scheduleTime,
@@ -759,7 +760,7 @@ export default function BimLearnProgress({
                   </Link>
                 );
               })}
-            </div>
+            </ScrollWrapper>
           ) : (
             <div className="flex flex-col items-center justify-center py-12">
               <MonitorPlay className="w-16 h-16 text-slate-300 mb-4" />
@@ -776,7 +777,7 @@ export default function BimLearnProgress({
           )
         ) : activeTab === 'courses' ? (
           filteredCourses.length > 0 ? (
-            <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
+            <ScrollWrapper className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
               {filteredCourses.map((course) => {
                 const getStatusBadge = () => {
                   if (course.progress === 0) {
@@ -905,7 +906,7 @@ export default function BimLearnProgress({
                   </Link>
                 );
               })}
-            </div>
+            </ScrollWrapper>
           ) : (
             <div className="text-center py-8">
               <div className="w-32 h-32 mx-auto mb-3">
@@ -942,7 +943,7 @@ export default function BimLearnProgress({
           )
         ) : activeTab === 'quiz' ? (
           filteredQuizVolumes.length > 0 ? (
-            <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
+            <ScrollWrapper className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
               {filteredQuizVolumes.map((qv) => {
                 const now = new Date();
                 const start = new Date(qv.startDate);
@@ -1046,7 +1047,7 @@ export default function BimLearnProgress({
                   </Link>
                 );
               })}
-            </div>
+            </ScrollWrapper>
           ) : (
             <div className="text-center py-8">
               <Swords className="w-16 h-16 text-slate-300 mx-auto mb-4" />
@@ -1074,7 +1075,7 @@ export default function BimLearnProgress({
             </div>
           )
         ) : filteredTryouts.length > 0 ? (
-          <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
+          <ScrollWrapper className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
             {filteredTryouts.map((tryout) => {
               const getStatusBadge = () => {
                 switch (tryout.status) {
@@ -1163,7 +1164,7 @@ export default function BimLearnProgress({
                 </Link>
               );
             })}
-          </div>
+          </ScrollWrapper>
         ) : (
           <div className="text-center py-8">
             <div className="w-32 h-32 mx-auto mb-3">

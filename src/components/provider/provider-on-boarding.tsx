@@ -17,6 +17,7 @@ type OnBoardingObjectType = {
   QUIZ: boolean;
   TRYOUT: boolean;
   CHAT_AI: boolean;
+  INSIGHT: boolean;
 };
 
 type OnBoardingListType =
@@ -26,7 +27,8 @@ type OnBoardingListType =
   | 'DOCUMENT_QUIZ'
   | 'QUIZ'
   | 'TRYOUT'
-  | 'CHAT_AI';
+  | 'CHAT_AI'
+  | 'INSIGHT';
 
 export default function ProviderOnBoarding({
   children,
@@ -41,6 +43,7 @@ export default function ProviderOnBoarding({
     QUIZ: false,
     TRYOUT: false,
     CHAT_AI: false,
+    INSIGHT: false,
   });
 
   const { isLoading, refetch } = useGet('/user/getUserOnBoarding', {

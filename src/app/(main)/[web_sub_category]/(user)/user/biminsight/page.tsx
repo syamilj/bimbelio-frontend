@@ -19,7 +19,8 @@ import { QuizAnalyticsTable } from './_components/4-quiz-analytics';
 import { ScorePrediction } from './_components/5-score-prediction';
 import { TopicMastery } from './_components/6-topic-mastery';
 import { BimArena, BimCourse, BimLearn, BimLive, BimInsight as BimInsightBrand } from '@/components/ui/bim-brand';
-import { useRef, useState, useEffect } from 'react';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
+import BimInsightOnboarding from './_components/onboarding';
 
 const tabs = [
   { value: 'overview', label: <BimLearn />, icon: Sparkles },
@@ -31,39 +32,21 @@ const tabs = [
 
 export default function BimInsight() {
   const { mainColor } = useWebsiteSubCategory();
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [canScrollRight, setCanScrollRight] = useState(false);
-
-  const checkScroll = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 2);
-    }
-  };
-
-  useEffect(() => {
-    checkScroll();
-    window.addEventListener('resize', checkScroll);
-    return () => window.removeEventListener('resize', checkScroll);
-  }, []);
 
   return (
     <div className="min-h-screen pb-12">
+      <BimInsightOnboarding />
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <Tabs defaultValue="overview" className="w-full">
           {/* ── Tab navigation ─────────────────────────────────── */}
           <div className="sticky top-0 z-30">
-            <div className="relative">
-              <div
-                ref={scrollContainerRef}
-                onScroll={checkScroll}
-                className="overflow-x-auto flex pb-2"
-                style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
+            <ScrollWrapper
+              className="overflow-x-auto flex pb-2 scrollbar-hide"
+            >
+              <TabsList
+                className="inline-flex w-fit min-w-fit justify-start h-auto gap-2 p-1 rounded-full bg-slate-100"
               >
-                <TabsList
-                  className="inline-flex w-fit min-w-fit justify-start h-auto gap-2 p-1 rounded-full bg-slate-100"
-                >
-                  {tabs.map((tab) => {
+                {tabs.map((tab) => {
                     const Icon = tab.icon;
                     return (
                       <TabsTrigger
@@ -79,18 +62,8 @@ export default function BimInsight() {
                       </TabsTrigger>
                     );
                   })}
-                </TabsList>
-              </div>
-
-              {/* Right Scroll Indicator Gradient & Badge */}
-              {canScrollRight && (
-                <div className="absolute right-0 top-0 bottom-2 w-16 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none flex justify-end items-center pr-1">
-                  <div className="bg-white text-slate-500 shadow-md border rounded-full p-1 animate-pulse">
-                    <ChevronRight className="w-4 h-4" />
-                  </div>
-                </div>
-              )}
-            </div>
+              </TabsList>
+            </ScrollWrapper>
           </div>
 
           {/* ── Tab panels ──────────────────────────────────────── */}

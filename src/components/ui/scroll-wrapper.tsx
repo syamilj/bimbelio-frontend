@@ -6,10 +6,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 export function ScrollWrapper({
   children,
   className,
+  style,
+  ...props
 }: {
   children: React.ReactNode;
   className?: string;
-}) {
+  style?: React.CSSProperties;
+} & React.HTMLAttributes<HTMLDivElement>) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
@@ -33,11 +36,11 @@ export function ScrollWrapper({
   }, [checkScroll]);
 
   return (
-    <div className="relative group min-w-0 max-w-full">
+    <div className="relative group min-w-0 max-w-full" {...props}>
       <div
         ref={scrollRef}
         className={cn("overflow-x-auto", className)}
-        style={{ scrollbarWidth: "none" }}
+        style={{ scrollbarWidth: "none", ...style }}
       >
         {children}
       </div>

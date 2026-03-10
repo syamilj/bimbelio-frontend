@@ -379,7 +379,7 @@ export const CourseAnalytics = () => {
             >
               <BarChart
                 data={overviewChartData}
-                margin={{ top: 20, right: 10, left: -20, bottom: 0 }}
+                margin={{ top: 5, right: 5, left: -25, bottom: 0 }}
               >
                 <CartesianGrid
                   strokeDasharray="3 3"
@@ -459,7 +459,7 @@ export const CourseAnalytics = () => {
             >
               <LineChart
                 data={overviewChartData}
-                margin={{ top: 20, right: 10, left: -20, bottom: 0 }}
+                margin={{ top: 5, right: 5, left: -25, bottom: 0 }}
               >
                 <CartesianGrid
                   strokeDasharray="3 3"

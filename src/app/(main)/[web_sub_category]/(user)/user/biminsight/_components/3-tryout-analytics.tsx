@@ -211,7 +211,7 @@ const OverallSection = ({
         >
           <AreaChart
             data={chartData}
-            margin={{ top: 20, right: 0, left: -20, bottom: 0 }}
+            margin={{ top: 5, right: 45, left: -25, bottom: 0 }}
           >
             <defs>
               <linearGradient
