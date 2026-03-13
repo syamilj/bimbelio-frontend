@@ -140,8 +140,12 @@ export function JoinLiveClassModal({
     setIsJoining(true);
     try {
       if (liveClass.link) {
+        let link = liveClass.link;
+        if (!/^https?:\/\//i.test(link)) {
+          link = 'https://' + link;
+        }
         await AddAttendance();
-        window.open(liveClass.link, '_blank');
+        window.open(link, '_blank');
         if (onSuccess) onSuccess('Redirected to Meeting');
       }
       if (onClose) onClose();
