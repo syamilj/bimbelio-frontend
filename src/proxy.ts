@@ -19,6 +19,8 @@ export const proxy = async (req: NextRequest) => {
     const token = req.cookies.get('token')?.value;
     const pathname = req.nextUrl.pathname;
 
+    console.log({token})
+
     if (!token) {
       return NextResponse.redirect(new URL('/', req.url));
     }
@@ -35,6 +37,8 @@ export const proxy = async (req: NextRequest) => {
     const { status, data } = resData;
 
     // console.log('[Session] : ', { resData, token });
+
+    console.log({ status, data })
 
     if (status !== 200) {
       return NextResponse.redirect(new URL('/', req.url));

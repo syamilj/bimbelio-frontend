@@ -1,3 +1,18 @@
+
+export type UserReferral = {
+  id: string;
+  referralCode: string;
+  balance: number;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type ReferralDiscountTypeEnum = "PERCENTAGE" | "FIXED_AMOUNT"
+
+
+
+
 export type Pivot_Plan_QuizVolume = {
   id: string;
   planFeatureId: string;
@@ -714,17 +729,24 @@ export type GenderEnum = 'PRIA' | 'WANITA';
 export type Transaction = {
   id: string;
   userId: string;
+  createdAt: string;
   token: string;
   settlement_time: Date | null;
   payment_type: string | null;
   transaction_details: Object;
   item_details: Object;
   customer_details: Object;
-  transaction_time: Date;
-  expired_time: Date;
+  transaction_time: string;
+  expired_time: string;
   order_id: string;
+  voucher_code: string | null;
   transaction_status: TransactionStatusTypeEnum;
+  referral_code: string | null;
+  referral_discount: number | null;
+  referral_discount_type: ReferralDiscountTypeEnum | null;
+  voucherId: string | null;
   website_sub_category_id: string | null;
+  updatedAt: string;
 };
 
 export type TransactionStatusTypeEnum =

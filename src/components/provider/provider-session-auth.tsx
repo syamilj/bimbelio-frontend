@@ -1,6 +1,5 @@
 'use client';
 
-import { signOut } from '@/lib/auth-helper';
 import axiosInstanceWithToken from '@/lib/axios/axiosInstanceWithToken';
 import { responseError } from '@/lib/response';
 import {
@@ -24,6 +23,7 @@ import {
 } from 'react';
 // import { Toaster } from 'react-hot-toast';
 import { Toaster } from '@/components/ui/sonner';
+import { signOut } from '@/lib/auth-helper';
 
 export default function ProviderSessionAuth({
   children,

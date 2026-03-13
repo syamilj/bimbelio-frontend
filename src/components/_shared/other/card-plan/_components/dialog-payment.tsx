@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toaster } from '@/components/ui/toaster';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { ErrorType } from '@/lib/fetch-helper/useGet';
@@ -25,7 +26,7 @@ import {
   getPriceByDiscountPercentage,
 } from '@/lib/utils/currency';
 import { formatPhoneNumber } from '@/lib/utils/phone';
-import { Voucher } from '@/types/database';
+import { ReferralDiscountType, Voucher } from '@/types/database';
 import {
   ArrowRight,
   CheckCircle2,
@@ -82,9 +83,13 @@ export function DialogPayment({
   const searchParams = useSearchParams();
   const voucherCodeQuery = searchParams.get('voucherCode');
   const [loading, setLoading] = useState(false);
+  const [discountTab, setDiscountTab] = useState<'voucher' | 'referral'>(
+    'voucher',
+  );
 
   const [telp, setTelp] = useState('');
   const [voucherCode, setVoucherCode] = useState('');
+  const [referralCode, setReferralCode] = useState('');
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatPhoneNumber(e.target.value) || '';
@@ -92,10 +97,11 @@ export function DialogPayment({
   };
 
   const [discountPrice, setDiscountPrice] = useState<number | null>(null);
+
   const {
     mutate: checkVoucherCode,
-    isLoading,
-    error,
+    isLoading: checkVoucherCodeIsLoading,
+    error: checkVoucherCodeError,
   } = useMutation<Voucher>('/voucher/checkVoucherCode', 'post', {
     onSuccess({ data }) {
       if (!data) return;
@@ -131,7 +137,52 @@ export function DialogPayment({
     },
   });
 
-  console.log({ error });
+  const {
+    mutate: checkReferralCode,
+    isLoading: checkReferralCodeIsLoading,
+    error: checkReferralCodeError,
+  } = useMutation<{ discount: number; type: ReferralDiscountType }>(
+    '/referral/checkReferralCode',
+    'post',
+    {
+      onSuccess({ data }) {
+        if (!data) return;
+        const type = data.type;
+        const discount = data.discount;
+        if (type === 'FIXED_AMOUNT') {
+          if (paymentMethod === 'INSTALLMENT' && plan.PlanInstallmentConfig) {
+            const discountInstallment =
+              discount /
+              plan.PlanInstallmentConfig.PlanInstallmentSchedule.length;
+            const firstInstallmentPrice =
+              plan.PlanInstallmentConfig.PlanInstallmentSchedule[0].amount;
+            setDiscountPrice(
+              getPriceByDiscountFixedAmount(
+                firstInstallmentPrice,
+                discountInstallment,
+              ),
+            );
+          } else {
+            setDiscountPrice(
+              getPriceByDiscountFixedAmount(plan.price, discount),
+            );
+          }
+        } else if (type === 'PERCENTAGE') {
+          if (paymentMethod === 'FULL_PAYMENT') {
+            setDiscountPrice(
+              getPriceByDiscountPercentage(plan.price, discount),
+            );
+          } else if (plan.PlanInstallmentConfig) {
+            const firstInstallmentPrice =
+              plan.PlanInstallmentConfig.PlanInstallmentSchedule[0].amount;
+            setDiscountPrice(
+              getPriceByDiscountPercentage(firstInstallmentPrice, discount),
+            );
+          }
+        }
+      },
+    },
+  );
 
   const getDiscountPercentage = () => {
     if (!plan.originalPrice || plan.originalPrice <= plan.price) return 0;
@@ -141,6 +192,10 @@ export function DialogPayment({
   };
   const applyVoucherCode = async (planId: string) => {
     await checkVoucherCode({ payload: { voucherCode, planId } });
+  };
+
+  const applyReferralCode = async (planId: string) => {
+    await checkReferralCode({ payload: { referralCode, planId } });
   };
 
   const addPayment = async (payload: any) => {
@@ -157,6 +212,7 @@ export function DialogPayment({
     phoneNumber: string,
     plan_website_sub_category_id?: string,
     voucherCode?: string,
+    referralCode?: string,
   ) => {
     try {
       // console.log('handlePayment called with:', {
@@ -165,6 +221,7 @@ export function DialogPayment({
       //   planId: plan.id,
       //   plan_website_sub_category_id,
       //   voucherCode,
+      //   referralCode,
       //   paymentType: paymentMethod,
       // });
       // return;
@@ -174,6 +231,7 @@ export function DialogPayment({
         planId: plan.id,
         plan_website_sub_category_id,
         voucherCode,
+        referralCode,
         paymentType: paymentMethod,
       });
       setIsOpen(false);
@@ -274,7 +332,8 @@ export function DialogPayment({
     await handlePayment(
       telp,
       plan.PlanSubscription?.websiteSubCategoryId,
-      voucherCode,
+      voucherCode.length > 0 ? voucherCode : undefined,
+      referralCode.length > 0 ? referralCode : undefined,
     );
     setTransactionPopUp(false);
     setLoading(false);
@@ -382,18 +441,73 @@ export function DialogPayment({
               telp={telp}
             />
 
-            {/* Voucher Section */}
-            <FormVoucher
-              applyVoucherCode={applyVoucherCode}
-              discountPrice={discountPrice}
-              error={error}
-              isLoading={isLoading}
-              plan={plan}
-              setDiscountPrice={setDiscountPrice}
-              setVoucherCode={setVoucherCode}
-              voucherCode={voucherCode}
-              paymentMethod={paymentMethod}
-            />
+            {/* Discount Tabs - Voucher or Referral */}
+            <Tabs
+              value={discountTab}
+              onValueChange={(value) =>
+                setDiscountTab(value as 'voucher' | 'referral')
+              }
+              className="w-full"
+            >
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger
+                  value="voucher"
+                  className="flex gap-2"
+                  disabled={!!discountPrice}
+                >
+                  <Tag
+                    size={14}
+                    className="mr-1"
+                  />
+                  Voucher
+                </TabsTrigger>
+                <TabsTrigger
+                  value="referral"
+                  className="flex gap-2"
+                  disabled={!!discountPrice}
+                >
+                  <Coins
+                    size={14}
+                    className="mr-1"
+                  />
+                  Referral
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent
+                value="voucher"
+                className="mt-0"
+              >
+                <FormVoucher
+                  applyVoucherCode={applyVoucherCode}
+                  discountPrice={discountPrice}
+                  error={checkVoucherCodeError}
+                  isLoading={checkVoucherCodeIsLoading}
+                  plan={plan}
+                  setDiscountPrice={setDiscountPrice}
+                  setVoucherCode={setVoucherCode}
+                  voucherCode={voucherCode}
+                  paymentMethod={paymentMethod}
+                />
+              </TabsContent>
+
+              <TabsContent
+                value="referral"
+                className="mt-0"
+              >
+                <FormReferral
+                  applyReferralCode={applyReferralCode}
+                  discountPrice={discountPrice}
+                  error={checkReferralCodeError}
+                  isLoading={checkReferralCodeIsLoading}
+                  plan={plan}
+                  setDiscountPrice={setDiscountPrice}
+                  setReferralCode={setReferralCode}
+                  referralCode={referralCode}
+                  paymentMethod={paymentMethod}
+                />
+              </TabsContent>
+            </Tabs>
 
             {/* Order Summary & Payment */}
             <FormCheckoutSummary
@@ -751,6 +865,98 @@ const FormVoucher = ({
             }
           }}
           disabled={isLoading || (!voucherCode.trim() && !discountPrice)}
+        >
+          {isLoading ? (
+            <Loader2 className="w-3 h-3 animate-spin" />
+          ) : discountPrice ? (
+            'Hapus'
+          ) : (
+            'Cek'
+          )}
+        </Button>
+      </div>
+
+      {error && (
+        <p className="text-[10px] text-red-600 mt-1.5">⚠️ {error.message}</p>
+      )}
+
+      {discountPrice && (
+        <div className="flex items-center gap-2 mt-2 p-2 bg-emerald-100 rounded-3xl">
+          <CheckCircle2
+            size={14}
+            className="text-emerald-600"
+          />
+          <span className="text-xs font-medium text-emerald-700">
+            Hemat{' '}
+            {paymentMethod === 'INSTALLMENT' && firstInstallmentPrice
+              ? formatPrice(firstInstallmentPrice - discountPrice)
+              : formatPrice(plan.price - discountPrice)}
+          </span>
+        </div>
+      )}
+    </div>
+  );
+};
+const FormReferral = ({
+  referralCode,
+  setReferralCode,
+  discountPrice,
+  setDiscountPrice,
+  isLoading,
+  applyReferralCode,
+  error,
+  plan,
+  paymentMethod,
+}: {
+  referralCode: string;
+  setReferralCode: React.Dispatch<React.SetStateAction<string>>;
+  discountPrice: number | null;
+  setDiscountPrice: React.Dispatch<React.SetStateAction<number | null>>;
+  isLoading: boolean;
+  applyReferralCode: (planId: string) => void;
+  error: ErrorType<any> | null;
+  plan: PlanDataType;
+  paymentMethod: 'FULL_PAYMENT' | 'INSTALLMENT';
+}) => {
+  const firstInstallmentPrice =
+    plan.PlanInstallmentConfig?.PlanInstallmentSchedule[0].amount || null;
+
+  return (
+    <div className="p-3 bg-slate-50 rounded-3xl border border-slate-200">
+      <div className="flex gap-2">
+        <div className="relative flex-1">
+          <Input
+            type="text"
+            placeholder="Kode referral (opsional)"
+            value={referralCode}
+            disabled={!!discountPrice}
+            onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+            className="h-9 text-sm border border-slate-200 rounded-3xl pl-8 bg-white"
+          />
+          <Tag
+            size={12}
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
+          />
+        </div>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className={cn(
+            'h-9 px-3 rounded-3xl text-xs font-semibold',
+            discountPrice
+              ? 'border-red-200 text-red-600 hover:bg-red-50'
+              : 'border-emerald-200 text-emerald-600 hover:bg-emerald-50',
+          )}
+          onClick={() => {
+            if (!discountPrice) {
+              applyReferralCode(plan.id);
+            } else {
+              setDiscountPrice(null);
+              setReferralCode('');
+            }
+          }}
+          disabled={isLoading || (!referralCode.trim() && !discountPrice)}
         >
           {isLoading ? (
             <Loader2 className="w-3 h-3 animate-spin" />
