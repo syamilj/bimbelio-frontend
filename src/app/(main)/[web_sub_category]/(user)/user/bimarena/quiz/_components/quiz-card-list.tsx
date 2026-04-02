@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { env } from '@/env.mjs';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { cn, formatTwoDecimals } from '@/lib/utils';
+import { cn, formatTwoDecimals, getInitials } from '@/lib/utils';
 import {
   CheckCircle2,
   Clock,
@@ -205,7 +205,7 @@ export function QuizCardList() {
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-base font-black text-slate-800">
-                  {sub.code}
+                  {getInitials(sub.name, { type: "Remove 'dan'" })}
                 </h3>
                 <p className="text-xs text-slate-500 font-medium truncate">
                   {sub.name}
@@ -346,9 +346,9 @@ export function QuizCardList() {
                                   </p>
                                   <div className="flex items-baseline gap-1">
                                     <p className="text-xl md:text-2xl font-black text-emerald-600">
-                                        {formatTwoDecimals(
-                                          quiz.TryoutResult?.totalScore,
-                                        )}
+                                      {formatTwoDecimals(
+                                        quiz.TryoutResult?.totalScore,
+                                      )}
                                     </p>
                                     {/* <div className="flex items-center gap-0.5 text-amber-600">
                                       <Trophy className="w-3 h-3 md:w-3.5 md:h-3.5" />

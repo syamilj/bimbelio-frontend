@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { cn, formatTwoDecimals, Provinces } from '@/lib/utils';
+import { cn, formatTwoDecimals, getInitials, Provinces } from '@/lib/utils';
 import {
   ArrowDown,
   ArrowUp,
@@ -58,7 +58,7 @@ export function QuizLeaderboard() {
       },
       ...SubCategoryLeaderboards.map((subCategory) => ({
         id: subCategory.id,
-        label: subCategory.code || subCategory.name,
+        label: getInitials(subCategory.name, { type: "Remove 'dan'" }),
         topThreeUsers: subCategory.topThreeUsers,
         userRankingArray: subCategory.userRankingArray,
       })),
