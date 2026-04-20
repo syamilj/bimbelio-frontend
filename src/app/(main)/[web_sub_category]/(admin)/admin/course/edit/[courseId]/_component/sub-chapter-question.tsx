@@ -24,7 +24,7 @@ import {
   Trash2,
   Upload,
 } from 'lucide-react';
-import React, { SetStateAction, useCallback, useState } from 'react';
+import React, { SetStateAction, useCallback } from 'react';
 import { SubChapterProps } from '../page';
 
 interface Props {
@@ -44,11 +44,6 @@ const SubChapterQuestion = ({
   setQuestionIndex,
   assessmentType,
 }: Props) => {
-  const [showPreview, setShowPreview] = useState<number>(99999);
-  const [showAnswerPreview, setShowAnswerPreview] = useState<number>(99999);
-  const [showExplanationPreview, setShowExplanationPreview] =
-    useState<number>(99999);
-
   const deleteQuestion = async (questionIndex: number) => {
     if (!EditSubChapter?.Questions) {
       return;
@@ -546,7 +541,9 @@ const SubChapterQuestion = ({
               <Select
                 value={`${currentQuestion.number}`}
                 onValueChange={(value) => {
-                  value && changeQuestionOrder(value, questionIndex);
+                  if (value) {
+                    changeQuestionOrder(value, questionIndex);
+                  }
                 }}
               >
                 <SelectTrigger className="w-32">

@@ -1,10 +1,10 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { cn } from '@/lib/utils';
 import { Globe, Layers, Sparkles } from 'lucide-react';
 import { useCallback, useState } from 'react';
-import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import CourseSummary from './course-summary';
 import CourseTabAll from './course-tab-all';
 import CourseTabUpsell from './course-tab-upsell';

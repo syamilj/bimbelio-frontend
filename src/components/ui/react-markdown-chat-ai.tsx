@@ -131,7 +131,7 @@ export default function ReactMarkdownChatAI({
 
   // Fixed Markdown components to avoid nested issues
   const markdownComponents = {
-    p: ({ node, children, ...props }: any) => {
+    p: ({ _node, children, ...props }: any) => {
       // Convert any PAGE tags in children to avoid nesting issues
       const processedChildren = React.Children.map(children, (child) => {
         if (typeof child === 'string') {

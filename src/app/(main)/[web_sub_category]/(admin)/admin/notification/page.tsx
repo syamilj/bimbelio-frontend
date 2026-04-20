@@ -36,17 +36,17 @@ import Link from 'next/link';
 import { useDebouncedCallback } from 'use-debounce';
 
 export default function NotificationQueuePage() {
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [_errorMessage, setErrorMessage] = useState<string | null>(null);
   const [data, setData] = useState<NotificationQueueType[]>([]);
   const [take, setTake] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [totalData, setTotalData] = useState<number>(0);
+  const [isLoading] = useState<boolean>(false);
+  const [_totalData, setTotalData] = useState<number>(0);
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   const fetchNotificationQueue = useDebouncedCallback(
-    async (page: number, take: number, search?: string) => {
+    async (page: number, take: number) => {
       const {
         data,
         error,
@@ -71,8 +71,8 @@ export default function NotificationQueuePage() {
   );
 
   useEffect(() => {
-    fetchNotificationQueue(page, take, searchTerm);
-  }, [page, take, searchTerm]);
+    fetchNotificationQueue(page, take);
+  }, [page, take]);
 
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 

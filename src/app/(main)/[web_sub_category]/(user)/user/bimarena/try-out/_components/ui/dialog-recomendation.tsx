@@ -275,7 +275,7 @@ export default function DialogRecomendation({
                 <CardTryOut
                   data={data}
                   userTryOutId={session?.user.userTryOutId || ''}
-                  isPrivate
+                  // isPrivate
                   refresh={fetchData}
                   reloadHref
                 />

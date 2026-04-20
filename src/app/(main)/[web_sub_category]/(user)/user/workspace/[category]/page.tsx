@@ -8,7 +8,7 @@ import HeadingBahanAjar from './_components/heading';
 export default function BahanAjarByCategory() {
   const [subCategoryId, setSubCategoryId] = useState<string>('');
   const [docsData, setDocsData] = useState<any[]>([]);
-  const [sort, setSort] = useState<boolean>(false);
+  const [sort] = useState<boolean>(false);
 
   return (
     <Fragment>
@@ -19,9 +19,6 @@ export default function BahanAjarByCategory() {
         <HeadingBahanAjar
           subCategoryId={subCategoryId}
           setSubCategoryId={setSubCategoryId}
-          setDocsData={setDocsData}
-          sort={sort}
-          setSort={setSort}
         />
         <DocumentByCategory
           subCategoryId={subCategoryId}

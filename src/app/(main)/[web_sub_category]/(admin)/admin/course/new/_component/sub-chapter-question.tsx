@@ -12,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { env } from '@/env.mjs';
 import { cn } from '@/lib/utils';
 import { storage } from '@/supabaseClient';
 import 'katex/dist/katex.min.css';
@@ -24,7 +23,7 @@ import {
   Trash2,
   Upload,
 } from 'lucide-react';
-import React, { SetStateAction, useCallback, useState } from 'react';
+import React, { SetStateAction, useCallback } from 'react';
 import { SubChapterProps } from '../page';
 
 interface Props {
@@ -44,11 +43,6 @@ const SubChapterQuestion = ({
   setQuestionIndex,
   assessmentType,
 }: Props) => {
-  const [showPreview, setShowPreview] = useState<number>(99999);
-  const [showAnswerPreview, setShowAnswerPreview] = useState<number>(99999);
-  const [showExplanationPreview, setShowExplanationPreview] =
-    useState<number>(99999);
-
   const deleteQuestion = async (questionIndex: number) => {
     if (!EditSubChapter?.Questions) {
       return;
@@ -113,28 +107,28 @@ const SubChapterQuestion = ({
     );
   };
 
-  const addImageToQuestion = (image: string, questionIndex: number) => {
-    setSubChapter((prev) => {
-      return prev.map((item, sessionIndex) => {
-        if (
-          sessionIndex === currentIndexEdit &&
-          item.Questions &&
-          item.Questions.length > 0
-        ) {
-          return {
-            ...item,
-            Questions: item.Questions.map((item2, qIndex) => {
-              if (qIndex === questionIndex) {
-                return { ...item2, question: `${item2.question}\n\n${image}` };
-              }
-              return item2;
-            }),
-          };
-        }
-        return item;
-      });
-    });
-  };
+  // const addImageToQuestion = (image: string, questionIndex: number) => {
+  //   setSubChapter((prev) => {
+  //     return prev.map((item, sessionIndex) => {
+  //       if (
+  //         sessionIndex === currentIndexEdit &&
+  //         item.Questions &&
+  //         item.Questions.length > 0
+  //       ) {
+  //         return {
+  //           ...item,
+  //           Questions: item.Questions.map((item2, qIndex) => {
+  //             if (qIndex === questionIndex) {
+  //               return { ...item2, question: `${item2.question}\n\n${image}` };
+  //             }
+  //             return item2;
+  //           }),
+  //         };
+  //       }
+  //       return item;
+  //     });
+  //   });
+  // };
 
   const deleteImageQuestion = async (questionIndex: number) => {
     if (
@@ -546,7 +540,9 @@ const SubChapterQuestion = ({
               <Select
                 value={`${currentQuestion.number}`}
                 onValueChange={(value) => {
-                  value && changeQuestionOrder(value, questionIndex);
+                  if (value) {
+                    changeQuestionOrder(value, questionIndex);
+                  }
                 }}
               >
                 <SelectTrigger className="w-32">
@@ -640,19 +636,19 @@ const SubChapterQuestion = ({
                       onClick={() => {
                         // const image = `![Image](${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${currentQuestion.image} "")`;
                         // addImageToQuestion(image, questionIndex);
-                        const image = `
-                        <div class="bn-block-outer" data-node-type="blockOuter" data-id="aed85167-c23d-4804-8abd-b774b8adfb50">
-                          <div class="bn-block" data-node-type="blockContainer" data-id="aed85167-c23d-4804-8abd-b774b8adfb50">
-                            <div class="bn-block-content ProseMirror-selectednode" data-content-type="image" data-url="${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${currentQuestion.image}" data-file-block="" contenteditable="false" draggable="true">
-                              <div class="bn-file-block-content-wrapper" style="width: fit-content;">
-                                <div class="bn-visual-media-wrapper">
-                                  <img class="bn-visual-media" src="${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${currentQuestion.image}" alt="BlockNote image" contenteditable="false" draggable="false">
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        `;
+                        // const image = `
+                        // <div class="bn-block-outer" data-node-type="blockOuter" data-id="aed85167-c23d-4804-8abd-b774b8adfb50">
+                        //   <div class="bn-block" data-node-type="blockContainer" data-id="aed85167-c23d-4804-8abd-b774b8adfb50">
+                        //     <div class="bn-block-content ProseMirror-selectednode" data-content-type="image" data-url="${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${currentQuestion.image}" data-file-block="" contenteditable="false" draggable="true">
+                        //       <div class="bn-file-block-content-wrapper" style="width: fit-content;">
+                        //         <div class="bn-visual-media-wrapper">
+                        //           <img class="bn-visual-media" src="${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${currentQuestion.image}" alt="BlockNote image" contenteditable="false" draggable="false">
+                        //         </div>
+                        //       </div>
+                        //     </div>
+                        //   </div>
+                        // </div>
+                        // `;
                       }}
                       className="gap-2"
                     >

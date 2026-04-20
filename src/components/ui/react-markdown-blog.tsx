@@ -15,8 +15,6 @@ interface ReactMarkdownProps {
   className?: string;
 }
 
-const heading = 'text-[#3F3F3F] my-[3px] leading-normal font-bold';
-
 export default function ReactMarkdownBlog({
   value,
   className,

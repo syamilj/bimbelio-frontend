@@ -3,7 +3,9 @@
 import Footer from '@/components/_shared/footer';
 import { lazy, Suspense } from 'react';
 
-const Tryout = lazy(() => import('@/components/_shared/homepage/main/tryout'));
+const Tryout = lazy(
+  () => import('@/components/_shared/homepage/home-v2/09-tryout'),
+);
 
 export default function TryoutPage() {
   return (

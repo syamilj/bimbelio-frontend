@@ -8,16 +8,12 @@ import { cn } from '@/lib/utils';
 import { Crown, Lock, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 interface CardProps {
   data: any;
-  href: string;
-  noCategory?: boolean;
 }
 
-export default function Card({ data, href, noCategory }: CardProps) {
-  const router = useRouter();
+export default function Card({ data }: CardProps) {
   const { data: session } = useSession();
   const isUnlocked = session?.user.feature.document || false;
   const { setTransactionPopUp } = useAppContext();

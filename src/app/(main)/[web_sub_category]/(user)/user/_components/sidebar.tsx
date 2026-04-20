@@ -1,6 +1,5 @@
 'use client';
 import { useAppContext } from '@/components/provider/provider-app';
-import { useUserLimitation } from '@/components/provider/provider-limitation';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -58,7 +57,6 @@ const SidebarUser = ({
   setIsMobileSidebarOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { data: session } = useSession();
-  const { userLimitation } = useUserLimitation();
   const userImage = session?.user.image || null;
   const router = useRouter();
   const [isUpgrading, setIsUpgrading] = useState(false); // Added state
@@ -72,7 +70,6 @@ const SidebarUser = ({
     setMinimizeSidebar,
     transactionPopUp,
     setTransactionPopUp,
-    setSidebarMobile,
     setPagesSetting,
     pagesSetting,
   } = useAppContext();
@@ -175,7 +172,10 @@ const SidebarUser = ({
                     ) : (
                       <div
                         className="w-full h-full flex items-center justify-center text-sm font-black px-3 text-center"
-                        style={{ color: mainColor, backgroundColor: `${mainColor}14` }}
+                        style={{
+                          color: mainColor,
+                          backgroundColor: `${mainColor}14`,
+                        }}
                       >
                         {websiteSubCategory?.name || 'Pilih Kategori'}
                       </div>
@@ -194,7 +194,6 @@ const SidebarUser = ({
             <SidebarRoute
               category={category}
               minimizeSidebar={minimizeSidebar}
-              setMinimizeSidebar={setMinimizeSidebar}
               categoryColors={{ mainColor, secondaryColor }}
             />
           </div>
@@ -211,20 +210,18 @@ const SidebarUser = ({
                     return;
                   }
                   setIsUpgrading(true);
-                  router.push(`/${website_sub_category_id_params}/user/paket-belajar`);
+                  router.push(
+                    `/${website_sub_category_id_params}/user/paket-belajar`,
+                  );
                 }}
                 disabled={isUpgrading}
                 className="w-10 h-10 rounded-3xl flex items-center justify-center hover:opacity-90 transition-all shadow-lg group relative disabled:opacity-70 disabled:cursor-not-allowed bg-amber-400"
                 title="Paket Belajar"
               >
                 {isUpgrading ? (
-                  <Loader2
-                    className="w-5 h-5 animate-spin text-amber-900"
-                  />
+                  <Loader2 className="w-5 h-5 animate-spin text-amber-900" />
                 ) : (
-                  <ShoppingBag
-                    className="w-5 h-5 group-hover:scale-110 transition-transform text-amber-900"
-                  />
+                  <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform text-amber-900" />
                 )}
               </button>
             </div>
@@ -241,7 +238,9 @@ const SidebarUser = ({
                   }
                   if (!isUpgrading) {
                     setIsUpgrading(true);
-                    router.push(`/${website_sub_category_id_params}/user/paket-belajar`);
+                    router.push(
+                      `/${website_sub_category_id_params}/user/paket-belajar`,
+                    );
                   }
                 }}
                 disabled={isUpgrading}
@@ -253,7 +252,9 @@ const SidebarUser = ({
                   <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 )}
                 <div className="flex flex-col leading-tight">
-                  <span className="text-[10px] font-semibold text-amber-800">Mau lebih banyak akses?</span>
+                  <span className="text-[10px] font-semibold text-amber-800">
+                    Mau lebih banyak akses?
+                  </span>
                   <span>Paket Belajar</span>
                 </div>
               </button>
@@ -418,7 +419,10 @@ const SidebarUser = ({
                       ) : (
                         <div
                           className="w-full h-full flex items-center justify-center text-sm font-black px-3 text-center"
-                          style={{ color: mainColor, backgroundColor: `${mainColor}14` }}
+                          style={{
+                            color: mainColor,
+                            backgroundColor: `${mainColor}14`,
+                          }}
                         >
                           {websiteSubCategory?.name || 'Pilih Kategori'}
                         </div>
@@ -435,7 +439,6 @@ const SidebarUser = ({
               <SidebarRoute
                 category={category}
                 minimizeSidebar={false}
-                setMinimizeSidebar={setMinimizeSidebar}
                 categoryColors={{ mainColor, secondaryColor }}
               />
             </div>
@@ -446,7 +449,9 @@ const SidebarUser = ({
                 <button
                   onClick={() => {
                     setIsUpgrading(true);
-                    router.push(`/${website_sub_category_id_params}/user/paket-belajar`);
+                    router.push(
+                      `/${website_sub_category_id_params}/user/paket-belajar`,
+                    );
                     setIsMobileSidebarOpen(false);
                   }}
                   disabled={isUpgrading}
@@ -458,7 +463,9 @@ const SidebarUser = ({
                     <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
                   )}
                   <div className="flex flex-col leading-tight">
-                    <span className="text-[10px] font-semibold text-amber-800">Mau lebih banyak akses?</span>
+                    <span className="text-[10px] font-semibold text-amber-800">
+                      Mau lebih banyak akses?
+                    </span>
                     <span>Paket Belajar</span>
                   </div>
                 </button>

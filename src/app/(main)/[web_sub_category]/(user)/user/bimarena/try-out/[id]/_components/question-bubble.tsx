@@ -6,15 +6,10 @@ import { HelpCircle } from 'lucide-react';
 
 interface QuestionBubbleProps {
   question?: string;
-  questionNumber?: number;
   className?: string;
 }
 
-const QuestionBubble = ({
-  question,
-  questionNumber,
-  className = '',
-}: QuestionBubbleProps) => {
+const QuestionBubble = ({ question, className = '' }: QuestionBubbleProps) => {
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   // Get dynamic colors

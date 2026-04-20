@@ -27,7 +27,7 @@ import {
   PredictionScoreDetail,
   Tryout,
 } from '@/types/database';
-import { Award, BookOpen, Calculator, School, Target } from 'lucide-react';
+import { Calculator, Target } from 'lucide-react';
 import Link from 'next/link';
 import ExampleResult from './[predictionId]/_components/example-result';
 import { useProvider } from './_provider/provider';
@@ -265,33 +265,6 @@ export default function UTBKSIMAKPredictor() {
     </TooltipProvider>
   );
 }
-
-const STEPS = [
-  {
-    id: 1,
-    title: 'Pilih Jurusan',
-    description: 'Pilih jurusan yang diinginkan',
-    icon: School,
-  },
-  {
-    id: 2,
-    title: 'Input UTBK',
-    description: 'Masukkan nilai 7 subtes UTBK',
-    icon: BookOpen,
-  },
-  {
-    id: 3,
-    title: 'Input SIMAK',
-    description: 'Masukkan hasil Try Out SIMAK UI',
-    icon: Target,
-  },
-  {
-    id: 4,
-    title: 'Hasil Prediksi',
-    description: 'Lihat prediksi kelulusan per jurusan',
-    icon: Award,
-  },
-];
 
 /*
 

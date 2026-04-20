@@ -73,7 +73,7 @@ export function CountdownTimer({ timeLeft }: CountdownTimerProps) {
 
   return (
     <div className="flex gap-1.5 items-center">
-      {units.map(({ value, label }, i) => (
+      {units.map(({ value, label }) => (
         <div
           key={label}
           className="flex flex-col items-center justify-center min-w-[36px] px-2 py-1.5 rounded-3xl bg-white border border-slate-200 shadow-sm"
@@ -142,10 +142,7 @@ interface MarketingCTAProps {
   compact?: boolean;
 }
 
-export function MarketingCTA({
-  liveClass,
-  compact = false,
-}: MarketingCTAProps) {
+export function MarketingCTA({ compact = false }: MarketingCTAProps) {
   if (compact) {
     return (
       <div className="bg-orange-50 border-2 border-orange-200 rounded-3xl p-3 shadow-sm">

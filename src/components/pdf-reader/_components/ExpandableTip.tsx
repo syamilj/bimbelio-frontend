@@ -2,7 +2,6 @@
 
 import { useAppContext } from '@/components/provider/provider-app';
 import { useUserLimitation } from '@/components/provider/provider-limitation';
-import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import { CustomTooltip } from '@/components/ui/tooltip';
 import { env } from '@/env.mjs';
@@ -92,13 +91,12 @@ const TextSelectionPopover = ({
   const sub = searchParams?.get('sub');
   // const pathnameArray = pathname?.split('/');
   // const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
-  const { data: session } = useSession();
   const {
     useSendMessage: { setSendMessage: sendMessage },
     setVision,
   } = useAppContext();
 
-  const { checkLimitation, userLimitation } = useUserLimitation();
+  const { checkLimitation } = useUserLimitation();
 
   const [visionLoading, setVisionLoading] = useState(false);
 

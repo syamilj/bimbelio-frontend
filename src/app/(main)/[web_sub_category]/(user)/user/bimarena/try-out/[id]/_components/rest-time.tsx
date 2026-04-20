@@ -131,8 +131,6 @@ const RestTime = ({
     FinishTryOutLate(sessionAnswer);
   }, 500);
 
-  console;
-
   useEffect(() => {
     const endDate = new Date(tryoutData.endDate).getTime();
     const currentDate = new Date().getTime();

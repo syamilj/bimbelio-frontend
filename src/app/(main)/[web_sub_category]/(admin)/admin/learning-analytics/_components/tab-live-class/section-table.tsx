@@ -51,7 +51,6 @@ export const SectionTable = ({
     data: LiveClass,
     totalPages,
     isLoading,
-    refetch: LiveClassRefetch,
   } = useGet<
     (LiveClass & {
       Instructor: Instructor;

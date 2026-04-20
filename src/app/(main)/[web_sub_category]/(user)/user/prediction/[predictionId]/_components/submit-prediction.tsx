@@ -13,7 +13,6 @@ import {
 import LoadingPageWithText from '@/components/ui/spinner';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
-import { useRouter } from 'next/navigation';
 import { ReactNode, useState } from 'react';
 import { useProvider } from '../../_provider/provider';
 
@@ -23,7 +22,6 @@ export default function SubmitPrediction({
   children: ReactNode;
 }) {
   const session = useSession();
-  const router = useRouter();
   const {
     selectedPrograms,
     utbkScores,
@@ -32,7 +30,7 @@ export default function SubmitPrediction({
     useScoreSimak: { simakAvgSNBT },
     useSelectTryouts: { tryoutId },
   } = useProvider();
-  const { mutate, isLoading, success } = useMutation<{
+  const { mutate, isLoading } = useMutation<{
     userId: string;
     tryoutId: string | null;
     university: string;

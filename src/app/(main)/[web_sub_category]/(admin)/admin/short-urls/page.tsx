@@ -1,6 +1,5 @@
 'use client';
 
-import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -43,7 +42,6 @@ import toast from 'react-hot-toast';
 import { QrCodeDialog } from './_components/QrCodeDialog';
 
 export default function ShortUrlsPage() {
-  const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const router = useRouter();
 

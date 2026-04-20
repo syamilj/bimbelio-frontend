@@ -33,7 +33,7 @@ const QuizFinish = ({
   }`;
   // const limitation = api.user.limitation.useMutation();
 
-  const { userLimitation, checkLimitation } = useUserLimitation();
+  const { checkLimitation } = useUserLimitation();
 
   // const deleteQuiz = api.quiz.deleteQuiz.useMutation();
 

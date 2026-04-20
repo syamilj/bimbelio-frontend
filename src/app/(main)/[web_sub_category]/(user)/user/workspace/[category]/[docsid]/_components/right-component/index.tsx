@@ -53,9 +53,7 @@ const TABS = [
   },
 ];
 
-const tabNames = TABS.map((tab) => tab.value);
-
-export function RightComponent({ docId: initialDocId }: { docId: string }) {
+export function RightComponent() {
   const pathname = usePathname();
   const pathnameArray = pathname?.split('/');
   const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];

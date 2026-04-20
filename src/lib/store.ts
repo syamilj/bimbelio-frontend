@@ -27,9 +27,9 @@ export const schema = BlockNoteSchema.create({
 export const getSlashMenuItems = (
   editor: BlockNoteEditorType,
 ): DefaultReactSuggestionItem[] => [
-  ...getDefaultReactSlashMenuItems(editor),
-  insertAlert(editor),
-];
+    ...getDefaultReactSlashMenuItems(editor),
+    insertAlert(editor),
+  ];
 
 export type BlockNoteEditorType = typeof schema.BlockNoteEditor;
 

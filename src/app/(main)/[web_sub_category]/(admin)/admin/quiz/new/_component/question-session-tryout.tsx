@@ -417,7 +417,9 @@ const QuestionSessionTryout = ({
         <Select
           value={`${EditSession.Questions[questionIndex].number}`}
           onValueChange={(value) => {
-            value && changeQuestionOrder(value, questionIndex);
+            if (value) {
+              changeQuestionOrder(value, questionIndex);
+            }
           }}
         >
           <SelectTrigger className="h-full rounded-3xl border-none bg-white shadow-none outline-none">
@@ -818,7 +820,7 @@ export default QuestionSessionTryout;
 
 const SelectedCourseChapter = ({
   setSessions,
-  currentIndexEdit,
+  currentIndexEdit: _currentIndexEdit,
   questionIndex,
   EditSession,
 }: {
@@ -983,7 +985,7 @@ const UploadImageQuestion = ({
   EditSession,
   questionIndex,
   setSessions,
-  currentIndexEdit,
+  currentIndexEdit: _currentIndexEdit,
 }: {
   EditSession: SessionProps;
   questionIndex: number;
@@ -1168,7 +1170,7 @@ const UploadAnswerQuestion = ({
   EditSession,
   questionIndex,
   setSessions,
-  currentIndexEdit,
+  currentIndexEdit: _currentIndexEdit,
   answerIndex,
 }: {
   EditSession: SessionProps;

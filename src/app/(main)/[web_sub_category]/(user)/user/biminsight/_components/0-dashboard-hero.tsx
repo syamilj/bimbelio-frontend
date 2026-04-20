@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useGet } from "@/lib/fetch-helper/useGet";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import {
   BookOpen,
   ClipboardCheck,
@@ -10,9 +10,9 @@ import {
   Sparkles,
   Target,
   Video,
-} from "lucide-react";
-import { useParams } from "next/navigation";
-import { InsightBanner, ScrollRow, StatPill } from "./_primitives";
+} from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { InsightBanner, ScrollRow, StatPill } from './_primitives';
 
 interface UserData {
   name: string;
@@ -33,7 +33,7 @@ export function DashboardHero() {
   const { mainColor } = useWebsiteSubCategory();
 
   const { data, isLoading } = useGet<UserData>(
-    "/learningAnalytics/getUserData",
+    '/learningAnalytics/getUserData',
     {
       params: { website_sub_category_id: web_sub_category },
     },
@@ -42,7 +42,7 @@ export function DashboardHero() {
   if (isLoading) return <LoadingState />;
   if (!data) return null;
 
-  const firstName = data.name?.split(" ")[0] || "Siswa";
+  const firstName = data.name?.split(' ')[0] || 'Siswa';
 
   return (
     <div className="relative overflow-hidden rounded-3xl border border-slate-200/60 bg-white p-5 md:p-7 shadow-xl shadow-slate-200/20 mb-4 transition-all hover:shadow-2xl hover:shadow-slate-200/30">
@@ -104,7 +104,7 @@ export function DashboardHero() {
           <InsightBanner tone="info">
             {data.summaryCount.tryout + data.summaryCount.quiz > 0
               ? `Kamu sudah mengerjakan ${data.summaryCount.tryout} tryout dan ${data.summaryCount.quiz} quiz. Terus berlatih untuk hasil terbaik!`
-              : "Belum ada aktivitas tercatat. Mulai kerjakan tryout atau quiz pertamamu!"}
+              : 'Belum ada aktivitas tercatat. Mulai kerjakan tryout atau quiz pertamamu!'}
           </InsightBanner>
         </div>
 
@@ -153,7 +153,9 @@ function LoadingState() {
   return (
     <div
       className="rounded-3xl p-5 md:p-7 space-y-5 border border-slate-200/60 shadow-xl shadow-slate-200/20"
-      style={{ background: "linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)" }}
+      style={{
+        background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+      }}
     >
       <div className="flex items-center gap-4">
         <Skeleton className="h-14 w-14 md:h-16 md:w-16 rounded-[1.25rem]" />

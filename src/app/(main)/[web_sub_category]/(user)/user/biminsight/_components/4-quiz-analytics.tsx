@@ -1,8 +1,13 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from '@/components/ui/button';
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/components/ui/chart';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -10,59 +15,47 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-import { useGet } from "@/lib/fetch-helper/useGet";
-import { getSubtestLabel } from "@/lib/utils/subtest";
-import { BookOpen, ChevronDown, ChevronUp } from "lucide-react";
-import { useParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+} from '@/components/ui/table';
+import { useGet } from '@/lib/fetch-helper/useGet';
+import { getSubtestLabel } from '@/lib/utils/subtest';
+import { BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import {
   EmptyState,
   FilterChip,
   HeatmapCell,
   HeroBanner,
-  InsightBanner,
   ScrollWrapper,
   SectionLabel,
   SubtestTooltipHeader,
-} from "./_primitives";
-
+} from './_primitives';
 
 const ColorList = [
-  "#0091FF",
-  "#22c55e",
-  "#eab308",
-  "#ef4444",
-  "#6366f1",
-  "#a855f7",
-  "#f97316",
+  '#0091FF',
+  '#22c55e',
+  '#eab308',
+  '#ef4444',
+  '#6366f1',
+  '#a855f7',
+  '#f97316',
 ];
 
 export const QuizAnalyticsTable = () => {
   const { id } = useParams<{ id: string | undefined }>();
-  const { mainColor } = useWebsiteSubCategory();
 
   const {
     data: QuizData,
     isLoading: quizLoading,
     error: quizError,
-  } = useGet<DataTypeAll>("/learningAnalytics/getUserAnalyticsQuiz", {
+  } = useGet<DataTypeAll>('/learningAnalytics/getUserAnalyticsQuiz', {
     params: { userId: id ? id : undefined },
     useEffectDependencies: [id],
   });
 
-  const {
-    data: VolumeData,
-    isLoading: volumeLoading,
-  } = useGet<DataTypeQuiz>(
-    "/learningAnalytics/getUserAnalyticsQuizPerVolume",
+  const { data: VolumeData, isLoading: volumeLoading } = useGet<DataTypeQuiz>(
+    '/learningAnalytics/getUserAnalyticsQuizPerVolume',
     {
       params: { userId: id ? id : undefined },
       useEffectDependencies: [id],
@@ -72,7 +65,8 @@ export const QuizAnalyticsTable = () => {
   if (quizLoading || volumeLoading) return <LoadingPage />;
   if (quizError) return <div>Error: {quizError.message}</div>;
 
-  const hasData = (QuizData?.data.length ?? 0) > 0 || (VolumeData?.data.length ?? 0) > 0;
+  const hasData =
+    (QuizData?.data.length ?? 0) > 0 || (VolumeData?.data.length ?? 0) > 0;
 
   return (
     <div>
@@ -87,7 +81,7 @@ export const QuizAnalyticsTable = () => {
           </div>
         ) : (
           <>
-            <HeroBanner color={mainColor}>
+            <HeroBanner>
               <SectionLabel
                 title="Performa Quiz"
                 sub="Analisis skor quiz per subkategori dan per volume"
@@ -116,7 +110,6 @@ export const QuizAnalyticsTable = () => {
 // =============================================================================
 
 function SubtestSection({ data }: { data: DataTypeAll }) {
-  const { mainColor } = useWebsiteSubCategory();
   const [isExpanded, setIsExpanded] = useState(false);
   const INITIAL_ROWS = 5;
 
@@ -195,7 +188,10 @@ function SubtestSection({ data }: { data: DataTypeAll }) {
       {/* Chart */}
       {filteredChartData.length > 0 && (
         <div className="rounded-2xl border border-slate-100 bg-white p-3">
-          <SectionLabel title="Grafik Skor per Volume" sub="Rata-rata skor per subkategori di setiap volume" />
+          <SectionLabel
+            title="Grafik Skor per Volume"
+            sub="Rata-rata skor per subkategori di setiap volume"
+          />
           <ChartContainer
             config={chartConfig}
             className="aspect-auto h-[220px] md:h-[260px] w-full mt-2"
@@ -204,26 +200,25 @@ function SubtestSection({ data }: { data: DataTypeAll }) {
               data={filteredChartData}
               margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="#f1f5f9"
+              />
               <XAxis
                 dataKey="volume"
-                tick={{ fontSize: 10, fill: "#94a3b8" }}
+                tick={{ fontSize: 10, fill: '#94a3b8' }}
                 tickLine={false}
                 axisLine={false}
               />
               <YAxis
-                tick={{ fontSize: 10, fill: "#94a3b8" }}
+                tick={{ fontSize: 10, fill: '#94a3b8' }}
                 tickLine={false}
                 axisLine={false}
                 width={45}
               />
-              <ChartTooltip
-                content={
-                  <ChartTooltipContent />
-                }
-              />
+              <ChartTooltip content={<ChartTooltipContent />} />
               {SubCategory.filter((s) => selectedSubtests.includes(s.id)).map(
-                (sub, i) => (
+                (sub) => (
                   <Bar
                     key={sub.id}
                     dataKey={sub.id}
@@ -241,7 +236,10 @@ function SubtestSection({ data }: { data: DataTypeAll }) {
 
       {/* Heatmap score table */}
       <ScrollWrapper className="w-full rounded-3xl border border-slate-200/80">
-        <Table className="min-w-max" classNameWrapper="overflow-visible">
+        <Table
+          className="min-w-max"
+          classNameWrapper="overflow-visible"
+        >
           <TableHeader>
             <TableRow className="bg-slate-50/80">
               <TableHead className="py-3 font-bold text-slate-700">
@@ -252,7 +250,10 @@ function SubtestSection({ data }: { data: DataTypeAll }) {
                 .map((subCat) => (
                   <SubtestTooltipHeader
                     key={subCat.id}
-                    initial={getSubtestLabel(subCat.name, subCat.website_sub_category_id)}
+                    initial={getSubtestLabel(
+                      subCat.name,
+                      subCat.website_sub_category_id,
+                    )}
                     fullName={subCat.name}
                   />
                 ))}
@@ -336,7 +337,6 @@ function SubtestSection({ data }: { data: DataTypeAll }) {
 // =============================================================================
 
 function VolumeSection({ data }: { data: DataTypeQuiz }) {
-  const { mainColor } = useWebsiteSubCategory();
   const [isExpanded, setIsExpanded] = useState(false);
   const INITIAL_ROWS = 5;
 
@@ -415,7 +415,10 @@ function VolumeSection({ data }: { data: DataTypeQuiz }) {
       {/* Chart */}
       {filteredVolChartData.length > 0 && (
         <div className="rounded-2xl border border-slate-100 bg-white p-3">
-          <SectionLabel title="Grafik Skor per Quiz" sub="Skor total per volume di setiap quiz" />
+          <SectionLabel
+            title="Grafik Skor per Quiz"
+            sub="Skor total per volume di setiap quiz"
+          />
           <ChartContainer
             config={volChartConfig}
             className="aspect-auto h-[220px] md:h-[260px] w-full mt-2"
@@ -424,24 +427,23 @@ function VolumeSection({ data }: { data: DataTypeQuiz }) {
               data={filteredVolChartData}
               margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="#f1f5f9"
+              />
               <XAxis
                 dataKey="volume"
-                tick={{ fontSize: 10, fill: "#94a3b8" }}
+                tick={{ fontSize: 10, fill: '#94a3b8' }}
                 tickLine={false}
                 axisLine={false}
               />
               <YAxis
-                tick={{ fontSize: 10, fill: "#94a3b8" }}
+                tick={{ fontSize: 10, fill: '#94a3b8' }}
                 tickLine={false}
                 axisLine={false}
                 width={45}
               />
-              <ChartTooltip
-                content={
-                  <ChartTooltipContent />
-                }
-              />
+              <ChartTooltip content={<ChartTooltipContent />} />
               {Volumes.filter((v) => selectedVolumes.includes(v.volId)).map(
                 (vol) => (
                   <Bar
@@ -461,7 +463,10 @@ function VolumeSection({ data }: { data: DataTypeQuiz }) {
 
       {/* Heatmap score table */}
       <ScrollWrapper className="w-full rounded-3xl border border-slate-200/80">
-        <Table className="min-w-max" classNameWrapper="overflow-visible">
+        <Table
+          className="min-w-max"
+          classNameWrapper="overflow-visible"
+        >
           <TableHeader>
             <TableRow className="bg-slate-50/80">
               <TableHead className="py-3 font-bold text-slate-700">

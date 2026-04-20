@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import {
   Select,
   SelectContent,
@@ -15,7 +16,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import {
   website_sub_category_id,
   website_sub_category_id_params,
@@ -376,9 +376,7 @@ export default function LiveLearningDashboard({
 
         {/* Attendance pills */}
         {summary && summary.total > 0 && (
-          <ScrollWrapper
-            className="flex items-center gap-2 pb-1"
-          >
+          <ScrollWrapper className="flex items-center gap-2 pb-1">
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 flex-shrink-0">
               <CheckCircle2 className="w-3 h-3 text-emerald-600" />
               <span className="text-[10px] font-bold text-emerald-700">
@@ -490,9 +488,7 @@ export default function LiveLearningDashboard({
 
         {/* ─── Sticky Tab Navigation — identical to bimarena ─────────────────── */}
         <div className="sticky top-0 z-30 bg-slate-50/80 backdrop-blur-xl py-2">
-          <ScrollWrapper
-            className="flex gap-1.5 p-1 bg-white rounded-3xl border border-slate-200/80 shadow-sm"
-          >
+          <ScrollWrapper className="flex gap-1.5 p-1 bg-white rounded-3xl border border-slate-200/80 shadow-sm">
             {tabItems.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -691,9 +687,7 @@ function LiveClassSection({
 
       {/* Loading skeletons */}
       {isLoading && (
-        <ScrollWrapper
-          className="flex gap-4 pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3"
-        >
+        <ScrollWrapper className="flex gap-4 pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3">
           {Array.from({ length: 3 }).map((_, i) => (
             <Skeleton
               key={i}
@@ -708,16 +702,13 @@ function LiveClassSection({
         <CalendarView
           liveClass={data}
           onJoin={() => {}}
-          onRate={() => {}}
           onUpgrade={() => {}}
         />
       )}
 
       {/* Grid view */}
       {!isLoading && !hasError && viewMode === 'grid' && data.length > 0 && (
-        <ScrollWrapper
-          className="flex gap-4 pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3 xl:grid-cols-4"
-        >
+        <ScrollWrapper className="flex gap-4 pb-2 -mx-4 px-4 snap-x md:grid md:grid-cols-2 md:overflow-visible md:pb-0 md:mx-0 md:px-0 md:gap-5 lg:grid-cols-3 xl:grid-cols-4">
           {data.map((lc) => (
             <LiveClassCard
               key={lc.id}

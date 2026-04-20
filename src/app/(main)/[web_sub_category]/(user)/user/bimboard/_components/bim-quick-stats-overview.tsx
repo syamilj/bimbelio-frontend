@@ -1,8 +1,7 @@
 'use client';
 
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { BimArena, BimCourse } from '@/components/ui/bim-brand';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import {
   Award,
   BookOpen,
@@ -30,12 +29,7 @@ interface BimQuickStatsOverviewProps {
   };
 }
 
-export default function BimQuickStatsOverview({
-  stats,
-}: BimQuickStatsOverviewProps) {
-  const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-
+export function BimQuickStatsOverview({ stats }: BimQuickStatsOverviewProps) {
   // Ensure we have valid data with fallbacks
   const safeStats = {
     studyHours: stats?.studyHours || 0,

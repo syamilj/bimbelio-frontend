@@ -1,6 +1,5 @@
 'use client';
 
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import {
@@ -12,8 +11,8 @@ import {
   Target,
   Trophy,
 } from 'lucide-react';
-import { DecorativePatterns } from './DecorativePatterns';
-import { EmptyStateIllustrations } from './EmptyStateIllustrations';
+import { DecorativePatterns } from './decorative-patterns';
+import { EmptyStateIllustrations } from './empty-state-illustrations';
 
 interface AchievementBadgesProps {
   achievements: Array<{
@@ -28,12 +27,7 @@ interface AchievementBadgesProps {
   }>;
 }
 
-export default function AchievementBadges({
-  achievements,
-}: AchievementBadgesProps) {
-  const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-
+export function BimAchievementBadges({ achievements }: AchievementBadgesProps) {
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case 'star':

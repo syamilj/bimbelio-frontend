@@ -14,13 +14,6 @@ import { useState } from 'react';
 import { useProvider } from '../provider';
 import Feedback from './feedback';
 
-interface QuizAttemptType {
-  userResponse: string;
-  correctResponse: string | null;
-  incorrectResponse: string | null;
-  moreInfo: string | null;
-}
-
 const IndividualQuizQuestion = ({
   complete,
   toggleAttempt,
@@ -108,17 +101,6 @@ const IndividualQuizQuestion = ({
     } else {
       return 'bg-white';
     }
-  };
-
-  const replaceLatexNotation = (content: any) => {
-    if (!content) return '';
-    return content
-      .replace(/\\\[([\s\S]*?)\\\]/g, '$$$$$$ $1 $$$$$$') // \[...\] → $$...$$ (display math)
-      .replace(/\\\(([\s\S]*?)\\\)/g, '$ $1 $'); // \(...\) → $...$ (inline math)
-  };
-
-  const remarkMathOptions = {
-    singleDollarTextMath: false,
   };
 
   return (

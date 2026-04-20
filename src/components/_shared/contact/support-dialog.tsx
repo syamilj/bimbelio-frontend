@@ -153,7 +153,7 @@ export const SupportDialog = ({ children }: { children: ReactNode }) => {
               Konsultasi Langsung
             </h3>
             <div className="grid grid-cols-2 gap-3">
-              {consultationOptions.map((option, index) => (
+              {consultationOptions.map((option) => (
                 <div
                   key={`consultation-${option.id}`}
                   className="w-full"

@@ -5,7 +5,6 @@ import {
   MessageContent,
   MessageResponse,
 } from '@/components/ai-elements/message';
-import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { BimBot } from '@/components/ui/bim-brand';
 import { env } from '@/env.mjs';
@@ -74,7 +73,6 @@ function preprocessContent(content: string) {
 // ── Row component ──────────────────────────────────────────────────
 
 export default function Row({ message, index, isLast, isStreaming }: Props) {
-  const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
 

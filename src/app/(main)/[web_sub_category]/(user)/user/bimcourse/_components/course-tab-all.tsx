@@ -1,5 +1,6 @@
 'use client';
 
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
 import {
@@ -18,7 +19,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 
 interface CourseCategory {
   id: number;

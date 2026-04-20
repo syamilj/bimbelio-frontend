@@ -345,7 +345,11 @@ export default function Kategori() {
                 className="w-full rounded bg-red-500 px-4 py-2 text-white hover:bg-red-700 flex justify-center items-center"
                 disabled={isDeleting}
                 onClick={() => {
-                  selectedCategoryId ? handleDelete() : handleDeleteSub();
+                  if (selectedCategoryId) {
+                    handleDelete();
+                  } else {
+                    handleDeleteSub();
+                  }
                 }}
               >
                 {isDeleting ? (

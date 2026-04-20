@@ -1,12 +1,11 @@
 import { useSession } from '@/components/provider/provider-session-auth';
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { BookOpen, Clock, Layers, Play, Zap } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import CardTryOut, { CardTryoutProps } from './ui/card-tryout';
-import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 
 export default function Terbaru({
   id,
@@ -16,8 +15,6 @@ export default function Terbaru({
   onCountReady?: (count: number) => void;
 }) {
   const { data: session } = useSession();
-  const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
   const [cards, setCards] = useState<CardTryoutProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);

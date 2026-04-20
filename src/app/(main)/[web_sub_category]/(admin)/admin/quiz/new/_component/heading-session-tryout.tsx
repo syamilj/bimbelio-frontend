@@ -28,8 +28,6 @@ interface Props {
   assessmentType: string;
   setAssesmentType: React.Dispatch<SetStateAction<string>>;
   setSessions: React.Dispatch<SetStateAction<SessionProps>>;
-  currentIndexEdit: number | null;
-  setCurrentIndexEdit: React.Dispatch<SetStateAction<number | null>>;
 }
 
 type QuestionProps = {
@@ -51,8 +49,6 @@ const HeadingSessionTryout = ({
   assessmentType,
   setAssesmentType,
   setSessions,
-  currentIndexEdit,
-  setCurrentIndexEdit,
 }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -355,7 +351,9 @@ const HeadingSessionTryout = ({
                     : 'placeholder'
                 }
                 onValueChange={(value) => {
-                  value && onChangeCategory(value);
+                  if (value) {
+                    onChangeCategory(value);
+                  }
                 }}
               >
                 <SelectTrigger className="h-full w-full rounded-3xl border-none bg-white shadow-none outline-none">
@@ -399,7 +397,9 @@ const HeadingSessionTryout = ({
                       : 'placeholder'
                   }
                   onValueChange={(value) => {
-                    value && onChangeSubCategory(value);
+                    if (value) {
+                      onChangeSubCategory(value);
+                    }
                   }}
                 >
                   <SelectTrigger className="h-full w-full rounded-3xl border-none bg-white shadow-none outline-none">

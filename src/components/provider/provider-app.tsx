@@ -1,7 +1,6 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { usePathname } from 'next/navigation';
 import {
   createContext,
   Dispatch,
@@ -19,7 +18,6 @@ const AccountSetting = dynamic(() => import('../_shared/account/setting'), {
 });
 
 export default function ProviderApp({ children }: { children: ReactNode }) {
-  const pathname = usePathname();
   const [showAuth, setShowAuth] = useState<{
     open: boolean;
     redirect: string | null;
@@ -87,18 +85,6 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
   //   link.href = 'https://snap-assets.al-pc-id-p.cdn.gtflabs.io';
   //   document.head.appendChild(link);
   // };
-
-  useEffect(() => {
-    const isPayment =
-      transactionPopUp ||
-      pathname.includes('/price') ||
-      pathname.includes('/user');
-    // if (isPayment && !isMidtransScriptLoaded) {
-    //   LoadMidtransScript();
-    //   LoadMidtransCss();
-    //   setIsMidtransScriptLoaded(true);
-    // }
-  }, [pathname, transactionPopUp]);
 
   useEffect(() => {
     if (showAuth.open) {

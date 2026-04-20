@@ -374,7 +374,7 @@ export const Notification = () => {
             </div>
           ) : (
             <div className="divide-y divide-gray-100">
-              {notifications.map((notif, index) => (
+              {notifications.map((notif) => (
                 <div
                   key={notif.id}
                   className={cn(

@@ -227,8 +227,8 @@ const Tryout: React.FC<Props> = ({
     return <SpinnerPageCentered />;
 
   const currentQuestionData = questions[currentQuestionIndex];
-  const answeredCount = sessionAnswer.filter(
-    (item: SessionAnswerItem) => isAnsweredItem(item),
+  const answeredCount = sessionAnswer.filter((item: SessionAnswerItem) =>
+    isAnsweredItem(item),
   ).length;
   const notSureCount = sessionAnswer.filter((item: any) => item.notSure).length;
   const progressPercentage = (answeredCount / questions.length) * 100;

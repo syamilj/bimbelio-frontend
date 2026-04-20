@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 export default function ShortUrlRedirect() {
   const params = useParams();
   const code = params.code as string;
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
 
   useEffect(() => {
     // Redirect immediately to backend endpoint which handles analytics and redirect

@@ -3,11 +3,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
-interface HourlyHeatmapChartProps {
-  dateFilter: { from: Date; to: Date };
-  selectedLinkPageId: string;
-}
-
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export function HourlyHeatmapChart({

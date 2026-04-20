@@ -52,18 +52,6 @@ export default function LinkPageButtons() {
   const [testingPixel, setTestingPixel] = useState(false);
   const [duplicateId, setDuplicateId] = useState<string | null>(null);
 
-  const sectionOptions = useMemo(() => {
-    const labels = new Set<string>();
-    buttons.forEach((btn) => {
-      if (btn.sectionLabel && btn.sectionLabel.trim().length > 0) {
-        labels.add(btn.sectionLabel.trim());
-      }
-    });
-    return Array.from(labels);
-  }, [buttons]);
-
-  const shortLinkOptions = useMemo(() => pageData?.shortUrls ?? [], [pageData]);
-
   const fetchData = async () => {
     try {
       setLoading(true);

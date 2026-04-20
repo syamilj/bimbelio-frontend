@@ -1,6 +1,5 @@
 'use client';
 
-import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import {
@@ -31,7 +30,6 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 export default function CreateShortUrlPage() {
-  const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const router = useRouter();
 
@@ -74,7 +72,7 @@ export default function CreateShortUrlPage() {
 
     try {
       setLoading(true);
-      const result = await createShortUrl({
+      await createShortUrl({
         ...formData,
         website_sub_category_id: websiteSubCategory?.id,
       });

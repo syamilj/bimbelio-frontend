@@ -291,7 +291,7 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
 
           {/* Subject Cards - More Compact */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {category.data.map((subject, subjectIndex) => (
+            {category.data.map((subject) => (
               <Card
                 key={subject.id}
                 className="border rounded-3xl shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden"

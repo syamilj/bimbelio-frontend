@@ -126,7 +126,7 @@ export function AnalisisTab({
     )
       return null;
 
-    const univTotalApplicants = data?.univTotalAplicants;
+    // const univTotalApplicants = data?.univTotalAplicants;
     const majorTotalApplicants = data?.majorTotalAplicants;
 
     const passingUniv = data?.univAverageScore;
@@ -135,10 +135,10 @@ export function AnalisisTab({
     const isUnivPass = passingUniv ? userScore > passingUniv : true;
     const isMajorPass = passingMajor ? userScore > passingMajor : true;
 
-    const uniRank = data?.univRanking;
+    // const uniRank = data?.univRanking;
     const majorRank = data?.majorRanking;
 
-    const univPercentage = data?.univPercentage;
+    // const univPercentage = data?.univPercentage;
     const majorPercentage = data?.majorPercentage;
 
     const chartData = [

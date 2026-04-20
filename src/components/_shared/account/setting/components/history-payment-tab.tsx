@@ -7,12 +7,10 @@ import { ArrowRight, CreditCard, History, Loader2, X } from 'lucide-react';
 export const HistoryPaymentTab = ({
   data,
   mainColor,
-  secondaryColor,
   refetch,
 }: {
   data: MidtransTransaction[];
   mainColor: string;
-  secondaryColor: string;
   refetch: () => any;
 }) => {
   return (

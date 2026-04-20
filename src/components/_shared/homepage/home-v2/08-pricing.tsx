@@ -138,7 +138,7 @@ const PricingSection: React.FC = () => {
               </p>
             </div>
             <div className="flex overflow-x-auto touch-pan-y md:flex md:flex-wrap md:justify-center gap-5 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
-              {recommendedPlans.map((plan, index) => (
+              {recommendedPlans.map((plan) => (
                 <div
                   key={`recommended-${plan.id}`}
                   className={cn(

@@ -106,7 +106,7 @@ export function QuizProgress() {
   const chartConfig: ChartConfig = useMemo(() => {
     const config: ChartConfig = {};
 
-    SubCategory.forEach((sub, index) => {
+    SubCategory.forEach((sub) => {
       config[sub.id] = {
         label: sub.code,
         color: sub.color,
@@ -254,7 +254,7 @@ export function QuizProgress() {
               >
                 <style>{`.filter-chips::-webkit-scrollbar { display: none; }`}</style>
                 <div className="filter-chips flex gap-1.5 md:gap-2 mb-3 md:mb-4 min-w-max md:min-w-0 md:flex-wrap">
-                  {SubCategory.map((sub, index) => (
+                  {SubCategory.map((sub) => (
                     <button
                       key={sub.id}
                       onClick={() => toggleSubtest(sub.id)}
@@ -329,7 +329,7 @@ export function QuizProgress() {
 
                 {SubCategory.filter((sub) =>
                   selectedSubtests.includes(sub.id),
-                ).map((sub, index) => (
+                ).map((sub) => (
                   <Line
                     key={sub.id}
                     type="monotone"
@@ -761,12 +761,12 @@ export function QuizProgress() {
               <ScrollWrapper className="overflow-x-auto -mx-3 px-3 md:mx-0 md:px-0 pb-2 md:pb-0">
                 <div className="space-y-4 md:space-y-6 min-w-max md:min-w-0">
                   {compareToTop.subTesGap.map((item, index) => {
-                    const accuracyGap =
-                      item.gap.accuracy.user - item.gap.accuracy.top;
-                    const avgGap =
-                      item.gap.averageScore.user - item.gap.averageScore.top;
-                    const totalGap =
-                      item.gap.totalScore.user - item.gap.totalScore.top;
+                    // const accuracyGap =
+                    //   item.gap.accuracy.user - item.gap.accuracy.top;
+                    // const avgGap =
+                    //   item.gap.averageScore.user - item.gap.averageScore.top;
+                    // const totalGap =
+                    //   item.gap.totalScore.user - item.gap.totalScore.top;
 
                     return (
                       <div key={`${item.code}-${item.name}-${index}`}>
@@ -821,7 +821,9 @@ export function QuizProgress() {
                                   Kamu
                                 </p>
                                 <p className="text-lg md:text-2xl font-black text-slate-800">
-                                  {formatTwoDecimals(item.gap.averageScore.user)}
+                                  {formatTwoDecimals(
+                                    item.gap.averageScore.user,
+                                  )}
                                 </p>
                               </div>
                               <div className="text-center px-1 md:px-3">

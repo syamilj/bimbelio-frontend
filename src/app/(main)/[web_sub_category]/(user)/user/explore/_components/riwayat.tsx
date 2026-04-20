@@ -1,9 +1,7 @@
 'use client';
 
 import { useSession } from '@/components/provider/provider-session-auth';
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Skeleton } from '@/components/ui/skeleton';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import type { Category, Subcategory } from '@/types/database';
 import { History, RotateCcw } from 'lucide-react';
@@ -13,7 +11,6 @@ import CardNotFound from '../../_components/card-not-found';
 
 export default function Riwayat() {
   const { data: session } = useSession();
-  const { websiteSubCategory } = useWebsiteSubCategory();
   const [riwayat, setRiwayat] = useState<any>([]);
 
   const [datas, setDatas] = useState<{
@@ -86,11 +83,7 @@ export default function Riwayat() {
       {/* Content */}
       {!isLoading && riwayat?.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          <Card
-            data={riwayat}
-            href={`${website_sub_category_id}/user/workspace`}
-            noCategory={true}
-          />
+          <Card data={riwayat} />
         </div>
       )}
 

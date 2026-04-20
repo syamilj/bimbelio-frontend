@@ -93,7 +93,7 @@ export default function ProviderLimitation({
       onSuccess({ data }) {
         sendData = data;
         if (!userLimitation) return;
-        let newUserLimitation = userLimitation;
+        const newUserLimitation = userLimitation;
         if (chat === true) newUserLimitation.chat++;
         if (notes === true) newUserLimitation.notes++;
         if (quiz === true) newUserLimitation.quiz++;

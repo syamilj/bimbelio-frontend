@@ -30,7 +30,6 @@ interface Props {
 const HeaderPdf = ({ doc, isCourseDone }: Props) => {
   const docId = doc?.id;
   const id = doc?.id;
-  const [onSearchPdf, setOnSearchPdf] = useState<boolean>(false);
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const sub = searchParams?.get('sub');
@@ -45,8 +44,6 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
       setCurrentPage,
       editPage,
       setEditPage,
-      searchPdf,
-      setSearchPdf,
       zoomValue,
       setZoomValue,
       vision,

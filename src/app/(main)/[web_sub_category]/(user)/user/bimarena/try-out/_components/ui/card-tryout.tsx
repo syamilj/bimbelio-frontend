@@ -38,24 +38,8 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 import RegistrationProofModal from './registration-proof-modal';
-
-interface ProofItem {
-  id: string;
-  title: string;
-  instruction: string;
-  icon: ReactNode;
-  link: string;
-  points: number;
-  required: boolean;
-  step: number;
-  completed: boolean;
-  uploaded: boolean;
-  loading: boolean;
-  fileName: string;
-  uploadType?: 'action' | 'file';
-}
 
 interface CardTryout {
   id: string;
@@ -115,18 +99,12 @@ export interface CardTryoutProps extends CardTryout {
 
 interface card {
   data: CardTryoutProps[];
-  isPrivate?: boolean;
   userTryOutId: string;
   refresh?: () => any;
   reloadHref?: boolean;
 }
 
-export default function CardTryOut({
-  data,
-  isPrivate,
-  refresh,
-  reloadHref,
-}: card) {
+export default function CardTryOut({ data, refresh, reloadHref }: card) {
   const pathname = usePathname();
   const isTesting = pathname?.toLowerCase().includes('testing') || false;
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -155,46 +133,46 @@ export default function CardTryOut({
   //   }
   // }, [showDetail]);
 
-  const getTimer = (date: any, item: CardTryoutProps): any => {
-    const targetDate = new Date(date);
-    const now = new Date();
-    if (isNaN(targetDate.getTime()) || isNaN(now.getTime())) {
-      return 'Tanggal tidak valid';
-    }
+  // const getTimer = (date: any, item: CardTryoutProps): any => {
+  //   const targetDate = new Date(date);
+  //   const now = new Date();
+  //   if (isNaN(targetDate.getTime()) || isNaN(now.getTime())) {
+  //     return 'Tanggal tidak valid';
+  //   }
 
-    const difference = targetDate.getTime() - now.getTime();
+  //   const difference = targetDate.getTime() - now.getTime();
 
-    if (difference <= 0) {
-      if (item.isDone) {
-        return { start: false, value: 'Selesai' };
-      } else {
-        return { start: true, value: 'Mulai Tryout' };
-      }
-    }
+  //   if (difference <= 0) {
+  //     if (item.isDone) {
+  //       return { start: false, value: 'Selesai' };
+  //     } else {
+  //       return { start: true, value: 'Mulai Tryout' };
+  //     }
+  //   }
 
-    const seconds = Math.floor(difference / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
+  //   const seconds = Math.floor(difference / 1000);
+  //   const minutes = Math.floor(seconds / 60);
+  //   const hours = Math.floor(minutes / 60);
+  //   const days = Math.floor(hours / 24);
 
-    if (days > 7) {
-      const options: Intl.DateTimeFormatOptions = {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-      };
-      return {
-        start: false,
-        value: targetDate.toLocaleDateString('id-ID', options),
-      };
-    } else if (days >= 1) {
-      return { start: false, value: `Mulai dalam ${days} hari` };
-    } else if (hours >= 1) {
-      return { start: false, value: `Mulai dalam ${hours} jam` };
-    } else {
-      return { start: false, value: `Mulai dalam ${minutes} menit` };
-    }
-  };
+  //   if (days > 7) {
+  //     const options: Intl.DateTimeFormatOptions = {
+  //       day: '2-digit',
+  //       month: 'short',
+  //       year: 'numeric',
+  //     };
+  //     return {
+  //       start: false,
+  //       value: targetDate.toLocaleDateString('id-ID', options),
+  //     };
+  //   } else if (days >= 1) {
+  //     return { start: false, value: `Mulai dalam ${days} hari` };
+  //   } else if (hours >= 1) {
+  //     return { start: false, value: `Mulai dalam ${hours} jam` };
+  //   } else {
+  //     return { start: false, value: `Mulai dalam ${minutes} menit` };
+  //   }
+  // };
 
   const registerTryOut = async (payload: {
     tryoutId: string;

@@ -15,15 +15,6 @@ import {
 import Image from 'next/image';
 import { useState } from 'react';
 
-interface Tutor {
-  name: string;
-  // university: string;
-  major: string;
-  quote: string;
-  badge?: string;
-  image?: string;
-}
-
 const LayersSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const [activeLayer, setActiveLayer] = useState<number>(0);

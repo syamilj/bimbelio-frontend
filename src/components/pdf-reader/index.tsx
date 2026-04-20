@@ -123,8 +123,8 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
   } = useAppContext();
 
   const {
-    useHeaderPdf: { setNormalSize, setZoomValue, vision, setCurrentPage },
-    useVideo: { hideVideo, setHideVideo, videoUrl, setVideoUrl },
+    useHeaderPdf: { setNormalSize, setZoomValue, setCurrentPage },
+    useVideo: { hideVideo, setHideVideo },
     useHighlights: { setHighlights },
   } = useProvider();
 
@@ -217,7 +217,7 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
           type: 'image',
         });
       } catch (err: any) {
-        err;
+        console.error('Error adding image block:', err);
       }
     }
   };

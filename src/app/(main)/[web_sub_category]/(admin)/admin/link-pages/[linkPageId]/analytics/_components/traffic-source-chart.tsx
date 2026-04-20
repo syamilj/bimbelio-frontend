@@ -4,11 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer } from 'recharts';
 
-interface TrafficSourceChartProps {
-  dateFilter: { from: Date; to: Date };
-  selectedLinkPageId: string;
-}
-
 const COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6'];
 
 export function TrafficSourceChart({

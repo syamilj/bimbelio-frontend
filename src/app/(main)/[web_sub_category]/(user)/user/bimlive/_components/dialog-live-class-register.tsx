@@ -71,11 +71,6 @@ export const DialogLiveClassRegister = ({
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const [step, setStep] = useState<number>(1);
-  const [registrationData, setRegistrationData] = useState<any>(null);
-  const [showPayment, setShowPayment] = useState<boolean>(false);
-  const [selectTypeRegistration, setSelectTypeRegistration] = useState<
-    'free' | 'premium'
-  >('free');
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 

@@ -3,7 +3,6 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { InputImage } from '@/components/ui/input-image';
 import {
   Command,
   CommandEmpty,
@@ -13,6 +12,7 @@ import {
   CommandList,
 } from '@/components/ui/command';
 import { Input } from '@/components/ui/input';
+import { InputImage } from '@/components/ui/input-image';
 import {
   Popover,
   PopoverContent,
@@ -27,9 +27,11 @@ import {
 import LoadingPageWithText, {
   LoadingComponentWithText,
 } from '@/components/ui/spinner';
+import { env } from '@/env.mjs';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn, getDateForInputDateTime } from '@/lib/utils';
+import { storage } from '@/supabaseClient';
 import {
   QuizVolume,
   Tryout,
@@ -47,11 +49,9 @@ import {
   ChevronsUpDown,
   X,
 } from 'lucide-react';
-import { env } from '@/env.mjs';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { storage } from '@/supabaseClient';
 
 const STATUS_OPTIONS = [
   {
@@ -217,11 +217,11 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
   const handleSortTryouts = (tryoutData: TryoutListType[]) =>
     normalizeOrdersBySubCategory(tryoutData);
 
-  const { data: SubCategory, isLoading: SubCategoryIsLoading } = useGet<
-    TryoutSubCategory[]
-  >('/tryoutCategory/getSubCategory');
+  const { data: SubCategory } = useGet<TryoutSubCategory[]>(
+    '/tryoutCategory/getSubCategory',
+  );
 
-  const { isLoading: isLoadingGetData, refetch } = useGet<
+  const { isLoading: isLoadingGetData } = useGet<
     QuizVolume & {
       resultDate?: string | null;
       Tryout: TryoutListType[];
@@ -238,9 +238,10 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
           status: data.status || 'DRAFT',
           startDate: getDateForInputDateTime(data.startDate) || '',
           endDate: getDateForInputDateTime(data.endDate) || '',
-          resultDate: getDateForInputDateTime(
-            data.resultDate || data.Tryout?.[0]?.resultDate || data.startDate,
-          ) || '',
+          resultDate:
+            getDateForInputDateTime(
+              data.resultDate || data.Tryout?.[0]?.resultDate || data.startDate,
+            ) || '',
           image: data.image || '',
         });
         const sortedTryouts = normalizeOrdersBySubCategory(data.Tryout);
@@ -456,8 +457,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
                         .upload(`quiz-volume/${filename}`, image);
 
                       if (
-                        upload?.error?.message ===
-                        'The resource already exists'
+                        upload?.error?.message === 'The resource already exists'
                       ) {
                         await storage
                           .from('img')
@@ -658,14 +658,16 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
                 <p className="text-xs font-bold text-slate-500 uppercase tracking-wide">
                   Tryout Terpilih
                 </p>
-                {SubCategory?.map((item, index) => (
+                {SubCategory?.map((item) => (
                   <TryoutItem
                     key={item.id}
                     selectedTryouts={selectedTryouts}
                     setSelectedTryouts={setSelectedTryouts}
                     sub={item}
                     handleSortTryouts={handleSortTryouts}
-                    reorderTryoutWithinSubCategory={reorderTryoutWithinSubCategory}
+                    reorderTryoutWithinSubCategory={
+                      reorderTryoutWithinSubCategory
+                    }
                   />
                 ))}
               </div>

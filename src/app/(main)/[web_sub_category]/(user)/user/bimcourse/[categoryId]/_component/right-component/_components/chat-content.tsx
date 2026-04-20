@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 // src/components/workspace-course/chat/index.tsx
 
 import { useSession } from '@/components/provider/provider-session-auth';

@@ -1,6 +1,5 @@
 'use client';
 
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -37,9 +36,6 @@ import toast from 'react-hot-toast';
 export default function ShortUrlAnalyticsPage() {
   const params = useParams();
   const router = useRouter();
-  const { websiteSubCategory } = useWebsiteSubCategory();
-
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const shortUrlId = params.id as string;
 
   const [analytics, setAnalytics] = useState<ShortUrlAnalytics | null>(null);

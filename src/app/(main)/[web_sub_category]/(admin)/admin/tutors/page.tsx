@@ -74,7 +74,7 @@ export default function TutorDashboard() {
       </div>
 
       {/* Metrics */}
-      <TutorMetrics instructor={filteredTutors || []} />
+      <TutorMetrics />
 
       {/* Filters & Search */}
       <Card>

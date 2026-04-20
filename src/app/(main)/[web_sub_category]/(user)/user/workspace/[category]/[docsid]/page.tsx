@@ -20,16 +20,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { cn } from '@/lib/utils';
 import { CrownIcon, LockIcon, PlayIcon, Sparkles } from 'lucide-react';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useDebouncedCallback } from 'use-debounce';
 import ButtonUpgradeTryout from '../../../bimarena/try-out/_components/ui/button-upgrade-tryout';
 import LeftComponent from './_components/left-component';
 import { RightComponent } from './_components/right-component';
-
-const DocViewer = dynamic(() => import('@/components/pdf-reader'), {
-  ssr: false,
-});
 
 const DocViewerPage = () => {
   const pathname = usePathname();
@@ -85,8 +80,7 @@ const DocViewerPage = () => {
     }
   }, [tab]);
 
-  const { mobileScreen, setSidebarMobile, setTransactionPopUp } =
-    useAppContext();
+  const { setTransactionPopUp } = useAppContext();
 
   const updateHistory = async (payload: { documentId: string }) => {
     await mutateGeneral('/document/updateHistory', {
@@ -464,7 +458,7 @@ const DocViewerPage = () => {
             minSize={30}
             className="chatAIContainer relative bg-slate-50/80"
           >
-            <RightComponent docId={docId} />
+            <RightComponent />
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>

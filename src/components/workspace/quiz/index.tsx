@@ -20,8 +20,8 @@ const Quiz = () => {
 
 const Main = () => {
   const {
-    useQuiz: { Quiz: quiz, QuizIsLoading: isLoading, QuizError: error },
-    useState: { current: cur, setCurrent: setCur },
+    useQuiz: { Quiz: quiz },
+    useState: { current: cur },
   } = useProvider();
 
   return (

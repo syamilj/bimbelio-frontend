@@ -28,11 +28,6 @@ import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
-import {
-  LiveClassStatus,
-  formatDateTime,
-  formatDuration,
-} from '@/lib/mock-data/live-class';
 import { cn } from '@/lib/utils';
 import { sanitizeFileName } from '@/lib/utils/storage';
 import { storage } from '@/supabaseClient';
@@ -59,6 +54,7 @@ interface Props {
   statusFilter: LiveClassStatus | 'ALL';
   subjectFilter: string | undefined;
 }
+type LiveClassStatus = 'SCHEDULED' | 'ONGOING' | 'COMPLETED' | 'CANCELLED';
 
 export function LiveClassTable({
   searchTerm,
@@ -481,4 +477,25 @@ const getStatusColor = (status: string) => {
     default:
       return 'bg-gray-100 text-gray-800';
   }
+};
+
+const formatDateTime = (dateData: Date | string) => {
+  const date = new Date(dateData);
+  return new Intl.DateTimeFormat('id-ID', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date);
+};
+
+const formatDuration = (minutes: number) => {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+
+  if (hours > 0) {
+    return `${hours}j ${mins}m`;
+  }
+  return `${mins}m`;
 };

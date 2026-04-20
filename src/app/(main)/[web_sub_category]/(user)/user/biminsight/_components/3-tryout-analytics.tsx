@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { Button } from "@/components/ui/button";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Button } from '@/components/ui/button';
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
-import { Skeleton } from "@/components/ui/skeleton";
+} from '@/components/ui/chart';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -16,19 +16,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { FetchReturnType, useGet } from "@/lib/fetch-helper/useGet";
-import { format } from "date-fns";
-import { id as localeId } from "date-fns/locale";
-import {
-  BookOpen,
-  ChevronDown,
-  ChevronUp,
-  Target,
-  Trophy,
-} from "lucide-react";
-import { useParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+} from '@/components/ui/table';
+import { FetchReturnType, useGet } from '@/lib/fetch-helper/useGet';
+import { getSubtestLabel } from '@/lib/utils/subtest';
+import { format } from 'date-fns';
+import { id as localeId } from 'date-fns/locale';
+import { BookOpen, ChevronDown, ChevronUp, Target, Trophy } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Area,
   AreaChart,
@@ -37,8 +32,7 @@ import {
   Line,
   XAxis,
   YAxis,
-} from "recharts";
-import { getSubtestLabel } from "@/lib/utils/subtest";
+} from 'recharts';
 import {
   EmptyState,
   FilterChip,
@@ -50,24 +44,23 @@ import {
   SectionLabel,
   StatPill,
   SubtestTooltipHeader,
-} from "./_primitives";
-
+} from './_primitives';
 
 const ColorList = [
-  "#0091FF",
-  "#22c55e",
-  "#eab308",
-  "#ef4444",
-  "#6366f1",
-  "#a855f7",
-  "#f97316",
+  '#0091FF',
+  '#22c55e',
+  '#eab308',
+  '#ef4444',
+  '#6366f1',
+  '#a855f7',
+  '#f97316',
 ];
 
 export const TryoutAnalyticsTable = () => {
   const { id } = useParams<{ id: string | undefined }>();
 
   const fetchingData = useGet<DataType>(
-    "/learningAnalytics/getUserAnalyticsTryout",
+    '/learningAnalytics/getUserAnalyticsTryout',
     {
       params: {
         userId: id ? id : undefined,
@@ -121,9 +114,7 @@ const OverallSection = ({
       index: index + 1,
       name: item.tryoutTitle,
       shortName:
-        item.tryoutTitle.length > 12
-          ? `TO ${index + 1}`
-          : item.tryoutTitle,
+        item.tryoutTitle.length > 12 ? `TO ${index + 1}` : item.tryoutTitle,
       score: item.score,
       rank: item.rank,
       date: item.date,
@@ -139,8 +130,8 @@ const OverallSection = ({
   const stats = TryoutData.overall.stats;
 
   const chartConfigAll: ChartConfig = {
-    score: { label: "Skor", color: mainColor },
-    benar: { label: "Benar", color: "#10B981" },
+    score: { label: 'Skor', color: mainColor },
+    benar: { label: 'Benar', color: '#10B981' },
   };
 
   const displayedData = isExpanded
@@ -162,8 +153,11 @@ const OverallSection = ({
   return (
     <div>
       {/* Hero */}
-      <HeroBanner color={mainColor}>
-        <SectionLabel title="Performa Tryout" sub="Skor total berdasarkan masing-masing tryout" />
+      <HeroBanner>
+        <SectionLabel
+          title="Performa Tryout"
+          sub="Skor total berdasarkan masing-masing tryout"
+        />
         <ScrollRow className="mt-3">
           <StatPill
             label="Rata-rata"
@@ -192,7 +186,13 @@ const OverallSection = ({
       {/* Insight */}
       <div className="px-5 pt-3">
         <InsightBanner
-          tone={stats.trend > 0 ? "success" : stats.trend < 0 ? "warning" : "neutral"}
+          tone={
+            stats.trend > 0
+              ? 'success'
+              : stats.trend < 0
+                ? 'warning'
+                : 'neutral'
+          }
         >
           {stats.trend > 0
             ? `Skor rata-rata ${stats.avg.toFixed(0)} dengan tren naik +${stats.trend.toFixed(0)} — pertahankan momentum!`
@@ -204,7 +204,10 @@ const OverallSection = ({
 
       {/* Chart */}
       <div className="px-5 pt-3 pb-0 w-full min-w-0">
-        <SectionLabel title="Grafik Skor" sub="Klik titik untuk detail B/S/K" />
+        <SectionLabel
+          title="Grafik Skor"
+          sub="Klik titik untuk detail B/S/K"
+        />
         <ChartContainer
           config={chartConfigAll}
           className="aspect-auto h-[200px] md:h-[240px] w-full mt-2"
@@ -221,14 +224,25 @@ const OverallSection = ({
                 x2="0"
                 y2="1"
               >
-                <stop offset="5%" stopColor={mainColor} stopOpacity={0.3} />
-                <stop offset="95%" stopColor={mainColor} stopOpacity={0} />
+                <stop
+                  offset="5%"
+                  stopColor={mainColor}
+                  stopOpacity={0.3}
+                />
+                <stop
+                  offset="95%"
+                  stopColor={mainColor}
+                  stopOpacity={0}
+                />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke="#f1f5f9"
+            />
             <XAxis
               dataKey="shortName"
-              tick={{ fontSize: 10, fill: "#94a3b8" }}
+              tick={{ fontSize: 10, fill: '#94a3b8' }}
               tickLine={false}
               axisLine={false}
               interval={0}
@@ -238,7 +252,7 @@ const OverallSection = ({
             />
             <YAxis
               yAxisId="left"
-              tick={{ fontSize: 10, fill: "#94a3b8" }}
+              tick={{ fontSize: 10, fill: '#94a3b8' }}
               tickLine={false}
               axisLine={false}
               width={40}
@@ -246,7 +260,7 @@ const OverallSection = ({
             <YAxis
               yAxisId="right"
               orientation="right"
-              tick={{ fontSize: 10, fill: "#10B981" }}
+              tick={{ fontSize: 10, fill: '#10B981' }}
               tickLine={false}
               axisLine={false}
               width={30}
@@ -259,10 +273,10 @@ const OverallSection = ({
                     const p = payload?.[0]?.payload as {
                       name?: string;
                     };
-                    return p?.name || "";
+                    return p?.name || '';
                   }}
                   formatter={(value, name, item) => {
-                    if (name === "score") {
+                    if (name === 'score') {
                       return (
                         <>
                           <div
@@ -276,7 +290,7 @@ const OverallSection = ({
                         </>
                       );
                     }
-                    if (name === "benar") {
+                    if (name === 'benar') {
                       const p = (
                         item as {
                           payload: {
@@ -289,7 +303,9 @@ const OverallSection = ({
                       return (
                         <>
                           <div className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-emerald-500" />
-                          <span className="text-muted-foreground font-semibold">B/S/K</span>
+                          <span className="text-muted-foreground font-semibold">
+                            B/S/K
+                          </span>
                           <span className="ml-auto font-mono font-medium flex items-center gap-1">
                             <span className="text-emerald-600 dark:text-emerald-500">
                               {p?.benar ?? value}
@@ -322,12 +338,12 @@ const OverallSection = ({
                 fill: mainColor,
                 r: 4,
                 strokeWidth: 2,
-                stroke: "#fff",
+                stroke: '#fff',
               }}
               activeDot={{
                 r: 6,
                 fill: mainColor,
-                stroke: "#fff",
+                stroke: '#fff',
                 strokeWidth: 2,
               }}
             >
@@ -345,15 +361,15 @@ const OverallSection = ({
               strokeWidth={2}
               strokeDasharray="5 3"
               dot={{
-                fill: "#10B981",
+                fill: '#10B981',
                 r: 3,
                 strokeWidth: 2,
-                stroke: "#fff",
+                stroke: '#fff',
               }}
               activeDot={{
                 r: 5,
-                fill: "#10B981",
-                stroke: "#fff",
+                fill: '#10B981',
+                stroke: '#fff',
                 strokeWidth: 2,
               }}
             >
@@ -371,7 +387,10 @@ const OverallSection = ({
       {/* Rank cards */}
       <div className="px-5 pb-5 w-full min-w-0 flex flex-col relative">
         <SectionLabel title="Riwayat Skor & Peringkat" />
-        <ScrollRow className="mt-3" noGrid>
+        <ScrollRow
+          className="mt-3"
+          noGrid
+        >
           {[...displayedData].reverse().map((item, index) => {
             const rankPercentile =
               item.totalParticipants > 0
@@ -392,7 +411,7 @@ const OverallSection = ({
                       {item.tryoutTitle}
                     </p>
                     <p className="text-[11px] text-slate-400">
-                      {format(new Date(item.date), "dd MMM yyyy", {
+                      {format(new Date(item.date), 'dd MMM yyyy', {
                         locale: localeId,
                       })}
                     </p>
@@ -424,14 +443,12 @@ const OverallSection = ({
                   <div className="flex flex-1 items-center gap-2">
                     <div
                       className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-3xl ${
-                        item.rank <= 3 ? "bg-yellow-100" : "bg-blue-50"
+                        item.rank <= 3 ? 'bg-yellow-100' : 'bg-blue-50'
                       }`}
                     >
                       <Trophy
                         className={`h-4 w-4 ${
-                          item.rank <= 3
-                            ? "text-yellow-600"
-                            : "text-blue-600"
+                          item.rank <= 3 ? 'text-yellow-600' : 'text-blue-600'
                         }`}
                       />
                     </div>
@@ -442,9 +459,7 @@ const OverallSection = ({
                       <div className="flex items-center gap-1">
                         <span
                           className={`text-base font-black ${
-                            item.rank <= 3
-                              ? "text-yellow-600"
-                              : "text-blue-600"
+                            item.rank <= 3 ? 'text-yellow-600' : 'text-blue-600'
                           }`}
                         >
                           #{item.rank}
@@ -456,11 +471,11 @@ const OverallSection = ({
                           <span
                             className={`ml-0.5 text-[10px] font-bold ${
                               item.rankChange > 0
-                                ? "text-emerald-600"
-                                : "text-red-600"
+                                ? 'text-emerald-600'
+                                : 'text-red-600'
                             }`}
                           >
-                            {item.rankChange > 0 ? "\u2191" : "\u2193"}
+                            {item.rankChange > 0 ? '\u2191' : '\u2193'}
                             {Math.abs(item.rankChange)}
                           </span>
                         )}
@@ -484,9 +499,9 @@ const OverallSection = ({
                         width: `${rankPercentile}%`,
                         backgroundColor:
                           item.rankChange > 0
-                            ? "#10b981"
+                            ? '#10b981'
                             : item.rankChange < 0
-                              ? "#ef4444"
+                              ? '#ef4444'
                               : mainColor,
                       }}
                     />
@@ -544,12 +559,9 @@ const SubtestSection = ({
 }: {
   fetchingData: FetchReturnType<DataType, any>;
 }) => {
-  const { mainColor } = useWebsiteSubCategory();
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const {
-    data: TryoutData,
-  } = fetchingData;
+  const { data: TryoutData } = fetchingData;
 
   const performanceBySubCategory = TryoutData?.bySubCategory;
 
@@ -608,7 +620,10 @@ const SubtestSection = ({
 
       {/* Heatmap score table */}
       <ScrollWrapper className="w-full rounded-3xl border border-slate-200/80">
-        <Table className="min-w-max" classNameWrapper="overflow-visible">
+        <Table
+          className="min-w-max"
+          classNameWrapper="overflow-visible"
+        >
           <TableHeader>
             <TableRow className="bg-slate-50/80">
               <TableHead className="py-3 font-bold text-slate-700">
@@ -625,7 +640,10 @@ const SubtestSection = ({
                 .map((subCat) => (
                   <SubtestTooltipHeader
                     key={subCat.id}
-                    initial={getSubtestLabel(subCat.name, subCat.website_sub_category_id)}
+                    initial={getSubtestLabel(
+                      subCat.name,
+                      subCat.website_sub_category_id,
+                    )}
                     fullName={subCat.name}
                   />
                 ))}

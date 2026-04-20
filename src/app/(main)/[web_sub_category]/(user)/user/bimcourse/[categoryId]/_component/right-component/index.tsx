@@ -230,7 +230,7 @@ const Sidebar = ({
         }
       }
     } catch (error) {
-      error;
+      console.error('Error handleResetChat:', error);
     }
   };
 

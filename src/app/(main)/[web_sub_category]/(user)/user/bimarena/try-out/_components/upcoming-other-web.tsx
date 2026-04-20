@@ -1,5 +1,5 @@
 import { useSession } from '@/components/provider/provider-session-auth';
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import {
@@ -12,7 +12,6 @@ import {
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import CardTryOut, { CardTryoutProps } from './ui/card-tryout';
-import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 
 interface GroupedTryout {
   webSubName: string;
@@ -32,8 +31,6 @@ export default function UpcomingOtherWeb({
   onCountReady?: (count: number) => void;
 }) {
   const { data: session } = useSession();
-  const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
   const [cards, setCards] = useState<CardTryoutProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -297,7 +294,7 @@ export default function UpcomingOtherWeb({
                 <CardTryOut
                   data={group.tryouts}
                   userTryOutId={id}
-                  isPrivate
+                  // isPrivate
                   refresh={getData}
                   reloadHref
                 />

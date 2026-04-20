@@ -11,9 +11,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { LiveClassStatus } from '@/lib/mock-data/live-class';
 import { Category } from '@/types/database';
 import { Filter, RotateCcw, Search } from 'lucide-react';
+
+type LiveClassStatus = 'SCHEDULED' | 'ONGOING' | 'COMPLETED' | 'CANCELLED';
 
 interface FilterProps {
   searchTerm: string;

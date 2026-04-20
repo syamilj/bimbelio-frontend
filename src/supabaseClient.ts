@@ -1,9 +1,3 @@
-// import { createClient } from "@supabase/supabase-js";
-// import {
-//   NEXT_PUBLIC_SUPABASE_SECRET_KEY,
-//   NEXT_PUBLIC_SUPABASE_URL,
-// } from "../env";
-
 import axios from 'axios';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
@@ -11,14 +5,8 @@ import { useSession } from './components/provider/provider-session-auth';
 import { env } from './env.mjs';
 import { responseError } from './lib/response';
 
-// const supabaseUrl = NEXT_PUBLIC_SUPABASE_URL || "";
-// const supabaseKey = NEXT_PUBLIC_SUPABASE_SECRET_KEY || "";
-
-// export const supabase = createClient(supabaseUrl, supabaseKey);
-
 const STORAGE_URL = env.NEXT_PUBLIC_SUPABASE_URL;
 const STORAGE_UPLOAD_URL = env.NEXT_PUBLIC_SUPABASE_UPLOAD_URL;
-const PRIVATE_KEY = env.NEXT_PUBLIC_SUPABASE_SECRET_KEY;
 const PUBLIC_KEY = env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 type BucketList =

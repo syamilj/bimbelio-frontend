@@ -85,7 +85,7 @@ export default function TambahDokumen() {
       },
       type: 'post',
       setLoading: setLoading,
-      async onSuccess({ data }) {
+      async onSuccess() {
         fetchDocument();
         setShowAddDocument(false);
         setFile(undefined);

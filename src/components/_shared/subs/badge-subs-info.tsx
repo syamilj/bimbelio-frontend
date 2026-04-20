@@ -25,12 +25,7 @@ export const BadgeSubsInfo = () => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const {
-    minimizeSidebar,
-    setSidebarMobile,
-    setTransactionPopUp,
-    setPagesSetting,
-  } = useAppContext();
+  const { setTransactionPopUp, setPagesSetting } = useAppContext();
 
   // Close dropdown on outside click
   useEffect(() => {

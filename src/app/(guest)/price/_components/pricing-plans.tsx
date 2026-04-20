@@ -113,7 +113,7 @@ export default function PricingPlans() {
   const filteredAndSortedPlans = useMemo(() => {
     if (!PricingData?.plans) return [];
 
-    let filtered = PricingData.plans.filter((plan) => {
+    const filtered = PricingData.plans.filter((plan) => {
       const searchLower = searchQuery.toLowerCase();
       const planName = plan.name?.toLowerCase() || '';
       const planDescription = plan.description?.toLowerCase() || '';

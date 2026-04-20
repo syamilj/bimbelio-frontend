@@ -322,8 +322,7 @@ const notificationSocketListener = ({
 }) => {
   const { data: session } = useSession();
   const userId = session?.user.id;
-  const role = session?.user.role;
-  const { on, emit, off } = useSocket();
+  const { on, off } = useSocket();
 
   const playNotificationSound = (
     soundUrl: string = '/sounds/notification.mp3',
@@ -452,7 +451,7 @@ const initiateNotificationWorker = () => {
 
         console.log({ registrations });
 
-        for (let reg of registrations) {
+        for (const reg of registrations) {
           await reg.unregister();
         }
 

@@ -41,7 +41,6 @@ import {
   XCircle,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { SessionOptionsProps } from '..';
 import { TryoutAI } from './tryout-ai';
@@ -102,14 +101,6 @@ interface Props {
   participantId: string;
 }
 
-interface NavigationProps {
-  sessionResult: SessionResultTryout | undefined;
-  userAnswerIndex: number;
-  getIsCorrect: (userAnswerIdx: number) => boolean | null;
-  setUserAnswerIndex: React.Dispatch<SetStateAction<number>>;
-  className?: string;
-}
-
 export function ReviewTab({
   sessionResult,
   setResultIndex,
@@ -124,7 +115,6 @@ export function ReviewTab({
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   // Safeguard: Pastikan userAnswerIndex dalam rentang yang valid
   const safeUserAnswerIndex =
@@ -135,7 +125,7 @@ export function ReviewTab({
       : 0;
 
   const UserAnswers = sessionResult?.TryoutUserAnswer[safeUserAnswerIndex];
-  const AssessmentType = sessionResult?.TryoutSession.assessmentType || '';
+  // const AssessmentType = sessionResult?.TryoutSession.assessmentType || '';
   const TotalQuestion = sessionResult?.TryoutUserAnswer.length || 0;
 
   const notAnswered =
@@ -173,36 +163,36 @@ export function ReviewTab({
     return userAnswer.TryoutAnswers.id === correctOption.id;
   };
 
-  const getSessionDuration = () => {
-    if (!sessionResult?.endSession) return 'Coming Soon';
-    const startSession = new Date(sessionResult.startSession);
-    const endSession = new Date(sessionResult.endSession);
+  // const getSessionDuration = () => {
+  //   if (!sessionResult?.endSession) return 'Coming Soon';
+  //   const startSession = new Date(sessionResult.startSession);
+  //   const endSession = new Date(sessionResult.endSession);
 
-    const diffInMilliseconds = endSession.getTime() - startSession.getTime();
-    const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
-    const minutes = Math.floor(diffInSeconds / 60);
-    const seconds = diffInSeconds % 60;
+  //   const diffInMilliseconds = endSession.getTime() - startSession.getTime();
+  //   const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
+  //   const minutes = Math.floor(diffInSeconds / 60);
+  //   const seconds = diffInSeconds % 60;
 
-    // Pastikan angka didefinisikan sebelum dipanggil toString
-    return `${minutes.toString().padStart(2, '0')}:${seconds
-      .toString()
-      .padStart(2, '0')}`;
-  };
+  //   // Pastikan angka didefinisikan sebelum dipanggil toString
+  //   return `${minutes.toString().padStart(2, '0')}:${seconds
+  //     .toString()
+  //     .padStart(2, '0')}`;
+  // };
 
-  const getSecondPerQuestion = () => {
-    if (!sessionResult?.endSession) return 'Coming Soon';
-    const startSession = new Date(sessionResult.startSession);
-    const endSession = new Date(sessionResult.endSession);
+  // const getSecondPerQuestion = () => {
+  //   if (!sessionResult?.endSession) return 'Coming Soon';
+  //   const startSession = new Date(sessionResult.startSession);
+  //   const endSession = new Date(sessionResult.endSession);
 
-    const diffInMilliseconds = endSession.getTime() - startSession.getTime();
-    const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
-    const questPerSecond =
-      sessionResult.TryoutUserAnswer.length > 0
-        ? diffInSeconds / sessionResult.TryoutUserAnswer.length
-        : 0;
+  //   const diffInMilliseconds = endSession.getTime() - startSession.getTime();
+  //   const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
+  //   const questPerSecond =
+  //     sessionResult.TryoutUserAnswer.length > 0
+  //       ? diffInSeconds / sessionResult.TryoutUserAnswer.length
+  //       : 0;
 
-    return `Rata-rata ${questPerSecond.toFixed(2)} detik/soal`;
-  };
+  //   return `Rata-rata ${questPerSecond.toFixed(2)} detik/soal`;
+  // };
 
   const correctAnswer = () => {
     if (!sessionResult) return 0;
@@ -220,14 +210,6 @@ export function ReviewTab({
 
   const accuracy =
     TotalQuestion > 0 ? (correctAnswer() / TotalQuestion) * 100 : 0;
-
-  const getPercentageScore = () => {
-    if (!sessionResult?.TryoutSession.thresholdValue) return null;
-    const value =
-      getTotalScore() / (sessionResult?.TryoutSession.thresholdValue || 0);
-
-    return value * 100;
-  };
 
   return (
     <div className="space-y-4">
@@ -430,8 +412,6 @@ const QuestionView = ({
   sessionResult: SessionResultTryout | undefined;
   participantId: string;
 }) => {
-  const router = useRouter();
-
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6">
       {/* Main Question Area */}
@@ -870,7 +850,7 @@ const CompactNavigation = ({
   mainColor: string;
   participantId: string;
 }) => {
-  const [openAI, setOpenAI] = useState<boolean>(false);
+  const [_openAI, setOpenAI] = useState<boolean>(false);
 
   const totalQuestions = Array.isArray(sessionResult?.TryoutUserAnswer)
     ? sessionResult.TryoutUserAnswer.length

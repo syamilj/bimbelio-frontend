@@ -92,7 +92,7 @@ export default function RegistrationProofModal({
 
   const [couponCode, setCouponCode] = useState<string>('');
 
-  const { data: TryoutIrtData, isLoading: TryoutIrtDataIsLoading } = useGet<{
+  const { data: TryoutIrtData } = useGet<{
     isIrt: boolean;
     isDone: boolean;
   }>('/tryout/getIsTryoutIRT', {

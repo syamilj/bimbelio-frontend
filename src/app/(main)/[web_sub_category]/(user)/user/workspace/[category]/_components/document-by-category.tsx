@@ -11,19 +11,12 @@ export default function DocumentByCategory({
   subCategoryId,
   docsData,
   setDocsData,
-  sort,
 }: any) {
   const params = useParams();
 
   const categoryId = params?.category as string | undefined;
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  const [documentByCategory, setDocumentByCategory] = useState<any>();
-  const [
-    documentByCategoryAndSubcategory,
-    setDocumentByCategoryAndSubcategory,
-  ] = useState<any>();
 
   // const { data: documentByCategory, isLoading } =
   //   api.document.getDocumentByCategoryId.useQuery(`${params?.category}`, {
@@ -79,10 +72,7 @@ export default function DocumentByCategory({
     <>
       {docsData?.length !== 0 ? (
         <div className="grid grid-cols-2 gap-4 font-semibold md2:grid-cols-4">
-          <Card
-            data={docsData}
-            href={`/user/workspace/${params?.category}`}
-          />
+          <Card data={docsData} />
         </div>
       ) : (
         <>

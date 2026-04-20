@@ -58,7 +58,6 @@ export const SectionTable = ({
   const {
     data: QuizVolumeData,
     isLoading,
-    refetch,
     totalPages,
   } = useGet<
     (QuizVolume & {

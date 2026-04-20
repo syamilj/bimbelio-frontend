@@ -16,7 +16,7 @@ import { useProvider } from '../provider';
 
 export default function Start() {
   const {
-    useQuiz: { Quiz, QuizRefetch },
+    useQuiz: { QuizRefetch },
   } = useProvider();
   const pathname = usePathname();
   const pathnameArray = pathname?.split('/');
@@ -26,7 +26,7 @@ export default function Start() {
 
   // const limitation = api.user.limitation.useMutation();
 
-  const { userLimitation, checkLimitation } = useUserLimitation();
+  const { checkLimitation } = useUserLimitation();
 
   // const { mutate: generateQuiz, isPending: isGeneratingQuiz } =
   //   api.quiz.generateQuiz.useMutation();

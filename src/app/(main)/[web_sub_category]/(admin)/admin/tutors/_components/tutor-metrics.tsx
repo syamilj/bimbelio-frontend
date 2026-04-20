@@ -15,11 +15,6 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { InstructorsType } from '../page';
-
-interface Props {
-  instructor: InstructorsType;
-}
 
 type MetricsType = {
   title: string;
@@ -32,7 +27,7 @@ type MetricsType = {
   description: string;
 };
 
-export function TutorMetrics({ instructor }: Props) {
+export function TutorMetrics() {
   // const activeInstructors = instructor.filter((tutor) => tutor.status).length;
   // const inactiveInstructors = instructor.filter(
   //   (tutor) => !tutor.status,

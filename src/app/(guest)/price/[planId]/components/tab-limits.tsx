@@ -9,7 +9,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { CheckCircle2, Infinity, TrendingUp } from 'lucide-react';
+import {
+  CheckCircle2,
+  Infinity as InfinityIcon,
+  TrendingUp,
+} from 'lucide-react';
 import { getLimitationIcon, PlanDataType } from './_helper';
 
 export default function TabLimits({ plan }: { plan: PlanDataType }) {
@@ -25,7 +29,7 @@ export default function TabLimits({ plan }: { plan: PlanDataType }) {
               className="mb-4 px-4 py-2 text-sm font-semibold text-white border-none flex items-center gap-2 w-fit rounded-full shadow-sm"
               style={{ backgroundColor: mainColor }}
             >
-              <Infinity className="w-4 h-4" />
+              <InfinityIcon className="w-4 h-4" />
               Koin BimBot Detail
             </Badge>
             <CardTitle className="text-2xl md:text-3xl font-bold text-slate-900 mb-3">

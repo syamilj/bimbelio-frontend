@@ -43,17 +43,6 @@ import {
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-type PaymentPremium =
-  | '1-month'
-  | '3-month'
-  | 'limitasi_chat'
-  | 'limitasi_notes'
-  | 'limitasi_vision'
-  | 'limitasi_quiz'
-  | 'limitasi_all'
-  | 'tryout_unlock'
-  | 'plan';
-
 type PlanType = PlanDataType;
 
 type PricingDataType = {
@@ -95,7 +84,7 @@ export function Payment() {
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
-  const topping = PricingData?.topping || [];
+  // const topping = PricingData?.topping || [];
   const categoryOptions =
     webCategoryData.length > 0 ? webCategoryData[0].WebsiteSubCategory : [];
 
@@ -156,7 +145,7 @@ export function Payment() {
   const filteredAndSortedPlans = useMemo(() => {
     if (!PricingData?.plans) return [];
 
-    let filtered = PricingData.plans.filter((plan) => {
+    const filtered = PricingData.plans.filter((plan) => {
       const searchLower = searchQuery.toLowerCase();
       const planName = plan.name?.toLowerCase() || '';
       const planDescription = plan.description?.toLowerCase() || '';

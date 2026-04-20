@@ -95,7 +95,7 @@ export default function ParticipantsPage() {
     null,
   );
 
-  const { mutate: InviteUser, isLoading: InviteUserIsLoading } = useMutation(
+  const { mutate: InviteUser } = useMutation(
     '/liveClass/addLiveClassInvited',
     'post',
     {

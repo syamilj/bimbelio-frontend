@@ -130,11 +130,10 @@ const ConsultationDialog = ({
   onOpenChange,
   title = 'Wujudkan Impian PTN-mu!',
   description = 'Pilih langkah pertama untuk memulai journey menuju PTN idaman',
-  showStats = true,
   showDiscordOption = true,
   onContactSelect,
 }: ConsultationDialogProps) => {
-  const { consultationOptions, discordOption, mainColor } = useContactOptions(
+  const { consultationOptions, discordOption } = useContactOptions(
     () => onOpenChange(false),
     onContactSelect,
   );

@@ -1,16 +1,12 @@
 'use client';
 
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { BimBrand } from '@/components/ui/bim-brand';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { BookOpen, Bot, Medal, MonitorPlay, Trophy } from 'lucide-react';
 import Link from 'next/link';
-import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 
-export default function BimQuickAccessMenu() {
-  const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-
+export function BimQuickAccessMenu() {
   const quickActions = [
     {
       suffix: 'Course',

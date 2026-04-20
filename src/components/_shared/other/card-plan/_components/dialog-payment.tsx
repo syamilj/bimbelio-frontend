@@ -71,7 +71,6 @@ export function DialogPayment({
     useAuth: { setShowAuth },
   } = useAppContext();
   const { data: session } = useSession();
-  const { websiteSubCategory } = useWebsiteSubCategory();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -133,12 +132,6 @@ export function DialogPayment({
 
   console.log({ error });
 
-  const getDiscountPercentage = () => {
-    if (!plan.originalPrice || plan.originalPrice <= plan.price) return 0;
-    return Math.round(
-      ((plan.originalPrice - plan.price) / plan.originalPrice) * 100,
-    );
-  };
   const applyVoucherCode = async (planId: string) => {
     await checkVoucherCode({ payload: { voucherCode, planId } });
   };
@@ -398,7 +391,6 @@ export function DialogPayment({
             {/* Order Summary & Payment */}
             <FormCheckoutSummary
               discountPrice={discountPrice}
-              getDiscountPercentage={getDiscountPercentage}
               loading={loading}
               plan={plan}
               telp={telp}
@@ -787,14 +779,12 @@ const FormVoucher = ({
 const FormCheckoutSummary = ({
   plan,
   discountPrice,
-  getDiscountPercentage,
   loading,
   telp,
   paymentMethod,
 }: {
   plan: PlanDataType;
   discountPrice: number | null;
-  getDiscountPercentage: () => number;
   loading: boolean;
   telp: string;
   paymentMethod: 'FULL_PAYMENT' | 'INSTALLMENT' | null;

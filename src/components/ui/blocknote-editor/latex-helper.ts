@@ -34,7 +34,7 @@ export function preprocessLatexInValue(value: string): string {
       // IMPORTANT: Use </p> alone (not </p><p>) because BlockNote wraps
       // paragraphs in deep nesting: </p></div></div></div><div...><p...>
       // So </p>\s*<p> would NOT match BlockNote's internal HTML structure.
-      let cleaned = content
+      const cleaned = content
         .replace(/<\/p>/gi, '\n') // every closing </p> = line break
         .replace(/<br\s*\/?>/gi, '\n') // <br> = line break
         .replace(
@@ -156,7 +156,7 @@ function normalizeFormula(formula: string): string {
     // Inside environments like \begin{bmatrix}, a lone \ before whitespace
     // should always be \\ (row separator). (?<!\\) ensures we don't touch
     // already-correct \\ pairs.
-    let result = formula.replace(/(?<!\\)\\(?=\s)/g, '\\\\');
+    const result = formula.replace(/(?<!\\)\\(?=\s)/g, '\\\\');
 
     return result
       .replace(/\\\\\s*[\r\n]+\s*/g, ' \\\\ ') // \\ + newlines → \\

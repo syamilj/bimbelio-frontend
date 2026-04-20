@@ -335,7 +335,7 @@ const Index = () => {
       return;
     }
 
-    let subChapterData = subChapter;
+    const subChapterData = subChapter;
 
     for (const sub of subChapterData) {
       if (sub.imageFile) {
@@ -473,7 +473,6 @@ const Index = () => {
               setCurrentIndexEdit={setCurrentIndexEdit}
               setQuestionIndex={setQuestionIndex}
               isLoading={isLoading}
-              resetCourse={resetCourse}
               category={category}
             />
           </div>

@@ -5,7 +5,6 @@ import { User, UserDocument } from '@/types/database';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport, type UIMessage } from 'ai';
 import Cookies from 'js-cookie';
-import { usePathname } from 'next/navigation';
 import {
   createContext,
   Dispatch,
@@ -64,7 +63,6 @@ export default function Provider({
   vectorize,
   onClickPageNumber,
 }: Props) {
-  const pathname = usePathname();
   const { vision } = useAppContext();
 
   const [editMessage, setEditMessage] = useState({
@@ -160,7 +158,7 @@ export default function Provider({
   } = useChat({
     transport,
     experimental_throttle: 50,
-    onError: (error: Error) => {
+    onError: () => {
       toaster({
         title: 'Gagal',
         description: 'Terjadi kesalahan!',
@@ -208,8 +206,6 @@ export default function Provider({
   });
 
   const isLoadingMessages =
-    statusMessages === 'streaming' || statusMessages === 'submitted';
-  const isStreamingMessages =
     statusMessages === 'streaming' || statusMessages === 'submitted';
 
   const handleInputChangeMessages = (
@@ -419,7 +415,6 @@ export default function Provider({
     if (prevChatMessages !== undefined) {
       setMessageData([]);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [prevChatMessages, convertedMessages, convertedEditMessages]);
 
   const useMessages = {

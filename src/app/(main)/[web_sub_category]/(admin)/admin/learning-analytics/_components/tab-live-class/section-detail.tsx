@@ -195,7 +195,7 @@ const UserListSection = ({ liveClass }: { liveClass: DataType }) => {
   const listUser = liveClass.listUser || [];
   const absence = liveClass.absence;
 
-  const { mainColor, secondaryColor } = useWebsiteSubCategory();
+  const { mainColor } = useWebsiteSubCategory();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [isExporting, setIsExporting] = useState(false);
@@ -659,7 +659,7 @@ const UserListSection = ({ liveClass }: { liveClass: DataType }) => {
 };
 
 const NotSelectedPage = () => {
-  const { mainColor, secondaryColor } = useWebsiteSubCategory();
+  const { mainColor } = useWebsiteSubCategory();
   return (
     <div>
       <SectionTitle

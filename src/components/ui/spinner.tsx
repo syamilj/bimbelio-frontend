@@ -129,7 +129,7 @@ export function LoadingPageStorage({
 }) {
   const [percentage, setPercentage] = useState<number | undefined>(undefined);
 
-  const { socketId, on, off, emit } = useStorageSocket();
+  const { socketId, on, off } = useStorageSocket();
   console.log({ storage: socketId });
   console.log({ percentage });
 

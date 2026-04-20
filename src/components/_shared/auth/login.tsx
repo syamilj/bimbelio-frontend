@@ -19,7 +19,6 @@ export const Login = () => {
   } = useAppContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const [loading, setLoading] = useState<boolean>(false);
 

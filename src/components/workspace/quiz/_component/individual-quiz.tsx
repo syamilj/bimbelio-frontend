@@ -23,13 +23,6 @@ import IndividualQuizReport from './individual-quiz-report';
 import QuizFinish from './quiz-finish';
 import Result from './result';
 
-interface QuizAttemptType {
-  userResponse: string;
-  correctResponse: string | null;
-  incorrectResponse: string | null;
-  moreInfo: string | null;
-}
-
 const IndividualQuiz = () => {
   const {
     useQuiz: { QuizRefetch, Quiz },
@@ -54,29 +47,7 @@ const IndividualQuiz = () => {
       userId: session?.user.id,
     },
 
-    onFinish: async (_prompt, completion) => {
-      // utils.quiz.getQuiz.setData({ documentId: `${documentId}` }, (prev) => {
-      //   if (!prev) return prev;
-      //   return prev.map((quiz) => {
-      //     if (quiz.id === id) {
-      //       return {
-      //         ...quiz,
-      //         QuizAttempt: [
-      //           ...quiz.QuizAttempt,
-      //           {
-      //             userResponse,
-      //             correctResponse: completion.split('||')[0] ?? null,
-      //             incorrectResponse: completion.split('||')[1] ?? null,
-      //             moreInfo: completion.split('||')[2] ?? null,
-      //             createdAt: new Date(),
-      //           },
-      //         ],
-      //       };
-      //     }
-      //     return quiz;
-      //   });
-      // });
-      // await trpc.quiz.getQuiz.refetch();
+    onFinish: async (_prompt, _completion) => {
       QuizRefetch();
     },
 

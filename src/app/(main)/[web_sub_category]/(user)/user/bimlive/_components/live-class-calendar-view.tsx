@@ -11,14 +11,12 @@ interface CalendarViewProps {
   liveClass: any[];
   // needsUpgradeClasses: any[];
   onJoin: (liveClass: LiveLearningDataType) => void;
-  onRate: (liveClass: LiveLearningDataType) => void;
   onUpgrade: (liveClass: any) => void;
 }
 
 export function CalendarView({
   liveClass,
   onJoin,
-  onRate,
   onUpgrade,
 }: CalendarViewProps) {
   const [currentDate, setCurrentDate] = useState(new Date());

@@ -1,4 +1,3 @@
-import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
@@ -115,7 +114,6 @@ const Step2 = ({
   const {
     useParams: { predictionId },
   } = useProvider();
-  const { setPagesSetting } = useAppContext();
   const { data: session } = useSession();
 
   const [loading, setLoading] = useState(false);

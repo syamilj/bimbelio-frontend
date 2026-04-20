@@ -1,18 +1,11 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import ListPagination from '@/components/ui/list-pagination';
 // import AbsoluteLoader from '@/components/ui/loading/absolute-loader';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
@@ -25,15 +18,7 @@ import {
 } from '@/components/ui/table';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { getDateString } from '@/lib/utils';
-import { formatIDR } from '@/lib/utils/currency';
-import {
-  TransactionStatusTypeEnum,
-  Tryout,
-  TryoutRegistration,
-  User,
-} from '@/types/database';
-import { MidtransTransaction } from '@/types/midtrans-type';
-import { format } from 'date-fns';
+import { Tryout, TryoutRegistration, User } from '@/types/database';
 import { Search } from 'lucide-react';
 import { useParams } from 'next/navigation';
 
@@ -174,122 +159,122 @@ export default function Detail() {
   );
 }
 
-const DetailTransaction = ({
-  transaction,
-  children,
-}: {
-  transaction: MidtransTransaction & {
-    total_amount: number;
-    status: string;
-    transaction_details: { order_id: string };
-    user: User;
-    customer_details: { tryout_id?: string; title_tryout?: string };
-  };
-  children: ReactNode;
-}) => {
-  return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="mb:max-w-md space-y-4">
-        <DialogHeader>
-          <DialogTitle>Detail Transaksi</DialogTitle>
-        </DialogHeader>
+// const DetailTransaction = ({
+//   transaction,
+//   children,
+// }: {
+//   transaction: MidtransTransaction & {
+//     total_amount: number;
+//     status: string;
+//     transaction_details: { order_id: string };
+//     user: User;
+//     customer_details: { tryout_id?: string; title_tryout?: string };
+//   };
+//   children: ReactNode;
+// }) => {
+//   return (
+//     <Dialog>
+//       <DialogTrigger asChild>{children}</DialogTrigger>
+//       <DialogContent className="mb:max-w-md space-y-4">
+//         <DialogHeader>
+//           <DialogTitle>Detail Transaksi</DialogTitle>
+//         </DialogHeader>
 
-        <div className="space-y-1">
-          <p>
-            <span className="font-medium">Status:</span> {transaction.status}
-          </p>
-          <p>
-            <span className="font-medium">Order ID:</span>{' '}
-            {transaction.transaction_details.order_id}
-          </p>
-          <p>
-            <span className="font-medium">Total:</span>{' '}
-            {formatIDR(transaction.total_amount)}
-          </p>
-          <p>
-            <span className="font-medium">Waktu Transaksi:</span>{' '}
-            {format(
-              new Date(transaction.transaction_time),
-              'dd MMM yyyy, HH:mm',
-            )}
-          </p>
-          <p>
-            <span className="font-medium">Kadaluarsa:</span>{' '}
-            {format(new Date(transaction.expired_time), 'dd MMM yyyy, HH:mm')}
-          </p>
-        </div>
+//         <div className="space-y-1">
+//           <p>
+//             <span className="font-medium">Status:</span> {transaction.status}
+//           </p>
+//           <p>
+//             <span className="font-medium">Order ID:</span>{' '}
+//             {transaction.transaction_details.order_id}
+//           </p>
+//           <p>
+//             <span className="font-medium">Total:</span>{' '}
+//             {formatIDR(transaction.total_amount)}
+//           </p>
+//           <p>
+//             <span className="font-medium">Waktu Transaksi:</span>{' '}
+//             {format(
+//               new Date(transaction.transaction_time),
+//               'dd MMM yyyy, HH:mm',
+//             )}
+//           </p>
+//           <p>
+//             <span className="font-medium">Kadaluarsa:</span>{' '}
+//             {format(new Date(transaction.expired_time), 'dd MMM yyyy, HH:mm')}
+//           </p>
+//         </div>
 
-        <hr />
+//         <hr />
 
-        <div>
-          <div className="font-semibold mb-2">User</div>
-          <div className="flex items-center gap-3">
-            {/* <img
-              src={transaction.user.image}
-              alt="User"
-              className="w-10 h-10 rounded-full"
-            /> */}
-            <UserAvatar
-              name={transaction.user.name}
-              image={transaction.user.image}
-            />
-            <div>
-              <p className="font-medium">{transaction.user.name}</p>
-              <p className="text-sm text-muted-foreground">
-                {transaction.user.email}
-              </p>
-            </div>
-          </div>
-        </div>
+//         <div>
+//           <div className="font-semibold mb-2">User</div>
+//           <div className="flex items-center gap-3">
+//             {/* <img
+//               src={transaction.user.image}
+//               alt="User"
+//               className="w-10 h-10 rounded-full"
+//             /> */}
+//             <UserAvatar
+//               name={transaction.user.name}
+//               image={transaction.user.image}
+//             />
+//             <div>
+//               <p className="font-medium">{transaction.user.name}</p>
+//               <p className="text-sm text-muted-foreground">
+//                 {transaction.user.email}
+//               </p>
+//             </div>
+//           </div>
+//         </div>
 
-        {transaction.customer_details?.tryout_id && (
-          <>
-            <hr />
+//         {transaction.customer_details?.tryout_id && (
+//           <>
+//             <hr />
 
-            <div>
-              <div className="font-semibold mb-2">Tryout</div>
-              <p>
-                <span className="font-medium">Judul:</span>{' '}
-                {transaction.customer_details?.title_tryout}
-              </p>
-              <p>
-                <span className="font-medium">Tryout ID:</span>{' '}
-                {transaction.customer_details?.tryout_id}
-              </p>
-            </div>
-          </>
-        )}
+//             <div>
+//               <div className="font-semibold mb-2">Tryout</div>
+//               <p>
+//                 <span className="font-medium">Judul:</span>{' '}
+//                 {transaction.customer_details?.title_tryout}
+//               </p>
+//               <p>
+//                 <span className="font-medium">Tryout ID:</span>{' '}
+//                 {transaction.customer_details?.tryout_id}
+//               </p>
+//             </div>
+//           </>
+//         )}
 
-        <hr />
+//         <hr />
 
-        <div>
-          <div className="font-semibold mb-2">Item</div>
-          {transaction.item_details.map((item) => (
-            <div
-              key={item.id}
-              className="border p-2 rounded mb-2"
-            >
-              <p>
-                <span className="font-medium">Nama:</span> {item.name}
-              </p>
-              <p>
-                <span className="font-medium">Brand:</span> {item.brand}
-              </p>
-              <p>
-                <span className="font-medium">Harga:</span>{' '}
-                {formatIDR(item.price)}
-              </p>
-              <p>
-                <span className="font-medium">Jumlah:</span> {item.quantity}
-              </p>
-            </div>
-          ))}
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-};
+//         <div>
+//           <div className="font-semibold mb-2">Item</div>
+//           {transaction.item_details.map((item) => (
+//             <div
+//               key={item.id}
+//               className="border p-2 rounded mb-2"
+//             >
+//               <p>
+//                 <span className="font-medium">Nama:</span> {item.name}
+//               </p>
+//               <p>
+//                 <span className="font-medium">Brand:</span> {item.brand}
+//               </p>
+//               <p>
+//                 <span className="font-medium">Harga:</span>{' '}
+//                 {formatIDR(item.price)}
+//               </p>
+//               <p>
+//                 <span className="font-medium">Jumlah:</span> {item.quantity}
+//               </p>
+//             </div>
+//           ))}
+//         </div>
+//       </DialogContent>
+//     </Dialog>
+//   );
+// };
 
 const UserAvatar = ({
   name,
@@ -319,18 +304,4 @@ const UserAvatar = ({
       onError={() => setImgError(true)}
     />
   );
-};
-const getStatusColor = (status: TransactionStatusTypeEnum) => {
-  switch (status) {
-    case 'SETTLEMENT':
-      return 'bg-green-100 text-green-700';
-    case 'PENDING':
-      return 'bg-yellow-100 text-yellow-700';
-    case 'FAILURE':
-      return 'bg-red-100 text-red-700';
-    case 'EXPIRE':
-      return 'bg-red-100 text-red-700';
-    default:
-      return 'bg-gray-100 text-gray-700';
-  }
 };

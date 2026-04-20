@@ -8,10 +8,6 @@ import {
 } from '@/lib/socket/socket';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-interface SocketEvent {
-  eventName: string;
-  callback: (data: any) => void;
-}
 
 export const useSocket = () => {
   const { data: session } = useSession();

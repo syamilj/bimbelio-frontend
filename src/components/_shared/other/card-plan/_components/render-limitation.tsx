@@ -9,7 +9,7 @@ import {
   CheckCircle2,
   Eye,
   FileText,
-  Infinity,
+  Infinity as InfinityIcon,
   MessageSquare,
   Target,
   TrendingUp,
@@ -94,7 +94,7 @@ export const RenderLimitationTab = () => {
         <span className="text-sm font-semibold">
           {isUnlimited ? (
             <div className="flex items-center gap-1 text-green-600">
-              <Infinity size={16} />
+              <InfinityIcon size={16} />
               <span className="text-xs">Unlimited</span>
             </div>
           ) : (
@@ -107,7 +107,7 @@ export const RenderLimitationTab = () => {
   if (!plan.PlanLimitation) {
     return (
       <div className="text-center py-8 text-gray-500">
-        <Infinity
+        <InfinityIcon
           size={48}
           className="mx-auto mb-4 text-green-300"
         />
@@ -200,7 +200,7 @@ export const RenderLimitationTab = () => {
       {hasUnlimited && (
         <div className="p-3 bg-linear-to-r from-green-50 to-emerald-50 rounded-3xl border border-green-200">
           <div className="flex items-center gap-2">
-            <Infinity
+            <InfinityIcon
               size={16}
               className="text-green-600"
             />

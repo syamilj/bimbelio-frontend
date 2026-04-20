@@ -64,11 +64,11 @@ const TryoutOption = ({
   currentIndexEdit,
   setCurrentIndexEdit,
   setQuestionIndex,
-  isLoading,
+  isLoading: _isLoading,
   setAssesmentType,
   resetTryout,
 }: Props) => {
-  const [prevIndexEdit, setPrevIndexEdit] = useState<number | null>(null);
+  const [_prevIndexEdit, setPrevIndexEdit] = useState<number | null>(null);
   const addSesi = () => {
     setSessions((prev) => {
       return [

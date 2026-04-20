@@ -1,7 +1,6 @@
 'use client';
 
 import { useSession } from '@/components/provider/provider-session-auth';
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import {
@@ -133,7 +132,6 @@ function UpsellCard({
 
 export default function CourseTabUpsell({ onCountReady }: Props) {
   const { data: session } = useSession();
-  const { websiteSubCategory } = useWebsiteSubCategory();
 
   const [courses, setCourses] = useState<AnotherWebCourse[]>([]);
   const [isLoading, setIsLoading] = useState(true);

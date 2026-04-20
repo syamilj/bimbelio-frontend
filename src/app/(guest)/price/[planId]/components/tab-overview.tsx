@@ -17,7 +17,7 @@ import {
   Check,
   ChevronRight,
   Clock,
-  Infinity,
+  Infinity as InfinityIcon,
   LockOpen,
   Play,
   Star,
@@ -151,7 +151,7 @@ export default function TabOverview({
                     'md:grid-cols-2',
                 )}
               >
-                {plan.PlanSubscription.PlanFeature.map((feature, index) => (
+                {plan.PlanSubscription.PlanFeature.map((feature) => (
                   <div
                     key={feature.id}
                     className="group p-5 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-300"
@@ -379,7 +379,7 @@ export default function TabOverview({
               className="mb-4 px-4 py-2 text-sm font-semibold text-white border-none flex items-center gap-2 w-fit rounded-full shadow-sm"
               style={{ backgroundColor: mainColor }}
             >
-              <Infinity className="w-4 h-4" />
+              <InfinityIcon className="w-4 h-4" />
               Koin BimBot
             </Badge>
             <CardTitle className="text-2xl md:text-3xl font-bold text-slate-900 mb-3">
@@ -425,7 +425,7 @@ export default function TabOverview({
                   }
                   return false;
                 })
-                .map(([key, value], index) => (
+                .map(([key, value]) => (
                   <div
                     key={key}
                     className="group p-5 rounded-3xl bg-slate-50 border border-slate-100 text-center hover:shadow-md transition-all duration-300 relative"
@@ -500,7 +500,7 @@ export default function TabOverview({
                   className="w-10 h-10 rounded-3xl flex items-center justify-center shrink-0"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
-                  <Infinity
+                  <InfinityIcon
                     className="w-5 h-5"
                     style={{ color: mainColor }}
                   />

@@ -1,7 +1,7 @@
 'use client';
 
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 
 import { useParams, usePathname } from 'next/navigation';
@@ -10,17 +10,11 @@ import { useEffect, useState } from 'react';
 interface heading {
   setSubCategoryId: (id: string) => void;
   subCategoryId: string;
-  setDocsData: (data: any) => void;
-  sort: boolean;
-  setSort: (sort: boolean) => void;
 }
 
 export default function HeadingBahanAjar({
   setSubCategoryId,
   subCategoryId,
-  setDocsData,
-  sort,
-  setSort,
 }: heading) {
   const params = useParams();
   const pathname = usePathname();

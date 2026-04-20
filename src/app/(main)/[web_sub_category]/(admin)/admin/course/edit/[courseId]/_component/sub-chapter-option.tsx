@@ -25,8 +25,6 @@ interface Props {
   setSubChapter: React.Dispatch<SetStateAction<SubChapterProps[]>>;
   currentIndexEdit: number | null;
   setCurrentIndexEdit: React.Dispatch<SetStateAction<number | null>>;
-  showDetailSubChapter: boolean;
-  setShowDetailSubChapter: React.Dispatch<SetStateAction<boolean>>;
   assessmentType: string;
   questionIndex: number;
   setQuestionIndex: React.Dispatch<SetStateAction<number>>;
@@ -35,8 +33,6 @@ interface Props {
 const SubChapterOption = ({
   currentIndexEdit,
   setCurrentIndexEdit,
-  showDetailSubChapter,
-  setShowDetailSubChapter,
   EditSubChapter,
   assessmentType,
   setSubChapter,
@@ -155,9 +151,7 @@ const SubChapterOption = ({
 
       // Remove old video if exists
       if (EditSubChapter?.video && EditSubChapter.video.length > 0) {
-        const { data, error } = await storage
-          .from('video')
-          .remove([`course/${EditSubChapter.video}`]);
+        await storage.from('video').remove([`course/${EditSubChapter.video}`]);
         // if (error) {
         //   toaster({
         //     title: 'Error',
@@ -400,7 +394,6 @@ const SubChapterOption = ({
               EditSubChapter={EditSubChapter}
               setSubChapter={setSubChapter}
               currentIndexEdit={currentIndexEdit}
-              setLoading={setLoading}
               handleVideoUpload={handleVideoUpload}
             />
           </TabsContent>
@@ -437,13 +430,11 @@ const VideoEditor = ({
   EditSubChapter,
   setSubChapter,
   currentIndexEdit,
-  setLoading,
   handleVideoUpload,
 }: {
   EditSubChapter: SubChapterProps;
   setSubChapter: React.Dispatch<SetStateAction<SubChapterProps[]>>;
   currentIndexEdit: number | null;
-  setLoading: React.Dispatch<SetStateAction<boolean>>;
   handleVideoUpload: (e: ChangeEvent<HTMLInputElement>) => void;
 }) => (
   <div className="space-y-4">

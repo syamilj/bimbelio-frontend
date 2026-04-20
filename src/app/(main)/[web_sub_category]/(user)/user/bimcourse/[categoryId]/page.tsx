@@ -1,6 +1,5 @@
 'use client';
 
-import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -15,13 +14,10 @@ import { differenceInCalendarDays } from 'date-fns';
 import {
   BarChart3,
   BookOpen,
-  Crown,
   FileText,
   Gem,
-  Medal,
   PlayCircle,
   Search,
-  Sigma,
   Target,
   TrendingUp,
   Trophy,
@@ -38,7 +34,7 @@ import {
   Tooltip,
   XAxis,
 } from 'recharts';
-import { CourseReportStats } from './_component/z_other/report/CourseReportStats';
+import { CourseReportStats } from './_component/z_other/report/course-report-stats';
 import { useProvider } from './_provider/provider';
 
 type CourseReportData = Parameters<typeof CourseReportStats>[0]['report'];
@@ -48,7 +44,6 @@ export default function CourseOverviewPage() {
     useData: { Course, CourseLoading, CourseProgress, CourseAnalytics },
   } = useProvider();
 
-  const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -178,21 +173,23 @@ export default function CourseOverviewPage() {
       ? Math.round((completedCount / totalSubChapters) * 100)
       : 0;
 
-  const leaderboard = courseReport?.courseRanking?.topLeaderboard || [];
-  const totalParticipants = courseReport?.courseRanking?.totalParticipants || 0;
-  const myRank = courseReport?.courseRanking?.myRank;
-  const latestScore =
-    scoreData.length > 0 ? Math.round(scoreData[scoreData.length - 1].score) : 0;
-  const averageScore =
-    scoreData.length > 0
-      ? Math.round(
-          scoreData.reduce((acc, curr) => acc + curr.score, 0) /
-            Math.max(scoreData.length, 1),
-        )
-      : 0;
-  const percentile =
-    courseReport?.tryoutResult?.find((item) => item.percentile !== null)
-      ?.percentile || null;
+  // const leaderboard = courseReport?.courseRanking?.topLeaderboard || [];
+  // const totalParticipants = courseReport?.courseRanking?.totalParticipants || 0;
+  // const myRank = courseReport?.courseRanking?.myRank;
+  // const latestScore =
+  //   scoreData.length > 0
+  //     ? Math.round(scoreData[scoreData.length - 1].score)
+  //     : 0;
+  // const averageScore =
+  //   scoreData.length > 0
+  //     ? Math.round(
+  //         scoreData.reduce((acc, curr) => acc + curr.score, 0) /
+  //           Math.max(scoreData.length, 1),
+  //       )
+  //     : 0;
+  // const percentile =
+  //   courseReport?.tryoutResult?.find((item) => item.percentile !== null)
+  //     ?.percentile || null;
 
   // Real Streak Calculation
   let currentStreak = 0;
@@ -306,7 +303,15 @@ export default function CourseOverviewPage() {
                           width="100%"
                           height="100%"
                         >
-                          <BarChart data={scoreData.slice(-5)} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                          <BarChart
+                            data={scoreData.slice(-5)}
+                            margin={{
+                              top: 10,
+                              right: 10,
+                              left: -10,
+                              bottom: 0,
+                            }}
+                          >
                             <CartesianGrid
                               strokeDasharray="3 3"
                               vertical={false}

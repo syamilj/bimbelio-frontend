@@ -25,7 +25,6 @@ interface Props {
   setCurrentIndexEdit: React.Dispatch<SetStateAction<number | null>>;
   setQuestionIndex: React.Dispatch<SetStateAction<number>>;
   isLoading: boolean;
-  resetCourse: ({ deleteFile }: { deleteFile: boolean }) => void;
   category: Category[] | null;
 }
 
@@ -69,7 +68,6 @@ const ChapterOption = ({
   setCurrentIndexEdit,
   setQuestionIndex,
   isLoading,
-  resetCourse,
   category,
 }: Props) => {
   const addSubChapter = () => {

@@ -8,7 +8,7 @@ import { useParams } from 'next/navigation';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { CourseReportStats } from './CourseReportStats';
+import { CourseReportStats } from './course-report-stats';
 
 export default function CourseReport() {
   const { data: session } = useSession();

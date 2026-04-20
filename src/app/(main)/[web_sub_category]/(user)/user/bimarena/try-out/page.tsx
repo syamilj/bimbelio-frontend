@@ -10,7 +10,7 @@ import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { cn } from '@/lib/utils';
 import { Calendar, CheckCircle, Globe, Zap } from 'lucide-react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Done from './_components/done';
 import Terbaru from './_components/terbaru';
@@ -22,7 +22,6 @@ import UpcomingOtherWeb from './_components/upcoming-other-web';
 
 export default function TryOutPage() {
   const Router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const payment = searchParams?.get('payment');
 
@@ -65,20 +64,18 @@ const Content = () => {
   const transaction_status = searchParams?.get('transaction_status');
   const register_tryout = searchParams?.get('register_tryout');
 
-  const Router = useRouter();
   const { data: session } = useSession();
 
-  const [step, setStep] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tryoutAccount, setTryoutAccount] = useState<{
     userTryOutId: string;
   }>();
 
-  const [isHideGeneralSection, setIsHideGeneralSection] =
+  const [_isHideGeneralSection, setIsHideGeneralSection] =
     useState<boolean>(false);
-  const [isHideTargetValue, setIsHideTargetValue] = useState<boolean>(false);
+  const [_isHideTargetValue, setIsHideTargetValue] = useState<boolean>(false);
 
-  const [univOption, setUnivOption] = useState<string | undefined>();
+  const [_univOption, setUnivOption] = useState<string | undefined>();
 
   const getUserTryout = async () => {
     getGeneral(`/user/getUserTryOut?userId=${session?.user.id}`, {
@@ -212,9 +209,7 @@ const Content = () => {
           <div className="max-w-7xl mx-auto px-4 md:px-6 space-y-0">
             {/* Sleek Tab Navigation */}
             <div className="sticky top-0 z-30 bg-slate-50/80 backdrop-blur-xl py-2">
-              <ScrollWrapper
-                className="flex gap-1.5 p-1 bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-x-auto"
-              >
+              <ScrollWrapper className="flex gap-1.5 p-1 bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-x-auto">
                 {tabItems.map((tab) => {
                   const Icon = tab.icon;
                   const isActive = activeTab === tab.id;

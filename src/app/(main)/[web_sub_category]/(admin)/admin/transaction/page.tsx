@@ -44,9 +44,6 @@ import toast from 'react-hot-toast';
 export default function TransactionsPage() {
   const [isExporting, setIsExporting] = useState(false);
 
-  const [_isLoadingMessage, setIsLoadingMessage] = useState<null | string>(
-    null,
-  );
   // const [transactions, setTransactions] = useState<
   //   (MidtransTransaction & {
   //     user: User;

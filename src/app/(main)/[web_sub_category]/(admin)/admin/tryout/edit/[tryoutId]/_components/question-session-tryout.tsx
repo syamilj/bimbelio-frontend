@@ -510,7 +510,9 @@ const QuestionSessionTryout = () => {
         <Select
           value={`${EditSession?.Questions[questionIndex].number}`}
           onValueChange={(value) => {
-            value && changeQuestionOrder(value, questionIndex);
+            if (value) {
+              changeQuestionOrder(value, questionIndex);
+            }
           }}
         >
           <SelectTrigger className="h-full rounded-3xl border-none bg-white shadow-none outline-none">

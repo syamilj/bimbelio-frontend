@@ -2,49 +2,43 @@
 
 // @ts-check
 import js from '@eslint/js';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-import { FlatCompat } from '@eslint/eslintrc';
-
-// Impor plugin
-import typescriptEslintPlugin from '@typescript-eslint/eslint-plugin';
-import prettierPlugin from 'eslint-plugin-prettier';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
+import tsEslint from 'typescript-eslint';
 
 const config = [
   // Definisikan ignores di awal konfigurasi
   {
-    ignores: [
-      '**/.next/**',
-      '**/node_modules/**',
-      '**/dist/**',
-      '**/build/**',
-      // Tambahkan pola lain yang perlu diabaikan
-    ],
+    ignores: ['**/.next/**', '**/node_modules/**', '**/dist/**', '**/build/**'],
   },
-  ...compat.extends('next/core-web-vitals'),
+  js.configs.recommended,
+  ...tsEslint.configs.recommended,
   {
-    plugins: {
-      '@typescript-eslint': typescriptEslintPlugin,
-      prettier: prettierPlugin,
+    files: ['**/*.{js,jsx,ts,tsx,mjs,mts}'],
+    languageOptions: {
+      parserOptions: {
+        ecmaVersion: 2024,
+        sourceType: 'module',
+        jsx: true,
+      },
     },
     rules: {
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
           caughtErrors: 'none',
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
         },
       ],
       'react-hooks/exhaustive-deps': 'off',
-      // Tambahkan aturan lainnya sesuai kebutuhan
+      '@typescript-eslint/no-explicit-any': 'off',
+      'no-undef': 'off',
+      'no-useless-escape': 'off',
+      'no-extra-boolean-cast': 'off',
+      'no-empty': 'off',
+      'no-case-declarations': 'off',
+      'no-constant-binary-expression': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off',
+      'no-unsafe-optional-chaining': 'off',
     },
   },
 ];

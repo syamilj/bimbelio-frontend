@@ -13,7 +13,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { EmptyStateIllustrations } from './EmptyStateIllustrations';
+import { EmptyStateIllustrations } from './empty-state-illustrations';
 
 interface RecommendedContentProps {
   courses: Array<{
@@ -42,7 +42,7 @@ interface RecommendedContentProps {
   }>;
 }
 
-export default function RecommendedContent({
+export function BimRecommendedContent({
   courses,
   tryouts,
   documents,

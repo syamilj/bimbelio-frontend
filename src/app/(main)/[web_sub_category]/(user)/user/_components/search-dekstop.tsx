@@ -1,8 +1,8 @@
 'use client';
 
-import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import {
   Select,
   SelectContent,
@@ -27,7 +27,6 @@ const SearchDeskstop = () => {
 
   // Get dynamic colors from the selected category
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const [categoryId, setCategoryId] = useState<string>('');
   const [searchValue, setSearchValue] = useState<string>('');

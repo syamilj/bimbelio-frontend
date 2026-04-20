@@ -217,7 +217,8 @@ export function QuizSummary() {
                   Target PTN
                 </p>
                 <p className="text-base font-black text-white line-clamp-1 max-w-[160px]">
-                  {getUniversityInitials(targetUniversity?.name) || 'Belum dipilih'}
+                  {getUniversityInitials(targetUniversity?.name) ||
+                    'Belum dipilih'}
                 </p>
               </div>
             </div>
@@ -346,7 +347,7 @@ export function QuizSummary() {
               { value: countdown.hours, label: 'Jam' },
               { value: countdown.minutes, label: 'Menit' },
               { value: countdown.seconds, label: 'Detik' },
-            ].map((item, i) => (
+            ].map((item) => (
               <div
                 key={item.label}
                 className="flex-1 text-center"

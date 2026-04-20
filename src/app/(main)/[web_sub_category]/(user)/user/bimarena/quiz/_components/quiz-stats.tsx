@@ -1,6 +1,7 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { cn, formatTwoDecimals } from '@/lib/utils';
 import {
   CheckCircle2,
@@ -9,9 +10,8 @@ import {
   TrendingDown,
   TrendingUp,
   Trophy,
-  Zap
+  Zap,
 } from 'lucide-react';
-import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { useQuizProvider } from '../_provider/_provider';
 import {
   calculateBeatenPercentage,

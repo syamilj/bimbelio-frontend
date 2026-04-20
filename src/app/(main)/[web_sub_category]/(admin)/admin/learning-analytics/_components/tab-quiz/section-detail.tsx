@@ -50,17 +50,16 @@ export function SectionDetail({ id }: { id: string | null }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const INITIAL_ROWS = 5;
 
-  const {
-    data: TryoutData,
-    isLoading: TryoutDataIsLoading,
-    error: TryoutDataError,
-  } = useGet<DataType>('/learningAnalytics/getAnalyticsQuizById', {
-    params: {
-      id: id ? id : undefined,
+  const { data: TryoutData, isLoading: TryoutDataIsLoading } = useGet<DataType>(
+    '/learningAnalytics/getAnalyticsQuizById',
+    {
+      params: {
+        id: id ? id : undefined,
+      },
+      enabled: !!id,
+      useEffectDependencies: [id],
     },
-    enabled: !!id,
-    useEffectDependencies: [id],
-  });
+  );
 
   const SubCategory = useMemo(
     () =>
@@ -361,7 +360,7 @@ export function SectionDetail({ id }: { id: string | null }) {
 }
 
 const NotSelectedPage = () => {
-  const { mainColor, secondaryColor } = useWebsiteSubCategory();
+  const { mainColor } = useWebsiteSubCategory();
   return (
     <div>
       <SectionTitle

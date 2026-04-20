@@ -30,7 +30,6 @@ interface Props {
 
 const SessionOption = ({
   currentIndexEdit,
-  setCurrentIndexEdit,
   showDetailTryout,
   setShowDetailTryout,
   EditSession,
@@ -170,7 +169,6 @@ const SessionOption = ({
         <div className="flex items-center gap-4">
           <ModalImportCSV
             setSessions={setSessions}
-            currentIndexEdit={currentIndexEdit}
             assessmentType={assessmentType}
             setQuestionIndex={setQuestionIndex}
           />
@@ -205,8 +203,6 @@ const SessionOption = ({
         assessmentType={assessmentType}
         setAssesmentType={setAssesmentType}
         setSessions={setSessions}
-        currentIndexEdit={currentIndexEdit}
-        setCurrentIndexEdit={setCurrentIndexEdit}
       />
       <div className="my-[.5rem] h-px w-full shrink-0 bg-main-gray-disabled/60" />
       <div className="mb-[.5rem] flex w-full items-center justify-between">

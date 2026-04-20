@@ -3,7 +3,6 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { cn } from '@/lib/utils';
 import { ChevronDown } from 'lucide-react';
-import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { DialogWebCategory } from './dialog-web-category';
 
@@ -12,7 +11,6 @@ export default function ChooseWebCategory({
 }: {
   minimizeSidebar: boolean;
 }) {
-  const { web_sub_category } = useParams<{ web_sub_category: string }>();
   const { websiteSubCategory, webCategoryData } = useWebsiteSubCategory();
   const [isClient, setIsClient] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);

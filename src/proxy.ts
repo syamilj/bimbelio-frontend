@@ -40,8 +40,6 @@ export const proxy = async (req: NextRequest) => {
       return NextResponse.redirect(new URL('/', req.url));
     }
 
-    const pathnameWithoutWebCat = pathname.split('/');
-    // console.log({ pathnameWithoutWebCat });
     if (status === 200 && data) {
       if (
         pathname.includes('admin') &&

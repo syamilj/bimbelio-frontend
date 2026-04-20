@@ -21,7 +21,7 @@ export function DeleteNote({ props }: { props: any }) {
   ) => {
     await deleteGeneral('/highlight/deleteHighlight', {
       params,
-      onSuccess: async ({ data }) => {
+      onSuccess: async () => {
         // Highlight berhasil dihapus dari database
       },
       onError: (error) => {

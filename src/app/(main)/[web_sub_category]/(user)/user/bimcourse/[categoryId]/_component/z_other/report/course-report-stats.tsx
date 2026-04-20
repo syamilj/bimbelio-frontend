@@ -14,6 +14,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import {
   Table,
   TableBody,
@@ -52,7 +53,6 @@ import {
   YAxis,
 } from 'recharts';
 import useMedia from 'use-media';
-import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 
 type TierKey = 'unggul' | 'baik' | 'cukup' | 'rendah' | 'lemah';
 
@@ -102,7 +102,9 @@ function ProgressTooltip({ active, payload }: ProgressTooltipProps) {
       </div>
       <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-medium">
         <span>Benar/Salah/Kosong</span>
-        <span className="font-semibold text-slate-700">{current.benar}/{current.salah}/{current.kosong}</span>
+        <span className="font-semibold text-slate-700">
+          {current.benar}/{current.salah}/{current.kosong}
+        </span>
       </div>
     </div>
   );
@@ -431,32 +433,32 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
             className="flex w-fit max-w-full justify-start gap-1 whitespace-nowrap rounded-full bg-slate-100/60 p-1.5"
           >
             <TabsTrigger
-            value="overview"
-            className="flex shrink-0 items-center rounded-full px-4 py-2 text-slate-600 data-[state=active]:text-slate-900 data-[state=active]:shadow-sm"
-          >
-            <BookOpen className="h-3.5 w-3.5 mr-1.5" /> Overview
-          </TabsTrigger>
+              value="overview"
+              className="flex shrink-0 items-center rounded-full px-4 py-2 text-slate-600 data-[state=active]:text-slate-900 data-[state=active]:shadow-sm"
+            >
+              <BookOpen className="h-3.5 w-3.5 mr-1.5" /> Overview
+            </TabsTrigger>
 
-          <TabsTrigger
-            value="peringkat"
-            className="flex shrink-0 items-center rounded-full px-4 py-2 text-slate-600 data-[state=active]:text-slate-900 data-[state=active]:shadow-sm"
-          >
-            <Crown className="h-3.5 w-3.5 mr-1.5" /> Peringkat
-          </TabsTrigger>
+            <TabsTrigger
+              value="peringkat"
+              className="flex shrink-0 items-center rounded-full px-4 py-2 text-slate-600 data-[state=active]:text-slate-900 data-[state=active]:shadow-sm"
+            >
+              <Crown className="h-3.5 w-3.5 mr-1.5" /> Peringkat
+            </TabsTrigger>
 
-          <TabsTrigger
-            value="nilai"
-            className="flex shrink-0 items-center rounded-full px-4 py-2 text-slate-600 data-[state=active]:text-slate-900 data-[state=active]:shadow-sm"
-          >
-            <Activity className="h-3.5 w-3.5 mr-1.5" /> Nilai
-          </TabsTrigger>
+            <TabsTrigger
+              value="nilai"
+              className="flex shrink-0 items-center rounded-full px-4 py-2 text-slate-600 data-[state=active]:text-slate-900 data-[state=active]:shadow-sm"
+            >
+              <Activity className="h-3.5 w-3.5 mr-1.5" /> Nilai
+            </TabsTrigger>
 
-          <TabsTrigger
-            value="statistik"
-            className="flex shrink-0 items-center rounded-full px-4 py-2 text-slate-600 data-[state=active]:text-slate-900 data-[state=active]:shadow-sm"
-          >
-            <Sigma className="h-3.5 w-3.5 mr-1.5" /> Statistik
-          </TabsTrigger>
+            <TabsTrigger
+              value="statistik"
+              className="flex shrink-0 items-center rounded-full px-4 py-2 text-slate-600 data-[state=active]:text-slate-900 data-[state=active]:shadow-sm"
+            >
+              <Sigma className="h-3.5 w-3.5 mr-1.5" /> Statistik
+            </TabsTrigger>
           </TabsList>
         </ScrollWrapper>
 
@@ -531,23 +533,38 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                 <div className="flex gap-4 min-w-max">
                   <div className="flex items-center gap-1.5 text-xs text-slate-500">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                    Tertinggi: <strong className="text-slate-800">{highestScore.toFixed(1)}</strong>
+                    Tertinggi:{' '}
+                    <strong className="text-slate-800">
+                      {highestScore.toFixed(1)}
+                    </strong>
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-slate-500">
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                    Rata-rata: <strong className="text-slate-800">{avgScore.toFixed(1)}</strong>
+                    Rata-rata:{' '}
+                    <strong className="text-slate-800">
+                      {avgScore.toFixed(1)}
+                    </strong>
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-slate-500">
                     <span className="w-1.5 h-1.5 rounded-full bg-violet-500" />
-                    Akurasi: <strong className="text-slate-800">{averageAccuracy.toFixed(1)}%</strong>
+                    Akurasi:{' '}
+                    <strong className="text-slate-800">
+                      {averageAccuracy.toFixed(1)}%
+                    </strong>
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-slate-500">
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                    Terakhir: <strong className="text-slate-800">{latestScore.toFixed(1)}</strong>
+                    Terakhir:{' '}
+                    <strong className="text-slate-800">
+                      {latestScore.toFixed(1)}
+                    </strong>
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-slate-500">
                     <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
-                    Terendah: <strong className="text-slate-800">{lowestScore.toFixed(1)}</strong>
+                    Terendah:{' '}
+                    <strong className="text-slate-800">
+                      {lowestScore.toFixed(1)}
+                    </strong>
                   </div>
                 </div>
               </ScrollWrapper>
@@ -556,11 +573,15 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
               <div className="mt-5 flex flex-wrap gap-5 text-sm pb-1">
                 <div className="flex items-center gap-2">
                   <span className="w-4 border-t-[3px] border-blue-500 inline-block rounded-full" />
-                  <span className="font-semibold text-slate-700">Skor Akhir</span>
+                  <span className="font-semibold text-slate-700">
+                    Skor Akhir
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-4 border-t-[3px] border-dashed border-emerald-500 inline-block" />
-                  <span className="font-semibold text-slate-700">Akurasi (B/S/K)</span>
+                  <span className="font-semibold text-slate-700">
+                    Akurasi (B/S/K)
+                  </span>
                 </div>
               </div>
 
@@ -573,8 +594,15 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                     width="100%"
                     height="100%"
                   >
-                    <LineChart data={progressTrendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                    <LineChart
+                      data={progressTrendData}
+                      margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                    >
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke="#f1f5f9"
+                        vertical={false}
+                      />
                       <XAxis
                         dataKey="label"
                         tick={{ fontSize: 11, fill: '#94a3b8' }}
@@ -650,13 +678,17 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                         </p>
                         <div className="mt-4 flex items-end justify-between">
                           <div>
-                            <p className="text-[11px] text-slate-500 font-medium">Skor</p>
+                            <p className="text-[11px] text-slate-500 font-medium">
+                              Skor
+                            </p>
                             <p className="text-2xl font-black text-blue-600 mt-0.5">
                               {item.score.toFixed(1)}
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="text-[11px] text-slate-500 font-medium">Rank</p>
+                            <p className="text-[11px] text-slate-500 font-medium">
+                              Rank
+                            </p>
                             <p className="text-2xl font-black text-amber-500 mt-0.5">
                               {item.rank ? `#${item.rank}` : '-'}
                             </p>
@@ -688,19 +720,25 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
               </p>
               <div className="mt-4 space-y-3 text-sm text-slate-600">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-slate-500">Total chapter</span>
+                  <span className="text-sm font-medium text-slate-500">
+                    Total chapter
+                  </span>
                   <span className="font-bold text-slate-800">
                     {learningOverview?.totalChapter ?? 0}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-slate-500">Total sub-bab</span>
+                  <span className="text-sm font-medium text-slate-500">
+                    Total sub-bab
+                  </span>
                   <span className="font-bold text-slate-800">
                     {learningOverview?.totalSubChapter ?? 0}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-slate-500">Estimasi durasi</span>
+                  <span className="text-sm font-medium text-slate-500">
+                    Estimasi durasi
+                  </span>
                   <span className="font-bold text-slate-800">
                     {formatMinutes(
                       learningOverview?.totalEstimatedMinutes ?? 0,
@@ -721,7 +759,9 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                   typeRows.map((row) => (
                     <div key={row.type}>
                       <div className="flex items-center justify-between text-xs text-slate-600 mb-1.5">
-                        <span className="capitalize font-medium text-slate-700">{row.type}</span>
+                        <span className="capitalize font-medium text-slate-700">
+                          {row.type}
+                        </span>
                         <span className="font-semibold text-slate-800">
                           {row.done}/{row.total}
                         </span>
@@ -750,21 +790,28 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
           <ScrollWrapper className="pb-1 mb-4">
             <div className="flex gap-3 min-w-max">
               <div className="w-[180px] shrink-0 rounded-3xl border border-slate-100 p-4 bg-white shadow-sm">
-                <p className="text-xs font-semibold text-slate-500">Peserta Aktif</p>
+                <p className="text-xs font-semibold text-slate-500">
+                  Peserta Aktif
+                </p>
                 <p className="text-2xl font-black text-slate-800 mt-1.5">
                   {rankingData?.totalParticipants ?? 0}
                 </p>
               </div>
               <div className="w-[180px] shrink-0 rounded-3xl border border-slate-100 p-4 bg-white shadow-sm">
-                <p className="text-xs font-semibold text-slate-500">Peringkat Kamu</p>
+                <p className="text-xs font-semibold text-slate-500">
+                  Peringkat Kamu
+                </p>
                 <p className="text-2xl font-black text-slate-800 mt-1.5">
                   {rankingData?.myRank ? `#${rankingData.myRank}` : '-'}
                 </p>
               </div>
               <div className="w-[200px] shrink-0 rounded-3xl border border-slate-100 p-4 bg-white shadow-sm">
-                <p className="text-xs font-semibold text-slate-500">Metode Poin</p>
+                <p className="text-xs font-semibold text-slate-500">
+                  Metode Poin
+                </p>
                 <p className="text-sm font-bold text-slate-800 mt-1.5 leading-tight">
-                  Completion 70% <br/><span className="text-slate-500 text-xs">+ Quiz 30%</span>
+                  Completion 70% <br />
+                  <span className="text-slate-500 text-xs">+ Quiz 30%</span>
                 </p>
               </div>
             </div>
@@ -809,7 +856,9 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs font-medium text-slate-500">Completion</p>
+                    <p className="text-xs font-medium text-slate-500">
+                      Completion
+                    </p>
                     <p className="font-bold text-slate-800 mt-0.5">
                       {row.completionRate.toFixed(1)}%
                     </p>
@@ -817,7 +866,9 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                 </div>
               ))}
               {(rankingData?.topLeaderboard ?? []).length === 0 && (
-                <p className="text-sm font-medium text-slate-500 text-center py-4">Belum ada data ranking.</p>
+                <p className="text-sm font-medium text-slate-500 text-center py-4">
+                  Belum ada data ranking.
+                </p>
               )}
             </div>
           </div>
@@ -830,7 +881,9 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
           <ScrollWrapper className="pb-1">
             <div className="flex gap-3 min-w-max">
               <div className="w-[180px] shrink-0 rounded-3xl border border-slate-100 p-4 bg-white shadow-sm">
-                <p className="text-xs font-semibold text-slate-500">Rata-rata Nilai</p>
+                <p className="text-xs font-semibold text-slate-500">
+                  Rata-rata Nilai
+                </p>
                 <p className="text-2xl font-black text-slate-800 mt-1.5">
                   {avgScore.toFixed(1)}
                 </p>
@@ -842,7 +895,9 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                 </div>
               </div>
               <div className="w-[180px] shrink-0 rounded-3xl border border-slate-100 p-4 bg-white shadow-sm flex flex-col justify-center">
-                <p className="text-xs font-semibold text-slate-500">Nilai Tertinggi</p>
+                <p className="text-xs font-semibold text-slate-500">
+                  Nilai Tertinggi
+                </p>
                 <p className="text-2xl font-black text-slate-800 mt-1.5">
                   {bestScore.toFixed(1)}
                 </p>
@@ -851,7 +906,9 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                 </p>
               </div>
               <div className="w-[180px] shrink-0 rounded-3xl border border-slate-100 p-4 bg-white shadow-sm">
-                <p className="text-xs font-semibold text-slate-500">Nilai Terakhir</p>
+                <p className="text-xs font-semibold text-slate-500">
+                  Nilai Terakhir
+                </p>
                 <p className="text-2xl font-black text-slate-800 mt-1.5">
                   {latestScore.toFixed(1)}
                 </p>
@@ -863,11 +920,15 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                 </div>
               </div>
               <div className="w-[180px] shrink-0 rounded-3xl border border-slate-100 p-4 bg-white shadow-sm flex flex-col justify-center">
-                <p className="text-xs font-semibold text-slate-500">Akurasi Rata-rata</p>
+                <p className="text-xs font-semibold text-slate-500">
+                  Akurasi Rata-rata
+                </p>
                 <p className="text-2xl font-black text-slate-800 mt-1.5">
                   {averageAccuracy.toFixed(1)}%
                 </p>
-                <p className="text-xs font-medium text-slate-500 mt-1.5">B/S/K Index</p>
+                <p className="text-xs font-medium text-slate-500 mt-1.5">
+                  B/S/K Index
+                </p>
               </div>
             </div>
           </ScrollWrapper>
@@ -878,7 +939,9 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                 <CardTitle className="text-base font-bold text-slate-800">
                   Radar: Kamu vs Rata-rata
                 </CardTitle>
-                <CardDescription className="text-slate-500">Perbandingan per kuis</CardDescription>
+                <CardDescription className="text-slate-500">
+                  Perbandingan per kuis
+                </CardDescription>
               </CardHeader>
               <CardContent className="h-[260px] sm:h-[320px]">
                 <ChartContainer
@@ -889,7 +952,10 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                     width="100%"
                     height="100%"
                   >
-                    <RadarChart data={radarData} margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
+                    <RadarChart
+                      data={radarData}
+                      margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+                    >
                       <PolarGrid stroke="#f1f5f9" />
                       <PolarAngleAxis
                         dataKey="name"
@@ -919,7 +985,9 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                 <CardTitle className="text-base font-bold text-slate-800">
                   Distribusi Nilai Peserta
                 </CardTitle>
-                <CardDescription className="text-slate-500">Sebaran akumulasi skor</CardDescription>
+                <CardDescription className="text-slate-500">
+                  Sebaran akumulasi skor
+                </CardDescription>
               </CardHeader>
               <CardContent className="h-[260px] sm:h-[320px]">
                 <ChartContainer
@@ -930,8 +998,15 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
                     width="100%"
                     height="100%"
                   >
-                    <BarChart data={report.DistributionScore} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                    <BarChart
+                      data={report.DistributionScore}
+                      margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                    >
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke="#f1f5f9"
+                        vertical={false}
+                      />
                       <XAxis
                         dataKey="range"
                         tickLine={false}
@@ -985,33 +1060,68 @@ export function CourseReportStats({ report }: { report: CourseReportData }) {
               <ScrollWrapper className="pb-1 text-sm">
                 <Table classNameWrapper="overflow-visible min-w-[700px]">
                   <TableHeader>
-                  <TableRow className="border-b border-slate-100 bg-slate-50/50 hover:bg-slate-50/50">
-                    <TableHead className="font-semibold text-slate-600 rounded-tl-xl py-3">Sub Kuis</TableHead>
-                    <TableHead className="text-right font-semibold text-slate-600 py-3">Min</TableHead>
-                    <TableHead className="text-right font-semibold text-slate-600 py-3">Q1</TableHead>
-                    <TableHead className="text-right font-semibold text-slate-600 py-3">Median</TableHead>
-                    <TableHead className="text-right font-semibold text-slate-600 py-3">Mean</TableHead>
-                    <TableHead className="text-right font-semibold text-slate-600 py-3">Std Dev</TableHead>
-                    <TableHead className="text-right font-semibold text-slate-600 py-3">Q3</TableHead>
-                    <TableHead className="text-right font-semibold text-slate-600 rounded-tr-xl py-3">Max</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {statRows.map((row) => (
-                    <TableRow key={`${row.category}-${row.subCategory}`} className="border-b border-slate-50 hover:bg-slate-50/30 transition-colors py-1 cursor-default">
-                      <TableCell className="font-medium text-slate-700 py-3">{row.subCategory}</TableCell>
-                      <TableCell className="text-right text-slate-600 py-3">{row.min}</TableCell>
-                      <TableCell className="text-right text-slate-600 py-3">{row.q1}</TableCell>
-                      <TableCell className="text-right text-slate-600 py-3">{row.median}</TableCell>
-                      <TableCell className="text-right font-semibold text-slate-800 py-3 bg-slate-50/50">{row.mean}</TableCell>
-                      <TableCell className="text-right text-slate-600 py-3">{row.stdDev}</TableCell>
-                      <TableCell className="text-right text-slate-600 py-3">{row.q3}</TableCell>
-                      <TableCell className="text-right text-slate-600 py-3">{row.max}</TableCell>
+                    <TableRow className="border-b border-slate-100 bg-slate-50/50 hover:bg-slate-50/50">
+                      <TableHead className="font-semibold text-slate-600 rounded-tl-xl py-3">
+                        Sub Kuis
+                      </TableHead>
+                      <TableHead className="text-right font-semibold text-slate-600 py-3">
+                        Min
+                      </TableHead>
+                      <TableHead className="text-right font-semibold text-slate-600 py-3">
+                        Q1
+                      </TableHead>
+                      <TableHead className="text-right font-semibold text-slate-600 py-3">
+                        Median
+                      </TableHead>
+                      <TableHead className="text-right font-semibold text-slate-600 py-3">
+                        Mean
+                      </TableHead>
+                      <TableHead className="text-right font-semibold text-slate-600 py-3">
+                        Std Dev
+                      </TableHead>
+                      <TableHead className="text-right font-semibold text-slate-600 py-3">
+                        Q3
+                      </TableHead>
+                      <TableHead className="text-right font-semibold text-slate-600 rounded-tr-xl py-3">
+                        Max
+                      </TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </ScrollWrapper>
+                  </TableHeader>
+                  <TableBody>
+                    {statRows.map((row) => (
+                      <TableRow
+                        key={`${row.category}-${row.subCategory}`}
+                        className="border-b border-slate-50 hover:bg-slate-50/30 transition-colors py-1 cursor-default"
+                      >
+                        <TableCell className="font-medium text-slate-700 py-3">
+                          {row.subCategory}
+                        </TableCell>
+                        <TableCell className="text-right text-slate-600 py-3">
+                          {row.min}
+                        </TableCell>
+                        <TableCell className="text-right text-slate-600 py-3">
+                          {row.q1}
+                        </TableCell>
+                        <TableCell className="text-right text-slate-600 py-3">
+                          {row.median}
+                        </TableCell>
+                        <TableCell className="text-right font-semibold text-slate-800 py-3 bg-slate-50/50">
+                          {row.mean}
+                        </TableCell>
+                        <TableCell className="text-right text-slate-600 py-3">
+                          {row.stdDev}
+                        </TableCell>
+                        <TableCell className="text-right text-slate-600 py-3">
+                          {row.q3}
+                        </TableCell>
+                        <TableCell className="text-right text-slate-600 py-3">
+                          {row.max}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </ScrollWrapper>
             </CardContent>
           </Card>
         </TabsContent>

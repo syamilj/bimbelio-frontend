@@ -281,7 +281,7 @@ export function OverviewMetrics({
             data: analytics?.osBreakdown,
             label: 'os',
           },
-        ].map(({ title, data, label }, idx) => (
+        ].map(({ title, data, label }) => (
           <Card key={title}>
             <CardHeader>
               <CardTitle>{title}</CardTitle>

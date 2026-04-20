@@ -4,7 +4,7 @@ import { createEventId } from '@/lib/tracking/event-id';
 import { trackServerEvent } from '@/lib/tracking/server-events';
 import { MetaPixelCustomDataType, MetaPixelEventType } from './types';
 
-let isMetaPixelInitialized = false;
+let _isMetaPixelInitialized = false;
 
 export const initMetaPixel = () => {
   // ✅ Meta Pixel sudah di-load via layout.tsx untuk konsistensi dengan TikTok Pixel
@@ -13,7 +13,7 @@ export const initMetaPixel = () => {
 
   // Cek apakah Meta Pixel sudah tersedia (dari layout.tsx script)
   if ((window as any).fbq) {
-    isMetaPixelInitialized = true;
+    _isMetaPixelInitialized = true;
     console.info('✅ Meta Pixel sudah tersedia dan ready untuk tracking');
     return;
   }
@@ -88,11 +88,11 @@ export const trackMetaEvent = (
     platforms: ['meta'],
     user: advancedMatching
       ? {
-          email: advancedMatching.em,
-          phone: advancedMatching.ph,
-          firstName: advancedMatching.fn,
-          lastName: advancedMatching.ln,
-        }
+        email: advancedMatching.em,
+        phone: advancedMatching.ph,
+        firstName: advancedMatching.fn,
+        lastName: advancedMatching.ln,
+      }
       : undefined,
     customData: data || {},
   }).catch((e) => {

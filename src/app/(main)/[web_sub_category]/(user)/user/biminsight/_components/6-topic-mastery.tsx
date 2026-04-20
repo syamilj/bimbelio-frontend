@@ -3,10 +3,6 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import {
-  Card,
-  CardContent,
-} from '@/components/ui/card';
-import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
@@ -33,19 +29,16 @@ import {
   BarChart,
   CartesianGrid,
   Cell,
-  Label,
   LabelList,
-  Pie,
-  PieChart,
-  PolarAngleAxis,
-  PolarGrid,
-  Radar,
-  RadarChart,
   XAxis,
   YAxis,
 } from 'recharts';
-import { InsightBanner, SectionLabel, StatPill, ScrollRow } from './_primitives';
-
+import {
+  InsightBanner,
+  ScrollRow,
+  SectionLabel,
+  StatPill,
+} from './_primitives';
 
 // --- Types -------------------------------------------------------------------
 
@@ -199,7 +192,10 @@ function TopicMasteryCard({
             )}
             <h2 className="text-xl font-bold flex items-center gap-2">
               <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-white shadow-sm border border-slate-100/50">
-                <Target className="w-4 h-4" style={{ color: mainColor }} />
+                <Target
+                  className="w-4 h-4"
+                  style={{ color: mainColor }}
+                />
               </div>
               Tingkat Penguasaan
             </h2>
@@ -255,7 +251,13 @@ function TopicMasteryCard({
       {/* Insight */}
       <div className="px-5 pt-3">
         <InsightBanner
-          tone={s.overallAccuracy >= 70 ? "success" : s.overallAccuracy >= 50 ? "info" : "warning"}
+          tone={
+            s.overallAccuracy >= 70
+              ? 'success'
+              : s.overallAccuracy >= 50
+                ? 'info'
+                : 'warning'
+          }
         >
           {s.overallAccuracy >= 70
             ? `Akurasi ${s.overallAccuracy}% dengan ${s.strongCount} topik kuat — pemahaman materi sangat baik!`
@@ -267,14 +269,20 @@ function TopicMasteryCard({
 
       <div className="space-y-5 px-5 py-5">
         {/* -- 2. Category overview bar chart -- */}
-        <CategoryBarChart categories={group.categories} mainColor={mainColor} />
+        <CategoryBarChart
+          categories={group.categories}
+          mainColor={mainColor}
+        />
 
         {/* -- 3. Category deep-dive cards -- */}
         <div>
           <SectionLabel title="Detail Per Kategori" />
           <div className="space-y-3 mt-3">
             {group.categories.map((cat) => (
-              <CategoryCard key={cat.categoryId} category={cat} />
+              <CategoryCard
+                key={cat.categoryId}
+                category={cat}
+              />
             ))}
           </div>
         </div>
@@ -287,7 +295,6 @@ function TopicMasteryCard({
             weakest={group.weakestChapters}
           />
         )}
-
       </div>
     </div>
   );
@@ -381,14 +388,21 @@ function CategoryBarChart({
                   return `${d?.fullName} \u2014 ${d?.total} soal`;
                 }}
                 formatter={(_, __, item) => {
-                  const d = item.payload as { benar: number; salah: number; kosong: number; fill: string };
+                  const d = item.payload as {
+                    benar: number;
+                    salah: number;
+                    kosong: number;
+                    fill: string;
+                  };
                   return (
                     <>
                       <div
                         className="h-2.5 w-2.5 shrink-0 rounded-[2px]"
                         style={{ backgroundColor: d.fill }}
                       />
-                      <span className="text-muted-foreground font-semibold">B/S/K</span>
+                      <span className="text-muted-foreground font-semibold">
+                        B/S/K
+                      </span>
                       <span className="ml-auto font-mono font-medium">
                         <span className="text-emerald-600">{d.benar}</span>/
                         <span className="text-red-500">{d.salah}</span>/
@@ -400,9 +414,17 @@ function CategoryBarChart({
               />
             }
           />
-          <Bar dataKey="accuracy" radius={[0, 8, 8, 0]} barSize={22}>
+          <Bar
+            dataKey="accuracy"
+            radius={[0, 8, 8, 0]}
+            barSize={22}
+          >
             {data.map((entry) => (
-              <Cell key={entry.fullName} fill={entry.fill} fillOpacity={0.85} />
+              <Cell
+                key={entry.fullName}
+                fill={entry.fill}
+                fillOpacity={0.85}
+              />
             ))}
             <LabelList
               dataKey="accuracy"
@@ -646,7 +668,10 @@ function CategoryCard({ category: cat }: { category: CategoryData }) {
           {/* Chapter rows */}
           <div className="space-y-1.5">
             {cat.chapters.map((ch) => (
-              <ChapterRow key={ch.chapterId} chapter={ch} />
+              <ChapterRow
+                key={ch.chapterId}
+                chapter={ch}
+              />
             ))}
           </div>
         </div>
@@ -725,7 +750,6 @@ function FocusAreas({
           chapters={strongest}
           type="strong"
           accentColor="#22c55e"
-          gradientFrom="from-emerald-50"
         />
       )}
       {weakest.length > 0 && (
@@ -735,7 +759,6 @@ function FocusAreas({
           chapters={weakest}
           type="weak"
           accentColor="#ef4444"
-          gradientFrom="from-red-50"
         />
       )}
     </div>
@@ -748,19 +771,17 @@ function FocusColumn({
   chapters,
   type,
   accentColor,
-  gradientFrom,
 }: {
   title: string;
   icon: React.ReactNode;
   chapters: (ChapterData & { categoryName: string })[];
   type: 'strong' | 'weak';
   accentColor: string;
-  gradientFrom: string;
 }) {
   return (
     <div
       className={cn(
-        'rounded-3xl border border-slate-200 overflow-hidden bg-white shadow-sm'
+        'rounded-3xl border border-slate-200 overflow-hidden bg-white shadow-sm',
       )}
     >
       {/* Header */}
@@ -777,7 +798,12 @@ function FocusColumn({
       {/* Items */}
       <div className="px-3 pb-3 space-y-1">
         {chapters.map((ch, i) => (
-          <FocusItem key={ch.chapterId} chapter={ch} rank={i + 1} type={type} />
+          <FocusItem
+            key={ch.chapterId}
+            chapter={ch}
+            rank={i + 1}
+            type={type}
+          />
         ))}
       </div>
     </div>

@@ -58,7 +58,7 @@ const TryoutOption = () => {
   const router = useRouter();
 
   const [openDelete, setOpenDelete] = useState<boolean>(false);
-  const [prevIndexEdit, setPrevIndexEdit] = useState<number | null>(null);
+  const [_prevIndexEdit, setPrevIndexEdit] = useState<number | null>(null);
   const [loadingDeleteTryout, setIsLoadingDeleteTryout] =
     useState<boolean>(false);
 

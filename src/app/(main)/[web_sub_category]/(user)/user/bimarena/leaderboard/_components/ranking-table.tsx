@@ -15,8 +15,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import { Skeleton } from '@/components/ui/skeleton';
 import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -145,7 +145,10 @@ export function RankingTable() {
 
   const getThresholdValue = useCallback(
     (session: { subCategory: string; thresholdValue?: number | null }) => {
-      if (typeof session.thresholdValue === 'number' && session.thresholdValue > 0) {
+      if (
+        typeof session.thresholdValue === 'number' &&
+        session.thresholdValue > 0
+      ) {
         return session.thresholdValue;
       }
 
@@ -944,10 +947,9 @@ export default RankingTable;
 const ExportButton = () => {
   const { RankingTryout } = useLeaderboardContext();
   const { data: session } = useSession();
-  const { websiteSubCategory } = useWebsiteSubCategory();
-  const isKedinasanExport = (websiteSubCategory?.id ?? '')
-    .toLowerCase()
-    .includes('kedinasan');
+  // const isKedinasanExport = (websiteSubCategory?.id ?? '')
+  //   .toLowerCase()
+  //   .includes('kedinasan');
 
   const exportData = RankingTryout?.rankingData || [];
 

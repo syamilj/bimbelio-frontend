@@ -44,17 +44,16 @@ export function SectionDetail({ id }: { id: string | null }) {
   //   const { id } = useParams<{ id: string | undefined }>();
   const { mainColor, secondaryColor } = useWebsiteSubCategory();
 
-  const {
-    data: TryoutData,
-    isLoading: TryoutDataIsLoading,
-    error: TryoutDataError,
-  } = useGet<DataType>('/learningAnalytics/getAnalyticsTryoutById', {
-    params: {
-      id: id ? id : undefined,
+  const { data: TryoutData, isLoading: TryoutDataIsLoading } = useGet<DataType>(
+    '/learningAnalytics/getAnalyticsTryoutById',
+    {
+      params: {
+        id: id ? id : undefined,
+      },
+      enabled: !!id,
+      useEffectDependencies: [id],
     },
-    enabled: !!id,
-    useEffectDependencies: [id],
-  });
+  );
 
   console.log({ TryoutData });
 
@@ -1002,7 +1001,7 @@ const UserRegistrations = ({
 };
 
 const NotSelectedPage = () => {
-  const { mainColor, secondaryColor } = useWebsiteSubCategory();
+  const { mainColor } = useWebsiteSubCategory();
   return (
     <div>
       <SectionTitle

@@ -97,8 +97,6 @@ const BORDER_RADIUS_OPTIONS = [
   { label: 'Full', value: 'rounded-full' },
 ];
 
-const SECTION_DATALIST_ID = 'section-label-suggestions';
-
 const getOrigin = () =>
   typeof window !== 'undefined'
     ? window.location.origin

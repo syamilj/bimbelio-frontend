@@ -54,7 +54,7 @@ export default function Provider({ children }: Props) {
   // ===== Params ================================
   const tab = searchParams?.get('tab');
   const sub = searchParams?.get('sub');
-  const startParam = searchParams?.get('start'); // New parameter to detect start flow
+  // const startParam = searchParams?.get('start');
   const categoryId = Array.isArray(params?.categoryId)
     ? params.categoryId[0]
     : params?.categoryId || null;
@@ -126,21 +126,21 @@ export default function Provider({ children }: Props) {
   useEffect(() => {
     if (Course && CourseProgress) {
       // Check if user has any progress in this course category
-      const hasProgress =
-        Array.isArray(CourseProgress) &&
-        CourseProgress.some(
-          (progress: any) =>
-            progress.courseSubChapterId &&
-            Array.isArray(Course) &&
-            Course.some(
-              (chapter: any) =>
-                Array.isArray(chapter.CourseSubChapter) &&
-                chapter.CourseSubChapter.some(
-                  (subChapter: any) =>
-                    subChapter.id === progress.courseSubChapterId,
-                ),
-            ),
-        );
+      // const hasProgress =
+      //   Array.isArray(CourseProgress) &&
+      //   CourseProgress.some(
+      //     (progress: any) =>
+      //       progress.courseSubChapterId &&
+      //       Array.isArray(Course) &&
+      //       Course.some(
+      //         (chapter: any) =>
+      //           Array.isArray(chapter.CourseSubChapter) &&
+      //           chapter.CourseSubChapter.some(
+      //             (subChapter: any) =>
+      //               subChapter.id === progress.courseSubChapterId,
+      //           ),
+      //       ),
+      //   );
 
       if (sub) {
         let findData: any;
@@ -218,7 +218,9 @@ export default function Provider({ children }: Props) {
           if (pathname?.endsWith('/study')) {
             const targetUrl = `${pathname}?sub=${Course[0].CourseSubChapter[0].id}&tab=chat`;
             const currentQuery = searchParams?.toString();
-            const currentUrl = currentQuery ? `${pathname}?${currentQuery}` : pathname;
+            const currentUrl = currentQuery
+              ? `${pathname}?${currentQuery}`
+              : pathname;
             if (currentUrl !== targetUrl) {
               router.replace(targetUrl);
             }

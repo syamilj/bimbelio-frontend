@@ -220,7 +220,7 @@ export function TutorTable({
                         const existhingImageName =
                           tutor?.image?.split('/tutor/')[1];
 
-                        const deleteData = await storage
+                        await storage
                           .from('img')
                           .remove([`tutor/${existhingImageName}`]);
                       }}

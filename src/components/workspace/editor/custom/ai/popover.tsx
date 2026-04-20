@@ -67,7 +67,7 @@ const AiPopover = () => {
       setCompletions((prev) => [...prev, completion]);
       inputRef.current?.focus();
     },
-    onError: (error: Error) => {
+    onError: () => {
       toaster({
         title: 'Gagal',
         description: 'Terjadi kesalahan dengan pembuatan teks!',

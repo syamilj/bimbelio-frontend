@@ -5,7 +5,6 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import {
   Card,
   CardContent,
@@ -13,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import { cn } from '@/lib/utils';
 import {
@@ -276,16 +276,16 @@ const BySimakScore = () => {
         finalScore,
         finalPercentage,
       );
-      const userValueFinal =
-        pg.tipe === 'PERCENTAGE' ? finalPercentage : finalScore;
+      // const userValueFinal =
+      //   pg.tipe === 'PERCENTAGE' ? finalPercentage : finalScore;
 
       const statusSimak = getPassingGradeStatus(
         pg,
         simakAvgSNBT,
         simakPercentageRAW,
       );
-      const userValueSimak =
-        pg.tipe === 'PERCENTAGE' ? simakPercentageRAW : simakAvgSNBT;
+      // const userValueSimak =
+      //   pg.tipe === 'PERCENTAGE' ? simakPercentageRAW : simakAvgSNBT;
 
       const titleFinalScore = 'UTBK + SIMAK UI';
       const titleSimakScore = 'SIMAK UI';

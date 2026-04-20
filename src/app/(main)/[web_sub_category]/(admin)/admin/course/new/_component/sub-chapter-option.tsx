@@ -42,9 +42,6 @@ interface Props {
 
 const SubChapterOption = ({
   currentIndexEdit,
-  setCurrentIndexEdit,
-  showDetailSubChapter,
-  setShowDetailSubChapter,
   EditSubChapter,
   assessmentType,
   setSubChapter,
@@ -184,9 +181,7 @@ const SubChapterOption = ({
 
       // Remove old video if exists
       if (EditSubChapter?.video && EditSubChapter.video.length > 0) {
-        const { data, error } = await storage
-          .from('video')
-          .remove([`course/${EditSubChapter.video}`]);
+        await storage.from('video').remove([`course/${EditSubChapter.video}`]);
         // if (error) {
         //   toaster({
         //     title: 'Error',

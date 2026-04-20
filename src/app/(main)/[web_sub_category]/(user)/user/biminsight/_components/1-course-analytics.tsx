@@ -1,16 +1,15 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { Badge } from "@/components/ui/badge";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Badge } from '@/components/ui/badge';
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
-import { Skeleton } from "@/components/ui/skeleton";
-import { getGeneral } from "@/lib/fetch-helper/fetch-helper";
-import { useGet } from "@/lib/fetch-helper/useGet";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/chart';
+import { Skeleton } from '@/components/ui/skeleton';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import {
   BookOpen,
   Brain,
@@ -19,9 +18,9 @@ import {
   Layers3,
   Target,
   TrendingUp,
-} from "lucide-react";
-import { useParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+} from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Bar,
   BarChart,
@@ -31,8 +30,8 @@ import {
   LineChart,
   XAxis,
   YAxis,
-} from "recharts";
-import { CourseReportStats } from "../../bimcourse/[categoryId]/_component/z_other/report/CourseReportStats";
+} from 'recharts';
+import { CourseReportStats } from '../../bimcourse/[categoryId]/_component/z_other/report/course-report-stats';
 import {
   EmptyState,
   FilterChip,
@@ -43,8 +42,7 @@ import {
   ScrollWrapper,
   SectionLabel,
   StatPill,
-} from "./_primitives";
-
+} from './_primitives';
 
 type CourseCategory = {
   id: number;
@@ -58,7 +56,7 @@ type CourseCategory = {
   totalTryout: number;
 };
 
-type CourseReportData = Parameters<typeof CourseReportStats>[0]["report"];
+type CourseReportData = Parameters<typeof CourseReportStats>[0]['report'];
 
 type ReportMap = Record<string, CourseReportData>;
 
@@ -75,9 +73,9 @@ const formatMinutes = (minutes: number) => {
 const getShortCategoryLabel = (name: string) => {
   if (name.length <= 16) return name;
 
-  const words = name.split(" ").filter(Boolean);
+  const words = name.split(' ').filter(Boolean);
   if (words.length >= 2) {
-    const initials = words.map((word) => word[0]).join("");
+    const initials = words.map((word) => word[0]).join('');
     if (initials.length >= 2 && initials.length <= 8) return initials;
   }
 
@@ -101,7 +99,7 @@ const pickFeaturedCategoryId = (
     })
     .sort((left, right) => right.score - left.score);
 
-  return ranked[0]?.id ?? String(categories[0]?.id ?? "");
+  return ranked[0]?.id ?? String(categories[0]?.id ?? '');
 };
 
 export const CourseAnalytics = () => {
@@ -116,7 +114,7 @@ export const CourseAnalytics = () => {
     data: categories,
     isLoading: categoriesLoading,
     error: categoriesError,
-  } = useGet<CourseCategory[]>("/course/getCategoryForCard", {
+  } = useGet<CourseCategory[]>('/course/getCategoryForCard', {
     params: {
       userId: id ? id : undefined,
     },
@@ -139,7 +137,7 @@ export const CourseAnalytics = () => {
 
       const settled = await Promise.all(
         categories.map(async (category) => {
-          const result = await getGeneral("/course/getReportByCategory", {
+          const result = await getGeneral('/course/getReportByCategory', {
             hideToast: true,
             params: {
               categoryId: category.id,
@@ -167,7 +165,7 @@ export const CourseAnalytics = () => {
       setReportsLoading(false);
 
       if (Object.keys(nextReports).length === 0) {
-        setReportsError("Belum ada report category yang bisa ditampilkan.");
+        setReportsError('Belum ada report category yang bisa ditampilkan.');
       }
     };
 
@@ -245,16 +243,14 @@ export const CourseAnalytics = () => {
   const bestProgressCategory =
     overviewCards.length > 0
       ? [...overviewCards].sort(
-          (left, right) =>
-            right.percentageProgress - left.percentageProgress,
+          (left, right) => right.percentageProgress - left.percentageProgress,
         )[0]
       : null;
 
   const needsAttentionCategory =
     overviewCards.length > 0
       ? [...overviewCards].sort(
-          (left, right) =>
-            left.percentageProgress - right.percentageProgress,
+          (left, right) => left.percentageProgress - right.percentageProgress,
         )[0]
       : null;
 
@@ -295,7 +291,7 @@ export const CourseAnalytics = () => {
     <div>
       <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
         {/* Hero */}
-        <HeroBanner color={mainColor}>
+        <HeroBanner>
           <SectionLabel
             title="Analitik Course"
             sub="Ringkasan lintas kategori dan detail per kategori"
@@ -331,11 +327,11 @@ export const CourseAnalytics = () => {
             <div className="w-[180px] flex-shrink-0 md:w-auto">
               <InsightCard
                 title="Kategori Terdepan"
-                value={bestProgressCategory?.name ?? "-"}
+                value={bestProgressCategory?.name ?? '-'}
                 sub={
                   bestProgressCategory
                     ? `${bestProgressCategory.percentageProgress}% selesai`
-                    : "Belum ada data"
+                    : 'Belum ada data'
                 }
                 tone="emerald"
               />
@@ -343,11 +339,11 @@ export const CourseAnalytics = () => {
             <div className="w-[180px] flex-shrink-0 md:w-auto">
               <InsightCard
                 title="Butuh Perhatian"
-                value={needsAttentionCategory?.name ?? "-"}
+                value={needsAttentionCategory?.name ?? '-'}
                 sub={
                   needsAttentionCategory
                     ? `${needsAttentionCategory.percentageProgress}% progress`
-                    : "Belum ada data"
+                    : 'Belum ada data'
                 }
                 tone="amber"
               />
@@ -373,7 +369,7 @@ export const CourseAnalytics = () => {
             />
             <ChartContainer
               config={{
-                progress: { label: "Progress", color: mainColor },
+                progress: { label: 'Progress', color: mainColor },
               }}
               className="aspect-auto h-[220px] md:h-[260px] w-full mt-2"
             >
@@ -388,7 +384,7 @@ export const CourseAnalytics = () => {
                 />
                 <XAxis
                   dataKey="name"
-                  tick={{ fontSize: 10, fill: "#94a3b8" }}
+                  tick={{ fontSize: 10, fill: '#94a3b8' }}
                   tickLine={false}
                   axisLine={false}
                   interval={0}
@@ -399,7 +395,7 @@ export const CourseAnalytics = () => {
                 />
                 <YAxis
                   domain={[0, 100]}
-                  tick={{ fontSize: 10, fill: "#94a3b8" }}
+                  tick={{ fontSize: 10, fill: '#94a3b8' }}
                   tickLine={false}
                   axisLine={false}
                   width={36}
@@ -413,7 +409,7 @@ export const CourseAnalytics = () => {
                             payload?.[0]?.payload as {
                               fullName?: string;
                             }
-                          )?.fullName ?? "",
+                          )?.fullName ?? '',
                         )
                       }
                       formatter={(value) => (
@@ -453,7 +449,7 @@ export const CourseAnalytics = () => {
             />
             <ChartContainer
               config={{
-                avgQuiz: { label: "Avg Quiz", color: "#10B981" },
+                avgQuiz: { label: 'Avg Quiz', color: '#10B981' },
               }}
               className="aspect-auto h-[220px] md:h-[260px] w-full mt-2"
             >
@@ -468,7 +464,7 @@ export const CourseAnalytics = () => {
                 />
                 <XAxis
                   dataKey="name"
-                  tick={{ fontSize: 10, fill: "#94a3b8" }}
+                  tick={{ fontSize: 10, fill: '#94a3b8' }}
                   tickLine={false}
                   axisLine={false}
                   interval={0}
@@ -479,7 +475,7 @@ export const CourseAnalytics = () => {
                 />
                 <YAxis
                   domain={[0, 100]}
-                  tick={{ fontSize: 10, fill: "#94a3b8" }}
+                  tick={{ fontSize: 10, fill: '#94a3b8' }}
                   tickLine={false}
                   axisLine={false}
                   width={36}
@@ -493,7 +489,7 @@ export const CourseAnalytics = () => {
                             payload?.[0]?.payload as {
                               fullName?: string;
                             }
-                          )?.fullName ?? "",
+                          )?.fullName ?? '',
                         )
                       }
                       formatter={(value, _name, item) => {
@@ -506,7 +502,7 @@ export const CourseAnalytics = () => {
                               Avg Quiz
                             </span>
                             <span className="ml-auto font-mono font-medium tabular-nums">
-                              {Number(value).toFixed(1)} ·{" "}
+                              {Number(value).toFixed(1)} ·{' '}
                               {row.totalTryout ?? 0} quiz
                             </span>
                           </>
@@ -522,14 +518,14 @@ export const CourseAnalytics = () => {
                   strokeWidth={3}
                   dot={{
                     r: 4,
-                    fill: "#10B981",
-                    stroke: "#fff",
+                    fill: '#10B981',
+                    stroke: '#fff',
                     strokeWidth: 2,
                   }}
                   activeDot={{
                     r: 6,
-                    fill: "#10B981",
-                    stroke: "#fff",
+                    fill: '#10B981',
+                    stroke: '#fff',
                     strokeWidth: 2,
                   }}
                 >
@@ -617,7 +613,7 @@ export const CourseAnalytics = () => {
                       sub={
                         featuredCategory.report
                           ? `avg quiz ${featuredCategory.avgQuiz.toFixed(1)}`
-                          : "report belum tersedia"
+                          : 'report belum tersedia'
                       }
                       icon={<Clock3 className="h-3.5 w-3.5" />}
                       color="amber"
@@ -628,10 +624,10 @@ export const CourseAnalytics = () => {
                   <InsightBanner
                     tone={
                       featuredCategory.percentageProgress >= 70
-                        ? "success"
+                        ? 'success'
                         : featuredCategory.percentageProgress >= 40
-                          ? "info"
-                          : "warning"
+                          ? 'info'
+                          : 'warning'
                     }
                   >
                     {featuredCategory.percentageProgress >= 70
@@ -665,9 +661,7 @@ export const CourseAnalytics = () => {
 
                     {featuredCategory.report ? (
                       <div className="rounded-3xl border border-white bg-white p-4 shadow-sm md:p-5">
-                        <CourseReportStats
-                          report={featuredCategory.report}
-                        />
+                        <CourseReportStats report={featuredCategory.report} />
                       </div>
                     ) : (
                       <div className="py-12 text-center text-sm text-slate-500">
@@ -688,8 +682,6 @@ export const CourseAnalytics = () => {
 // =============================================================================
 // Sub-components
 // =============================================================================
-
-
 
 const LoadingState = () => (
   <div>

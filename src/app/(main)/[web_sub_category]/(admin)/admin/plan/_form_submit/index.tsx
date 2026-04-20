@@ -495,9 +495,7 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
       let imageUrl = undefined;
       if (image) {
         const filePath = `plan/${sanitizeFileName(name)}-${crypto.randomUUID().slice(0, 4)}`;
-        const { data, error } = await storage
-          .from('img')
-          .upload(filePath, image);
+        const { error } = await storage.from('img').upload(filePath, image);
         if (error) {
           toaster({
             title: 'Error',
@@ -1411,12 +1409,7 @@ const SectionFeature = () => {
       quizVolumeIds,
       setQuizVolumeIds,
       setIsQuizActive,
-      isQuizActive,
-      isCourseActive,
       isLiveClassActive,
-      setIsCourseActive,
-      setIsDocumentActive,
-      setIsLiveClassActive,
       setExpireType,
       expireType,
       liveClassIds,
@@ -1434,7 +1427,6 @@ const SectionFeature = () => {
 
   const { webCategoryData, websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const { data: Categories } = useGet<
     { categoryName: string; data: Category[] }[]
@@ -2274,7 +2266,6 @@ const SectionInstallment = () => {
       alertLimitation,
       dataHelper: { limitationMismatches, priceDifference, totalLimitations },
     },
-    useLimitation: { limitRows },
   } = useProvider();
 
   enum LateFeeType {

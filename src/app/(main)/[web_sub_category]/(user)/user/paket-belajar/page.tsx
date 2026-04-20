@@ -4,11 +4,11 @@ import { CardPlan } from '@/components/_shared/other/card-plan';
 import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/types';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
-import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { Crown, Sparkles, Zap } from 'lucide-react';
+import { Crown, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useMemo } from 'react';
@@ -81,25 +81,31 @@ export default function PaketBelajarPage() {
     const currentWebSubRecommended =
       pricingData?.webSubCategory
         ?.filter(
-          (item) => item.webSubCategoryId.toLowerCase() === webSub.toLowerCase(),
+          (item) =>
+            item.webSubCategoryId.toLowerCase() === webSub.toLowerCase(),
         )
         .flatMap((item) => [
           ...sortByPrice(
             (item.subscriptions || []).filter((plan) => plan.recommended),
           ),
-          ...sortByPrice((item.bundles || []).filter((plan) => plan.recommended)),
+          ...sortByPrice(
+            (item.bundles || []).filter((plan) => plan.recommended),
+          ),
         ]) || [];
 
     const otherWebSubRecommended =
       pricingData?.webSubCategory
         ?.filter(
-          (item) => item.webSubCategoryId.toLowerCase() !== webSub.toLowerCase(),
+          (item) =>
+            item.webSubCategoryId.toLowerCase() !== webSub.toLowerCase(),
         )
         .flatMap((item) => [
           ...sortByPrice(
             (item.subscriptions || []).filter((plan) => plan.recommended),
           ),
-          ...sortByPrice((item.bundles || []).filter((plan) => plan.recommended)),
+          ...sortByPrice(
+            (item.bundles || []).filter((plan) => plan.recommended),
+          ),
         ]) || [];
 
     const toppingRecommended = sortByPrice(
@@ -125,7 +131,8 @@ export default function PaketBelajarPage() {
   const regularPlans = useMemo(
     () =>
       visiblePlans.filter(
-        (plan) => !plan.recommended && !topUpPlans.some((top) => top.id === plan.id),
+        (plan) =>
+          !plan.recommended && !topUpPlans.some((top) => top.id === plan.id),
       ),
     [visiblePlans, topUpPlans],
   );

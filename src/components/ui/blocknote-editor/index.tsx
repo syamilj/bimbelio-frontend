@@ -15,12 +15,6 @@ import {
 } from './latex-helper';
 import './style.css';
 
-async function uploadFile(file: File) {
-  //   const convertedFile = await convertFileToBase64(file);
-
-  return file;
-}
-
 function BlocknoteEditor({
   value,
   onValueChange,

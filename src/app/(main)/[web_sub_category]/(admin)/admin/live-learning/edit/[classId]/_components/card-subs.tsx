@@ -21,17 +21,11 @@ import {
 
 type CardProps = {
   data: PlanType;
-  onSelect?: () => void;
   isSelected?: boolean;
   onClick?: () => any;
 };
 
-export const CardSubs = ({
-  data,
-  onSelect,
-  isSelected,
-  onClick,
-}: CardProps) => {
+export const CardSubs = ({ data, isSelected, onClick }: CardProps) => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   return (
     <Card

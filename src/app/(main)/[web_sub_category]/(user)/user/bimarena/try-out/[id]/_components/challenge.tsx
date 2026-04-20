@@ -1,9 +1,8 @@
 'use client';
 
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { cn } from '@/lib/utils';
 import { QuestionTypeEnum, TryoutAnswer } from '@/types/database';
-import { HelpCircle, List, RotateCcw } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 import { Dispatch, SetStateAction, useState } from 'react';
 import Card from './card';
 
@@ -39,11 +38,9 @@ const Challenge = ({
   index,
   sessionAnswer,
 }: ChallengeProps) => {
-  const { websiteSubCategory } = useWebsiteSubCategory();
   const [showHint, setShowHint] = useState(false);
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
   // const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const handleSelect = (id: string, answer: string, index: number) => {
@@ -68,42 +65,42 @@ const Challenge = ({
     }
   };
 
-  const getQuestionTypeInfo = () => {
-    switch (type) {
-      case 'OBJECTIVE_5':
-        return {
-          title: 'Pilihan Ganda',
-          description: 'Pilih satu jawaban yang paling tepat',
-          icon: <List className="w-4 h-4" />,
-          color: '#3B82F6',
-        };
-      case 'TRUE_FALSE':
-        return {
-          title: 'Benar/Salah',
-          description: 'Pilih Benar atau Salah',
-          icon: <HelpCircle className="w-4 h-4" />,
-          color: '#10B981',
-        };
-      case 'SHORT_ANSWER':
-        return {
-          title: 'Jawaban Singkat',
-          description: 'Ketik jawaban singkat Kamu',
-          icon: <RotateCcw className="w-4 h-4" />,
-          color: '#F59E0B',
-        };
-      default:
-        return {
-          title: 'Soal',
-          description: 'Pilih jawaban yang tepat',
-          icon: <List className="w-4 h-4" />,
-          color: mainColor,
-        };
-    }
-  };
+  // const getQuestionTypeInfo = () => {
+  //   switch (type) {
+  //     case 'OBJECTIVE_5':
+  //       return {
+  //         title: 'Pilihan Ganda',
+  //         description: 'Pilih satu jawaban yang paling tepat',
+  //         icon: <List className="w-4 h-4" />,
+  //         color: '#3B82F6',
+  //       };
+  //     case 'TRUE_FALSE':
+  //       return {
+  //         title: 'Benar/Salah',
+  //         description: 'Pilih Benar atau Salah',
+  //         icon: <HelpCircle className="w-4 h-4" />,
+  //         color: '#10B981',
+  //       };
+  //     case 'SHORT_ANSWER':
+  //       return {
+  //         title: 'Jawaban Singkat',
+  //         description: 'Ketik jawaban singkat Kamu',
+  //         icon: <RotateCcw className="w-4 h-4" />,
+  //         color: '#F59E0B',
+  //       };
+  //     default:
+  //       return {
+  //         title: 'Soal',
+  //         description: 'Pilih jawaban yang tepat',
+  //         icon: <List className="w-4 h-4" />,
+  //         color: mainColor,
+  //       };
+  //   }
+  // };
 
-  const typeInfo = getQuestionTypeInfo();
-  const currentAnswer = sessionAnswer[index];
-  const hasAnswer = currentAnswer?.answer && currentAnswer.answer.length > 0;
+  // const typeInfo = getQuestionTypeInfo();
+  // const currentAnswer = sessionAnswer[index];
+  // const hasAnswer = currentAnswer?.answer && currentAnswer.answer.length > 0;
 
   return (
     <div className="space-y-3 md:space-y-4">

@@ -20,7 +20,7 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
     <div className="space-y-6">
       {plan.PlanSubscription?.PlanFeature &&
         plan.PlanSubscription?.PlanFeature.length > 0 &&
-        plan.PlanSubscription.PlanFeature.map((feature, index) => (
+        plan.PlanSubscription.PlanFeature.map((feature) => (
           <Card
             key={feature.id}
             className="border-2 border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300 rounded-3xl overflow-hidden"

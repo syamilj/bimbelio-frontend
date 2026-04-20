@@ -1,7 +1,6 @@
 'use client';
 
 import { useAppContext } from '@/components/provider/provider-app';
-import { useSession } from '@/components/provider/provider-session-auth';
 import { LaTeXInline } from '@/components/ui/blocknote-editor/latex';
 import {
   preprocessLatexInValue,
@@ -44,8 +43,6 @@ type Props = {
 
 export default function Provider({ children, docId, editor, value }: Props) {
   const { change, setChange } = useAppContext();
-  const { data: session } = useSession();
-  const userId = session?.user.id;
 
   // const editor = useCreateBlockNote({
   //   schema,

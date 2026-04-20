@@ -1,21 +1,16 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import {
-  ChartConfig,
-  ChartContainer,
-} from "@/components/ui/chart";
+import { ChartConfig, ChartContainer } from '@/components/ui/chart';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
-import { ArrowDown, ArrowUp, ChevronRight, Lightbulb } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Cell, Label, Pie, PieChart } from "recharts";
-import { ScrollWrapper } from "@/components/ui/scroll-wrapper";
+} from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
+import { ArrowDown, ArrowUp, Lightbulb } from 'lucide-react';
+import { Cell, Label, Pie, PieChart } from 'recharts';
 
 // --- StatPill -----------------------------------------------------------------
 
@@ -50,20 +45,16 @@ export function StatPill({
           {value}
         </p>
       </div>
-      <p className="text-[10px] md:text-[11px] text-slate-500 mt-1.5 pb-0.5 line-clamp-2 md:line-clamp-1">{sub}</p>
+      <p className="text-[10px] md:text-[11px] text-slate-500 mt-1.5 pb-0.5 line-clamp-2 md:line-clamp-1">
+        {sub}
+      </p>
     </div>
   );
 }
 
 // --- SectionLabel -------------------------------------------------------------
 
-export function SectionLabel({
-  title,
-  sub,
-}: {
-  title: string;
-  sub?: string;
-}) {
+export function SectionLabel({ title, sub }: { title: string; sub?: string }) {
   return (
     <div>
       <h3 className="text-sm font-black text-slate-800">{title}</h3>
@@ -83,28 +74,46 @@ export function InsightCard({
   title: string;
   value: string;
   sub: string;
-  tone: "emerald" | "amber" | "blue" | "slate";
+  tone: 'emerald' | 'amber' | 'blue' | 'slate';
 }) {
   const toneMap = {
-    emerald: { bg: "bg-emerald-50", iconBg: "bg-emerald-500", text: "text-slate-800" },
-    amber: { bg: "bg-amber-50", iconBg: "bg-amber-500", text: "text-slate-800" },
-    blue: { bg: "bg-blue-50", iconBg: "bg-blue-500", text: "text-slate-800" },
-    slate: { bg: "bg-slate-50", iconBg: "bg-slate-500", text: "text-slate-800" },
+    emerald: {
+      bg: 'bg-emerald-50',
+      iconBg: 'bg-emerald-500',
+      text: 'text-slate-800',
+    },
+    amber: {
+      bg: 'bg-amber-50',
+      iconBg: 'bg-amber-500',
+      text: 'text-slate-800',
+    },
+    blue: { bg: 'bg-blue-50', iconBg: 'bg-blue-500', text: 'text-slate-800' },
+    slate: {
+      bg: 'bg-slate-50',
+      iconBg: 'bg-slate-500',
+      text: 'text-slate-800',
+    },
   } as const;
   const t = toneMap[tone];
 
   return (
     <div
       className={cn(
-        "rounded-3xl p-4 border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center",
+        'rounded-3xl p-4 border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center',
         t.bg,
       )}
     >
       <p className="text-[10px] md:text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
         {title}
       </p>
-      <p className={cn("text-xl md:text-2xl font-black w-full truncate", t.text)}>{value}</p>
-      <p className="mt-1 text-[10px] md:text-[11px] text-slate-500 w-full line-clamp-2">{sub}</p>
+      <p
+        className={cn('text-xl md:text-2xl font-black w-full truncate', t.text)}
+      >
+        {value}
+      </p>
+      <p className="mt-1 text-[10px] md:text-[11px] text-slate-500 w-full line-clamp-2">
+        {sub}
+      </p>
     </div>
   );
 }
@@ -136,7 +145,9 @@ export function ChangeCard({
           {label}
         </span>
       </div>
-      <div className="text-xl md:text-2xl font-black text-slate-800 truncate w-full">{current}</div>
+      <div className="text-xl md:text-2xl font-black text-slate-800 truncate w-full">
+        {current}
+      </div>
       <div className="flex items-center justify-center gap-1 mt-1.5 w-full">
         {change !== 0 ? (
           <>
@@ -147,16 +158,18 @@ export function ChangeCard({
             )}
             <span
               className={cn(
-                "text-[10px] text-left md:text-[11px] font-bold leading-tight",
-                isGood ? "text-emerald-600" : "text-red-500",
+                'text-[10px] text-left md:text-[11px] font-bold leading-tight',
+                isGood ? 'text-emerald-600' : 'text-red-500',
               )}
             >
-              {change > 0 ? "+" : ""}
+              {change > 0 ? '+' : ''}
               {change} vs awal
             </span>
           </>
         ) : (
-          <span className="text-[10px] md:text-[11px] text-slate-400">Tidak berubah</span>
+          <span className="text-[10px] md:text-[11px] text-slate-400">
+            Tidak berubah
+          </span>
         )}
       </div>
     </div>
@@ -166,10 +179,10 @@ export function ChangeCard({
 // --- ScoreBadge ---------------------------------------------------------------
 
 export function getScoreBadgeColor(score: number) {
-  if (score >= 80) return { bg: "bg-emerald-100", text: "text-emerald-700" };
-  if (score >= 60) return { bg: "bg-blue-100", text: "text-blue-700" };
-  if (score >= 40) return { bg: "bg-yellow-100", text: "text-yellow-700" };
-  return { bg: "bg-red-100", text: "text-red-700" };
+  if (score >= 80) return { bg: 'bg-emerald-100', text: 'text-emerald-700' };
+  if (score >= 60) return { bg: 'bg-blue-100', text: 'text-blue-700' };
+  if (score >= 40) return { bg: 'bg-yellow-100', text: 'text-yellow-700' };
+  return { bg: 'bg-red-100', text: 'text-red-700' };
 }
 
 // --- GaugeDonut ---------------------------------------------------------------
@@ -190,13 +203,13 @@ export function GaugeDonut({
   size?: number;
 }) {
   const gaugeData = [
-    { name: "filled", value: Math.min(value, max), fill: color },
-    { name: "empty", value: Math.max(0, max - value), fill: "#e2e8f0" },
+    { name: 'filled', value: Math.min(value, max), fill: color },
+    { name: 'empty', value: Math.max(0, max - value), fill: '#e2e8f0' },
   ];
 
   const gaugeConfig: ChartConfig = {
-    filled: { label: "Value", color },
-    empty: { label: "", color: "#e2e8f0" },
+    filled: { label: 'Value', color },
+    empty: { label: '', color: '#e2e8f0' },
   };
 
   const inner = Math.round(size * 0.33);
@@ -223,11 +236,14 @@ export function GaugeDonut({
           stroke="none"
         >
           {gaugeData.map((d, i) => (
-            <Cell key={i} fill={d.fill} />
+            <Cell
+              key={i}
+              fill={d.fill}
+            />
           ))}
           <Label
             content={({ viewBox }) => {
-              if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+              if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
                 return (
                   <text
                     x={viewBox.cx}
@@ -265,18 +281,8 @@ export function GaugeDonut({
 
 // --- HeroBanner ---------------------------------------------------------------
 
-export function HeroBanner({
-  children,
-  color,
-}: {
-  children: React.ReactNode;
-  color: string;
-}) {
-  return (
-    <div className="px-5 pt-6 pb-5">
-      {children}
-    </div>
-  );
+export function HeroBanner({ children }: { children: React.ReactNode }) {
+  return <div className="px-5 pt-6 pb-5">{children}</div>;
 }
 
 // --- EmptyState ---------------------------------------------------------------
@@ -316,23 +322,23 @@ export function ScrollRow({
 }) {
   const gridCols =
     cols === 2
-      ? "md:grid-cols-2"
+      ? 'md:grid-cols-2'
       : cols === 4
-        ? "md:grid-cols-4"
-        : "md:grid-cols-3";
+        ? 'md:grid-cols-4'
+        : 'md:grid-cols-3';
 
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn('relative', className)}>
       <ScrollWrapper
         className={cn(
-          "-mx-4 px-4 pb-2 pt-1",
-          !noGrid && "md:mx-0 md:px-0 md:overflow-visible"
+          '-mx-4 px-4 pb-2 pt-1',
+          !noGrid && 'md:mx-0 md:px-0 md:overflow-visible',
         )}
       >
         <div
           className={cn(
-            "flex gap-3 md:gap-4 min-w-max",
-            !noGrid && ["md:min-w-0 md:grid", gridCols]
+            'flex gap-3 md:gap-4 min-w-max',
+            !noGrid && ['md:min-w-0 md:grid', gridCols],
           )}
         >
           {children}
@@ -348,30 +354,30 @@ export { ScrollWrapper };
 
 const INSIGHT_TONES = {
   info: {
-    bg: "bg-blue-50/80 border-blue-100",
-    icon: "bg-blue-100 text-blue-600",
-    text: "text-blue-800",
+    bg: 'bg-blue-50/80 border-blue-100',
+    icon: 'bg-blue-100 text-blue-600',
+    text: 'text-blue-800',
   },
   success: {
-    bg: "bg-emerald-50/80 border-emerald-100",
-    icon: "bg-emerald-100 text-emerald-600",
-    text: "text-emerald-800",
+    bg: 'bg-emerald-50/80 border-emerald-100',
+    icon: 'bg-emerald-100 text-emerald-600',
+    text: 'text-emerald-800',
   },
   warning: {
-    bg: "bg-amber-50/80 border-amber-100",
-    icon: "bg-amber-100 text-amber-600",
-    text: "text-amber-800",
+    bg: 'bg-amber-50/80 border-amber-100',
+    icon: 'bg-amber-100 text-amber-600',
+    text: 'text-amber-800',
   },
   neutral: {
-    bg: "bg-slate-50/80 border-slate-200",
-    icon: "bg-slate-100 text-slate-500",
-    text: "text-slate-700",
+    bg: 'bg-slate-50/80 border-slate-200',
+    icon: 'bg-slate-100 text-slate-500',
+    text: 'text-slate-700',
   },
 } as const;
 
 export function InsightBanner({
   children,
-  tone = "info",
+  tone = 'info',
 }: {
   children: React.ReactNode;
   tone?: keyof typeof INSIGHT_TONES;
@@ -380,19 +386,19 @@ export function InsightBanner({
   return (
     <div
       className={cn(
-        "flex items-start gap-2.5 rounded-3xl border px-3.5 py-3 text-xs leading-relaxed",
+        'flex items-start gap-2.5 rounded-3xl border px-3.5 py-3 text-xs leading-relaxed',
         t.bg,
       )}
     >
       <div
         className={cn(
-          "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-3xl",
+          'flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-3xl',
           t.icon,
         )}
       >
         <Lightbulb className="h-3.5 w-3.5" />
       </div>
-      <span className={cn("font-medium pt-0.5", t.text)}>{children}</span>
+      <span className={cn('font-medium pt-0.5', t.text)}>{children}</span>
     </div>
   );
 }
@@ -414,10 +420,10 @@ export function FilterChip({
     <button
       onClick={onClick}
       className={cn(
-        "px-4 py-2 rounded-full text-xs font-bold transition-all border flex-shrink-0 cursor-pointer shadow-sm hover:-translate-y-0.5 hover:shadow-md",
+        'px-4 py-2 rounded-full text-xs font-bold transition-all border flex-shrink-0 cursor-pointer shadow-sm hover:-translate-y-0.5 hover:shadow-md',
         active
-          ? "text-white border-transparent"
-          : "bg-slate-50 text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-100",
+          ? 'text-white border-transparent'
+          : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-100',
       )}
       style={active ? { backgroundColor: color } : undefined}
     >
@@ -442,18 +448,18 @@ export function HeatmapCell({
 
   const bg =
     score >= 80
-      ? "bg-emerald-100 text-emerald-800"
+      ? 'bg-emerald-100 text-emerald-800'
       : score >= 60
-        ? "bg-blue-100 text-blue-800"
+        ? 'bg-blue-100 text-blue-800'
         : score >= 40
-          ? "bg-amber-100 text-amber-800"
-          : "bg-red-100 text-red-800";
+          ? 'bg-amber-100 text-amber-800'
+          : 'bg-red-100 text-red-800';
 
   return (
     <td className="px-1.5 py-2 text-center">
       <span
         className={cn(
-          "inline-block min-w-[3rem] rounded-3xl px-2 py-1 text-xs font-bold tabular-nums",
+          'inline-block min-w-[3rem] rounded-3xl px-2 py-1 text-xs font-bold tabular-nums',
           bg,
         )}
       >
@@ -480,7 +486,10 @@ export function SubtestTooltipHeader({
             {initial}
           </th>
         </TooltipTrigger>
-        <TooltipContent side="top" className="text-xs">
+        <TooltipContent
+          side="top"
+          className="text-xs"
+        >
           {fullName}
         </TooltipContent>
       </Tooltip>

@@ -4,7 +4,7 @@ import { useVideoHLS } from '@/hooks/use-hls-video';
 import { IconCheckList } from '@/styles/icon';
 import 'katex/dist/katex.min.css';
 import { ClockIcon, Loader } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useProvider } from '../../../../_provider/provider';
 import EmojiRating from '../../../z_other/emoji-rating';
 import SubmitCourse from '../../../z_other/submit-course';
@@ -13,7 +13,6 @@ const VideoType = () => {
   const {
     useData: { CourseData, CourseProgress },
   } = useProvider();
-  const [videoUrl, setVideoUrl] = useState<string>('');
 
   useEffect(() => {
     const video = document.getElementById('course-video') as HTMLDivElement;

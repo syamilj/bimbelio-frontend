@@ -125,8 +125,8 @@ export const DialogOnBoarding = ({
               <li className="flex items-start gap-2">
                 <Crown className="w-4 h-4 mt-1 flex-shrink-0" />
                 <span>
-                  <strong>Gratis:</strong> Akses terbatas ke fitur dasar
-                  dengan batasan penggunaan
+                  <strong>Gratis:</strong> Akses terbatas ke fitur dasar dengan
+                  batasan penggunaan
                 </span>
               </li>
               <li className="flex items-start gap-2">

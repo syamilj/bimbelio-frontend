@@ -148,7 +148,6 @@ export default function DialogAIMatch({
       setCatLoadingSet(new Set());
     }
     prevOpenRef.current = open;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   /* close dropdown on outside click */

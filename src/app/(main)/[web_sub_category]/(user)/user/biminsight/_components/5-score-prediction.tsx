@@ -1,39 +1,32 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { Badge } from "@/components/ui/badge";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Badge } from '@/components/ui/badge';
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useGet } from "@/lib/fetch-helper/useGet";
-import { cn } from "@/lib/utils";
-import { getSubtestLabel } from "@/lib/utils/subtest";
+} from '@/components/ui/chart';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useGet } from '@/lib/fetch-helper/useGet';
+import { cn } from '@/lib/utils';
+import { getSubtestLabel } from '@/lib/utils/subtest';
 import {
   ArrowDown,
   ArrowRight,
   ArrowUp,
   Brain,
   CheckCircle2,
-  Gauge,
   Minus,
   Rocket,
-  Target,
-  TrendingDown,
-  TrendingUp,
-  Trophy,
   XCircle,
-  Zap,
-} from "lucide-react";
-import { useParams } from "next/navigation";
-import { useMemo } from "react";
+} from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { useMemo } from 'react';
 import {
   Area,
   Bar,
-  BarChart,
   CartesianGrid,
   Cell,
   ComposedChart,
@@ -49,16 +42,14 @@ import {
   RadarChart,
   XAxis,
   YAxis,
-} from "recharts";
+} from 'recharts';
 import {
   ChangeCard,
   InsightBanner,
   InsightCard,
   ScrollRow,
   SectionLabel,
-  StatPill,
-} from "./_primitives";
-
+} from './_primitives';
 
 // --- Types -------------------------------------------------------------------
 
@@ -70,9 +61,9 @@ interface SubtestData {
   recentAvg: number;
   latestScore: number;
   predicted: number;
-  trend: "improving" | "declining" | "stable";
+  trend: 'improving' | 'declining' | 'stable';
   slope: number;
-  strength: "strong" | "moderate" | "weak";
+  strength: 'strong' | 'moderate' | 'weak';
   dataPoints: number;
   history: { index: number; score: number }[];
 }
@@ -84,7 +75,7 @@ interface PredictionResponse {
   prediction?: {
     nextScore: number;
     confidence: { low: number; high: number };
-    trend: "improving" | "declining" | "stable";
+    trend: 'improving' | 'declining' | 'stable';
     trendSlope: number;
     rSquared: number;
     mae: number;
@@ -152,31 +143,31 @@ interface PredictionResponse {
 
 const STRENGTH = {
   strong: {
-    label: "Kuat",
-    color: "#22c55e",
-    badge: "border-emerald-200 text-emerald-700 bg-emerald-50",
+    label: 'Kuat',
+    color: '#22c55e',
+    badge: 'border-emerald-200 text-emerald-700 bg-emerald-50',
   },
   moderate: {
-    label: "Sedang",
-    color: "#f59e0b",
-    badge: "border-amber-200 text-amber-700 bg-amber-50",
+    label: 'Sedang',
+    color: '#f59e0b',
+    badge: 'border-amber-200 text-amber-700 bg-amber-50',
   },
   weak: {
-    label: "Lemah",
-    color: "#ef4444",
-    badge: "border-red-200 text-red-600 bg-red-50",
+    label: 'Lemah',
+    color: '#ef4444',
+    badge: 'border-red-200 text-red-600 bg-red-50',
   },
 } as const;
 
 const SUB_COLORS = [
-  "#0091FF",
-  "#22c55e",
-  "#eab308",
-  "#ef4444",
-  "#6366f1",
-  "#a855f7",
-  "#f97316",
-  "#14b8a6",
+  '#0091FF',
+  '#22c55e',
+  '#eab308',
+  '#ef4444',
+  '#6366f1',
+  '#a855f7',
+  '#f97316',
+  '#14b8a6',
 ];
 
 // --- Main export -------------------------------------------------------------
@@ -185,7 +176,7 @@ export const ScorePrediction = () => {
   const { id } = useParams<{ id: string | undefined }>();
 
   const { data, isLoading } = useGet<PredictionResponse>(
-    "/learningAnalytics/getScorePrediction",
+    '/learningAnalytics/getScorePrediction',
     {
       params: { userId: id ? id : undefined },
       useEffectDependencies: [id],
@@ -199,33 +190,33 @@ export const ScorePrediction = () => {
     return (
       <div>
         <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm overflow-hidden py-12">
-            <div className="flex flex-col items-center justify-center text-center">
-              <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-slate-100 mb-4">
-                <Brain className="h-8 w-8 text-slate-300" />
+          <div className="flex flex-col items-center justify-center text-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-slate-100 mb-4">
+              <Brain className="h-8 w-8 text-slate-300" />
+            </div>
+            <h3 className="text-lg font-black text-slate-800 mb-1">
+              Data Belum Cukup
+            </h3>
+            <p className="text-sm text-slate-500 max-w-md">
+              Dibutuhkan minimal {data.minimumRequired ?? 2} tryout untuk
+              prediksi. Saat ini baru {data.totalTryouts ?? 0} tryout selesai.
+            </p>
+            <div className="mt-4 flex items-center gap-2">
+              <div className="w-full max-w-[200px] bg-slate-200 rounded-full h-2 overflow-hidden">
+                <div
+                  className="h-full bg-violet-500 rounded-full transition-all"
+                  style={{
+                    width: `${Math.min(100, ((data.totalTryouts ?? 0) / (data.minimumRequired ?? 2)) * 100)}%`,
+                  }}
+                />
               </div>
-              <h3 className="text-lg font-black text-slate-800 mb-1">
-                Data Belum Cukup
-              </h3>
-              <p className="text-sm text-slate-500 max-w-md">
-                Dibutuhkan minimal {data.minimumRequired ?? 2} tryout untuk
-                prediksi. Saat ini baru {data.totalTryouts ?? 0} tryout selesai.
-              </p>
-              <div className="mt-4 flex items-center gap-2">
-                <div className="w-full max-w-[200px] bg-slate-200 rounded-full h-2 overflow-hidden">
-                  <div
-                    className="h-full bg-violet-500 rounded-full transition-all"
-                    style={{
-                      width: `${Math.min(100, ((data.totalTryouts ?? 0) / (data.minimumRequired ?? 2)) * 100)}%`,
-                    }}
-                  />
-                </div>
-                <span className="text-xs font-bold text-slate-500">
-                  {data.totalTryouts ?? 0}/{data.minimumRequired ?? 2}
-                </span>
-              </div>
+              <span className="text-xs font-bold text-slate-500">
+                {data.totalTryouts ?? 0}/{data.minimumRequired ?? 2}
+              </span>
             </div>
           </div>
         </div>
+      </div>
     );
   }
 
@@ -241,29 +232,26 @@ function PredictionCard({ data }: { data: PredictionResponse }) {
   const p = data.prediction!;
   const ins = data.insights!;
 
-  const scoreDiff = p.nextScore - Math.round(ins.latestScore);
-
   return (
     <div>
       <div className="rounded-3xl border border-slate-200/60 bg-white shadow-xl shadow-slate-200/20 overflow-hidden mb-4">
-
         <div className="space-y-5 px-5 py-5 md:px-7 md:py-6">
           {/* Insight */}
           <InsightBanner
             tone={
-              p.trend === "improving"
-                ? "success"
-                : p.trend === "declining"
-                  ? "warning"
-                  : "info"
+              p.trend === 'improving'
+                ? 'success'
+                : p.trend === 'declining'
+                  ? 'warning'
+                  : 'info'
             }
           >
             {`Prediksi skor ${p.nextScore.toFixed(0)} (interval ${p.confidence.low.toFixed(0)}–${p.confidence.high.toFixed(0)}) dengan tren ${
-              p.trend === "improving"
-                ? "naik — momentum belajarmu sedang bagus!"
-                : p.trend === "declining"
-                  ? "menurun — perlu strategi baru."
-                  : "stabil — tetap konsisten untuk peningkatan."
+              p.trend === 'improving'
+                ? 'naik — momentum belajarmu sedang bagus!'
+                : p.trend === 'declining'
+                  ? 'menurun — perlu strategi baru.'
+                  : 'stabil — tetap konsisten untuk peningkatan.'
             }`}
           </InsightBanner>
 
@@ -282,11 +270,17 @@ function PredictionCard({ data }: { data: PredictionResponse }) {
           )}
 
           {/* -- 4. Insights grid -- */}
-          <InsightsGrid prediction={p} insights={ins} />
+          <InsightsGrid
+            prediction={p}
+            insights={ins}
+          />
 
           {/* -- 5. Per subtest -- */}
           {data.perSubtest && data.perSubtest.length > 0 && (
-            <SubtestSection perSubtest={data.perSubtest} mainColor={mainColor} />
+            <SubtestSection
+              perSubtest={data.perSubtest}
+              mainColor={mainColor}
+            />
           )}
 
           {/* -- 6. Efficiency -- */}
@@ -299,9 +293,7 @@ function PredictionCard({ data }: { data: PredictionResponse }) {
           )}
 
           {/* -- 7. Percentile chart -- */}
-          {data.history && (
-            <PercentileChart history={data.history} />
-          )}
+          {data.history && <PercentileChart history={data.history} />}
         </div>
       </div>
     </div>
@@ -317,15 +309,16 @@ function ScoreTrendChart({
   mainColor,
   projections,
 }: {
-  history: NonNullable<PredictionResponse["history"]>;
+  history: NonNullable<PredictionResponse['history']>;
   mainColor: string;
-  projections?: PredictionResponse["projections"];
+  projections?: PredictionResponse['projections'];
 }) {
   const chartData = useMemo(() => {
-    const projEma = projections && projections.length > 0 ? projections[0].ema : null;
+    const projEma =
+      projections && projections.length > 0 ? projections[0].ema : null;
 
     return history.map((h) => ({
-      name: h.actual == null ? "Prediksi" : `TO-${h.index}`,
+      name: h.actual == null ? 'Prediksi' : `TO-${h.index}`,
       fullName: h.tryoutTitle,
       actual: h.actual,
       predicted: h.predicted,
@@ -335,9 +328,9 @@ function ScoreTrendChart({
   }, [history, projections]);
 
   const chartConfig: ChartConfig = {
-    actual: { label: "Skor Aktual", color: mainColor },
-    predicted: { label: "Prediksi V1", color: "#a855f7" },
-    ema: { label: "Prediksi V2", color: "#f59e0b" },
+    actual: { label: 'Skor Aktual', color: mainColor },
+    predicted: { label: 'Prediksi V1', color: '#a855f7' },
+    ema: { label: 'Prediksi V2', color: '#f59e0b' },
   };
 
   return (
@@ -355,15 +348,32 @@ function ScoreTrendChart({
           margin={{ top: 15, right: 45, left: -15, bottom: 0 }}
         >
           <defs>
-            <linearGradient id="predScoreGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor={mainColor} stopOpacity={0.25} />
-              <stop offset="95%" stopColor={mainColor} stopOpacity={0} />
+            <linearGradient
+              id="predScoreGrad"
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="1"
+            >
+              <stop
+                offset="5%"
+                stopColor={mainColor}
+                stopOpacity={0.25}
+              />
+              <stop
+                offset="95%"
+                stopColor={mainColor}
+                stopOpacity={0}
+              />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="#f1f5f9"
+          />
           <XAxis
             dataKey="name"
-            tick={{ fontSize: 10, fill: "#94a3b8" }}
+            tick={{ fontSize: 10, fill: '#94a3b8' }}
             tickLine={false}
             axisLine={false}
             interval={0}
@@ -373,7 +383,7 @@ function ScoreTrendChart({
           />
           <YAxis
             domain={['dataMin - 50', 'dataMax + 50']}
-            tick={{ fontSize: 10, fill: "#94a3b8" }}
+            tick={{ fontSize: 10, fill: '#94a3b8' }}
             tickLine={false}
             axisLine={false}
             width={35}
@@ -383,7 +393,7 @@ function ScoreTrendChart({
               <ChartTooltipContent
                 labelFormatter={(_, payload) => {
                   const d = payload?.[0]?.payload as { fullName?: string };
-                  return d?.fullName || "";
+                  return d?.fullName || '';
                 }}
               />
             }
@@ -416,7 +426,9 @@ function ScoreTrendChart({
               position="top"
               offset={10}
               className="fill-slate-700 font-bold text-[10px]"
-              formatter={(v: unknown) => v != null ? String(Math.round(Number(v))) : ''}
+              formatter={(v: unknown) =>
+                v != null ? String(Math.round(Number(v))) : ''
+              }
             />
           </Area>
           <Line
@@ -428,18 +440,45 @@ function ScoreTrendChart({
             connectNulls={false}
             dot={(props: any) => {
               const { cx, cy, payload } = props;
-              if (!payload.isPrediction || payload.ema == null) return <g key={`e-${cx}`} />;
+              if (!payload.isPrediction || payload.ema == null)
+                return <g key={`e-${cx}`} />;
               const pVal = Math.round(payload.ema);
               return (
-                <g key={`e-${cx}`} className="overflow-visible">
+                <g
+                  key={`e-${cx}`}
+                  className="overflow-visible"
+                >
                   {/* Glowing/pulsing ring */}
-                  <circle cx={cx} cy={cy} r={6} fill="#f59e0b" stroke="none">
-                    <animate attributeName="r" values="6;20" dur="2.2s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="0.6;0" dur="2.2s" repeatCount="indefinite" />
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r={6}
+                    fill="#f59e0b"
+                    stroke="none"
+                  >
+                    <animate
+                      attributeName="r"
+                      values="6;20"
+                      dur="2.2s"
+                      repeatCount="indefinite"
+                    />
+                    <animate
+                      attributeName="opacity"
+                      values="0.6;0"
+                      dur="2.2s"
+                      repeatCount="indefinite"
+                    />
                   </circle>
 
                   {/* Solid inner dot */}
-                  <circle cx={cx} cy={cy} r={6} fill="#f59e0b" stroke="#fff" strokeWidth={2} />
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r={6}
+                    fill="#f59e0b"
+                    stroke="#fff"
+                    strokeWidth={2}
+                  />
 
                   {/* Floating animated badge below the dot (to avoid overlapping WLS) */}
                   <g>
@@ -451,11 +490,30 @@ function ScoreTrendChart({
                       repeatCount="indefinite"
                     />
                     {/* Tail pointing up */}
-                    <path d={`M${cx - 6} ${cy + 12} L${cx + 6} ${cy + 12} L${cx} ${cy + 5} Z`} fill="#d97706" />
+                    <path
+                      d={`M${cx - 6} ${cy + 12} L${cx + 6} ${cy + 12} L${cx} ${cy + 5} Z`}
+                      fill="#d97706"
+                    />
                     {/* Tooltip box */}
-                    <rect x={cx - 30} y={cy + 12} width={60} height={24} rx={12} fill="#d97706" className="drop-shadow-md" />
+                    <rect
+                      x={cx - 30}
+                      y={cy + 12}
+                      width={60}
+                      height={24}
+                      rx={12}
+                      fill="#d97706"
+                      className="drop-shadow-md"
+                    />
                     {/* Text value */}
-                    <text x={cx} y={cy + 28} textAnchor="middle" fill="#ffffff" fontSize="11" fontWeight="900" className="drop-shadow-sm">
+                    <text
+                      x={cx}
+                      y={cy + 28}
+                      textAnchor="middle"
+                      fill="#ffffff"
+                      fontSize="11"
+                      fontWeight="900"
+                      className="drop-shadow-sm"
+                    >
                       ✨ {pVal}
                     </text>
                   </g>
@@ -474,15 +532,41 @@ function ScoreTrendChart({
               if (!payload.isPrediction) return <g key={`p-${cx}`} />;
               const pVal = Math.round(payload.predicted);
               return (
-                <g key={`p-${cx}`} className="overflow-visible">
+                <g
+                  key={`p-${cx}`}
+                  className="overflow-visible"
+                >
                   {/* Glowing/pulsing ring */}
-                  <circle cx={cx} cy={cy} r={6} fill="#a855f7" stroke="none">
-                    <animate attributeName="r" values="6;20" dur="2s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="0.6;0" dur="2s" repeatCount="indefinite" />
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r={6}
+                    fill="#a855f7"
+                    stroke="none"
+                  >
+                    <animate
+                      attributeName="r"
+                      values="6;20"
+                      dur="2s"
+                      repeatCount="indefinite"
+                    />
+                    <animate
+                      attributeName="opacity"
+                      values="0.6;0"
+                      dur="2s"
+                      repeatCount="indefinite"
+                    />
                   </circle>
 
                   {/* Solid inner dot */}
-                  <circle cx={cx} cy={cy} r={6} fill="#a855f7" stroke="#fff" strokeWidth={2} />
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r={6}
+                    fill="#a855f7"
+                    stroke="#fff"
+                    strokeWidth={2}
+                  />
 
                   {/* Floating animated badge above the dot */}
                   <g>
@@ -494,11 +578,30 @@ function ScoreTrendChart({
                       repeatCount="indefinite"
                     />
                     {/* Tail of the tooltip */}
-                    <path d={`M${cx - 6} ${cy - 12} L${cx + 6} ${cy - 12} L${cx} ${cy - 5} Z`} fill="#9333ea" />
+                    <path
+                      d={`M${cx - 6} ${cy - 12} L${cx + 6} ${cy - 12} L${cx} ${cy - 5} Z`}
+                      fill="#9333ea"
+                    />
                     {/* Tooltip box */}
-                    <rect x={cx - 30} y={cy - 36} width={60} height={24} rx={12} fill="#9333ea" className="drop-shadow-md" />
+                    <rect
+                      x={cx - 30}
+                      y={cy - 36}
+                      width={60}
+                      height={24}
+                      rx={12}
+                      fill="#9333ea"
+                      className="drop-shadow-md"
+                    />
                     {/* Text value */}
-                    <text x={cx} y={cy - 19} textAnchor="middle" fill="#ffffff" fontSize="11" fontWeight="900" className="drop-shadow-sm">
+                    <text
+                      x={cx}
+                      y={cy - 19}
+                      textAnchor="middle"
+                      fill="#ffffff"
+                      fontSize="11"
+                      fontWeight="900"
+                      className="drop-shadow-sm"
+                    >
                       🎯 {pVal}
                     </text>
                   </g>
@@ -519,14 +622,13 @@ function ScoreTrendChart({
 function ProjectionsRow({
   projections,
 }: {
-  projections: NonNullable<PredictionResponse["projections"]>;
+  projections: NonNullable<PredictionResponse['projections']>;
 }) {
   return (
     <div>
       <SectionLabel title="Proyeksi Skor" />
       <ScrollRow className="mt-3">
         {projections.map((proj) => {
-          const diff = proj.blended - proj.wls;
           return (
             <div
               key={proj.stepsAhead}
@@ -536,10 +638,10 @@ function ProjectionsRow({
                 <Rocket className="w-3.5 h-3.5" />
               </div>
               <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                  {proj.stepsAhead === 1
-                    ? "TO Berikutnya"
-                    : `${proj.stepsAhead} TO Lagi`}
-                </p>
+                {proj.stepsAhead === 1
+                  ? 'TO Berikutnya'
+                  : `${proj.stepsAhead} TO Lagi`}
+              </p>
               <p className="text-2xl font-black text-slate-800">
                 {proj.blended}
               </p>
@@ -567,60 +669,60 @@ function InsightsGrid({
   prediction: p,
   insights: ins,
 }: {
-  prediction: NonNullable<PredictionResponse["prediction"]>;
-  insights: NonNullable<PredictionResponse["insights"]>;
+  prediction: NonNullable<PredictionResponse['prediction']>;
+  insights: NonNullable<PredictionResponse['insights']>;
 }) {
   const momentumLabel =
     p.momentum > 3
-      ? "Kuat Naik"
+      ? 'Kuat Naik'
       : p.momentum > 0
-        ? "Naik Perlahan"
+        ? 'Naik Perlahan'
         : p.momentum < -3
-          ? "Turun Tajam"
+          ? 'Turun Tajam'
           : p.momentum < 0
-            ? "Sedikit Turun"
-            : "Netral";
+            ? 'Sedikit Turun'
+            : 'Netral';
 
   const insights: {
     title: string;
     value: string;
     sub: string;
-    tone: "emerald" | "amber" | "blue" | "slate";
+    tone: 'emerald' | 'amber' | 'blue' | 'slate';
   }[] = [
     {
-      title: "Momentum",
+      title: 'Momentum',
       value: momentumLabel,
-      sub: `${p.momentum > 0 ? "+" : ""}${p.momentum} poin/TO (3 terakhir)`,
-      tone: p.momentum > 0 ? "emerald" : p.momentum < 0 ? "amber" : "slate",
+      sub: `${p.momentum > 0 ? '+' : ''}${p.momentum} poin/TO (3 terakhir)`,
+      tone: p.momentum > 0 ? 'emerald' : p.momentum < 0 ? 'amber' : 'slate',
     },
     {
-      title: "Pertumbuhan",
-      value: `${ins.growthPercent > 0 ? "+" : ""}${ins.growthPercent}%`,
-      sub: "Paruh akhir vs paruh awal",
-      tone: ins.growthPercent >= 0 ? "emerald" : "amber",
+      title: 'Pertumbuhan',
+      value: `${ins.growthPercent > 0 ? '+' : ''}${ins.growthPercent}%`,
+      sub: 'Paruh akhir vs paruh awal',
+      tone: ins.growthPercent >= 0 ? 'emerald' : 'amber',
     },
     {
-      title: "Konsistensi",
+      title: 'Konsistensi',
       value:
         ins.consistency < 10
-          ? "Sangat Konsisten"
+          ? 'Sangat Konsisten'
           : ins.consistency < 20
-            ? "Cukup Konsisten"
-            : "Berfluktuasi",
+            ? 'Cukup Konsisten'
+            : 'Berfluktuasi',
       sub: `CV = ${ins.consistency}%`,
-      tone: ins.consistency < 20 ? "emerald" : "amber",
+      tone: ins.consistency < 20 ? 'emerald' : 'amber',
     },
     {
-      title: "Performa Terbaik",
+      title: 'Performa Terbaik',
       value: `${Math.round(ins.bestPerformance.score)}`,
       sub: ins.bestPerformance.title,
-      tone: "emerald",
+      tone: 'emerald',
     },
     {
-      title: "Performa Terendah",
+      title: 'Performa Terendah',
       value: `${Math.round(ins.worstPerformance.score)}`,
       sub: ins.worstPerformance.title,
-      tone: "amber",
+      tone: 'amber',
     },
   ];
 
@@ -629,32 +731,38 @@ function InsightsGrid({
       title: `Target Skor ${ins.projectedMilestone.target}`,
       value: `~${ins.projectedMilestone.triesNeeded} TO lagi`,
       sub: `Dengan tren +${ins.learningVelocity}/TO`,
-      tone: "blue",
+      tone: 'blue',
     });
   }
   if (ins.strongestSubtest) {
     insights.push({
-      title: "Subtes Terkuat",
+      title: 'Subtes Terkuat',
       value: ins.strongestSubtest.name,
       sub: `Rata-rata: ${Math.round(ins.strongestSubtest.avgScore)}`,
-      tone: "emerald",
+      tone: 'emerald',
     });
   }
   if (ins.weakestSubtest) {
     insights.push({
-      title: "Perlu Ditingkatkan",
+      title: 'Perlu Ditingkatkan',
       value: ins.weakestSubtest.name,
       sub: `Rata-rata: ${Math.round(ins.weakestSubtest.avgScore)}`,
-      tone: "amber",
+      tone: 'amber',
     });
   }
 
   return (
     <div>
       <SectionLabel title="Insight" />
-      <ScrollRow className="mt-3" cols={3}>
+      <ScrollRow
+        className="mt-3"
+        cols={3}
+      >
         {insights.map((item) => (
-          <div key={item.title} className="w-[200px] flex-shrink-0 md:w-auto">
+          <div
+            key={item.title}
+            className="w-[200px] flex-shrink-0 md:w-auto"
+          >
             <InsightCard {...item} />
           </div>
         ))}
@@ -671,7 +779,7 @@ function SubtestSection({
   perSubtest,
   mainColor,
 }: {
-  perSubtest: NonNullable<PredictionResponse["perSubtest"]>;
+  perSubtest: NonNullable<PredictionResponse['perSubtest']>;
   mainColor: string;
 }) {
   const { id: webSubId } = useWebsiteSubCategory();
@@ -688,8 +796,8 @@ function SubtestSection({
   );
 
   const radarConfig: ChartConfig = {
-    current: { label: "Saat Ini", color: mainColor },
-    predicted: { label: "Prediksi", color: "#a855f7" },
+    current: { label: 'Saat Ini', color: mainColor },
+    predicted: { label: 'Prediksi', color: '#a855f7' },
   };
 
   return (
@@ -718,10 +826,10 @@ function SubtestSection({
               <PolarGrid stroke="#e2e8f0" />
               <PolarAngleAxis
                 dataKey="subject"
-                tick={{ fontSize: 11, fill: "#374151", fontWeight: 700 }}
+                tick={{ fontSize: 11, fill: '#374151', fontWeight: 700 }}
               />
               <PolarRadiusAxis
-                tick={{ fontSize: 9, fill: "#9CA3AF" }}
+                tick={{ fontSize: 9, fill: '#9CA3AF' }}
                 orientation="middle"
                 angle={90}
               />
@@ -788,24 +896,29 @@ function SubtestCard({
           {getSubtestLabel(sub.name, webSubId)}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-bold text-slate-800 leading-tight">{sub.name}</p>
+          <p className="text-sm font-bold text-slate-800 leading-tight">
+            {sub.name}
+          </p>
           <div className="flex items-center gap-1.5 mt-1">
             <Badge
               variant="outline"
-              className={cn("text-[9px] px-1.5 py-0 uppercase tracking-widest", s.badge)}
+              className={cn(
+                'text-[9px] px-1.5 py-0 uppercase tracking-widest',
+                s.badge,
+              )}
             >
               {s.label}
             </Badge>
             <div className="flex items-center gap-0.5 text-slate-500">
-              {sub.trend === "improving" ? (
+              {sub.trend === 'improving' ? (
                 <ArrowUp className="w-3 h-3 text-emerald-500" />
-              ) : sub.trend === "declining" ? (
+              ) : sub.trend === 'declining' ? (
                 <ArrowDown className="w-3 h-3 text-red-500" />
               ) : (
                 <Minus className="w-3 h-3 text-slate-400" />
               )}
               <span className="text-[10px] font-medium">
-                {sub.slope > 0 ? "+" : ""}
+                {sub.slope > 0 ? '+' : ''}
                 {sub.slope % 1 === 0 ? sub.slope : sub.slope.toFixed(1)} Poin/TO
               </span>
             </div>
@@ -815,27 +928,35 @@ function SubtestCard({
 
       <div className="flex items-center bg-slate-50/70 p-2.5 rounded-2xl gap-3">
         <div className="flex-1">
-          <p className="text-[10px] font-bold text-slate-400 mb-0.5 uppercase tracking-wider">Rata-rata</p>
-          <p className="text-base font-bold text-slate-700">{Math.round(sub.currentAvg)}</p>
+          <p className="text-[10px] font-bold text-slate-400 mb-0.5 uppercase tracking-wider">
+            Rata-rata
+          </p>
+          <p className="text-base font-bold text-slate-700">
+            {Math.round(sub.currentAvg)}
+          </p>
         </div>
         <div className="flex items-center justify-center text-slate-300">
           <ArrowRight className="w-4 h-4" />
         </div>
         <div className="flex-1 text-right">
-          <p className="text-[10px] font-bold text-violet-500/70 mb-0.5 uppercase tracking-wider">Prediksi</p>
+          <p className="text-[10px] font-bold text-violet-500/70 mb-0.5 uppercase tracking-wider">
+            Prediksi
+          </p>
           <div className="flex items-center justify-end gap-1.5">
-            <span className="text-base font-black text-violet-600">{sub.predicted}</span>
-             <span
+            <span className="text-base font-black text-violet-600">
+              {sub.predicted}
+            </span>
+            <span
               className={cn(
-                "text-[10px] font-bold px-1.5 py-0.5 rounded-full",
+                'text-[10px] font-bold px-1.5 py-0.5 rounded-full',
                 isUp
-                  ? "text-emerald-700 bg-emerald-100/50"
+                  ? 'text-emerald-700 bg-emerald-100/50'
                   : diff < 0
-                    ? "text-red-700 bg-red-100/50"
-                    : "text-slate-500 bg-slate-200/50",
+                    ? 'text-red-700 bg-red-100/50'
+                    : 'text-slate-500 bg-slate-200/50',
               )}
             >
-              {isUp ? "+" : ""}
+              {isUp ? '+' : ''}
               {Math.round(diff)}
             </span>
           </div>
@@ -854,8 +975,8 @@ function EfficiencySection({
   bskTrend,
   mainColor,
 }: {
-  insights: NonNullable<PredictionResponse["insights"]>;
-  bskTrend: NonNullable<PredictionResponse["bskTrend"]>;
+  insights: NonNullable<PredictionResponse['insights']>;
+  bskTrend: NonNullable<PredictionResponse['bskTrend']>;
   mainColor: string;
 }) {
   const bskChartData = useMemo(
@@ -871,9 +992,9 @@ function EfficiencySection({
   );
 
   const bskConfig: ChartConfig = {
-    benar: { label: "Benar", color: "#22c55e" },
-    salah: { label: "Salah", color: "#ef4444" },
-    kosong: { label: "Kosong", color: "#94a3b8" },
+    benar: { label: 'Benar', color: '#22c55e' },
+    salah: { label: 'Salah', color: '#ef4444' },
+    kosong: { label: 'Kosong', color: '#94a3b8' },
   };
 
   const latestBsk = bskTrend[bskTrend.length - 1];
@@ -889,22 +1010,22 @@ function EfficiencySection({
   const effData = useMemo(
     () => [
       {
-        name: "filled",
+        name: 'filled',
         value: insights.scoringEfficiency,
         fill: mainColor,
       },
       {
-        name: "empty",
+        name: 'empty',
         value: 100 - insights.scoringEfficiency,
-        fill: "#e2e8f0",
+        fill: '#e2e8f0',
       },
     ],
     [insights.scoringEfficiency, mainColor],
   );
 
   const effConfig: ChartConfig = {
-    filled: { label: "Efisiensi", color: mainColor },
-    empty: { label: "", color: "#e2e8f0" },
+    filled: { label: 'Efisiensi', color: mainColor },
+    empty: { label: '', color: '#e2e8f0' },
   };
 
   return (
@@ -912,7 +1033,10 @@ function EfficiencySection({
       <SectionLabel title="Efisiensi Jawab" />
 
       {/* Efficiency gauge + change cards */}
-      <ScrollRow cols={4} className="mt-4">
+      <ScrollRow
+        cols={4}
+        className="mt-4"
+      >
         {/* Gauge Card */}
         <div className="w-[150px] md:w-auto rounded-3xl border border-slate-100 bg-white shadow-sm p-4 shrink-0 flex flex-col items-center justify-center">
           <ChartContainer
@@ -934,11 +1058,14 @@ function EfficiencySection({
                 stroke="none"
               >
                 {effData.map((d, i) => (
-                  <Cell key={i} fill={d.fill} />
+                  <Cell
+                    key={i}
+                    fill={d.fill}
+                  />
                 ))}
                 <Label
                   content={({ viewBox }) => {
-                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                    if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
                       return (
                         <text
                           x={viewBox.cx}
@@ -946,7 +1073,10 @@ function EfficiencySection({
                           textAnchor="middle"
                           dominantBaseline="middle"
                         >
-                          <tspan className="fill-slate-800 text-lg font-black tracking-tight" dy="2">
+                          <tspan
+                            className="fill-slate-800 text-lg font-black tracking-tight"
+                            dy="2"
+                          >
                             {Math.round(insights.scoringEfficiency)}%
                           </tspan>
                         </text>
@@ -1009,16 +1139,19 @@ function EfficiencySection({
             margin={{ top: 10, right: 10, left: 0, bottom: 10 }}
             barCategoryGap="18%"
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke="#f1f5f9"
+            />
             <XAxis
               dataKey="name"
-              tick={{ fontSize: 10, fill: "#94a3b8" }}
+              tick={{ fontSize: 10, fill: '#94a3b8' }}
               tickLine={false}
               axisLine={false}
               interval={0}
             />
             <YAxis
-              tick={{ fontSize: 10, fill: "#94a3b8" }}
+              tick={{ fontSize: 10, fill: '#94a3b8' }}
               tickLine={false}
               axisLine={false}
               width={40}
@@ -1033,7 +1166,7 @@ function EfficiencySection({
               <LabelList
                 position="center"
                 className="fill-white font-bold text-[9px]"
-                formatter={(v: unknown) => Number(v) > 0 ? String(v) : ''}
+                formatter={(v: unknown) => (Number(v) > 0 ? String(v) : '')}
               />
             </Bar>
             <Bar
@@ -1045,7 +1178,7 @@ function EfficiencySection({
               <LabelList
                 position="center"
                 className="fill-white font-bold text-[9px]"
-                formatter={(v: unknown) => Number(v) > 0 ? String(v) : ''}
+                formatter={(v: unknown) => (Number(v) > 0 ? String(v) : '')}
               />
             </Bar>
             <Bar
@@ -1057,7 +1190,7 @@ function EfficiencySection({
               <LabelList
                 position="center"
                 className="fill-white font-bold text-[9px]"
-                formatter={(v: unknown) => Number(v) > 0 ? String(v) : ''}
+                formatter={(v: unknown) => (Number(v) > 0 ? String(v) : '')}
               />
             </Bar>
             <Line
@@ -1065,7 +1198,7 @@ function EfficiencySection({
               dataKey="benarLine"
               stroke="#16a34a"
               strokeWidth={2}
-              dot={{ r: 3, fill: "#16a34a", strokeWidth: 2, stroke: "#fff" }}
+              dot={{ r: 3, fill: '#16a34a', strokeWidth: 2, stroke: '#fff' }}
               activeDot={{ r: 5 }}
               tooltipType="none"
             />
@@ -1083,7 +1216,7 @@ function EfficiencySection({
 function PercentileChart({
   history,
 }: {
-  history: NonNullable<PredictionResponse["history"]>;
+  history: NonNullable<PredictionResponse['history']>;
 }) {
   const percentileData = useMemo(
     () =>
@@ -1103,8 +1236,8 @@ function PercentileChart({
   if (percentileData.length === 0) return null;
 
   const chartConfig: ChartConfig = {
-    percentile: { label: "Persentil", color: "#22c55e" },
-    rank: { label: "Peringkat", color: "#6366f1" },
+    percentile: { label: 'Persentil', color: '#22c55e' },
+    rank: { label: 'Peringkat', color: '#6366f1' },
   };
 
   return (
@@ -1122,15 +1255,32 @@ function PercentileChart({
           margin={{ top: 5, right: 5, left: -20, bottom: 0 }}
         >
           <defs>
-            <linearGradient id="pctlGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#22c55e" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="#22c55e" stopOpacity={0} />
+            <linearGradient
+              id="pctlGrad"
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="1"
+            >
+              <stop
+                offset="5%"
+                stopColor="#22c55e"
+                stopOpacity={0.3}
+              />
+              <stop
+                offset="95%"
+                stopColor="#22c55e"
+                stopOpacity={0}
+              />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="#f1f5f9"
+          />
           <XAxis
             dataKey="name"
-            tick={{ fontSize: 10, fill: "#94a3b8" }}
+            tick={{ fontSize: 10, fill: '#94a3b8' }}
             tickLine={false}
             axisLine={false}
             interval={0}
@@ -1138,7 +1288,7 @@ function PercentileChart({
           <YAxis
             yAxisId="left"
             domain={[0, 100]}
-            tick={{ fontSize: 10, fill: "#94a3b8" }}
+            tick={{ fontSize: 10, fill: '#94a3b8' }}
             tickLine={false}
             axisLine={false}
             width={35}
@@ -1149,7 +1299,7 @@ function PercentileChart({
             orientation="right"
             domain={['dataMin', 'dataMax']}
             reversed={true}
-            tick={{ fontSize: 10, fill: "#a5b4fc" }}
+            tick={{ fontSize: 10, fill: '#a5b4fc' }}
             tickLine={false}
             axisLine={false}
             width={24}
@@ -1165,13 +1315,11 @@ function PercentileChart({
                     rank?: number;
                     total?: number;
                   };
-                  return `${d?.fullName || ""} · #${d?.rank}/${d?.total}`;
+                  return `${d?.fullName || ''} · #${d?.rank}/${d?.total}`;
                 }}
                 formatter={(value, name) => {
-                  if (name === "rank") {
-                    const entry = percentileData.find(
-                      (d) => d.rank === value,
-                    );
+                  if (name === 'rank') {
+                    const entry = percentileData.find((d) => d.rank === value);
                     return (
                       <>
                         <div className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-indigo-500" />
@@ -1203,9 +1351,9 @@ function PercentileChart({
             strokeWidth={2.5}
             fill="url(#pctlGrad)"
             dot={{
-              fill: "#22c55e",
+              fill: '#22c55e',
               r: 4,
-              stroke: "#fff",
+              stroke: '#fff',
               strokeWidth: 2,
             }}
           >
@@ -1224,9 +1372,9 @@ function PercentileChart({
             strokeWidth={2}
             strokeDasharray="5 3"
             dot={{
-              fill: "#6366f1",
+              fill: '#6366f1',
               r: 3.5,
-              stroke: "#fff",
+              stroke: '#fff',
               strokeWidth: 2,
             }}
           >

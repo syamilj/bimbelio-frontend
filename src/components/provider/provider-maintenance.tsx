@@ -17,7 +17,7 @@ export default function ProviderMaintenance({
 }: {
   children: ReactNode;
 }) {
-  const [timeLeft, setTimeLeft] = useState({
+  const [_timeLeft, setTimeLeft] = useState({
     hours: 2,
     minutes: 45,
     seconds: 30,

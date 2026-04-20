@@ -8,16 +8,16 @@ import ProviderPixel from '@/components/provider/provider-pixel';
 import ProviderSessionAuth from '@/components/provider/provider-session-auth';
 import ProviderWebsiteCategory from '@/components/provider/provider-website-category';
 import { siteConfig } from '@/config/site';
+import '@/styles/globals.css';
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import { Suspense } from 'react';
-import '../../styles/globals.css';
-const PATH_HEADER_KEYS = [
-  'x-invoke-path',
-  'x-matched-path',
-  'x-original-url',
-  'next-url',
-];
+// const PATH_HEADER_KEYS = [
+//   'x-invoke-path',
+//   'x-matched-path',
+//   'x-original-url',
+//   'next-url',
+// ];
 
 export const metadata: Metadata = {
   title: {

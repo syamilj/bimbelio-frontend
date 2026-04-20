@@ -10,19 +10,16 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { cn } from '@/lib/utils';
 import {
   Coins,
   Eye,
-  Gift,
   Heart,
   ImageIcon,
   Info,
   Shield,
   ShoppingCart,
-  Sparkles,
   Users,
   Zap,
 } from 'lucide-react';
@@ -31,10 +28,6 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { DialogPayment } from './_components/dialog-payment';
-import { RenderBenefitTab } from './_components/render-benefit';
-import { RenderFeatureTab } from './_components/render-feature';
-import { RenderLimitationTab } from './_components/render-limitation';
-import { RenderOverviewTab } from './_components/render-overview';
 import { ProviderContext, useProvider } from './_provider/provider';
 import { PlanDataType } from './_provider/types';
 
@@ -52,7 +45,6 @@ export function CardPlan({
   hideFeatures = [],
   viewOnly,
   discount,
-  onClose,
   classOverlay,
   paymentMethod = 'FULL_PAYMENT',
 }: {
@@ -60,7 +52,6 @@ export function CardPlan({
   hideFeatures?: string[];
   viewOnly?: boolean;
   discount?: number;
-  onClose?: () => void;
   classOverlay?: string;
   paymentMethod?: 'FULL_PAYMENT' | 'INSTALLMENT';
 }) {
@@ -434,12 +425,7 @@ const PricingSection = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const {
     useData: { plan },
-    useViewData: {
-      isLimitedTime,
-      getDiscountPercentage,
-      discount,
-      paymentMethod,
-    },
+    useViewData: { isLimitedTime, getDiscountPercentage, discount },
   } = useProvider();
 
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -715,207 +701,205 @@ const QuickFeatures = () => {
   );
 };
 
-// Old components below are kept for backward compatibility but not used in main render
-const MaxUsersInfo = () => {
-  const {
-    useData: { plan },
-  } = useProvider();
+// const MaxUsersInfo = () => {
+//   const {
+//     useData: { plan },
+//   } = useProvider();
 
-  if (!plan.maxUsers) return null;
+//   if (!plan.maxUsers) return null;
 
-  return (
-    <div className="mb-4 p-3 rounded-3xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200">
-      <div className="flex items-center gap-3">
-        <div className="p-2 bg-amber-100 rounded-3xl">
-          <Users className="w-4 h-4 text-amber-600" />
-        </div>
-        <div className="flex-1">
-          <p className="text-sm font-semibold text-amber-800">Kuota Terbatas</p>
-          <p className="text-xs text-amber-700">
-            {plan.totalUsers || 0} / {plan.maxUsers} pengguna aktif
-          </p>
-        </div>
-        <Badge className="bg-amber-500 text-white text-xs font-bold px-2 py-1">
-          LIMITED
-        </Badge>
-      </div>
-    </div>
-  );
-};
+//   return (
+//     <div className="mb-4 p-3 rounded-3xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200">
+//       <div className="flex items-center gap-3">
+//         <div className="p-2 bg-amber-100 rounded-3xl">
+//           <Users className="w-4 h-4 text-amber-600" />
+//         </div>
+//         <div className="flex-1">
+//           <p className="text-sm font-semibold text-amber-800">Kuota Terbatas</p>
+//           <p className="text-xs text-amber-700">
+//             {plan.totalUsers || 0} / {plan.maxUsers} pengguna aktif
+//           </p>
+//         </div>
+//         <Badge className="bg-amber-500 text-white text-xs font-bold px-2 py-1">
+//           LIMITED
+//         </Badge>
+//       </div>
+//     </div>
+//   );
+// };
 
-const InstallmentInfo = () => {
-  const {
-    useData: { plan },
-    useViewData: { paymentMethod, discount },
-  } = useProvider();
-  if (!plan.PlanInstallmentConfig) return null;
-  return (
-    <div className="mb-4 p-3 rounded-3xl bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200">
-      <div className="flex items-center gap-3 mb-3">
-        <div className="p-2 bg-blue-100 rounded-3xl">
-          <Coins className="w-4 h-4 text-blue-600" />
-        </div>
-        <div className="flex-1">
-          <p className="text-sm font-semibold text-blue-800">
-            Cicilan Tersedia
-          </p>
-          <p className="text-xs text-blue-700">
-            {plan.PlanInstallmentConfig.totalInstallments}x tanpa bunga
-          </p>
-        </div>
-      </div>
+// const InstallmentInfo = () => {
+//   const {
+//     useData: { plan },
+//     useViewData: { paymentMethod, discount },
+//   } = useProvider();
+//   if (!plan.PlanInstallmentConfig) return null;
+//   return (
+//     <div className="mb-4 p-3 rounded-3xl bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200">
+//       <div className="flex items-center gap-3 mb-3">
+//         <div className="p-2 bg-blue-100 rounded-3xl">
+//           <Coins className="w-4 h-4 text-blue-600" />
+//         </div>
+//         <div className="flex-1">
+//           <p className="text-sm font-semibold text-blue-800">
+//             Cicilan Tersedia
+//           </p>
+//           <p className="text-xs text-blue-700">
+//             {plan.PlanInstallmentConfig.totalInstallments}x tanpa bunga
+//           </p>
+//         </div>
+//       </div>
 
-      {/* Detail Cicilan */}
-      <div className="space-y-2 ml-11">
-        {plan.PlanInstallmentConfig.PlanInstallmentSchedule.map(
-          (schedule, index) => {
-            const amount = schedule.amount;
-            return (
-              <div
-                key={schedule.id}
-                className="text-xs text-blue-700"
-              >
-                <span className="font-semibold">
-                  Cicilan #{schedule.installmentNumber}:
-                </span>{' '}
-                {formatPrice(amount)}
-                {index === 0
-                  ? ' (Pembayaran pertama)'
-                  : ` (${schedule.daysAfterFirstPayment} hari setelah)`}
-              </div>
-            );
-          },
-        )}
-      </div>
+//       {/* Detail Cicilan */}
+//       <div className="space-y-2 ml-11">
+//         {plan.PlanInstallmentConfig.PlanInstallmentSchedule.map(
+//           (schedule, index) => {
+//             const amount = schedule.amount;
+//             return (
+//               <div
+//                 key={schedule.id}
+//                 className="text-xs text-blue-700"
+//               >
+//                 <span className="font-semibold">
+//                   Cicilan #{schedule.installmentNumber}:
+//                 </span>{' '}
+//                 {formatPrice(amount)}
+//                 {index === 0
+//                   ? ' (Pembayaran pertama)'
+//                   : ` (${schedule.daysAfterFirstPayment} hari setelah)`}
+//               </div>
+//             );
+//           },
+//         )}
+//       </div>
 
-      {/* Masa Tenggang */}
-      {plan.PlanInstallmentConfig.gracePeriodDays > 0 && (
-        <div className="mt-2 pt-2 border-t border-blue-200 text-xs text-blue-700">
-          <span className="font-semibold">Masa Tenggang:</span>{' '}
-          {plan.PlanInstallmentConfig.gracePeriodDays} hari
-        </div>
-      )}
-    </div>
-  );
-};
+//       {/* Masa Tenggang */}
+//       {plan.PlanInstallmentConfig.gracePeriodDays > 0 && (
+//         <div className="mt-2 pt-2 border-t border-blue-200 text-xs text-blue-700">
+//           <span className="font-semibold">Masa Tenggang:</span>{' '}
+//           {plan.PlanInstallmentConfig.gracePeriodDays} hari
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
 
-const TabsSection = () => {
-  const { websiteSubCategory } = useWebsiteSubCategory();
-  const {
-    useData: { plan },
-    useState: { activeTab, setActiveTab },
-  } = useProvider();
+// const TabsSection = () => {
+//   const { websiteSubCategory } = useWebsiteSubCategory();
+//   const {
+//     useData: { plan },
+//     useState: { activeTab, setActiveTab },
+//   } = useProvider();
 
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+//   const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
-  const tabCount =
-    (plan.PlanBenefit.length > 0 ? 1 : 0) +
-    (plan.PlanLimitation ? 1 : 0) +
-    (plan.PlanSubscription ? 1 : 0) +
-    1;
+//   const tabCount =
+//     (plan.PlanBenefit.length > 0 ? 1 : 0) +
+//     (plan.PlanLimitation ? 1 : 0) +
+//     (plan.PlanSubscription ? 1 : 0) +
+//     1;
 
-  return (
-    <Tabs
-      value={activeTab}
-      onValueChange={setActiveTab}
-      className="w-full"
-    >
-      <TabsList
-        className={cn(
-          'grid w-full mb-4 h-8 bg-gray-100 p-1 rounded-3xl grid-cols-4',
-        )}
-        style={{
-          gridTemplateColumns: `repeat(${tabCount}, minmax(0, 1fr))`,
-        }}
-      >
-        <TabsTrigger
-          value="overview"
-          className="text-xs font-medium rounded-3xl data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
-          style={
-            {
-              '--tw-ring-color': `${mainColor}20`,
-            } as React.CSSProperties
-          }
-        >
-          <Eye
-            size={14}
-            className="mr-1"
-          />
-          <span className="hidden sm:inline">Overview</span>
-        </TabsTrigger>
-        {plan.PlanSubscription && (
-          <TabsTrigger
-            value="features"
-            className="text-xs font-medium rounded-3xl data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
-          >
-            <Sparkles
-              size={14}
-              className="mr-1"
-            />
-            <span className="hidden sm:inline">Fitur</span>
-          </TabsTrigger>
-        )}
-        {plan.PlanLimitation && (
-          <TabsTrigger
-            value="limitations"
-            className="text-xs font-medium rounded-3xl data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
-          >
-            <Coins
-              size={14}
-              className="mr-1"
-            />
-            <span className="hidden sm:inline">Koin</span>
-          </TabsTrigger>
-        )}
-        {plan.PlanBenefit.length > 0 && (
-          <TabsTrigger
-            value="benefits"
-            className="text-xs font-medium rounded-3xl data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
-          >
-            <Gift
-              size={14}
-              className="mr-1"
-            />
-            <span className="hidden sm:inline">Benefit</span>
-          </TabsTrigger>
-        )}
-      </TabsList>
+//   return (
+//     <Tabs
+//       value={activeTab}
+//       onValueChange={setActiveTab}
+//       className="w-full"
+//     >
+//       <TabsList
+//         className={cn(
+//           'grid w-full mb-4 h-8 bg-gray-100 p-1 rounded-3xl grid-cols-4',
+//         )}
+//         style={{
+//           gridTemplateColumns: `repeat(${tabCount}, minmax(0, 1fr))`,
+//         }}
+//       >
+//         <TabsTrigger
+//           value="overview"
+//           className="text-xs font-medium rounded-3xl data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
+//           style={
+//             {
+//               '--tw-ring-color': `${mainColor}20`,
+//             } as React.CSSProperties
+//           }
+//         >
+//           <Eye
+//             size={14}
+//             className="mr-1"
+//           />
+//           <span className="hidden sm:inline">Overview</span>
+//         </TabsTrigger>
+//         {plan.PlanSubscription && (
+//           <TabsTrigger
+//             value="features"
+//             className="text-xs font-medium rounded-3xl data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
+//           >
+//             <Sparkles
+//               size={14}
+//               className="mr-1"
+//             />
+//             <span className="hidden sm:inline">Fitur</span>
+//           </TabsTrigger>
+//         )}
+//         {plan.PlanLimitation && (
+//           <TabsTrigger
+//             value="limitations"
+//             className="text-xs font-medium rounded-3xl data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
+//           >
+//             <Coins
+//               size={14}
+//               className="mr-1"
+//             />
+//             <span className="hidden sm:inline">Koin</span>
+//           </TabsTrigger>
+//         )}
+//         {plan.PlanBenefit.length > 0 && (
+//           <TabsTrigger
+//             value="benefits"
+//             className="text-xs font-medium rounded-3xl data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
+//           >
+//             <Gift
+//               size={14}
+//               className="mr-1"
+//             />
+//             <span className="hidden sm:inline">Benefit</span>
+//           </TabsTrigger>
+//         )}
+//       </TabsList>
 
-      {/* Tab Content */}
-      <div className="min-h-[200px] rounded-3xl border border-gray-100 p-4 bg-white shadow-sm">
-        <TabsContent
-          value="overview"
-          className="mt-0"
-        >
-          <RenderOverviewTab />
-        </TabsContent>
-        <TabsContent
-          value="limitations"
-          className="mt-0"
-        >
-          <RenderLimitationTab />
-        </TabsContent>
-        <TabsContent
-          value="features"
-          className="mt-0"
-        >
-          <RenderFeatureTab />
-        </TabsContent>
-        <TabsContent
-          value="benefits"
-          className="mt-0"
-        >
-          <RenderBenefitTab />
-        </TabsContent>
-      </div>
-    </Tabs>
-  );
-};
+//       {/* Tab Content */}
+//       <div className="min-h-[200px] rounded-3xl border border-gray-100 p-4 bg-white shadow-sm">
+//         <TabsContent
+//           value="overview"
+//           className="mt-0"
+//         >
+//           <RenderOverviewTab />
+//         </TabsContent>
+//         <TabsContent
+//           value="limitations"
+//           className="mt-0"
+//         >
+//           <RenderLimitationTab />
+//         </TabsContent>
+//         <TabsContent
+//           value="features"
+//           className="mt-0"
+//         >
+//           <RenderFeatureTab />
+//         </TabsContent>
+//         <TabsContent
+//           value="benefits"
+//           className="mt-0"
+//         >
+//           <RenderBenefitTab />
+//         </TabsContent>
+//       </div>
+//     </Tabs>
+//   );
+// };
 
 const ButtonSection = () => {
   const { setTransactionPopUp } = useAppContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const { data: session } = useSession();
   const {
     useData: { plan },
     useViewData: { viewOnly, classOverlay, buttonRef },

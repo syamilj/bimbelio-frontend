@@ -36,31 +36,6 @@ type PdfHighlightType = {
   position: ScaledPosition;
 };
 
-interface HighlightPositionType {
-  boundingRect: {
-    id?: string;
-    x1: number;
-    y1: number;
-    x2: number;
-    y2: number;
-    width: number;
-    height: number;
-    pageNumber: number;
-  };
-  rects: {
-    x1: number;
-    y1: number;
-    x2: number;
-    y2: number;
-    width: number;
-    height: number;
-    pageNumber: number;
-  }[];
-  pageNumber: number;
-}
-
-const parseIdFromHash = () => document.location.hash.slice(1);
-
 const resetHash = () => {
   document.location.hash = '';
 };
@@ -72,14 +47,6 @@ type HighlightTypeData = {
     pageNumber: number | null;
   };
 };
-
-interface AddHighlighType {
-  content: {
-    text?: string;
-    image?: string;
-  };
-  position: HighlightPositionType;
-}
 
 declare global {
   interface Window {

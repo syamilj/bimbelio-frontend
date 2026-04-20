@@ -2,13 +2,14 @@
 
 import { Button } from '@/components/ui/button';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { LiveClassStatus } from '@/lib/mock-data/live-class';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { LiveClassFilters } from './_components/live-class-filters';
 import { LiveClassMetrics } from './_components/live-class-metrics';
 import { LiveClassTable } from './_components/live-class-table';
+
+type LiveClassStatus = 'SCHEDULED' | 'ONGOING' | 'COMPLETED' | 'CANCELLED';
 
 export default function LiveClassDashboard() {
   // const router = useRouter();

@@ -1540,7 +1540,6 @@ const Navbar: React.FC = () => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   // const [isNavigating, setIsNavigating] = useState(false);
   const isMobile = useMedia({ maxWidth: '768px' });
-  const pathname = usePathname();
 
   const [navData, setNavData] = useState<NavItem[]>(navItems);
 
@@ -1584,7 +1583,7 @@ const Navbar: React.FC = () => {
                   .filter(
                     (item) => !item.PlanSubscription && item.PlanLimitation,
                   )
-                  .map((plan, index) => ({
+                  .map((plan) => ({
                     href: `/price/${plan.slug}`,
                     label: plan.name,
                     description: Object.entries(plan.PlanLimitation)

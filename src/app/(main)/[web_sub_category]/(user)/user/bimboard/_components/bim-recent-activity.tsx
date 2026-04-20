@@ -1,6 +1,5 @@
 'use client';
 
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { formatDistanceToNow } from 'date-fns';
 import { id } from 'date-fns/locale';
 import {
@@ -11,7 +10,7 @@ import {
   Target,
   Video,
 } from 'lucide-react';
-import { EmptyStateIllustrations } from './EmptyStateIllustrations';
+import { EmptyStateIllustrations } from './empty-state-illustrations';
 
 interface RecentActivityProps {
   activities: Array<{
@@ -24,10 +23,7 @@ interface RecentActivityProps {
   }>;
 }
 
-export default function RecentActivity({ activities }: RecentActivityProps) {
-  const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-
+export function BimRecentActivity({ activities }: RecentActivityProps) {
   const getIcon = (type: string) => {
     switch (type) {
       case 'tryout':

@@ -212,8 +212,8 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
           </Button>
 
           <div className="text-xs md:text-sm text-slate-600 text-center">
-            <span className="font-black">{answeredCount}</span>{' '}
-            dari {questions.length} terjawab
+            <span className="font-black">{answeredCount}</span> dari{' '}
+            {questions.length} terjawab
           </div>
 
           {safeCurrentQuestionIndex + 1 === questions.length ? (

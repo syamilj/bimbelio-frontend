@@ -69,7 +69,7 @@ export default function SidebarChat() {
     return sendData;
   };
 
-  const editChat = async (payload: { id: String; title: string }) => {
+  const editChat = async (payload: { id: string; title: string }) => {
     const res = await mutateGeneral('/chat/editChat', {
       payload,
       type: 'put',

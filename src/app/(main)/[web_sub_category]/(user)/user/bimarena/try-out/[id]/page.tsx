@@ -425,7 +425,6 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     return (
       <div className="min-h-screen bg-gray-50">
         <StartTryout
-          tryoutName={tryoutData?.title}
           sessionData={sessionData}
           currentIndexSession={currentIndexSession}
           tryoutData={tryoutData}

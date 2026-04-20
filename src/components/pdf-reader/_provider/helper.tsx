@@ -66,10 +66,6 @@ export const addHighlightToNotes = async (
         return;
       }
 
-      // Insert block at the end of the document to avoid position errors
-      const currentBlocks = editor.document;
-      const currentLastBlock = currentBlocks[currentBlocks.length - 1];
-
       // Try the original approach that works in other parts of the app
       insertOrUpdateBlock(editor, {
         content: content,
@@ -101,9 +97,6 @@ export const addHighlightToNotes = async (
         }
       }, 100);
 
-      // Trigger manual save to ensure highlight persists
-      const htmlContent = await editor.blocksToFullHTML(editor.document);
-
       // Focus editor to ensure it's in active state
       editor._tiptapEditor.commands.focus('end');
     } catch (error) {
@@ -126,7 +119,7 @@ export const addHighlightToNotes = async (
         type: 'image',
       });
     } catch (err: any) {
-      err;
+      console.error('Error adding image block:', err);
     }
   }
 };

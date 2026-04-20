@@ -12,7 +12,7 @@ import {
   Swords,
 } from 'lucide-react';
 
-export const SubscriptionTab = ({ data, handlePay, mainColor }: any) => (
+export const SubscriptionTab = ({ mainColor }: any) => (
   <div className="p-5 space-y-4 pb-20">
     <Plans mainColor={mainColor} />
     <ButtonPayment text="Upgrade Subscription" />

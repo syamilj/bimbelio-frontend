@@ -24,7 +24,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
-import { EmptyStateIllustrations } from './EmptyStateIllustrations';
+import { EmptyStateIllustrations } from './empty-state-illustrations';
 
 interface BimLearnProgressProps {
   courses: Array<{
@@ -69,7 +69,7 @@ interface BimLearnProgressProps {
   }>;
 }
 
-export default function BimLearnProgress({
+export function BimLearnProgress({
   courses,
   tryouts,
   liveClasses,

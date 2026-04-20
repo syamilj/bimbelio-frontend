@@ -479,7 +479,9 @@ const HeadingSessionTryout = ({
                     : 'placeholder'
                 }
                 onValueChange={(value) => {
-                  value && onChangeCategory(value);
+                  if (value) {
+                    onChangeCategory(value);
+                  }
                 }}
               >
                 <SelectTrigger className="h-9 w-full rounded-3xl border-none bg-transparent shadow-none outline-none text-sm px-3">
@@ -528,7 +530,9 @@ const HeadingSessionTryout = ({
                       : 'placeholder'
                   }
                   onValueChange={(value) => {
-                    value && onChangeSubCategory(value);
+                    if (value) {
+                      onChangeSubCategory(value);
+                    }
                   }}
                 >
                   <SelectTrigger className="h-9 w-full rounded-3xl border-none bg-transparent shadow-none outline-none text-sm px-3">

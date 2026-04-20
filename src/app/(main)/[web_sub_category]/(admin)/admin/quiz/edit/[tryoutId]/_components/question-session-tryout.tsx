@@ -415,7 +415,9 @@ const QuestionSessionTryout = () => {
         <Select
           value={`${EditSession?.Questions[questionIndex].number}`}
           onValueChange={(value) => {
-            value && changeQuestionOrder(value, questionIndex);
+            if (value) {
+              changeQuestionOrder(value, questionIndex);
+            }
           }}
         >
           <SelectTrigger className="h-full rounded-3xl border-none bg-white shadow-none outline-none">
@@ -702,7 +704,6 @@ const QuestionSessionTryout = () => {
         </div>
         <SelectedCourseChapter
           setSessions={setSessions}
-          currentIndexEdit={currentIndexEdit}
           questionIndex={questionIndex}
           EditSession={EditSession}
         />
@@ -715,12 +716,10 @@ export default QuestionSessionTryout;
 
 const SelectedCourseChapter = ({
   setSessions,
-  currentIndexEdit,
   questionIndex,
   EditSession,
 }: {
   setSessions: React.Dispatch<SetStateAction<SessionProps>>;
-  currentIndexEdit: number | null;
   questionIndex: number;
   EditSession: SessionProps;
 }) => {
@@ -875,7 +874,7 @@ const SelectedCourseChapter = ({
 };
 
 const UploadImageQuestion = () => {
-  const { EditSession, questionIndex, setSessions, currentIndexEdit } =
+  const { EditSession, questionIndex, setSessions } =
     useEditQuizTryoutContext();
 
   const addImageToQuestion = (image: string, questionIndex: number) => {
@@ -1055,7 +1054,7 @@ const UploadImageQuestion = () => {
 };
 
 const UploadImageAnswer = ({ answerIndex }: { answerIndex: number }) => {
-  const { EditSession, questionIndex, setSessions, currentIndexEdit } =
+  const { EditSession, questionIndex, setSessions } =
     useEditQuizTryoutContext();
 
   const imageValue =

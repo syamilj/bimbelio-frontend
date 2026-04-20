@@ -26,14 +26,12 @@ import { TryoutDataType } from '../page';
 
 interface Props {
   sessionData: NonNullable<TryoutDataType>['TryoutSession'];
-  tryoutName: string;
   tryoutData: NonNullable<TryoutDataType>;
   currentIndexSession: number;
 }
 
 const StartTryout = ({
   currentIndexSession,
-  tryoutName,
   sessionData,
   tryoutData,
 }: Props) => {
@@ -82,14 +80,14 @@ const StartTryout = ({
   };
 
   const currentSession = sessionData[currentIndexSession];
-  const totalQuestions = sessionData.reduce(
-    (acc, session) => acc + session.TryoutQuestion.length,
-    0,
-  );
-  const totalDuration = sessionData.reduce(
-    (acc, session) => acc + session.duration,
-    0,
-  );
+  // const totalQuestions = sessionData.reduce(
+  //   (acc, session) => acc + session.TryoutQuestion.length,
+  //   0,
+  // );
+  // const totalDuration = sessionData.reduce(
+  //   (acc, session) => acc + session.duration,
+  //   0,
+  // );
 
   const rules = [
     {
@@ -167,9 +165,7 @@ const StartTryout = ({
             </div>
 
             {/* Stats Row - Horizontal Scroll on Mobile */}
-            <ScrollWrapper
-              className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-1"
-            >
+            <ScrollWrapper className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-1">
               <div className="stats-scroll flex md:grid md:grid-cols-3 gap-3 md:gap-4 min-w-max md:min-w-0">
                 {[
                   {

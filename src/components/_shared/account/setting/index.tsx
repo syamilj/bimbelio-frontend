@@ -288,7 +288,6 @@ export default function AccountSetting() {
             <HistoryPaymentTab
               data={data.riwayat as any}
               mainColor={mainColor}
-              secondaryColor={secondaryColor}
               refetch={refetch}
             />
           )}

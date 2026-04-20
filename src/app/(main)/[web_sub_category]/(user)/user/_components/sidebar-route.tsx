@@ -1,7 +1,6 @@
 'use client';
 
 import { useAppContext } from '@/components/provider/provider-app';
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { BimBrand } from '@/components/ui/bim-brand';
 import {
   Tooltip,
@@ -112,7 +111,7 @@ const navSections: NavSection[] = [
     items: [
       {
         title: 'BimArena',
-        url: (subCategoryId: string) => '#', // Parent, uses submenu
+        url: (_subCategoryId: string) => '#', // Parent, uses submenu
         icon: Target,
       },
     ],
@@ -141,7 +140,6 @@ const navSections: NavSection[] = [
 interface SidebarRouteProps {
   category?: any[];
   minimizeSidebar: boolean;
-  setMinimizeSidebar: (value: boolean) => void;
   categoryColors?: {
     mainColor?: string;
     secondaryColor?: string;
@@ -151,11 +149,10 @@ interface SidebarRouteProps {
 const SidebarRoute: React.FC<SidebarRouteProps> = ({
   category,
   minimizeSidebar,
-  setMinimizeSidebar,
   categoryColors,
 }) => {
   const pathname = usePathname();
-  const [showMaterialSub, setShowMaterialSub] = useState<boolean>(true); // Always expanded by default
+  const [_showMaterialSub, setShowMaterialSub] = useState<boolean>(true); // Always expanded by default
   const [showBimArenaSub, setShowBimArenaSub] = useState<boolean>(true); // Always expanded by default
   const [showBimCourseSub, setShowBimCourseSub] = useState<boolean>(true); // Added for BimCourse
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
@@ -165,7 +162,6 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
   } | null>(null);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { setSidebarMobile } = useAppContext();
-  const { websiteSubCategory } = useWebsiteSubCategory();
   const webSubCategoryId = website_sub_category_id_params;
 
   // Group categories by website sub category
@@ -215,8 +211,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
     }
   };
 
-  const { mainColor = '#0091FF', secondaryColor = '#5aa4dd' } =
-    categoryColors || {};
+  const { mainColor = '#0091FF' } = categoryColors || {};
 
   return (
     <div
@@ -246,7 +241,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
 
           {minimizeSidebar && (
             <div className="space-y-1 py-1">
-              {section.items.map((item, index) => {
+              {section.items.map((item) => {
                 const isActive = pathname?.includes(
                   item.url(webSubCategoryId ?? '').split('/user/')[1],
                 );
@@ -551,7 +546,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                       ? 'bg-purple-500'
                                       : item.isBeta
                                         ? 'bg-sky-500'
-                                      : 'bg-emerald-500',
+                                        : 'bg-emerald-500',
                                   )}
                                 />
                               )}
@@ -577,7 +572,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
           {/* Section Items - Clean Redesign */}
           {!minimizeSidebar && (
             <div className="space-y-0.5">
-              {section.items.map((item, index) => {
+              {section.items.map((item) => {
                 const isActive = pathname?.includes(
                   item.url(webSubCategoryId ?? '').split('/user/')[1],
                 );
@@ -796,8 +791,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                 href: `/${webSubCategoryId}/user/bimarena/quiz`,
                                 icon: Swords,
                                 isBeta: true,
-                                betaTooltip:
-                                  'Fitur masih dalam tahap testing',
+                                betaTooltip: 'Fitur masih dalam tahap testing',
                               },
                             ] as SubMenuItem[]
                           ).map((sub) => {

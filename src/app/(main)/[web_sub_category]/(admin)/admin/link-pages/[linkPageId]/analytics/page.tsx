@@ -2,7 +2,6 @@
 
 import { ArrowLeft, Rows3 } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
-import Papa from 'papaparse';
 import { useEffect, useMemo, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -58,25 +57,25 @@ const getPresetRange = (preset: PresetValue) => {
   return { startDate: getIsoDate(start), endDate: getIsoDate(end) };
 };
 
-const exportCsv = (data: Record<string, unknown>[], filename: string) => {
-  if (!data.length) {
-    toaster({
-      title: 'Nothing to export',
-      description: 'No rows available',
-      condition: 'warning',
-    });
-    return;
-  }
-  const csv = Papa.unparse(data);
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.setAttribute('download', `${filename}.csv`);
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
+// const exportCsv = (data: Record<string, unknown>[], filename: string) => {
+//   if (!data.length) {
+//     toaster({
+//       title: 'Nothing to export',
+//       description: 'No rows available',
+//       condition: 'warning',
+//     });
+//     return;
+//   }
+//   const csv = Papa.unparse(data);
+//   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+//   const url = URL.createObjectURL(blob);
+//   const link = document.createElement('a');
+//   link.href = url;
+//   link.setAttribute('download', `${filename}.csv`);
+//   document.body.appendChild(link);
+//   link.click();
+//   document.body.removeChild(link);
+// };
 
 export default function LinkAnalyticsPage() {
   const params = useParams();
@@ -96,7 +95,6 @@ export default function LinkAnalyticsPage() {
   // const [linkPage, setLinkPage] = useState<LinkPageDetail | null>(null);
   const [loading, setLoading] = useState(false);
   const [testingPixel, setTestingPixel] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
 
   const rangeParams = useMemo(() => {
     if (preset === 'custom') {

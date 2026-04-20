@@ -1,13 +1,12 @@
 'use client';
 
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { Calendar, Clock, Crown, Target, Users, Video } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { EmptyStateIllustrations } from './EmptyStateIllustrations';
+import { EmptyStateIllustrations } from './empty-state-illustrations';
 
 interface UpcomingScheduleProps {
   tryouts: Array<{
@@ -32,12 +31,10 @@ interface UpcomingScheduleProps {
   }>;
 }
 
-export default function UpcomingSchedule({
+export function BimUpcomingSchedule({
   tryouts,
   liveClasses,
 }: UpcomingScheduleProps) {
-  const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const [activeTab, setActiveTab] = useState<'tryouts' | 'liveclass'>(
     'tryouts',
   );

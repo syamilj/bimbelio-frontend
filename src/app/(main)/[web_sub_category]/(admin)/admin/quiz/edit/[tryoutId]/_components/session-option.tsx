@@ -159,7 +159,6 @@ const SessionOption = () => {
         <div className="flex items-center gap-4">
           <ModalImportCSV
             setSessions={setSessions}
-            currentIndexEdit={currentIndexEdit}
             assessmentType={assessmentType}
             setQuestionIndex={setQuestionIndex}
           />

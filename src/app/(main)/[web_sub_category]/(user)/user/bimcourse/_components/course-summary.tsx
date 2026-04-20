@@ -2,8 +2,8 @@
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { Skeleton } from '@/components/ui/skeleton';
 import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { Award, BookOpen, Clock, Flame, TrendingUp } from 'lucide-react';
 

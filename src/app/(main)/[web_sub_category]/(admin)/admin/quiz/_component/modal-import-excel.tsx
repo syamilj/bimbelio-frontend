@@ -30,12 +30,10 @@ type ChapterOptionsType = {
 
 const ModalImportCSV = ({
   setSessions,
-  currentIndexEdit,
   assessmentType,
   setQuestionIndex,
 }: {
   setSessions: React.Dispatch<SetStateAction<SessionProps>>;
-  currentIndexEdit: number | null;
   assessmentType: string;
   setQuestionIndex: React.Dispatch<SetStateAction<number>>;
 }) => {

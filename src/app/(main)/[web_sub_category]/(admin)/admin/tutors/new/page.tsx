@@ -25,7 +25,7 @@ import { FormEvent, useState } from 'react';
 export default function CreateTutorForm() {
   const router = useRouter();
 
-  const [file, setFile] = useState<File>();
+  const [_file, setFile] = useState<File>();
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   const [selectedSubjects, setSelectedSubject] = useState<string[]>([]);
@@ -81,9 +81,7 @@ export default function CreateTutorForm() {
 
       if (profile) {
         const filePath = `tutor/${email}-${crypto.randomUUID().slice(0, 4)}`;
-        const { data, error } = await storage
-          .from('img')
-          .upload(filePath, profile);
+        const { error } = await storage.from('img').upload(filePath, profile);
 
         if (error) {
           toaster({
@@ -120,15 +118,6 @@ export default function CreateTutorForm() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map((word) => word[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
   };
 
   return (

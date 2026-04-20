@@ -5,7 +5,7 @@ import { normalizeTikTokCustomData } from '@/lib/tracking/normalize-tiktok';
 import { trackServerEvent } from '@/lib/tracking/server-events';
 import { TiktokPixelCustomDataType, TiktokPixelEventType } from './types';
 
-let isTikTokPixelInitialized = false;
+let _isTikTokPixelInitialized = false;
 
 export const initTikTokPixel = () => {
   // ✅ TikTok Pixel sudah di-load via layout.tsx untuk konsistensi
@@ -14,7 +14,7 @@ export const initTikTokPixel = () => {
 
   // Cek apakah TikTok Pixel sudah tersedia (dari layout.tsx script)
   if ((window as any).ttq) {
-    isTikTokPixelInitialized = true;
+    _isTikTokPixelInitialized = true;
     console.info('✅ TikTok Pixel sudah tersedia dan ready untuk tracking');
     return;
   }

@@ -1,8 +1,6 @@
 'use client';
 
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Skeleton } from '@/components/ui/skeleton';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import type { Category, Subcategory } from '@/types/database';
 import { FlameIcon as Fire, TrendingUp } from 'lucide-react';
@@ -11,7 +9,6 @@ import Card from '../../_components/card';
 import CardNotFound from '../../_components/card-not-found';
 
 export default function Trending() {
-  const { websiteSubCategory } = useWebsiteSubCategory();
   const [datas, setDatas] = useState<
     (Document & {
       category: Category;
@@ -54,11 +51,7 @@ export default function Trending() {
       {/* Content */}
       {!isLoading && datas?.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          <Card
-            data={datas}
-            href={`${website_sub_category_id}/user/workspace`}
-            noCategory={true}
-          />
+          <Card data={datas} />
         </div>
       )}
 

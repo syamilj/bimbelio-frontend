@@ -135,11 +135,6 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
   // Next.js hooks
   const pathname = usePathname();
   const params = useParams();
-  const { websiteSubCategory } = useWebsiteSubCategory();
-
-  // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const [category, setCategory] = useState<CategoryType[]>([]);
   // const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
@@ -163,7 +158,6 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
     sidebarMobile,
     setSidebarMobile,
     setMinimizeSidebar,
-    setPagesSetting,
   } = useAppContext();
 
   // State

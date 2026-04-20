@@ -127,33 +127,33 @@ function TrackingScripts({ lazy }: { lazy?: boolean }) {
   );
 }
 
-function StructuredData() {
-  return (
-    <Script
-      type="application/ld+json"
-      id="ld-json-org"
-      dangerouslySetInnerHTML={{
-        __html: `
-        {
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          "name": "Bimbelio",
-          "url": "https://www.bimbelio.com",
-          "logo": "https://www.bimbelio.com/logo.png",
-          "sameAs": [
-            "https://www.facebook.com/bimbelio.official",
-            "https://www.twitter.com/bimbelio.official",
-            "https://www.instagram.com/bimbelio.official",
-            "https://www.tiktok.com/bimbelio.official"
-          ],
-          "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "+6285161112223",
-            "contactType": "Customer Service"
-          }
-        }
-        `,
-      }}
-    />
-  );
-}
+// function StructuredData() {
+//   return (
+//     <Script
+//       type="application/ld+json"
+//       id="ld-json-org"
+//       dangerouslySetInnerHTML={{
+//         __html: `
+//         {
+//           "@context": "https://schema.org",
+//           "@type": "Organization",
+//           "name": "Bimbelio",
+//           "url": "https://www.bimbelio.com",
+//           "logo": "https://www.bimbelio.com/logo.png",
+//           "sameAs": [
+//             "https://www.facebook.com/bimbelio.official",
+//             "https://www.twitter.com/bimbelio.official",
+//             "https://www.instagram.com/bimbelio.official",
+//             "https://www.tiktok.com/bimbelio.official"
+//           ],
+//           "contactPoint": {
+//             "@type": "ContactPoint",
+//             "telephone": "+6285161112223",
+//             "contactType": "Customer Service"
+//           }
+//         }
+//         `,
+//       }}
+//     />
+//   );
+// }

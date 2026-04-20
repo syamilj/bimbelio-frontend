@@ -717,9 +717,9 @@ export type Transaction = {
   token: string;
   settlement_time: Date | null;
   payment_type: string | null;
-  transaction_details: Object;
-  item_details: Object;
-  customer_details: Object;
+  transaction_details: object;
+  item_details: object;
+  customer_details: object;
   transaction_time: Date;
   expired_time: Date;
   order_id: string;

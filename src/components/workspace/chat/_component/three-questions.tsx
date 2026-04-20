@@ -75,7 +75,7 @@ export default function ThreeQuestions() {
             createdAt: new Date(),
           });
         } catch (error) {
-          error;
+          console.error('Error appending message:', error);
         }
       }
     } catch (error) {

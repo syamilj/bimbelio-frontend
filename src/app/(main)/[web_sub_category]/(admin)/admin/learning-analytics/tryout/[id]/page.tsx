@@ -41,7 +41,7 @@ export default function LearningAnalyticsTryoutAdmin() {
   const {
     data: TryoutData,
     isLoading: TryoutDataIsLoading,
-    error: TryoutDataError,
+    // error: TryoutDataError,
   } = useGet<DataType>('/learningAnalytics/getAnalyticsTryoutById', {
     params: {
       id: id ? id : undefined,

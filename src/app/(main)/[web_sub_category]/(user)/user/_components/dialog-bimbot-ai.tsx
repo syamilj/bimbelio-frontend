@@ -7,8 +7,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { VisuallyHidden } from '@/components/ui/visually-hidden';
 import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
+import { VisuallyHidden } from '@/components/ui/visually-hidden';
 import Chat from '@/components/workspace/chat';
 import { MessageDataType } from '@/components/workspace/chat/provider';
 import { env } from '@/env.mjs';

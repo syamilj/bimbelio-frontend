@@ -23,9 +23,7 @@ export const SectionTitle = ({
       </div>
       <div>
         <h2 className="text-xl font-black text-slate-800">{title}</h2>
-        {description && (
-          <p className="text-xs text-slate-500">{description}</p>
-        )}
+        {description && <p className="text-xs text-slate-500">{description}</p>}
       </div>
     </div>
   );

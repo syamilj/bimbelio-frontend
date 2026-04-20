@@ -59,7 +59,6 @@ export const SectionTable = ({
     data: Tryouts,
     totalPages,
     isLoading,
-    refetch: TryoutsRefetch,
   } = useGet<TryoutData[]>('/tryout/getTryout', {
     params: {
       page,

@@ -3,10 +3,10 @@
 // ============================================
 
 // Page load time measurement
-let pageLoadStartTime = performance.now();
+const pageLoadStartTime = performance.now();
 
 // Time on page tracking
-let pageStartTime = Date.now();
+const pageStartTime = Date.now();
 
 export function getPageLoadTime(): number {
   return Math.round(performance.now() - pageLoadStartTime);

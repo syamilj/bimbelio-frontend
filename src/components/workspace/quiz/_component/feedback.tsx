@@ -11,17 +11,6 @@ const Feedback = ({
   wrongResponse?: string | null;
   moreInfo?: string | null;
 }) => {
-  const replaceLatexNotation = (content: any) => {
-    if (!content) return '';
-    return content
-      .replace(/\\\[([\s\S]*?)\\\]/g, '$$$$$$ $1 $$$$$$') // \[...\] → $$...$$ (display math)
-      .replace(/\\\(([\s\S]*?)\\\)/g, '$ $1 $'); // \(...\) → $...$ (inline math)
-  };
-
-  const remarkMathOptions = {
-    singleDollarTextMath: false,
-  };
-
   return (
     <div className="space-y-4">
       {correctResponse && (

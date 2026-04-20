@@ -71,8 +71,7 @@ const Index = () => {
     : (params?.courseId ?? '');
 
   const [visibleAtWebSubIds, setVisibleAtWebSubIds] = useState<string[]>([]);
-  const [showDetailSubChapter, setShowDetailSubChapter] =
-    useState<boolean>(true);
+
   const [currentIndexEdit, setCurrentIndexEdit] = useState<number | null>(null);
   const [questionIndex, setQuestionIndex] = useState<number>(0);
   const [chapter, setChapter] = useState<ChapterProps | null>(null);
@@ -344,7 +343,7 @@ const Index = () => {
       return;
     }
 
-    let subChapterData = subChapter;
+    const subChapterData = subChapter;
 
     for (const sub of subChapterData) {
       if (sub.imageFile) {
@@ -511,8 +510,6 @@ const Index = () => {
               setSubChapter={setSubChapter}
               currentIndexEdit={currentIndexEdit}
               setCurrentIndexEdit={setCurrentIndexEdit}
-              showDetailSubChapter={showDetailSubChapter}
-              setShowDetailSubChapter={setShowDetailSubChapter}
               assessmentType={assessmentType}
               questionIndex={questionIndex}
               setQuestionIndex={setQuestionIndex}

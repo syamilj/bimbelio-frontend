@@ -1,6 +1,6 @@
 import { env } from '@/env.mjs';
 import axios from 'axios';
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata } from 'next';
 import { ReactNode } from 'react';
 import { PlanDataType } from './components/_helper';
 
@@ -24,10 +24,11 @@ async function getPlanData(slug: string): Promise<PlanDataType | null> {
 }
 
 // Generate dynamic metadata
-export async function generateMetadata(
-  { params }: { params: Promise<{ planId: string }> },
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ planId: string }>;
+}): Promise<Metadata> {
   const plan = await getPlanData((await params).planId);
 
   if (!plan) {

@@ -108,8 +108,6 @@ export const SectionPerformance = () => {
       <Detail
         fetchingData={fetchingData}
         endDate={endDate}
-        setEndDate={setEndDate}
-        setStartDate={setStartDate}
         startDate={startDate}
       />
     </div>
@@ -665,14 +663,10 @@ const Detail = ({
   fetchingData,
   endDate,
   startDate,
-  setEndDate,
-  setStartDate,
 }: {
   fetchingData: FetchReturnType<DataType, any>;
   startDate: Date;
   endDate: Date;
-  setStartDate: Dispatch<SetStateAction<Date>>;
-  setEndDate: Dispatch<SetStateAction<Date>>;
 }) => {
   const { mainColor, secondaryColor } = useWebsiteSubCategory();
   const [isExporting, setIsExporting] = useState(false);

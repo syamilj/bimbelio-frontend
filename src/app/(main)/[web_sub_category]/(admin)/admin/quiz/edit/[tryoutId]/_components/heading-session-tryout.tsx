@@ -40,8 +40,6 @@ const HeadingSessionTryout = () => {
     assessmentType,
     setAssesmentType,
     setSessions,
-    currentIndexEdit,
-    setCurrentIndexEdit,
   } = useEditQuizTryoutContext();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -345,7 +343,9 @@ const HeadingSessionTryout = () => {
                     : 'placeholder'
                 }
                 onValueChange={(value) => {
-                  value && onChangeCategory(value);
+                  if (value) {
+                    onChangeCategory(value);
+                  }
                 }}
               >
                 <SelectTrigger className="h-full w-full rounded-3xl border-none bg-white shadow-none outline-none">
@@ -389,7 +389,9 @@ const HeadingSessionTryout = () => {
                       : 'placeholder'
                   }
                   onValueChange={(value) => {
-                    value && onChangeSubCategory(value);
+                    if (value) {
+                      onChangeSubCategory(value);
+                    }
                   }}
                 >
                   <SelectTrigger className="h-full w-full rounded-3xl border-none bg-white shadow-none outline-none">

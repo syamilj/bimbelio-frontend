@@ -1,6 +1,5 @@
 'use client';
 
-import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import {
@@ -35,7 +34,6 @@ import toast from 'react-hot-toast';
 
 export default function EditShortUrlPage() {
   const params = useParams();
-  const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const router = useRouter();
 

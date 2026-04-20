@@ -14,8 +14,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import { Skeleton } from '@/components/ui/skeleton';
 import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
+import { Skeleton } from '@/components/ui/skeleton';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
@@ -85,12 +85,10 @@ interface LeaderboardItem {
 function TryoutQuickStats({
   summary,
   isLoading,
-  mainColor,
   isSNBT,
 }: {
   summary: SummaryData | undefined;
   isLoading: boolean;
-  mainColor: string;
   isSNBT: boolean;
 }) {
   const rawAvgScore =
@@ -370,14 +368,12 @@ function TryoutProgressChart({
   scoreHistory,
   isLoading,
   mainColor,
-  secondaryColor,
   isSNBT,
 }: {
   progressData: ProgressItem[] | undefined;
   scoreHistory: ScoreHistoryItem[];
   isLoading: boolean;
   mainColor: string;
-  secondaryColor: string;
   isSNBT: boolean;
 }) {
   // For SNBT, adjust scores: score / subtestCount
@@ -848,7 +844,6 @@ const SummaryTryout = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
   const isSNBT =
     websiteSubCategory?.name?.toUpperCase().includes('SNBT') || false;
 
@@ -857,18 +852,18 @@ const SummaryTryout = () => {
   const [tryoutProgress, setTryoutProgress] = useState<ProgressItem[]>();
   const [scoreHistory, setScoreHistory] = useState<ScoreHistoryItem[]>([]);
 
-  // Compute adjusted stats from progress data for consistent values
-  const adjustedProgressStats = useMemo(() => {
-    if (!tryoutProgress?.length) return null;
-    const scores = tryoutProgress.map((p) =>
-      isSNBT && p.subtestCount > 1
-        ? Math.round(p.score / p.subtestCount)
-        : p.score,
-    );
-    const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
-    const latest = scores[scores.length - 1];
-    return { avg, latest };
-  }, [tryoutProgress, isSNBT]);
+  // // Compute adjusted stats from progress data for consistent values
+  // const adjustedProgressStats = useMemo(() => {
+  //   if (!tryoutProgress?.length) return null;
+  //   const scores = tryoutProgress.map((p) =>
+  //     isSNBT && p.subtestCount > 1
+  //       ? Math.round(p.score / p.subtestCount)
+  //       : p.score,
+  //   );
+  //   const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+  //   const latest = scores[scores.length - 1];
+  //   return { avg, latest };
+  // }, [tryoutProgress, isSNBT]);
 
   useEffect(() => {
     if (!session) return;
@@ -920,7 +915,6 @@ const SummaryTryout = () => {
       <TryoutQuickStats
         summary={summary}
         isLoading={isLoading}
-        mainColor={mainColor}
         isSNBT={isSNBT}
       />
 
@@ -935,7 +929,6 @@ const SummaryTryout = () => {
             scoreHistory={scoreHistory}
             isLoading={isLoading}
             mainColor={mainColor}
-            secondaryColor={secondaryColor}
             isSNBT={isSNBT}
           />
         </div>

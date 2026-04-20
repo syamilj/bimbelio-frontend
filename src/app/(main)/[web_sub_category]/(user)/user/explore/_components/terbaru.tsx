@@ -2,7 +2,6 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Skeleton } from '@/components/ui/skeleton';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import type { Category, Subcategory } from '@/types/database';
 import { Clock, Zap } from 'lucide-react';
@@ -66,11 +65,7 @@ export default function Terbaru() {
       {/* Content */}
       {!isLoading && datas?.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          <Card
-            data={datas}
-            href={`${website_sub_category_id}/user/workspace`}
-            noCategory={true}
-          />
+          <Card data={datas} />
         </div>
       )}
 

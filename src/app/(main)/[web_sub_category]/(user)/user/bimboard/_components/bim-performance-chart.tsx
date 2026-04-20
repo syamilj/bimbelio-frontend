@@ -2,7 +2,6 @@
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { BimArena } from '@/components/ui/bim-brand';
 import {
   Card,
@@ -17,6 +16,7 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
+import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { format } from 'date-fns';
@@ -41,7 +41,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { EmptyStateIllustrations } from './EmptyStateIllustrations';
+import { EmptyStateIllustrations } from './empty-state-illustrations';
 
 // Progress data from /tryout/getTryoutUserProgress
 interface ProgressItem {
@@ -63,15 +63,10 @@ interface BimPerformanceChartProps {
     totalParticipants: number;
     rankChange: number;
   }>;
-  studyTimeHistory: Array<{
-    date: string;
-    hours: number;
-  }>;
 }
 
-export default function BimPerformanceChart({
+export function BimPerformanceChart({
   scoreHistory,
-  studyTimeHistory,
 }: BimPerformanceChartProps) {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -196,9 +191,7 @@ export default function BimPerformanceChart({
 
         {/* Score summary badges */}
         {stats && (
-          <ScrollWrapper
-            className="flex gap-2 mt-3 overflow-x-auto pb-1"
-          >
+          <ScrollWrapper className="flex gap-2 mt-3 overflow-x-auto pb-1">
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 flex-shrink-0">
               <TrendingUp className="w-3 h-3 text-emerald-500" />
               <span className="text-[10px] font-bold text-emerald-700">

@@ -46,7 +46,6 @@ export default function CreateCoupon() {
   const {
     register,
     // handleSubmit: SubmitForm,
-    control,
     // reset,
     watch,
     setValue,
@@ -368,45 +367,3 @@ export default function CreateCoupon() {
     </div>
   );
 }
-
-type PlanType = {
-  bundles: PlanDataType[];
-  subscriptions: PlanDataType[];
-  topping: PlanDataType[];
-  productCompare: {
-    subscription: PlanDataType[];
-    bundles: PlanDataType[];
-    listCompare: string[];
-  };
-};
-
-type PlanDataType = {
-  id: string;
-  tier: string;
-  name: string;
-  description: string;
-  price: number;
-  timeline: string | null;
-  features:
-    | {
-        name: string;
-        features: string[];
-      }[]
-    | undefined;
-  coins:
-    | {
-        name: string;
-        total: any;
-      }[]
-    | undefined;
-  limitations: {
-    Document: string | null;
-    Course: string | null;
-    Notes: string | null;
-    Chat: string | null;
-    Tryout: string | null;
-    Quiz: string | null;
-    Vision: string | null;
-  };
-  popular: boolean;
-};

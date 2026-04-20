@@ -16,11 +16,6 @@ import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { EventDataType } from '../_hooks/type';
 
-interface EventDetailsTableProps {
-  data: EventDataType[];
-  isLoading: boolean;
-}
-
 const EVENT_COLORS: Record<string, string> = {
   PAGE_VIEW: 'bg-blue-100 text-blue-800',
   BUTTON_CLICK: 'bg-green-100 text-green-800',
