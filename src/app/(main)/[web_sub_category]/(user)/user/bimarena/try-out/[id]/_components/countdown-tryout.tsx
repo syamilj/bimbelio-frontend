@@ -4,11 +4,12 @@
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { toaster } from '@/components/ui/toaster';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { AlertTriangle, Clock } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { AlertTriangle, Clock, RotateCw } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 interface CountDownTryoutProps {
   seconds: number;
@@ -26,6 +27,9 @@ const CountDownTryout = ({
   const [timeLeft, setTimeLeft] = useState(seconds);
   const [isWarning, setIsWarning] = useState(false);
   const [isCritical, setIsCritical] = useState(false);
+  // Guard so the late-finish request is sent exactly once per attempt.
+  const submittedRef = useRef(false);
+  const [lateSubmitFailed, setLateSubmitFailed] = useState(false);
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -46,15 +50,38 @@ const CountDownTryout = ({
     sessionId: string;
     answer: any[];
   }) => {
+    if (submittedRef.current) return;
+    submittedRef.current = true;
+    setLateSubmitFailed(false);
+
     await mutateGeneral(`/tryoutSession/finishSessionLate`, {
       payload,
       type: 'post',
+      toast: { hideError: true },
       onSuccess() {
         localStorage.removeItem(`sessionAnswer-${sessionId}`);
         window.location.reload();
       },
+      onError() {
+        submittedRef.current = false;
+        setLateSubmitFailed(true);
+        toaster({
+          title: 'Gagal mengirim jawaban',
+          description:
+            'Waktu habis, tetapi jawaban gagal dikirim. Klik "Kirim ulang" untuk mencoba lagi.',
+          condition: 'warning',
+          duration: 5000,
+        });
+      },
     });
   };
+
+  const finishLate = () =>
+    FinishTryOutLate({
+      sessionId,
+      answer: sessionAnswer,
+      userId: session?.user.id || '',
+    });
 
   useEffect(() => {
     setTimeLeft(seconds);
@@ -71,26 +98,14 @@ const CountDownTryout = ({
 
   useEffect(() => {
     if (timeLeft <= 0) {
-      FinishTryOutLate({
-        sessionId,
-        answer: sessionAnswer,
-        userId: session?.user.id || '',
-      });
+      // Side effect lives here (not in the state updater); the ref guard
+      // makes sure it only fires once even if this effect re-runs.
+      finishLate();
       return;
     }
 
     const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          FinishTryOutLate({
-            sessionId,
-            answer: sessionAnswer,
-            userId: session?.user.id || '',
-          });
-          return 0;
-        }
-        return prev - 1;
-      });
+      setTimeLeft((prev) => Math.max(prev - 1, 0));
     }, 1000);
 
     return () => clearInterval(timer);
@@ -161,6 +176,17 @@ const CountDownTryout = ({
           <span className="text-xs font-normal opacity-80">Perhatian</span>
         )}
       </div>
+
+      {lateSubmitFailed && (
+        <button
+          type="button"
+          onClick={finishLate}
+          className="inline-flex items-center gap-1 rounded-full bg-white px-2 py-1 font-sans text-xs font-semibold text-red-500 shadow-sm"
+        >
+          <RotateCw className="h-3 w-3" />
+          Kirim ulang
+        </button>
+      )}
     </motion.div>
   );
 };

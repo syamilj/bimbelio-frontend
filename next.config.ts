@@ -17,11 +17,11 @@ const nextConfig = {
 
   // Tambahkan ini untuk hapus console di production
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
-    // Jika ingin mengecualikan beberapa jenis console:
-    // removeConsole: {
-    //   exclude: ['error', 'warn']
-    // }
+    // Keep console.error / console.warn so production errors stay visible.
+    removeConsole:
+      process.env.NODE_ENV === 'production'
+        ? { exclude: ['error', 'warn'] }
+        : false,
   },
 
   async rewrites() {
@@ -88,10 +88,13 @@ const nextConfig = {
     // Next.js 16 defaults to [75], so we need to add the others used in the app
     qualities: [30, 50, 60, 75, 100],
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
+      // Supabase storage (NEXT_PUBLIC_SUPABASE_*_URL)
+      { protocol: 'https', hostname: 'vxouccslsjuycviqqllb.supabase.co' },
+      { protocol: 'https', hostname: 'bimbelio.com' },
+      { protocol: 'https', hostname: 'www.bimbelio.com' },
+      // Google account avatars
+      { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
+      { protocol: 'https', hostname: 'storage.googleapis.com' },
     ],
   },
   // Tambah headers caching aset statis untuk meningkatkan FCP / repeat views

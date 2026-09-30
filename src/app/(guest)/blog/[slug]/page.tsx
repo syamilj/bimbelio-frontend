@@ -92,7 +92,9 @@ export default async function BlogServerPage({
     <Fragment>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}
       />
       <BlogClientWrapper blog={blog} />
     </Fragment>

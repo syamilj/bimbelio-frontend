@@ -1,13 +1,46 @@
+import { env } from '@/env.mjs';
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 
 // MIGRATED: Removed export const runtime = 'edge' (incompatible with Cache Components)
 
+const getHost = (url?: string) => {
+  if (!url) return null;
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return null;
+  }
+};
+
+// Only these hosts may be fetched server-side for the `image` param (SSRF guard).
+const ALLOWED_IMAGE_HOSTS = new Set(
+  [
+    getHost(env.NEXT_PUBLIC_SUPABASE_URL),
+    getHost(env.NEXT_PUBLIC_SUPABASE_IMG_URL),
+    'bimbelio.com',
+    'www.bimbelio.com',
+  ].filter((host): host is string => !!host),
+);
+
+const getSafeImageUrl = (value: string | null) => {
+  if (!value) return null;
+  try {
+    const url = new URL(value);
+    if (url.protocol !== 'https:') return null;
+    if (url.username || url.password || url.port) return null;
+    if (!ALLOWED_IMAGE_HOSTS.has(url.hostname)) return null;
+    return url.toString();
+  } catch {
+    return null;
+  }
+};
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const title = searchParams.get('title') || 'My Link Page';
   const description = searchParams.get('description') || 'Check out my links!';
-  const image = searchParams.get('image');
+  const image = getSafeImageUrl(searchParams.get('image'));
 
   return new ImageResponse(
     <div

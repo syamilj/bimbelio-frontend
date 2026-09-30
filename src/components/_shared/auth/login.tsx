@@ -5,11 +5,11 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import LoadingPage from '@/components/ui/Loading-Page';
 import Logo from '@/components/ui/logo';
 import { env } from '@/env.mjs';
+import { setAuthToken } from '@/lib/auth-helper';
 import { responseError } from '@/lib/response';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 
@@ -33,7 +33,7 @@ export const Login = () => {
       });
       console.log({ res });
 
-      Cookies.set('token', res.data.data.token);
+      setAuthToken(res.data.data.token);
 
       console.log('Login Success: ', res);
 

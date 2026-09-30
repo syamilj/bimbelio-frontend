@@ -15,79 +15,64 @@ type DecodeData = {
 };
 
 export const proxy = async (req: NextRequest) => {
+  const token = req.cookies.get('token')?.value;
+  const pathname = req.nextUrl.pathname;
+
+  if (!token) {
+    return NextResponse.redirect(new URL('/', req.url));
+  }
+
   try {
-    const token = req.cookies.get('token')?.value;
-    const pathname = req.nextUrl.pathname;
-
-    if (!token) {
-      return NextResponse.redirect(new URL('/', req.url));
-    }
-
     const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/auth/verifyToken`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
+      signal: AbortSignal.timeout(5000),
     });
+
+    if (!res.ok) {
+      return NextResponse.redirect(new URL('/', req.url));
+    }
+
     const resData: { status: number; message: string; data?: DecodeData } =
       await res.json();
     const { status, data } = resData;
 
-    // console.log('[Session] : ', { resData, token });
-
-    if (status !== 200) {
+    if (status !== 200 || !data) {
       return NextResponse.redirect(new URL('/', req.url));
     }
 
-    if (status === 200 && data) {
-      if (
-        pathname.includes('admin') &&
-        data.role !== 'ADMIN' &&
-        data.role !== 'SUPER_ADMIN' &&
-        data.role !== 'FINANCE'
-      ) {
-        return NextResponse.redirect(new URL('/', req.url));
-      }
+    if (
+      pathname.includes('admin') &&
+      data.role !== 'ADMIN' &&
+      data.role !== 'SUPER_ADMIN' &&
+      data.role !== 'FINANCE'
+    ) {
+      return NextResponse.redirect(new URL('/', req.url));
+    }
 
-      if (pathname.includes('admin/category') && data.role !== 'SUPER_ADMIN') {
-        return NextResponse.redirect(new URL('/404', req.url));
-      }
+    if (pathname.includes('admin/category') && data.role !== 'SUPER_ADMIN') {
+      return NextResponse.redirect(new URL('/404', req.url));
     }
 
     return NextResponse.next();
   } catch (error) {
-    return NextResponse.next();
+    // Fail closed: if the session cannot be verified (network error, timeout,
+    // invalid JSON), do not let the request through to protected pages.
+    console.error('[proxy] verifyToken failed:', error);
+    return NextResponse.redirect(new URL('/', req.url));
   }
 };
 
 export const config = {
   matcher: [
-    // "/",
     '/:path*/auth/login',
     '/:path*/auth/signup',
     '/:path*/admin/:path*',
     '/:path*/user/:path*',
-    '/:path*/user/explore/:path*',
-    '/:path*/user/explore/:path*',
-    '/:path*/user/bimarena/try-out/:path*',
-    '/:path*/user/bimarena/try-out',
-    '/:path*/user/workspace/:path*',
     '/:path*/verify/:path*',
-    '/:path*/user/explore',
-    '/:path*/user/explore/:path*',
-    '/:path*/user/search',
-    '/:path*/user/bimarena/leaderboard',
-    '/:path*/user/bimboard',
-    '/:path*/user/bimcourse/:path*',
-    '/:path*/user/bimbot',
-    '/:path*/user/bimbot/:path*',
-    '/:path*/user/prediction',
-    '/:path*/user/prediction/:path*',
-    '/:path*/user/biminsight',
-    '/:path*/user/biminsight/:path*',
-    '/:path*/user/bimlive',
-    '/:path*/user/bimlive/:path*',
   ],
 };
 

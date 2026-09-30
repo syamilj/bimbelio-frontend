@@ -1,3 +1,4 @@
+import { getAuthToken } from '@/lib/auth-helper';
 import HLS from 'hls.js';
 import { useEffect, useRef } from 'react';
 
@@ -7,7 +8,8 @@ export const useVideoHLS = (videoUrl: string) => {
     const video = videoRef.current;
     if (!video) return;
 
-    const token = '123';
+    // Bucket video bersifat privat: setiap request playlist/segmen membawa token sesi.
+    const token = getAuthToken();
 
     if (HLS.isSupported()) {
       const hls = new HLS({

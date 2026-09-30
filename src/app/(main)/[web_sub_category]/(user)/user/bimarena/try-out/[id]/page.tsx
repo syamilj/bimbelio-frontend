@@ -45,7 +45,6 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   // const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
-  const [loading, setLoading] = useState<boolean>(true);
   const [tryoutData, setTryoutData] = useState<TryoutDataType>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -143,12 +142,6 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
 
   useEffect(() => {
     if (tryoutData) {
-      setLoading(false);
-    }
-  }, [tryoutData]);
-
-  useEffect(() => {
-    if (tryoutData) {
       tryoutData.TryoutSession.forEach((item, i: number) => {
         if (
           item.TryoutSessionParticipant &&
@@ -180,7 +173,9 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     });
   }, [sessionUser, tryoutId]);
 
-  if (isLoading || loading) return <SpinnerPageCentered />;
+  // `isLoading` is cleared by getGeneral on success *and* on error, so a failed
+  // fetch falls through to the "not found" state instead of spinning forever.
+  if (isLoading) return <SpinnerPageCentered />;
 
   if (!tryoutData) {
     return (

@@ -2,8 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { setAuthToken } from '@/lib/auth-helper';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
-import Cookies from 'js-cookie';
 import { Loader2 } from 'lucide-react';
 import { FormEvent } from 'react';
 
@@ -14,7 +14,7 @@ export default function Page() {
     {
       onSuccess({ data }) {
         if (data?.token) {
-          Cookies.set('token', data?.token);
+          setAuthToken(data.token);
           window.location.pathname = '/';
         }
       },

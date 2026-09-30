@@ -10,6 +10,7 @@ import { useUserOnBoarding } from '@/components/provider/provider-on-boarding';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { ResizablePanel } from '@/components/ui/resizable';
 import { toaster } from '@/components/ui/toaster';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn } from '@/lib/utils';
 import {
@@ -132,7 +133,7 @@ const Sidebar = ({
   className?: string;
   onClose?: () => void;
 }) => {
-  // const { data: session } = useSession();
+  const { data: session } = useSession();
   const {
     useData: { CourseData },
     useDoc: { docId },
@@ -151,11 +152,12 @@ const Sidebar = ({
   const { mutate: resetChat } = useMutation('/message/resetMessage', 'delete', {
     payload: { docId },
   });
-  const { mutate: getNameImage } = useMutation(
-    '/message/getNameImage',
-    'post',
-    { payload: { docId } },
-  );
+  // Backend: GET /message/getNameImage?userId=... (website_sub_category_id is
+  // appended by the axios interceptor).
+  const getNameImage = () =>
+    getGeneral('/message/getNameImage', {
+      params: { userId: session?.user.id },
+    });
   const router = useRouter();
 
   const { setMobileScreen, mobileScreen, setShowSidebar } = useAppContext();

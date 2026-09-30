@@ -112,7 +112,7 @@ export default function AccountSetting() {
 
   const updateProfileImage = async (data: any) => {
     try {
-      const res = await axiosInstance.put(`/user/updateProfileImage`, data);
+      const res = await axiosInstance.post(`/user/updateProfileImage`, data);
       setProfile(undefined);
       setTimeout(() => {
         router.refresh();

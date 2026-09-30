@@ -192,7 +192,7 @@ export const mutateGeneral = async (
   more: {
     params?: object;
     payload?: any;
-    type: 'post' | 'put' | 'delete';
+    type: 'post' | 'put' | 'patch' | 'delete';
     setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
     firstLoad?: boolean;
     endLoad?: boolean;
@@ -246,7 +246,7 @@ export const mutateGeneral = async (
     else if (more.hideToast === true) showToast = false;
     else showToast = true;
     let res;
-    if (type === 'post' || type === 'put') {
+    if (type === 'post' || type === 'put' || type === 'patch') {
       res = await axiosInstance[type](url, payload, { params });
     } else {
       res = await axiosInstance.delete(url, { params });

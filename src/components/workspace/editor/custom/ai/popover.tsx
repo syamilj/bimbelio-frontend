@@ -13,6 +13,7 @@ import { useUserLimitation } from '@/components/provider/provider-limitation';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Input } from '@/components/ui/input';
 import { env } from '@/env.mjs';
+import { markdownSanitizeSchema } from '@/lib/utils/markdown-sanitize';
 import { useCompletion } from '@ai-sdk/react';
 import { useBlockNoteEditor } from '@blocknote/react';
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
@@ -23,6 +24,7 @@ import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import { useProvider } from '../../provider';
@@ -217,7 +219,11 @@ const AiPopover = () => {
               <div className="ReactMarkdown prose px-2 py-1 text-start">
                 <ReactMarkdown
                   remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
-                  rehypePlugins={[rehypeKatex, rehypeRaw]}
+                  rehypePlugins={[
+                    rehypeRaw,
+                    [rehypeSanitize, markdownSanitizeSchema],
+                    rehypeKatex,
+                  ]}
                 >
                   {replaceLatexNotation(
                     responseExists ? completions[curIndex] : completion,

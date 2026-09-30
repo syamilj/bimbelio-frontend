@@ -6,6 +6,7 @@ import {
   NotificationTypeEnum,
 } from '@/types/database';
 
+import { authHeaders } from '@/lib/auth-helper';
 import axios from 'axios';
 
 export const addManyNotification = async ({
@@ -72,6 +73,7 @@ export const addManyNotification = async ({
         retryCount,
         maxRetries,
       },
+      { headers: authHeaders() },
     );
     console.log(
       `[SOCKET] Notification added for ${users.length} users : ${res?.data?.data?.id}`,
