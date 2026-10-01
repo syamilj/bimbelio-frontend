@@ -1,5 +1,6 @@
 'use client';
 
+import { AdminNotFound } from '@/components/admin/admin-page';
 import { Button } from '@/components/ui/button';
 import { MultiSelectVisibleAt } from '@/components/ui/multi-select-visibleAt';
 import LoadingPageWithText, { Spinner } from '@/components/ui/spinner';
@@ -15,7 +16,6 @@ import { ArrowLeft, Check, Save } from 'lucide-react';
 import LZString from 'lz-string';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { AdminNotFound } from '@/components/admin/admin-page';
 import ChapterOption from './_component/chapter-option';
 import SubChapterOption from './_component/sub-chapter-option';
 
@@ -107,10 +107,13 @@ const Index = () => {
     },
   });
 
-  const { data: Course, isLoading: isLoadingCourse } = useGet('/course/getCourseForUpdate', {
-    params: { courseId },
-    useEffectDependencies: [courseId],
-  });
+  const { data: Course, isLoading: isLoadingCourse } = useGet(
+    '/course/getCourseForUpdate',
+    {
+      params: { courseId },
+      useEffectDependencies: [courseId],
+    },
+  );
 
   const { data: category, isLoading: isLoadingCategory } = useGet<Category[]>(
     '/category/getAllCategoryAdminCourse',

@@ -3,6 +3,7 @@
 import { CardPlan } from '@/components/_shared/other/card-plan';
 import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/types';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { PLAN_CACHE_MS } from '@/lib/fetch-helper/fetch-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
 import { Crown, MessageCircle, Star } from 'lucide-react';
@@ -34,6 +35,7 @@ const PricingSection: React.FC = () => {
 
   const { data: PricingData } = useGet<PricingDataType>(
     '/plan/getAllPlanByWebCategory',
+    { cacheMs: PLAN_CACHE_MS },
   );
 
   const mainColor = websiteSubCategory?.main_color ?? '#0091FF';

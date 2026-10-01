@@ -1,13 +1,20 @@
 'use client';
 
-import { AdminFormActions, AdminFormSection, AdminNotFound, AdminPageHeader } from '@/components/admin/admin-page';
+import {
+  AdminFormActions,
+  AdminFormSection,
+  AdminNotFound,
+  AdminPageHeader,
+} from '@/components/admin/admin-page';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { InputTags } from '@/components/ui/input-tags';
 import { Label } from '@/components/ui/label';
-import LoadingPageWithText, { LoadingComponentWithText } from '@/components/ui/spinner';
+import LoadingPageWithText, {
+  LoadingComponentWithText,
+} from '@/components/ui/spinner';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { toaster } from '@/components/ui/toaster';
@@ -32,7 +39,13 @@ type TutorFields = {
   lastEducation: string;
 };
 
-const EMPTY_FIELDS: TutorFields = { name: '', email: '', phone: '', description: '', lastEducation: '' };
+const EMPTY_FIELDS: TutorFields = {
+  name: '',
+  email: '',
+  phone: '',
+  description: '',
+  lastEducation: '',
+};
 
 export const TutorForm = ({ instructorId }: { instructorId?: string }) => {
   const isEdit = !!instructorId;
@@ -45,13 +58,18 @@ export const TutorForm = ({ instructorId }: { instructorId?: string }) => {
   const [status, setStatus] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  const setField = (key: keyof TutorFields) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    setFields((prev) => ({ ...prev, [key]: e.target.value }));
+  const setField =
+    (key: keyof TutorFields) =>
+    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setFields((prev) => ({ ...prev, [key]: e.target.value }));
 
-  const { data: instructor, isLoading: isLoadingInstructor } = useGet<InstructorsType[0]>(
-    '/instructor/getSingleInstructor',
-    { enabled: isEdit, params: { id: instructorId }, useEffectDependencies: [instructorId] },
-  );
+  const { data: instructor, isLoading: isLoadingInstructor } = useGet<
+    InstructorsType[0]
+  >('/instructor/getSingleInstructor', {
+    enabled: isEdit,
+    params: { id: instructorId },
+    useEffectDependencies: [instructorId],
+  });
   const { data: categories } = useGet<Category[]>('/category/getAllCategories');
 
   const { mutate: saveTutor } = useMutation(
@@ -68,14 +86,18 @@ export const TutorForm = ({ instructorId }: { instructorId?: string }) => {
       description: instructor.description,
       lastEducation: instructor.lastEducation,
     });
-    setCertificateList(instructor.InstructorCertificate.map((item) => item.title));
+    setCertificateList(
+      instructor.InstructorCertificate.map((item) => item.title),
+    );
     setSelectedSubjects(instructor.Category.map((item) => item.id));
     setStatus(instructor.status);
     setAvatarPreview(instructor.image);
   }, [instructor]);
 
   const toggleSubject = (id: string) =>
-    setSelectedSubjects((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
+    setSelectedSubjects((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
+    );
 
   const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
     const picked = e.target.files?.[0];
@@ -90,7 +112,8 @@ export const TutorForm = ({ instructorId }: { instructorId?: string }) => {
   const uploadAvatar = async () => {
     if (!file) return instructor?.image ?? null;
     const existingName = instructor?.image?.split('/tutor/')[1];
-    if (existingName) await storage.from('img').remove([`tutor/${existingName}`]);
+    if (existingName)
+      await storage.from('img').remove([`tutor/${existingName}`]);
 
     const filePath = `tutor/${fields.email}-${crypto.randomUUID().slice(0, 4)}`;
     const { error } = await storage.from('img').upload(filePath, file);
@@ -101,12 +124,20 @@ export const TutorForm = ({ instructorId }: { instructorId?: string }) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (selectedSubjects.length === 0) {
-      toaster({ title: 'Error', condition: 'warning', description: 'Pilih mata pelajaran' });
+      toaster({
+        title: 'Error',
+        condition: 'warning',
+        description: 'Pilih mata pelajaran',
+      });
       return;
     }
     // Backend mewajibkan field image.
     if (!file && !instructor?.image) {
-      toaster({ title: 'Error', condition: 'warning', description: 'Unggah foto profil tutor' });
+      toaster({
+        title: 'Error',
+        condition: 'warning',
+        description: 'Unggah foto profil tutor',
+      });
       return;
     }
 
@@ -141,17 +172,28 @@ export const TutorForm = ({ instructorId }: { instructorId?: string }) => {
   if (isEdit && isLoadingInstructor) {
     return <LoadingComponentWithText heading="Mengambil data tutor..." />;
   }
-  if (isEdit && !instructor) return <AdminNotFound title="Tutor tidak ditemukan" />;
+  if (isEdit && !instructor)
+    return <AdminNotFound title="Tutor tidak ditemukan" />;
 
   return (
     <div className="space-y-6">
-      <LoadingPageWithText loading={isSaving} heading="Menyimpan tutor..." />
+      <LoadingPageWithText
+        loading={isSaving}
+        heading="Menyimpan tutor..."
+      />
       <AdminPageHeader
         title={isEdit ? 'Edit Tutor' : 'Tambah Tutor'}
-        description={isEdit ? 'Perbarui data tutor live class' : 'Tambahkan tutor baru untuk mengajar live class'}
+        description={
+          isEdit
+            ? 'Perbarui data tutor live class'
+            : 'Tambahkan tutor baru untuk mengajar live class'
+        }
       />
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6"
+      >
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="space-y-6 lg:col-span-2">
             <AdminFormSection title="Informasi Dasar">
@@ -160,7 +202,13 @@ export const TutorForm = ({ instructorId }: { instructorId?: string }) => {
                   <Label htmlFor="name">
                     Nama Lengkap <span className="text-red-500">*</span>
                   </Label>
-                  <Input id="name" value={fields.name} onChange={setField('name')} placeholder="Dr. Ahmad Sukri, M.Si" required />
+                  <Input
+                    id="name"
+                    value={fields.name}
+                    onChange={setField('name')}
+                    placeholder="Dr. Ahmad Sukri, M.Si"
+                    required
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">
@@ -181,7 +229,13 @@ export const TutorForm = ({ instructorId }: { instructorId?: string }) => {
                 <Label htmlFor="phone">
                   Nomor Telepon <span className="text-red-500">*</span>
                 </Label>
-                <Input id="phone" value={fields.phone} onChange={setField('phone')} placeholder="+6281234567890" required />
+                <Input
+                  id="phone"
+                  value={fields.phone}
+                  onChange={setField('phone')}
+                  placeholder="+6281234567890"
+                  required
+                />
               </div>
 
               <div className="space-y-2">
@@ -201,7 +255,11 @@ export const TutorForm = ({ instructorId }: { instructorId?: string }) => {
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label>Sertifikat</Label>
-                  <InputTags value={certificateList} onChange={setCertificateList} placeholder="Tambahkan sertifikat" />
+                  <InputTags
+                    value={certificateList}
+                    onChange={setCertificateList}
+                    placeholder="Tambahkan sertifikat"
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="last-education">
@@ -218,16 +276,25 @@ export const TutorForm = ({ instructorId }: { instructorId?: string }) => {
               </div>
             </AdminFormSection>
 
-            <AdminFormSection title="Mata Pelajaran" description="Pilih mata pelajaran yang dapat diajar oleh tutor">
+            <AdminFormSection
+              title="Mata Pelajaran"
+              description="Pilih mata pelajaran yang dapat diajar oleh tutor"
+            >
               <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                 {categories?.map((subject) => (
-                  <div key={subject.id} className="flex items-center space-x-2">
+                  <div
+                    key={subject.id}
+                    className="flex items-center space-x-2"
+                  >
                     <Checkbox
                       id={subject.id}
                       checked={selectedSubjects.includes(subject.id)}
                       onCheckedChange={() => toggleSubject(subject.id)}
                     />
-                    <Label htmlFor={subject.id} className="text-sm font-normal">
+                    <Label
+                      htmlFor={subject.id}
+                      className="text-sm font-normal"
+                    >
                       {subject.name}
                     </Label>
                   </div>
@@ -236,12 +303,21 @@ export const TutorForm = ({ instructorId }: { instructorId?: string }) => {
 
               {selectedSubjects.length > 0 && (
                 <div className="border-t pt-3">
-                  <p className="mb-2 text-sm font-medium text-gray-700">Mata pelajaran terpilih:</p>
+                  <p className="mb-2 text-sm font-medium text-gray-700">
+                    Mata pelajaran terpilih:
+                  </p>
                   <div className="flex flex-wrap gap-2">
                     {selectedSubjects.map((id) => (
-                      <Badge key={id} variant="secondary" className="gap-1">
+                      <Badge
+                        key={id}
+                        variant="secondary"
+                        className="gap-1"
+                      >
                         {categories?.find((item) => item.id === id)?.name}
-                        <X className="h-3 w-3 cursor-pointer hover:text-red-500" onClick={() => toggleSubject(id)} />
+                        <X
+                          className="h-3 w-3 cursor-pointer hover:text-red-500"
+                          onClick={() => toggleSubject(id)}
+                        />
                       </Badge>
                     ))}
                   </div>
@@ -254,26 +330,45 @@ export const TutorForm = ({ instructorId }: { instructorId?: string }) => {
             <AdminFormSection title="Foto Profil">
               <div className="flex justify-center">
                 <Avatar className="h-24 w-24">
-                  <AvatarImage src={avatarPreview || undefined} className="h-full w-full object-contain" />
+                  <AvatarImage
+                    src={avatarPreview || undefined}
+                    className="h-full w-full object-contain"
+                  />
                   <AvatarFallback className="text-lg">IMG</AvatarFallback>
                 </Avatar>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="avatar">Unggah Foto</Label>
-                <Input id="avatar" type="file" accept="image/*" onChange={handleAvatarChange} />
-                <p className="text-xs text-gray-500">Format: JPG, PNG. Maksimal 2MB.</p>
+                <Input
+                  id="avatar"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarChange}
+                />
+                <p className="text-xs text-gray-500">
+                  Format: JPG, PNG. Maksimal 2MB.
+                </p>
               </div>
             </AdminFormSection>
 
             <AdminFormSection title="Status">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label htmlFor="isActive" className="text-sm font-medium">
+                  <Label
+                    htmlFor="isActive"
+                    className="text-sm font-medium"
+                  >
                     Status Aktif
                   </Label>
-                  <p className="text-xs text-gray-500">Tutor dapat mengajar live class</p>
+                  <p className="text-xs text-gray-500">
+                    Tutor dapat mengajar live class
+                  </p>
                 </div>
-                <Switch id="isActive" checked={status} onCheckedChange={setStatus} />
+                <Switch
+                  id="isActive"
+                  checked={status}
+                  onCheckedChange={setStatus}
+                />
               </div>
             </AdminFormSection>
           </div>

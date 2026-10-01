@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollWrapper } from '@/components/ui/scroll-wrapper';
+import { PLAN_CACHE_MS } from '@/lib/fetch-helper/fetch-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { Crown, Sparkles } from 'lucide-react';
 import Link from 'next/link';
@@ -33,6 +34,7 @@ export default function PaketBelajarPage() {
 
   const { data: pricingData, isLoading } = useGet<PricingDataType>(
     '/plan/getAllPlanByWebCategory',
+    { cacheMs: PLAN_CACHE_MS },
   );
 
   const categoryPlans = useMemo(() => {

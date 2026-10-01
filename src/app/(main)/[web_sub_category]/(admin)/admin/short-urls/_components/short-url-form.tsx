@@ -1,15 +1,30 @@
 'use client';
 
-import { AdminFormActions, AdminFormSection, AdminPageHeader } from '@/components/admin/admin-page';
+import {
+  AdminFormActions,
+  AdminFormSection,
+  AdminPageHeader,
+} from '@/components/admin/admin-page';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { LoadingComponentWithText } from '@/components/ui/spinner';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { fetchAllLinkPages } from '@/lib/api/link-pages';
-import { createShortUrl, fetchAllShortUrls, updateShortUrl, type ShortUrl } from '@/lib/api/short-url';
+import {
+  createShortUrl,
+  fetchAllShortUrls,
+  updateShortUrl,
+  type ShortUrl,
+} from '@/lib/api/short-url';
 import { getDateForInputDateTime } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useEffect, useState } from 'react';
@@ -80,7 +95,8 @@ const UTM_FIELDS = [
   { key: 'utmTerm', label: 'UTM Term', placeholder: 'tryout+gratis' },
 ] as const;
 
-const errorMessage = (error: any, fallback: string) => error?.response?.data?.message || fallback;
+const errorMessage = (error: any, fallback: string) =>
+  error?.response?.data?.message || fallback;
 
 export const ShortUrlForm = ({ shortUrlId }: { shortUrlId?: string }) => {
   const isEdit = !!shortUrlId;
@@ -91,7 +107,9 @@ export const ShortUrlForm = ({ shortUrlId }: { shortUrlId?: string }) => {
 
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [original, setOriginal] = useState<ShortUrl | null>(null);
-  const [linkPages, setLinkPages] = useState<{ id: string; title: string; slug: string }[]>([]);
+  const [linkPages, setLinkPages] = useState<
+    { id: string; title: string; slug: string }[]
+  >([]);
   const [isLoadingData, setIsLoadingData] = useState(isEdit);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -102,13 +120,22 @@ export const ShortUrlForm = ({ shortUrlId }: { shortUrlId?: string }) => {
   // menjadi "" bila opsi belum ada saat nilai diisi.
   useEffect(() => {
     if (!websiteId) return;
-    const loadLinkPages = fetchAllLinkPages({ website_sub_category_id: websiteId })
+    const loadLinkPages = fetchAllLinkPages({
+      website_sub_category_id: websiteId,
+    })
       .then((res) => setLinkPages(res.data || []))
       .catch(() => setLinkPages([]));
     if (!isEdit) return;
 
     setIsLoadingData(true);
-    Promise.all([fetchAllShortUrls({ website_sub_category_id: websiteId, id: shortUrlId, take: 1 }), loadLinkPages])
+    Promise.all([
+      fetchAllShortUrls({
+        website_sub_category_id: websiteId,
+        id: shortUrlId,
+        take: 1,
+      }),
+      loadLinkPages,
+    ])
       .then(([res]) => {
         const url: ShortUrl | undefined = res.data?.[0];
         if (!url) {
@@ -152,7 +179,9 @@ export const ShortUrlForm = ({ shortUrlId }: { shortUrlId?: string }) => {
       utmTerm: text(form.utmTerm),
     };
     // Kirim sebagai ISO (UTC) supaya server tidak menafsirkan ulang zona waktu.
-    const expireAt = form.expireAt ? new Date(form.expireAt).toISOString() : null;
+    const expireAt = form.expireAt
+      ? new Date(form.expireAt).toISOString()
+      : null;
     const maxClicks = form.maxClicks ? Number(form.maxClicks) : null;
 
     setIsSaving(true);
@@ -161,7 +190,12 @@ export const ShortUrlForm = ({ shortUrlId }: { shortUrlId?: string }) => {
         // Field opsional yang dikosongkan dikirim null supaya benar-benar terhapus.
         const cleared = Object.fromEntries(
           Object.entries(common).map(([key, value]) => [key, value ?? null]),
-        ) as { [K in keyof typeof common]: Exclude<(typeof common)[K], undefined> | null };
+        ) as {
+          [K in keyof typeof common]: Exclude<
+            (typeof common)[K],
+            undefined
+          > | null;
+        };
         await updateShortUrl({
           id: shortUrlId,
           ...cleared,
@@ -190,30 +224,50 @@ export const ShortUrlForm = ({ shortUrlId }: { shortUrlId?: string }) => {
     }
   };
 
-  if (isLoadingData) return <LoadingComponentWithText heading="Mengambil data short URL..." />;
+  if (isLoadingData)
+    return <LoadingComponentWithText heading="Mengambil data short URL..." />;
 
   return (
     <div className="space-y-6">
       <AdminPageHeader
         title={isEdit ? 'Edit Short URL' : 'Buat Short URL'}
         description={
-          isEdit ? 'Perbarui pengaturan short link' : 'Buat short link baru untuk melacak klik dan trafik'
+          isEdit
+            ? 'Perbarui pengaturan short link'
+            : 'Buat short link baru untuk melacak klik dan trafik'
         }
       />
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6"
+      >
         <AdminFormSection title="Informasi Dasar">
           <div className="space-y-2">
-            <Label htmlFor="code">Kode {!isEdit && <span className="text-gray-500">(opsional)</span>}</Label>
+            <Label htmlFor="code">
+              Kode{' '}
+              {!isEdit && <span className="text-gray-500">(opsional)</span>}
+            </Label>
             <Input
               id="code"
-              placeholder={isEdit ? 'promo-snbt' : 'promo-snbt (kosongkan untuk dibuat otomatis)'}
+              placeholder={
+                isEdit
+                  ? 'promo-snbt'
+                  : 'promo-snbt (kosongkan untuk dibuat otomatis)'
+              }
               value={form.code}
-              onChange={(e) => set('code', e.target.value.toLowerCase().replace(/[^a-z0-9-_]/g, ''))}
+              onChange={(e) =>
+                set(
+                  'code',
+                  e.target.value.toLowerCase().replace(/[^a-z0-9-_]/g, ''),
+                )
+              }
               minLength={3}
               required={isEdit}
             />
-            <p className="text-sm text-gray-500">Hanya huruf kecil, angka, tanda hubung, dan garis bawah</p>
+            <p className="text-sm text-gray-500">
+              Hanya huruf kecil, angka, tanda hubung, dan garis bawah
+            </p>
           </div>
 
           <div className="space-y-2">
@@ -245,26 +299,39 @@ export const ShortUrlForm = ({ shortUrlId }: { shortUrlId?: string }) => {
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label htmlFor="isActive">Status Aktif</Label>
-                <p className="text-sm text-gray-500">Link nonaktif tidak akan mengalihkan pengunjung</p>
+                <p className="text-sm text-gray-500">
+                  Link nonaktif tidak akan mengalihkan pengunjung
+                </p>
               </div>
-              <Switch id="isActive" checked={form.isActive} onCheckedChange={(checked) => set('isActive', checked)} />
+              <Switch
+                id="isActive"
+                checked={form.isActive}
+                onCheckedChange={(checked) => set('isActive', checked)}
+              />
             </div>
           )}
         </AdminFormSection>
 
-        <AdminFormSection title="Tujuan" description="Ke mana short URL ini mengarahkan pengunjung?">
+        <AdminFormSection
+          title="Tujuan"
+          description="Ke mana short URL ini mengarahkan pengunjung?"
+        >
           <div className="space-y-2">
             <Label htmlFor="destinationType">Tipe Tujuan</Label>
             <Select
               value={form.destinationType}
-              onValueChange={(value) => set('destinationType', value as DestinationType)}
+              onValueChange={(value) =>
+                set('destinationType', value as DestinationType)
+              }
             >
               <SelectTrigger id="destinationType">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="DIRECT">URL langsung</SelectItem>
-                <SelectItem value="LINK_PAGE">Link Page (link-in-bio)</SelectItem>
+                <SelectItem value="LINK_PAGE">
+                  Link Page (link-in-bio)
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -288,31 +355,50 @@ export const ShortUrlForm = ({ shortUrlId }: { shortUrlId?: string }) => {
               <Label htmlFor="linkPageId">
                 Link Page <span className="text-red-500">*</span>
               </Label>
-              <Select value={form.linkPageId} onValueChange={(value) => set('linkPageId', value)}>
+              <Select
+                value={form.linkPageId}
+                onValueChange={(value) => set('linkPageId', value)}
+              >
                 <SelectTrigger id="linkPageId">
                   <SelectValue placeholder="Pilih link page..." />
                 </SelectTrigger>
                 <SelectContent>
                   {linkPages.map((page) => (
-                    <SelectItem key={page.id} value={page.id}>
+                    <SelectItem
+                      key={page.id}
+                      value={page.id}
+                    >
                       {page.title} ({page.slug})
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
               {linkPages.length === 0 && (
-                <p className="text-sm text-amber-600">Belum ada link page. Buat dulu di menu Link Pages.</p>
+                <p className="text-sm text-amber-600">
+                  Belum ada link page. Buat dulu di menu Link Pages.
+                </p>
               )}
             </div>
           )}
         </AdminFormSection>
 
-        <AdminFormSection title="Parameter UTM" description="Opsional, untuk melacak performa kampanye">
+        <AdminFormSection
+          title="Parameter UTM"
+          description="Opsional, untuk melacak performa kampanye"
+        >
           <div className="grid gap-4 md:grid-cols-2">
             {UTM_FIELDS.map(({ key, label, placeholder }) => (
-              <div key={key} className="space-y-2">
+              <div
+                key={key}
+                className="space-y-2"
+              >
                 <Label htmlFor={key}>{label}</Label>
-                <Input id={key} placeholder={placeholder} value={form[key]} onChange={(e) => set(key, e.target.value)} />
+                <Input
+                  id={key}
+                  placeholder={placeholder}
+                  value={form[key]}
+                  onChange={(e) => set(key, e.target.value)}
+                />
               </div>
             ))}
           </div>
@@ -328,7 +414,9 @@ export const ShortUrlForm = ({ shortUrlId }: { shortUrlId?: string }) => {
                 value={form.expireAt}
                 onChange={(e) => set('expireAt', e.target.value)}
               />
-              <p className="text-sm text-gray-500">Link otomatis nonaktif setelah tanggal ini</p>
+              <p className="text-sm text-gray-500">
+                Link otomatis nonaktif setelah tanggal ini
+              </p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="maxClicks">Batas Klik</Label>
@@ -340,24 +428,33 @@ export const ShortUrlForm = ({ shortUrlId }: { shortUrlId?: string }) => {
                 value={form.maxClicks}
                 onChange={(e) => set('maxClicks', e.target.value)}
               />
-              <p className="text-sm text-gray-500">Link otomatis nonaktif setelah jumlah klik ini</p>
+              <p className="text-sm text-gray-500">
+                Link otomatis nonaktif setelah jumlah klik ini
+              </p>
             </div>
           </div>
         </AdminFormSection>
 
         {original && (
-          <AdminFormSection title="Statistik" description="Performa saat ini">
+          <AdminFormSection
+            title="Statistik"
+            description="Performa saat ini"
+          >
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
                 <div className="text-2xl font-bold">{original.totalClicks}</div>
                 <div className="text-sm text-gray-500">Total Klik</div>
               </div>
               <div>
-                <div className="text-2xl font-bold">{original.totalUniqueIps}</div>
+                <div className="text-2xl font-bold">
+                  {original.totalUniqueIps}
+                </div>
                 <div className="text-sm text-gray-500">Pengunjung Unik</div>
               </div>
               <div>
-                <div className="text-2xl font-bold">{new Date(original.createdAt).toLocaleDateString('id-ID')}</div>
+                <div className="text-2xl font-bold">
+                  {new Date(original.createdAt).toLocaleDateString('id-ID')}
+                </div>
                 <div className="text-sm text-gray-500">Dibuat</div>
               </div>
             </div>

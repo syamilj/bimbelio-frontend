@@ -1,7 +1,13 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { ArrowLeft, Loader2, Save, SearchX } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -29,7 +35,12 @@ export const AdminPageHeader = ({
     <div className="flex flex-wrap items-center justify-between gap-4">
       <div className="flex items-center gap-4">
         {showBack && (
-          <Button variant="ghost" size="sm" onClick={() => router.back()} className="gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.back()}
+            className="gap-2"
+          >
             <ArrowLeft className="h-4 w-4" />
             Kembali
           </Button>
@@ -69,7 +80,9 @@ export const AdminFormSection = ({
       </CardTitle>
       {description && <CardDescription>{description}</CardDescription>}
     </CardHeader>
-    <CardContent className={cn('space-y-4', contentClassName)}>{children}</CardContent>
+    <CardContent className={cn('space-y-4', contentClassName)}>
+      {children}
+    </CardContent>
   </Card>
 );
 
@@ -92,11 +105,22 @@ export const AdminFormActions = ({
   const router = useRouter();
   return (
     <div className={cn('flex justify-end gap-2', className)}>
-      <Button type="button" variant="outline" onClick={onCancel ?? (() => router.back())}>
+      <Button
+        type="button"
+        variant="outline"
+        onClick={onCancel ?? (() => router.back())}
+      >
         {cancelLabel}
       </Button>
-      <Button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
+      <Button
+        type="submit"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? (
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        ) : (
+          <Save className="mr-2 h-4 w-4" />
+        )}
         {submitLabel}
       </Button>
     </div>
@@ -117,7 +141,11 @@ export const AdminNotFound = ({
       <SearchX className="h-10 w-10 text-gray-400" />
       <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
       <p className="max-w-sm text-sm text-gray-600">{description}</p>
-      <Button variant="outline" onClick={() => router.back()} className="gap-2">
+      <Button
+        variant="outline"
+        onClick={() => router.back()}
+        className="gap-2"
+      >
         <ArrowLeft className="h-4 w-4" />
         Kembali
       </Button>

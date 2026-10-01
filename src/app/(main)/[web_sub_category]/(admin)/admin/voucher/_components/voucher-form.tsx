@@ -1,10 +1,24 @@
 'use client';
 
-import { AdminFormActions, AdminFormSection, AdminNotFound, AdminPageHeader } from '@/components/admin/admin-page';
+import {
+  AdminFormActions,
+  AdminFormSection,
+  AdminNotFound,
+  AdminPageHeader,
+} from '@/components/admin/admin-page';
+import { CardSubs } from '@/components/admin/card-subs';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import LoadingPageWithText, { LoadingComponentWithText } from '@/components/ui/spinner';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import LoadingPageWithText, {
+  LoadingComponentWithText,
+} from '@/components/ui/spinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
@@ -14,7 +28,6 @@ import { Pivot_Voucher_Plan, Plan, Voucher } from '@/types/database';
 import { Percent } from 'lucide-react';
 import { FormEvent, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { CardSubs } from '@/components/admin/card-subs';
 
 // Satu form untuk tambah & edit voucher (dulu dua halaman salinan ~520 baris).
 
@@ -74,7 +87,10 @@ const PlanGroup = ({
 }) => (
   <div className="space-y-4">
     <Label className="text-xl font-semibold">
-      {label} {hint && <span className="text-xs font-medium text-gray-400">{hint}</span>}
+      {label}{' '}
+      {hint && (
+        <span className="text-xs font-medium text-gray-400">{hint}</span>
+      )}
     </Label>
     <div className="flex flex-wrap justify-start gap-4">
       {plans?.map((item) => (
@@ -103,22 +119,27 @@ export const VoucherForm = ({ voucherId }: { voucherId?: string }) => {
       usageLimit: '',
     },
   });
-  const [title, voucherCode, type, discount, startDate, endDate, usageLimit] = watch([
-    'title',
-    'voucherCode',
-    'type',
-    'discount',
-    'startDate',
-    'endDate',
-    'usageLimit',
-  ]);
+  const [title, voucherCode, type, discount, startDate, endDate, usageLimit] =
+    watch([
+      'title',
+      'voucherCode',
+      'type',
+      'discount',
+      'startDate',
+      'endDate',
+      'usageLimit',
+    ]);
 
   const { data: plans } = useGet<PlanType>('/plan/getAllPlanForPricingPage');
 
   const [selectedPlanIds, setSelectedPlanIds] = useState<string[]>([]);
-  const [planType, setPlanType] = useState<'ALL_PLAN' | 'SELECTED_PLAN'>('ALL_PLAN');
+  const [planType, setPlanType] = useState<'ALL_PLAN' | 'SELECTED_PLAN'>(
+    'ALL_PLAN',
+  );
   const togglePlan = (id: string) =>
-    setSelectedPlanIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+    setSelectedPlanIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
 
   const { data: voucher, isLoading: isLoadingVoucher } = useGet<VoucherDetail>(
     '/voucher/getSingleVoucher',
@@ -136,8 +157,10 @@ export const VoucherForm = ({ voucherId }: { voucherId?: string }) => {
     setValue('discount', voucher.discount.toString());
     setValue('voucherCode', voucher.voucherCode);
     setValue('startDate', getDateForInputDateTime(voucher.startDate));
-    if (voucher.endDate) setValue('endDate', getDateForInputDateTime(voucher.endDate));
-    if (voucher.usageLimit) setValue('usageLimit', voucher.usageLimit.toString());
+    if (voucher.endDate)
+      setValue('endDate', getDateForInputDateTime(voucher.endDate));
+    if (voucher.usageLimit)
+      setValue('usageLimit', voucher.usageLimit.toString());
     setPlanType(voucher.voucherPlanType);
     setSelectedPlanIds(voucher.Pivot_Voucher_Plan.map((item) => item.planId));
   }, [voucher, setValue]);
@@ -178,24 +201,38 @@ export const VoucherForm = ({ voucherId }: { voucherId?: string }) => {
   if (isEdit && isLoadingVoucher) {
     return <LoadingComponentWithText heading="Mengambil data voucher..." />;
   }
-  if (isEdit && !voucher) return <AdminNotFound title="Voucher tidak ditemukan" />;
+  if (isEdit && !voucher)
+    return <AdminNotFound title="Voucher tidak ditemukan" />;
 
   return (
     <div className="space-y-6">
-      <LoadingPageWithText loading={isSaving} heading="Menyimpan voucher..." />
+      <LoadingPageWithText
+        loading={isSaving}
+        heading="Menyimpan voucher..."
+      />
       <AdminPageHeader
         title={isEdit ? 'Edit Voucher' : 'Tambah Voucher'}
-        description={isEdit ? 'Perbarui data voucher' : 'Buat voucher diskon baru'}
+        description={
+          isEdit ? 'Perbarui data voucher' : 'Buat voucher diskon baru'
+        }
       />
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6"
+      >
         <AdminFormSection title="Informasi Dasar">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="title">
                 Judul <span className="text-red-500">*</span>
               </Label>
-              <Input id="title" {...register('title')} placeholder="Voucher Lebaran" required />
+              <Input
+                id="title"
+                {...register('title')}
+                placeholder="Voucher Lebaran"
+                required
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="voucherCode">
@@ -203,12 +240,23 @@ export const VoucherForm = ({ voucherId }: { voucherId?: string }) => {
                 <button
                   type="button"
                   className="bg-main-default hover:bg-main-default/90 rounded-full px-3 py-1 text-xs text-white"
-                  onClick={() => setValue('voucherCode', crypto.randomUUID().toUpperCase().slice(0, 6))}
+                  onClick={() =>
+                    setValue(
+                      'voucherCode',
+                      crypto.randomUUID().toUpperCase().slice(0, 6),
+                    )
+                  }
                 >
                   Buat otomatis
                 </button>
               </Label>
-              <Input id="voucherCode" {...register('voucherCode')} placeholder="YS3ND8" maxLength={10} required />
+              <Input
+                id="voucherCode"
+                {...register('voucherCode')}
+                placeholder="YS3ND8"
+                maxLength={10}
+                required
+              />
             </div>
           </div>
 
@@ -222,7 +270,9 @@ export const VoucherForm = ({ voucherId }: { voucherId?: string }) => {
                 <Select
                   name="type"
                   required
-                  onValueChange={(value) => setValue('type', value as VoucherPayloadType['type'])}
+                  onValueChange={(value) =>
+                    setValue('type', value as VoucherPayloadType['type'])
+                  }
                   value={type}
                 >
                   <SelectTrigger id="type">
@@ -241,18 +291,27 @@ export const VoucherForm = ({ voucherId }: { voucherId?: string }) => {
                 Nilai Diskon <span className="text-red-500">*</span>
               </Label>
               {!type ? (
-                <Input placeholder="Pilih tipe voucher dahulu" disabled />
+                <Input
+                  placeholder="Pilih tipe voucher dahulu"
+                  disabled
+                />
               ) : (
                 <Controller
                   name="discount"
                   control={control}
                   render={({ field }) => {
                     const rawValue = field.value?.replace(/\D/g, '') || '';
-                    const formatted = new Intl.NumberFormat('id-ID').format(Number(rawValue));
+                    const formatted = new Intl.NumberFormat('id-ID').format(
+                      Number(rawValue),
+                    );
                     return (
                       <div className="relative overflow-hidden rounded-3xl">
                         <div className="bg-main absolute top-0 left-0 flex h-full w-10 items-center justify-center text-white">
-                          {type === 'Fixed_Amount' ? <p>Rp</p> : <Percent className="h-4 w-4" />}
+                          {type === 'Fixed_Amount' ? (
+                            <p>Rp</p>
+                          ) : (
+                            <Percent className="h-4 w-4" />
+                          )}
                         </div>
                         <Input
                           id="discount"
@@ -260,11 +319,22 @@ export const VoucherForm = ({ voucherId }: { voucherId?: string }) => {
                           {...field}
                           value={formatted === '0' ? '' : formatted}
                           onChange={(e) => {
-                            const onlyNumbers = e.target.value.replace(/\D/g, '');
-                            if (type === 'Percentage' && parseInt(onlyNumbers) > 100) return;
+                            const onlyNumbers = e.target.value.replace(
+                              /\D/g,
+                              '',
+                            );
+                            if (
+                              type === 'Percentage' &&
+                              parseInt(onlyNumbers) > 100
+                            )
+                              return;
                             field.onChange(onlyNumbers);
                           }}
-                          placeholder={type === 'Fixed_Amount' ? 'contoh: 100000' : 'rentang: 0 - 100'}
+                          placeholder={
+                            type === 'Fixed_Amount'
+                              ? 'contoh: 100000'
+                              : 'rentang: 0 - 100'
+                          }
                           required
                         />
                       </div>
@@ -280,13 +350,22 @@ export const VoucherForm = ({ voucherId }: { voucherId?: string }) => {
               <Label htmlFor="startDate">
                 Mulai <span className="text-red-500">*</span>
               </Label>
-              <Input id="startDate" type="datetime-local" {...register('startDate')} required />
+              <Input
+                id="startDate"
+                type="datetime-local"
+                {...register('startDate')}
+                required
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="endDate">
                 Berakhir <span className="text-gray-500">(opsional)</span>
               </Label>
-              <Input id="endDate" type="datetime-local" {...register('endDate')} />
+              <Input
+                id="endDate"
+                type="datetime-local"
+                {...register('endDate')}
+              />
             </div>
           </div>
 
@@ -294,22 +373,40 @@ export const VoucherForm = ({ voucherId }: { voucherId?: string }) => {
             <Label htmlFor="usageLimit">
               Batas Penggunaan <span className="text-gray-500">(opsional)</span>
             </Label>
-            <Input id="usageLimit" type="number" {...register('usageLimit')} placeholder="contoh: 3" />
+            <Input
+              id="usageLimit"
+              type="number"
+              {...register('usageLimit')}
+              placeholder="contoh: 3"
+            />
           </div>
         </AdminFormSection>
 
         <AdminFormSection title="Berlaku untuk Plan">
-          <Tabs value={planType} className="w-full" onValueChange={(value) => setPlanType(value as typeof planType)}>
+          <Tabs
+            value={planType}
+            className="w-full"
+            onValueChange={(value) => setPlanType(value as typeof planType)}
+          >
             <TabsList className="mx-start mb-8 grid w-fit max-w-md grid-cols-2 rounded-full bg-[#e6f0ff] p-1">
-              <TabsTrigger value="ALL_PLAN" className="data-[state=active]:bg-main-default rounded-full">
+              <TabsTrigger
+                value="ALL_PLAN"
+                className="data-[state=active]:bg-main-default rounded-full"
+              >
                 Semua Plan
               </TabsTrigger>
-              <TabsTrigger value="SELECTED_PLAN" className="data-[state=active]:bg-main-default rounded-full">
+              <TabsTrigger
+                value="SELECTED_PLAN"
+                className="data-[state=active]:bg-main-default rounded-full"
+              >
                 Plan Tertentu
               </TabsTrigger>
             </TabsList>
             <TabsContent value="ALL_PLAN" />
-            <TabsContent value="SELECTED_PLAN" className="flex flex-col gap-4">
+            <TabsContent
+              value="SELECTED_PLAN"
+              className="flex flex-col gap-4"
+            >
               <PlanGroup
                 label="Bundles"
                 hint="( Subscription + Coin )"
@@ -323,7 +420,12 @@ export const VoucherForm = ({ voucherId }: { voucherId?: string }) => {
                 selectedIds={selectedPlanIds}
                 onToggle={togglePlan}
               />
-              <PlanGroup label="Koin" plans={plans?.topping} selectedIds={selectedPlanIds} onToggle={togglePlan} />
+              <PlanGroup
+                label="Koin"
+                plans={plans?.topping}
+                selectedIds={selectedPlanIds}
+                onToggle={togglePlan}
+              />
             </TabsContent>
           </Tabs>
         </AdminFormSection>
