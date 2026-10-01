@@ -1,9 +1,9 @@
 'use client';
 
+import { trackIdFromPath } from '@/lib/api/client';
 import axiosInstanceRaw from '@/lib/axios/axiosInstanceRaw';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { response } from '@/lib/response';
-import { trackIdFromPath } from '@/lib/api/client';
 import { trackThemeCss } from '@/lib/theme/track-theme';
 import {
   WebsiteCategory,
@@ -13,8 +13,8 @@ import {
 import { useParams, usePathname } from 'next/navigation';
 import NextTopLoader from 'nextjs-toploader';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { DialogWebCategory } from '../ui/choose-web-category/dialog-web-category';
-import { LoadingFixed } from '../ui/loading/loading-fixed';
+import { switchTrack, TrackPickerDialog } from '../layout/app/track-picker';
+import { PageLoader } from '../patterns/page-loader';
 import { useSession } from './provider-session-auth';
 
 const initialValue: WebsiteSubCategory = {
@@ -67,19 +67,16 @@ export default function ProviderWebsiteCategory({
           setWebsiteSubCategory(resData.data);
         })
         .catch(() => {
-          if (isAppArea) {
-            setFirst(true);
-          }
+          // Track tersimpan sudah tidak ada; track dari URL diselesaikan effect di bawah.
+          localStorage.removeItem('website_sub_category_id');
         })
         .finally(() => {
           setIsLoading(false);
         });
     } else {
       if (!session) setWebsiteSubCategory(initialValue);
-      else if (isAppArea) {
-        setFirst(true);
-      }
-
+      // Di area aplikasi track diambil dari URL lewat daftar track (effect di
+      // bawah); pemilih hanya muncul bila track di URL tidak valid.
       setIsLoading(false);
     }
   };
@@ -105,6 +102,7 @@ export default function ProviderWebsiteCategory({
       item.WebsiteSubCategory.find((item2) => item2.id === web_sub_category),
     );
     if (find) {
+      setFirst(false);
       localStorage.setItem('website_sub_category_id', web_sub_category);
       setWebsiteSubCategory(
         find.WebsiteSubCategory.find(
@@ -151,41 +149,25 @@ export default function ProviderWebsiteCategory({
   if (first) {
     return (
       <WebsiteSubCategoryContext.Provider value={Context}>
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
-          <div className="mx-4 w-full max-w-2xl">
-            <DialogWebCategory
-              items={webCategoryData}
-              value={websiteSubCategory?.id}
-              isOpen={true}
-              onOpenChange={(open) => {
-                if (!open) {
-                  // Don't allow closing if this is the first selection
-                  return;
-                }
-              }}
-              onSelect={(item) => {
-                localStorage.setItem('website_sub_category_id', item?.id);
-                setWebsiteSubCategory(item);
-                setFirst(false);
-                // Navigate to the selected category
-                const currentPath = window.location.pathname;
-                const pathParts = currentPath.split('/').filter(Boolean);
-                if (pathParts.length > 0) {
-                  window.location.pathname = `/${item.id}/${pathParts.slice(1).join('/')}`;
-                } else {
-                  window.location.pathname = `/${item.id}/user/bimboard`;
-                }
-              }}
-            />
-          </div>
-        </div>
+        <div className="fixed inset-0 z-40 bg-paper" />
+        <TrackPickerDialog
+          required
+          open
+          groups={webCategoryData}
+          value={websiteSubCategory?.id}
+          onSelect={(track) => {
+            setWebsiteSubCategory(track);
+            setFirst(false);
+            switchTrack(track.id);
+          }}
+        />
       </WebsiteSubCategoryContext.Provider>
     );
   }
 
   return (
     <WebsiteSubCategoryContext.Provider value={Context}>
-      {isLoading && !websiteSubCategory && !isHome && <LoadingFixed />}
+      {isLoading && !websiteSubCategory && isAppArea && <PageLoader />}
       <NextTopLoader
         color="var(--brand)"
         initialPosition={0.08}

@@ -3,5 +3,11 @@
   "entry": ["src/proxy.ts", "test/e2e/mock-api/server.ts", "test/setup.ts"],
   "project": ["src/**/*.{ts,tsx}", "test/**/*.{ts,tsx}"],
   "ignore": ["public/sw.js", "src/types/**"],
-  "ignoreDependencies": ["@tailwindcss/typography", "tw-animate-css", "katex"]
+  "ignoreDependencies": [
+    "@t3-oss/env-nextjs",
+    "@tailwindcss/typography",
+    "katex",
+    "tailwindcss",
+    "tw-animate-css"
+  ]
 }

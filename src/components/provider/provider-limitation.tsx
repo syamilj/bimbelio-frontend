@@ -1,8 +1,9 @@
 'use client';
+import { PageLoader } from '@/components/patterns/page-loader';
+import { trackIdFromPath } from '@/lib/api/client';
 import axiosInstance from '@/lib/axios/axiosInstance';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { response } from '@/lib/response';
-import { Loader2 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import {
   createContext,
@@ -111,12 +112,10 @@ export default function ProviderLimitation({
     checkLimitation,
   };
 
-  if (isLoading && pathname !== '/') {
-    return (
-      <div className="flex w-full h-full fixed top-0 left-0 justify-center items-center">
-        <Loader2 className="animate-spin w-4 h-4" />
-      </div>
-    );
+  // Hanya area aplikasi yang menunggu kuota; halaman publik dirender langsung
+  // agar HTML dari server berisi konten.
+  if (isLoading && trackIdFromPath(pathname)) {
+    return <PageLoader />;
   }
 
   return (

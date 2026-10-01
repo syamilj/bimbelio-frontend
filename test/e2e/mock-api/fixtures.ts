@@ -16,7 +16,7 @@ export const TRACKS = [
         secondary_color: '#5aa4dd',
         website_category_id: 'ptn',
         sharing_website_sub_category_ids: [],
-        type: 'CORE',
+        type: 'GENERAL',
         createdAt: '2026-01-01T00:00:00.000Z',
         updatedAt: '2026-01-01T00:00:00.000Z',
       },
@@ -80,4 +80,58 @@ export const USERS: Record<string, Record<string, unknown>> = {
     name: 'Super Admin Uji',
     role: 'SUPER_ADMIN',
   },
+  'e2e-finance': {
+    ...baseUser,
+    id: 'u-finance',
+    name: 'Finance Uji',
+    role: 'FINANCE',
+  },
 };
+
+export const NOTIFICATIONS = [
+  {
+    id: 'n1',
+    userId: 'u-student',
+    isBroadcast: false,
+    isPopUp: false,
+    title: 'Try out minggu ini dibuka',
+    content: 'Try out UTBK #12 bisa dikerjakan sampai Minggu.',
+    description: null,
+    type: 'INFO',
+    category: 'TRYOUT',
+    priority: 'NORMAL',
+    relatedResourceId: null,
+    relatedResourceType: null,
+    isRead: false,
+    readAt: null,
+    isArchived: false,
+    archivedAt: null,
+    actionUrl: '/utbk/user/bimarena/try-out',
+    metadata: null,
+    isSendingWhatsApp: false,
+    isSendingEmail: false,
+    createdAt: '2026-10-01T08:00:00.000Z',
+    updatedAt: '2026-10-01T08:00:00.000Z',
+  },
+];
+
+export const COURSE_INDEX = [
+  {
+    id: 'mat',
+    name: 'Penalaran Matematika',
+    CourseChapter: [
+      {
+        title: 'Aljabar',
+        CourseSubChapter: [
+          {
+            id: 'l1',
+            title: 'Persamaan kuadrat',
+            description: 'Akar-akar persamaan',
+            type: 'VIDEO',
+            CourseProgress: [],
+          },
+        ],
+      },
+    ],
+  },
+];

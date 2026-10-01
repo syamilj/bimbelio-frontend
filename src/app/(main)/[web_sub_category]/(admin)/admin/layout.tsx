@@ -1,12 +1,15 @@
-// src/app/(admin)/admin/layout.tsx (SERVER layout, no 'use client')
-import AdminClientLayout from '@/components/layout/layoutAdmin';
+import { AdminShell } from '@/components/layout/admin/admin-shell';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Panel admin',
+  robots: { index: false },
+};
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <AdminClientLayout>{children}</AdminClientLayout>;
+  return <AdminShell>{children}</AdminShell>;
 }
-
-//

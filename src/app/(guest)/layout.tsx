@@ -1,10 +1,10 @@
-import LayoutGuest from '@/components/layout/layoutGuest';
+import { SiteFooter } from '@/components/layout/site/site-footer';
+import { SiteShell } from '@/components/layout/site/site-shell';
 import ProviderApp from '@/components/provider/provider-app';
 import ProviderLimitation from '@/components/provider/provider-limitation';
 import ProviderPixel from '@/components/provider/provider-pixel';
 import ProviderSessionAuth from '@/components/provider/provider-session-auth';
 import ProviderWebsiteCategory from '@/components/provider/provider-website-category';
-import { Suspense } from 'react';
 
 export default function GuestLayout({
   children,
@@ -12,18 +12,16 @@ export default function GuestLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Suspense fallback={null}>
-      <ProviderSessionAuth>
-        <ProviderLimitation>
-          <ProviderPixel>
-            <ProviderWebsiteCategory>
-              <ProviderApp>
-                <LayoutGuest>{children}</LayoutGuest>
-              </ProviderApp>
-            </ProviderWebsiteCategory>
-          </ProviderPixel>
-        </ProviderLimitation>
-      </ProviderSessionAuth>
-    </Suspense>
+    <ProviderSessionAuth>
+      <ProviderLimitation>
+        <ProviderPixel>
+          <ProviderWebsiteCategory>
+            <ProviderApp>
+              <SiteShell footer={<SiteFooter />}>{children}</SiteShell>
+            </ProviderApp>
+          </ProviderWebsiteCategory>
+        </ProviderPixel>
+      </ProviderLimitation>
+    </ProviderSessionAuth>
   );
 }

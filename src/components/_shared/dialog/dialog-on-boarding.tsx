@@ -21,13 +21,16 @@ interface DialogOnBoardingProps {
     onOpenChange: (open: boolean) => void;
   };
   inviteLink: string | null;
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  /** Dipanggil saat siswa menekan tombol selesai di langkah terakhir. */
+  onFinish?: () => void;
 }
 
 export const DialogOnBoarding = ({
   useOpen,
   children,
   inviteLink,
+  onFinish,
 }: DialogOnBoardingProps) => {
   const isOpen = useOpen?.isOpen;
   const onOpenChange = useOpen?.onOpenChange;
@@ -58,7 +61,7 @@ export const DialogOnBoarding = ({
         'Mari kita pelajari fitur-fitur penting untuk memaksimalkan pengalaman belajarmu',
       content: (
         <div className="space-y-4">
-          <p className="text-gray-600 text-sm">
+          <p className="text-sm text-gray-600">
             Bimbelio menyediakan platform belajar lengkap untuk mempersiapkan
             dirimu menghadapi ujian masuk perguruan tinggi.
           </p>
@@ -66,7 +69,7 @@ export const DialogOnBoarding = ({
             {categories.map((cat) => (
               <div
                 key={cat.id}
-                className="p-4 rounded-3xl flex items-start justify-between transition-all duration-300 hover:shadow-md"
+                className="flex items-start justify-between rounded-3xl p-4 transition-all duration-300 hover:shadow-md"
                 style={{
                   backgroundColor: cat.mainColor + '15',
                   borderLeft: `4px solid ${cat.mainColor}`,
@@ -74,30 +77,30 @@ export const DialogOnBoarding = ({
               >
                 <div className="flex-1 text-left">
                   <p
-                    className="font-bold text-sm"
+                    className="text-sm font-bold"
                     style={{ color: cat.mainColor }}
                   >
                     {cat.name}
                   </p>
-                  <p className="text-xs text-gray-600 mt-1">
+                  <p className="mt-1 text-xs text-gray-600">
                     Kategori pembelajaran terbaik
                   </p>
                 </div>
                 <div
-                  className="w-6 h-6 rounded-full border-2 flex-shrink-0 ml-3 flex items-center justify-center"
+                  className="ml-3 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border-2"
                   style={{ borderColor: cat.mainColor }}
                 >
                   <div
-                    className="w-3 h-3 rounded-full"
+                    className="h-3 w-3 rounded-full"
                     style={{ backgroundColor: cat.mainColor }}
                   />
                 </div>
               </div>
             ))}
           </div>
-          <p className="text-xs text-gray-500 pt-2">
+          <p className="pt-2 text-xs text-gray-500">
             <Zap
-              className="w-4 h-4 inline mr-1"
+              className="mr-1 inline h-4 w-4"
               style={{ color: mainColor }}
             />
             Kami memiliki 4 kategori ujian yang berbeda untuk memenuhi kebutuhan
@@ -112,25 +115,25 @@ export const DialogOnBoarding = ({
       content: (
         <div className="space-y-4">
           <div
-            className="bg-gradient-to-r p-4 rounded-3xl text-white"
+            className="rounded-3xl bg-gradient-to-r p-4 text-white"
             style={{
               backgroundImage: `linear-gradient(135deg, ${secondaryColor}, ${mainColor})`,
             }}
           >
-            <p className="font-semibold mb-2 flex items-center gap-2">
-              <Gift className="w-4 h-4" />
+            <p className="mb-2 flex items-center gap-2 font-semibold">
+              <Gift className="h-4 w-4" />
               Paket Tersedia:
             </p>
             <ul className="space-y-2 text-sm">
               <li className="flex items-start gap-2">
-                <Crown className="w-4 h-4 mt-1 flex-shrink-0" />
+                <Crown className="mt-1 h-4 w-4 flex-shrink-0" />
                 <span>
                   <strong>Gratis:</strong> Akses terbatas ke fitur dasar dengan
                   batasan penggunaan
                 </span>
               </li>
               <li className="flex items-start gap-2">
-                <Zap className="w-4 h-4 mt-1 flex-shrink-0" />
+                <Zap className="mt-1 h-4 w-4 flex-shrink-0" />
                 <span>
                   <strong>Premium:</strong> Akses penuh ke semua fitur
                   berdasarkan produk yang kamu beli
@@ -139,11 +142,11 @@ export const DialogOnBoarding = ({
             </ul>
           </div>
           <div
-            className="bg-blue-50 border-l-4 p-3 rounded flex items-start gap-2"
+            className="flex items-start gap-2 rounded border-l-4 bg-blue-50 p-3"
             style={{ borderColor: mainColor }}
           >
             <AlertCircle
-              className="w-4 h-4 mt-0.5 flex-shrink-0"
+              className="mt-0.5 h-4 w-4 flex-shrink-0"
               style={{ color: mainColor }}
             />
             <p className="text-sm text-gray-700">
@@ -159,9 +162,9 @@ export const DialogOnBoarding = ({
       title: 'Menukar Website Category',
       description: 'Cara mengubah kategori ujian yang ingin kamu pelajari',
       content: (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {/* Gambar */}
-          <div className="w-full rounded-3xl overflow-hidden border border-amber-200 bg-gray-100 flex justify-center p-1">
+          <div className="flex w-full justify-center overflow-hidden rounded-3xl border border-amber-200 bg-gray-100 p-1">
             <img
               src={ImgChangeCategory.src}
               alt="Cara Menukar Website Category"
@@ -169,42 +172,42 @@ export const DialogOnBoarding = ({
             />
           </div>
           <div className="space-y-4">
-            <div className="bg-amber-50 border border-amber-200 rounded-3xl p-4 space-y-3">
+            <div className="space-y-3 rounded-3xl border border-amber-200 bg-amber-50 p-4">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-amber-200 text-amber-900 flex items-center justify-center font-bold flex-shrink-0">
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-amber-200 font-bold text-amber-900">
                   1
                 </div>
                 <div>
-                  <p className="font-semibold text-sm text-gray-900">
+                  <p className="text-sm font-semibold text-gray-900">
                     Buka Sidebar Navigation
                   </p>
-                  <p className="text-xs text-gray-600 mt-1">
+                  <p className="mt-1 text-xs text-gray-600">
                     Klik menu di sisi kiri atau gunakan hamburger menu di mobile
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-amber-200 text-amber-900 flex items-center justify-center font-bold flex-shrink-0">
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-amber-200 font-bold text-amber-900">
                   2
                 </div>
                 <div>
-                  <p className="font-semibold text-sm text-gray-900">
+                  <p className="text-sm font-semibold text-gray-900">
                     Pilih Category
                   </p>
-                  <p className="text-xs text-gray-600 mt-1">
+                  <p className="mt-1 text-xs text-gray-600">
                     Cari dan klik salah satu dari 4 kategori yang tersedia
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-amber-200 text-amber-900 flex items-center justify-center font-bold flex-shrink-0">
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-amber-200 font-bold text-amber-900">
                   3
                 </div>
                 <div>
-                  <p className="font-semibold text-sm text-gray-900">
+                  <p className="text-sm font-semibold text-gray-900">
                     Sistem Otomatis
                   </p>
-                  <p className="text-xs text-gray-600 mt-1">
+                  <p className="mt-1 text-xs text-gray-600">
                     Dashboard dan konten akan secara otomatis berubah sesuai
                     kategori pilihan
                   </p>
@@ -213,11 +216,11 @@ export const DialogOnBoarding = ({
             </div>
 
             <div
-              className="bg-blue-50 border-l-4 p-3 rounded flex items-start gap-2"
+              className="flex items-start gap-2 rounded border-l-4 bg-blue-50 p-3"
               style={{ borderColor: mainColor }}
             >
               <AlertCircle
-                className="w-4 h-4 mt-0.5 flex-shrink-0"
+                className="mt-0.5 h-4 w-4 flex-shrink-0"
                 style={{ color: mainColor }}
               />
               <p className="text-xs text-gray-700">
@@ -235,7 +238,7 @@ export const DialogOnBoarding = ({
       content: (
         <div className="space-y-4">
           {/* Gambar */}
-          <div className="w-full rounded-3xl overflow-hidden border border-green-200 bg-gray-100 flex justify-center">
+          <div className="flex w-full justify-center overflow-hidden rounded-3xl border border-green-200 bg-gray-100">
             <img
               src={ImgSubscription.src}
               alt="Cara Kelola Subscription Aktif"
@@ -243,44 +246,44 @@ export const DialogOnBoarding = ({
             />
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-3xl p-4 space-y-3">
+          <div className="space-y-3 rounded-3xl border border-green-200 bg-green-50 p-4">
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-full bg-green-200 text-green-900 flex items-center justify-center font-bold flex-shrink-0">
+              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-green-200 font-bold text-green-900">
                 1
               </div>
               <div>
-                <p className="font-semibold text-sm text-gray-900">
+                <p className="text-sm font-semibold text-gray-900">
                   Lihat Status Subscription
                 </p>
-                <p className="text-xs text-gray-600 mt-1">
+                <p className="mt-1 text-xs text-gray-600">
                   Di header kanan atas, ada button dengan badge yang menunjukkan
                   tier kamu saat ini (Gratis/Premium)
                 </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-full bg-green-200 text-green-900 flex items-center justify-center font-bold flex-shrink-0">
+              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-green-200 font-bold text-green-900">
                 2
               </div>
               <div>
-                <p className="font-semibold text-sm text-gray-900">
+                <p className="text-sm font-semibold text-gray-900">
                   Hover Button Subscription
                 </p>
-                <p className="text-xs text-gray-600 mt-1">
+                <p className="mt-1 text-xs text-gray-600">
                   Arahkan mouse ke button subscription di header, akan muncul
                   button &quot;Kelola Subscription&quot; dengan opsi lainnya
                 </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-full bg-green-200 text-green-900 flex items-center justify-center font-bold flex-shrink-0">
+              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-green-200 font-bold text-green-900">
                 3
               </div>
               <div>
-                <p className="font-semibold text-sm text-gray-900">
+                <p className="text-sm font-semibold text-gray-900">
                   Kelola Subscription
                 </p>
-                <p className="text-xs text-gray-600 mt-1">
+                <p className="mt-1 text-xs text-gray-600">
                   Klik &quot;Kelola Subscription&quot; untuk melihat detail
                   subscription aktif, yang pending, dan upgrade/beli
                   subscription baru
@@ -290,11 +293,11 @@ export const DialogOnBoarding = ({
           </div>
 
           <div
-            className="bg-blue-50 border-l-4 p-3 rounded flex items-start gap-2"
+            className="flex items-start gap-2 rounded border-l-4 bg-blue-50 p-3"
             style={{ borderColor: mainColor }}
           >
             <AlertCircle
-              className="w-4 h-4 mt-0.5 flex-shrink-0"
+              className="mt-0.5 h-4 w-4 flex-shrink-0"
               style={{ color: mainColor }}
             />
             <p className="text-sm text-gray-700">
@@ -317,10 +320,10 @@ export const DialogOnBoarding = ({
       open={isOpen ? isOpen : open}
       onOpenChange={onOpenChange ? onOpenChange : setOpen}
     >
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      {children && <DialogTrigger asChild>{children}</DialogTrigger>}
       <DialogContent className="md:max-w-lg">
         {/* Header dengan progress indicator */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gray-200 rounded-t-lg overflow-hidden">
+        <div className="absolute top-0 right-0 left-0 h-1 overflow-hidden rounded-t-lg bg-gray-200">
           <div
             className="h-full transition-all duration-300"
             style={{
@@ -340,16 +343,16 @@ export const DialogOnBoarding = ({
         </DialogHeader>
 
         {/* Content */}
-        <div className="py-4 overflow-y-auto">{currentStep.content}</div>
+        <div className="overflow-y-auto py-4">{currentStep.content}</div>
 
         {/* Footer dengan buttons */}
-        <div className="flex items-center justify-between gap-3 pt-4 border-t">
+        <div className="flex items-center justify-between gap-3 border-t pt-4">
           {/* Progress dots */}
           <div className="flex gap-1.5">
             {steps.map((_, index) => (
               <div
                 key={index}
-                className="w-2 h-2 rounded-full transition-all duration-300"
+                className="h-2 w-2 rounded-full transition-all duration-300"
                 style={{
                   backgroundColor:
                     index === step
@@ -381,7 +384,7 @@ export const DialogOnBoarding = ({
                 style={{ backgroundColor: mainColor }}
               >
                 Selanjutnya
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="h-4 w-4" />
               </Button>
             ) : (
               <Button
@@ -390,16 +393,14 @@ export const DialogOnBoarding = ({
                     onOpenChange(false);
                   }
                   setOpen(false);
-                  if (inviteLink) {
-                    document.getElementById('openJoin')?.click();
-                  }
+                  if (inviteLink) onFinish?.();
                 }}
                 className="gap-2 text-white"
                 style={{
                   backgroundImage: `linear-gradient(135deg, ${secondaryColor}, ${mainColor})`,
                 }}
               >
-                <Check className="w-4 h-4" />
+                <Check className="h-4 w-4" />
                 Selesai
               </Button>
             )}

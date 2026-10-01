@@ -61,5 +61,5 @@ test('URL satu segmen yang bukan track menampilkan 404, bukan pemilih track', as
   await expect(
     page.getByRole('heading', { name: 'Halaman tidak ditemukan' }),
   ).toBeVisible();
-  await expect(page.getByText('Pilih Kategori')).toHaveCount(0);
+  await expect(page.getByText('Pilih jalur ujian')).toHaveCount(0);
 });

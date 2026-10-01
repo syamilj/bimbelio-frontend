@@ -5,7 +5,7 @@
  * sama-sama memakai data fiktif. Rute yang belum di-mock membalas 404 dan
  * dicatat di /__unhandled agar tes bisa menangkap request yang terlewat.
  */
-import { TRACKS, USERS } from './fixtures';
+import { COURSE_INDEX, NOTIFICATIONS, TRACKS, USERS } from './fixtures';
 
 type Handler = (req: Request, url: URL) => Response | Promise<Response>;
 
@@ -41,6 +41,30 @@ const routes: Record<string, Handler> = {
   'GET /plan/getAllPlanByWebCategory': () => ok([]),
   'GET /notification/getNotification': () =>
     ok([], { page: 1, total_pages: 1, total_data: 0 }),
+  'GET /notification/getUserNotification': (_req, url) => {
+    const unreadOnly = url.searchParams.get('unReadOnly') === 'true';
+    const list = NOTIFICATIONS.filter((n) => !unreadOnly || !n.isRead);
+    return ok(
+      {
+        data: list,
+        unreadCount: NOTIFICATIONS.filter((n) => !n.isRead).length,
+      },
+      { page: 1, total_pages: 1, total: list.length },
+    );
+  },
+  'PUT /notification/readNotification': () => ok(null),
+  'PUT /notification/readAllNotification': () => ok(null),
+  'GET /notification/vapidPublicKey': () => ok({ publicKey: '' }),
+  'POST /user/checkSubscription': () => ok(null),
+  'POST /user/checkSubscriptionPending': () => ok(null),
+  'POST /user/checkSubscriptionInstallment': () => ok(null),
+  'POST /user/checkLimitation': () => ok(null),
+  'GET /user/getUserOnBoarding': () => ok([]),
+  'GET /payment/getPaymentInProses': () => ok({ waiting: [], riwayat: [] }),
+  'GET /course/getCategoryForCard': () => ok(COURSE_INDEX),
+  'GET /category/getAllCategories': () => ok([]),
+  // Pelacakan server-side (CAPI) — diterima tanpa diproses.
+  'POST /tracking/event': () => ok(null),
 };
 
 const cors = {

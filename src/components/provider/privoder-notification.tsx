@@ -508,11 +508,7 @@ const FloatingNotificationAlert = () => {
 
   // Detect browser
   const getBrowserName = ():
-    | 'chrome'
-    | 'firefox'
-    | 'safari'
-    | 'edge'
-    | 'other' => {
+    'chrome' | 'firefox' | 'safari' | 'edge' | 'other' => {
     const ua = navigator.userAgent;
     if (ua.includes('Edg/')) return 'edge';
     if (ua.includes('Chrome/')) return 'chrome';
@@ -564,13 +560,13 @@ const FloatingNotificationAlert = () => {
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 2 }}
-        className="fixed bottom-24 right-6 z-50"
+        className="fixed right-4 bottom-36 z-30 lg:right-6 lg:bottom-24"
       >
         <motion.button
           onClick={() => setIsDialogOpen(true)}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          className="relative w-12 h-12 rounded-full shadow-xl flex items-center justify-center text-white focus:outline-none"
+          className="relative flex h-12 w-12 items-center justify-center rounded-full text-white shadow-xl focus:outline-none"
           style={{
             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
           }}
@@ -588,7 +584,7 @@ const FloatingNotificationAlert = () => {
             animate={{ rotate: [0, -15, 15, -10, 10, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
           >
-            <Bell className="w-6 h-6 relative z-10" />
+            <Bell className="relative z-10 h-6 w-6" />
           </motion.div>
         </motion.button>
       </motion.div>
@@ -598,7 +594,7 @@ const FloatingNotificationAlert = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 backdrop-blur-sm sm:items-center"
           onClick={(e) =>
             e.target === e.currentTarget && setIsDialogOpen(false)
           }
@@ -607,7 +603,7 @@ const FloatingNotificationAlert = () => {
             initial={{ opacity: 0, y: 40, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            className="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden"
+            className="w-full max-w-sm overflow-hidden rounded-2xl bg-white shadow-2xl"
           >
             {/* Top gradient bar */}
             <div
@@ -621,38 +617,38 @@ const FloatingNotificationAlert = () => {
               {/* Close button */}
               <button
                 onClick={() => setIsDialogOpen(false)}
-                className="absolute top-4 right-4 w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                className="absolute top-4 right-4 flex h-7 w-7 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
                 aria-label="Tutup"
               >
-                <X className="w-4 h-4" />
+                <X className="h-4 w-4" />
               </button>
 
               {/* Icon */}
-              <div className="flex justify-center mb-4">
+              <div className="mb-4 flex justify-center">
                 <div
-                  className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
+                  className="flex h-16 w-16 items-center justify-center rounded-full shadow-lg"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }}
                 >
-                  <Bell className="w-8 h-8 text-white" />
+                  <Bell className="h-8 w-8 text-white" />
                 </div>
               </div>
 
               {/* Text */}
-              <h2 className="text-center text-lg font-bold text-gray-900 mb-1">
+              <h2 className="mb-1 text-center text-lg font-bold text-gray-900">
                 Aktifkan Notifikasi
               </h2>
 
               {/* Teks berbeda tergantung status permission */}
               {permission === 'denied' ? (
-                <p className="text-center text-sm text-gray-500 leading-relaxed mb-6">
+                <p className="mb-6 text-center text-sm leading-relaxed text-gray-500">
                   Notifikasi diblokir. Klik{' '}
                   <span className="font-semibold text-gray-700">"Izinkan"</span>{' '}
                   untuk melihat cara mengaktifkannya di pengaturan browser.
                 </p>
               ) : (
-                <p className="text-center text-sm text-gray-500 leading-relaxed mb-6">
+                <p className="mb-6 text-center text-sm leading-relaxed text-gray-500">
                   Dapatkan info tryout, pengumuman nilai, dan promo eksklusif
                   langsung di perangkatmu.
                 </p>
@@ -662,13 +658,13 @@ const FloatingNotificationAlert = () => {
               <div className="flex gap-3">
                 <button
                   onClick={handleDismiss}
-                  className="flex-1 py-2.5 px-4 rounded-xl text-sm font-medium text-gray-500 bg-gray-100 hover:bg-gray-200 transition-colors"
+                  className="flex-1 rounded-xl bg-gray-100 px-4 py-2.5 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-200"
                 >
                   Nanti saja
                 </button>
                 <button
                   onClick={handleRequestPermission}
-                  className="flex-1 py-2.5 px-4 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90 hover:shadow-md"
+                  className="flex-1 rounded-xl px-4 py-2.5 text-sm font-bold text-white transition-all hover:opacity-90 hover:shadow-md"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }}
@@ -686,14 +682,14 @@ const FloatingNotificationAlert = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 backdrop-blur-sm sm:items-center"
           onClick={(e) => e.target === e.currentTarget && setIsGuideOpen(false)}
         >
           <motion.div
             initial={{ opacity: 0, y: 40, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            className="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden"
+            className="w-full max-w-sm overflow-hidden rounded-2xl bg-white shadow-2xl"
           >
             <div
               className="h-1 w-full"
@@ -704,31 +700,31 @@ const FloatingNotificationAlert = () => {
             <div className="p-6">
               <button
                 onClick={() => setIsGuideOpen(false)}
-                className="absolute top-4 right-4 w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                className="absolute top-4 right-4 flex h-7 w-7 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
               >
-                <X className="w-4 h-4" />
+                <X className="h-4 w-4" />
               </button>
 
-              <div className="flex justify-center mb-4">
+              <div className="mb-4 flex justify-center">
                 <div
-                  className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
+                  className="flex h-16 w-16 items-center justify-center rounded-full shadow-lg"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }}
                 >
-                  <Bell className="w-8 h-8 text-white" />
+                  <Bell className="h-8 w-8 text-white" />
                 </div>
               </div>
 
-              <h2 className="text-center text-lg font-bold text-gray-900 mb-3">
+              <h2 className="mb-3 text-center text-lg font-bold text-gray-900">
                 Cara Mengaktifkan Notifikasi
               </h2>
 
               {/* Step by step */}
-              <ol className="text-sm text-gray-600 space-y-2 mb-6 text-left list-none">
+              <ol className="mb-6 list-none space-y-2 text-left text-sm text-gray-600">
                 <li className="flex gap-2">
                   <span
-                    className="w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold"
+                    className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
                     style={{ backgroundColor: mainColor }}
                   >
                     1
@@ -741,7 +737,7 @@ const FloatingNotificationAlert = () => {
                 </li>
                 <li className="flex gap-2">
                   <span
-                    className="w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold"
+                    className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
                     style={{ backgroundColor: mainColor }}
                   >
                     2
@@ -753,7 +749,7 @@ const FloatingNotificationAlert = () => {
                 </li>
                 <li className="flex gap-2">
                   <span
-                    className="w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold"
+                    className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
                     style={{ backgroundColor: mainColor }}
                   >
                     3
@@ -768,7 +764,7 @@ const FloatingNotificationAlert = () => {
                 </li>
                 <li className="flex gap-2">
                   <span
-                    className="w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold"
+                    className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
                     style={{ backgroundColor: mainColor }}
                   >
                     4
@@ -779,7 +775,7 @@ const FloatingNotificationAlert = () => {
 
               <button
                 onClick={() => window.location.reload()}
-                className="w-full py-2.5 px-4 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90"
+                className="w-full rounded-xl px-4 py-2.5 text-sm font-bold text-white transition-all hover:opacity-90"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}

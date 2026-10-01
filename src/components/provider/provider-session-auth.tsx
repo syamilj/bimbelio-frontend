@@ -19,6 +19,7 @@ import { usePathname } from 'next/navigation';
 import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -93,24 +94,27 @@ export default function ProviderSessionAuth({
   const [status, setStatus] = useState<SessionStatus>('loading');
   const [raw, setRaw] = useState<{ user: any; token: string } | null>(null);
 
-  useEffect(() => {
+  const load = useCallback(async () => {
     const token = Cookies.get('token');
     if (!token) {
+      setRaw(null);
       setStatus('unauthenticated');
       return;
     }
-    axiosInstanceWithToken
-      .post('/auth/verifyToken')
-      .then((res) => {
-        setRaw({ user: res.data.data, token });
-        setStatus('authenticated');
-      })
-      .catch((error) => {
-        const { status: httpStatus } = responseError(error);
-        setStatus('unauthenticated');
-        if (httpStatus === 401) signOut();
-      });
+    try {
+      const res = await axiosInstanceWithToken.post('/auth/verifyToken');
+      setRaw({ user: res.data.data, token });
+      setStatus('authenticated');
+    } catch (error) {
+      const { status: httpStatus } = responseError(error);
+      setStatus('unauthenticated');
+      if (httpStatus === 401) signOut();
+    }
   }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const trackId = useMemo(() => {
     const fromPath = trackIdFromPath(pathname);
@@ -123,8 +127,9 @@ export default function ProviderSessionAuth({
     () => ({
       status,
       data: raw ? buildSession(raw.user, raw.token, trackId) : undefined,
+      refresh: load,
     }),
-    [status, raw, trackId],
+    [status, raw, trackId, load],
   );
 
   if (status === 'loading' && isProtectedPath(pathname)) {
@@ -142,6 +147,8 @@ const SessionProvider = createContext<null | SessionProviderType>(null);
 
 type SessionProviderType = {
   status: SessionStatus;
+  /** Verifikasi ulang sesi (mis. setelah langganan berubah) tanpa reload halaman. */
+  refresh: () => Promise<void>;
   data:
     | {
         user: {
