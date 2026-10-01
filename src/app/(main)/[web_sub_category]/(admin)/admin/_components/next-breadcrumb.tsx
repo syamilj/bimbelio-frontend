@@ -17,6 +17,12 @@ const NextBreadcrumb = () => {
 
   const pathNames = paths?.split('/').filter((path) => path);
 
+  // Hanya /admin dan halaman daftar entitas (/admin/<entitas>) yang pasti punya
+  // halaman; segmen tengah lain (edit, users, <id>) dulu menjadi link 404.
+  const adminIndex = pathNames?.indexOf('admin') ?? -1;
+  const isNavigable = (fullIndex: number) =>
+    adminIndex === -1 || fullIndex <= adminIndex + 1;
+
   // Limit breadcrumb items on mobile
   const displayPaths = pathNames?.slice(-3) || []; // Show max 3 items on mobile
 
@@ -44,6 +50,10 @@ const NextBreadcrumb = () => {
                   <BreadcrumbPage className="capitalize max-w-[150px] md:max-w-none truncate">
                     {displayPath.replace(/-/g, ' ')}
                   </BreadcrumbPage>
+                ) : !isNavigable(fullIndex) ? (
+                  <span className="capitalize max-w-[100px] md:max-w-none truncate">
+                    {displayPath.replace(/-/g, ' ')}
+                  </span>
                 ) : (
                   <BreadcrumbLink asChild>
                     <Link
