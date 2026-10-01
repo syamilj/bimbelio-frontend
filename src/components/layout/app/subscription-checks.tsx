@@ -34,20 +34,24 @@ export function SubscriptionChecks() {
     const status = (request: Promise<{ status: number }>) =>
       request.then((res) => res.status).catch(() => null);
 
-    Promise.all([
-      status(api.post('/user/checkSubscription', { userId })),
-      status(
+    // Urutan penting: langganan pending diaktifkan TERAKHIR, setelah langganan
+    // kedaluwarsa, cicilan, dan kuota yang habis dibereskan (sama seperti
+    // perilaku produksi lama, di mana cek pending tertunda 1 detik). Bila
+    // dibalik, kuota baru bisa ditambahkan ke limit lama yang sudah habis.
+    const run = async () => {
+      const [subscription, installment, limitation] = await Promise.all([
+        status(api.post('/user/checkSubscription', { userId })),
+        status(api.post('/user/checkSubscriptionInstallment')),
+        status(api.post('/user/checkLimitation', { userId })),
+      ]);
+      const pending = await status(
         api.post(
           '/user/checkSubscriptionPending',
           { userId },
-          {
-            params: { website_sub_category_id: trackId },
-          },
+          { params: { website_sub_category_id: trackId } },
         ),
-      ),
-      status(api.post('/user/checkLimitation', { userId })),
-      status(api.post('/user/checkSubscriptionInstallment')),
-    ]).then(([subscription, pending, limitation, installment]) => {
+      );
+
       if (installment === INSTALLMENT_SUSPENDED) {
         toast.error('Langganan ditangguhkan', {
           description:
@@ -59,7 +63,8 @@ export function SubscriptionChecks() {
       if ([subscription, pending, limitation, installment].includes(CHANGED)) {
         refresh();
       }
-    });
+    };
+    run();
   }, [userId, trackId, refresh, setPagesSetting]);
 
   return null;
