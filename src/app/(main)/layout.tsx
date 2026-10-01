@@ -8,6 +8,7 @@ import ProviderPixel from '@/components/provider/provider-pixel';
 import ProviderSessionAuth from '@/components/provider/provider-session-auth';
 import ProviderWebsiteCategory from '@/components/provider/provider-website-category';
 import { siteConfig } from '@/config/site';
+import { fontVariables } from '@/lib/fonts';
 import '@/styles/globals.css';
 import type { Metadata } from 'next';
 import Script from 'next/script';
@@ -90,6 +91,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
       lang="id"
+      className={fontVariables}
       suppressHydrationWarning
     >
       <head>
@@ -130,25 +132,6 @@ function DefaultHeadContent() {
       <link
         rel="preconnect"
         href="https://be.bimbelio.com"
-      />
-      <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-      />
-      <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossOrigin="anonymous"
-      />
-      {/* Inter for body text */}
-      <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet"
-      />
-      {/* Playfair Display for BimBrand */}
-      <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap"
-        rel="stylesheet"
       />
       <link
         rel="dns-prefetch"

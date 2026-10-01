@@ -5,7 +5,7 @@
 
 /* Font Configuration */
 @theme {
-  --font-family-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-family-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
 /* stylelint-disable-next-line at-rule-no-unknown */
@@ -23,11 +23,11 @@
 
 /* BimBrand Font Styling */
 .font-playfair {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-playfair), serif;
 }
 
 .font-playfair-italic {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-playfair), serif;
   font-style: italic;
 }
 
@@ -699,12 +699,12 @@ video::-webkit-media-controls-panel {
 #blog-admin .wmde-markdown p,
 #blog-admin .w-md-editor-text textarea,
 #blog-admin .w-md-editor-text-input {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), sans-serif;
   font-size: 14px;
 }
 
 #blog-admin .w-md-editor-text textarea {
-  font-family: 'Inter', sans-serif !important;
+  font-family: var(--font-inter), sans-serif !important;
 }
 
 /* Course Material Styles */
@@ -728,7 +728,7 @@ video::-webkit-media-controls-panel {
   }
 
   #blog-user .wmde-markdown p {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter), sans-serif;
     font-size: 14px;
   }
 }
