@@ -99,22 +99,24 @@ export interface UpdateShortUrlPayload {
   id: string;
   code?: string;
   destinationType?: 'DIRECT' | 'LINK_PAGE' | 'SMART_REDIRECT';
-  title?: string;
-  description?: string;
-  destinationUrl?: string;
-  linkPageId?: string;
+  // null = kosongkan field.
+  title?: string | null;
+  description?: string | null;
+  destinationUrl?: string | null;
+  linkPageId?: string | null;
   isActive?: boolean;
-  expireAt?: string;
-  maxClicks?: number;
-  utmSource?: string;
-  utmMedium?: string;
-  utmCampaign?: string;
-  utmContent?: string;
-  utmTerm?: string;
+  expireAt?: string | null;
+  maxClicks?: number | null;
+  utmSource?: string | null;
+  utmMedium?: string | null;
+  utmCampaign?: string | null;
+  utmContent?: string | null;
+  utmTerm?: string | null;
 }
 
 export const fetchAllShortUrls = async (params?: {
   website_sub_category_id?: string;
+  id?: string;
   page?: number;
   take?: number;
   search?: string;

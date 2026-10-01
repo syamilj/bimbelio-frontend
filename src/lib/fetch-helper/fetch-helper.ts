@@ -1,5 +1,50 @@
+import type { AxiosResponse } from 'axios';
+import { getAuthToken } from '../auth-helper';
 import axiosInstance from '../axios/axiosInstance';
 import { response, responseError } from '../response';
+
+// Cache GET opsional (opt-in lewat `cacheMs`): komponen yang remount di setiap
+// navigasi (navbar, dsb.) tidak mengulang request yang sama, dan request
+// paralel dengan kunci sama berbagi satu promise. Kunci memuat token dan
+// kategori website karena keduanya ikut menentukan respons.
+const getCache = new Map<
+  string,
+  { expires: number; promise: Promise<AxiosResponse> }
+>();
+
+const cachedGet = (
+  url: string,
+  params: object | undefined,
+  cacheMs?: number,
+) => {
+  if (!cacheMs) return axiosInstance.get(url, { params });
+  const websiteSegment =
+    typeof window !== 'undefined' ? window.location.pathname.split('/')[1] : '';
+  const key = [
+    getAuthToken() ?? '',
+    websiteSegment,
+    url,
+    JSON.stringify(params ?? {}),
+  ].join('|');
+  const hit = getCache.get(key);
+  if (hit && hit.expires > Date.now()) return hit.promise;
+
+  const promise = axiosInstance.get(url, { params });
+  getCache.set(key, { expires: Date.now() + cacheMs, promise });
+  promise.catch(() => getCache.delete(key));
+  return promise;
+};
+
+/** Daftar plan publik jarang berubah; dipakai navbar, beranda, dan halaman paket. */
+export const PLAN_CACHE_MS = 5 * 60 * 1000;
+
+/** Kosongkan cache GET (mis. setelah data terkait diubah). */
+export const clearGetCache = (urlPrefix?: string) => {
+  for (const key of getCache.keys()) {
+    if (!urlPrefix || key.split('|')[2]?.startsWith(urlPrefix))
+      getCache.delete(key);
+  }
+};
 
 export const getGeneral = async (
   url: string,
@@ -43,6 +88,8 @@ export const getGeneral = async (
       data: any;
     }) => any;
     params?: object;
+    /** Lama cache respons dalam ms (default: tanpa cache). */
+    cacheMs?: number;
   },
 ) => {
   if (
@@ -57,9 +104,7 @@ export const getGeneral = async (
   let showToast = true;
 
   try {
-    const res = await axiosInstance.get(url, {
-      params: more?.params,
-    });
+    const res = await cachedGet(url, more?.params, more?.cacheMs);
     const resData = response(res);
     if (more?.onSuccess) {
       await more.onSuccess(resData);
@@ -192,7 +237,7 @@ export const mutateGeneral = async (
   more: {
     params?: object;
     payload?: any;
-    type: 'post' | 'put' | 'delete';
+    type: 'post' | 'put' | 'patch' | 'delete';
     setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
     firstLoad?: boolean;
     endLoad?: boolean;
@@ -246,7 +291,7 @@ export const mutateGeneral = async (
     else if (more.hideToast === true) showToast = false;
     else showToast = true;
     let res;
-    if (type === 'post' || type === 'put') {
+    if (type === 'post' || type === 'put' || type === 'patch') {
       res = await axiosInstance[type](url, payload, { params });
     } else {
       res = await axiosInstance.delete(url, { params });

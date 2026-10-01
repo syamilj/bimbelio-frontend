@@ -2,6 +2,7 @@
 
 // @ts-check
 import js from '@eslint/js';
+import reactHooks from 'eslint-plugin-react-hooks';
 import tsEslint from 'typescript-eslint';
 
 const config = [
@@ -13,6 +14,9 @@ const config = [
   ...tsEslint.configs.recommended,
   {
     files: ['**/*.{js,jsx,ts,tsx,mjs,mts}'],
+    plugins: {
+      'react-hooks': reactHooks,
+    },
     languageOptions: {
       parserOptions: {
         ecmaVersion: 2024,

@@ -501,7 +501,7 @@ const UserListSection = ({ liveClass }: { liveClass: DataType }) => {
                 <div className="animate-spin inline-block">
                   <Download className="w-4 h-4" />
                 </div>
-                Exporting...
+                Mengekspor...
               </>
             ) : (
               <>
@@ -572,7 +572,7 @@ const UserListSection = ({ liveClass }: { liveClass: DataType }) => {
                   </div>
                 </TableHead>
                 <TableHead className="font-bold text-gray-800 py-3 text-center">
-                  Action
+                  Aksi
                 </TableHead>
               </TableRow>
             </TableHeader>

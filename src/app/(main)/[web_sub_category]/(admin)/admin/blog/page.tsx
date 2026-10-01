@@ -101,7 +101,7 @@ const BlogAdmin = () => {
                   <th className="bg-white py-4 text-center">Views</th>
                   <th className="bg-white py-4 text-center">Status</th>
                   <th className="rounded-tr-[.8rem] bg-white py-4 text-start">
-                    Action
+                    Aksi
                   </th>
                 </tr>
               </thead>
@@ -148,7 +148,7 @@ const BlogAdmin = () => {
                             setBlogId(item.id);
                           }}
                         >
-                          Delete
+                          Hapus
                         </button>
                       </div>
                     </td>

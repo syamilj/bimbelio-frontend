@@ -1,4 +1,5 @@
 import { env } from '@/env.mjs';
+import { authHeaders } from '@/lib/auth-helper';
 import axios from 'axios';
 
 export const deleteNotification = async ({ id }: { id: string }) => {
@@ -6,6 +7,7 @@ export const deleteNotification = async ({ id }: { id: string }) => {
     const res = await axios.delete(
       `${env.NEXT_PUBLIC_SOCKET_URL}/notification/queue`,
       {
+        headers: authHeaders(),
         params: {
           notifId: id,
         },

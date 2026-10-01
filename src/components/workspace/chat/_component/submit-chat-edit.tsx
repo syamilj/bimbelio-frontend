@@ -61,7 +61,7 @@ const SubmitChatEdit = () => {
         ...payload,
         userId: session?.user.id,
       },
-      type: 'post',
+      type: 'put',
     });
   };
 

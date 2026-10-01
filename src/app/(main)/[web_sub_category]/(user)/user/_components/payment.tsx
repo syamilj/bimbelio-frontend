@@ -23,6 +23,7 @@ import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/typ
 import { Card, CardContent } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { PLAN_CACHE_MS } from '@/lib/fetch-helper/fetch-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { motion } from 'framer-motion';
@@ -78,7 +79,9 @@ export function Payment() {
     data: PricingData,
     isLoading,
     error,
-  } = useGet<PricingDataType>('/plan/getAllPlanByWebCategory');
+  } = useGet<PricingDataType>('/plan/getAllPlanByWebCategory', {
+    cacheMs: PLAN_CACHE_MS,
+  });
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';

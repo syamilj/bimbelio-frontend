@@ -384,7 +384,7 @@ const UserParticipants = ({
               <div className="animate-spin inline-block">
                 <Download className="w-4 h-4" />
               </div>
-              Exporting...
+              Mengekspor...
             </>
           ) : (
             <>
@@ -456,7 +456,7 @@ const UserParticipants = ({
                 </TableHead>
               ))}
               <TableHead className="font-bold text-gray-800 py-3 text-center">
-                Action
+                Aksi
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -680,7 +680,7 @@ const UserRegistrations = ({
               <div className="animate-spin inline-block">
                 <Download className="w-4 h-4" />
               </div>
-              Exporting...
+              Mengekspor...
             </>
           ) : (
             <>
@@ -731,7 +731,7 @@ const UserRegistrations = ({
                 </div>
               </TableHead>
               <TableHead className="font-bold text-gray-800 py-3 text-center">
-                Action
+                Aksi
               </TableHead>
             </TableRow>
           </TableHeader>

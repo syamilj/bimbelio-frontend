@@ -853,7 +853,7 @@ export function ButtonFormDialog({
                 variant="outline"
                 onClick={onClose}
               >
-                Cancel
+                Batal
               </Button>
               <Button
                 type="submit"

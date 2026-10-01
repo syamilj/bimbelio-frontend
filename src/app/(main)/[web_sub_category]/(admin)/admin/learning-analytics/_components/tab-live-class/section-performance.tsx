@@ -577,7 +577,7 @@ export const SectionPerformance = () => {
                     <div className="animate-spin inline-block">
                       <Download className="w-4 h-4" />
                     </div>
-                    Exporting...
+                    Mengekspor...
                   </>
                 ) : (
                   <>

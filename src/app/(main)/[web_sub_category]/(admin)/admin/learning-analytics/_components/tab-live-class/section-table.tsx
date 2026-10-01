@@ -1,7 +1,7 @@
 'use client';
 
 import { BookOpen, Clock, Eye, MoreHorizontal, Search } from 'lucide-react';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, Fragment, SetStateAction, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -171,8 +171,8 @@ export const SectionTable = ({
                 </TableRow>
               ) : (
                 LiveClass?.map((liveclass, index) => (
-                  <>
-                    <TableRow key={liveclass.id}>
+                  <Fragment key={liveclass.id}>
+                    <TableRow>
                       <TableCell>{page * take - take + index + 1}</TableCell>
                       <TableCell>
                         <div className="flex items-center gap-3">
@@ -291,7 +291,7 @@ export const SectionTable = ({
                         </DropdownMenu>
                       </TableCell>
                     </TableRow>
-                  </>
+                  </Fragment>
                 ))
               )}
             </TableBody>

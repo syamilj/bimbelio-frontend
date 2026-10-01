@@ -7,11 +7,18 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 function Select({
+  onValueChange,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Root>) {
   return (
     <SelectPrimitive.Root
       data-slot="select"
+      // Di dalam <form>, Radix memicu onValueChange("") lewat <select> tersembunyi
+      // bila value diisi sebelum opsinya termuat (data async) sehingga pilihan
+      // terhapus diam-diam. SelectItem tidak boleh bernilai "", jadi "" selalu palsu.
+      onValueChange={(value) => {
+        if (value !== '') onValueChange?.(value);
+      }}
       {...props}
     />
   );

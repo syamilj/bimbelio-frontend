@@ -124,7 +124,7 @@ const TabContentSubCategory = ({
                       deleteSubCategory(item.id);
                     }}
                   >
-                    Delete
+                    Hapus
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

@@ -5,6 +5,7 @@ import {
   NotificationRelatedTypeEnum,
   NotificationTypeEnum,
 } from '@/types/database';
+import { authHeaders } from '@/lib/auth-helper';
 import axios from 'axios';
 
 export const getNotificationQueue = async ({
@@ -29,6 +30,7 @@ export const getNotificationQueue = async ({
     const res = await axios.get(
       `${env.NEXT_PUBLIC_SOCKET_URL}/notification/queue`,
       {
+        headers: authHeaders(),
         params: {
           page,
           take,

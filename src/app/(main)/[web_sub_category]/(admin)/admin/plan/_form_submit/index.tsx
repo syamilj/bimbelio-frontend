@@ -1015,7 +1015,7 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
             type="button"
             variant="outline"
           >
-            Cancel
+            Batal
           </Button>
           <Button
             className="bg-main hover:bg-main/80"
@@ -1283,7 +1283,7 @@ const SectionLimit = () => {
                 )}
                 onClick={() => setValidityTypeLimit('duration')}
               >
-                Duration
+                Durasi
               </Button>
               <Button
                 type="button"
@@ -1668,7 +1668,7 @@ const SectionFeature = () => {
                     )}
                     onClick={() => setValidityType('duration')}
                   >
-                    Duration
+                    Durasi
                   </Button>
                   <Button
                     type="button"

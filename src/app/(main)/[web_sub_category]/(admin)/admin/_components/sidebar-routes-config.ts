@@ -17,7 +17,6 @@ import {
   Users,
   Video,
   Wallet,
-  Zap,
 } from 'lucide-react';
 
 export interface RouteItem {
@@ -83,9 +82,10 @@ export const getAdminRoutes = (
   // USERS & ROLES
   {
     icon: Users,
-    href: buildRouteHref('users', website_sub_category_id),
-    label: 'Users',
-    description: 'Manajemen pengguna',
+    // Manajemen pengguna ada di Dashboard; /admin/users tidak punya halaman (404).
+    href: buildRouteHref('users/online', website_sub_category_id),
+    label: 'Pengguna Online',
+    description: 'Pengguna yang sedang aktif',
     category: ROUTE_CATEGORIES.USERS,
   },
   // EDUCATION
@@ -239,13 +239,6 @@ export const getAdminRoutes = (
     href: buildRouteHref('website-category', website_sub_category_id),
     label: 'Web Categories',
     description: 'Kategori website',
-    category: ROUTE_CATEGORIES.SYSTEM,
-  },
-  {
-    icon: Zap,
-    href: buildRouteHref('token', website_sub_category_id),
-    label: 'API Tokens',
-    description: 'Manajemen token',
     category: ROUTE_CATEGORIES.SYSTEM,
   },
   {

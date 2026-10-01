@@ -235,7 +235,7 @@ export default function NotificationQueuePage() {
                                 onSelect={(e) => e.preventDefault()}
                               >
                                 <Trash2 className="mr-2 h-4 w-4" />
-                                Delete
+                                Hapus
                               </DropdownMenuItem>
                             </ModalVerification>
                           </DropdownMenuContent>

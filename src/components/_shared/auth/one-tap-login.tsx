@@ -3,11 +3,11 @@
 import { useSession } from '@/components/provider/provider-session-auth';
 import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import { setAuthToken } from '@/lib/auth-helper';
 import { responseError } from '@/lib/response';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { GoogleOAuthProvider, useGoogleOneTapLogin } from '@react-oauth/google';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 export const OneTapLogin = () => {
   return (
@@ -29,7 +29,7 @@ const HandleLogin = () => {
       });
       console.log({ res });
 
-      Cookies.set('token', res.data.data.token);
+      setAuthToken(res.data.data.token);
 
       console.log('Login Success: ', res);
 

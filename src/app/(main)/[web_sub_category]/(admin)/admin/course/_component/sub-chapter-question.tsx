@@ -25,7 +25,7 @@ import {
   Upload,
 } from 'lucide-react';
 import React, { SetStateAction, useCallback } from 'react';
-import { SubChapterProps } from '../page';
+import { SubChapterProps } from '../new/page';
 
 interface Props {
   EditSubChapter: SubChapterProps;

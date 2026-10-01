@@ -17,14 +17,21 @@ import { toaster } from '@/components/ui/toaster';
 import axiosInstance from '@/lib/axios/axiosInstance';
 import { response, responseError } from '@/lib/response';
 import { Loader2 } from 'lucide-react';
-import React, { SetStateAction, useState } from 'react';
-import { Category, SessionProps } from '../page';
+import React, { SetStateAction, useId, useState } from 'react';
+import { SessionProps } from '../new/page';
+
+// Hanya field yang dipakai komponen ini, supaya cocok untuk halaman buat & edit.
+type CategoryOption = {
+  id: string;
+  name: string;
+  TryoutSubCategory: { id: string; name: string }[];
+};
 // import { toaster } from "@/lib/utils";
 // import { useCompletion } from "ai/react";
 
 interface Props {
   EditSession: SessionProps;
-  category: Category[] | undefined;
+  category: CategoryOption[] | undefined;
   assessmentType: string;
   setAssesmentType: React.Dispatch<SetStateAction<string>>;
   setSessions: React.Dispatch<SetStateAction<SessionProps>>;
@@ -50,6 +57,8 @@ const HeadingSessionTryout = ({
   setAssesmentType,
   setSessions,
 }: Props) => {
+  // Dipakai halaman buat & edit quiz; id unik per instance.
+  const contextInputId = useId();
   const [loading, setLoading] = useState<boolean>(false);
 
   const generateTryout = async (context: string) => {
@@ -69,7 +78,7 @@ const HeadingSessionTryout = ({
 
   const handleGenerate = async () => {
     const input = document.getElementById(
-      'context-for-generate-ai',
+      contextInputId,
     ) as HTMLTextAreaElement;
     if (input.value.length < 10) {
       toaster({
@@ -536,8 +545,8 @@ const HeadingSessionTryout = ({
             </div>
           </div>
           <textarea
-            id="context-for-generate-ai"
-            placeholder="Conteks.."
+            id={contextInputId}
+            placeholder="Konteks untuk generate soal (topik, materi, contoh)..."
             className="w-full shrink-0 rounded-3xl border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
           />
         </div>

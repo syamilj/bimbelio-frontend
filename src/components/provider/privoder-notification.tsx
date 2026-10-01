@@ -6,6 +6,7 @@ import { MutateType, useMutation } from '@/lib/fetch-helper/useMutation';
 import { useSocket } from '@/lib/socket/useSocket';
 import { Notification as NotificationData } from '@/types/database';
 import { motion } from 'framer-motion';
+import Cookies from 'js-cookie';
 import { Bell, X } from 'lucide-react';
 import {
   createContext,
@@ -504,6 +505,13 @@ const initiateNotificationWorker = () => {
 
         const payload = { userId, ...subscription.toJSON() };
 
+        // Same token source as src/lib/axios/axiosInstance.ts
+        const token = Cookies.get('token');
+        if (!token) {
+          console.warn('No auth token, skipping push subscription sync');
+          return;
+        }
+
         // Kirim subscription ke backend
         const res = await fetch(
           `${env.NEXT_PUBLIC_API_URL}/notification/addNotificationWorker`,
@@ -512,6 +520,7 @@ const initiateNotificationWorker = () => {
             body: JSON.stringify(payload),
             headers: {
               'content-type': 'application/json',
+              Authorization: `Bearer ${token}`,
             },
           },
         );

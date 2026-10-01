@@ -8,7 +8,7 @@ import {
   MoreHorizontal,
   Search,
 } from 'lucide-react';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, Fragment, SetStateAction, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -162,8 +162,8 @@ export const SectionTable = ({
                 </TableRow>
               ) : (
                 Tryouts?.map((tryout, index) => (
-                  <>
-                    <TableRow key={tryout.id}>
+                  <Fragment key={tryout.id}>
+                    <TableRow>
                       <TableCell>
                         <button
                           onClick={() => toggleExpanded(tryout.id)}
@@ -281,7 +281,7 @@ export const SectionTable = ({
                                     </div>
                                     <div>
                                       <p className="text-xs text-gray-500 font-semibold">
-                                        Duration
+                                        Durasi
                                       </p>
                                       <p className="font-medium text-gray-900">
                                         {session.duration} min
@@ -316,7 +316,7 @@ export const SectionTable = ({
                         </TableCell>
                       </TableRow>
                     )}
-                  </>
+                  </Fragment>
                 ))
               )}
             </TableBody>

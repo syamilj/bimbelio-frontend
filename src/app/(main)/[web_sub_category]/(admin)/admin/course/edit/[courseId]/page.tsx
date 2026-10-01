@@ -1,5 +1,6 @@
 'use client';
 
+import { AdminNotFound } from '@/components/admin/admin-page';
 import { Button } from '@/components/ui/button';
 import { MultiSelectVisibleAt } from '@/components/ui/multi-select-visibleAt';
 import LoadingPageWithText, { Spinner } from '@/components/ui/spinner';
@@ -106,10 +107,13 @@ const Index = () => {
     },
   });
 
-  const { data: Course } = useGet('/course/getCourseForUpdate', {
-    params: { courseId },
-    useEffectDependencies: [courseId],
-  });
+  const { data: Course, isLoading: isLoadingCourse } = useGet(
+    '/course/getCourseForUpdate',
+    {
+      params: { courseId },
+      useEffectDependencies: [courseId],
+    },
+  );
 
   const { data: category, isLoading: isLoadingCategory } = useGet<Category[]>(
     '/category/getAllCategoryAdminCourse',
@@ -444,6 +448,11 @@ const Index = () => {
       subChapter.every((sc) => sc.title && sc.spendTime && sc.type)
     );
   };
+
+  // API mengembalikan {} bila kursus tidak ada.
+  if (!isLoadingCourse && !Course?.chapter) {
+    return <AdminNotFound title="Kursus tidak ditemukan" />;
+  }
 
   return (
     <>

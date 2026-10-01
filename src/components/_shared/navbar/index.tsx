@@ -45,6 +45,7 @@ import {
 } from '@/components/ui/navigation-menu';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
+import { PLAN_CACHE_MS } from '@/lib/fetch-helper/fetch-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
 import { hexToRgba } from '@/styles/main-styles';
@@ -1545,6 +1546,7 @@ const Navbar: React.FC = () => {
 
   const { data: PricingData } = useGet<PricingDataType>(
     '/plan/getAllPlanByWebCategory',
+    { cacheMs: PLAN_CACHE_MS },
   );
 
   const plans = PricingData?.plans || [];

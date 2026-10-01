@@ -367,7 +367,9 @@ export default async function PublicLinkPage({
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}
       />
 
       <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-md flex-col items-center px-4 py-16 sm:py-20">

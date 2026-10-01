@@ -169,7 +169,7 @@ export default function ShortUrlAnalyticsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-gray-600">
-              Total Clicks
+              Total Klik
             </CardTitle>
           </CardHeader>
           <CardContent>

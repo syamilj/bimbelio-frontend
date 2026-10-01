@@ -3,11 +3,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useSession } from './components/provider/provider-session-auth';
 import { env } from './env.mjs';
+import { authHeaders, getAuthToken } from './lib/auth-helper';
 import { responseError } from './lib/response';
 
 const STORAGE_URL = env.NEXT_PUBLIC_SUPABASE_URL;
 const STORAGE_UPLOAD_URL = env.NEXT_PUBLIC_SUPABASE_UPLOAD_URL;
-const PUBLIC_KEY = env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 type BucketList =
   | 'dump-images'
@@ -49,9 +49,7 @@ export const storage = {
             formData,
             {
               params: { loadingId },
-              headers: {
-                Authorization: `Bearer ${PUBLIC_KEY}`,
-              },
+              headers: authHeaders(),
               timeout: 6000000, // 100 menit dalam milliseconds
             },
           );
@@ -100,9 +98,7 @@ export const storage = {
             `${STORAGE_UPLOAD_URL}/storage/buckets/${bucket}/files`,
             formData,
             {
-              headers: {
-                Authorization: `Bearer ${PUBLIC_KEY}`,
-              },
+              headers: authHeaders(),
               timeout: 6000000, // 100 menit dalam milliseconds
             },
           );
@@ -132,9 +128,7 @@ export const storage = {
               newPath,
             },
             {
-              headers: {
-                Authorization: `Bearer ${PUBLIC_KEY}`,
-              },
+              headers: authHeaders(),
               timeout: 6000000, // 100 menit dalam milliseconds
             },
           );
@@ -162,9 +156,7 @@ export const storage = {
             `${STORAGE_URL}/storage/buckets/${bucket}/files`,
             {
               data: { pathArray: filePathArray },
-              headers: {
-                Authorization: `Bearer ${PUBLIC_KEY}`,
-              },
+              headers: authHeaders(),
             },
           );
 
@@ -192,9 +184,7 @@ export const storage = {
               filepath: filePath,
             },
             {
-              headers: {
-                Authorization: `Bearer ${PUBLIC_KEY}`,
-              },
+              headers: authHeaders(),
               responseType: 'blob',
             },
           );
@@ -254,9 +244,7 @@ export const storage = {
                 page,
                 take,
               },
-              headers: {
-                Authorization: `Bearer ${PUBLIC_KEY}`,
-              },
+              headers: authHeaders(),
             },
           );
 
@@ -340,6 +328,8 @@ const connectSocket = () => {
   if (!socket) {
     socket = io(serverUrl, {
       transports: ['websocket'],
+      // Backend memverifikasi sesi saat handshake.
+      auth: (cb) => cb({ token: getAuthToken() }),
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,

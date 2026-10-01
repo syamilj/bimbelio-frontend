@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app)..
+# Bimbelio Frontend
 
-## Getting Started
+Next.js 16 (App Router) + React 19 + Tailwind 4. Backend: repo `bimbelio-backend`
+(satu service di `be.bimbelio.com`, `socket.bimbelio.com`, `storage.bimbelio.com`,
+`storage-upload.bimbelio.com`).
 
-First, run the development server:
+## Menjalankan lokal (terhubung ke backend VPS)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install
+cp .env.example .env.local   # URL backend VPS, nilai publik saja
+bun run dev                  # http://localhost:3000 (atau: bun run dev -- -p 3001)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Backend mengizinkan `http://localhost:<port berapa pun>` (env `CORS_ALLOW_LOCALHOST=true`
+di server), jadi port bebas. Login memakai Google; agar tombol login muncul di lokal,
+origin `http://localhost:<port>` harus terdaftar di Google Cloud Console →
+Credentials → OAuth Client → *Authorized JavaScript origins*.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Data yang dipakai saat lokal adalah **data produksi** (database VPS). Hati-hati
+dengan aksi yang mengubah data (membuat try-out, voucher, mengirim notifikasi).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Perintah
 
-## Learn More
+| Perintah | Fungsi |
+|---|---|
+| `bun run dev` | Dev server |
+| `bun run build` / `bun run start` | Build & jalankan versi produksi |
+| `bun run lint` | ESLint |
+| `bun run typecheck` | TypeScript |
 
-To learn more about Next.js, take a look at the following resources:
+## Deploy
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Vercel men-deploy otomatis dari branch `main`. Env produksi diatur di Vercel
+(sama dengan `.env.example`).

@@ -19,7 +19,7 @@ import { mutateGeneral } from './fetch-helper';
 
 export function useMutation<Data = any, ErrorData = any>(
   url: string,
-  type: 'post' | 'put' | 'delete',
+  type: 'post' | 'put' | 'patch' | 'delete',
   more?: MoreProps<Data, ErrorData>,
 ): FetchReturnType<Data, ErrorData> {
   const [isLoading, setIsLoading] = useState(false);

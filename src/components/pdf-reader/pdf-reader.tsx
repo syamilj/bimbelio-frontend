@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 //   Popup,
 // } from 'react-pdf-highlighter';
 import { env } from '@/env.mjs';
+import { authHeaders } from '@/lib/auth-helper';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { HighlightTypeEnum } from '@/types/database';
 import { Loader2 } from 'lucide-react';
@@ -99,7 +100,7 @@ function PdfReader({
   const updateAreaHighlight = async (payload: updateAreaHighlightType) => {
     await mutateGeneral('/highlight/updateAreaHighlight', {
       payload,
-      type: 'put',
+      type: 'patch',
       onSuccess: () => {
         //       utils.document.getDocData.invalidate();
       },
@@ -115,10 +116,8 @@ function PdfReader({
       `${env.NEXT_PUBLIC_SUPABASE_PDF_URL}/document/${docUrl}`,
       {
         method: 'GET',
-        // headers: {
-        //   Authorization: `Bearer ${Cookies.get('token')}`,
-        //   'Content-Type': 'application/json',
-        // },
+        // Bucket pdf bersifat privat: backend memverifikasi sesi.
+        headers: authHeaders(),
       },
     );
     if (response.ok) {

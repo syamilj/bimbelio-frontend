@@ -32,9 +32,11 @@ export function useGet<Data = any, ErrorData = any>(
   const [totalPages, setTotalPages] = useState<number>(0);
   const [totalData, setTotalData] = useState<number>(0);
 
-  const refetch = async () => {
+  // Muat otomatis boleh memakai cache; refetch() manual selalu mengambil data baru.
+  const load = async (useCache: boolean) => {
     const res = await getGeneral(url, {
       ...more,
+      cacheMs: useCache ? more?.cacheMs : undefined,
       setLoading: setIsLoading,
       setData: setData,
       setPage: setPage,
@@ -57,9 +59,10 @@ export function useGet<Data = any, ErrorData = any>(
     });
     return res;
   };
+  const refetch = () => load(false);
 
   const referchDeounced = useDebouncedCallback(
-    refetch,
+    () => load(true),
     more?.debounceTime || 0,
   );
 
@@ -109,6 +112,8 @@ type MoreProps<Data = any, ErrorData = any> = {
     data: ErrorData;
   }) => any;
   useEffectDependencies?: any[];
+  /** Cache respons GET selama n ms (lihat getGeneral). */
+  cacheMs?: number;
 };
 
 export type ErrorType<Data = any> = {

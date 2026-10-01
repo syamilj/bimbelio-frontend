@@ -125,7 +125,7 @@ export default function BlogTag() {
                 className="w-full rounded bg-neutral-300 px-4 py-2 text-black hover:bg-gray-300"
                 onClick={closeAndClear}
               >
-                Cancel
+                Batal
               </button>
               <button
                 className="w-full rounded bg-red-500 px-4 py-2 text-white hover:bg-red-700"
@@ -134,7 +134,7 @@ export default function BlogTag() {
                   deleteTag();
                 }}
               >
-                Delete
+                Hapus
               </button>
             </div>
           </div>

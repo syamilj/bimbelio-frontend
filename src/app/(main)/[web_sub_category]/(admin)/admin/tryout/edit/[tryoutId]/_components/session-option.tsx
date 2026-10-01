@@ -6,12 +6,15 @@ import { FileText, PanelLeft, PanelLeftOpen, Plus } from 'lucide-react';
 import ModalImportCSV from '@/app/(main)/[web_sub_category]/(admin)/admin/tryout/_component/modal-import-excel';
 import { useEditTryoutContext } from '@/app/(main)/[web_sub_category]/(admin)/admin/tryout/_component/provider-edit-tryout';
 import { QuestionProps } from '@/app/(main)/[web_sub_category]/(admin)/admin/tryout/edit/[tryoutId]/page';
-import HeadingSessionTryout from './heading-session-tryout';
+import HeadingSessionTryout from '../../../_component/heading-session-tryout';
 import QuestionSessionTryout from './question-session-tryout';
 
 const SessionOption = () => {
   const {
     currentIndexEdit,
+    setCurrentIndexEdit,
+    category,
+    setAssesmentType,
     showDetailTryout,
     setShowDetailTryout,
     EditSession,
@@ -166,7 +169,15 @@ const SessionOption = () => {
         {/* Scrollable: config + pills */}
         <div className="flex-1 overflow-y-auto">
           <div className="px-4 py-4 border-b border-gray-100">
-            <HeadingSessionTryout />
+            <HeadingSessionTryout
+              EditSession={EditSession}
+              category={category}
+              assessmentType={assessmentType}
+              setAssesmentType={setAssesmentType}
+              setSessions={setSessions}
+              currentIndexEdit={currentIndexEdit}
+              setCurrentIndexEdit={setCurrentIndexEdit}
+            />
           </div>
           <div className="px-4 pt-4 pb-4">
             <div className="flex items-center justify-between mb-3">

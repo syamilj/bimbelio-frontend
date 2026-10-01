@@ -239,7 +239,7 @@ export default function LinkPagesPage() {
           <Card className="rounded-3xl border-none bg-secondary/40">
             <CardHeader className="pb-2">
               <CardTitle className="text-xs uppercase tracking-widest text-muted-foreground">
-                Total Clicks
+                Total Klik
               </CardTitle>
             </CardHeader>
             <CardContent>

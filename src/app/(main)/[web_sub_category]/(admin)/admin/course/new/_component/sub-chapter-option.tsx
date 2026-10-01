@@ -26,7 +26,7 @@ import { FileText, Plus, Video } from 'lucide-react';
 import React, { ChangeEvent, SetStateAction, useState } from 'react';
 import ModalImportExcel from '../../_component/modal-import-excel';
 import { QuestionProps, SubChapterProps } from '../page';
-import SubChapterQuestion from './sub-chapter-question';
+import SubChapterQuestion from '../../_component/sub-chapter-question';
 
 interface Props {
   EditSubChapter: SubChapterProps | null;

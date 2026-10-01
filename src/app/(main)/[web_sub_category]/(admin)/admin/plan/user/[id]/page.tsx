@@ -206,7 +206,7 @@ export default function Detail() {
                               className="text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors duration-200 px-3 py-2 rounded-3xl"
                             >
                               <Trash className="w-4 h-4 mr-2" />
-                              Delete
+                              Hapus
                             </Button>
                           </DialogDeleteSubs>
                         </TableCell>

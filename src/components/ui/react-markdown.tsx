@@ -1,11 +1,13 @@
 // File: src/components/ui/react-markdown.tsx
 
 import { cn, replaceLatexNotation } from '@/lib/utils';
+import { markdownSanitizeSchema } from '@/lib/utils/markdown-sanitize';
 import 'katex/dist/katex.min.css';
 import Image from 'next/image';
 import MarkdownView from 'react-markdown';
 import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 
@@ -22,7 +24,11 @@ export default function ReactMarkdown({
     <div className={cn('prose bg-transparent', className)}>
       <MarkdownView
         remarkPlugins={[remarkMath, remarkGfm]}
-        rehypePlugins={[rehypeKatex, rehypeRaw]}
+        rehypePlugins={[
+          rehypeRaw,
+          [rehypeSanitize, markdownSanitizeSchema],
+          rehypeKatex,
+        ]}
         components={{
           code({ className, children, ...props }) {
             return (
