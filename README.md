@@ -31,5 +31,8 @@ dengan aksi yang mengubah data (membuat try-out, voucher, mengirim notifikasi).
 
 ## Deploy
 
+Package manager: **bun saja** (tanpa npm/pnpm/yarn). `vercel.json` mengunci
+install/build Vercel ke bun.
+
 Vercel men-deploy otomatis dari branch `main`. Env produksi diatur di Vercel
 (sama dengan `.env.example`).
