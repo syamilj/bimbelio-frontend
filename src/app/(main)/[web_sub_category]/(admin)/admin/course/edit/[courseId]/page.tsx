@@ -15,6 +15,7 @@ import { ArrowLeft, Check, Save } from 'lucide-react';
 import LZString from 'lz-string';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { AdminNotFound } from '@/components/admin/admin-page';
 import ChapterOption from './_component/chapter-option';
 import SubChapterOption from './_component/sub-chapter-option';
 
@@ -106,7 +107,7 @@ const Index = () => {
     },
   });
 
-  const { data: Course } = useGet('/course/getCourseForUpdate', {
+  const { data: Course, isLoading: isLoadingCourse } = useGet('/course/getCourseForUpdate', {
     params: { courseId },
     useEffectDependencies: [courseId],
   });
@@ -444,6 +445,11 @@ const Index = () => {
       subChapter.every((sc) => sc.title && sc.spendTime && sc.type)
     );
   };
+
+  // API mengembalikan {} bila kursus tidak ada.
+  if (!isLoadingCourse && !Course?.chapter) {
+    return <AdminNotFound title="Kursus tidak ditemukan" />;
+  }
 
   return (
     <>
