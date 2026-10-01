@@ -1,4 +1,5 @@
 import { env } from '@/env.mjs';
+import { inter, playfair } from '@/lib/fonts';
 import {
   ExternalLink,
   Facebook,
@@ -12,18 +13,11 @@ import {
   Youtube,
 } from 'lucide-react';
 import type { Metadata } from 'next';
-import { Inter, Playfair_Display } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { type ComponentType } from 'react';
 import { ButtonLinkPage } from './components/button-link-page';
-
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-playfair',
-});
 
 const API_BASE_URL = env.NEXT_PUBLIC_API_URL.replace(/\/$/, '');
 // MIGRATED: Removed export const runtime = 'edge' (incompatible with Cache Components)
