@@ -11,18 +11,13 @@ import {
   Twitter,
   Youtube,
 } from 'lucide-react';
-import { Inter, Playfair_Display } from 'next/font/google';
 import Image from 'next/image';
 import { memo, useMemo } from 'react';
 
+import { inter, playfair } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { LinkButton, LinkPageDetail } from '@/types/link';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-playfair',
-});
 
 interface LinkPreviewPaneProps {
   page?: LinkPageDetail | null;
