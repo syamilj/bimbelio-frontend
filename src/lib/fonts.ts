@@ -1,19 +1,31 @@
-import { Inter, Playfair_Display } from 'next/font/google';
+import localFont from 'next/font/local';
 
-// Font di-host sendiri saat build (next/font). Dulu dimuat lewat <link> Google
-// Fonts yang ditulis ulang oleh Cloudflare Fonts sehingga <head> hasil server
-// tidak cocok dengan React (hydration error #418 di bimbelio.com).
-export const inter = Inter({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800', '900'],
+// Font di-host sendiri dari repo (variable font, lisensi OFL, sumber: Fontsource).
+// - Dulu dimuat lewat <link> Google Fonts yang ditulis ulang Cloudflare Fonts
+//   sehingga <head> tidak cocok dengan React (hydration error #418).
+// - next/font/google mengunduh font saat build dan sempat gagal di Vercel;
+//   file lokal membuat build tidak bergantung jaringan.
+export const inter = localFont({
+  src: '../fonts/inter-latin-wght-normal.woff2',
+  weight: '100 900',
+  style: 'normal',
   variable: '--font-inter',
   display: 'swap',
 });
 
-export const playfair = Playfair_Display({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  style: ['normal', 'italic'],
+export const playfair = localFont({
+  src: [
+    {
+      path: '../fonts/playfair-display-latin-wght-normal.woff2',
+      weight: '400 900',
+      style: 'normal',
+    },
+    {
+      path: '../fonts/playfair-display-latin-wght-italic.woff2',
+      weight: '400 900',
+      style: 'italic',
+    },
+  ],
   variable: '--font-playfair',
   display: 'swap',
 });
