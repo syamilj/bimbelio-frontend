@@ -25,11 +25,9 @@ export default function LayoutAdmin({ children }: LayoutAdminProps) {
   const [hideLayout, setHideLayout] = useState<boolean>(false);
 
   useEffect(() => {
-    if (
-      (pathname?.includes('try-out') && params && params.id) ||
-      pathname?.includes('/admin/tryout/edit/') ||
-      pathname?.includes('/admin/tryout/new')
-    ) {
+    // Hanya pratinjau pengerjaan try-out yang layar penuh. Editor tryout kini
+    // memakai layout admin seperti editor quiz (dulu tanpa sidebar/navbar).
+    if (pathname?.includes('try-out') && params && params.id) {
       setHideLayout(true);
     } else {
       setHideLayout(false);

@@ -8,7 +8,7 @@ import {
   MoreHorizontal,
   Search,
 } from 'lucide-react';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, Fragment, SetStateAction, useState } from 'react';
 
 import {
   Card,
@@ -200,8 +200,8 @@ export const SectionTable = ({
                 </TableRow>
               ) : (
                 volumes.map((volume, index) => (
-                  <>
-                    <TableRow key={volume.id}>
+                  <Fragment key={volume.id}>
+                    <TableRow>
                       <TableCell>
                         <button
                           onClick={() => toggleExpanded(volume.id)}
@@ -379,7 +379,7 @@ export const SectionTable = ({
                           </TableCell>
                         </TableRow>
                       )}
-                  </>
+                  </Fragment>
                 ))
               )}
             </TableBody>

@@ -8,7 +8,7 @@ import {
   MoreHorizontal,
   Search,
 } from 'lucide-react';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, Fragment, SetStateAction, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -162,8 +162,8 @@ export const SectionTable = ({
                 </TableRow>
               ) : (
                 Tryouts?.map((tryout, index) => (
-                  <>
-                    <TableRow key={tryout.id}>
+                  <Fragment key={tryout.id}>
+                    <TableRow>
                       <TableCell>
                         <button
                           onClick={() => toggleExpanded(tryout.id)}
@@ -316,7 +316,7 @@ export const SectionTable = ({
                         </TableCell>
                       </TableRow>
                     )}
-                  </>
+                  </Fragment>
                 ))
               )}
             </TableBody>
