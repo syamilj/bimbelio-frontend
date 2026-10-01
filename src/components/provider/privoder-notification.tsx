@@ -17,7 +17,6 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { useDebouncedCallback } from 'use-debounce';
 import { useSession } from './provider-session-auth';
 
 export default function ProviderNotification({
@@ -400,148 +399,98 @@ const notificationSocketListener = ({
   }, []);
 };
 
+// Langganan web push. Dulu setiap pemuatan halaman meng-unregister service
+// worker, membuat langganan baru, dan mengirim POST ke backend; sekarang hanya
+// bila belum ada langganan, VAPID key berubah, atau belum tersinkron untuk user ini.
+const PUSH_SYNC_STORAGE_KEY = 'push-subscription-synced';
+
+const urlBase64ToUint8Array = (base64String: string) => {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  return Uint8Array.from(rawData, (char) => char.charCodeAt(0));
+};
+
+const sameKey = (a: ArrayBuffer | null | undefined, b: Uint8Array) => {
+  if (!a || a.byteLength !== b.byteLength) return false;
+  const view = new Uint8Array(a);
+  return view.every((byte, i) => byte === b[i]);
+};
+
+const syncPushSubscription = async (userId: string) => {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+
+  if (Notification.permission === 'default') {
+    if ((await Notification.requestPermission()) !== 'granted') return;
+  }
+  if (Notification.permission !== 'granted') return;
+
+  const token = Cookies.get('token');
+  if (!token) return;
+
+  const keyRes = await fetch(
+    `${env.NEXT_PUBLIC_API_URL}/notification/vapidPublicKey`,
+  );
+  if (!keyRes.ok) return;
+  const serverKey = urlBase64ToUint8Array((await keyRes.json()).data.publicKey);
+
+  // register() idempoten: memperbarui sw.js bila berubah tanpa unregister.
+  await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+  const registration = await navigator.serviceWorker.ready;
+
+  let subscription = await registration.pushManager.getSubscription();
+  const keyChanged =
+    !!subscription &&
+    !sameKey(subscription.options.applicationServerKey, serverKey);
+  if (keyChanged) {
+    await subscription!.unsubscribe();
+    subscription = null;
+  }
+  if (!subscription) {
+    subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: serverKey,
+    });
+  }
+
+  const syncMarker = `${userId}|${subscription.endpoint}`;
+  let alreadySynced = false;
+  try {
+    alreadySynced = localStorage.getItem(PUSH_SYNC_STORAGE_KEY) === syncMarker;
+  } catch {
+    // storage tidak tersedia: tetap sinkron
+  }
+  if (alreadySynced) return;
+
+  const res = await fetch(
+    `${env.NEXT_PUBLIC_API_URL}/notification/addNotificationWorker`,
+    {
+      method: 'POST',
+      body: JSON.stringify(subscription.toJSON()),
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  if (!res.ok) throw new Error(`Gagal menyimpan langganan push: ${res.status}`);
+  try {
+    localStorage.setItem(PUSH_SYNC_STORAGE_KEY, syncMarker);
+  } catch {
+    // abaikan
+  }
+};
+
 const initiateNotificationWorker = () => {
   const { data: session } = useSession();
   const userId = session?.user.id;
 
-  function urlBase64ToUint8Array(base64String: string) {
-    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-    const base64 = (base64String + padding)
-      .replace(/\-/g, '+')
-      .replace(/_/g, '/');
-
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
-
-    for (let i = 0; i < rawData.length; ++i) {
-      outputArray[i] = rawData.charCodeAt(i);
-    }
-    return outputArray;
-  }
-  const handleResubscribe = useDebouncedCallback(async () => {
-    if ('serviceWorker' in navigator) {
-      try {
-        // Check notification permission
-        console.log(
-          'Current notification permission:',
-          Notification.permission,
-        );
-
-        if (Notification.permission === 'default') {
-          console.log('Requesting notification permission...');
-          const permission = await Notification.requestPermission();
-          console.log('Requested permission:', permission);
-          if (permission !== 'granted') {
-            console.warn('❌ Notification permission not granted');
-            // alert('Please enable notifications in your browser settings');
-            return;
-          }
-        } else if (Notification.permission === 'denied') {
-          console.warn(
-            '❌ Notification permission is denied. Please change it in browser settings.',
-          );
-
-          // alert(
-          //   'Notification permission is denied. Please change it in browser settings.',
-          // );
-          return;
-        }
-
-        // Unregister old SW and register fresh one
-        const registrations = await navigator.serviceWorker.getRegistrations();
-
-        console.log({ registrations });
-
-        for (const reg of registrations) {
-          await reg.unregister();
-        }
-
-        // Register service worker fresh
-        const registration = await navigator.serviceWorker.register('/sw.js', {
-          scope: '/',
-        });
-        console.log('✅ Service worker registered/updated');
-
-        // Tunggu sampai SW benar-benar active dengan polling
-        let isActive = false;
-        let attempts = 0;
-        const maxAttempts = 20;
-
-        while (!isActive && attempts < maxAttempts) {
-          if (registration.active) {
-            isActive = true;
-            console.log('✅ Service worker is now active!');
-            break;
-          }
-          attempts++;
-          console.log(
-            `Waiting for SW to activate... attempt ${attempts}/${maxAttempts}`,
-          );
-          await new Promise((resolve) => setTimeout(resolve, 100)); // Wait 100ms
-        }
-
-        if (!isActive) {
-          throw new Error(
-            'Service Worker failed to activate after multiple attempts',
-          );
-        }
-
-        // Check existing subscription
-        let subscription = await registration.pushManager.getSubscription();
-        if (subscription) {
-          console.log('Existing subscription found, deleting...');
-          await subscription.unsubscribe();
-        }
-
-        // Create new subscription
-        subscription = await registration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(
-            'BJthRQ5myDgc7OSXzPCMftGw-n16F7zQBEN7EUD6XxcfTTvrLGWSIG7y_JxiWtVlCFua0S8MTB5rPziBqNx1qIo',
-          ),
-        });
-
-        console.log('✅ New push subscription created:', subscription);
-
-        const payload = { userId, ...subscription.toJSON() };
-
-        // Same token source as src/lib/axios/axiosInstance.ts
-        const token = Cookies.get('token');
-        if (!token) {
-          console.warn('No auth token, skipping push subscription sync');
-          return;
-        }
-
-        // Kirim subscription ke backend
-        const res = await fetch(
-          `${env.NEXT_PUBLIC_API_URL}/notification/addNotificationWorker`,
-          {
-            method: 'POST',
-            body: JSON.stringify(payload),
-            headers: {
-              'content-type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-
-        if (!res.ok) {
-          throw new Error(`Failed to subscribe: ${res.status}`);
-        }
-
-        const data = await res.json();
-        console.log('✅ Subscription sent to backend:', data);
-        // alert('✅ Subscription successful! You can now receive notifications.');
-      } catch (error: any) {
-        console.error('❌ Error:', error);
-        // alert('Error: ' + error.message);
-      }
-    }
-  }, 1000);
-
   useEffect(() => {
-    handleResubscribe();
-  }, []);
+    if (!userId) return;
+    syncPushSubscription(userId).catch((error) =>
+      console.error('Push subscription gagal:', error),
+    );
+  }, [userId]);
 };
 
 const FloatingNotificationAlert = () => {
