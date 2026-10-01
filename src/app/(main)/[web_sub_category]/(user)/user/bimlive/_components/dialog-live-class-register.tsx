@@ -1,5 +1,6 @@
 'use client';
 
+import { Instagram } from '@/components/icons/brand-icons';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -12,7 +13,6 @@ import {
   Check,
   ExternalLink,
   Heart,
-  Instagram,
   Loader2,
   MessageCircle,
   Share2,
@@ -332,27 +332,27 @@ export const DialogLiveClassRegister = ({
     if (item.loading)
       return (
         <>
-          <Loader2 className="animate-spin h-4 w-4 mr-2" />
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           <span>Tunggu...</span>
         </>
       );
     if (item.uploaded)
       return (
         <>
-          <Check className="h-4 w-4 mr-2" />
+          <Check className="mr-2 h-4 w-4" />
           <span>Selesai</span>
         </>
       );
     if (item.completed)
       return (
         <>
-          <ArrowUp className="h-4 w-4 mr-2" />
+          <ArrowUp className="mr-2 h-4 w-4" />
           <span>Upload</span>
         </>
       );
     return (
       <>
-        <ExternalLink className="h-4 w-4 mr-2" />
+        <ExternalLink className="mr-2 h-4 w-4" />
         <span>Lakukan</span>
       </>
     );
@@ -367,12 +367,12 @@ export const DialogLiveClassRegister = ({
       <DialogContent>
         <DialogHeader className="flex flex-col items-center gap-3">
           <div
-            className="w-16 h-16 mx-auto rounded-3xl flex items-center justify-center shadow-lg"
+            className="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl shadow-lg"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
           >
-            <Trophy className="w-8 h-8 text-white" />
+            <Trophy className="h-8 w-8 text-white" />
           </div>
           <h2 className="text-xl font-bold text-gray-900">
             Daftar Kelas Live Learning
@@ -418,12 +418,12 @@ export const DialogLiveClassRegister = ({
               </CardContent>
             </Card>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {proofItems.map((item) => (
                 <Card
                   key={item.id}
                   className={cn(
-                    'transition-all duration-300 border-2',
+                    'border-2 transition-all duration-300',
                     item.uploaded
                       ? 'border-green-300 bg-green-50 shadow-green-100'
                       : item.completed
@@ -437,7 +437,7 @@ export const DialogLiveClassRegister = ({
                       <div className="flex items-center justify-between">
                         <div
                           className={cn(
-                            'w-10 h-10 rounded-3xl flex items-center justify-center',
+                            'flex h-10 w-10 items-center justify-center rounded-3xl',
                             item.uploaded
                               ? 'bg-green-100'
                               : item.completed
@@ -446,7 +446,7 @@ export const DialogLiveClassRegister = ({
                           )}
                         >
                           {item.uploaded ? (
-                            <Check className="w-5 h-5 text-green-600" />
+                            <Check className="h-5 w-5 text-green-600" />
                           ) : (
                             item.icon
                           )}
@@ -455,8 +455,8 @@ export const DialogLiveClassRegister = ({
                           className={cn(
                             'text-xs',
                             item.uploaded
-                              ? 'bg-green-100 text-green-700 border-green-200'
-                              : 'bg-gray-100 text-gray-700 border-gray-200',
+                              ? 'border-green-200 bg-green-100 text-green-700'
+                              : 'border-gray-200 bg-gray-100 text-gray-700',
                           )}
                         >
                           +{item.points} poin
@@ -465,21 +465,21 @@ export const DialogLiveClassRegister = ({
 
                       {/* Content */}
                       <div className="space-y-2">
-                        <h3 className="font-semibold text-sm">{item.title}</h3>
+                        <h3 className="text-sm font-semibold">{item.title}</h3>
                         <p className="text-xs text-gray-600">
                           {item.instruction}
                         </p>
 
                         {/* Status Messages */}
                         {item.completed && !item.uploaded && (
-                          <div className="flex items-center gap-1 text-blue-600 text-xs">
-                            <ArrowUp className="w-3 h-3" />
+                          <div className="flex items-center gap-1 text-xs text-blue-600">
+                            <ArrowUp className="h-3 w-3" />
                             <span>Siap upload bukti screenshot</span>
                           </div>
                         )}
                         {item.uploaded && (
-                          <div className="flex items-center gap-1 text-green-600 text-xs">
-                            <Check className="w-3 h-3" />
+                          <div className="flex items-center gap-1 text-xs text-green-600">
+                            <Check className="h-3 w-3" />
                             <span>
                               {item.fileName
                                 ? `Terupload: ${item.fileName}`
@@ -492,12 +492,12 @@ export const DialogLiveClassRegister = ({
                       {/* Action Button */}
                       <Button
                         className={cn(
-                          'w-full text-xs h-8',
+                          'h-8 w-full text-xs',
                           item.uploaded
-                            ? 'bg-green-500 hover:bg-green-600 text-white'
+                            ? 'bg-green-500 text-white hover:bg-green-600'
                             : item.completed
-                              ? 'bg-blue-500 hover:bg-blue-600 text-white'
-                              : 'bg-gray-500 hover:bg-gray-600 text-white',
+                              ? 'bg-blue-500 text-white hover:bg-blue-600'
+                              : 'bg-gray-500 text-white hover:bg-gray-600',
                         )}
                         onClick={() => handleAction(item.id)}
                         disabled={item.loading || item.uploaded}
@@ -516,7 +516,7 @@ export const DialogLiveClassRegister = ({
           <CardContent className="p-4">
             {step === 1 && (
               <Button
-                className="w-full h-12 text-white font-semibold rounded-3xl shadow-lg hover:shadow-xl transition-all duration-200"
+                className="h-12 w-full rounded-3xl font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-xl"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
@@ -525,12 +525,12 @@ export const DialogLiveClassRegister = ({
               >
                 {isLoading ? (
                   <div className="flex items-center gap-2">
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Loader2 className="h-4 w-4 animate-spin" />
                     <span>Memproses...</span>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
-                    <Trophy className="w-4 h-4" />
+                    <Trophy className="h-4 w-4" />
                     <span>Daftar Live Learning</span>
                   </div>
                 )}
@@ -538,7 +538,7 @@ export const DialogLiveClassRegister = ({
             )}
             {step === 2 && (
               <Button
-                className="w-full h-12 text-white font-semibold rounded-3xl shadow-lg hover:shadow-xl transition-all duration-200"
+                className="h-12 w-full rounded-3xl font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-xl"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
@@ -547,12 +547,12 @@ export const DialogLiveClassRegister = ({
               >
                 {isLoading ? (
                   <div className="flex items-center gap-2">
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Loader2 className="h-4 w-4 animate-spin" />
                     <span>Memproses...</span>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
-                    <Trophy className="w-4 h-4" />
+                    <Trophy className="h-4 w-4" />
                     <span>
                       Daftar Live Learning{' '}
                       {step === 2 && `(${earnedPoints} poin)`}
@@ -562,7 +562,7 @@ export const DialogLiveClassRegister = ({
               </Button>
             )}
             {earnedPoints !== totalPoints && step == 2 && (
-              <p className="text-center text-xs text-gray-500 mt-2">
+              <p className="mt-2 text-center text-xs text-gray-500">
                 Lengkapi semua tugas untuk melanjutkan
               </p>
             )}

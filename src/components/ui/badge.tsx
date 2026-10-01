@@ -4,17 +4,17 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 const badgeVariants = cva(
-  'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  "inline-flex w-fit shrink-0 items-center gap-1 rounded-sm px-2 py-0.5 text-xs font-semibold whitespace-nowrap [&_svg:not([class*='size-'])]:size-3",
   {
     variants: {
       variant: {
-        default:
-          'border-transparent bg-primary text-primary-foreground hover:bg-primary/80',
-        secondary:
-          'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        destructive:
-          'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
-        outline: 'text-foreground',
+        default: 'bg-brand-soft text-brand-strong',
+        secondary: 'bg-paper text-ink-muted',
+        outline: 'border border-line-strong text-ink',
+        success: 'bg-success-soft text-success',
+        destructive: 'bg-danger-soft text-danger',
+        marker: 'bg-marker-soft text-marker-ink',
+        solid: 'bg-brand-strong text-brand-ink',
       },
     },
     defaultVariants: {
@@ -23,31 +23,20 @@ const badgeVariants = cva(
   },
 );
 
-export interface BadgeProps
-  extends
-    React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {}
+export type BadgeProps = React.ComponentProps<'span'> &
+  VariantProps<typeof badgeVariants>;
 
 function Badge({ className, variant, ...props }: BadgeProps) {
   return (
-    <div
+    <span
+      data-slot="badge"
       className={cn(badgeVariants({ variant }), className)}
       {...props}
     />
   );
 }
 
-const BadgeWithRef = React.forwardRef<HTMLDivElement, BadgeProps>(
-  ({ className, variant, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn(badgeVariants({ variant }), className)}
-        {...props}
-      />
-    );
-  },
-);
-BadgeWithRef.displayName = 'Badge';
+/** @deprecated React 19 meneruskan ref sebagai prop; pakai `Badge`. */
+const BadgeWithRef = Badge;
 
 export { Badge, badgeVariants, BadgeWithRef };

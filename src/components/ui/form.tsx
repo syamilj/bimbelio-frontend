@@ -1,5 +1,5 @@
-import * as LabelPrimitive from '@radix-ui/react-label';
-import { Slot } from '@radix-ui/react-slot';
+import { Label as LabelPrimitive, Slot as SlotPrimitive } from 'radix-ui';
+
 import * as React from 'react';
 import {
   Controller,
@@ -12,6 +12,8 @@ import {
 
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
+
+const Slot = SlotPrimitive.Root;
 
 const Form = FormProvider;
 
@@ -97,7 +99,7 @@ const FormLabel = React.forwardRef<
   return (
     <Label
       ref={ref}
-      className={cn(error && 'text-destructive', className)}
+      className={cn(error && 'text-danger', className)}
       htmlFor={formItemId}
       {...props}
     />
@@ -138,7 +140,7 @@ const FormDescription = React.forwardRef<
     <p
       ref={ref}
       id={formDescriptionId}
-      className={cn('text-sm text-muted-foreground', className)}
+      className={cn('text-sm text-ink-muted', className)}
       {...props}
     />
   );
@@ -160,7 +162,7 @@ const FormMessage = React.forwardRef<
     <p
       ref={ref}
       id={formMessageId}
-      className={cn('text-sm font-medium text-destructive', className)}
+      className={cn('text-sm font-medium text-danger', className)}
       {...props}
     >
       {body}

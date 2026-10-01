@@ -38,7 +38,7 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { QrCodeDialog } from './_components/QrCodeDialog';
 
 export default function ShortUrlsPage() {
@@ -123,12 +123,12 @@ export default function ShortUrlsPage() {
   };
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="container mx-auto space-y-6 p-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Short URLs</h1>
-          <p className="text-gray-600 mt-1">
+          <p className="mt-1 text-gray-600">
             Manage your short links and track clicks
           </p>
         </div>
@@ -137,14 +137,14 @@ export default function ShortUrlsPage() {
             style={{ backgroundColor: mainColor }}
             className="gap-2"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="h-4 w-4" />
             Create Short URL
           </Button>
         </Link>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-gray-600">
@@ -189,7 +189,7 @@ export default function ShortUrlsPage() {
       <Card>
         <CardContent className="pt-6">
           <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+            <Search className="absolute top-3 left-3 h-4 w-4 text-gray-400" />
             <Input
               placeholder="Search by code, title, or destination..."
               value={searchTerm}
@@ -204,9 +204,9 @@ export default function ShortUrlsPage() {
       <Card>
         <CardContent className="pt-6">
           {loading ? (
-            <div className="text-center py-8 text-gray-500">Loading...</div>
+            <div className="py-8 text-center text-gray-500">Loading...</div>
           ) : shortUrls.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="py-8 text-center text-gray-500">
               No short URLs found. Create your first one!
             </div>
           ) : (
@@ -226,7 +226,7 @@ export default function ShortUrlsPage() {
                   <TableRow key={url.id}>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <code className="px-2 py-1 bg-gray-100 rounded text-sm font-mono">
+                        <code className="rounded bg-gray-100 px-2 py-1 font-mono text-sm">
                           {url.code}
                         </code>
                         <Button
@@ -235,11 +235,11 @@ export default function ShortUrlsPage() {
                           onClick={() => handleCopyUrl(url.code)}
                           className="h-6 w-6 p-0"
                         >
-                          <Copy className="w-3 h-3" />
+                          <Copy className="h-3 w-3" />
                         </Button>
                       </div>
                       {url.title && (
-                        <div className="text-sm text-gray-600 mt-1">
+                        <div className="mt-1 text-sm text-gray-600">
                           {url.title}
                         </div>
                       )}
@@ -247,7 +247,7 @@ export default function ShortUrlsPage() {
                     <TableCell>{getDestinationDisplay(url)}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <TrendingUp className="w-4 h-4 text-gray-400" />
+                        <TrendingUp className="h-4 w-4 text-gray-400" />
                         <span className="font-medium">
                           {url.totalClicks.toLocaleString()}
                         </span>
@@ -284,7 +284,7 @@ export default function ShortUrlsPage() {
                             size="sm"
                             className="h-8 w-8 p-0"
                           >
-                            <MoreVertical className="w-4 h-4" />
+                            <MoreVertical className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
@@ -295,7 +295,7 @@ export default function ShortUrlsPage() {
                               )
                             }
                           >
-                            <TrendingUp className="w-4 h-4 mr-2" />
+                            <TrendingUp className="mr-2 h-4 w-4" />
                             Analytics
                           </DropdownMenuItem>
                           <DropdownMenuItem
@@ -305,7 +305,7 @@ export default function ShortUrlsPage() {
                               )
                             }
                           >
-                            <Edit className="w-4 h-4 mr-2" />
+                            <Edit className="mr-2 h-4 w-4" />
                             Edit
                           </DropdownMenuItem>
                           <DropdownMenuItem
@@ -314,13 +314,13 @@ export default function ShortUrlsPage() {
                               setQrDialogOpen(true);
                             }}
                           >
-                            <QrCode className="w-4 h-4 mr-2" />
+                            <QrCode className="mr-2 h-4 w-4" />
                             QR Code
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             onClick={() => handleCopyUrl(url.code)}
                           >
-                            <Copy className="w-4 h-4 mr-2" />
+                            <Copy className="mr-2 h-4 w-4" />
                             Copy URL
                           </DropdownMenuItem>
                           <DropdownMenuItem
@@ -328,7 +328,7 @@ export default function ShortUrlsPage() {
                               window.open(`/l/${url.code}`, '_blank')
                             }
                           >
-                            <ExternalLink className="w-4 h-4 mr-2" />
+                            <ExternalLink className="mr-2 h-4 w-4" />
                             Open Link
                           </DropdownMenuItem>
                           <DropdownMenuItem

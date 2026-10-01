@@ -28,7 +28,7 @@ import {
 import { getDateForInputDateTime } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 // Satu form untuk buat & edit short URL (dulu dua halaman salinan ~470 baris).
 

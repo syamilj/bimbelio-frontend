@@ -165,8 +165,7 @@ const WorkspaceCourse = () => {
       <ResizablePanelGroup
         autoSaveId="window-layout"
         direction={isMobile ? 'vertical' : 'horizontal'}
-        onLayout={() => {}}
-        className="flex-col h-full bg-slate-50/50"
+        className="h-full flex-col bg-slate-50/50"
       >
         <LeftComponent />
         <ResizableHandleComponent />
@@ -194,7 +193,7 @@ const ResizableHandleComponent = () => {
   return (
     <ResizableHandle
       className={cn(
-        'relative z-42 w-[5px] bg-slate-200/80 transition-colors duration-200 data-[panel-group-direction=vertical]:h-[5px] data-[panel-group-direction=vertical]:w-full hover:bg-blue-400 active:bg-blue-500',
+        'relative z-42 w-[5px] bg-slate-200/80 transition-colors duration-200 hover:bg-blue-400 active:bg-blue-500 data-[panel-group-direction=vertical]:h-[5px] data-[panel-group-direction=vertical]:w-full',
         mobileScreen !== 'minimize' && 'h-0 w-0 overflow-hidden',
       )}
       withHandle

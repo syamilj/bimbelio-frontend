@@ -1,17 +1,13 @@
 import { env } from '@/env.mjs';
-import { inter, playfair } from '@/lib/fonts';
+
 import {
-  ExternalLink,
   Facebook,
-  Globe,
   Instagram,
   Linkedin,
-  Lock,
-  MessageCircle,
-  Music4,
   Twitter,
   Youtube,
-} from 'lucide-react';
+} from '@/components/icons/brand-icons';
+import { ExternalLink, Globe, Lock, MessageCircle, Music4 } from 'lucide-react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -212,8 +208,8 @@ const PasswordGate = ({
   message?: string;
   password?: string;
 }) => (
-  <div className="min-h-screen flex items-center justify-center bg-slate-950 p-4">
-    <div className="w-full max-w-sm overflow-hidden rounded-3xl bg-slate-900 p-8 text-center shadow-lg border border-white/10">
+  <div className="flex min-h-screen items-center justify-center bg-slate-950 p-4">
+    <div className="w-full max-w-sm overflow-hidden rounded-3xl border border-white/10 bg-slate-900 p-8 text-center shadow-lg">
       <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/20">
         <Lock className="h-6 w-6 text-white/80" />
       </div>
@@ -237,7 +233,7 @@ const PasswordGate = ({
             name="password"
             type="password"
             defaultValue={password}
-            className="w-full rounded-3xl border border-white/10 bg-black/20 px-4 py-3 text-center text-white placeholder:text-white/30 focus:border-white/30 focus:outline-none focus:ring-1 focus:ring-white/30 transition-colors"
+            className="w-full rounded-3xl border border-white/10 bg-black/20 px-4 py-3 text-center text-white transition-colors placeholder:text-white/30 focus:border-white/30 focus:ring-1 focus:ring-white/30 focus:outline-none"
             placeholder="Masukkan Password"
             required
             autoFocus
@@ -245,7 +241,7 @@ const PasswordGate = ({
         </div>
         <button
           type="submit"
-          className="w-full rounded-3xl bg-white px-4 py-3 font-medium text-black active:scale-[0.98] transition-transform"
+          className="w-full rounded-3xl bg-white px-4 py-3 font-medium text-black transition-transform active:scale-[0.98]"
         >
           Buka Halaman
         </button>
@@ -255,8 +251,8 @@ const PasswordGate = ({
 );
 
 const ErrorState = ({ message }: { message: string }) => (
-  <div className="min-h-screen flex items-center justify-center bg-slate-950 p-4">
-    <div className="w-full max-w-sm rounded-3xl bg-slate-900 p-8 text-center border border-white/10">
+  <div className="flex min-h-screen items-center justify-center bg-slate-950 p-4">
+    <div className="w-full max-w-sm rounded-3xl border border-white/10 bg-slate-900 p-8 text-center">
       <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-red-500/10">
         <ExternalLink className="h-6 w-6 text-red-400" />
       </div>
@@ -264,7 +260,7 @@ const ErrorState = ({ message }: { message: string }) => (
       <p className="mt-2 text-sm text-white/60">{message}</p>
       <Link
         href="/"
-        className="mt-6 inline-block rounded-full bg-white/10 px-6 py-2 text-sm font-medium text-white hover:bg-white/20 transition-colors"
+        className="mt-6 inline-block rounded-full bg-white/10 px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-white/20"
       >
         Kembali ke Beranda
       </Link>
@@ -351,7 +347,7 @@ export default async function PublicLinkPage({
 
   return (
     <div
-      className={`relative min-h-screen w-full overflow-x-hidden transition-colors duration-700 ${inter.variable} ${playfair.variable} font-sans`}
+      className={`relative min-h-screen w-full overflow-x-hidden font-sans transition-colors duration-700`}
       style={backgroundStyle(page)}
     >
       {/* Halftone Overlay for depth if needed, but handled in backgroundStyle now */}
@@ -382,11 +378,11 @@ export default async function PublicLinkPage({
               />
             </div>
           )}
-          <h1 className="text-xl font-bold tracking-tight text-white drop-shadow-md sm:text-2xl font-serif">
+          <h1 className="font-serif text-xl font-bold tracking-tight text-white drop-shadow-md sm:text-2xl">
             {page.title}
           </h1>
           {page.description && (
-            <p className="mt-2 max-w-xs text-base font-medium leading-relaxed text-white/90 drop-shadow-sm">
+            <p className="mt-2 max-w-xs text-base leading-relaxed font-medium text-white/90 drop-shadow-sm">
               {page.description}
             </p>
           )}{' '}
@@ -403,7 +399,7 @@ export default async function PublicLinkPage({
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex h-10 w-10 items-center justify-center rounded-full bg-black/20 text-white transition-transform active:scale-95 hover:bg-white hover:text-black"
+                    className="group flex h-10 w-10 items-center justify-center rounded-full bg-black/20 text-white transition-transform hover:bg-white hover:text-black active:scale-95"
                     aria-label={platform}
                   >
                     <Icon className="h-5 w-5" />
@@ -428,7 +424,7 @@ export default async function PublicLinkPage({
               >
                 {section.label && (
                   <div className="px-1 pb-1 text-center">
-                    <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-white/60 drop-shadow-sm">
+                    <h2 className="text-sm font-bold tracking-[0.2em] text-white/60 uppercase drop-shadow-sm">
                       {section.label}
                     </h2>
                   </div>

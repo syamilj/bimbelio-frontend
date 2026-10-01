@@ -1,0 +1,91 @@
+/*
+ * Penyesuaian library pihak ketiga ke token desain.
+ * Hanya selector milik library di sini — bukan gaya komponen aplikasi.
+ */
+
+/* react-pdf-highlighter */
+#DocumentViewPdf .PdfHighlighter {
+  background-color: var(--paper);
+  scrollbar-width: thin;
+  scrollbar-color: var(--brand) transparent;
+}
+
+#DocumentViewPdf .PdfHighlighter .pdfViewer {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+#DocumentViewPdf .PdfHighlighter .MouseSelection,
+#DocumentViewPdf .PdfHighlighter .Highlight .Highlight__part,
+.PdfHighlighter .TextHighlight__part {
+  background: var(--marker);
+}
+
+#DocumentViewPdf .PdfHighlighter .textLayer ::selection {
+  background: var(--marker);
+}
+
+#DocumentViewPdf .PdfHighlighter .MouseSelection-container .MouseSelection {
+  z-index: 20;
+}
+
+#VisionOff .PdfHighlighter {
+  z-index: 39;
+}
+#VisionOn .PdfHighlighter {
+  z-index: 38;
+}
+#VisionOn .PdfHighlighter.up {
+  z-index: 40;
+}
+
+/* Video: sembunyikan tombol unduh bawaan */
+video::-internal-media-controls-download-button {
+  display: none;
+}
+video::-webkit-media-controls-enclosure {
+  overflow: hidden;
+}
+video::-webkit-media-controls-panel {
+  width: calc(100% + 30px);
+}
+
+/* Tombol Google Identity selebar kontainer */
+#google-button-container > div,
+#google-button-container > div > div > div {
+  width: 100%;
+}
+#google-button-container .S9gUrf-YoZ4jf {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Lencana nomor halaman di jawaban AI (dirender sebagai HTML mentah) */
+.page-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  border: 1px solid var(--brand-muted);
+  background-color: var(--brand-soft);
+  color: var(--brand-strong);
+  font-size: 12px;
+  font-weight: 600;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.page-badge:hover {
+  background-color: var(--brand-muted);
+}
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

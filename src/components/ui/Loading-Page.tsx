@@ -1,13 +1,9 @@
-import { Loader2 } from 'lucide-react';
+import { BubbleLoader } from '@/components/patterns/bubble-loader';
 
 export default function LoadingPage() {
   return (
-    <div className="fixed left-0 top-0 z-100 flex h-full w-full items-center justify-center bg-[#00000036]">
-      <Spinner />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/20">
+      <BubbleLoader />
     </div>
   );
-}
-
-function Spinner() {
-  return <Loader2 className={'mr-2 h-20 w-20 animate-spin'} />;
 }

@@ -1,40 +1,42 @@
 'use client';
 
 import {
-  CircleCheckIcon,
-  InfoIcon,
-  Loader2Icon,
-  OctagonXIcon,
-  TriangleAlertIcon,
+  CircleCheck,
+  CircleX,
+  Info,
+  LoaderCircle,
+  TriangleAlert,
 } from 'lucide-react';
-import { useTheme } from 'next-themes';
 import { Toaster as Sonner, type ToasterProps } from 'sonner';
 
-const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = 'system' } = useTheme();
-
+/** Satu-satunya <Toaster> aplikasi; dipasang di root layout. */
+export function Toaster(props: ToasterProps) {
   return (
     <Sonner
-      theme={theme as ToasterProps['theme']}
-      className="toaster group"
+      position="top-center"
+      gap={8}
       icons={{
-        success: <CircleCheckIcon className="size-4" />,
-        info: <InfoIcon className="size-4" />,
-        warning: <TriangleAlertIcon className="size-4" />,
-        error: <OctagonXIcon className="size-4" />,
-        loading: <Loader2Icon className="size-4 animate-spin" />,
+        success: <CircleCheck className="size-4 text-success" />,
+        error: <CircleX className="size-4 text-danger" />,
+        warning: <TriangleAlert className="size-4 text-marker-ink" />,
+        info: <Info className="size-4 text-brand-strong" />,
+        loading: (
+          <LoaderCircle className="size-4 animate-spin text-ink-muted" />
+        ),
       }}
-      style={
-        {
-          '--normal-bg': 'var(--popover)',
-          '--normal-text': 'var(--popover-foreground)',
-          '--normal-border': 'var(--border)',
-          '--border-radius': 'var(--radius)',
-        } as React.CSSProperties
-      }
+      toastOptions={{
+        classNames: {
+          toast:
+            'bg-surface! text-ink! border-line! rounded-md! shadow-overlay! font-sans! gap-3! items-start!',
+          title: 'text-sm! font-semibold!',
+          description: 'text-ink-muted! text-sm!',
+          icon: 'mt-0.5!',
+          actionButton: 'bg-brand-strong! text-brand-ink! rounded-sm!',
+          cancelButton: 'bg-paper! text-ink! rounded-sm!',
+          closeButton: 'bg-surface! border-line! text-ink-muted!',
+        },
+      }}
       {...props}
     />
   );
-};
-
-export { Toaster };
+}

@@ -54,11 +54,7 @@ const ModalImportExcel = ({
               value: true,
               number: 0,
             };
-            let isValid = true;
-
-            console.log({ data });
-
-            isValid = validateFormat(data);
+            const isValid = validateFormat(data);
 
             if (assessmentType !== '+5/0') {
               toaster({
@@ -217,14 +213,14 @@ const ModalImportExcel = ({
     >
       <DialogTrigger asChild>
         <button
-          className="shrink-0 cursor-pointer rounded-3xl bg-blue-50 border border-blue-200 px-4 py-2 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-100 active:bg-blue-50"
+          className="shrink-0 cursor-pointer rounded-3xl border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-100 active:bg-blue-50"
           onClick={() => setOpen(true)}
         >
           Import CSV
         </button>
       </DialogTrigger>
       <DialogContent className="w-[400px]">
-        <DialogTitle className="text-center text-lg font-semibold mb-2">
+        <DialogTitle className="mb-2 text-center text-lg font-semibold">
           Import Soal dari Excel/CSV
         </DialogTitle>
         <div className="flex flex-col items-center justify-center text-center">
@@ -241,18 +237,18 @@ const ModalImportExcel = ({
             <input
               id="uploadCSV"
               type="file"
-              className="absolute left-0 top-0 w-0 p-0"
+              className="absolute top-0 left-0 w-0 p-0"
               onChange={(e) => handleChangeFile(e)}
             />
             {file ? (
               <button
-                className="w-full shrink-0 cursor-pointer rounded-3xl bg-blue-600 py-2.5 font-medium text-white transition-colors hover:bg-blue-700 active:bg-blue-600 disabled:opacity-60 flex items-center justify-center gap-2"
+                className="flex w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-3xl bg-blue-600 py-2.5 font-medium text-white transition-colors hover:bg-blue-700 active:bg-blue-600 disabled:opacity-60"
                 onClick={handleGenerate}
                 disabled={isLoading}
               >
                 {isLoading ? (
                   <>
-                    <Loader2 className="animate-spin w-4 h-4" /> Memproses...
+                    <Loader2 className="h-4 w-4 animate-spin" /> Memproses...
                   </>
                 ) : (
                   'Generate Soal'
@@ -260,7 +256,7 @@ const ModalImportExcel = ({
               </button>
             ) : (
               <button
-                className="w-full shrink-0 cursor-pointer rounded-3xl bg-blue-50 border border-blue-200 py-2.5 font-medium text-blue-700 transition-colors hover:bg-blue-100 active:bg-blue-50 flex items-center justify-center gap-2"
+                className="flex w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-3xl border border-blue-200 bg-blue-50 py-2.5 font-medium text-blue-700 transition-colors hover:bg-blue-100 active:bg-blue-50"
                 onClick={() => {
                   document.getElementById('uploadCSV')?.click();
                 }}

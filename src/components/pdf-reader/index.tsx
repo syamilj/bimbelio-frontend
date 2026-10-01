@@ -11,7 +11,7 @@ import { deleteGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { HighlightTypeEnum, Message, Video } from '@/types/database';
-import { insertOrUpdateBlock } from '@blocknote/core';
+import { insertOrUpdateBlockForSlashMenu as insertOrUpdateBlock } from '@blocknote/core/extensions';
 import { createId } from '@paralleldrive/cuid2';
 import { Star } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
@@ -416,9 +416,9 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
           <div
             className={`relative w-full shrink-0 overflow-hidden transition-all duration-300 ease-in-out ${hideVideo ? 'h-0' : 'h-auto'}`}
           >
-            <div className="px-2 pb-0 pt-2 sm:p-3 sm:pb-0">
+            <div className="px-2 pt-2 pb-0 sm:p-3 sm:pb-0">
               {doc.video?.url?.length > 0 && (
-                <div className="relative rounded-3xl overflow-hidden shadow-sm border border-slate-200/80 bg-black">
+                <div className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-black shadow-sm">
                   <video
                     ref={videoRef}
                     controls
@@ -478,7 +478,7 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
         )}
         <div
           id="DocumentViewPdf"
-          className="relative flex-1 w-full bg-slate-50/50"
+          className="relative w-full flex-1 bg-slate-50/50"
           style={{
             height: 'calc(100dvh - 120px)',
             minHeight: '420px',
@@ -494,7 +494,7 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
           />
           {hideVideo && doc?.video && (
             <button
-              className="absolute right-3 top-3 z-49 rounded-3xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 px-4 py-1.5 text-xs font-medium shadow-sm hover:shadow transition-all"
+              className="absolute top-3 right-3 z-49 rounded-3xl border border-slate-200 bg-white px-4 py-1.5 text-xs font-medium text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:shadow"
               onClick={() => {
                 setHideVideo(false);
               }}

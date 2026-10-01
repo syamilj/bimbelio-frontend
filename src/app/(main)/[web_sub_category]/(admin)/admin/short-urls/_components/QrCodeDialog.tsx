@@ -14,7 +14,7 @@ import { generateQrCode } from '@/lib/api/short-url';
 import { Download, Link2, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 interface QrCodeDialogProps {
   open: boolean;
@@ -114,7 +114,7 @@ export function QrCodeDialog({
             >
               {loading ? (
                 <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Generating...
                 </>
               ) : (
@@ -126,7 +126,7 @@ export function QrCodeDialog({
           {/* QR Code Preview */}
           {qrData && (
             <div className="space-y-4">
-              <div className="flex justify-center p-4 bg-gray-50 rounded-3xl border">
+              <div className="flex justify-center rounded-3xl border bg-gray-50 p-4">
                 <Image
                   src={qrData.qrCodeDataUrl}
                   alt="QR Code"
@@ -137,9 +137,9 @@ export function QrCodeDialog({
               </div>
 
               {/* URL Display */}
-              <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-3xl border">
-                <Link2 className="w-4 h-4 text-gray-500 flex-shrink-0" />
-                <code className="text-sm flex-1 truncate">
+              <div className="flex items-center gap-2 rounded-3xl border bg-gray-50 p-3">
+                <Link2 className="h-4 w-4 flex-shrink-0 text-gray-500" />
+                <code className="flex-1 truncate text-sm">
                   {qrData.qrCodeUrl}
                 </code>
                 <Button
@@ -165,7 +165,7 @@ export function QrCodeDialog({
                   onClick={handleDownload}
                   className="flex-1 gap-2"
                 >
-                  <Download className="w-4 h-4" />
+                  <Download className="h-4 w-4" />
                   Download
                 </Button>
               </div>

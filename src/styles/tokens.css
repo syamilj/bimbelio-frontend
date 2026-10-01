@@ -1,0 +1,220 @@
+/*
+ * Sistem desain "Lembar Jawaban" — token tunggal untuk seluruh aplikasi.
+ * Lihat docs/redesign/PLAN.md §3. Jangan menulis hex di komponen; pakai token.
+ *
+ * --brand diganti per track (web_sub_category) oleh <TrackTheme>; turunannya
+ * dihitung dengan color-mix sehingga ikut berubah otomatis.
+ */
+
+:root {
+  /* Kertas & tinta */
+  --paper: #f6f8fb;
+  --surface: #ffffff;
+  --ink: #1b2230;
+  --ink-muted: #5b6475;
+  --ink-subtle: #8a93a3;
+  --line: #e3e8ef;
+  --line-strong: #cdd5df;
+
+  /* Warna track (tenant) */
+  --brand: #0091ff;
+  --brand-2: #5aa4dd;
+  --brand-ink: #ffffff;
+  --brand-strong: color-mix(in oklab, var(--brand) 80%, black);
+  --brand-soft: color-mix(in oklab, var(--brand) 10%, white);
+  --brand-muted: color-mix(in oklab, var(--brand) 22%, white);
+
+  /* Sinyal */
+  --marker: #fcb930;
+  --marker-soft: color-mix(in oklab, var(--marker) 22%, white);
+  --marker-ink: #7a5300;
+  --success: #12a150;
+  --success-soft: color-mix(in oklab, var(--success) 12%, white);
+  --danger: #da2850;
+  --danger-soft: color-mix(in oklab, var(--danger) 10%, white);
+
+  /* Grafik: urutan seri tetap */
+  --chart-1: var(--brand);
+  --chart-2: #12a150;
+  --chart-3: #fcb930;
+  --chart-4: #7c5cff;
+  --chart-5: #da2850;
+  --chart-6: #14b8c4;
+
+  --radius: 10px;
+}
+
+/* Pemetaan ke nama token shadcn agar primitive pihak ketiga ikut konsisten. */
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-subtle: var(--ink-subtle);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-brand: var(--brand);
+  --color-brand-2: var(--brand-2);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-muted: var(--brand-muted);
+
+  --color-marker: var(--marker);
+  --color-marker-soft: var(--marker-soft);
+  --color-marker-ink: var(--marker-ink);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+
+  /* shadcn */
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--ink);
+  --color-primary: var(--brand-strong);
+  --color-primary-foreground: var(--brand-ink);
+  --color-secondary: var(--paper);
+  --color-secondary-foreground: var(--ink);
+  --color-muted: var(--paper);
+  --color-muted-foreground: var(--ink-muted);
+  --color-accent: var(--brand-soft);
+  --color-accent-foreground: var(--ink);
+  --color-destructive: var(--danger);
+  --color-destructive-foreground: var(--surface);
+  --color-border: var(--line);
+  --color-input: var(--line-strong);
+  --color-ring: var(--brand);
+
+  --color-sidebar: var(--surface);
+  --color-sidebar-foreground: var(--ink);
+  --color-sidebar-primary: var(--brand-strong);
+  --color-sidebar-primary-foreground: var(--brand-ink);
+  --color-sidebar-accent: var(--brand-soft);
+  --color-sidebar-accent-foreground: var(--ink);
+  --color-sidebar-border: var(--line);
+  --color-sidebar-ring: var(--brand);
+}
+
+@theme {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  /* Skala tipe (min 12px) */
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.625rem;
+  --text-xl: 1.375rem;
+  --text-xl--line-height: 1.75rem;
+  --text-2xl: 1.75rem;
+  --text-2xl--line-height: 2.125rem;
+  --text-3xl: 2.25rem;
+  --text-3xl--line-height: 2.625rem;
+  --text-4xl: 3rem;
+  --text-4xl--line-height: 1.1;
+
+  /* Radius: sm (input kecil, badge) · md (tombol, kartu) · lg (dialog) */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 16px;
+  --radius-2xl: 16px;
+  --radius-3xl: 16px;
+
+  /* Bayangan hanya untuk lapisan melayang */
+  --shadow-overlay:
+    0 1px 2px rgb(27 34 48 / 0.06), 0 8px 24px -4px rgb(27 34 48 / 0.14);
+
+  --ease-snap: cubic-bezier(0.2, 0.9, 0.3, 1.2);
+
+  --animate-bubble-fill: bubble-fill 1.2s ease-in-out infinite;
+  @keyframes bubble-fill {
+    0%,
+    70%,
+    100% {
+      background-color: transparent;
+      border-color: var(--line-strong);
+    }
+    25%,
+    45% {
+      background-color: var(--brand);
+      border-color: var(--brand);
+    }
+  }
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--line);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Sorotan stabilo */
+  ::selection {
+    background-color: var(--marker-soft);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']) {
+    cursor: pointer;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}

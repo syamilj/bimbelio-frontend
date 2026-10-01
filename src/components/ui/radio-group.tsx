@@ -1,43 +1,40 @@
 'use client';
 
-import { cn } from '@/lib/utils';
-import { DotFilledIcon } from '@radix-ui/react-icons';
-import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
+import { RadioGroup as RadioGroupPrimitive } from 'radix-ui';
 import * as React from 'react';
 
-const RadioGroup = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
->(({ className, ...props }, ref) => {
+import { cn } from '@/lib/utils';
+
+function RadioGroup({
+  className,
+  ...props
+}: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
   return (
     <RadioGroupPrimitive.Root
+      data-slot="radio-group"
       className={cn('grid gap-2', className)}
       {...props}
-      ref={ref}
     />
   );
-});
-RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
+}
 
-const RadioGroupItem = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>
->(({ className, ...props }, ref) => {
+/** Radio = bubble lembar jawaban: lingkaran yang terisi penuh saat dipilih. */
+function RadioGroupItem({
+  className,
+  ...props
+}: React.ComponentProps<typeof RadioGroupPrimitive.Item>) {
   return (
     <RadioGroupPrimitive.Item
-      ref={ref}
+      data-slot="radio-group-item"
       className={cn(
-        'aspect-square h-4 w-4 rounded-full border border-primary text-primary shadow focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+        'relative size-5 shrink-0 rounded-full border-[1.5px] border-line-strong bg-surface transition-colors focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-danger data-[state=checked]:border-brand-strong',
         className,
       )}
       {...props}
     >
-      <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
-        <DotFilledIcon className="h-3.5 w-3.5 fill-primary" />
-      </RadioGroupPrimitive.Indicator>
+      <RadioGroupPrimitive.Indicator className="absolute inset-[3px] animate-in rounded-full bg-brand-strong duration-150 zoom-in-50" />
     </RadioGroupPrimitive.Item>
   );
-});
-RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
+}
 
 export { RadioGroup, RadioGroupItem };

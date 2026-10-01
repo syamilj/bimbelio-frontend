@@ -6,7 +6,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { defaultProps, insertOrUpdateBlock } from '@blocknote/core';
+import { defaultProps } from '@blocknote/core';
+import { insertOrUpdateBlockForSlashMenu as insertOrUpdateBlock } from '@blocknote/core/extensions';
 import { createReactBlockSpec } from '@blocknote/react';
 import { AlertCircle, Ban, Check, Info, ShieldAlertIcon } from 'lucide-react';
 import { createElement } from 'react';
@@ -52,7 +53,7 @@ export const AlertBlock = createReactBlockSpec(
   {
     render: (props) => (
       <div
-        className="flex flex-1 items-center gap-2 break-words rounded-3xl p-1"
+        className="flex flex-1 items-center gap-2 rounded-3xl p-1 break-words"
         style={{
           backgroundColor: alertTypes[props.block.props.type].backgroundColor,
         }}
@@ -68,7 +69,7 @@ export const AlertBlock = createReactBlockSpec(
           <SelectTrigger className="w-fit">
             <SelectValue>
               <div
-                className="mx-[12px] flex h-[18px] w-[18px] select-none items-center justify-center rounded-[16px] hover:cursor-pointer"
+                className="mx-[12px] flex h-[18px] w-[18px] items-center justify-center rounded-[16px] select-none hover:cursor-pointer"
                 style={{
                   backgroundColor: alertTypes[props.block.props.type].color,
                 }}

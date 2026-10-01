@@ -679,13 +679,10 @@ export const handleKeyDown = (
     const cursorPosition = editor.getTextCursorPosition();
     if (cursorPosition && cursorPosition.block) {
       const block = cursorPosition.block;
-      let hasLatex = false;
-
-      if (block.type === 'table') {
-        hasLatex = tableHasLatex(block);
-      } else {
-        hasLatex = inlineContentHasLatex(block.content as any[]);
-      }
+      const hasLatex =
+        block.type === 'table'
+          ? tableHasLatex(block)
+          : inlineContentHasLatex(block.content as any[]);
 
       if (hasLatex) {
         if (e.key === ' ') {

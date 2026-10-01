@@ -42,7 +42,7 @@ import {
   SubscriptionInstallmentLimitation,
   User,
 } from '@/types/database';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 type DataType = (User & {
   SubscriptionInstallment: (SubscriptionInstallment & {
@@ -145,14 +145,14 @@ export default function InstallmentPage() {
             <CardTitle>Daftar Cicilan</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid gap-4 md:grid-cols-4 mb-4">
+            <div className="mb-4 grid gap-4 md:grid-cols-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
                 <Input
                   placeholder="Cari email atau nama user..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="pl-10 rounded-3xl border-gray-200 focus:border-blue-500"
+                  className="rounded-3xl border-gray-200 pl-10 focus:border-blue-500"
                 />
               </div>
             </div>
@@ -190,7 +190,7 @@ export default function InstallmentPage() {
                             {isFirstInstallment && (
                               <TableCell
                                 rowSpan={user.SubscriptionInstallment.length}
-                                className="align-text-top border-b border-r"
+                                className="border-r border-b align-text-top"
                               >
                                 {page * take -
                                   take +
@@ -203,15 +203,15 @@ export default function InstallmentPage() {
                             {isFirstInstallment ? (
                               <TableCell
                                 rowSpan={user.SubscriptionInstallment.length}
-                                className="align-top border-b border-r"
+                                className="border-r border-b align-top"
                               >
                                 <div className="flex items-center gap-3">
                                   <UserAvatar
                                     name={user.name}
                                     image={user.image}
                                   />
-                                  <div className="flex flex-col min-w-[140px]">
-                                    <span className="font-medium text-black/70 whitespace-nowrap">
+                                  <div className="flex min-w-[140px] flex-col">
+                                    <span className="font-medium whitespace-nowrap text-black/70">
                                       {user.name}
                                     </span>
                                     <span className="text-sm text-gray-500">
@@ -223,7 +223,7 @@ export default function InstallmentPage() {
                             ) : null}
                             <TableCell
                               className={cn(
-                                'text-black/70 text-center',
+                                'text-center text-black/70',
                                 isLastInstallment && 'border-b',
                               )}
                             >
@@ -250,7 +250,7 @@ export default function InstallmentPage() {
                             </TableCell>
                             <TableCell
                               className={cn(
-                                'text-black/70 text-start',
+                                'text-start text-black/70',
                                 isLastInstallment && 'border-b',
                               )}
                             >
@@ -329,7 +329,7 @@ export default function InstallmentPage() {
                                 isLastInstallment && 'border-b',
                               )}
                             >
-                              <div className="flex items-center gap-2 justify-end">
+                              <div className="flex items-center justify-end gap-2">
                                 {!installment.isPaid && (
                                   <RemindButton
                                     installment={installment}
@@ -360,7 +360,7 @@ export default function InstallmentPage() {
                   <TableRow>
                     <TableCell
                       colSpan={8}
-                      className="text-center py-8"
+                      className="py-8 text-center"
                     >
                       <p className="text-gray-500">Tidak ada data cicilan</p>
                     </TableCell>
@@ -423,7 +423,7 @@ const RemindButton = ({
       <Button
         variant="outline"
         size="sm"
-        className="text-orange-600 hover:text-orange-700 border-orange-200"
+        className="border-orange-200 text-orange-600 hover:text-orange-700"
       >
         Ingatkan
       </Button>
@@ -458,15 +458,15 @@ const DetailInstallment = ({
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-2xl space-y-4 max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-h-[80vh] space-y-4 overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Detail Cicilan</DialogTitle>
         </DialogHeader>
 
         {/* User Info */}
-        <div className="space-y-3 pb-4 border-b">
+        <div className="space-y-3 border-b pb-4">
           <div>
-            <div className="font-semibold mb-2">User</div>
+            <div className="mb-2 font-semibold">User</div>
             <div className="flex items-center gap-3">
               <UserAvatar
                 name={user.name}
@@ -481,13 +481,13 @@ const DetailInstallment = ({
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-xs text-gray-500 uppercase font-semibold">
+              <p className="text-xs font-semibold text-gray-500 uppercase">
                 User ID
               </p>
               <p className="font-mono text-sm text-black">{user.id}</p>
             </div>
             <div>
-              <p className="text-xs text-gray-500 uppercase font-semibold">
+              <p className="text-xs font-semibold text-gray-500 uppercase">
                 Bergabung Sejak
               </p>
               <p className="font-medium text-black/70">
@@ -499,11 +499,11 @@ const DetailInstallment = ({
 
         {/* Installment Details */}
         <div className="space-y-3">
-          <div className="font-semibold text-lg">
+          <div className="text-lg font-semibold">
             Cicilan #{installment.installmentNumber}
           </div>
 
-          <div className="p-4 border rounded-3xl space-y-3 bg-gray-50">
+          <div className="space-y-3 rounded-3xl border bg-gray-50 p-4">
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-600">Status</span>
               <Badge
@@ -536,7 +536,7 @@ const DetailInstallment = ({
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-xs text-gray-500 uppercase font-semibold">
+                <p className="text-xs font-semibold text-gray-500 uppercase">
                   Nominal
                 </p>
                 <p className="text-xl font-bold text-black">
@@ -544,7 +544,7 @@ const DetailInstallment = ({
                 </p>
               </div>
               <div>
-                <p className="text-xs text-gray-500 uppercase font-semibold">
+                <p className="text-xs font-semibold text-gray-500 uppercase">
                   Jatuh Tempo
                 </p>
                 <p className="font-medium text-black">
@@ -555,7 +555,7 @@ const DetailInstallment = ({
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-xs text-gray-500 uppercase font-semibold">
+                <p className="text-xs font-semibold text-gray-500 uppercase">
                   Akses Berakhir
                 </p>
                 <p className="font-medium text-black">
@@ -563,7 +563,7 @@ const DetailInstallment = ({
                 </p>
               </div>
               <div>
-                <p className="text-xs text-gray-500 uppercase font-semibold">
+                <p className="text-xs font-semibold text-gray-500 uppercase">
                   Reminder Dikirim
                 </p>
                 <p className="font-medium text-black">
@@ -580,25 +580,25 @@ const DetailInstallment = ({
             </div>
 
             {installment.gracePeriodEndDate && (
-              <div className="p-3 bg-green-50 rounded border border-green-200">
-                <p className="text-xs text-gray-500 uppercase font-semibold mb-1">
+              <div className="rounded border border-green-200 bg-green-50 p-3">
+                <p className="mb-1 text-xs font-semibold text-gray-500 uppercase">
                   Masa Tenggang
                 </p>
-                <p className="text-green-700 font-medium">
+                <p className="font-medium text-green-700">
                   Hingga {getDateString(installment.gracePeriodEndDate)}
                 </p>
               </div>
             )}
 
             {hasLateFee && (
-              <div className="p-3 bg-orange-50 rounded border border-orange-200">
-                <p className="text-xs font-semibold text-orange-900 mb-1">
+              <div className="rounded border border-orange-200 bg-orange-50 p-3">
+                <p className="mb-1 text-xs font-semibold text-orange-900">
                   Denda Keterlambatan
                 </p>
                 <p className="text-sm text-orange-700">
                   {formatPrice(installment.lateFee)}
                 </p>
-                <p className="text-xs text-orange-600 mt-1">
+                <p className="mt-1 text-xs text-orange-600">
                   Total dengan denda:{' '}
                   {formatPrice(installment.amountWithLateFee)}
                 </p>
@@ -608,7 +608,7 @@ const DetailInstallment = ({
 
           {installment.SubscriptionInstallmentLimitation && (
             <div className="space-y-2">
-              <p className="text-xs text-gray-500 uppercase font-semibold">
+              <p className="text-xs font-semibold text-gray-500 uppercase">
                 Limitasi Akses
               </p>
               <div className="flex flex-wrap gap-2">
@@ -633,7 +633,7 @@ const DetailInstallment = ({
 
           {installment.transactionId && (
             <div className="space-y-2">
-              <p className="text-xs text-gray-500 uppercase font-semibold">
+              <p className="text-xs font-semibold text-gray-500 uppercase">
                 Transaction ID
               </p>
               <p className="font-mono text-sm text-black">
@@ -664,7 +664,7 @@ const UserAvatar = ({
     .toUpperCase();
 
   return imgError || !image ? (
-    <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-sm font-medium text-gray-600">
+    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 text-sm font-medium text-gray-600">
       {initials}
     </div>
   ) : (

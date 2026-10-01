@@ -3,7 +3,8 @@
 import axiosInstanceRaw from '@/lib/axios/axiosInstanceRaw';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { response } from '@/lib/response';
-import { getMainStyles } from '@/styles/main-styles';
+import { trackIdFromPath } from '@/lib/api/client';
+import { trackThemeCss } from '@/lib/theme/track-theme';
 import {
   WebsiteCategory,
   WebsiteSubCategory,
@@ -34,6 +35,7 @@ export default function ProviderWebsiteCategory({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const isAppArea = trackIdFromPath(pathname) !== undefined;
   const { data: session } = useSession();
   const { web_sub_category } = useParams<{ web_sub_category: string }>();
   const [first, setFirst] = useState<boolean>(false);
@@ -50,8 +52,6 @@ export default function ProviderWebsiteCategory({
   const sharingWebSubIds =
     websiteSubCategory?.sharing_website_sub_category_ids || [];
 
-  console.log({ websiteSubCategory, websiteSubCategoryType });
-
   const getWebSubCategory = () => {
     const website_sub_category_id = localStorage.getItem(
       'website_sub_category_id',
@@ -67,7 +67,7 @@ export default function ProviderWebsiteCategory({
           setWebsiteSubCategory(resData.data);
         })
         .catch(() => {
-          if (pathname.includes('user') || pathname.includes('admin')) {
+          if (isAppArea) {
             setFirst(true);
           }
         })
@@ -76,7 +76,7 @@ export default function ProviderWebsiteCategory({
         });
     } else {
       if (!session) setWebsiteSubCategory(initialValue);
-      else if (pathname.includes('user') || pathname.includes('admin')) {
+      else if (isAppArea) {
         setFirst(true);
       }
 
@@ -84,8 +84,12 @@ export default function ProviderWebsiteCategory({
     }
   };
 
+  // Daftar track jarang berubah: muat sekali per sesi, bukan per navigasi.
+  // Beranda (/) tidak butuh track sehingga request ditunda sampai keluar dari /.
+  const isHome = pathname === '/';
+  // Pemilih track hanya relevan di area aplikasi (/<track>/user|admin).
   useEffect(() => {
-    if (pathname === '/') {
+    if (isHome) {
       setIsLoading(false);
       return;
     }
@@ -93,7 +97,7 @@ export default function ProviderWebsiteCategory({
     getGeneral('/website-category/getWebsiteCategory', {
       setData: setWebCategoryData,
     });
-  }, [session, pathname]);
+  }, [session, isHome]);
 
   useEffect(() => {
     if (webCategoryData.length === 0 || !web_sub_category) return;
@@ -110,7 +114,8 @@ export default function ProviderWebsiteCategory({
     } else {
       localStorage.removeItem('website_sub_category_id');
       setWebsiteSubCategory(null);
-      setFirst(true);
+      // URL satu segmen yang bukan track (mis. /salah-ketik) → biarkan 404 tampil.
+      if (isAppArea) setFirst(true);
     }
   }, [web_sub_category, webCategoryData]);
 
@@ -146,8 +151,8 @@ export default function ProviderWebsiteCategory({
   if (first) {
     return (
       <WebsiteSubCategoryContext.Provider value={Context}>
-        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="w-full max-w-2xl mx-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+          <div className="mx-4 w-full max-w-2xl">
             <DialogWebCategory
               items={webCategoryData}
               value={websiteSubCategory?.id}
@@ -180,9 +185,9 @@ export default function ProviderWebsiteCategory({
 
   return (
     <WebsiteSubCategoryContext.Provider value={Context}>
-      {isLoading && pathname !== '/' && <LoadingFixed />}
+      {isLoading && !websiteSubCategory && !isHome && <LoadingFixed />}
       <NextTopLoader
-        color={websiteSubCategory?.main_color || '#0091FF'}
+        color="var(--brand)"
         initialPosition={0.08}
         crawlSpeed={200}
         height={3}
@@ -190,9 +195,14 @@ export default function ProviderWebsiteCategory({
         showSpinner={false}
         easing="ease"
         speed={200}
-        shadow="0 0 10px #0091FF,0 0 5px #0091FF"
+        shadow={false}
       />
-      <style>{getMainStyles(websiteSubCategory)}</style>
+      <style>
+        {trackThemeCss(
+          websiteSubCategory?.main_color,
+          websiteSubCategory?.secondary_color,
+        )}
+      </style>
       {children}
     </WebsiteSubCategoryContext.Provider>
   );

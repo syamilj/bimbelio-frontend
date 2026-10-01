@@ -1,5 +1,7 @@
 export const siteConfig = {
-  name: 'Bimbel AI untuk PTN dan Kedinasan | Bimbelio',
+  name: 'Bimbelio',
+  /** Judul beranda & judul bawaan bila halaman tidak menentukan judul. */
+  defaultTitle: 'Bimbel AI untuk PTN dan Kedinasan | Bimbelio',
   url: 'https://www.bimbelio.com',
   ogImage: 'https://www.bimbelio.com/og.webp',
   description:

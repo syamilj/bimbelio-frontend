@@ -7,8 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { formatDateTime } from '@/lib/utils';
 import { LiveClassRating } from '@/types/database';
-import { Progress } from '@radix-ui/react-progress';
+import { Progress as ProgressPrimitive } from 'radix-ui';
+
 import { Heart, MessageSquare, Star, TrendingUp } from 'lucide-react';
+
+const Progress = ProgressPrimitive.Root;
 
 type RatingDataType = {
   totalRating: number;
@@ -63,7 +66,7 @@ export function LiveClassRatingsDisplay({
       <Star
         key={i}
         className={`h-4 w-4 transition-colors ${
-          filled ? 'text-yellow-400 fill-current' : 'text-gray-300'
+          filled ? 'fill-current text-yellow-400' : 'text-gray-300'
         }`}
       />
     ));
@@ -71,16 +74,16 @@ export function LiveClassRatingsDisplay({
 
   if (isLoading) {
     return (
-      <Card className="bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden">
+      <Card className="overflow-hidden rounded-3xl border-2 border-gray-100 bg-white shadow-sm">
         <CardHeader
-          className="pb-4 border-b-2 border-gray-100 relative overflow-hidden"
+          className="relative overflow-hidden border-b-2 border-gray-100 pb-4"
           style={{
             background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
           }}
         >
           <CardTitle className="flex items-center gap-3 text-lg">
             <div
-              className="w-8 h-8 rounded-3xl flex items-center justify-center border-2 border-gray-100"
+              className="flex h-8 w-8 items-center justify-center rounded-3xl border-2 border-gray-100"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <Star
@@ -97,9 +100,9 @@ export function LiveClassRatingsDisplay({
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6">
-          <div className="flex items-center justify-center h-32">
+          <div className="flex h-32 items-center justify-center">
             <div
-              className="animate-spin rounded-full h-8 w-8 border-3 border-t-transparent"
+              className="h-8 w-8 animate-spin rounded-full border-3 border-t-transparent"
               style={{
                 borderColor: `${mainColor}30`,
                 borderTopColor: 'transparent',
@@ -113,16 +116,16 @@ export function LiveClassRatingsDisplay({
 
   if (!ratingsData || ratingsData.totalRating === 0) {
     return (
-      <Card className="bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden">
+      <Card className="overflow-hidden rounded-3xl border-2 border-gray-100 bg-white shadow-sm">
         <CardHeader
-          className="pb-4 border-b-2 border-gray-100 relative overflow-hidden"
+          className="relative overflow-hidden border-b-2 border-gray-100 pb-4"
           style={{
             background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
           }}
         >
           <CardTitle className="flex items-center gap-3 text-lg">
             <div
-              className="w-8 h-8 rounded-3xl flex items-center justify-center border-2 border-gray-100"
+              className="flex h-8 w-8 items-center justify-center rounded-3xl border-2 border-gray-100"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <Star
@@ -139,17 +142,17 @@ export function LiveClassRatingsDisplay({
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6">
-          <div className="text-center py-8">
+          <div className="py-8 text-center">
             <div
-              className="w-16 h-16 mx-auto rounded-3xl flex items-center justify-center mb-4 border-2 border-gray-100"
+              className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-3xl border-2 border-gray-100"
               style={{ backgroundColor: `${mainColor}08` }}
             >
               <MessageSquare className="h-8 w-8 text-gray-400" />
             </div>
-            <p className="text-gray-500 font-bold">
+            <p className="font-bold text-gray-500">
               Belum ada rating untuk live class ini
             </p>
-            <p className="text-sm text-gray-400 mt-1 font-medium">
+            <p className="mt-1 text-sm font-medium text-gray-400">
               Jadilah yang pertama memberikan rating!
             </p>
           </div>
@@ -167,21 +170,21 @@ export function LiveClassRatingsDisplay({
   } = ratingsData;
 
   return (
-    <Card className="bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden">
+    <Card className="overflow-hidden rounded-3xl border-2 border-gray-100 bg-white shadow-sm">
       {/* ENHANCED HEADER */}
       <CardHeader
-        className="pb-6 border-b-2 border-gray-100 relative overflow-hidden"
+        className="relative overflow-hidden border-b-2 border-gray-100 pb-6"
         style={{
           background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
         }}
       >
         <div
-          className="absolute -right-6 -top-6 w-12 h-12 rounded-full opacity-5"
+          className="absolute -top-6 -right-6 h-12 w-12 rounded-full opacity-5"
           style={{ backgroundColor: mainColor }}
         />
-        <CardTitle className="flex items-center gap-3 text-lg relative z-10">
+        <CardTitle className="relative z-10 flex items-center gap-3 text-lg">
           <div
-            className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm border-2 border-gray-100"
+            className="flex h-10 w-10 items-center justify-center rounded-3xl border-2 border-gray-100 shadow-sm"
             style={{ backgroundColor: `${mainColor}15` }}
           >
             <TrendingUp
@@ -198,32 +201,32 @@ export function LiveClassRatingsDisplay({
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="p-6 space-y-6">
+      <CardContent className="space-y-6 p-6">
         {/* ENHANCED RATING SUMMARY */}
         <div className="flex items-center gap-8">
           {/* Average Rating Display */}
           <div
-            className="text-center p-6 rounded-3xl border-2 relative overflow-hidden shadow-sm"
+            className="relative overflow-hidden rounded-3xl border-2 p-6 text-center shadow-sm"
             style={{
               backgroundColor: `${mainColor}05`,
               borderColor: `${mainColor}15`,
             }}
           >
             <div
-              className="absolute -right-4 -top-4 w-10 h-10 rounded-full opacity-10"
+              className="absolute -top-4 -right-4 h-10 w-10 rounded-full opacity-10"
               style={{ backgroundColor: mainColor }}
             />
             <div className="relative z-10">
               <div
-                className="text-4xl font-black mb-2"
+                className="mb-2 text-4xl font-black"
                 style={{ color: mainColor }}
               >
                 {averageRating.toFixed(1)}
               </div>
-              <div className="flex items-center justify-center gap-1 mb-2">
+              <div className="mb-2 flex items-center justify-center gap-1">
                 {renderStars(Math.round(averageRating))}
               </div>
-              <p className="text-sm text-gray-500 font-bold">
+              <p className="text-sm font-bold text-gray-500">
                 {totalRating} ulasan
               </p>
             </div>
@@ -236,23 +239,23 @@ export function LiveClassRatingsDisplay({
                 key={star}
                 className="flex items-center gap-3 text-sm"
               >
-                <div className="flex items-center gap-1 w-8">
+                <div className="flex w-8 items-center gap-1">
                   <span className="font-bold">{star}</span>
-                  <Star className="h-3 w-3 text-yellow-400 fill-current" />
+                  <Star className="h-3 w-3 fill-current text-yellow-400" />
                 </div>
                 <Progress
                   value={getRatingPercentage(
                     ratingDistribution[star as keyof typeof ratingDistribution],
                     totalRating,
                   )}
-                  className="flex-1 h-2"
+                  className="h-2 flex-1"
                   style={
                     {
                       '--progress-foreground': mainColor,
                     } as React.CSSProperties & { [key: string]: string }
                   }
                 />
-                <span className="w-8 text-right text-gray-500 font-bold">
+                <span className="w-8 text-right font-bold text-gray-500">
                   {ratingDistribution[star as keyof typeof ratingDistribution]}
                 </span>
               </div>
@@ -263,20 +266,20 @@ export function LiveClassRatingsDisplay({
         {/* USER'S RATING */}
         {userRating && (
           <div
-            className="border-2 rounded-3xl p-5 relative overflow-hidden shadow-sm"
+            className="relative overflow-hidden rounded-3xl border-2 p-5 shadow-sm"
             style={{
               backgroundColor: `${mainColor}08`,
               borderColor: `${mainColor}20`,
             }}
           >
             <div
-              className="absolute -right-3 -top-3 w-8 h-8 rounded-full opacity-10"
+              className="absolute -top-3 -right-3 h-8 w-8 rounded-full opacity-10"
               style={{ backgroundColor: mainColor }}
             />
             <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-3">
+              <div className="mb-3 flex items-center gap-3">
                 <Badge
-                  className="text-white font-black rounded-3xl border-2"
+                  className="rounded-3xl border-2 font-black text-white"
                   style={{ backgroundColor: mainColor }}
                 >
                   Rating Kamu
@@ -286,11 +289,11 @@ export function LiveClassRatingsDisplay({
                 </div>
               </div>
               {userRating.comment && (
-                <p className="text-gray-900 mb-3 font-medium leading-relaxed">
+                <p className="mb-3 leading-relaxed font-medium text-gray-900">
                   {userRating.comment}
                 </p>
               )}
-              <p className="text-xs text-gray-500 font-medium">
+              <p className="text-xs font-medium text-gray-500">
                 Diberikan pada {formatDateTime(userRating.createdAt)}
               </p>
             </div>
@@ -299,7 +302,7 @@ export function LiveClassRatingsDisplay({
 
         {/* OTHER REVIEWS */}
         <div className="space-y-4">
-          <h4 className="font-black text-gray-900 flex items-center gap-2">
+          <h4 className="flex items-center gap-2 font-black text-gray-900">
             <Heart
               className="h-5 w-5"
               style={{ color: mainColor }}
@@ -311,10 +314,10 @@ export function LiveClassRatingsDisplay({
             {ratings.slice(0, 5).map((rating) => (
               <div
                 key={rating.id}
-                className="border-2 border-gray-100 rounded-3xl p-4 hover:shadow-sm transition-shadow"
+                className="rounded-3xl border-2 border-gray-100 p-4 transition-shadow hover:shadow-sm"
               >
                 <div className="flex items-start gap-4">
-                  <Avatar className="h-10 w-10 ring-2 ring-gray-100 border-2 border-gray-100">
+                  <Avatar className="h-10 w-10 border-2 border-gray-100 ring-2 ring-gray-100">
                     <AvatarImage src={rating.User.image || undefined} />
                     <AvatarFallback
                       className="font-black text-white"
@@ -328,7 +331,7 @@ export function LiveClassRatingsDisplay({
                   </Avatar>
 
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
+                    <div className="mb-2 flex items-center gap-3">
                       <p className="font-black text-gray-900">
                         {rating.User.name}
                       </p>
@@ -338,12 +341,12 @@ export function LiveClassRatingsDisplay({
                     </div>
 
                     {rating.comment && (
-                      <p className="text-gray-900 mb-3 leading-relaxed font-medium">
+                      <p className="mb-3 leading-relaxed font-medium text-gray-900">
                         {rating.comment}
                       </p>
                     )}
 
-                    <p className="text-xs text-gray-500 font-bold">
+                    <p className="text-xs font-bold text-gray-500">
                       {formatDateTime(rating.createdAt)}
                     </p>
                   </div>
@@ -354,7 +357,7 @@ export function LiveClassRatingsDisplay({
 
           {ratings.length > 5 && (
             <div
-              className="text-center p-4 rounded-3xl border-2 border-dashed"
+              className="rounded-3xl border-2 border-dashed p-4 text-center"
               style={{ borderColor: `${mainColor}20` }}
             >
               <p

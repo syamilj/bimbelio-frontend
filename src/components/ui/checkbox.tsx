@@ -1,60 +1,32 @@
 'use client';
 
-import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
-import { CheckIcon } from '@radix-ui/react-icons';
+import { Check } from 'lucide-react';
+import { Checkbox as CheckboxPrimitive } from 'radix-ui';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-const Checkbox = React.forwardRef<
-  React.ElementRef<typeof CheckboxPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
->(({ className, ...props }, ref) => {
-  const localRef = React.useRef<HTMLElement | null>(null);
-  const combinedRef = (node: HTMLElement | null) => {
-    localRef.current = node;
-    if (typeof ref === 'function') ref(node as any);
-    else if (ref)
-      (ref as React.MutableRefObject<HTMLElement | null>).current = node;
-  };
-
-  const [isChecked, setIsChecked] = React.useState(false);
-
-  React.useEffect(() => {
-    const el = localRef.current;
-    if (!el) return;
-
-    const observer = new MutationObserver(() => {
-      const state = el.getAttribute('data-state');
-      setIsChecked(state === 'checked');
-    });
-
-    observer.observe(el, { attributes: true, attributeFilter: ['data-state'] });
-
-    // Initialize state on mount
-    setIsChecked(el.getAttribute('data-state') === 'checked');
-
-    return () => observer.disconnect();
-  }, []);
-
+function Checkbox({
+  className,
+  ...props
+}: React.ComponentProps<typeof CheckboxPrimitive.Root>) {
   return (
     <CheckboxPrimitive.Root
-      ref={combinedRef}
+      data-slot="checkbox"
       className={cn(
-        'peer h-5 w-5 shrink-0 rounded-3xl border border-main shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:text-primary-foreground',
+        'peer size-5 shrink-0 rounded-xs border border-line-strong bg-surface transition-colors focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-danger data-[state=checked]:border-brand-strong data-[state=checked]:bg-brand-strong data-[state=checked]:text-brand-ink',
         className,
-        isChecked && 'bg-main',
       )}
       {...props}
     >
-      <CheckboxPrimitive.Indicator
-        className={cn('flex items-center justify-center text-current')}
-      >
-        <CheckIcon className="h-4 w-4" />
+      <CheckboxPrimitive.Indicator className="flex items-center justify-center">
+        <Check
+          className="size-3.5"
+          strokeWidth={3}
+        />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   );
-});
-Checkbox.displayName = CheckboxPrimitive.Root.displayName;
+}
 
 export { Checkbox };

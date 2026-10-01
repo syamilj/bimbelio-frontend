@@ -59,7 +59,8 @@ const IndividualQuiz = () => {
         duration: 3000,
       });
     },
-    streamProtocol: 'text',
+    // Backend mengirim UI message stream (pipeUIMessageStreamToResponse), bukan teks mentah
+    streamProtocol: 'data',
     api: `${env.NEXT_PUBLIC_API_URL}/ai/evaluateQuiz?website_sub_category_id=${websiteSubCategory?.id}`,
     headers: {
       'Content-Type': 'application/json',
@@ -159,14 +160,14 @@ const IndividualQuiz = () => {
         <div className="bg-bg-workspace pb-[.5rem]">
           <div
             id="paginationQuiz"
-            className="flex items-center justify-start gap-[.5rem] overflow-x-auto overflow-y-hidden px-[1rem] pb-[1rem] pt-[.5rem]"
+            className="flex items-center justify-start gap-[.5rem] overflow-x-auto overflow-y-hidden px-[1rem] pt-[.5rem] pb-[1rem]"
           >
             {Array.from({ length: total }).map((_, i) =>
               !opsi ? (
                 <p
                   key={i}
                   className={cn(
-                    `cursor-pointer rounded-3xl px-[.5rem] text-[.9rem] duration-200 hover:bg-main-hover hover:text-white active:bg-white `,
+                    `cursor-pointer rounded-3xl px-[.5rem] text-[.9rem] duration-200 hover:bg-main-hover hover:text-white active:bg-white`,
                     i + 1 === current
                       ? 'bg-[#e7e7e7] text-main-gray-text'
                       : 'bg-white',

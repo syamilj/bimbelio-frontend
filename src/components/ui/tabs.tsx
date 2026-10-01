@@ -1,91 +1,68 @@
 'use client';
 
-import { cn } from '@/lib/utils';
-import * as TabsPrimitive from '@radix-ui/react-tabs';
+import { Tabs as TabsPrimitive } from 'radix-ui';
 import * as React from 'react';
+
+import { cn } from '@/lib/utils';
 
 const Tabs = TabsPrimitive.Root;
 
-const TabsList = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.List>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
->(({ className, ...props }, ref) => (
-  <TabsPrimitive.List
-    ref={ref}
-    className={cn(
-      'inline-flex h-9 items-center justify-center rounded-3xl bg-muted/50 p-1 text-muted-foreground',
-      className,
-    )}
-    {...props}
-  />
-));
-TabsList.displayName = TabsPrimitive.List.displayName;
+type TabsListProps = React.ComponentProps<typeof TabsPrimitive.List> & {
+  /** `segmented` (default) untuk pilihan ringkas, `line` untuk navigasi halaman. */
+  variant?: 'segmented' | 'line';
+};
 
-interface TabsTriggerProps extends React.ComponentPropsWithoutRef<
-  typeof TabsPrimitive.Trigger
-> {
-  isActiveClassName?: string;
-}
-
-const TabsTrigger = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Trigger>,
-  TabsTriggerProps
->(({ className, isActiveClassName, ...props }, ref) => {
-  const localRef = React.useRef<HTMLElement | null>(null);
-  const combinedRef = (node: HTMLElement | null) => {
-    localRef.current = node;
-    if (typeof ref === 'function') ref(node as any);
-    else if (ref)
-      (ref as React.MutableRefObject<HTMLElement | null>).current = node;
-  };
-
-  const [isActive, setIsActive] = React.useState(false);
-
-  React.useEffect(() => {
-    const el = localRef.current;
-    if (!el) return;
-
-    const observer = new MutationObserver(() => {
-      const state = el.getAttribute('data-state');
-      setIsActive(state === 'active');
-    });
-
-    observer.observe(el, { attributes: true, attributeFilter: ['data-state'] });
-
-    setIsActive(el.getAttribute('data-state') === 'active');
-
-    return () => observer.disconnect();
-  }, []);
-
+function TabsList({
+  className,
+  variant = 'segmented',
+  ...props
+}: TabsListProps) {
   return (
-    <TabsPrimitive.Trigger
-      ref={combinedRef}
+    <TabsPrimitive.List
+      data-slot="tabs-list"
+      data-variant={variant}
       className={cn(
-        'inline-flex items-center justify-center whitespace-nowrap rounded-3xl px-4 py-2 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-main data-[state=active]:text-white data-[state=active]:shadow',
-        isActive && 'bg-main text-white',
+        'group/tabs-list inline-flex items-center text-ink-muted',
+        variant === 'segmented' && 'h-10 gap-1 rounded-md bg-ink/5 p-1',
+        variant === 'line' &&
+          'scrollbar-none w-full justify-start gap-5 overflow-x-auto border-b border-line',
         className,
-        isActive && isActiveClassName,
       )}
       {...props}
     />
   );
-});
-TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
+}
 
-const TabsContent = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
->(({ className, ...props }, ref) => (
-  <TabsPrimitive.Content
-    ref={ref}
-    className={cn(
-      // 'mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-      'mt-2 ring-offset-transparent focus-visible:outline-none',
-      className,
-    )}
-    {...props}
-  />
-));
-TabsContent.displayName = TabsPrimitive.Content.displayName;
+function TabsTrigger({
+  className,
+  ...props
+}: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+  return (
+    <TabsPrimitive.Trigger
+      data-slot="tabs-trigger"
+      className={cn(
+        "inline-flex items-center justify-center gap-1.5 text-sm font-semibold whitespace-nowrap transition-colors hover:text-ink focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg:not([class*='size-'])]:size-4",
+        'group-data-[variant=segmented]/tabs-list:h-full group-data-[variant=segmented]/tabs-list:rounded-sm group-data-[variant=segmented]/tabs-list:px-3 group-data-[variant=segmented]/tabs-list:data-[state=active]:bg-surface group-data-[variant=segmented]/tabs-list:data-[state=active]:ring-1 group-data-[variant=segmented]/tabs-list:data-[state=active]:ring-line',
+        '-mb-px border-b-2 border-transparent group-data-[variant=line]/tabs-list:pb-3 group-data-[variant=segmented]/tabs-list:border-b-0 group-data-[variant=line]/tabs-list:data-[state=active]:border-brand',
+        'data-[state=active]:text-ink',
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function TabsContent({
+  className,
+  ...props
+}: React.ComponentProps<typeof TabsPrimitive.Content>) {
+  return (
+    <TabsPrimitive.Content
+      data-slot="tabs-content"
+      className={cn('mt-4 focus-visible:outline-none', className)}
+      {...props}
+    />
+  );
+}
 
 export { Tabs, TabsContent, TabsList, TabsTrigger };
