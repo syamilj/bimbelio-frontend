@@ -18,7 +18,6 @@ export const env = createEnv({
     NEXT_PUBLIC_SUPABASE_DUMP_IMAGES_URL: z.string(),
     NEXT_PUBLIC_SUPABASE_PDF_URL: z.string(),
     NEXT_PUBLIC_SUPABASE_VIDEO_URL: z.string(),
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
     // NEXT_PUBLIC_MIDTRANS_PRODUCTION: z.string().default('false'),
     // NEXT_PUBLIC_MIDTRANS_CLIENT_KEY: z.string(), // Client-side key
     // NEXT_PUBLIC_MIDTRANS_SNAP_URL: z.string(), // Client-side key
@@ -40,7 +39,6 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_SUPABASE_DUMP_IMAGES_URL,
     NEXT_PUBLIC_SUPABASE_PDF_URL: process.env.NEXT_PUBLIC_SUPABASE_PDF_URL,
     NEXT_PUBLIC_SUPABASE_VIDEO_URL: process.env.NEXT_PUBLIC_SUPABASE_VIDEO_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     // NEXT_PUBLIC_MIDTRANS_PRODUCTION:
     //   process.env.NEXT_PUBLIC_MIDTRANS_PRODUCTION,
     // NEXT_PUBLIC_MIDTRANS_CLIENT_KEY:
