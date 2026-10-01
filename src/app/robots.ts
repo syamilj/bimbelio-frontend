@@ -1,14 +1,14 @@
-import { MetadataRoute } from 'next';
+import { siteConfig } from '@/config/site';
+import type { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://www.bimbelio.com'; // Should ideally come from env
-
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/*/admin/', '/*/user/', '/api/'],
+      disallow: ['/*/admin/', '/*/user/', '/api/', '/l/'],
     },
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${siteConfig.url}/sitemap.xml`,
+    host: siteConfig.url,
   };
 }

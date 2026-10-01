@@ -84,6 +84,16 @@ Judul halaman 28/700, judul seksi 18/700, body 14–16/400–500.
 - Motion: hanya sebagai respon aksi (buka/tutup, isi bubble). Hormati
   `prefers-reduced-motion`.
 
+### Penamaan URL
+
+- Segmen URL memakai **bahasa Inggris**, huruf kecil, dipisah tanda hubung
+  (`/scholarship`, `/<track>/user/plans`). Isi halaman tetap berbahasa Indonesia.
+- Nama produk (`bimboard`, `bimarena`, …) tetap sebagai merek.
+- Mengganti URL wajib disertai redirect permanen (301) di `next.config.ts`.
+  Diganti: `/beasiswa` → `/scholarship`, `/<track>/user/paket-belajar` →
+  `/<track>/user/plans`, `/tutor` → `/#tutors`.
+- Folder non-rute di dalam `app/` diberi awalan `_` (`_components`).
+
 ### Pagar pembatas (lint)
 
 - Dilarang: hex arbitrer di className (`bg-[#...]`), `text-[Npx]`, `style={{ color }}`
@@ -170,9 +180,15 @@ Setiap fase wajib lolos `bun run check`, `bun run test`, `bun run build`
 - [x] Pemilih track (TrackPicker) dengan bubble; BimBot dimuat lazy
 - [ ] Halaman legal (privasi, syarat) — **butuh isi dari pemilik**, footer tidak menautkan halaman kosong
 
-### Fase 3 — Guest (`redesign/03-guest`)
-- [ ] Landing (server, `<h1>` nyata), about, beasiswa, blog, price, calendar, tryout, link, `/l/[code]`
-- [ ] Metadata per halaman, sitemap & robots dari env
+### Fase 3 — Guest (`redesign/03-guest`) ✅
+- [x] Beranda server-rendered dengan `<h1>` nyata, hero kartu LJK, statistik persaingan bubble, FAQ `<details>` + JSON-LD
+- [x] `/price` + `/price/[slug]` server-rendered (404 nyata, Product JSON-LD); checkout ditulis ulang (voucher teruji, satu instance kartu, resume `?checkout=`)
+- [x] Login (dialog + One Tap) tanpa reload, redirect aman (`//price` & open redirect dicegah)
+- [x] Blog: daftar & artikel dirender server (HTML tersanitasi, KaTeX, daftar isi dari id yang sama), 404 nyata, view sekali per sesi
+- [x] About, scholarship, calendar, tryout sebagai server component dengan metadata
+- [x] `/l/[code]` redirect server; halaman link: password via POST + cookie httpOnly
+- [x] URL bahasa Inggris + redirect 301; sitemap (artikel, paket, link) & robots dari `siteConfig`
+- [x] E2E: SEO/SSR, checkout, redirect, sitemap, password link, axe (desktop & mobile)
 
 ### Fase 4 — Siswa (`redesign/04-*`)
 - [ ] Mesin ujian tunggal (tryout, quiz, tryout course, quiz workspace) + hasil
@@ -235,3 +251,17 @@ Setiap fase wajib lolos `bun run check`, `bun run test`, `bun run build`
    backend membatasi pemanggilnya.
 5. **Halaman legal** (Kebijakan Privasi, Syarat & Ketentuan) belum ada; footer
    lama menautkannya ke `#`. Perlu teks resmi dari pemilik.
+6. **Klaim pemasaran yang di-hardcode** — dipertahankan apa adanya, mohon
+   diverifikasi terhadap paket aktif: FAQ (garansi 7 hari, durasi 3/6/12 bulan,
+   cicilan 0% 3/6/12 bulan — paket aktif saat ini cicilan 3×), tabel perbandingan
+   (Rp1.499.000 / Rp799.000, cicilan 3×), statistik about (10.000+ siswa, 85%,
+   4,9/5), statistik pendaftar SNBT/SIMAK/UM UGM/STAN. Klaim "koin tidak pernah
+   kedaluwarsa" **dihapus** karena bertentangan dengan data (koin punya masa berlaku).
+7. **Pemisahan subdomain** (permintaan pemilik, belum diputuskan):
+   `bimbelio.com` (marketing), `app.bimbelio.com` (siswa), `admin.bimbelio.com`
+   (admin) — tetap **satu codebase & satu deploy**, dirutekan per host di
+   `proxy.ts`. Untung: isolasi admin (keamanan, cookie terpisah), bundle & cache
+   terpisah, robots/SEO bersih. Biaya: DNS + domain di Vercel, origin Google OAuth,
+   cookie `token` ber-domain `.bimbelio.com`, CORS backend, redirect 301 dari URL
+   lama (`/<track>/user/...` → `app.bimbelio.com/<track>/...`), `actionUrl`
+   notifikasi lama tetap jalan lewat redirect.

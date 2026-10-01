@@ -1,8 +1,14 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "entry": ["src/proxy.ts", "test/e2e/mock-api/server.ts", "test/setup.ts"],
+  "entry": [
+    "src/proxy.ts",
+    "test/e2e/build.ts",
+    "test/e2e/dev.ts",
+    "test/e2e/mock-api/server.ts",
+    "test/setup.ts"
+  ],
   "project": ["src/**/*.{ts,tsx}", "test/**/*.{ts,tsx}"],
-  "ignore": ["public/sw.js", "src/types/**"],
+  "ignore": ["public/sw.js", "src/components/patterns/**", "src/types/**"],
   "ignoreDependencies": [
     "@t3-oss/env-nextjs",
     "@tailwindcss/typography",

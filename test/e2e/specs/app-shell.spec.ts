@@ -92,7 +92,7 @@ test.describe('shell aplikasi siswa', () => {
       .getByRole('dialog')
       .getByRole('button', { name: 'Lihat paket belajar' })
       .click();
-    await expect(page).toHaveURL('/utbk/user/paket-belajar', {
+    await expect(page).toHaveURL('/utbk/user/plans', {
       timeout: 30_000,
     });
   });

@@ -28,9 +28,9 @@
   --marker: #fcb930;
   --marker-soft: color-mix(in oklab, var(--marker) 22%, white);
   --marker-ink: #7a5300;
-  --success: #12a150;
-  --success-soft: color-mix(in oklab, var(--success) 12%, white);
-  --danger: #da2850;
+  --success: #0b7038;
+  --success-soft: color-mix(in oklab, var(--success) 9%, white);
+  --danger: #c4234a;
   --danger-soft: color-mix(in oklab, var(--danger) 10%, white);
 
   /* Grafik: urutan seri tetap */

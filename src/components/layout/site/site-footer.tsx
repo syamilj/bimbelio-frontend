@@ -10,7 +10,7 @@ const COLUMNS = [
       { label: 'Paket belajar', href: '/price' },
       { label: 'Try out gratis', href: '/tryout' },
       { label: 'Kalender event', href: '/calendar' },
-      { label: 'Beasiswa', href: '/beasiswa' },
+      { label: 'Beasiswa', href: '/scholarship' },
     ],
   },
   {

@@ -1,31 +1,41 @@
+import { ContactButton } from '@/components/layout/site/contact';
+import { getPlans } from '@/features/billing/api';
+import { CoinExplainer } from '@/features/billing/coin-explainer';
+import { PlanBrowser } from '@/features/billing/plan-browser';
+import { MarketingSection } from '@/features/marketing/section';
 import type { Metadata } from 'next';
-import PricingPlans from './_components/pricing-plans';
-// import PricingHeader from "./_components/pricing-header";
-// import PricingFaq from "./_components/pricing-faq";
-import PricingFeatures from './_components/pricing-features';
 
 export const metadata: Metadata = {
-  title: 'Paket',
+  title: 'Paket belajar',
   description:
-    'Pilih paket yang sesuai dengan kebutuhan kamu hari ini baik itu UTBK/SNBT, Ujian Mandiri, Kedinasan, atau lainnya.',
+    'Pilih paket belajar Bimbelio untuk UTBK-SNBT, ujian mandiri, dan kedinasan. Bisa dicicil, lengkap dengan try out, live class, dan BimBot AI.',
+  alternates: { canonical: '/price' },
 };
 
-export default function PricingPage() {
-  return (
-    <div className="relative bg-slate-50/50 min-h-screen pt-16">
-      {/* Simplified Background decorative shapes */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-        {/* Single subtle gradient circle */}
-        <div
-          className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full opacity-[0.03] blur-3xl"
-          style={{ backgroundColor: '#0091FF' }}
-        />
-      </div>
+export default async function PricePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ voucherCode?: string }>;
+}) {
+  const { voucherCode } = await searchParams;
+  const plans = await getPlans(voucherCode);
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 py-12 md:py-16">
-        <PricingPlans />
-        <PricingFeatures />
-      </div>
-    </div>
+  return (
+    <>
+      <MarketingSection
+        headingLevel={1}
+        title="Paket belajar"
+        description="Pilih paket sesuai jalur ujianmu. Semua program sudah termasuk try out, live class, dan BimBot AI sesuai isi paketnya."
+        className="pt-10 sm:pt-14"
+      >
+        <PlanBrowser plans={plans} />
+      </MarketingSection>
+      <CoinExplainer />
+      <MarketingSection
+        title="Masih bingung pilih paket?"
+        description="Ceritakan target dan jadwalmu. Tim kami bantu pilihkan paket yang paling pas, gratis."
+        headerAction={<ContactButton size="lg" />}
+      />
+    </>
   );
 }

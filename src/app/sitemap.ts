@@ -1,95 +1,59 @@
-import { env } from '@/env.mjs';
-import { MetadataRoute } from 'next';
+import { siteConfig } from '@/config/site';
+import { getPlans } from '@/features/billing/api';
+import { getPosts } from '@/features/blog/api';
+import { serverGetSafe } from '@/lib/api/server';
+import type { MetadataRoute } from 'next';
 
-const BASE_URL = 'https://www.bimbelio.com'; // Should ideally come from env but hardcoded for now based on existing sitemap
-const API_URL = env.NEXT_PUBLIC_API_URL.replace(/\/$/, '');
+export const revalidate = 3600;
+
+const STATIC: {
+  path: string;
+  changeFrequency: 'daily' | 'weekly' | 'monthly';
+  priority: number;
+}[] = [
+  { path: '/', changeFrequency: 'daily', priority: 1 },
+  { path: '/price', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/tryout', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/blog', changeFrequency: 'daily', priority: 0.9 },
+  { path: '/about', changeFrequency: 'monthly', priority: 0.7 },
+  { path: '/calendar', changeFrequency: 'weekly', priority: 0.7 },
+  { path: '/scholarship', changeFrequency: 'monthly', priority: 0.6 },
+];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // 1. Static Routes
-  const staticRoutes: MetadataRoute.Sitemap = [
-    {
-      url: `${BASE_URL}`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 1.0,
-    },
-    {
-      url: `${BASE_URL}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/beasiswa`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/blog`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/calendar`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
+  const [posts, plans, links] = await Promise.all([
+    getPosts(),
+    getPlans(),
+    serverGetSafe<{ slug: string; updatedAt: string }[]>(
+      '/link/public/sitemap-slugs',
+      [],
+      { revalidate: 3600 },
+    ),
+  ]);
+
+  return [
+    ...STATIC.map((s) => ({
+      url: `${siteConfig.url}${s.path}`,
+      changeFrequency: s.changeFrequency,
+      priority: s.priority,
+    })),
+    ...posts.map((p) => ({
+      url: `${siteConfig.url}/blog/${p.slug}`,
+      lastModified: new Date(p.updatedAt),
+      changeFrequency: 'monthly' as const,
       priority: 0.7,
-    },
-    {
-      url: `${BASE_URL}/discord`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
-      url: `${BASE_URL}/price`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/program`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/tryout`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/tutor`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
+    })),
+    ...plans.map((p) => ({
+      url: `${siteConfig.url}/price/${p.slug}`,
+      lastModified: new Date(p.updatedAt),
+      changeFrequency: 'weekly' as const,
       priority: 0.8,
-    },
+    })),
+    ...links.map((l) => ({
+      url: `${siteConfig.url}/link/${l.slug}`,
+      lastModified: new Date(l.updatedAt),
+      changeFrequency: 'weekly' as const,
+      priority: 0.5,
+    })),
   ];
-
-  // 2. Dynamic Routes (Link Pages)
-  let dynamicRoutes: MetadataRoute.Sitemap = [];
-  try {
-    const response = await fetch(`${API_URL}/link/public/sitemap-slugs`, {
-      next: { revalidate: 3600 }, // Revalidate every hour
-    });
-
-    if (response.ok) {
-      const payload = await response.json();
-      const slugs = payload.data as Array<{ slug: string; updatedAt: string }>;
-
-      dynamicRoutes = slugs.map((item) => ({
-        url: `${BASE_URL}/link/${item.slug}`,
-        lastModified: new Date(item.updatedAt),
-        changeFrequency: 'weekly',
-        priority: 0.8,
-      }));
-    }
-  } catch (error) {
-    console.error('Failed to fetch sitemap slugs:', error);
-  }
-
-  return [...staticRoutes, ...dynamicRoutes];
 }
