@@ -17,11 +17,15 @@ const NextBreadcrumb = () => {
 
   const pathNames = paths?.split('/').filter((path) => path);
 
-  // Hanya /admin dan halaman daftar entitas (/admin/<entitas>) yang pasti punya
-  // halaman; segmen tengah lain (edit, users, <id>) dulu menjadi link 404.
+  // Hanya /admin dan halaman daftar entitas (/admin/<entitas>) yang punya
+  // halaman; segmen tengah lain (edit, <id>) dulu menjadi link 404.
+  // /admin/users juga tidak punya halaman (hanya /admin/users/online).
+  const SEGMENTS_WITHOUT_PAGE = new Set(['users']);
   const adminIndex = pathNames?.indexOf('admin') ?? -1;
   const isNavigable = (fullIndex: number) =>
-    adminIndex === -1 || fullIndex <= adminIndex + 1;
+    adminIndex === -1 ||
+    (fullIndex <= adminIndex + 1 &&
+      !SEGMENTS_WITHOUT_PAGE.has(pathNames![fullIndex]));
 
   // Limit breadcrumb items on mobile
   const displayPaths = pathNames?.slice(-3) || []; // Show max 3 items on mobile
