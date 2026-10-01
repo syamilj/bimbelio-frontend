@@ -1164,7 +1164,7 @@ const UploadImageQuestion = () => {
               addImageToQuestion(image, questionIndex);
             }}
           >
-            Add Image
+            Tambah Gambar
           </div>
           {/* <div
             className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-3xl bg-white px-4 py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
@@ -1180,7 +1180,7 @@ const UploadImageQuestion = () => {
                 onChangeQuestionImage(e, questionIndex);
               }}
             />
-            Change Image
+            Ganti Gambar
           </div> */}
           <div
             className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-3xl bg-red-100 px-4 py-[.5rem] text-[.8rem] font-medium text-red-700 duration-300 md:hover:shadow-default md:active:shadow-none"
@@ -1193,7 +1193,7 @@ const UploadImageQuestion = () => {
               deleteImageQuestion(questionIndex);
             }}
           >
-            Delete Image
+            Hapus Gambar
           </div>
         </div>
       ) : (
@@ -1431,7 +1431,7 @@ const UploadImageAnswer = ({ answerIndex }: { answerIndex: number }) => {
               addImageToQuestion(image, questionIndex, answerIndex);
             }}
           >
-            Add Image
+            Tambah Gambar
           </div>
           {/* <div
             className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-3xl bg-white px-4 py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
@@ -1447,7 +1447,7 @@ const UploadImageAnswer = ({ answerIndex }: { answerIndex: number }) => {
                 onChangeQuestionImage(e, questionIndex);
               }}
             />
-            Change Image
+            Ganti Gambar
           </div> */}
           <div
             className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-3xl bg-red-100 px-4 py-[.5rem] text-[.8rem] font-medium text-red-700 duration-300 md:hover:shadow-default md:active:shadow-none"
@@ -1460,7 +1460,7 @@ const UploadImageAnswer = ({ answerIndex }: { answerIndex: number }) => {
               deleteImageQuestion(questionIndex, answerIndex);
             }}
           >
-            Delete Image
+            Hapus Gambar
           </div>
         </div>
       ) : (

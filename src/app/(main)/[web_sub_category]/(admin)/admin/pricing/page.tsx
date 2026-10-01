@@ -228,7 +228,7 @@ export default function Page() {
               variant="outline"
               onClick={handleCancelUpdate}
             >
-              Cancel
+              Batal
             </Button>
             <Button
               className="min-w-[90px] flex justify-center items-center"

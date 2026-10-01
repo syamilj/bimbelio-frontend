@@ -191,7 +191,7 @@ export function LinkButtonCard({
           onClick={() => onDelete(button)}
         >
           <Trash2 className="mr-2 h-4 w-4" />
-          Delete
+          Hapus
         </Button>
       </div>
     </Card>

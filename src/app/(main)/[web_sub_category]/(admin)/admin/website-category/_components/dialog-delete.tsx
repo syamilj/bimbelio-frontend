@@ -80,7 +80,7 @@ export function DialogDelete({
             variant="outline"
             onClick={() => setOpen(false)}
           >
-            Cancel
+            Batal
           </Button>
           <Button
             variant="destructive"

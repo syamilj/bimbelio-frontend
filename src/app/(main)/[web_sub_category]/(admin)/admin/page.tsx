@@ -530,7 +530,7 @@ export default function UserManagementDashboard() {
                   {isExporting === 'EXCEL' ? (
                     <>
                       <Download className="mr-2 h-4 w-4 animate-bounce" />
-                      Exporting...
+                      Mengekspor...
                     </>
                   ) : (
                     <>
@@ -548,7 +548,7 @@ export default function UserManagementDashboard() {
                   {isExporting === 'CSV' ? (
                     <>
                       <Download className="mr-2 h-4 w-4 animate-bounce" />
-                      Exporting...
+                      Mengekspor...
                     </>
                   ) : (
                     <>

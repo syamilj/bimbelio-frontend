@@ -305,7 +305,7 @@ export default function VoucherPage() {
                               >
                                 <div className="items-center flex justify-start w-full">
                                   <Trash className="mr-2 h-4 w-4" />
-                                  Delete
+                                  Hapus
                                 </div>
                               </DropdownMenuItem>
                             </ModalVerification>

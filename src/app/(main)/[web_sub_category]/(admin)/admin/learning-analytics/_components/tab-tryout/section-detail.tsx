@@ -565,7 +565,7 @@ const UserParticipants = ({
               <div className="animate-spin inline-block">
                 <Download className="w-4 h-4" />
               </div>
-              Exporting...
+              Mengekspor...
             </>
           ) : (
             <>
@@ -649,7 +649,7 @@ const UserParticipants = ({
               className="sticky top-0 z-20 font-bold text-gray-800 py-3 text-center"
               style={{ backgroundColor: `white` }}
             >
-              Action
+              Aksi
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -869,7 +869,7 @@ const UserRegistrations = ({
               <div className="animate-spin inline-block">
                 <Download className="w-4 h-4" />
               </div>
-              Exporting...
+              Mengekspor...
             </>
           ) : (
             <>
@@ -929,7 +929,7 @@ const UserRegistrations = ({
               className="sticky top-0 z-20 font-bold text-gray-800 py-3 text-center"
               style={{ backgroundColor: `white` }}
             >
-              Action
+              Aksi
             </TableHead>
           </TableRow>
         </TableHeader>

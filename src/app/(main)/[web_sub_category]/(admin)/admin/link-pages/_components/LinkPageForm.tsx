@@ -1266,7 +1266,7 @@ export default function LinkPageForm({ mode, linkPageId }: LinkPageFormProps) {
                   onClick={() => router.back()}
                   disabled={disabled}
                 >
-                  Cancel
+                  Batal
                 </Button>
                 <Button
                   type="submit"

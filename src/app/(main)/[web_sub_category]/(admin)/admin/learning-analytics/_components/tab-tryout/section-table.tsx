@@ -281,7 +281,7 @@ export const SectionTable = ({
                                     </div>
                                     <div>
                                       <p className="text-xs text-gray-500 font-semibold">
-                                        Duration
+                                        Durasi
                                       </p>
                                       <p className="font-medium text-gray-900">
                                         {session.duration} min

@@ -42,7 +42,7 @@ export function TrafficSourceChart({
           <Skeleton className="h-64" />
         ) : chartData.length === 0 ? (
           <div className="flex h-64 items-center justify-center text-gray-500">
-            No data available
+            Tidak ada data
           </div>
         ) : (
           <ResponsiveContainer

@@ -127,7 +127,7 @@ const TabContentCategory = ({ categories, refresh }: Props) => {
                       deleteCategory(item.id);
                     }}
                   >
-                    Delete
+                    Hapus
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
