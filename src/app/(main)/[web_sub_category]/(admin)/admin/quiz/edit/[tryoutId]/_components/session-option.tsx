@@ -13,12 +13,14 @@ import { useState } from 'react';
 import ModalImportCSV from '../../../_component/modal-import-excel';
 import { useEditQuizTryoutContext } from '../../../_component/provider-edit-tryout';
 import { QuestionProps } from '../page';
-import HeadingSessionTryout from './heading-session-tryout';
+import HeadingSessionTryout from '../../../_component/heading-session-tryout';
 import QuestionSessionTryout from './question-session-tryout';
 
 const SessionOption = () => {
   const {
     currentIndexEdit,
+    category,
+    setAssesmentType,
     showDetailTryout,
     setShowDetailTryout,
     EditSession,
@@ -187,7 +189,13 @@ const SessionOption = () => {
           </div>
         </div>
       </div>
-      <HeadingSessionTryout />
+      <HeadingSessionTryout
+        EditSession={EditSession}
+        category={category}
+        assessmentType={assessmentType}
+        setAssesmentType={setAssesmentType}
+        setSessions={setSessions}
+      />
       <div className="my-[.5rem] h-px w-full shrink-0 bg-main-gray-disabled/60" />
       <div className="mb-[.5rem] flex w-full items-center justify-between">
         <h1 className="text-[1.1rem] font-medium">Daftar soal</h1>

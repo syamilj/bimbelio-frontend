@@ -17,15 +17,22 @@ import { toaster } from '@/components/ui/toaster';
 import axiosInstance from '@/lib/axios/axiosInstance';
 import { response, responseError } from '@/lib/response';
 import { Loader2 } from 'lucide-react';
-import React, { SetStateAction, useState } from 'react';
-import { Category, SessionProps } from '../page';
-import ModalDeleteSession from './modal-delete';
+import React, { SetStateAction, useId, useState } from 'react';
+import { SessionProps } from '../new/page';
+
+// Hanya field yang dipakai komponen ini, supaya cocok untuk halaman buat & edit.
+type CategoryOption = {
+  id: string;
+  name: string;
+  TryoutSubCategory: { id: string; name: string }[];
+};
+import ModalDeleteSession from './modal-delete-session';
 // import { toaster } from "@/lib/utils";
 // import { useCompletion } from "ai/react";
 
 interface Props {
   EditSession: SessionProps;
-  category: Category[] | undefined;
+  category: CategoryOption[] | undefined;
   assessmentType: string;
   setAssesmentType: React.Dispatch<SetStateAction<string>>;
   setSessions: React.Dispatch<SetStateAction<SessionProps[]>>;
@@ -55,6 +62,8 @@ const HeadingSessionTryout = ({
   currentIndexEdit,
   setCurrentIndexEdit,
 }: Props) => {
+  // Dipakai halaman buat & edit try-out; id unik per instance.
+  const contextInputId = useId();
   const [loading, setLoading] = useState<boolean>(false);
 
   const generateTryout = async (context: string) => {
@@ -74,7 +83,7 @@ const HeadingSessionTryout = ({
 
   const handleGenerate = async () => {
     const input = document.getElementById(
-      'context-for-generate-ai',
+      contextInputId,
     ) as HTMLTextAreaElement;
     if (input.value.length < 10) {
       toaster({
@@ -708,7 +717,7 @@ const HeadingSessionTryout = ({
           </p>
           <div className="flex gap-2">
             <textarea
-              id="context-for-generate-ai"
+              id={contextInputId}
               placeholder="Masukkan konteks materi untuk generate soal..."
               rows={2}
               className="flex-1 rounded-3xl border border-gray-200 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors hover:border-gray-300 resize-none"

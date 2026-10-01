@@ -11,7 +11,7 @@ import {
 import React, { SetStateAction, useState } from 'react';
 import ModalImportCSV from '../../_component/modal-import-excel';
 import { Category, QuestionProps, SessionProps } from '../page';
-import HeadingSessionTryout from './heading-session-tryout';
+import HeadingSessionTryout from '../../_component/heading-session-tryout';
 import QuestionSessionTryout from './question-session-tryout';
 
 interface Props {
