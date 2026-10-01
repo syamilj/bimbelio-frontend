@@ -8,11 +8,10 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
-import { useTrackId } from '@/lib/track';
+import { useRoutePathname, useTrackId } from '@/lib/track';
 import { cn } from '@/lib/utils';
 import { Menu } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { isNavActive, mobileTabs } from './app-nav';
 import { AppNavList, UpgradeCard } from './app-sidebar';
 import { CourseSearch } from './course-search';
@@ -56,7 +55,7 @@ export function MobileAppMenu() {
 
 /** Tab bar bawah di layar kecil: empat tujuan utama + Menu. */
 export function MobileTabBar() {
-  const pathname = usePathname();
+  const pathname = useRoutePathname('app');
   const trackId = useTrackId();
   const { setSidebarMobile } = useAppContext();
 

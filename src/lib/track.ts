@@ -2,7 +2,8 @@
 
 import { usePathname } from 'next/navigation';
 import { useSyncExternalStore } from 'react';
-import { trackIdFromPath } from './api/client';
+import { areaHref, toRoutePath, trackIdFromPath } from './surface';
+import { rememberTrackCookie } from './track-cookie';
 
 /** Kunci localStorage track terakhir yang dibuka (dipakai juga kode lama). */
 export const TRACK_STORAGE_KEY = 'website_sub_category_id';
@@ -39,9 +40,28 @@ export function useTrackId() {
   return trackIdFromPath(pathname) ?? stored;
 }
 
-/** URL di area siswa untuk track tertentu, mis. `appPath('utbk', 'bimboard')`. */
+/**
+ * Pathname dalam bentuk rute internal (`/utbk/user/bimboard`), baik dibuka
+ * lewat satu domain maupun subdomain (`app.bimbelio.com/utbk/bimboard`).
+ */
+export function useRoutePathname(area: 'app' | 'admin') {
+  return toRoutePath(usePathname(), area);
+}
+
+/** Simpan track terakhir (localStorage untuk origin ini + cookie lintas subdomain). */
+export function rememberTrack(trackId: string) {
+  try {
+    localStorage.setItem(TRACK_STORAGE_KEY, trackId);
+  } catch {}
+  rememberTrackCookie(trackId);
+}
+
+/**
+ * URL di area siswa untuk track tertentu, mis. `appPath('utbk', 'bimboard')`.
+ * Satu domain → `/utbk/user/bimboard`; domain terpisah → URL app.bimbelio.com.
+ */
 export const appPath = (trackId: string | null | undefined, path: string) =>
-  `/${trackId || NO_TRACK}/user/${path.replace(/^\//, '')}`;
+  areaHref('app', trackId || NO_TRACK, path);
 
 export const adminPath = (trackId: string | null | undefined, path = '') =>
-  `/${trackId || NO_TRACK}/admin${path ? `/${path.replace(/^\//, '')}` : ''}`;
+  areaHref('admin', trackId || NO_TRACK, path);

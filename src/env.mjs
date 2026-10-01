@@ -22,6 +22,12 @@ export const env = createEnv({
     // NEXT_PUBLIC_MIDTRANS_CLIENT_KEY: z.string(), // Client-side key
     // NEXT_PUBLIC_MIDTRANS_SNAP_URL: z.string(), // Client-side key
     NEXT_PUBLIC_GOOGLE_CLIENT_ID: z.string(),
+    // Domain terpisah (opsional). Kosong → semua di satu domain (lokal/preview).
+    NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
+    NEXT_PUBLIC_APP_URL: z.string().url().optional(),
+    NEXT_PUBLIC_ADMIN_URL: z.string().url().optional(),
+    // Domain cookie sesi agar berlaku di semua subdomain, mis. `.bimbelio.com`.
+    NEXT_PUBLIC_COOKIE_DOMAIN: z.string().optional(),
   },
 
   runtimeEnv: {
@@ -46,6 +52,10 @@ export const env = createEnv({
     // NEXT_PUBLIC_MIDTRANS_SNAP_URL: process.env.NEXT_PUBLIC_MIDTRANS_SNAP_URL,
     // MIDTRANS_SERVER_KEY: process.env.MIDTRANS_SERVER_KEY, // Server-side only
     NEXT_PUBLIC_GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    NEXT_PUBLIC_ADMIN_URL: process.env.NEXT_PUBLIC_ADMIN_URL,
+    NEXT_PUBLIC_COOKIE_DOMAIN: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,

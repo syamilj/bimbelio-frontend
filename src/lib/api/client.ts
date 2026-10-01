@@ -1,4 +1,5 @@
 import { env } from '@/env.mjs';
+import { trackIdFromPath } from '@/lib/surface';
 import axios, { AxiosError, type AxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 
@@ -64,11 +65,10 @@ export const toApiError = (error: unknown): ApiError => {
 
 /**
  * Di area aplikasi, segmen pertama URL adalah id track (web_sub_category),
- * mis. `/utbk/user/bimboard`. Backend memfilter data per track lewat query
- * `website_sub_category_id`. Halaman marketing (`/blog/x`) tidak punya track.
+ * mis. `/utbk/user/bimboard` (atau `/utbk/bimboard` di app.bimbelio.com).
+ * Backend memfilter data per track lewat query `website_sub_category_id`.
  */
-export const trackIdFromPath = (pathname: string): string | undefined =>
-  pathname.match(/^\/([^/]+)\/(?:user|admin)(?:\/|$)/)?.[1];
+export { trackIdFromPath };
 
 export const http = axios.create({
   baseURL: env.NEXT_PUBLIC_API_URL,

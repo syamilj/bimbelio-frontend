@@ -18,7 +18,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { adminPath, appPath, useTrackId } from '@/lib/track';
+import { adminPath, appPath, useRoutePathname, useTrackId } from '@/lib/track';
 import { cn } from '@/lib/utils';
 import {
   ChevronRight,
@@ -28,7 +28,6 @@ import {
   PanelLeftOpen,
 } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { Fragment } from 'react';
 import { SubscriptionChecks } from '../app/subscription-checks';
 import { TrackSwitcher } from '../app/track-picker';
@@ -50,7 +49,7 @@ function AdminNavList({
   collapsed?: boolean;
   onNavigate?: () => void;
 }) {
-  const pathname = usePathname();
+  const pathname = useRoutePathname('admin');
   const trackId = useTrackId();
   const { data: session } = useSession();
   const { type } = useWebsiteSubCategory();
@@ -143,7 +142,7 @@ const ACTION_LABELS: Record<string, string> = {
 
 /** Breadcrumb dari URL admin. Hanya halaman daftar yang ditautkan. */
 function AdminBreadcrumb() {
-  const pathname = usePathname();
+  const pathname = useRoutePathname('admin');
   const trackId = useTrackId();
   const segments = pathname.split('/').filter(Boolean).slice(2); // buang track & 'admin'
   if (segments.length === 0) {
@@ -209,7 +208,7 @@ function AdminBreadcrumb() {
 
 /** Kerangka panel admin. */
 export function AdminShell({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
+  const pathname = useRoutePathname('admin');
   const trackId = useTrackId();
   const { data: session } = useSession();
   const {

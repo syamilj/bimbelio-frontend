@@ -1,9 +1,9 @@
 'use client';
 import { PageLoader } from '@/components/patterns/page-loader';
-import { trackIdFromPath } from '@/lib/api/client';
 import axiosInstance from '@/lib/axios/axiosInstance';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { response } from '@/lib/response';
+import { trackIdFromPath } from '@/lib/surface';
 import { usePathname } from 'next/navigation';
 import {
   createContext,

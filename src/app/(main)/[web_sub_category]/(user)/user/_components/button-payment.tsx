@@ -1,4 +1,5 @@
 import { useAppContext } from '@/components/provider/provider-app';
+import { siteHref } from '@/lib/surface';
 import { cn } from '@/lib/utils';
 import { IconCrown } from '@/styles/icon';
 import Link from 'next/link';
@@ -24,7 +25,7 @@ export default function ButtonPayment({
     return (
       <div
         className={cn(
-          'flex h-fit w-fit items-center gap-[.5rem] rounded-3xl px-4 py-[.7rem] text-[.9rem] text-white duration-300 md:hover:opacity-90 bg-gradient cursor-pointer',
+          'bg-gradient flex h-fit w-fit cursor-pointer items-center gap-[.5rem] rounded-3xl px-4 py-[.7rem] text-[.9rem] text-white duration-300 md:hover:opacity-90',
           className,
         )}
         onClick={() => setTransactionPopUp(true)}
@@ -43,9 +44,9 @@ export default function ButtonPayment({
 
   return (
     <Link
-      href={'/price'}
+      href={siteHref('/price')}
       className={cn(
-        'flex h-fit w-fit items-center gap-[.5rem] rounded-3xl px-4 py-[.7rem] text-[.9rem] text-white duration-300 md:hover:opacity-90 bg-gradient',
+        'bg-gradient flex h-fit w-fit items-center gap-[.5rem] rounded-3xl px-4 py-[.7rem] text-[.9rem] text-white duration-300 md:hover:opacity-90',
         className,
       )}
       // onClick={() => setTransactionPopUp(true)}

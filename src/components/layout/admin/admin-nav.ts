@@ -1,3 +1,4 @@
+import { toRoutePath } from '@/lib/surface';
 import { adminPath } from '@/lib/track';
 import {
   Activity,
@@ -156,6 +157,7 @@ export function isAdminItemActive(
   href: string,
   isDashboard: boolean,
 ) {
-  if (isDashboard) return pathname === href || pathname === `${href}/`;
-  return pathname === href || pathname.startsWith(`${href}/`);
+  const target = toRoutePath(href, 'admin');
+  if (isDashboard) return pathname === target || pathname === `${target}/`;
+  return pathname === target || pathname.startsWith(`${target}/`);
 }

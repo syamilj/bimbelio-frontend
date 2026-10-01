@@ -1,7 +1,7 @@
 'use client';
 
+import { useRoutePathname } from '@/lib/track';
 import dynamic from 'next/dynamic';
-import { usePathname } from 'next/navigation';
 import { AppSidebar } from './app-sidebar';
 import { AppTopbar } from './app-topbar';
 import { MobileAppMenu, MobileTabBar } from './mobile-nav';
@@ -19,7 +19,7 @@ const BimbotLauncher = dynamic(
 
 /** Kerangka aplikasi siswa: sidebar, topbar, tab bar mobile, dan layanan latar. */
 export function AppShell({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
+  const pathname = useRoutePathname('app');
   const mode = getShellMode(pathname);
 
   // Ujian: tanpa navigasi dan tanpa sinkronisasi langganan (agar tidak mengganggu sesi).

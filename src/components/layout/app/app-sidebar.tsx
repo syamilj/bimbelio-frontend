@@ -10,11 +10,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { appPath, useTrackId } from '@/lib/track';
+import { appPath, useRoutePathname, useTrackId } from '@/lib/track';
 import { cn } from '@/lib/utils';
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { buildAppNav, isNavActive, type AppNavItem } from './app-nav';
 import { TrackSwitcher } from './track-picker';
 
@@ -26,7 +25,7 @@ export function AppNavList({
   collapsed?: boolean;
   onNavigate?: () => void;
 }) {
-  const pathname = usePathname();
+  const pathname = useRoutePathname('app');
   const trackId = useTrackId();
   const sections = buildAppNav(trackId);
 

@@ -1,3 +1,4 @@
+import { toRoutePath } from '@/lib/surface';
 import { appPath } from '@/lib/track';
 import {
   BarChart3,
@@ -79,8 +80,10 @@ export function buildAppNav(trackId: string | null): AppNavSection[] {
 }
 
 /** Item aktif bila URL sama atau berada di bawahnya. */
-export const isNavActive = (pathname: string, href: string) =>
-  pathname === href || pathname.startsWith(`${href}/`);
+export const isNavActive = (pathname: string, href: string) => {
+  const target = toRoutePath(href, 'app');
+  return pathname === target || pathname.startsWith(`${target}/`);
+};
 
 /** Tab bar mobile: empat tujuan utama + "Menu". */
 export const mobileTabs = (trackId: string | null) => [

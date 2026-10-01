@@ -19,6 +19,7 @@ import {
   remaining,
   tierLabel,
 } from '@/features/billing/model';
+import { siteHref } from '@/lib/surface';
 import { appPath, useTrackId } from '@/lib/track';
 import { cn } from '@/lib/utils';
 import { formatIDR } from '@/lib/utils/currency';
@@ -136,7 +137,7 @@ export function PlanMenu() {
                     </p>
                   )}
                   <Link
-                    href={`/price/${sub.planSlug}`}
+                    href={siteHref(`/price/${sub.planSlug}`)}
                     onClick={close}
                     className="self-start text-xs font-semibold text-brand-strong hover:underline"
                   >

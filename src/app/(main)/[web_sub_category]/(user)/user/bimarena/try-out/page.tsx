@@ -90,9 +90,9 @@ const Content = () => {
           hideTargetValue: boolean;
           universityOption: string | undefined;
         } = data;
-        if (getData.hideGeneral) setIsHideGeneralSection(true);
-        if (getData.hideTargetValue) setIsHideTargetValue(true);
-        if (getData.universityOption) setUnivOption(getData.universityOption);
+        if (getData?.hideGeneral) setIsHideGeneralSection(true);
+        if (getData?.hideTargetValue) setIsHideTargetValue(true);
+        if (getData?.universityOption) setUnivOption(getData.universityOption);
       },
     });
   };

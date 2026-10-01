@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { env } from './env.mjs';
 import { decideAccess } from './lib/auth/access';
+import {
+  domainConfig,
+  routeByHost,
+  surfaceForHost,
+  type Surface,
+} from './lib/surface';
+import { LAST_TRACK_COOKIE } from './lib/track-cookie';
 
 type DecodeData = {
   id: string;
@@ -61,38 +68,100 @@ const verifySession = async (token: string): Promise<DecodeData | null> => {
   return resData.data;
 };
 
-export const proxy = async (req: NextRequest) => {
-  const token = req.cookies.get('token')?.value;
-  const pathname = req.nextUrl.pathname;
+/** Rute yang butuh sesi (dicek terhadap path internal hasil routing host). */
+const needsSession = (internalPath: string) => {
+  const seg = internalPath.split('/').filter(Boolean);
+  return seg[1] === 'user' || seg[1] === 'admin' || seg.includes('verify');
+};
 
-  if (!token) {
-    return NextResponse.redirect(new URL('/', req.url));
-  }
+const authorize = async (
+  req: NextRequest,
+  internalPath: string,
+  surface: Surface,
+): Promise<NextResponse | null> => {
+  // Tanpa sesi → beranda situs (dialog login ada di sana). Di subdomain, `/`
+  // milik subdomain mengalihkan ke dashboard, jadi harus ke situs utama.
+  const home =
+    surface === 'site'
+      ? new URL('/', req.url)
+      : new URL('/', domainConfig.siteUrl);
+  const token = req.cookies.get('token')?.value;
+  if (!token) return NextResponse.redirect(home);
 
   try {
     const data = isPrefetch(req)
       ? decodeTokenPayload(token)
       : await verifySession(token);
-    const decision = decideAccess(pathname, data);
-    if (decision.type === 'redirect') {
-      return NextResponse.redirect(new URL(decision.to, req.url));
-    }
-
-    return NextResponse.next();
+    const decision = decideAccess(internalPath, data);
+    if (decision.type === 'allow') return null;
+    if (decision.to === '/') return NextResponse.redirect(home);
+    // Halaman terlarang: satu domain → 404; subdomain → dashboard-nya sendiri.
+    return NextResponse.redirect(
+      new URL(surface === 'site' ? decision.to : '/', req.url),
+    );
   } catch (error) {
     // Fail closed: if the session cannot be verified (network error, timeout,
     // invalid JSON), do not let the request through to protected pages.
     console.error('[proxy] verifyToken failed:', error);
-    return NextResponse.redirect(new URL('/', req.url));
+    return NextResponse.redirect(home);
   }
 };
 
+/**
+ * Sesi lama tersimpan sebagai cookie host-only di situs. Saat situs mengalihkan
+ * ke subdomain, salin token ke domain bersama agar langsung terbaca di sana.
+ * Hanya di respons redirect (tidak pernah di-cache CDN).
+ */
+const shareSessionCookie = (
+  req: NextRequest,
+  res: NextResponse,
+  surface: Surface,
+) => {
+  const token = req.cookies.get('token')?.value;
+  const domain = env.NEXT_PUBLIC_COOKIE_DOMAIN;
+  if (surface !== 'site' || !token || !domain) return;
+  res.cookies.set('token', token, {
+    domain,
+    path: '/',
+    sameSite: 'lax',
+    secure: req.nextUrl.protocol === 'https:',
+    maxAge: 60 * 60 * 24 * 7,
+  });
+};
+
+export const proxy = async (req: NextRequest) => {
+  const { pathname, search } = req.nextUrl;
+  const host = req.headers.get('host');
+  const surface = surfaceForHost(host);
+
+  const route = routeByHost(host, pathname, search, {
+    lastTrack: req.cookies.get(LAST_TRACK_COOKIE)?.value,
+  });
+  if (route.type === 'redirect') {
+    const res = NextResponse.redirect(
+      new URL(route.url, req.url),
+      route.permanent ? 308 : 307,
+    );
+    shareSessionCookie(req, res, surface);
+    return res;
+  }
+
+  const internalPath = route.type === 'rewrite' ? route.pathname : pathname;
+  if (needsSession(internalPath)) {
+    const denied = await authorize(req, internalPath, surface);
+    if (denied) return denied;
+  }
+
+  const res =
+    route.type === 'rewrite'
+      ? NextResponse.rewrite(new URL(`${internalPath}${search}`, req.url))
+      : NextResponse.next();
+  // Subdomain aplikasi bukan untuk mesin pencari.
+  if (surface !== 'site') res.headers.set('X-Robots-Tag', 'noindex, nofollow');
+  return res;
+};
+
 export const config = {
-  matcher: [
-    '/:path*/auth/login',
-    '/:path*/auth/signup',
-    '/:path*/admin/:path*',
-    '/:path*/user/:path*',
-    '/:path*/verify/:path*',
-  ],
+  // Semua halaman kecuali aset Next dan file statis (path berekstensi).
+  matcher: ['/((?!_next/static|_next/image|.*\\.[\\w]+$).*)'],
 };
