@@ -1,33 +1,34 @@
-'use client';
+import { Button } from '@/components/ui/button';
+import { TryoutPreview } from '@/features/marketing/home/tryout-preview';
+import { MarketingSection } from '@/features/marketing/section';
+import type { Metadata } from 'next';
+import Link from 'next/link';
 
-import { lazy, Suspense } from 'react';
-
-const Tryout = lazy(
-  () => import('@/components/_shared/homepage/home-v2/09-tryout'),
-);
+export const metadata: Metadata = {
+  title: 'Try out gratis',
+  description:
+    'Try out UTBK-SNBT, ujian mandiri, dan kedinasan gratis dengan penilaian IRT dan peringkat nasional dari Bimbelio.',
+  alternates: { canonical: '/tryout' },
+};
 
 export default function TryoutPage() {
   return (
-    <div
-      id="tryout"
-      className="relative bg-bg-workspace"
-    >
-      {/* Consistent background pattern seperti homepage */}
-      <div className="absolute top-0 -z-10 h-full w-full">
-        <div className="absolute top-0 right-32 bottom-auto left-auto h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(109,244,152,0.53)] opacity-60 blur-[80px]" />
-      </div>
-
-      <div className="min-h-screen">
-        <div className="flex w-full flex-col gap-20">
-          <Suspense
-            fallback={
-              <div className="h-64 w-full animate-pulse rounded-3xl bg-gray-100" />
-            }
+    <>
+      <MarketingSection
+        headingLevel={1}
+        title="Try out gratis"
+        description="Ukur kesiapanmu dengan simulasi ujian berformat resmi. Daftar gratis, kerjakan sesuai jadwal, lalu lihat skor dan pembahasannya."
+        headerAction={
+          <Button
+            asChild
+            variant="outline"
           >
-            <Tryout />
-          </Suspense>
-        </div>
-      </div>
-    </div>
+            <Link href="/price">Butuh latihan lebih banyak?</Link>
+          </Button>
+        }
+        className="pb-0 sm:pb-0"
+      />
+      <TryoutPreview />
+    </>
   );
 }

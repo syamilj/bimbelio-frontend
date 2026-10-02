@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -216,5 +217,21 @@ export function FloatingContactButton({ className }: { className?: string }) {
       />
       Konsultasi
     </button>
+  );
+}
+
+/** Tombol pembuka dialog kontak untuk dipakai di dalam halaman (server component aman). */
+export function ContactButton({
+  children = 'Konsultasi gratis',
+  ...props
+}: Omit<React.ComponentProps<typeof Button>, 'onClick'>) {
+  const { openContact } = useContact();
+  return (
+    <Button
+      {...props}
+      onClick={openContact}
+    >
+      {children}
+    </Button>
   );
 }

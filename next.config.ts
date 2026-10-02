@@ -33,6 +33,25 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'storage.googleapis.com' },
     ],
   },
+  // URL publik distandarkan ke bahasa Inggris; URL lama dialihkan permanen agar
+  // tautan di iklan, WhatsApp, mesin pencari, dan bookmark tetap berfungsi.
+  async redirects() {
+    return [
+      { source: '/beasiswa', destination: '/scholarship', permanent: true },
+      { source: '/tutor', destination: '/#tutors', permanent: true },
+      // Tautan pendek: backend mencatat klik lalu mengalihkan ke tujuan.
+      {
+        source: '/l/:code',
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/l/:code`,
+        permanent: false,
+      },
+      {
+        source: '/:track/user/paket-belajar',
+        destination: '/:track/user/plans',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

@@ -1,4 +1,7 @@
 import { env } from '@/env.mjs';
+import { cookies } from 'next/headers';
+import { passwordCookieName } from './_components/password-cookie';
+import { unlockLinkPage } from './actions';
 
 import {
   Facebook,
@@ -13,7 +16,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { type ComponentType } from 'react';
-import { ButtonLinkPage } from './components/button-link-page';
+import { ButtonLinkPage } from './_components/button-link-page';
 
 const API_BASE_URL = env.NEXT_PUBLIC_API_URL.replace(/\/$/, '');
 // MIGRATED: Removed export const runtime = 'edge' (incompatible with Cache Components)
@@ -61,8 +64,13 @@ interface LinkPageResult {
 
 type PageProps = {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ password?: string } | undefined>;
+  searchParams: Promise<{ password?: string; error?: string } | undefined>;
 };
+
+/** Password dari cookie (hasil unlockLinkPage); `?password=` lama tetap diterima. */
+async function resolvePassword(slug: string, fromQuery?: string) {
+  return (await cookies()).get(passwordCookieName(slug))?.value ?? fromQuery;
+}
 
 async function getLinkPage(
   slug: string,
@@ -116,7 +124,7 @@ export async function generateMetadata({
   const resolvedSearchParams = (await Promise.resolve(searchParams)) ?? {};
   const result = await getLinkPage(
     resolvedParams.slug,
-    resolvedSearchParams.password,
+    await resolvePassword(resolvedParams.slug, resolvedSearchParams.password),
   );
 
   if (!result.data) {
@@ -201,13 +209,7 @@ const backgroundStyle = (data?: LinkPageData) => {
   }
 };
 
-const PasswordGate = ({
-  message,
-  password,
-}: {
-  message?: string;
-  password?: string;
-}) => (
+const PasswordGate = ({ slug, wrong }: { slug: string; wrong?: boolean }) => (
   <div className="flex min-h-screen items-center justify-center bg-slate-950 p-4">
     <div className="w-full max-w-sm overflow-hidden rounded-3xl border border-white/10 bg-slate-900 p-8 text-center shadow-lg">
       <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/20">
@@ -215,10 +217,18 @@ const PasswordGate = ({
       </div>
       <h1 className="text-xl font-medium text-white">Halaman Terkunci</h1>
       <p className="mt-2 text-sm text-white/60">
-        {message || 'Masukkan password untuk membuka halaman.'}
+        Masukkan password untuk membuka halaman ini.
       </p>
+      {wrong && (
+        <p
+          role="alert"
+          className="mt-4 rounded-md bg-red-500/10 px-3 py-2 text-sm text-red-300"
+        >
+          Password salah. Coba lagi.
+        </p>
+      )}
       <form
-        method="GET"
+        action={unlockLinkPage.bind(null, slug)}
         className="mt-8 space-y-4 text-left"
       >
         <div>
@@ -232,7 +242,6 @@ const PasswordGate = ({
             id="password"
             name="password"
             type="password"
-            defaultValue={password}
             className="w-full rounded-3xl border border-white/10 bg-black/20 px-4 py-3 text-center text-white transition-colors placeholder:text-white/30 focus:border-white/30 focus:ring-1 focus:ring-white/30 focus:outline-none"
             placeholder="Masukkan Password"
             required
@@ -294,7 +303,10 @@ export default async function PublicLinkPage({
 }: PageProps) {
   const resolvedParams = await Promise.resolve(params);
   const resolvedSearchParams = (await Promise.resolve(searchParams)) ?? {};
-  const password = resolvedSearchParams.password;
+  const password = await resolvePassword(
+    resolvedParams.slug,
+    resolvedSearchParams.password,
+  );
   const result = await getLinkPage(resolvedParams.slug, password);
 
   if (result.status === 404) {
@@ -304,8 +316,8 @@ export default async function PublicLinkPage({
   if (result.requiresPassword) {
     return (
       <PasswordGate
-        password={password}
-        message="Halaman ini dilindungi."
+        slug={resolvedParams.slug}
+        wrong={resolvedSearchParams.error === 'password'}
       />
     );
   }

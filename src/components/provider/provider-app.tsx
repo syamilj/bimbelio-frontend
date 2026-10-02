@@ -93,7 +93,7 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
         },
       });
     } catch {}
-    const target = appPath(trackId, 'paket-belajar');
+    const target = appPath(trackId, 'plans');
     if (pathname !== target) router.push(target);
   }, [pathname, router, trackId]);
 
@@ -160,7 +160,7 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
 
   return (
     <AppContext.Provider value={value}>
-      {showAuth.open && <Login />}
+      <Login />
       <AccountSetting />
       {children}
     </AppContext.Provider>

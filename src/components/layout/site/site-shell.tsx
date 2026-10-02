@@ -1,9 +1,6 @@
 'use client';
 
-import { SectionLoader } from '@/components/patterns/page-loader';
 import dynamic from 'next/dynamic';
-import { usePathname } from 'next/navigation';
-import { Suspense } from 'react';
 import { ContactProvider, FloatingContactButton } from './contact';
 import { SiteHeader } from './site-header';
 
@@ -15,9 +12,6 @@ const OneTapLogin = dynamic(
   { ssr: false },
 );
 
-// Halaman tautan pendek (mis. /l/wa-grup) tampil tanpa header.
-const isBareRoute = (pathname: string) => pathname.startsWith('/l/');
-
 /** Kerangka halaman publik: header, konten, footer, dan tombol konsultasi. */
 export function SiteShell({
   children,
@@ -27,27 +21,23 @@ export function SiteShell({
   /** SiteFooter (server component) diteruskan dari layout. */
   footer: React.ReactNode;
 }) {
-  const pathname = usePathname();
-  const bare = isBareRoute(pathname);
-
   return (
     <ContactProvider>
       <OneTapLogin />
       <div className="flex min-h-dvh flex-col">
-        {!bare && <SiteHeader />}
+        <SiteHeader />
         <main
           id="konten"
           className="relative flex-1"
         >
-          {/* Halaman yang membaca query string (useSearchParams) cukup menunda
-              kontennya sendiri; header & footer tetap dirender di server. */}
-          <Suspense fallback={<SectionLoader className="min-h-[60vh]" />}>
-            {children}
-          </Suspense>
+          {/* Sengaja tanpa <Suspense> di sini: notFound()/redirect() halaman harus
+              terjadi sebelum streaming agar status HTTP (404/308) benar. Komponen
+              yang membaca query string membungkus dirinya sendiri dengan Suspense. */}
+          {children}
         </main>
-        {!bare && footer}
+        {footer}
       </div>
-      {!bare && <FloatingContactButton />}
+      <FloatingContactButton />
     </ContactProvider>
   );
 }

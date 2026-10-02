@@ -14,6 +14,9 @@ const DESIGN_SYSTEM_DIRS = [
   'src/components/providers/**',
   'src/components/layout/**',
   'src/features/**',
+  'src/app/(guest)/**',
+  'src/app/sitemap.ts',
+  'src/app/robots.ts',
   'src/lib/api/**',
   'src/lib/theme/**',
 ];

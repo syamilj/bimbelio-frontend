@@ -16,12 +16,6 @@ test.describe('shell situs publik', () => {
       '/price',
     );
 
-    await page.getByRole('button', { name: 'Kalender' }).hover();
-    await expect(page.getByRole('link', { name: 'Webinar' })).toHaveAttribute(
-      'href',
-      '/calendar?type=webinar',
-    );
-
     await page.getByRole('button', { name: 'Fitur' }).hover();
     await page.getByRole('link', { name: /Try out online/ }).click();
     await expect(page).toHaveURL(/\/#tryout$/);
@@ -36,9 +30,10 @@ test.describe('shell situs publik', () => {
     await page.getByRole('button', { name: 'Buka menu navigasi' }).click();
     const sheet = page.getByRole('dialog', { name: 'Menu' });
     await expect(sheet).toBeVisible();
-    await expect(
-      sheet.getByRole('link', { name: 'Live class' }),
-    ).toHaveAttribute('href', '/calendar?type=live-class');
+    await expect(sheet.getByRole('link', { name: 'Kalender' })).toHaveAttribute(
+      'href',
+      '/calendar',
+    );
     await sheet.getByRole('link', { name: 'Blog' }).click();
     await expect(page).toHaveURL('/blog');
     await expect(sheet).toBeHidden();
@@ -47,7 +42,9 @@ test.describe('shell situs publik', () => {
   test('tombol Masuk membuka modal login Google', async ({ page }) => {
     await page.goto('/about');
     await page.getByRole('button', { name: 'Masuk', exact: true }).click();
-    await expect(page.getByText('Selamat Datang!')).toBeVisible();
+    await expect(
+      page.getByRole('dialog', { name: 'Masuk ke Bimbelio' }),
+    ).toBeVisible();
   });
 
   test('pengguna yang sudah masuk melihat tautan dashboard ke track terakhir', async ({

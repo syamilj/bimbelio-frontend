@@ -5,7 +5,16 @@
  * sama-sama memakai data fiktif. Rute yang belum di-mock membalas 404 dan
  * dicatat di /__unhandled agar tes bisa menangkap request yang terlewat.
  */
-import { COURSE_INDEX, NOTIFICATIONS, TRACKS, USERS } from './fixtures';
+import {
+  COURSE_INDEX,
+  INSTRUCTORS,
+  LINK_PAGES,
+  NOTIFICATIONS,
+  PLANS,
+  POSTS,
+  TRACKS,
+  USERS,
+} from './fixtures';
 
 type Handler = (req: Request, url: URL) => Response | Promise<Response>;
 
@@ -38,7 +47,46 @@ const routes: Record<string, Handler> = {
   },
   'GET /user/getCurrentLimitation': () =>
     ok({ chat: 0, vision: 0, quiz: 0, maxChat: 10, maxVision: 5, maxQuiz: 5 }),
-  'GET /plan/getAllPlanByWebCategory': () => ok([]),
+  'GET /plan/getAllPlanByWebCategory': () =>
+    ok({
+      plans: PLANS,
+      topping: PLANS.filter((p) => !p.PlanSubscription),
+      webSubCategory: [
+        {
+          webSubCategoryId: 'utbk',
+          subscriptions: [],
+          bundles: PLANS.filter((p) => p.PlanSubscription),
+        },
+        {
+          webSubCategoryId: 'all',
+          subscriptions: [],
+          bundles: PLANS.filter((p) => p.PlanSubscription),
+        },
+      ],
+    }),
+  'GET /plan/getSinglePlan': (_req, url) => {
+    const plan = PLANS.find((p) => p.slug === url.searchParams.get('slug'));
+    return plan ? ok(plan) : fail(404, 'Paket tidak ditemukan');
+  },
+  'POST /voucher/checkVoucherCode': async (req) => {
+    const body = (await req.json()) as { voucherCode: string };
+    return body.voucherCode === 'HEMAT20'
+      ? ok({ type: 'Percentage', discount: 20 })
+      : fail(404, 'Voucher tidak ditemukan');
+  },
+  'POST /payment/addPayment': () =>
+    ok({ invoiceUrl: 'http://127.0.0.1:4010/__invoice', order_id: 'ord-e2e' }),
+  'GET /blog/getBlog': () => ok(POSTS),
+  'GET /blog/getBlogBySlug': (_req, url) => {
+    const post = POSTS.find((p) => p.slug === url.searchParams.get('slug'));
+    return post ? ok(post) : fail(404, 'Artikel tidak ditemukan');
+  },
+  'POST /blog/incrementViews': () => ok(null),
+  'GET /instructor/getAllInstructor': () => ok(INSTRUCTORS),
+  'GET /liveClass/getAllLiveClassForLandingPage': () => ok([]),
+  'GET /tryout/getTryOutCardUpcoming2': () => ok([]),
+  'GET /link/public/sitemap-slugs': () =>
+    ok([{ slug: 'komunitas', updatedAt: '2026-09-01T00:00:00.000Z' }]),
   'GET /notification/getNotification': () =>
     ok([], { page: 1, total_pages: 1, total_data: 0 }),
   'GET /notification/getUserNotification': (_req, url) => {
@@ -85,6 +133,18 @@ Bun.serve({
     if (url.pathname === '/__reset') {
       unhandled.length = 0;
       return new Response('ok', { headers: cors });
+    }
+
+    const linkMatch =
+      req.method === 'GET' && url.pathname.match(/^\/link\/([^/]+)$/);
+    if (linkMatch && LINK_PAGES[linkMatch[1]]) {
+      const page = LINK_PAGES[linkMatch[1]];
+      const res =
+        page.password && url.searchParams.get('password') !== page.password
+          ? fail(401, 'Butuh password')
+          : ok(page.data);
+      for (const [k, v] of Object.entries(cors)) res.headers.set(k, v);
+      return res;
     }
 
     const handler = routes[`${req.method} ${url.pathname}`];

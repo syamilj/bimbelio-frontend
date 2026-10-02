@@ -57,21 +57,7 @@ export const SITE_NAV: SiteNavGroup[] = [
     ],
   },
   { label: 'Program', href: '/price', badge: 'Promo' },
-  {
-    label: 'Kalender',
-    href: '/calendar',
-    sections: [
-      {
-        title: 'Jadwal event',
-        links: [
-          { label: 'Semua event', href: '/calendar' },
-          { label: 'Webinar', href: '/calendar?type=webinar' },
-          { label: 'Live class', href: '/calendar?type=live-class' },
-          { label: 'Try out', href: '/calendar?type=ujian' },
-        ],
-      },
-    ],
-  },
+  { label: 'Kalender', href: '/calendar' },
   { label: 'Blog', href: '/blog' },
-  { label: 'Beasiswa', href: '/beasiswa' },
+  { label: 'Beasiswa', href: '/scholarship' },
 ];
