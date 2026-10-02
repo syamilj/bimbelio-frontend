@@ -53,11 +53,14 @@ export const signIn = () => {};
 // Matches the backend JWT lifetime (`expiresIn: '7d'`).
 const AUTH_TOKEN_EXPIRES_DAYS = 7;
 
-/** Simpan token hasil login. Mode httpOnly: backend sudah memasang cookie. */
+/**
+ * Simpan token hasil login. Mode httpOnly: backend sudah memasang cookie, kecuali
+ * backend belum mendukungnya (cookie penanda tidak ada) — token tetap disimpan.
+ */
 export const setAuthToken = (token: string) => {
   // Cookie host-only lama dihapus dulu agar tidak terbaca dobel.
   removeSharedCookie(LEGACY_TOKEN_COOKIE);
-  if (httpOnlySession()) return;
+  if (httpOnlySession() && Cookies.get(SESSION_FLAG_COOKIE) === '1') return;
   // Berlaku di semua subdomain bila NEXT_PUBLIC_COOKIE_DOMAIN diisi.
   Cookies.set(
     LEGACY_TOKEN_COOKIE,

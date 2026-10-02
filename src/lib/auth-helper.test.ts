@@ -29,8 +29,15 @@ describe('mode token JS (bawaan, preview)', () => {
 describe('mode cookie httpOnly', () => {
   it('tidak menyimpan token di cookie yang bisa dibaca JS', () => {
     vi.stubEnv('NEXT_PUBLIC_SESSION_COOKIE', 'httponly');
+    document.cookie = 'bimbelio_auth=1; path=/';
     setAuthToken('abc');
     expect(getAuthToken()).toBeUndefined();
+  });
+
+  it('tetap menyimpan token bila backend belum memasang cookie sesi', () => {
+    vi.stubEnv('NEXT_PUBLIC_SESSION_COOKIE', 'httponly');
+    setAuthToken('abc');
+    expect(getAuthToken()).toBe('abc');
   });
 
   it('mengenali sesi dari cookie penanda backend', () => {
