@@ -1,3 +1,4 @@
+import { adminRolesFor } from '@/lib/auth/access';
 import { toRoutePath } from '@/lib/surface';
 import { adminPath } from '@/lib/track';
 import {
@@ -23,22 +24,16 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 
-type Role = 'ADMIN' | 'SUPER_ADMIN' | 'FINANCE';
-
 export type AdminNavItem = {
   label: string;
   /** Path relatif terhadap /<track>/admin ('' = dashboard). */
   path: string;
   icon: LucideIcon;
-  /** Role yang boleh melihat item ini. Tanpa ini: ADMIN & SUPER_ADMIN. */
-  roles?: Role[];
   /** Tersedia di track bertipe CORE. */
   core?: boolean;
 };
 
 export type AdminNavSection = { title: string; items: AdminNavItem[] };
-
-const SUPER: Role[] = ['SUPER_ADMIN'];
 
 export const ADMIN_NAV: AdminNavSection[] = [
   {
@@ -60,7 +55,6 @@ export const ADMIN_NAV: AdminNavSection[] = [
         label: 'Kategori dokumen',
         path: 'category',
         icon: FolderOpen,
-        roles: SUPER,
         core: true,
       },
       { label: 'Dokumen', path: 'document', icon: FileText, core: true },
@@ -81,7 +75,6 @@ export const ADMIN_NAV: AdminNavSection[] = [
         label: 'Kategori try out',
         path: 'category-tryout',
         icon: Brain,
-        roles: SUPER,
       },
       { label: 'Try out', path: 'tryout', icon: Trophy },
       { label: 'Kupon try out', path: 'tryout-coupon', icon: Ticket },
@@ -102,12 +95,7 @@ export const ADMIN_NAV: AdminNavSection[] = [
     items: [
       { label: 'Harga', path: 'pricing', icon: DollarSign },
       { label: 'Paket', path: 'plan', icon: ClipboardList },
-      {
-        label: 'Transaksi',
-        path: 'transaction',
-        icon: Receipt,
-        roles: ['ADMIN', 'SUPER_ADMIN', 'FINANCE'],
-      },
+      { label: 'Transaksi', path: 'transaction', icon: Receipt },
       { label: 'Cicilan', path: 'installment', icon: Wallet },
       { label: 'Voucher', path: 'voucher', icon: Ticket },
     ],
@@ -119,7 +107,6 @@ export const ADMIN_NAV: AdminNavSection[] = [
         label: 'Kategori website',
         path: 'website-category',
         icon: Globe,
-        roles: SUPER,
         core: true,
       },
       { label: 'Notifikasi', path: 'notification', icon: Bell },
@@ -127,9 +114,7 @@ export const ADMIN_NAV: AdminNavSection[] = [
   },
 ];
 
-const DEFAULT_ROLES: Role[] = ['ADMIN', 'SUPER_ADMIN'];
-
-/** Menu admin yang terlihat untuk role & tipe track tertentu. */
+/** Menu admin yang terlihat untuk role & tipe track tertentu (aturan role: lib/auth/access). */
 export function visibleAdminNav(
   role: string | undefined,
   isCoreTrack: boolean,
@@ -137,8 +122,8 @@ export function visibleAdminNav(
   return ADMIN_NAV.map((section) => ({
     ...section,
     items: section.items.filter((item) => {
-      const roles = item.roles ?? DEFAULT_ROLES;
-      if (!role || !(roles as string[]).includes(role)) return false;
+      const roles: string[] = adminRolesFor(item.path);
+      if (!role || !roles.includes(role)) return false;
       if (isCoreTrack && !item.core) return false;
       return true;
     }),

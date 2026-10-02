@@ -4,6 +4,7 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Button } from '@/components/ui/button';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
+import { authHeaders } from '@/lib/auth-helper';
 import { cn } from '@/lib/utils';
 import {
   IconCheckList,
@@ -14,7 +15,6 @@ import {
   IconTailedArrowPrev,
 } from '@/styles/icon';
 import { useCompletion } from '@ai-sdk/react';
-import Cookies from 'js-cookie';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useProvider } from '../provider';
@@ -62,10 +62,8 @@ const IndividualQuiz = () => {
     // Backend mengirim UI message stream (pipeUIMessageStreamToResponse), bukan teks mentah
     streamProtocol: 'data',
     api: `${env.NEXT_PUBLIC_API_URL}/ai/evaluateQuiz?website_sub_category_id=${websiteSubCategory?.id}`,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${Cookies.get('token')}`,
-    },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    credentials: 'include',
   });
 
   const toggleAttempt = () => {

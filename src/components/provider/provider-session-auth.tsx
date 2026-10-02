@@ -1,7 +1,7 @@
 'use client';
 
 import { PageLoader } from '@/components/patterns/page-loader';
-import { shareAuthCookie, signOut } from '@/lib/auth-helper';
+import { hasSession, migrateSession, signOut } from '@/lib/auth-helper';
 import axiosInstanceWithToken from '@/lib/axios/axiosInstanceWithToken';
 import { responseError } from '@/lib/response';
 import { trackIdFromPath } from '@/lib/surface';
@@ -14,7 +14,6 @@ import {
   SubscriptionPendingLimitation,
   UserRoleEnum,
 } from '@/types/database';
-import Cookies from 'js-cookie';
 import { usePathname } from 'next/navigation';
 import {
   createContext,
@@ -38,7 +37,6 @@ const NO_FEATURE = { document: false, course: [], quiz: [], liveClass: false };
 /** Hitung tier & fitur langganan untuk track yang sedang dibuka. */
 export const buildSession = (
   raw: any,
-  token: string,
   trackId: string | null,
 ): NonNullable<SessionProviderType['data']> => {
   const subsByTrack = raw.subsList ?? {};
@@ -67,7 +65,6 @@ export const buildSession = (
       email: raw.email,
       name: raw.name,
       role: raw.role,
-      token,
       type: raw.type,
       userTryOutId: raw.userTryOutId,
       emailVerified: raw.emailVerified,
@@ -92,20 +89,19 @@ export default function ProviderSessionAuth({
 }) {
   const pathname = usePathname();
   const [status, setStatus] = useState<SessionStatus>('loading');
-  const [raw, setRaw] = useState<{ user: any; token: string } | null>(null);
+  const [raw, setRaw] = useState<any>(null);
 
   const load = useCallback(async () => {
-    const token = Cookies.get('token');
-    if (!token) {
+    if (!hasSession()) {
       setRaw(null);
       setStatus('unauthenticated');
       return;
     }
     try {
+      await migrateSession();
       const res = await axiosInstanceWithToken.post('/auth/verifyToken');
-      setRaw({ user: res.data.data, token });
+      setRaw(res.data.data);
       setStatus('authenticated');
-      shareAuthCookie();
     } catch (error) {
       const { status: httpStatus } = responseError(error);
       setStatus('unauthenticated');
@@ -127,7 +123,7 @@ export default function ProviderSessionAuth({
   const value = useMemo<SessionProviderType>(
     () => ({
       status,
-      data: raw ? buildSession(raw.user, raw.token, trackId) : undefined,
+      data: raw ? buildSession(raw, trackId) : undefined,
       refresh: load,
     }),
     [status, raw, trackId, load],
@@ -157,7 +153,6 @@ type SessionProviderType = {
           name: string;
           email: string;
           role: UserRoleEnum;
-          token: string;
           image: string | null;
           emailVerified: Date | null;
           expire: string;

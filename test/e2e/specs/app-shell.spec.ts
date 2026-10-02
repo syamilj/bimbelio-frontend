@@ -147,4 +147,19 @@ test.describe('shell panel admin', () => {
     await expect(links).toHaveCount(1);
     await expect(links.first()).toHaveText('Transaksi');
   });
+
+  test('finance yang membuka seksi admin lain lewat URL diarahkan ke transaksi', async ({
+    page,
+    loginAs,
+  }) => {
+    await loginAs('finance');
+    for (const path of [
+      '/utbk/admin',
+      '/utbk/admin/voucher',
+      '/utbk/admin/login',
+    ]) {
+      await page.goto(path);
+      await expect(page).toHaveURL('/utbk/admin/transaction');
+    }
+  });
 });

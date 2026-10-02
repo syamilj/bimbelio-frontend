@@ -13,7 +13,11 @@ import {
 import { CheckoutDialog, useCheckoutGate } from './checkout-dialog';
 import type { PlanDataType } from './plan';
 
-type PlanCheckoutValue = { buy: (plan: PlanDataType) => void };
+type PlanCheckoutValue = {
+  buy: (plan: PlanDataType) => void;
+  /** Voucher dari URL (`?voucherCode=`), null bila tidak ada. */
+  voucherCode: string | null;
+};
 const PlanCheckoutContext = createContext<PlanCheckoutValue | null>(null);
 
 export const usePlanCheckout = () => {
@@ -58,7 +62,7 @@ export function PlanCheckout({
   }, [pending, status, gate, voucherCode]);
 
   return (
-    <PlanCheckoutContext.Provider value={{ buy }}>
+    <PlanCheckoutContext.Provider value={{ buy, voucherCode }}>
       {children}
       {/* Membaca query string ditunda sendiri agar halaman tetap statis dan
           status 404/redirect halaman tidak terganggu streaming. */}

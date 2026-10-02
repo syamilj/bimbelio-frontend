@@ -115,16 +115,22 @@ const routes: Record<string, Handler> = {
   'POST /tracking/event': () => ok(null),
 };
 
-const cors = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': '*',
+// Seperti backend asli (cors + credentials): origin dipantulkan, bukan `*`,
+// karena browser menolak `*` untuk request yang membawa cookie.
+const corsFor = (req: Request) => ({
+  'Access-Control-Allow-Origin': req.headers.get('origin') ?? '*',
+  'Access-Control-Allow-Credentials': 'true',
+  'Access-Control-Allow-Headers':
+    req.headers.get('access-control-request-headers') ?? '*',
   'Access-Control-Allow-Methods': 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
-};
+  Vary: 'Origin',
+});
 
 Bun.serve({
   port: PORT,
   async fetch(req) {
     const url = new URL(req.url);
+    const cors = corsFor(req);
     if (req.method === 'OPTIONS') return new Response(null, { headers: cors });
 
     if (url.pathname === '/__unhandled') {

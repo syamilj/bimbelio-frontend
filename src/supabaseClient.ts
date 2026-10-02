@@ -10,12 +10,7 @@ const STORAGE_URL = env.NEXT_PUBLIC_SUPABASE_URL;
 const STORAGE_UPLOAD_URL = env.NEXT_PUBLIC_SUPABASE_UPLOAD_URL;
 
 type BucketList =
-  | 'dump-images'
-  | 'img'
-  | 'to-question'
-  | 'pdf'
-  | 'video'
-  | 'dump-embedding';
+  'dump-images' | 'img' | 'to-question' | 'pdf' | 'video' | 'dump-embedding';
 
 export const storage = {
   from: (bucket: BucketList, showToast?: boolean) => {
@@ -50,6 +45,7 @@ export const storage = {
             {
               params: { loadingId },
               headers: authHeaders(),
+              withCredentials: true,
               timeout: 6000000, // 100 menit dalam milliseconds
             },
           );
@@ -99,6 +95,7 @@ export const storage = {
             formData,
             {
               headers: authHeaders(),
+              withCredentials: true,
               timeout: 6000000, // 100 menit dalam milliseconds
             },
           );
@@ -129,6 +126,7 @@ export const storage = {
             },
             {
               headers: authHeaders(),
+              withCredentials: true,
               timeout: 6000000, // 100 menit dalam milliseconds
             },
           );
@@ -157,6 +155,7 @@ export const storage = {
             {
               data: { pathArray: filePathArray },
               headers: authHeaders(),
+              withCredentials: true,
             },
           );
 
@@ -185,6 +184,7 @@ export const storage = {
             },
             {
               headers: authHeaders(),
+              withCredentials: true,
               responseType: 'blob',
             },
           );
@@ -245,6 +245,7 @@ export const storage = {
                 take,
               },
               headers: authHeaders(),
+              withCredentials: true,
             },
           );
 
@@ -330,6 +331,8 @@ const connectSocket = () => {
       transports: ['websocket'],
       // Backend memverifikasi sesi saat handshake.
       auth: (cb) => cb({ token: getAuthToken() }),
+      // Mode httpOnly: token dibaca backend dari cookie sesi.
+      withCredentials: true,
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,

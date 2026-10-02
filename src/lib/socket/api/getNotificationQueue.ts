@@ -1,11 +1,11 @@
 import { env } from '@/env.mjs';
+import { authHeaders } from '@/lib/auth-helper';
 import {
   NotificationCategoryEnum,
   NotificationPriorityEnum,
   NotificationRelatedTypeEnum,
   NotificationTypeEnum,
 } from '@/types/database';
-import { authHeaders } from '@/lib/auth-helper';
 import axios from 'axios';
 
 export const getNotificationQueue = async ({
@@ -31,6 +31,7 @@ export const getNotificationQueue = async ({
       `${env.NEXT_PUBLIC_SOCKET_URL}/notification/queue`,
       {
         headers: authHeaders(),
+        withCredentials: true,
         params: {
           page,
           take,
@@ -104,9 +105,4 @@ export type NotificationQueueType = {
 };
 
 type NotificationQueueStatusEnum =
-  | 'PENDING'
-  | 'SENT'
-  | 'DELIVERED'
-  | 'FAILED'
-  | 'BOUNCED'
-  | 'UNSUBSCRIBED';
+  'PENDING' | 'SENT' | 'DELIVERED' | 'FAILED' | 'BOUNCED' | 'UNSUBSCRIBED';

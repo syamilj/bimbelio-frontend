@@ -1,12 +1,12 @@
 'use client';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { env } from '@/env.mjs';
+import { authHeaders, hasSession } from '@/lib/auth-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { MutateType, useMutation } from '@/lib/fetch-helper/useMutation';
 import { useSocket } from '@/lib/socket/useSocket';
 import { Notification as NotificationData } from '@/types/database';
 import { motion } from 'framer-motion';
-import Cookies from 'js-cookie';
 import { Bell, X } from 'lucide-react';
 import {
   createContext,
@@ -425,8 +425,7 @@ const syncPushSubscription = async (userId: string) => {
   }
   if (Notification.permission !== 'granted') return;
 
-  const token = Cookies.get('token');
-  if (!token) return;
+  if (!hasSession()) return;
 
   const keyRes = await fetch(
     `${env.NEXT_PUBLIC_API_URL}/notification/vapidPublicKey`,
@@ -467,10 +466,8 @@ const syncPushSubscription = async (userId: string) => {
     {
       method: 'POST',
       body: JSON.stringify(subscription.toJSON()),
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { 'content-type': 'application/json', ...authHeaders() },
+      credentials: 'include',
     },
   );
   if (!res.ok) throw new Error(`Gagal menyimpan langganan push: ${res.status}`);

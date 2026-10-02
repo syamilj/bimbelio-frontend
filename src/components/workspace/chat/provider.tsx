@@ -1,10 +1,10 @@
 import { useAppContext } from '@/components/provider/provider-app';
 import { toaster } from '@/components/ui/toaster';
+import { authHeaders } from '@/lib/auth-helper';
 import type { Document } from '@/types/database';
 import { User, UserDocument } from '@/types/database';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport, type UIMessage } from 'ai';
-import Cookies from 'js-cookie';
 import {
   createContext,
   Dispatch,
@@ -127,10 +127,8 @@ export default function Provider({
     () =>
       new DefaultChatTransport({
         api: apiChat,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${Cookies.get('token')}`,
-        },
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
+        credentials: 'include',
         body: () => bodyRef.current,
       }),
     [apiChat, body],
@@ -140,10 +138,8 @@ export default function Provider({
     () =>
       new DefaultChatTransport({
         api: apiChat,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${Cookies.get('token')}`,
-        },
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
+        credentials: 'include',
         body: () => bodyRef.current,
       }),
     [apiChat, body],

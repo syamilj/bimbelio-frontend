@@ -59,6 +59,8 @@ export const SITE_SEGMENTS = new Set([
   'api',
   'beasiswa',
   'tutor',
+  'privacy',
+  'terms',
 ]);
 
 const segmentsOf = (pathname: string) => pathname.split('/').filter(Boolean);

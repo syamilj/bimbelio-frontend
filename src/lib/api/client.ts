@@ -1,7 +1,7 @@
 import { env } from '@/env.mjs';
+import { getAuthToken } from '@/lib/auth-helper';
 import { trackIdFromPath } from '@/lib/surface';
 import axios, { AxiosError, type AxiosRequestConfig } from 'axios';
-import Cookies from 'js-cookie';
 
 /** Bentuk respons standar backend Bimbelio. */
 export type ApiEnvelope<T> = {
@@ -72,13 +72,15 @@ export { trackIdFromPath };
 
 export const http = axios.create({
   baseURL: env.NEXT_PUBLIC_API_URL,
+  // Cookie sesi httpOnly ikut terkirim (lihat httpOnlySession).
+  withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 });
 
 http.interceptors.request.use((config) => {
   if (typeof window === 'undefined') return config;
 
-  const token = Cookies.get('token');
+  const token = getAuthToken();
   if (token && !config.headers.Authorization) {
     config.headers.Authorization = `Bearer ${token}`;
   }

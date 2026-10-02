@@ -152,9 +152,26 @@ export function SiteFooter() {
               ))}
             </ul>
           </div>
-          <p className="text-xs text-ink-subtle">
-            © {new Date().getFullYear()} PT Bimbelio Edukasi Teknologi
-          </p>
+          <div className="flex flex-col gap-2 text-xs text-ink-subtle sm:flex-row sm:items-center sm:justify-between">
+            <p>© {new Date().getFullYear()} PT Bimbelio Edukasi Teknologi</p>
+            <nav
+              aria-label="Legal"
+              className="flex gap-4"
+            >
+              <Link
+                href="/privacy"
+                className="hover:text-ink"
+              >
+                Kebijakan privasi
+              </Link>
+              <Link
+                href="/terms"
+                className="hover:text-ink"
+              >
+                Syarat dan ketentuan
+              </Link>
+            </nav>
+          </div>
         </div>
       </div>
     </footer>

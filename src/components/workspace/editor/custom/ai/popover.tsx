@@ -18,7 +18,7 @@ import { useCompletion } from '@ai-sdk/react';
 import { useBlockNoteEditor } from '@blocknote/react';
 import { DropdownMenu as DropdownMenuPrimitive } from 'radix-ui';
 
-import Cookies from 'js-cookie';
+import { authHeaders } from '@/lib/auth-helper';
 import 'katex/dist/katex.min.css';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -63,10 +63,8 @@ const AiPopover = () => {
 
   const { complete, completion, stop, isLoading } = useCompletion({
     api: `${env.NEXT_PUBLIC_API_URL}/ai/chatNotes?website_sub_category_id=${websiteSubCategory?.id}`,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${Cookies.get('token')}`,
-    },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    credentials: 'include',
     // Backend mengirim UI message stream (pipeUIMessageStreamToResponse), bukan teks mentah
     streamProtocol: 'data',
     onFinish: (_prompt: string, completion: string) => {

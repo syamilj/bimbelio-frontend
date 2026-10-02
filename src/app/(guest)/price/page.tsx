@@ -12,13 +12,12 @@ export const metadata: Metadata = {
   alternates: { canonical: '/price' },
 };
 
-export default async function PricePage({
-  searchParams,
-}: {
-  searchParams: Promise<{ voucherCode?: string }>;
-}) {
-  const { voucherCode } = await searchParams;
-  const plans = await getPlans(voucherCode);
+// Statis + ISR: tidak memanggil Function Vercel di setiap kunjungan. Harga
+// voucher (`?voucherCode=`) dimuat di browser oleh PlanBrowser.
+export const revalidate = 300;
+
+export default async function PricePage() {
+  const plans = await getPlans();
 
   return (
     <>
