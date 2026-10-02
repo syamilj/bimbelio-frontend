@@ -1,11 +1,11 @@
 import { env } from '@/env.mjs';
+import { authHeaders } from '@/lib/auth-helper';
 import {
   NotificationCategoryEnum,
   NotificationPriorityEnum,
   NotificationRelatedTypeEnum,
   NotificationTypeEnum,
 } from '@/types/database';
-import { authHeaders } from '@/lib/auth-helper';
 import axios from 'axios';
 
 export const addNotification = async ({
@@ -80,7 +80,7 @@ export const addNotification = async ({
         retryCount,
         maxRetries,
       },
-      { headers: authHeaders() },
+      { headers: authHeaders(), withCredentials: true },
     );
     console.log(
       `[SOCKET] Notification added for user ${userId}: ${res?.data?.data?.id}`,

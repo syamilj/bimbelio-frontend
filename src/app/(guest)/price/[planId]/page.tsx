@@ -25,6 +25,13 @@ import { notFound } from 'next/navigation';
 
 type Props = { params: Promise<{ planId: string }> };
 
+// ISR: halaman dibuat saat pertama dikunjungi lalu disajikan dari cache,
+// bukan dirender ulang (Function Vercel) di setiap kunjungan.
+export const revalidate = 300;
+export async function generateStaticParams() {
+  return [];
+}
+
 const formatDate = (value: string | Date) =>
   format(new Date(value), 'd MMMM yyyy', { locale: localeId });
 

@@ -1,10 +1,12 @@
 // utils/axiosInstance.js
 import { env } from '@/env.mjs';
+import { getAuthToken } from '@/lib/auth-helper';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 const axiosInstanceWithToken = axios.create({
   baseURL: env.NEXT_PUBLIC_API_URL,
+  // Cookie sesi httpOnly ikut terkirim (lihat httpOnlySession).
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -13,7 +15,7 @@ const axiosInstanceWithToken = axios.create({
 // Tambahkan interceptor untuk inject token secara otomatis
 axiosInstanceWithToken.interceptors.request.use(
   (config) => {
-    const token = Cookies.get('token');
+    const token = getAuthToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

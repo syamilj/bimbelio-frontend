@@ -11,6 +11,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { api } from '@/lib/api/client';
+import { useQuery } from '@tanstack/react-query';
 import { PackageSearch, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { listPrice, planKind, planTracks, type PlanDataType } from './plan';
@@ -36,8 +38,25 @@ export function PlanBrowser({ plans }: { plans: PlanDataType[] }) {
   );
 }
 
-function PlanBrowserInner({ plans }: { plans: PlanDataType[] }) {
-  const { buy } = usePlanCheckout();
+/**
+ * Halaman paket statis (ISR) memuat harga normal; harga terdiskon voucher URL
+ * diambil di browser hanya bila ada `?voucherCode=`.
+ */
+function useVoucherPlans(plans: PlanDataType[], voucherCode: string | null) {
+  const { data } = useQuery({
+    queryKey: ['plans', 'voucher', voucherCode],
+    queryFn: () =>
+      api.get<{ plans: PlanDataType[] }>('/plan/getAllPlanByWebCategory', {
+        params: { voucherCode },
+      }),
+    enabled: !!voucherCode,
+  });
+  return voucherCode && data?.plans ? data.plans : plans;
+}
+
+function PlanBrowserInner({ plans: basePlans }: { plans: PlanDataType[] }) {
+  const { buy, voucherCode } = usePlanCheckout();
+  const plans = useVoucherPlans(basePlans, voucherCode);
   const [query, setQuery] = useState('');
   const [kind, setKind] = useState<KindFilter>('all');
   const [track, setTrack] = useState('all');

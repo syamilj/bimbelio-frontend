@@ -179,3 +179,29 @@ test.describe('halaman link', () => {
     expect(page.url()).not.toContain('kunci123');
   });
 });
+
+test.describe('halaman legal', () => {
+  for (const [path, title] of [
+    ['/privacy', 'Kebijakan Privasi'],
+    ['/terms', 'Syarat dan Ketentuan'],
+  ]) {
+    test(`${path} dirender server, ditautkan dari footer, dan lolos axe`, async ({
+      page,
+      request,
+      expectAccessible,
+    }) => {
+      const html = await (await request.get(path)).text();
+      expect(html).toContain(`>${title}</h1>`);
+      await page.goto('/');
+      await page
+        .getByRole('navigation', { name: 'Legal' })
+        .getByRole('link', { name: new RegExp(title, 'i') })
+        .click();
+      await expect(page).toHaveURL(path);
+      // Muat langsung: progress bar navigasi klien bukan bagian halaman.
+      await page.goto(path);
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(title);
+      await expectAccessible(page);
+    });
+  }
+});

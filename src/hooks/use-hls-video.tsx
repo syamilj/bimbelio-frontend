@@ -13,9 +13,10 @@ export const useVideoHLS = (videoUrl: string) => {
 
     if (HLS.isSupported()) {
       const hls = new HLS({
-        xhrSetup: (xhr, url) => {
-          xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-          console.log('XHR request to:', url);
+        xhrSetup: (xhr) => {
+          // Mode httpOnly: cookie sesi; mode lama: header Bearer.
+          xhr.withCredentials = true;
+          if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`);
         },
       });
 

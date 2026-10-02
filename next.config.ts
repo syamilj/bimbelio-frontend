@@ -21,8 +21,8 @@ const nextConfig: NextConfig = {
         : false,
   },
   images: {
-    // Optimasi gambar Vercel dimatikan (biaya per gambar sumber). Lihat
-    // docs/redesign/PLAN.md §8 untuk rekomendasi menyalakannya.
+    // Optimasi gambar Vercel sengaja dimatikan: keputusan pemilik, tanpa biaya
+    // tambahan Vercel (lihat docs/redesign/PLAN.md §8).
     unoptimized: true,
     qualities: [50, 60, 75, 90],
     remotePatterns: [
@@ -67,12 +67,13 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // Aset publik lain tidak berhash: cache sehari, lalu validasi ulang.
+        // Aset publik di-cache browser setahun (sama seperti produksi lama) agar
+        // tidak menambah Edge Request Vercel. Mengganti gambar = ganti nama berkas.
         source: '/:path*.(svg|jpg|jpeg|png|webp|gif|ico)',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=86400, stale-while-revalidate=604800',
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },

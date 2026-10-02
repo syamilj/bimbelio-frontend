@@ -118,6 +118,7 @@ function PdfReader({
         method: 'GET',
         // Bucket pdf bersifat privat: backend memverifikasi sesi.
         headers: authHeaders(),
+        credentials: 'include',
       },
     );
     if (response.ok) {
@@ -142,13 +143,13 @@ function PdfReader({
 
   if (pdfUrl.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full w-full bg-linear-to-br from-gray-50 to-white">
-        <div className="text-center space-y-4">
-          <div className="w-16 h-16 mx-auto rounded-full bg-linear-to-br from-blue-100 to-blue-200 flex items-center justify-center shadow-lg">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+      <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-gray-50 to-white">
+        <div className="space-y-4 text-center">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br from-blue-100 to-blue-200 shadow-lg">
+            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <h3 className="mb-2 text-lg font-semibold text-gray-900">
               Loading Document
             </h3>
             <p className="text-gray-600">Preparing your PDF for viewing...</p>
@@ -159,7 +160,7 @@ function PdfReader({
   }
 
   return (
-    <div className="h-full w-full relative">
+    <div className="relative h-full w-full">
       <div
         id="VisionOn"
         className="h-full w-full"

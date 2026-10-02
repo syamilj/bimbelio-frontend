@@ -7,13 +7,14 @@ let socket: Socket | null = null;
 const serverUrl = env.NEXT_PUBLIC_SOCKET_URL;
 
 export const connectSocket = () => {
-
   if (!socket) {
     socket = io(serverUrl, {
       transports: ['websocket'],
       // Backend memverifikasi sesi saat handshake; callback dievaluasi ulang
       // setiap reconnect sehingga token terbaru selalu dipakai.
       auth: (cb) => cb({ token: getAuthToken() }),
+      // Mode httpOnly: token dibaca backend dari cookie sesi.
+      withCredentials: true,
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,

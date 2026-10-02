@@ -23,7 +23,7 @@ const raw = {
 
 describe('buildSession', () => {
   it('memakai langganan milik track yang sedang dibuka', () => {
-    const session = buildSession(raw, 'tok', 'utbk');
+    const session = buildSession(raw, 'utbk');
     expect(session.user.tier).toBe('PREMIUM');
     expect(session.user.feature.document).toBe(true);
     expect(session.user.subsList).toEqual([{ id: 's1' }]);
@@ -34,7 +34,7 @@ describe('buildSession', () => {
   });
 
   it('track lain tidak mewarisi langganan', () => {
-    const session = buildSession(raw, 'tok', 'stan');
+    const session = buildSession(raw, 'stan');
     expect(session.user.tier).toBeNull();
     expect(session.user.feature.document).toBe(false);
     expect(session.user.subsList).toEqual([]);
@@ -48,7 +48,6 @@ describe('buildSession', () => {
         role: 'ADMIN',
         specialRole: { tier: 'STAFF', feature: { document: true } },
       },
-      'tok',
       'stan',
     );
     expect(session.user.tier).toBe('STAFF');

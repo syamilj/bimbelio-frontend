@@ -73,7 +73,7 @@ export const addManyNotification = async ({
         retryCount,
         maxRetries,
       },
-      { headers: authHeaders() },
+      { headers: authHeaders(), withCredentials: true },
     );
     console.log(
       `[SOCKET] Notification added for ${users.length} users : ${res?.data?.data?.id}`,

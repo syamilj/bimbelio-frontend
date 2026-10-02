@@ -8,6 +8,7 @@ export const deleteNotification = async ({ id }: { id: string }) => {
       `${env.NEXT_PUBLIC_SOCKET_URL}/notification/queue`,
       {
         headers: authHeaders(),
+        withCredentials: true,
         params: {
           notifId: id,
         },

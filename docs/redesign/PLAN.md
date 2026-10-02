@@ -206,7 +206,7 @@ Setiap fase wajib lolos `bun run check`, `bun run test`, `bun run build`
 - [x] AdminShell: satu konfigurasi menu + filter role, status aktif per segmen, breadcrumb
 - [x] 4 provider cek langganan → `SubscriptionChecks` (refresh sesi, bukan reload); cek pembayaran tanpa klik DOM; "upgrade" = navigasi ke Paket Belajar
 - [x] Pemilih track (TrackPicker) dengan bubble; BimBot dimuat lazy
-- [ ] Halaman legal (privasi, syarat) — **butuh isi dari pemilik**, footer tidak menautkan halaman kosong
+- [x] Halaman legal `/privacy` & `/terms` (Fase 3c), ditautkan dari footer & sitemap
 
 ### Fase 3 — Guest (`redesign/03-guest`) ✅
 
@@ -225,6 +225,15 @@ Setiap fase wajib lolos `bun run check`, `bun run test`, `bun run build`
 - [x] Link builder & pathname helper sadar subdomain; cookie sesi lintas subdomain
 - [x] Logout dari subdomain kembali ke beranda situs; ganti track tetap di host yang sama
 - [x] Tes unit `surface.test.ts`; E2E project `domains` (`www./app./admin.localhost` via `next dev`)
+
+### Fase 3c — Keputusan pemilik (`redesign/03c-owner-decisions`) ✅
+
+- [x] Tanpa biaya tambahan Vercel: proxy hanya di area aplikasi & host app/admin, `/price` dan `/price/[planId]` ISR, optimasi gambar tetap mati, cache gambar publik setahun
+- [x] Halaman Kebijakan Privasi & Syarat dan Ketentuan
+- [x] Klaim pemasaran dikonfirmasi benar oleh pemilik (tidak diubah)
+- [x] Sesi di cookie httpOnly (backend `feat/httponly-session-finance-scope`), aktif dengan `NEXT_PUBLIC_SESSION_COOKIE=httponly`
+- [x] FINANCE hanya membuka Transaksi (proxy + menu dari satu aturan `lib/auth/access.ts`); prefetch tidak lagi lolos dengan JWT tanpa verifikasi
+- [x] CI: `typecheck` menjalankan `next typegen` dulu (deklarasi impor gambar)
 
 ### Fase 4 — Siswa (`redesign/04-*`)
 
@@ -292,18 +301,26 @@ Setiap fase wajib lolos `bun run check`, `bun run test`, `bun run build`
 
 ## 8. Rekomendasi yang butuh keputusan pemilik
 
-1. **Optimasi gambar Next** (`images.unoptimized: true` saat ini) — menyalakannya
-   memperbaiki LCP tapi menambah biaya Vercel per gambar sumber.
-2. **Token di cookie httpOnly** — sekarang dibaca JS (rentan XSS). Butuh perubahan
-   kontrak login di backend.
-3. **Role FINANCE** bisa membuka semua halaman admin lewat URL (hanya sidebar yang
-   membatasi). Akan dirapikan di Fase 5 dengan satu konfigurasi role.
-4. **`/admin/login`** = masuk sebagai pengguna mana pun lewat email. Pastikan
-   backend membatasi pemanggilnya.
-5. **Halaman legal** (Kebijakan Privasi, Syarat & Ketentuan) belum ada; footer
-   lama menautkannya ke `#`. Perlu teks resmi dari pemilik.
-6. **Klaim pemasaran yang di-hardcode** — dipertahankan apa adanya, mohon
-   diverifikasi terhadap paket aktif: FAQ (garansi 7 hari, durasi 3/6/12 bulan,
+1. **Optimasi gambar Next — DIPUTUSKAN: tetap mati.** Tidak boleh ada biaya
+   tambahan Vercel. Hal lain yang menambah biaya (proxy di setiap halaman,
+   `/price` dinamis) sudah dikembalikan di Fase 3c.
+2. **Token di cookie httpOnly — DIKERJAKAN (Fase 3c).** Backend memasang cookie
+   `bimbelio_session` (httpOnly, `Domain=.bimbelio.com`) saat login dan tetap
+   menerima Bearer (aplikasi mobile, preview). Request pengubah data lewat cookie
+   wajib `Origin` terdaftar. Token lama di cookie JS dipindahkan otomatis lewat
+   `POST /auth/sessionCookie`, jadi pengguna tidak perlu login ulang. Urutan
+   aktivasi: butir 7, langkah 7.
+3. **Role FINANCE — DIKERJAKAN (Fase 3c).** Frontend: FINANCE hanya membuka
+   Transaksi. Backend: FINANCE tidak lagi bebas memakai `userId` user lain,
+   kecuali di endpoint `financeOrAdmin`.
+4. **`/admin/login` — DIPERIKSA.** Backend hanya mengizinkan ADMIN/SUPER_ADMIN
+   (ADMIN tidak bisa masuk sebagai akun staff), kini dengan log audit
+   `[impersonation]`. Frontend kini juga menolak FINANCE di halaman ini.
+5. **Halaman legal — DIKERJAKAN (Fase 3c)** dari praktik data di kode (login
+   Google, Midtrans/Xendit, piksel Meta/TikTok/GA, OpenAI/Gemini, Discord).
+   Disarankan ditinjau konsultan hukum sebelum dianggap final.
+6. **Klaim pemasaran yang di-hardcode — DIKONFIRMASI BENAR oleh pemilik**, tidak
+   diubah: FAQ (garansi 7 hari, durasi 3/6/12 bulan,
    cicilan 0% 3/6/12 bulan — paket aktif saat ini cicilan 3×), tabel perbandingan
    (Rp1.499.000 / Rp799.000, cicilan 3×), statistik about (10.000+ siswa, 85%,
    4,9/5), statistik pendaftar SNBT/SIMAK/UM UGM/STAN. Klaim "koin tidak pernah
@@ -329,3 +346,7 @@ Setiap fase wajib lolos `bun run check`, `bun run test`, `bun run build`
       (sidebar ciut, dsb.) per origin dan kembali ke default sekali.
       Belum termasuk: halaman login khusus di subdomain. Pengguna tanpa sesi
       diarahkan ke beranda situs dan login di sana.
+   7. Cookie httpOnly, setelah backend `feat/httponly-session-finance-scope`
+      ter-deploy: env backend `SESSION_COOKIE_DOMAIN=.bimbelio.com` dan
+      `CORS_ORIGINS` berisi www, apex, app, dan admin; restart. Lalu env Vercel
+      Production `NEXT_PUBLIC_SESSION_COOKIE=httponly` dan redeploy.

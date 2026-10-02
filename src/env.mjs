@@ -28,6 +28,8 @@ export const env = createEnv({
     NEXT_PUBLIC_ADMIN_URL: z.string().url().optional(),
     // Domain cookie sesi agar berlaku di semua subdomain, mis. `.bimbelio.com`.
     NEXT_PUBLIC_COOKIE_DOMAIN: z.string().optional(),
+    // `httponly` → sesi di cookie httpOnly dari backend (Production saja).
+    NEXT_PUBLIC_SESSION_COOKIE: z.enum(['httponly']).optional(),
   },
 
   runtimeEnv: {
@@ -56,6 +58,7 @@ export const env = createEnv({
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_ADMIN_URL: process.env.NEXT_PUBLIC_ADMIN_URL,
     NEXT_PUBLIC_COOKIE_DOMAIN: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
+    NEXT_PUBLIC_SESSION_COOKIE: process.env.NEXT_PUBLIC_SESSION_COOKIE || undefined,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
