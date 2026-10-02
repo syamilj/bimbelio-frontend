@@ -90,9 +90,9 @@ const Content = () => {
           hideTargetValue: boolean;
           universityOption: string | undefined;
         } = data;
-        if (getData.hideGeneral) setIsHideGeneralSection(true);
-        if (getData.hideTargetValue) setIsHideTargetValue(true);
-        if (getData.universityOption) setUnivOption(getData.universityOption);
+        if (getData?.hideGeneral) setIsHideGeneralSection(true);
+        if (getData?.hideTargetValue) setIsHideTargetValue(true);
+        if (getData?.universityOption) setUnivOption(getData.universityOption);
       },
     });
   };
@@ -206,10 +206,10 @@ const Content = () => {
 
         {/* Tab-based Content */}
         {tryoutAccount?.userTryOutId && (
-          <div className="max-w-7xl mx-auto px-4 md:px-6 space-y-0">
+          <div className="mx-auto max-w-7xl space-y-0 px-4 md:px-6">
             {/* Sleek Tab Navigation */}
-            <div className="sticky top-0 z-30 bg-slate-50/80 backdrop-blur-xl py-2">
-              <ScrollWrapper className="flex gap-1.5 p-1 bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-x-auto">
+            <div className="sticky top-0 z-30 bg-slate-50/80 py-2 backdrop-blur-xl">
+              <ScrollWrapper className="flex gap-1.5 overflow-x-auto rounded-3xl border border-slate-200/80 bg-white p-1 shadow-sm">
                 {tabItems.map((tab) => {
                   const Icon = tab.icon;
                   const isActive = activeTab === tab.id;
@@ -219,10 +219,10 @@ const Content = () => {
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
                       className={cn(
-                        'relative flex items-center gap-1.5 px-4 py-2.5 rounded-3xl font-bold text-xs md:text-sm transition-all whitespace-nowrap flex-1 justify-center min-w-0',
+                        'relative flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-3xl px-4 py-2.5 text-xs font-bold whitespace-nowrap transition-all md:text-sm',
                         isActive
                           ? 'text-white shadow-lg'
-                          : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50',
+                          : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700',
                       )}
                     >
                       {/* Active bg via mainColor */}
@@ -233,12 +233,12 @@ const Content = () => {
                         />
                       )}
                       <div className="relative z-10 flex items-center gap-1.5">
-                        <Icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                        <Icon className="h-3.5 w-3.5 md:h-4 md:w-4" />
                         <span>{tab.label}</span>
                         {count !== null && count > 0 && (
                           <span
                             className={cn(
-                              'text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none',
+                              'rounded-full px-1.5 py-0.5 text-[9px] leading-none font-black',
                               isActive
                                 ? 'bg-white/25 text-white'
                                 : 'bg-slate-100 text-slate-500',
@@ -255,7 +255,7 @@ const Content = () => {
             </div>
 
             {/* Tab Content Card */}
-            <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden mt-2">
+            <div className="mt-2 overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm">
               <div className={cn(activeTab !== 'berlangsung' && 'hidden')}>
                 <Terbaru
                   id={tryoutAccount!.userTryOutId}

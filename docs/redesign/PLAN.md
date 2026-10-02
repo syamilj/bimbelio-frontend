@@ -5,13 +5,13 @@ Semua keputusan, aturan desain, urutan kerja, dan checklist progres ada di sini.
 
 ## 1. Keputusan
 
-| Topik | Keputusan |
-|---|---|
-| Arah visual | **"Lembar Jawaban"** — bahasa visual dari dunia ujian (LJK) |
-| Git | Branch integrasi `redesign/v2`; tiap fase = branch `redesign/NN-nama` + PR ke `redesign/v2`. Merge `redesign/v2` → `main` hanya atas keputusan pemilik |
-| Dark mode | Dihapus (tidak pernah aktif). Token disusun agar bisa ditambah nanti |
-| Backend | Ikut dikerjakan: autosave jawaban tryout + endpoint status langganan gabungan. Deploy backend = keputusan pemilik |
-| Package manager | bun saja |
+| Topik           | Keputusan                                                                                                                                              |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Arah visual     | **"Lembar Jawaban"** — bahasa visual dari dunia ujian (LJK)                                                                                            |
+| Git             | Branch integrasi `redesign/v2`; tiap fase = branch `redesign/NN-nama` + PR ke `redesign/v2`. Merge `redesign/v2` → `main` hanya atas keputusan pemilik |
+| Dark mode       | Dihapus (tidak pernah aktif). Token disusun agar bisa ditambah nanti                                                                                   |
+| Backend         | Ikut dikerjakan: autosave jawaban tryout + endpoint status langganan gabungan. Deploy backend = keputusan pemilik                                      |
+| Package manager | bun saja                                                                                                                                               |
 
 ## 2. Temuan audit (ringkas, Okt 2026)
 
@@ -49,17 +49,17 @@ tanpa bayangan kecuali lapisan melayang.
 
 ### Warna (light)
 
-| Token | Nilai | Peran |
-|---|---|---|
-| `--paper` | `#F6F8FB` | Latar aplikasi (kertas) |
-| `--surface` | `#FFFFFF` | Panel, kartu, input |
-| `--ink` | `#1B2230` | Teks utama (grafit) |
-| `--ink-muted` | `#5B6475` | Teks sekunder |
-| `--line` | `#E3E8EF` | Garis/border |
-| `--brand` | `#0091FF` | Warna track (di-override per `web_sub_category`) |
-| `--marker` | `#FCB930` | Stabilo: penanda "ragu-ragu", sorotan |
-| `--success` | `#12A150` | Benar / berhasil |
-| `--danger` | `#DA2850` | Salah / destruktif |
+| Token         | Nilai     | Peran                                            |
+| ------------- | --------- | ------------------------------------------------ |
+| `--paper`     | `#F6F8FB` | Latar aplikasi (kertas)                          |
+| `--surface`   | `#FFFFFF` | Panel, kartu, input                              |
+| `--ink`       | `#1B2230` | Teks utama (grafit)                              |
+| `--ink-muted` | `#5B6475` | Teks sekunder                                    |
+| `--line`      | `#E3E8EF` | Garis/border                                     |
+| `--brand`     | `#0091FF` | Warna track (di-override per `web_sub_category`) |
+| `--marker`    | `#FCB930` | Stabilo: penanda "ragu-ragu", sorotan            |
+| `--success`   | `#12A150` | Benar / berhasil                                 |
+| `--danger`    | `#DA2850` | Salah / destruktif                               |
 
 Turunan (`--brand-soft`, `--brand-strong`, dll.) dihitung dengan `color-mix()` dari
 `--brand`, sehingga warna track tenant otomatis konsisten. Shadcn token
@@ -141,15 +141,41 @@ src/
   `ConfirmDialog`/`useConfirm`, `useStorageUpload`, `AssessmentEditor`
   (tryout & quiz), `CategoryManager`.
 
+### Domain terpisah (situs / app / admin)
+
+Satu codebase dan satu deploy, tiga host. Rute di filesystem tidak berubah
+(`/[track]/user/...`, `/[track]/admin/...`); `proxy.ts` menerjemahkan per host
+lewat `routeByHost` (`src/lib/surface.ts`, murni dan diuji unit):
+
+| Host                 | URL publik                 | Rute internal                   |
+| -------------------- | -------------------------- | ------------------------------- |
+| `www.bimbelio.com`   | `/`, `/price`, `/blog/...` | sama                            |
+| `app.bimbelio.com`   | `/utbk/bimboard`           | `/utbk/user/bimboard` (rewrite) |
+| `admin.bimbelio.com` | `/utbk/voucher`            | `/utbk/admin/voucher` (rewrite) |
+
+- URL lama `www/<track>/user/...` dan `www/<track>/admin/...` → **308** ke subdomain.
+  Link lama di notifikasi dan kode juga ikut teralihkan.
+- Di subdomain: `/` → dashboard track terakhir (cookie `bimbelio_track`),
+  halaman marketing → 308 ke situs, area lain → domainnya, bentuk lama
+  `/<track>/user/...` → bentuk baru. Semua respons subdomain `X-Robots-Tag: noindex`.
+- Tanpa sesi → beranda situs. Role tidak cukup → dashboard subdomain itu.
+- Link: `appPath`/`adminPath` menghasilkan URL absolut subdomain. Next tetap
+  menavigasi client-side bila origin sama, jadi satu href benar dari host mana pun.
+  `siteHref()` dipakai untuk link marketing dari komponen yang tampil di app.
+- `useRoutePathname('app' | 'admin')` dan `toRoutePath()` menyamakan pathname
+  publik dan internal untuk mode shell, status menu aktif, dan breadcrumb.
+- Cookie `token` dan `bimbelio_track` ber-domain `NEXT_PUBLIC_COOKIE_DOMAIN` (`.bimbelio.com`).
+- **Env kosong = satu domain** (lokal, preview Vercel): perilaku persis seperti sebelumnya.
+
 ## 5. Strategi testing
 
-| Lapis | Alat | Cakupan |
-|---|---|---|
-| Unit | Vitest | util (currency, date, phone, slug, subtest), apiClient, queryKeys, state machine ujian, scoring, proxy (role gating) |
-| Komponen | Vitest + Testing Library + happy-dom + MSW | primitive & pattern, form + validasi, DataTable, mesin ujian (keyboard, autosave, timer) |
-| E2E | Playwright + API mock (route interception + mock server untuk proxy) | alur guest, login (sesi palsu), dashboard, tryout end-to-end, course study, admin CRUD |
-| Aksesibilitas | `@axe-core/playwright` | halaman utama tiap area |
-| CI | GitHub Actions (bun) | lint, typecheck, unit, build, e2e |
+| Lapis         | Alat                                                                 | Cakupan                                                                                                              |
+| ------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Unit          | Vitest                                                               | util (currency, date, phone, slug, subtest), apiClient, queryKeys, state machine ujian, scoring, proxy (role gating) |
+| Komponen      | Vitest + Testing Library + happy-dom + MSW                           | primitive & pattern, form + validasi, DataTable, mesin ujian (keyboard, autosave, timer)                             |
+| E2E           | Playwright + API mock (route interception + mock server untuk proxy) | alur guest, login (sesi palsu), dashboard, tryout end-to-end, course study, admin CRUD                               |
+| Aksesibilitas | `@axe-core/playwright`                                               | halaman utama tiap area                                                                                              |
+| CI            | GitHub Actions (bun)                                                 | lint, typecheck, unit, build, e2e                                                                                    |
 
 **Aturan keamanan tes:** env tes mengarahkan `NEXT_PUBLIC_API_URL` ke host yang
 tidak bisa dirutekan; semua request ke host produksi diblokir oleh fixture.
@@ -161,6 +187,7 @@ Setiap fase wajib lolos `bun run check`, `bun run test`, `bun run build`
 (dan e2e yang relevan) sebelum PR.
 
 ### Fase 1 — Fondasi (`redesign/01-foundation`) ✅
+
 - [x] Semua dependency ke versi terbaru (Next 16.3.8, React 19.3, TS 7 + TS 6 compat, ESLint 10, zod 4, AI SDK 7, BlockNote 0.55, lucide 1, react-day-picker 10, resizable-panels 4, Vitest 5, MSW 3)
 - [x] Hapus 41 file & 30+ dependency mati; satu library: sonner, framer-motion, lucide, `radix-ui`
 - [x] Infrastruktur tes: Vitest + RTL + MSW (request tak di-mock = gagal), Playwright + mock API server + blokir host eksternal + axe, CI GitHub
@@ -173,6 +200,7 @@ Setiap fase wajib lolos `bun run check`, `bun run test`, `bun run build`
 - [x] Tema track via CSS var `--brand` (kelas `bg-main` lama otomatis ikut), 404 & error global baru
 
 ### Fase 2 — Shell (`redesign/02-shell`) ✅
+
 - [x] SiteHeader (Radix NavigationMenu, tautan nyata termasuk `/#anchor`), menu mobile (Sheet), SiteFooter server component, dialog kontak berbasis state (`useContact`)
 - [x] AppShell siswa: sidebar (ciut tersimpan), topbar (pencarian ⌘K, paket & koin, notifikasi, akun), tab bar mobile, mode shell dari URL (`bare`/`immersive`/`default`)
 - [x] AdminShell: satu konfigurasi menu + filter role, status aktif per segmen, breadcrumb
@@ -181,6 +209,7 @@ Setiap fase wajib lolos `bun run check`, `bun run test`, `bun run build`
 - [ ] Halaman legal (privasi, syarat) — **butuh isi dari pemilik**, footer tidak menautkan halaman kosong
 
 ### Fase 3 — Guest (`redesign/03-guest`) ✅
+
 - [x] Beranda server-rendered dengan `<h1>` nyata, hero kartu LJK, statistik persaingan bubble, FAQ `<details>` + JSON-LD
 - [x] `/price` + `/price/[slug]` server-rendered (404 nyata, Product JSON-LD); checkout ditulis ulang (voucher teruji, satu instance kartu, resume `?checkout=`)
 - [x] Login (dialog + One Tap) tanpa reload, redirect aman (`//price` & open redirect dicegah)
@@ -190,27 +219,39 @@ Setiap fase wajib lolos `bun run check`, `bun run test`, `bun run build`
 - [x] URL bahasa Inggris + redirect 301; sitemap (artikel, paket, link) & robots dari `siteConfig`
 - [x] E2E: SEO/SSR, checkout, redirect, sitemap, password link, axe (desktop & mobile)
 
+### Fase 3b — Domain terpisah (`redesign/03b-domains`) ✅ (aktif setelah env diisi)
+
+- [x] Routing per host di `proxy.ts` (rewrite, redirect 308, noindex), matcher semua halaman
+- [x] Link builder & pathname helper sadar subdomain; cookie sesi lintas subdomain
+- [x] Logout dari subdomain kembali ke beranda situs; ganti track tetap di host yang sama
+- [x] Tes unit `surface.test.ts`; E2E project `domains` (`www./app./admin.localhost` via `next dev`)
+
 ### Fase 4 — Siswa (`redesign/04-*`)
+
 - [ ] Mesin ujian tunggal (tryout, quiz, tryout course, quiz workspace) + hasil
 - [ ] Course study & workspace (StudyLayout bersama, panel berat via `dynamic`)
 - [ ] BimBot, BimBoard, BimInsight, BimLive, prediction, explore, leaderboard, langganan/pembayaran
 
 ### Fase 5 — Admin (`redesign/05-*`)
+
 - [ ] Building block admin (DataTable, ResourceForm, ConfirmDialog, upload)
 - [ ] AssessmentEditor (tryout/quiz), CategoryManager, plan form berbasis zod
 - [ ] Migrasi semua seksi; role gating dari satu config (proxy + sidebar)
 
 ### Fase 6 — Backend (`bimbelio-backend`, branch `feat/redesign-support`)
+
 - [ ] Endpoint autosave jawaban tryout + tes
 - [ ] Endpoint status langganan gabungan + tes
 
 ### Fase 7 — Penutup
+
 - [ ] E2E menyeluruh + axe, audit bundle & Lighthouse, hapus kode lama tersisa
 - [ ] PR `redesign/v2` → `main`
 
 ## 7. Log progres
 
 ### Fase 1 — 2026-10-02
+
 - Baseline sebelum mulai: typecheck/lint/build lolos, 0 tes.
 - Bug yang ditemukan & diperbaiki saat fondasi:
   - Toast di 6 halaman admin (react-hot-toast tanpa `<Toaster>`) tidak pernah tampil.
@@ -229,6 +270,7 @@ Setiap fase wajib lolos `bun run check`, `bun run test`, `bun run build`
   mobile sampai dimigrasi (navbar lama meluber — diganti di Fase 2).
 
 ### Fase 2 — 2026-10-02
+
 - Spesifikasi fungsional shell lama disusun lebih dulu agar tidak ada fitur hilang.
 - Bug lama yang hilang bersama rewrite: link Kalender/WhatsApp ke halaman induk,
   link dashboard `/null/...`, nomor WhatsApp footer tidak cocok, navbar ganda di
@@ -238,6 +280,15 @@ Setiap fase wajib lolos `bun run check`, `bun run test`, `bun run build`
 - Disederhanakan dengan sengaja: submenu mata pelajaran di sidebar (diganti
   halaman BimCourse), fetch plan untuk dropdown navbar, komponen `payment.tsx`
   (1.144 baris, hanya redirect).
+
+### Fase 3b — 2026-10-02
+
+- `usePathname()` bisa mengembalikan bentuk publik (`/utbk/bimboard`) maupun
+  internal, tergantung rewrite dan prerender. Semua logika yang membaca path
+  kini lewat `toRoutePath`, jadi hasilnya sama di server dan client.
+- Next dev menganggap `localhost` sebagai origin sendiri dan membuat redirect ke
+  `http://localhost:…` menjadi relatif (loop). Karena itu E2E memakai `www.localhost`.
+- Tidak terdampak di produksi: host situs (`www.bimbelio.com`) berbeda dari host app.
 
 ## 8. Rekomendasi yang butuh keputusan pemilik
 
@@ -257,11 +308,24 @@ Setiap fase wajib lolos `bun run check`, `bun run test`, `bun run build`
    (Rp1.499.000 / Rp799.000, cicilan 3×), statistik about (10.000+ siswa, 85%,
    4,9/5), statistik pendaftar SNBT/SIMAK/UM UGM/STAN. Klaim "koin tidak pernah
    kedaluwarsa" **dihapus** karena bertentangan dengan data (koin punya masa berlaku).
-7. **Pemisahan subdomain** (permintaan pemilik, belum diputuskan):
-   `bimbelio.com` (marketing), `app.bimbelio.com` (siswa), `admin.bimbelio.com`
-   (admin) — tetap **satu codebase & satu deploy**, dirutekan per host di
-   `proxy.ts`. Untung: isolasi admin (keamanan, cookie terpisah), bundle & cache
-   terpisah, robots/SEO bersih. Biaya: DNS + domain di Vercel, origin Google OAuth,
-   cookie `token` ber-domain `.bimbelio.com`, CORS backend, redirect 301 dari URL
-   lama (`/<track>/user/...` → `app.bimbelio.com/<track>/...`), `actionUrl`
-   notifikasi lama tetap jalan lewat redirect.
+7. **Pemisahan subdomain — DIPUTUSKAN: app + admin.** Kode siap (Fase 3b) dan
+   baru aktif setelah env produksi diisi. Langkah pemilik, berurutan:
+   1. Vercel → Project → Domains: tambah `app.bimbelio.com` dan `admin.bimbelio.com`
+      (project yang sama). DNS: CNAME keduanya ke `cname.vercel-dns.com`.
+   2. Google Cloud Console → OAuth client → _Authorized JavaScript origins_:
+      tambah `https://app.bimbelio.com` dan `https://admin.bimbelio.com`.
+   3. Backend: izinkan origin `https://app.bimbelio.com` dan
+      `https://admin.bimbelio.com` di CORS API dan socket.
+   4. Env Vercel (Production saja, biarkan Preview kosong):
+      `NEXT_PUBLIC_SITE_URL=https://www.bimbelio.com`,
+      `NEXT_PUBLIC_APP_URL=https://app.bimbelio.com`,
+      `NEXT_PUBLIC_ADMIN_URL=https://admin.bimbelio.com`,
+      `NEXT_PUBLIC_COOKIE_DOMAIN=.bimbelio.com`. Lalu redeploy.
+   5. Midtrans/Xendit: perbarui URL redirect selesai bayar bila mengarah ke
+      `/<track>/user/...`. Tanpa ini pun tetap jalan lewat redirect 308.
+   6. Sesi lama ikut pindah otomatis. Token host-only disalin ke `.bimbelio.com`
+      oleh proxy saat URL lama dialihkan, dan oleh client saat sesi dimuat di
+      situs, jadi pengguna tidak perlu login ulang. Preferensi di localStorage
+      (sidebar ciut, dsb.) per origin dan kembali ke default sekali.
+      Belum termasuk: halaman login khusus di subdomain. Pengguna tanpa sesi
+      diarahkan ke beranda situs dan login di sana.

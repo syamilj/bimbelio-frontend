@@ -9,7 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { TRACK_STORAGE_KEY } from '@/lib/track';
+import { isSplitDomains, trackIdFromPath } from '@/lib/surface';
+import { appPath, rememberTrack } from '@/lib/track';
 import { cn } from '@/lib/utils';
 import type { WebsiteCategory, WebsiteSubCategory } from '@/types/database';
 import { ChevronsUpDown } from 'lucide-react';
@@ -114,13 +115,18 @@ export function TrackPickerDialog({
 
 /** Ganti track: simpan pilihan, lalu buka halaman yang sama di track baru. */
 export function switchTrack(trackId: string) {
-  try {
-    localStorage.setItem(TRACK_STORAGE_KEY, trackId);
-  } catch {}
-  const parts = window.location.pathname.split('/').filter(Boolean);
-  const rest = parts.length > 1 ? parts.slice(1).join('/') : 'user/bimboard';
+  rememberTrack(trackId);
+  const { pathname } = window.location;
   // Navigasi penuh: sebagian halaman lama masih membaca track saat modul dimuat.
-  window.location.assign(`/${trackId}/${rest}`);
+  if (trackIdFromPath(pathname) === undefined) {
+    window.location.assign(appPath(trackId, 'bimboard'));
+    return;
+  }
+  const rest = pathname.split('/').filter(Boolean).slice(1).join('/');
+  // Di subdomain `/<track>` saja sudah dashboard (proxy yang mengarahkan).
+  window.location.assign(
+    `/${trackId}/${rest || (isSplitDomains() ? '' : 'user/bimboard')}`,
+  );
 }
 
 /** Tombol di sidebar yang menampilkan track aktif dan membuka pemilih. */

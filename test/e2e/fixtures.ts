@@ -2,7 +2,13 @@ import AxeBuilder from '@axe-core/playwright';
 import { test as base, expect, type Page } from '@playwright/test';
 
 import { MOCK_API } from './env';
-const ALLOWED_HOSTS = new Set(['127.0.0.1', 'localhost']);
+const ALLOWED_HOSTS = new Set([
+  '127.0.0.1',
+  'localhost',
+  'www.localhost',
+  'app.localhost',
+  'admin.localhost',
+]);
 
 type Role = 'student' | 'premium' | 'admin' | 'superadmin' | 'finance';
 

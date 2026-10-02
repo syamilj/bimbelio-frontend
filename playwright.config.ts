@@ -1,6 +1,13 @@
 import { defineConfig, devices } from '@playwright/test';
 
-import { E2E_ENV, E2E_PORT, MOCK_API } from './test/e2e/env';
+import {
+  E2E_DOMAINS,
+  E2E_DOMAINS_ENV,
+  E2E_DOMAINS_PORT,
+  E2E_ENV,
+  E2E_PORT,
+  MOCK_API,
+} from './test/e2e/env';
 
 // Jalankan `bun run e2e:build` lebih dulu; di sini hanya menyalakan server.
 // Debug cepat: `bun test/e2e/dev.ts` lalu `E2E_BASE_URL=http://localhost:3300 bun run e2e`.
@@ -18,8 +25,24 @@ export default defineConfig({
     timezoneId: 'Asia/Jakarta',
   },
   projects: [
-    { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
-    { name: 'mobile', use: { ...devices['Pixel 7'] } },
+    {
+      name: 'desktop',
+      testIgnore: /domains\.spec/,
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'mobile',
+      testIgnore: /domains\.spec/,
+      use: { ...devices['Pixel 7'] },
+    },
+    // Mode domain terpisah (bimbelio.com / app. / admin.) lewat next dev,
+    // karena URL domain ikut ter-inline saat build.
+    {
+      name: 'domains',
+      testMatch: /domains\.spec/,
+      timeout: 90_000,
+      use: { ...devices['Desktop Chrome'], baseURL: E2E_DOMAINS.site },
+    },
   ],
   webServer: externalBaseURL
     ? undefined
@@ -34,6 +57,13 @@ export default defineConfig({
           url: `http://127.0.0.1:${E2E_PORT}`,
           env: E2E_ENV,
           timeout: 120_000,
+          reuseExistingServer: !process.env.CI,
+        },
+        {
+          command: `bun x next dev -p ${E2E_DOMAINS_PORT}`,
+          url: `${E2E_DOMAINS.site}/about`,
+          env: E2E_DOMAINS_ENV,
+          timeout: 180_000,
           reuseExistingServer: !process.env.CI,
         },
       ],

@@ -2,6 +2,7 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { siteHref } from '@/lib/surface';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { cn } from '@/lib/utils';
 import { formatIDR } from '@/lib/utils/currency';
@@ -217,7 +218,9 @@ export function PlanCard({ plan, onBuy, viewOnly, className }: PlanCardProps) {
                 } catch {}
               }}
             >
-              <Link href={`/price/${plan.slug}`}>Lihat detail paket</Link>
+              <Link href={siteHref(`/price/${plan.slug}`)}>
+                Lihat detail paket
+              </Link>
             </Button>
           </div>
         )}

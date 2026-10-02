@@ -1,6 +1,8 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  // Subdomain lokal untuk uji mode domain terpisah (E2E project `domains`).
+  allowedDevOrigins: ['www.localhost', 'app.localhost', 'admin.localhost'],
   reactStrictMode: true,
   poweredByHeader: false,
   experimental: {

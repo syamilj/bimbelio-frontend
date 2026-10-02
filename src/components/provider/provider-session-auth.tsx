@@ -1,10 +1,10 @@
 'use client';
 
 import { PageLoader } from '@/components/patterns/page-loader';
-import { trackIdFromPath } from '@/lib/api/client';
-import { signOut } from '@/lib/auth-helper';
+import { shareAuthCookie, signOut } from '@/lib/auth-helper';
 import axiosInstanceWithToken from '@/lib/axios/axiosInstanceWithToken';
 import { responseError } from '@/lib/response';
+import { trackIdFromPath } from '@/lib/surface';
 import {
   Subscription,
   SubscriptionFeature,
@@ -29,7 +29,7 @@ import {
 // Rute yang butuh sesi sebelum konten boleh dirender. Halaman lain (marketing)
 // dirender langsung agar HTML dari server berisi konten, bukan spinner.
 const isProtectedPath = (pathname: string) =>
-  /\/(user|admin)(\/|$)/.test(pathname);
+  trackIdFromPath(pathname) !== undefined;
 
 type SessionStatus = 'loading' | 'authenticated' | 'unauthenticated';
 
@@ -105,6 +105,7 @@ export default function ProviderSessionAuth({
       const res = await axiosInstanceWithToken.post('/auth/verifyToken');
       setRaw({ user: res.data.data, token });
       setStatus('authenticated');
+      shareAuthCookie();
     } catch (error) {
       const { status: httpStatus } = responseError(error);
       setStatus('unauthenticated');

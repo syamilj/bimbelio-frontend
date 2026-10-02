@@ -1,10 +1,11 @@
 'use client';
 
-import { trackIdFromPath } from '@/lib/api/client';
 import axiosInstanceRaw from '@/lib/axios/axiosInstanceRaw';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { response } from '@/lib/response';
+import { trackIdFromPath } from '@/lib/surface';
 import { trackThemeCss } from '@/lib/theme/track-theme';
+import { rememberTrack } from '@/lib/track';
 import {
   WebsiteCategory,
   WebsiteSubCategory,
@@ -103,7 +104,7 @@ export default function ProviderWebsiteCategory({
     );
     if (find) {
       setFirst(false);
-      localStorage.setItem('website_sub_category_id', web_sub_category);
+      rememberTrack(web_sub_category);
       setWebsiteSubCategory(
         find.WebsiteSubCategory.find(
           (item2) => item2.id === web_sub_category,

@@ -1,5 +1,6 @@
 'use client';
 
+import { toRoutePath } from '@/lib/surface';
 import { appPath, useTrackId } from '@/lib/track';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
 import dynamic from 'next/dynamic';
@@ -94,7 +95,8 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
       });
     } catch {}
     const target = appPath(trackId, 'plans');
-    if (pathname !== target) router.push(target);
+    if (toRoutePath(pathname, 'app') !== toRoutePath(target, 'app'))
+      router.push(target);
   }, [pathname, router, trackId]);
 
   const setTransactionPopUp: Dispatch<SetStateAction<boolean>> = useCallback(
