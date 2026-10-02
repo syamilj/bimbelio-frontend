@@ -48,6 +48,7 @@ import { useGet } from '@/lib/fetch-helper/useGet';
 import { useSocket } from '@/lib/socket/useSocket';
 import { cn, formatSchoolName } from '@/lib/utils';
 
+import { Facebook, Instagram } from '@/components/icons/brand-icons';
 import { Subscription, UserRoleEnum } from '@/types/database';
 import ExcelJS from 'exceljs';
 import {
@@ -57,14 +58,12 @@ import {
   Crown,
   Download,
   Edit,
-  Facebook,
   FileSpreadsheet,
   FileText,
   Filter,
   Globe,
   GraduationCap,
   Hash,
-  Instagram,
   MessageCircle,
   Search,
   SortAsc,
@@ -324,7 +323,7 @@ export default function UserManagementDashboard() {
 
   return (
     <div>
-      <h1 className="mb-4 md:mb-6 text-xl md:text-2xl font-bold">
+      <h1 className="mb-4 text-xl font-bold md:mb-6 md:text-2xl">
         User Management
       </h1>
 
@@ -339,14 +338,14 @@ export default function UserManagementDashboard() {
         </TabsList>
 
         <TabsContent value="overview">
-          <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
-            <Card className="border-l-4 border-l-main hover:shadow-lg transition-shadow duration-300">
+          <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-5">
+            <Card className="border-l-4 border-l-main transition-shadow duration-300 hover:shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Online</CardTitle>
                 <Crown className="h-4 w-4 text-main" />
               </CardHeader>
               <CardContent>
-                <div className="flex items-end gap-3 justify-between w-full">
+                <div className="flex w-full items-end justify-between gap-3">
                   <div className="text-3xl font-bold text-main">
                     {onlineCount || '-'}
                   </div>
@@ -354,7 +353,7 @@ export default function UserManagementDashboard() {
                     <Button
                       variant="default"
                       size="sm"
-                      className="w-full bg-main text-white shadow-md hover:shadow-lg transition-all duration-300 rounded-3xl"
+                      className="w-full rounded-3xl bg-main text-white shadow-md transition-all duration-300 hover:shadow-lg"
                     >
                       <span className="flex items-center gap-2">
                         Lihat Detail
@@ -365,7 +364,7 @@ export default function UserManagementDashboard() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="border-l-4 border-l-main hover:shadow-lg transition-shadow duration-300">
+            <Card className="border-l-4 border-l-main transition-shadow duration-300 hover:shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Admin</CardTitle>
                 <Crown className="h-4 w-4 text-main" />
@@ -377,7 +376,7 @@ export default function UserManagementDashboard() {
               </CardContent>
             </Card>
             {/* Total Users */}
-            <Card className="border-l-4 border-l-main hover:shadow-lg transition-shadow duration-300">
+            <Card className="border-l-4 border-l-main transition-shadow duration-300 hover:shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Users</CardTitle>
                 <Users className="h-4 w-4 text-main" />
@@ -390,7 +389,7 @@ export default function UserManagementDashboard() {
             </Card>
 
             {/* Tryout Users */}
-            <Card className="border-l-4 border-l-main hover:shadow-lg transition-shadow duration-300">
+            <Card className="border-l-4 border-l-main transition-shadow duration-300 hover:shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Verified Users
@@ -407,7 +406,7 @@ export default function UserManagementDashboard() {
             {/* Premium Users */}
 
             {/* Tryout Users Count */}
-            <Card className="border-l-4 border-l-main hover:shadow-lg transition-shadow duration-300">
+            <Card className="border-l-4 border-l-main transition-shadow duration-300 hover:shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Tryout Premium
@@ -490,7 +489,7 @@ export default function UserManagementDashboard() {
           {/* Search and Filter */}
           <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <form
-              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full lg:w-auto"
+              className="flex w-full flex-col items-stretch gap-2 sm:flex-row sm:items-center lg:w-auto"
               onSubmit={(e) => {
                 e.preventDefault();
                 const Form = new FormData(e.currentTarget);
@@ -519,13 +518,13 @@ export default function UserManagementDashboard() {
               </Button>
             </form>
 
-            <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 w-full lg:w-auto">
+            <div className="flex w-full flex-col flex-wrap items-stretch gap-3 sm:flex-row sm:items-center lg:w-auto">
               {/* Export Buttons */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+              <div className="flex w-full flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:items-center">
                 <Button
                   onClick={exportToExcel}
                   disabled={isExporting === 'EXCEL'}
-                  className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto"
+                  className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg transition-all duration-300 hover:from-green-700 hover:to-emerald-700 hover:shadow-xl sm:w-auto"
                 >
                   {isExporting === 'EXCEL' ? (
                     <>
@@ -543,7 +542,7 @@ export default function UserManagementDashboard() {
                   onClick={exportToCSV}
                   disabled={isExporting === 'CSV'}
                   variant="outline"
-                  className="border-2 border-blue-500 text-blue-600 hover:bg-blue-50 hover:border-blue-600 transition-all duration-300 w-full sm:w-auto"
+                  className="w-full border-2 border-blue-500 text-blue-600 transition-all duration-300 hover:border-blue-600 hover:bg-blue-50 sm:w-auto"
                 >
                   {isExporting === 'CSV' ? (
                     <>
@@ -560,7 +559,7 @@ export default function UserManagementDashboard() {
               </div>
 
               {/* Filter and Sort Section */}
-              <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+              <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
                 {/* Role Filter */}
                 <Select
                   value={roleFilter}
@@ -573,7 +572,7 @@ export default function UserManagementDashboard() {
                     setPage(1);
                   }}
                 >
-                  <SelectTrigger className="flex h-10 w-full sm:w-[180px] items-center justify-between rounded-3xl border border-gray-300 px-3">
+                  <SelectTrigger className="flex h-10 w-full items-center justify-between rounded-3xl border border-gray-300 px-3 sm:w-[180px]">
                     <div className="flex items-center">
                       <Filter className="mr-2 h-4 w-4 text-muted-foreground" />
                       <SelectValue placeholder="All Roles" />
@@ -593,7 +592,7 @@ export default function UserManagementDashboard() {
                     setPage(1);
                   }}
                 >
-                  <SelectTrigger className="flex h-10 w-full sm:w-[180px] items-center justify-between rounded-3xl border border-gray-300 px-3">
+                  <SelectTrigger className="flex h-10 w-full items-center justify-between rounded-3xl border border-gray-300 px-3 sm:w-[180px]">
                     <div className="flex items-center">
                       <Filter className="mr-2 h-4 w-4 text-muted-foreground" />
                       <SelectValue placeholder="All Roles" />
@@ -611,7 +610,7 @@ export default function UserManagementDashboard() {
                   value={sortOption}
                   onValueChange={(value: any) => setSortOption(value)}
                 >
-                  <SelectTrigger className="flex h-10 w-full sm:w-[180px] items-center justify-between rounded-3xl border border-gray-300 px-3">
+                  <SelectTrigger className="flex h-10 w-full items-center justify-between rounded-3xl border border-gray-300 px-3 sm:w-[180px]">
                     <div className="flex items-center">
                       {sortOption === 'LATEST' ? (
                         <SortDesc className="mr-2 h-4 w-4 text-muted-foreground" />
@@ -823,19 +822,19 @@ export default function UserManagementDashboard() {
                     <TableRow key={channel.name}>
                       <TableCell className="font-medium">
                         {channel.name === 'Instagram' && (
-                          <Instagram className="inline mr-2 h-4 w-4" />
+                          <Instagram className="mr-2 inline h-4 w-4" />
                         )}
                         {channel.name === 'WhatsApp' && (
-                          <MessageCircle className="inline mr-2 h-4 w-4" />
+                          <MessageCircle className="mr-2 inline h-4 w-4" />
                         )}
                         {channel.name === 'Facebook' && (
-                          <Facebook className="inline mr-2 h-4 w-4" />
+                          <Facebook className="mr-2 inline h-4 w-4" />
                         )}
                         {channel.name === 'Website' && (
-                          <Globe className="inline mr-2 h-4 w-4" />
+                          <Globe className="mr-2 inline h-4 w-4" />
                         )}
                         {channel.name === 'Other' && (
-                          <Hash className="inline mr-2 h-4 w-4" />
+                          <Hash className="mr-2 inline h-4 w-4" />
                         )}
                         {channel.name}
                       </TableCell>
@@ -894,9 +893,9 @@ export default function UserManagementDashboard() {
                         >
                           <TableCell className="font-medium">
                             {expandedProvinces.includes(province.region) ? (
-                              <ChevronDown className="inline mr-2 h-4 w-4" />
+                              <ChevronDown className="mr-2 inline h-4 w-4" />
                             ) : (
-                              <ChevronRight className="inline mr-2 h-4 w-4" />
+                              <ChevronRight className="mr-2 inline h-4 w-4" />
                             )}
                             {province.region}
                           </TableCell>
@@ -1039,24 +1038,24 @@ const DialogDetailSubscription = ({
             </div>
           ) : (
             /* Subscriptions List */
-            <div className="space-y-3 max-h-[60vh] overflow-y-auto">
+            <div className="max-h-[60vh] space-y-3 overflow-y-auto">
               {subData.map((sub, index) => (
                 <div
                   key={sub.id}
-                  className="rounded-3xl border border-gray-200 bg-gradient-to-br from-blue-50/50 via-indigo-50/30 to-purple-50/50 p-4 hover:shadow-md transition-shadow duration-200"
+                  className="rounded-3xl border border-gray-200 bg-gradient-to-br from-blue-50/50 via-indigo-50/30 to-purple-50/50 p-4 transition-shadow duration-200 hover:shadow-md"
                 >
                   <div className="space-y-3">
                     {/* Title Section */}
                     <div className="flex items-start justify-between gap-3">
-                      <div className="flex items-center gap-3 flex-1">
+                      <div className="flex flex-1 items-center gap-3">
                         <Badge
                           variant="default"
-                          className="bg-gradient-to-r from-blue-600 to-indigo-600 shrink-0"
+                          className="shrink-0 bg-gradient-to-r from-blue-600 to-indigo-600"
                         >
                           #{index + 1}
                         </Badge>
                         <div className="min-w-0 flex-1">
-                          <h3 className="font-semibold text-gray-900 truncate">
+                          <h3 className="truncate font-semibold text-gray-900">
                             {sub.planName || 'Unknown Plan'}
                           </h3>
                           <p className="text-xs text-gray-500">
@@ -1079,7 +1078,7 @@ const DialogDetailSubscription = ({
 
                     {/* Description */}
                     {sub.planDescription && (
-                      <p className="text-sm text-gray-600 line-clamp-2">
+                      <p className="line-clamp-2 text-sm text-gray-600">
                         {sub.planDescription}
                       </p>
                     )}
@@ -1088,7 +1087,7 @@ const DialogDetailSubscription = ({
                     <div className="grid grid-cols-2 gap-3 pt-2">
                       {/* Price */}
                       <div className="rounded-3xl bg-white/60 p-2.5">
-                        <p className="text-xs font-medium text-gray-500 mb-1">
+                        <p className="mb-1 text-xs font-medium text-gray-500">
                           Price
                         </p>
                         <p className="text-lg font-bold text-gray-900">
@@ -1098,7 +1097,7 @@ const DialogDetailSubscription = ({
 
                       {/* Duration */}
                       <div className="rounded-3xl bg-white/60 p-2.5">
-                        <p className="text-xs font-medium text-gray-500 mb-1">
+                        <p className="mb-1 text-xs font-medium text-gray-500">
                           Expire At
                         </p>
                         <p className="text-sm font-medium text-gray-900">
@@ -1117,7 +1116,7 @@ const DialogDetailSubscription = ({
 
                       {/* Start Date */}
                       <div className="rounded-3xl bg-white/60 p-2.5">
-                        <p className="text-xs font-medium text-gray-500 mb-1">
+                        <p className="mb-1 text-xs font-medium text-gray-500">
                           Created
                         </p>
                         <p className="text-sm font-medium text-gray-900">
@@ -1136,10 +1135,10 @@ const DialogDetailSubscription = ({
 
                       {/* Discord Status */}
                       <div className="rounded-3xl bg-white/60 p-2.5">
-                        <p className="text-xs font-medium text-gray-500 mb-1">
+                        <p className="mb-1 text-xs font-medium text-gray-500">
                           Discord
                         </p>
-                        <p className="text-sm font-medium text-gray-900 truncate">
+                        <p className="truncate text-sm font-medium text-gray-900">
                           {sub.discord_username || 'Not linked'}
                         </p>
                       </div>

@@ -1,5 +1,7 @@
 'use client';
 
+import { PageLoader } from '@/components/patterns/page-loader';
+import { trackIdFromPath } from '@/lib/api/client';
 import { signOut } from '@/lib/auth-helper';
 import axiosInstanceWithToken from '@/lib/axios/axiosInstanceWithToken';
 import { responseError } from '@/lib/response';
@@ -13,17 +15,74 @@ import {
   UserRoleEnum,
 } from '@/types/database';
 import Cookies from 'js-cookie';
-import { Loader2 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import {
   createContext,
   ReactNode,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
-// import { Toaster } from 'react-hot-toast';
-import { Toaster } from '@/components/ui/sonner';
+
+// Rute yang butuh sesi sebelum konten boleh dirender. Halaman lain (marketing)
+// dirender langsung agar HTML dari server berisi konten, bukan spinner.
+const isProtectedPath = (pathname: string) =>
+  /\/(user|admin)(\/|$)/.test(pathname);
+
+type SessionStatus = 'loading' | 'authenticated' | 'unauthenticated';
+
+const NO_FEATURE = { document: false, course: [], quiz: [], liveClass: false };
+
+/** Hitung tier & fitur langganan untuk track yang sedang dibuka. */
+export const buildSession = (
+  raw: any,
+  token: string,
+  trackId: string | null,
+): NonNullable<SessionProviderType['data']> => {
+  const subsByTrack = raw.subsList ?? {};
+  const subsData = raw.subsData ?? {};
+  const pendingData = raw.subsPendingData ?? {};
+  const hasTrack = !!trackId && trackId in subsByTrack;
+
+  let tier = hasTrack ? subsByTrack[trackId].tier : null;
+  let feature = hasTrack ? subsByTrack[trackId].feature : NO_FEATURE;
+
+  const isStaffOrPremium = [
+    'ADMIN',
+    'SUPER_ADMIN',
+    'PREMIUM',
+    'FINANCE',
+  ].includes(raw.role);
+  if (raw.specialRole && isStaffOrPremium) {
+    tier = raw.specialRole.tier;
+    feature = raw.specialRole.feature;
+  }
+
+  return {
+    expires: undefined,
+    user: {
+      id: raw.id,
+      email: raw.email,
+      name: raw.name,
+      role: raw.role,
+      token,
+      type: raw.type,
+      userTryOutId: raw.userTryOutId,
+      emailVerified: raw.emailVerified,
+      expire: raw.expire,
+      image: raw.image,
+      phone: raw.phone,
+      subsList: (trackId && subsData[trackId]) || [],
+      subsPendingList: [
+        ...((trackId && pendingData[trackId]) || []),
+        ...(pendingData.all || []),
+      ],
+      tier,
+      feature,
+    },
+  };
+};
 
 export default function ProviderSessionAuth({
   children,
@@ -31,137 +90,58 @@ export default function ProviderSessionAuth({
   children: ReactNode;
 }) {
   const pathname = usePathname();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [data, setData] = useState<SessionProviderType['data']>();
+  const [status, setStatus] = useState<SessionStatus>('loading');
+  const [raw, setRaw] = useState<{ user: any; token: string } | null>(null);
 
   useEffect(() => {
     const token = Cookies.get('token');
-    // console.log({ token });
-
-    // if (!token && window.location.pathname.includes('/user')) {
-    //   window.location.pathname = '/';
-    // }
-    const urlPathname = window.location.pathname.split('/');
-
-    const website_sub_category_id =
-      urlPathname.length > 1 && urlPathname[1].length > 0
-        ? urlPathname[1]
-        : localStorage?.getItem('website_sub_category_id');
-
-    if (token) {
-      axiosInstanceWithToken
-        .post(`/auth/verifyToken`)
-        .then((res) => {
-          const resData = res.data;
-          const userData = resData.data;
-          const subsListData = userData.subsData;
-          const subsPendingListData = userData.subsPendingData;
-          console.log({ userData, subsListData, subsPendingListData, res });
-          let tier, feature, subsList, subsPendingList;
-          if (
-            Object.keys(userData.subsList).includes(website_sub_category_id!)
-          ) {
-            tier = userData.subsList[website_sub_category_id!].tier;
-            feature = userData.subsList[website_sub_category_id!].feature;
-            subsList = subsListData[website_sub_category_id!] || [];
-          } else {
-            tier = null;
-            feature = { document: false, course: false, liveClass: false };
-            subsList = [];
-          }
-
-          if (
-            Object.keys(subsPendingListData).includes(website_sub_category_id!)
-          ) {
-            subsPendingList =
-              subsPendingListData[website_sub_category_id!] || [];
-          } else {
-            subsPendingList = [];
-          }
-
-          if (Object.keys(subsPendingListData).includes('all')) {
-            subsPendingList = [
-              ...subsPendingList,
-              ...subsPendingListData['all'],
-            ];
-          }
-
-          if (
-            userData.specialRole &&
-            (userData.role === 'ADMIN' ||
-              userData.role === 'SUPER_ADMIN' ||
-              userData.role === 'PREMIUM' ||
-              userData.role === 'FINANCE')
-          ) {
-            tier = userData.specialRole.tier;
-            feature = userData.specialRole.feature;
-          }
-          setData({
-            expires: undefined,
-            user: {
-              id: userData.id,
-              email: userData.email,
-              name: userData.name,
-              role: userData.role,
-              token: token,
-              type: userData.type,
-              userTryOutId: userData.userTryOutId,
-              emailVerified: userData.emailVerified,
-              expire: userData.expire,
-              image: userData.image,
-              phone: userData.phone,
-              subsList,
-              subsPendingList,
-              tier,
-              feature,
-            },
-          });
-        })
-        .catch((error) => {
-          const { message, status } = responseError(error);
-          if (status === 401) {
-            responseError(error);
-            signOut();
-          }
-          console.log({ error });
-          console.error('Token verification failed:', message);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    } else {
-      setIsLoading(false);
+    if (!token) {
+      setStatus('unauthenticated');
+      return;
     }
+    axiosInstanceWithToken
+      .post('/auth/verifyToken')
+      .then((res) => {
+        setRaw({ user: res.data.data, token });
+        setStatus('authenticated');
+      })
+      .catch((error) => {
+        const { status: httpStatus } = responseError(error);
+        setStatus('unauthenticated');
+        if (httpStatus === 401) signOut();
+      });
   }, []);
 
-  console.log('session : ', data);
+  const trackId = useMemo(() => {
+    const fromPath = trackIdFromPath(pathname);
+    if (fromPath) return fromPath;
+    if (typeof window === 'undefined') return null;
+    return localStorage.getItem('website_sub_category_id');
+  }, [pathname]);
 
-  const Context = {
-    data,
-  };
+  const value = useMemo<SessionProviderType>(
+    () => ({
+      status,
+      data: raw ? buildSession(raw.user, raw.token, trackId) : undefined,
+    }),
+    [status, raw, trackId],
+  );
 
-  if (isLoading && pathname !== '/') {
-    return (
-      <div className="flex w-full h-full fixed top-0 left-0 justify-center items-center">
-        <Loader2 className="animate-spin w-4 h-4" />
-      </div>
-    );
+  if (status === 'loading' && isProtectedPath(pathname)) {
+    return <PageLoader />;
   }
 
   return (
-    <>
-      {/* {isLoading && pathname !== '/' && <LoadingFixed />} */}
-      <Toaster />
-      <SessionProvider.Provider value={Context}>
-        {children}
-      </SessionProvider.Provider>
-    </>
+    <SessionProvider.Provider value={value}>
+      {children}
+    </SessionProvider.Provider>
   );
 }
 
 const SessionProvider = createContext<null | SessionProviderType>(null);
 
 type SessionProviderType = {
+  status: SessionStatus;
   data:
     | {
         user: {

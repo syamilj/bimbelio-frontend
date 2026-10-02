@@ -31,7 +31,7 @@ import {
 import { ArrowLeft, Download, RefreshCw } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 export default function ShortUrlAnalyticsPage() {
   const params = useParams();
@@ -93,7 +93,7 @@ export default function ShortUrlAnalyticsPage() {
   if (loading) {
     return (
       <div className="container mx-auto p-6">
-        <div className="text-center py-20 text-gray-500">
+        <div className="py-20 text-center text-gray-500">
           Loading analytics...
         </div>
       </div>
@@ -103,7 +103,7 @@ export default function ShortUrlAnalyticsPage() {
   if (!analytics) {
     return (
       <div className="container mx-auto p-6">
-        <div className="text-center py-20 text-gray-500">
+        <div className="py-20 text-center text-gray-500">
           No analytics data available
         </div>
       </div>
@@ -111,7 +111,7 @@ export default function ShortUrlAnalyticsPage() {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="container mx-auto space-y-6 p-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -120,12 +120,12 @@ export default function ShortUrlAnalyticsPage() {
             onClick={() => router.back()}
             className="gap-2"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="h-4 w-4" />
             Back
           </Button>
           <div>
             <h1 className="text-3xl font-bold">Short URL Analytics</h1>
-            <p className="text-gray-600 mt-1">
+            <p className="mt-1 text-gray-600">
               Track performance and visitor insights
             </p>
           </div>
@@ -149,7 +149,7 @@ export default function ShortUrlAnalyticsPage() {
             onClick={loadAnalytics}
             className="gap-2"
           >
-            <RefreshCw className="w-4 h-4" />
+            <RefreshCw className="h-4 w-4" />
             Refresh
           </Button>
           <Button
@@ -158,14 +158,14 @@ export default function ShortUrlAnalyticsPage() {
             disabled={exporting}
             className="gap-2"
           >
-            <Download className="w-4 h-4" />
+            <Download className="h-4 w-4" />
             {exporting ? 'Exporting...' : 'Export CSV'}
           </Button>
         </div>
       </div>
 
       {/* Overview Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-gray-600">
@@ -205,7 +205,7 @@ export default function ShortUrlAnalyticsPage() {
       </div>
 
       {/* Technology Breakdown */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {/* Devices */}
         <Card>
           <CardHeader>
@@ -227,7 +227,7 @@ export default function ShortUrlAnalyticsPage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-10 text-gray-500">No data</div>
+              <div className="py-10 text-center text-gray-500">No data</div>
             )}
           </CardContent>
         </Card>
@@ -253,7 +253,7 @@ export default function ShortUrlAnalyticsPage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-10 text-gray-500">No data</div>
+              <div className="py-10 text-center text-gray-500">No data</div>
             )}
           </CardContent>
         </Card>
@@ -279,14 +279,14 @@ export default function ShortUrlAnalyticsPage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-10 text-gray-500">No data</div>
+              <div className="py-10 text-center text-gray-500">No data</div>
             )}
           </CardContent>
         </Card>
       </div>
 
       {/* Geographic and Traffic Data */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {/* Top Countries */}
         <Card>
           <CardHeader>
@@ -318,7 +318,7 @@ export default function ShortUrlAnalyticsPage() {
                 </TableBody>
               </Table>
             ) : (
-              <div className="text-center py-10 text-gray-500">
+              <div className="py-10 text-center text-gray-500">
                 No country data
               </div>
             )}
@@ -343,7 +343,7 @@ export default function ShortUrlAnalyticsPage() {
                 <TableBody>
                   {analytics.traffic.referrers.map((ref, index) => (
                     <TableRow key={index}>
-                      <TableCell className="font-medium text-sm">
+                      <TableCell className="text-sm font-medium">
                         {ref.referer ? (
                           <span className="break-all">
                             {ref.referer.substring(0, 50)}
@@ -359,7 +359,7 @@ export default function ShortUrlAnalyticsPage() {
                 </TableBody>
               </Table>
             ) : (
-              <div className="text-center py-10 text-gray-500">
+              <div className="py-10 text-center text-gray-500">
                 No referrer data
               </div>
             )}
@@ -400,7 +400,7 @@ export default function ShortUrlAnalyticsPage() {
               </TableBody>
             </Table>
           ) : (
-            <div className="text-center py-10 text-gray-500">
+            <div className="py-10 text-center text-gray-500">
               No recent activity
             </div>
           )}

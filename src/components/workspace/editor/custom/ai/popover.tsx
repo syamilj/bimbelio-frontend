@@ -16,7 +16,8 @@ import { env } from '@/env.mjs';
 import { markdownSanitizeSchema } from '@/lib/utils/markdown-sanitize';
 import { useCompletion } from '@ai-sdk/react';
 import { useBlockNoteEditor } from '@blocknote/react';
-import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
+import { DropdownMenu as DropdownMenuPrimitive } from 'radix-ui';
+
 import Cookies from 'js-cookie';
 import 'katex/dist/katex.min.css';
 import { ArrowRight } from 'lucide-react';
@@ -28,6 +29,8 @@ import rehypeSanitize from 'rehype-sanitize';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import { useProvider } from '../../provider';
+
+const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
 
 export type AiPopoverPropsRect = {
   top: number;
@@ -64,7 +67,8 @@ const AiPopover = () => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
-    streamProtocol: 'text',
+    // Backend mengirim UI message stream (pipeUIMessageStreamToResponse), bukan teks mentah
+    streamProtocol: 'data',
     onFinish: (_prompt: string, completion: string) => {
       setCompletions((prev) => [...prev, completion]);
       inputRef.current?.focus();
@@ -122,8 +126,7 @@ const AiPopover = () => {
 
   useEffect(() => {
     const input = document.getElementById('notes-ai-input') as
-      | HTMLInputElement
-      | undefined;
+      HTMLInputElement | undefined;
     input?.focus();
     if (inputRef) {
       inputRef.current?.focus();
@@ -261,14 +264,13 @@ const AiPopover = () => {
                 onSubmit={async (e) => {
                   e.preventDefault();
                   const input = document.getElementById('notes-ai-input') as
-                    | HTMLInputElement
-                    | undefined;
+                    HTMLInputElement | undefined;
                   if (input) {
                     await handleSubmit(`${input.value}: ${rect.text}`);
                     input.value = '';
                   }
                 }}
-                className="flex justify-center items-center relative"
+                className="relative flex items-center justify-center"
               >
                 <Input
                   ref={inputRef}
@@ -276,9 +278,9 @@ const AiPopover = () => {
                 />
                 <button
                   type="submit"
-                  className="absolute bg-main text-white right-2 hover:bg-main/80 duration-300 rounded-3xl p-1"
+                  className="absolute right-2 rounded-3xl bg-main p-1 text-white duration-300 hover:bg-main/80"
                 >
-                  <ArrowRight className="text-white w-4 h-4" />
+                  <ArrowRight className="h-4 w-4 text-white" />
                 </button>
               </form>
             )}

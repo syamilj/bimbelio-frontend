@@ -1,23 +1,18 @@
 'use client';
 
 import {
-  ExternalLink,
   Facebook,
-  Globe,
   Instagram,
   Linkedin,
-  MessageCircle,
-  Music4,
   Twitter,
   Youtube,
-} from 'lucide-react';
+} from '@/components/icons/brand-icons';
+import { ExternalLink, Globe, MessageCircle, Music4 } from 'lucide-react';
 import Image from 'next/image';
 import { memo, useMemo } from 'react';
 
-import { inter, playfair } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { LinkButton, LinkPageDetail } from '@/types/link';
-
 
 interface LinkPreviewPaneProps {
   page?: LinkPageDetail | null;
@@ -176,7 +171,7 @@ const ButtonPreview = memo(function ButtonPreview({
             {button.title}
           </span>
           {button.subtitle && (
-            <span className="mt-0.5 text-sm opacity-80 font-medium">
+            <span className="mt-0.5 text-sm font-medium opacity-80">
               {button.subtitle}
             </span>
           )}
@@ -207,16 +202,14 @@ export const LinkPreviewPane = memo(function LinkPreviewPane({
         <div className={phoneChrome}>
           <div
             className={cn(
-              'rounded-[26px] border border-white/10 bg-gradient-to-b from-black/60 to-black/20 p-4 text-white h-[600px] overflow-y-auto no-scrollbar',
-              inter.variable,
-              playfair.variable,
+              'no-scrollbar h-[600px] overflow-y-auto rounded-[26px] border border-white/10 bg-gradient-to-b from-black/60 to-black/20 p-4 text-white',
               'font-sans',
             )}
             style={style}
           >
             <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-black/0 via-black/5 to-black/20" />
 
-            <div className="relative z-10 flex flex-col items-center text-center pt-8">
+            <div className="relative z-10 flex flex-col items-center pt-8 text-center">
               {page?.profileImage && (
                 <div className="group relative mb-5 h-24 w-24 overflow-hidden rounded-full shadow-2xl ring-4 ring-white/20">
                   <Image
@@ -228,12 +221,12 @@ export const LinkPreviewPane = memo(function LinkPreviewPane({
                 </div>
               )}
 
-              <h1 className="text-xl font-bold tracking-tight text-white drop-shadow-md font-serif">
+              <h1 className="font-serif text-xl font-bold tracking-tight text-white drop-shadow-md">
                 {page?.title || 'Your Link Page'}
               </h1>
 
               {page?.description && (
-                <p className="mt-2 max-w-[200px] text-sm font-medium leading-relaxed text-white/90 drop-shadow-sm">
+                <p className="mt-2 max-w-[200px] text-sm leading-relaxed font-medium text-white/90 drop-shadow-sm">
                   {page.description}
                 </p>
               )}
@@ -269,7 +262,7 @@ export const LinkPreviewPane = memo(function LinkPreviewPane({
                   >
                     {group.label && (
                       <div className="px-1 pb-1 text-center">
-                        <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-white/60 drop-shadow-sm">
+                        <h2 className="text-xs font-bold tracking-[0.2em] text-white/60 uppercase drop-shadow-sm">
                           {group.label}
                         </h2>
                       </div>
@@ -287,7 +280,7 @@ export const LinkPreviewPane = memo(function LinkPreviewPane({
               )}
             </div>
 
-            <footer className="relative z-10 mt-8 flex flex-col items-center gap-4 text-center pb-4">
+            <footer className="relative z-10 mt-8 flex flex-col items-center gap-4 pb-4 text-center">
               <div className="h-px w-12 bg-white/20" />
               <div className="text-[10px] font-medium text-white/50">
                 <p>

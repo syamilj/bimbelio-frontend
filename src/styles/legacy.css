@@ -1,0 +1,257 @@
+/*
+ * LAPISAN KOMPATIBILITAS SEMENTARA.
+ * Kelas & token lama yang masih dipakai halaman yang belum dimigrasi.
+ * Nilainya sudah dipetakan ke token baru. File ini DIHAPUS di Fase 7
+ * (docs/redesign/PLAN.md). Jangan menambah apa pun ke sini.
+ */
+
+@theme inline {
+  /* Pengganti kelas runtime dari styles/main-styles.ts (bg-main, text-main/40, ...) */
+  --color-main: var(--brand);
+  --color-main-default: var(--brand);
+  --color-secondary-default: var(--brand-2);
+  --color-main-hover: var(--brand-strong);
+  --color-main-yellow: var(--marker);
+  --color-main-red: var(--danger);
+  --color-main-red-hover: var(--danger-soft);
+  --color-main-border: var(--line);
+  --color-main-gray-input: var(--line-strong);
+  --color-main-gray-input2: var(--line);
+  --color-main-gray-text: var(--ink-muted);
+  --color-main-gray-text2: var(--ink-muted);
+  --color-main-gray-disabled: var(--ink-subtle);
+  --color-main-gray-disabled-hover: var(--ink-subtle);
+  --color-bg-layout: var(--paper);
+  --color-bg-workspace: var(--paper);
+  --color-workspace: var(--paper);
+  --color-surface-primary-light: var(--brand-soft);
+}
+
+@theme {
+  --breakpoint-mi: 401px;
+  --breakpoint-mb: 481px;
+  --breakpoint-md2: 991px;
+  --breakpoint-xxl: 1361px;
+  --breakpoint-xxxl: 1443px;
+  --breakpoint-max: 1901px;
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-twinkle: twinkle 3s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-gradient: gradient 8s linear infinite;
+  --animate-confetti-fall: confetti-fall 3s linear infinite;
+  --animate-confetti-spin: confetti-spin 2s linear infinite;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  @keyframes shimmer {
+    from {
+      background-position: -1000px 0;
+    }
+    to {
+      background-position: 1000px 0;
+    }
+  }
+  @keyframes gradient {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  @keyframes confetti-fall {
+    from {
+      transform: translateY(-20px) rotate(0deg);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+  @keyframes confetti-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+/* Gradien lama → warna datar/turunan brand */
+.bg-gradient,
+.bg-gradient-default,
+.bg-gradient-main,
+.bg-gradient-green,
+.bg-green-upgrade {
+  background-color: var(--brand);
+}
+.bg-gradient-green-hover,
+.bg-green-upgrade-hover {
+  background-color: var(--brand-strong);
+}
+.bg-yellow-upgrade {
+  background-color: var(--marker);
+}
+.bg-yellow-upgrade-hover {
+  background-color: color-mix(in oklab, var(--marker) 88%, black);
+}
+.bg-fade-materi {
+  background-image: linear-gradient(to bottom, transparent, var(--paper));
+}
+.bg-flashcard-result {
+  background-color: var(--paper);
+}
+.bg-loading,
+.bg-loading-text {
+  background-color: var(--line);
+  color: transparent;
+  border-radius: var(--radius-xs);
+}
+.bg-loading-text {
+  width: fit-content;
+  font-size: 0.75rem;
+  margin-bottom: 0.3rem;
+}
+
+.shadow-default,
+.shadow-default2,
+.shadow-card-soft,
+.shadow-card-soft2 {
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.text-main-gray,
+.text-main-gray-2 {
+  color: var(--ink-muted);
+}
+.text-main-red {
+  color: var(--danger);
+}
+.bg-layout,
+.bg-workspace {
+  background-color: var(--paper);
+}
+
+.no-scrollbar,
+.scrollbar-hidden,
+.scrollbar-hide,
+.messageContent {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar,
+.scrollbar-hidden::-webkit-scrollbar,
+.scrollbar-hide::-webkit-scrollbar,
+.messageContent::-webkit-scrollbar {
+  display: none;
+}
+
+.font-playfair,
+.font-playfair-italic {
+  font-family: var(--font-sans);
+  font-weight: 800;
+}
+
+.chat-ai-container {
+  display: flex;
+  align-items: flex-start;
+}
+
+#toaster:hover #toasterClose {
+  display: block;
+}
+#toaster #toasterClose {
+  display: none;
+}
+
+/* Markdown lama (ReactMarkdown / react-md-editor) */
+.ReactMarkdown ul {
+  list-style-type: disc;
+}
+.ReactMarkdown ol {
+  list-style-type: decimal;
+}
+.ReactMarkdown code {
+  background-color: var(--paper);
+  font-size: 90%;
+  color: var(--ink);
+}
+.ReactMarkdown table {
+  margin-block: 1rem;
+  width: 100%;
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+}
+.chat-ai-messages h1 {
+  font-size: 1.5rem;
+}
+.chat-ai-messages h2 {
+  font-size: 1.25rem;
+}
+.chat-ai-messages h3 {
+  font-size: 1.125rem;
+}
+.chat-ai-messages h4 {
+  font-size: 1rem;
+}
+.wmde-markdown ul,
+.wmde-markdown ol {
+  padding-left: 1rem;
+}
+#blog-admin .wmde-markdown p,
+#blog-admin .w-md-editor-text textarea,
+#blog-admin .w-md-editor-text-input {
+  font-family: var(--font-sans);
+  font-size: 14px;
+}
+#course-materi .course {
+  background-color: transparent;
+}
+#course-materi .course h2 {
+  text-align: center;
+}
+
+/* Blok sorotan BlockNote (catatan dari PDF) */
+.bn-container .h-full.w-2.rounded-full.bg-yellow-400 {
+  background-color: var(--marker);
+}
+
+/* Grafik lama memutar label sumbu */
+.recharts-text.recharts-cartesian-axis-tick-value tspan {
+  transform: rotate(180deg);
+}

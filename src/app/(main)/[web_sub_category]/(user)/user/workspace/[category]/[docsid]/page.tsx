@@ -138,26 +138,26 @@ const DocViewerPage = () => {
 
   if (error) {
     return (
-      <div className="flex justify-center items-center w-full h-full min-h-[90vh] relative overflow-hidden">
+      <div className="relative flex h-full min-h-[90vh] w-full items-center justify-center overflow-hidden">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
-          <div className="absolute top-40 right-10 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
-          <div className="absolute -bottom-8 left-40 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
+          <div className="animate-blob absolute top-20 left-10 h-72 w-72 rounded-full bg-purple-500 opacity-20 mix-blend-multiply blur-3xl filter" />
+          <div className="animate-blob animation-delay-2000 absolute top-40 right-10 h-72 w-72 rounded-full bg-yellow-500 opacity-20 mix-blend-multiply blur-3xl filter" />
+          <div className="animate-blob animation-delay-4000 absolute -bottom-8 left-40 h-72 w-72 rounded-full bg-pink-500 opacity-20 mix-blend-multiply blur-3xl filter" />
         </div>
 
-        <Card className="max-w-[95%] md:max-w-4xl w-full border-0 shadow-2xl overflow-hidden backdrop-blur-sm bg-white/95 relative z-10">
+        <Card className="relative z-10 w-full max-w-[95%] overflow-hidden border-0 bg-white/95 shadow-2xl backdrop-blur-sm md:max-w-4xl">
           {/* Gradient Border Animation */}
           <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 opacity-75 blur-xl" />
-          <div className="absolute inset-[2px] bg-white rounded-3xl" />
+          <div className="absolute inset-[2px] rounded-3xl bg-white" />
 
-          <CardContent className="relative p-8 md:p-12 z-10 max-h-[90vh] md:max-h-[95vh] overflow-y-auto">
+          <CardContent className="relative z-10 max-h-[90vh] overflow-y-auto p-8 md:max-h-[95vh] md:p-12">
             {/* Floating Particles */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
               {[...Array(20)].map((_, i) => (
                 <div
                   key={i}
-                  className="absolute w-1 h-1 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full animate-float"
+                  className="absolute h-1 w-1 animate-float rounded-full bg-gradient-to-r from-amber-400 to-orange-500"
                   style={{
                     left: `${Math.random() * 100}%`,
                     top: `${Math.random() * 100}%`,
@@ -169,37 +169,37 @@ const DocViewerPage = () => {
             </div>
 
             {/* Icon Container */}
-            <div className="flex items-center justify-center mb-8 relative">
+            <div className="relative mb-8 flex items-center justify-center">
               <div className="relative">
                 {/* Multiple Animated Rings */}
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full blur-2xl opacity-40 animate-ping" />
-                <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-red-500 rounded-full blur-xl opacity-30 animate-pulse" />
+                <div className="absolute inset-0 animate-ping rounded-full bg-gradient-to-r from-amber-400 to-orange-500 opacity-40 blur-2xl" />
+                <div className="absolute inset-0 animate-pulse rounded-full bg-gradient-to-r from-yellow-400 to-red-500 opacity-30 blur-xl" />
 
                 {/* Main Lock Container */}
-                <div className="relative bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 p-8 rounded-3xl shadow-2xl transform hover:scale-110 transition-all duration-500 hover:rotate-3">
-                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 to-orange-600 rounded-3xl animate-pulse opacity-50" />
-                  <LockIcon className="h-20 w-20 text-white drop-shadow-2xl relative z-10 animate-bounce" />
+                <div className="relative transform rounded-3xl bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 p-8 shadow-2xl transition-all duration-500 hover:scale-110 hover:rotate-3">
+                  <div className="absolute inset-0 animate-pulse rounded-3xl bg-gradient-to-br from-yellow-300 to-orange-600 opacity-50" />
+                  <LockIcon className="relative z-10 h-20 w-20 animate-bounce text-white drop-shadow-2xl" />
                 </div>
 
                 {/* Decorative Elements */}
-                <div className="absolute -top-3 -right-3 bg-gradient-to-br from-yellow-400 to-amber-500 p-3 rounded-full shadow-lg animate-bounce">
+                <div className="absolute -top-3 -right-3 animate-bounce rounded-full bg-gradient-to-br from-yellow-400 to-amber-500 p-3 shadow-lg">
                   <CrownIcon className="h-6 w-6 text-white" />
                 </div>
 
                 {/* Sparkle Effects */}
-                <Sparkles className="absolute -top-1 -left-1 h-6 w-6 text-yellow-400 animate-ping" />
-                <Sparkles className="absolute -bottom-1 -right-1 h-5 w-5 text-orange-400 animate-pulse" />
+                <Sparkles className="absolute -top-1 -left-1 h-6 w-6 animate-ping text-yellow-400" />
+                <Sparkles className="absolute -right-1 -bottom-1 h-5 w-5 animate-pulse text-orange-400" />
               </div>
             </div>
 
             {/* Content with Animated Gradient Text */}
-            <div className="text-center space-y-4 mb-8">
-              <h2 className="text-xl md:text-2xl font-extrabold bg-gradient-to-r from-amber-600 via-orange-500 to-red-600 bg-clip-text text-transparent animate-gradient-x">
+            <div className="mb-8 space-y-4 text-center">
+              <h2 className="animate-gradient-x bg-gradient-to-r from-amber-600 via-orange-500 to-red-600 bg-clip-text text-xl font-extrabold text-transparent md:text-2xl">
                 {error}
               </h2>
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-200 to-orange-200 blur-lg opacity-50" />
-                <p className="relative text-base md:text-lg text-gray-700 max-w-md mx-auto leading-relaxed font-medium">
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-200 to-orange-200 opacity-50 blur-lg" />
+                <p className="relative mx-auto max-w-md text-base leading-relaxed font-medium text-gray-700 md:text-lg">
                   Dapatkan akses penuh ke pembahasan detail, analisis skor
                   mendalam, dan fitur premium lainnya
                 </p>
@@ -207,7 +207,7 @@ const DocViewerPage = () => {
             </div>
 
             {/* Enhanced Features List with Icons */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3">
               {[
                 { title: 'Pembahasan Lengkap', color: 'amber', icon: '📚' },
                 { title: 'Analisis Mendalam', color: 'orange', icon: '🎯' },
@@ -215,21 +215,21 @@ const DocViewerPage = () => {
               ].map((feature, index) => (
                 <div
                   key={index}
-                  className={`group relative bg-gradient-to-br from-white to-${feature.color}-50 backdrop-blur-sm p-4 rounded-3xl border-2 border-${feature.color}-200 hover:border-${feature.color}-400 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer`}
+                  className={`group relative bg-gradient-to-br from-white to-${feature.color}-50 rounded-3xl border-2 p-4 backdrop-blur-sm border-${feature.color}-200 hover:border-${feature.color}-400 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl`}
                   style={{
                     animationDelay: `${index * 100}ms`,
                   }}
                 >
                   <div
-                    className={`absolute inset-0 bg-gradient-to-r from-${feature.color}-400 to-${feature.color}-600 rounded-3xl opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
+                    className={`absolute inset-0 bg-gradient-to-r from-${feature.color}-400 to-${feature.color}-600 rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-10`}
                   />
                   <div className="flex items-center gap-3">
                     <div
-                      className={`bg-gradient-to-br from-${feature.color}-100 to-${feature.color}-200 p-2.5 rounded-3xl transform group-hover:rotate-12 transition-transform duration-300`}
+                      className={`bg-gradient-to-br from-${feature.color}-100 to-${feature.color}-200 transform rounded-3xl p-2.5 transition-transform duration-300 group-hover:rotate-12`}
                     >
                       <span className="text-2xl">{feature.icon}</span>
                     </div>
-                    <span className="text-sm font-bold text-gray-800 group-hover:text-gray-900 transition-colors">
+                    <span className="text-sm font-bold text-gray-800 transition-colors group-hover:text-gray-900">
                       {feature.title}
                     </span>
                   </div>
@@ -238,8 +238,8 @@ const DocViewerPage = () => {
             </div>
 
             {/* Premium Benefits */}
-            <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-3xl p-6 mb-8 border-2 border-amber-200">
-              <h3 className="text-lg font-bold text-gray-800 mb-4 text-center flex items-center justify-center gap-2">
+            <div className="mb-8 rounded-3xl border-2 border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 p-6">
+              <h3 className="mb-4 flex items-center justify-center gap-2 text-center text-lg font-bold text-gray-800">
                 <CrownIcon className="h-5 w-5 text-amber-600" />
                 Manfaat Premium
               </h3>
@@ -256,9 +256,9 @@ const DocViewerPage = () => {
                     key={i}
                     className="flex items-center gap-2 text-sm text-gray-700"
                   >
-                    <div className="bg-green-500 rounded-full p-1">
+                    <div className="rounded-full bg-green-500 p-1">
                       <svg
-                        className="w-3 h-3 text-white"
+                        className="h-3 w-3 text-white"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -278,18 +278,18 @@ const DocViewerPage = () => {
             </div>
 
             {/* Enhanced Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+            <div className="mb-6 flex flex-col justify-center gap-4 sm:flex-row">
               {status === 400 && (
                 <>
                   <ButtonUpgradeTryout tryoutId={tryoutId || ''}>
                     <Button
                       size="lg"
-                      className="relative overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 hover:from-amber-600 hover:via-orange-600 hover:to-red-600 text-white font-bold px-10 py-7 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 group rounded-3xl"
+                      className="hover:shadow-3xl group relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 px-10 py-7 font-bold text-white shadow-2xl transition-all duration-300 hover:scale-110 hover:from-amber-600 hover:via-orange-600 hover:to-red-600"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" />
-                      <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 animate-shimmer" />
-                      <div className="relative flex items-center gap-3 z-10">
-                        <CrownIcon className="h-6 w-6 group-hover:rotate-12 group-hover:scale-125 transition-all duration-300" />
+                      <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-yellow-300 to-orange-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                      <div className="absolute inset-0 animate-shimmer bg-white opacity-0 group-hover:opacity-20" />
+                      <div className="relative z-10 flex items-center gap-3">
+                        <CrownIcon className="h-6 w-6 transition-all duration-300 group-hover:scale-125 group-hover:rotate-12" />
                         <span className="text-lg">Beli Tryout</span>
                         <Sparkles className="h-5 w-5 animate-pulse" />
                       </div>
@@ -303,9 +303,9 @@ const DocViewerPage = () => {
                     <Button
                       size="lg"
                       variant="outline"
-                      className="w-full border-3 border-amber-400 text-amber-700 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 hover:border-amber-500 font-bold px-10 py-7 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 group rounded-3xl"
+                      className="group w-full rounded-3xl border-3 border-amber-400 px-10 py-7 font-bold text-amber-700 shadow-xl transition-all duration-300 hover:scale-105 hover:border-amber-500 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 hover:shadow-2xl"
                     >
-                      <PlayIcon className="mr-3 h-6 w-6 group-hover:translate-x-2 transition-transform duration-300" />
+                      <PlayIcon className="mr-3 h-6 w-6 transition-transform duration-300 group-hover:translate-x-2" />
                       <span className="text-lg">Ikut Tryout</span>
                     </Button>
                   </Link>
@@ -315,13 +315,13 @@ const DocViewerPage = () => {
               {status === 401 && (
                 <Button
                   size="lg"
-                  className="relative overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 hover:from-amber-600 hover:via-orange-600 hover:to-red-600 text-white font-bold px-10 py-7 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 group w-full sm:w-auto rounded-3xl"
+                  className="hover:shadow-3xl group relative w-full overflow-hidden rounded-3xl bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 px-10 py-7 font-bold text-white shadow-2xl transition-all duration-300 hover:scale-110 hover:from-amber-600 hover:via-orange-600 hover:to-red-600 sm:w-auto"
                   onClick={() => setTransactionPopUp(true)}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" />
-                  <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 animate-shimmer" />
-                  <div className="relative flex items-center justify-center gap-3 z-10">
-                    <Sparkles className="h-6 w-6 group-hover:rotate-45 group-hover:scale-125 transition-all duration-300" />
+                  <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-yellow-300 to-orange-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <div className="absolute inset-0 animate-shimmer bg-white opacity-0 group-hover:opacity-20" />
+                  <div className="relative z-10 flex items-center justify-center gap-3">
+                    <Sparkles className="h-6 w-6 transition-all duration-300 group-hover:scale-125 group-hover:rotate-45" />
                     <span className="text-lg">Beli Subscription</span>
                     <CrownIcon className="h-5 w-5 animate-bounce" />
                   </div>
@@ -330,13 +330,13 @@ const DocViewerPage = () => {
             </div>
 
             {/* Enhanced Bottom Note */}
-            <div className="text-center space-y-3">
+            <div className="space-y-3 text-center">
               <div className="flex items-center justify-center gap-2">
                 <div className="h-px w-12 bg-gradient-to-r from-transparent to-amber-400" />
-                <p className="text-sm text-gray-600 font-medium">
+                <p className="text-sm font-medium text-gray-600">
                   Butuh bantuan?{' '}
                   <SupportDialog>
-                    <button className="text-amber-600 font-bold hover:text-orange-600 transition-colors hover:underline decoration-wavy decoration-2 underline-offset-4 cursor-pointer">
+                    <button className="cursor-pointer font-bold text-amber-600 decoration-wavy decoration-2 underline-offset-4 transition-colors hover:text-orange-600 hover:underline">
                       Hubungi Support
                     </button>
                   </SupportDialog>
@@ -346,15 +346,15 @@ const DocViewerPage = () => {
 
               <div className="flex items-center justify-center gap-4 text-xs text-gray-500">
                 <span className="flex items-center gap-1">
-                  <span className="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                  <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-green-500" />
                   100% Aman
                 </span>
                 <span className="flex items-center gap-1">
-                  <span className="inline-block w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                  <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-blue-500" />
                   Support 24/7
                 </span>
                 <span className="flex items-center gap-1">
-                  <span className="inline-block w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
+                  <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-purple-500" />
                   Money Back
                 </span>
               </div>
@@ -436,13 +436,12 @@ const DocViewerPage = () => {
   }
 
   return (
-    <div className="h-full flex flex-col bg-slate-50/50">
+    <div className="flex h-full flex-col bg-slate-50/50">
       {/* Main Content Area */}
-      <div className="flex-1 min-h-0">
+      <div className="min-h-0 flex-1">
         <ResizablePanelGroup
           autoSaveId="workspace-layout"
           direction={isMobile ? 'vertical' : 'horizontal'}
-          onLayout={() => {}}
           className="h-full"
         >
           <ResizablePanel
@@ -471,7 +470,7 @@ export default DocViewerPage;
 const ResizableHandleComponent = () => {
   return (
     <ResizableHandle
-      className="relative z-42 w-[5px] bg-slate-200/80 transition-colors duration-200 data-[panel-group-direction=vertical]:h-[5px] data-[panel-group-direction=vertical]:w-full hover:bg-blue-400 active:bg-blue-500"
+      className="relative z-42 w-[5px] bg-slate-200/80 transition-colors duration-200 hover:bg-blue-400 active:bg-blue-500 data-[panel-group-direction=vertical]:h-[5px] data-[panel-group-direction=vertical]:w-full"
       withHandle
     />
   );

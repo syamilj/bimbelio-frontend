@@ -101,7 +101,7 @@ export const getGeneral = async (
 
   if (more?.onLoading) await more.onLoading();
 
-  let showToast = true;
+  let showToast: boolean;
 
   try {
     const res = await cachedGet(url, more?.params, more?.cacheMs);
@@ -283,7 +283,7 @@ export const mutateGeneral = async (
 
   if (more.onLoading) await more.onLoading();
 
-  let showToast = true;
+  let showToast: boolean;
   // if (more.hideToast === true) showToast = false;
 
   try {

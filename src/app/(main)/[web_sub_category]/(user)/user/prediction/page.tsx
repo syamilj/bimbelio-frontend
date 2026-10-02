@@ -18,9 +18,9 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useGet } from '@/lib/fetch-helper/useGet';
+import { hexToRgba } from '@/lib/theme/track-theme';
 import { cn } from '@/lib/utils';
 import { IconCrown } from '@/styles/icon';
-import { hexToRgba } from '@/styles/main-styles';
 import {
   Prediction,
   PredictionScore,
@@ -48,59 +48,59 @@ export default function UTBKSIMAKPredictor() {
   return (
     <TooltipProvider>
       <div className="min-h-screen bg-gray-50">
-        <div className="flex flex-col gap-4 mx-auto px-4 py-8">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-main rounded-3xl mb-6">
-              <Calculator className="w-8 h-8 text-white" />
+        <div className="mx-auto flex flex-col gap-4 px-4 py-8">
+          <div className="mb-12 text-center">
+            <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-3xl bg-main">
+              <Calculator className="h-8 w-8 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="mb-2 text-3xl font-bold text-gray-900">
               Sistem Prediksi Kelulusan
             </h1>
-            <h2 className="text-lg text-main font-semibold mb-4">
+            <h2 className="mb-4 text-lg font-semibold text-main">
               UTBK + SIMAK UI
             </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <p className="mx-auto max-w-2xl text-gray-600">
               Hitung kemungkinan kelulusan seleksi masuk UI dengan menggabungkan
               nilai UTBK (50%) dan SIMAK UI (50%)
             </p>
           </div>
 
           <Card
-            className="mt-0 border border-r-0 border-l-4 border-main rounded-3xl"
+            className="mt-0 rounded-3xl border border-r-0 border-l-4 border-main"
             // style={{
             //   boxShadow: `0px 0px 10px ${websiteSubCategory?.main_color}`,
             // }}
           >
             <CardHeader className="p-3">
               <Card
-                className="relative overflow-hidden rounded-3xl border-none text-white animate-fade-in-up py-8"
+                className="animate-fade-in-up relative overflow-hidden rounded-3xl border-none py-8 text-white"
                 style={{
                   backgroundImage: `linear-gradient(to bottom right, ${websiteSubCategory?.main_color}, ${hexToRgba(websiteSubCategory?.main_color, 0.3)}, ${websiteSubCategory?.secondary_color})`,
                 }}
               >
                 {/* Background Icon Dekoratif */}
-                <div className="absolute -top-10 -right-10 opacity-20 rotate-12 scale-150">
-                  <Calculator className="w-48 h-48" />
+                <div className="absolute -top-10 -right-10 scale-150 rotate-12 opacity-20">
+                  <Calculator className="h-48 w-48" />
                 </div>
 
                 {/* Sparkles Animated Background */}
-                <div className="absolute inset-0 bg-[url('/sparkle.svg')] bg-cover opacity-10 animate-pulse-slow" />
+                <div className="animate-pulse-slow absolute inset-0 bg-[url('/sparkle.svg')] bg-cover opacity-10" />
 
-                <CardHeader className="text-center z-10 relative">
+                <CardHeader className="relative z-10 text-center">
                   <CardTitle className="text-3xl font-extrabold drop-shadow-lg">
                     🚀 Mulai Prediksi Kelulusanmu!
                   </CardTitle>
                 </CardHeader>
 
                 <CardContent className="relative z-10">
-                  <p className="text-center text-base font-medium max-w-md mx-auto mb-6 drop-shadow-lg">
+                  <p className="mx-auto mb-6 max-w-md text-center text-base font-medium drop-shadow-lg">
                     Gabungkan nilai UTBK & SIMAK UI, dan lihat seberapa besar
                     peluangmu masuk UI!
                   </p>
                   <div className="flex justify-center">
                     <Link href={'prediction/step?step=new'}>
                       <Button
-                        className="relative px-8 py-3 rounded-full bg-white text-main hover:text-white font-extrabold shadow-xl hover:scale-105 transition-transform animate-pulse-fast"
+                        className="animate-pulse-fast relative rounded-full bg-white px-8 py-3 font-extrabold text-main shadow-xl transition-transform hover:scale-105 hover:text-white"
                         onClick={() => setCurrentStep(1)}
                       >
                         🎯 Mulai Sekarang
@@ -125,7 +125,7 @@ export default function UTBKSIMAKPredictor() {
                   key={hIndex}
                   className="relative overflow-hidden shadow-lg"
                 >
-                  <div className="absolute bottom-8 -right-8 z-1 text-main/20">
+                  <div className="absolute -right-8 bottom-8 z-1 text-main/20">
                     <IconCrown
                       w={180}
                       className="rotate-[-20deg]"
@@ -134,7 +134,7 @@ export default function UTBKSIMAKPredictor() {
                   {hItem.Tryout && (
                     <Badge
                       className={cn(
-                        'absolute right-4 top-4 bg-main text-white',
+                        'absolute top-4 right-4 bg-main text-white',
                       )}
                     >
                       {hItem.Tryout.title}
@@ -152,7 +152,7 @@ export default function UTBKSIMAKPredictor() {
                           key={psIndex}
                           className="mb-2"
                         >
-                          <div className="flex items-center justify-between w-full mb-2">
+                          <div className="mb-2 flex w-full items-center justify-between">
                             <h3 className="text-lg font-semibold">
                               {psItem.type.replace('_', ' ')}
                             </h3>
@@ -164,9 +164,9 @@ export default function UTBKSIMAKPredictor() {
                           {psItem.PredictionScoreDetail.map((psdItem) => (
                             <div
                               key={psdItem.id}
-                              className="flex justify-between items-center mb-2"
+                              className="mb-2 flex items-center justify-between"
                             >
-                              <div className="flex items-center ml-2">
+                              <div className="ml-2 flex items-center">
                                 <span className="text-sm">
                                   {psdItem.subCategory}
                                 </span>
@@ -190,7 +190,7 @@ export default function UTBKSIMAKPredictor() {
                           >
                             <Button
                               className={cn(
-                                'w-full bg-gradient text-white md:hover:opacity-90',
+                                'bg-gradient w-full text-white md:hover:opacity-90',
                               )}
                             >
                               Lihat hasil
@@ -213,7 +213,7 @@ export default function UTBKSIMAKPredictor() {
                   <Skeleton
                     key={i}
                     className={
-                      'h-[360px] mb:h-[400px] md:h-[400px] md2:h-[380px] xl:h-[450px] xxxl:h-[500px]'
+                      'h-[360px] mb:h-[400px] md2:h-[380px] xxxl:h-[500px] md:h-[400px] xl:h-[450px]'
                     }
                   />
                 ))}
@@ -221,34 +221,34 @@ export default function UTBKSIMAKPredictor() {
             )}
           </div>
           <Card
-            className="mt-4 border border-r-0 border-l-4 border-main rounded-3xl"
+            className="mt-4 rounded-3xl border border-r-0 border-l-4 border-main"
             // style={{
             //   boxShadow: `0px 0px 10px ${websiteSubCategory?.main_color}`,
             // }}
           >
             <CardHeader className="p-3">
               <Card
-                className="relative overflow-hidden rounded-3xl border-none text-white animate-fade-in-up py-8"
+                className="animate-fade-in-up relative overflow-hidden rounded-3xl border-none py-8 text-white"
                 style={{
                   backgroundImage: `linear-gradient(to bottom right, ${websiteSubCategory?.main_color}, ${hexToRgba(websiteSubCategory?.main_color, 0.3)}, ${websiteSubCategory?.secondary_color})`,
                 }}
               >
                 {/* Background Icon Dekoratif */}
-                <div className="absolute -top-10 -right-10 opacity-20 rotate-12 scale-150">
-                  <Target className="w-48 h-48" />
+                <div className="absolute -top-10 -right-10 scale-150 rotate-12 opacity-20">
+                  <Target className="h-48 w-48" />
                 </div>
 
                 {/* Sparkles Animated Background */}
-                <div className="absolute inset-0 bg-[url('/sparkle.svg')] bg-cover opacity-10 animate-pulse-slow" />
+                <div className="animate-pulse-slow absolute inset-0 bg-[url('/sparkle.svg')] bg-cover opacity-10" />
 
-                <CardHeader className="text-center z-10 relative">
+                <CardHeader className="relative z-10 text-center">
                   <CardTitle className="text-3xl font-extrabold drop-shadow-lg">
                     🎓 Contoh Hasil Prediksi Kelulusan
                   </CardTitle>
                 </CardHeader>
 
                 <CardContent className="relative z-10">
-                  <p className="text-center text-base font-medium max-w-md mx-auto mb-6 drop-shadow-lg">
+                  <p className="mx-auto mb-6 max-w-md text-center text-base font-medium drop-shadow-lg">
                     Begini gambaran hasil akhir yang akan kamu dapatkan setelah
                     mengisi data prediksi. Yuk lihat seperti apa skornya!
                   </p>

@@ -1,43 +1,110 @@
+'use client';
+
 import { GripVertical } from 'lucide-react';
-import * as ResizablePrimitive from 'react-resizable-panels';
+import * as React from 'react';
+import {
+  Group,
+  Panel,
+  Separator,
+  useDefaultLayout,
+} from 'react-resizable-panels';
 
 import { cn } from '@/lib/utils';
 
-const ResizablePanelGroup = ({
-  className,
+// react-resizable-panels v4: angka pada ukuran panel berarti piksel.
+// Wrapper ini mempertahankan kontrak lama (angka = persen) agar pemanggil
+// tidak berubah perilaku.
+const toPercent = (size?: number | string) =>
+  typeof size === 'number' ? `${size}%` : size;
+
+type GroupProps = Omit<React.ComponentProps<typeof Group>, 'orientation'> & {
+  direction?: 'horizontal' | 'vertical';
+  /** Simpan layout di localStorage dengan kunci ini. */
+  autoSaveId?: string;
+};
+
+function PersistedGroup({
+  autoSaveId,
   ...props
-}: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) => (
-  <ResizablePrimitive.PanelGroup
-    className={cn(
+}: Omit<GroupProps, 'direction' | 'autoSaveId'> & {
+  autoSaveId: string;
+  orientation: 'horizontal' | 'vertical';
+}) {
+  const { defaultLayout, onLayoutChanged } = useDefaultLayout({
+    id: autoSaveId,
+  });
+  return (
+    <Group
+      defaultLayout={defaultLayout}
+      onLayoutChanged={onLayoutChanged}
+      {...props}
+    />
+  );
+}
+
+function ResizablePanelGroup({
+  className,
+  direction = 'horizontal',
+  autoSaveId,
+  ...props
+}: GroupProps) {
+  const shared = {
+    ...props,
+    orientation: direction,
+    'data-panel-group-direction': direction,
+    className: cn(
       'flex h-full w-full data-[panel-group-direction=vertical]:flex-col',
       className,
-    )}
-    {...props}
-  />
-);
+    ),
+  };
+  return autoSaveId ? (
+    <PersistedGroup
+      autoSaveId={autoSaveId}
+      {...shared}
+    />
+  ) : (
+    <Group {...shared} />
+  );
+}
 
-const ResizablePanel = ResizablePrimitive.Panel;
+function ResizablePanel({
+  defaultSize,
+  minSize,
+  maxSize,
+  collapsedSize,
+  ...props
+}: React.ComponentProps<typeof Panel>) {
+  return (
+    <Panel
+      defaultSize={toPercent(defaultSize)}
+      minSize={toPercent(minSize)}
+      maxSize={toPercent(maxSize)}
+      collapsedSize={toPercent(collapsedSize)}
+      {...props}
+    />
+  );
+}
 
-const ResizableHandle = ({
+function ResizableHandle({
   withHandle,
   className,
   ...props
-}: React.ComponentProps<typeof ResizablePrimitive.PanelResizeHandle> & {
-  withHandle?: boolean;
-}) => (
-  <ResizablePrimitive.PanelResizeHandle
-    className={cn(
-      'relative flex w-px items-center justify-center bg-border after:absolute after:inset-y-0 after:left-1/2 after:w-1 after:-translate-x-1/2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 data-[panel-group-direction=vertical]:h-full data-[panel-group-direction=vertical]:w-full data-[panel-group-direction=vertical]:after:left-0 data-[panel-group-direction=vertical]:after:-translate-y-1/2 data-[panel-group-direction=vertical]:after:translate-x-0 [&[data-panel-group-direction=vertical]>div]:rotate-90',
-      className,
-    )}
-    {...props}
-  >
-    {withHandle && (
-      <div className="z-10 flex h-4 w-3 items-center justify-center rounded-3xl border bg-border">
-        <GripVertical className="h-2.5 w-2.5" />
-      </div>
-    )}
-  </ResizablePrimitive.PanelResizeHandle>
-);
+}: React.ComponentProps<typeof Separator> & { withHandle?: boolean }) {
+  return (
+    <Separator
+      className={cn(
+        'relative flex w-px items-center justify-center bg-line focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none aria-[orientation=horizontal]:h-px aria-[orientation=horizontal]:w-full',
+        className,
+      )}
+      {...props}
+    >
+      {withHandle && (
+        <div className="z-10 flex h-5 w-3 items-center justify-center rounded-sm border border-line bg-surface">
+          <GripVertical className="size-3" />
+        </div>
+      )}
+    </Separator>
+  );
+}
 
 export { ResizableHandle, ResizablePanel, ResizablePanelGroup };

@@ -39,7 +39,7 @@ import { exportToExcel } from '@/lib/utils/excel';
 import { TransactionStatusTypeEnum, User } from '@/types/database';
 import { MidtransTransaction } from '@/types/midtrans-type';
 import { format } from 'date-fns';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 export default function TransactionsPage() {
   const [isExporting, setIsExporting] = useState(false);
@@ -179,14 +179,14 @@ export default function TransactionsPage() {
             <CardTitle>List Transactions</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid gap-4 md:grid-cols-4 mb-4">
+            <div className="mb-4 grid gap-4 md:grid-cols-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
                 <Input
                   placeholder="Cari email atau nama user..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="pl-10 rounded-3xl border-gray-200 focus:border-blue-500"
+                  className="rounded-3xl border-gray-200 pl-10 focus:border-blue-500"
                 />
               </div>
               <Select
@@ -235,8 +235,8 @@ export default function TransactionsPage() {
                           name={transaction.user.name}
                           image={transaction.user.image}
                         />
-                        <div className="flex flex-col min-w-[140px]">
-                          <span className="font-medium text-black/70 whitespace-nowrap">
+                        <div className="flex min-w-[140px] flex-col">
+                          <span className="font-medium whitespace-nowrap text-black/70">
                             {transaction.user.name}
                           </span>
                           <span className="text-sm text-gray-500">
@@ -315,7 +315,7 @@ const DetailTransaction = ({
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="mb:max-w-md space-y-4">
+      <DialogContent className="space-y-4 mb:max-w-md">
         <DialogHeader>
           <DialogTitle>Detail Transaksi</DialogTitle>
         </DialogHeader>
@@ -348,7 +348,7 @@ const DetailTransaction = ({
         <hr />
 
         <div>
-          <div className="font-semibold mb-2">User</div>
+          <div className="mb-2 font-semibold">User</div>
           <div className="flex items-center gap-3">
             {/* <img
               src={transaction.user.image}
@@ -373,7 +373,7 @@ const DetailTransaction = ({
             <hr />
 
             <div>
-              <div className="font-semibold mb-2">Tryout</div>
+              <div className="mb-2 font-semibold">Tryout</div>
               <p>
                 <span className="font-medium">Judul:</span>{' '}
                 {transaction.customer_details?.title_tryout}
@@ -389,11 +389,11 @@ const DetailTransaction = ({
         <hr />
 
         <div>
-          <div className="font-semibold mb-2">Item</div>
+          <div className="mb-2 font-semibold">Item</div>
           {transaction.item_details.map((item) => (
             <div
               key={item.id}
-              className="border p-2 rounded mb-2"
+              className="mb-2 rounded border p-2"
             >
               <p>
                 <span className="font-medium">Nama:</span> {item.name}
@@ -433,7 +433,7 @@ const UserAvatar = ({
     .toUpperCase();
 
   return imgError || !image ? (
-    <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-sm font-medium text-gray-600">
+    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 text-sm font-medium text-gray-600">
       {initials}
     </div>
   ) : (

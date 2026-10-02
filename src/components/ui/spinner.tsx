@@ -1,24 +1,28 @@
 'use client';
 
+// Pemuat versi lama. Semua varian kini memakai BubbleLoader agar seragam;
+// kode baru langsung memakai @/components/patterns/page-loader.
+import { BubbleLoader } from '@/components/patterns/bubble-loader';
 import { cn } from '@/lib/utils';
 import { useStorageSocket } from '@/supabaseClient';
-import { Loader2 } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogTitle } from './dialog';
 import { Progress } from './progress';
 
-export function Spinner({ width }: { width?: string }) {
+/** Spinner kecil untuk di dalam tombol/baris. */
+export function Spinner({ className }: { width?: string; className?: string }) {
   return (
-    <Loader2
-      className={` ${width ? `h-[${width}] w-[${width}]` : 'h-5 w-5'} animate-spin`}
+    <LoaderCircle
+      className={cn('size-5 animate-spin text-ink-muted', className)}
     />
   );
 }
 
 export function SpinnerPage() {
   return (
-    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform">
-      <Spinner />
+    <div className="absolute inset-0 flex items-center justify-center">
+      <BubbleLoader />
     </div>
   );
 }
@@ -27,58 +31,48 @@ export function SpinnerPageCentered({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        'fixed left-0 top-0 z-1000 flex h-full w-full items-center justify-center bg-white',
+        'fixed inset-0 z-50 flex items-center justify-center bg-paper',
         className,
       )}
     >
-      <Spinner />
+      <BubbleLoader />
     </div>
   );
 }
 
-// export function PageError({
-//   className,
-//   message,
-// }: {
-//   className?: string;
-//   message?: any;
-// }) {
-//   return (
-//     <div
-//       className={cn(
-//         'fixed left-0 top-0 z-1000 flex h-full w-full items-center justify-center bg-white',
-//         className,
-//       )}
-//     >
-//       {message ? JSON.stringify(message) : 'Page Error, Please Refresh'}
-//     </div>
-//   );
-// }
-
 export function SpinnerCentered() {
   return (
-    <div className="flex h-full items-center justify-center">
-      <Spinner />
+    <div className="flex h-full min-h-32 items-center justify-center">
+      <BubbleLoader />
+    </div>
+  );
+}
+
+function OverlayMessage({
+  heading,
+  children,
+}: {
+  heading?: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-3 text-center">
+      <BubbleLoader label={heading ?? 'Memuat…'} />
+      {heading && <p className="text-base font-semibold text-ink">{heading}</p>}
+      {children}
     </div>
   );
 }
 
 export function LoadingPopUp({ title }: { title?: string }) {
   return (
-    <Dialog open={true}>
+    <Dialog open>
       <DialogContent
-        className="overflow-hidden border-none bg-[#fff0] p-0 shadow-none"
-        classOverlay="bg-[#ffffffe3]"
         hideClose
+        className="max-w-xs justify-items-center py-8"
       >
-        <div className="z-100000000 flex items-center justify-center p-6">
-          <div className="flex flex-col items-center">
-            <Loader2 className="h-8 w-[2rem] animate-spin" />
-            <DialogTitle className="text-center text-[1.1rem] font-medium">
-              {title ? title : 'Loading...'}{' '}
-            </DialogTitle>
-          </div>
-        </div>
+        <DialogTitle className="sr-only">{title ?? 'Memuat'}</DialogTitle>
+        <OverlayMessage heading={title ?? 'Memuat…'} />
       </DialogContent>
     </Dialog>
   );
@@ -91,35 +85,23 @@ export default function LoadingPageWithText({
   heading?: string;
   loading: boolean;
 }) {
+  if (!loading) return null;
   return (
-    <>
-      {loading && (
-        <div className="fixed left-0 top-0 z-201 flex h-full w-full select-none items-center justify-center bg-[#ffffff52] backdrop-blur-[6px]">
-          <div className="flex flex-col items-center gap-[.5rem] text-center">
-            <Loader2 className="h-16 w-16 animate-spin text-[#464646]" />
-            {heading && (
-              <p className="text-[1.3rem] text-[#464646]">{heading}</p>
-            )}
-          </div>
-        </div>
-      )}
-    </>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-surface/80 backdrop-blur-sm select-none">
+      <OverlayMessage heading={heading} />
+    </div>
   );
 }
 
 export function LoadingComponentWithText({ heading }: { heading?: string }) {
   return (
-    <div className="flex w-full select-none items-center justify-center h-[75vh]">
-      <div className="flex flex-col items-center gap-[.5rem] text-center">
-        <Loader2 className="h-16 w-16 animate-spin text-[#464646]" />
-        <p className="text-[1.3rem] text-[#464646]">
-          {heading ? heading : 'Loading'}
-        </p>
-      </div>
+    <div className="flex min-h-[60vh] w-full items-center justify-center">
+      <OverlayMessage heading={heading ?? 'Memuat…'} />
     </div>
   );
 }
 
+/** Overlay unggahan dengan persentase dari socket storage. */
 export function LoadingPageStorage({
   heading,
   loading,
@@ -127,69 +109,32 @@ export function LoadingPageStorage({
   heading?: string;
   loading: boolean;
 }) {
-  const [percentage, setPercentage] = useState<number | undefined>(undefined);
-
-  const { socketId, on, off } = useStorageSocket();
-  console.log({ storage: socketId });
-  console.log({ percentage });
+  const [percentage, setPercentage] = useState<number>();
+  const { on, off } = useStorageSocket();
 
   useEffect(() => {
-    console.log('Setting Loading Storage');
-    // Listen ke notification:reminder
     on('loading', (data: { percentage: number }) => {
-      console.log('loading diterima:', data);
-      // setNotification(data);
-      setPercentage(data.percentage);
-      if (data.percentage === 100) {
-        setPercentage(undefined);
-      }
+      setPercentage(data.percentage === 100 ? undefined : data.percentage);
     });
     return () => {
-      console.log('Cleaning up notification listener for userId:');
-      off(`loading`);
+      off('loading');
       setPercentage(undefined);
     };
   }, []);
 
+  if (!loading) return null;
   return (
-    <>
-      {/* <Button
-        className="fixed top-0 left-0 z-[99999]"
-        onClick={() => {
-          emit('join:loading', { loadingId: '123' });
-        }}
-      >
-        Test Socket
-      </Button> */}
-      {loading && (
-        <div className="fixed left-0 top-0 z-[9999] flex h-full w-full select-none items-center justify-center bg-[#ffffff52] backdrop-blur-[6px]">
-          <div className="flex flex-col items-center gap-[.5rem] text-center">
-            <Loader2 className="h-16 w-16 animate-spin text-[#464646]" />
-            {percentage !== undefined && (
-              <div className="w-64 mt-4">
-                <Progress
-                  value={percentage}
-                  className="h-2 bg-gray-300"
-                  classNameThumb="bg-gray-600"
-                />
-                {heading && (
-                  <p className="text-[1.3rem] text-[#464646] mt-2">
-                    {heading} {percentage.toFixed(1)}%
-                  </p>
-                )}
-                {!heading && (
-                  <p className="text-[1.3rem] text-[#464646] mt-2">
-                    {percentage.toFixed(1)}%
-                  </p>
-                )}
-              </div>
-            )}
-            {percentage === undefined && heading && (
-              <p className="text-[1.3rem] text-[#464646] mt-2">{heading}</p>
-            )}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-surface/80 backdrop-blur-sm select-none">
+      <OverlayMessage heading={heading}>
+        {percentage !== undefined && (
+          <div className="flex w-64 flex-col gap-2">
+            <Progress value={percentage} />
+            <p className="text-sm text-ink-muted tabular-nums">
+              {percentage.toFixed(1)}%
+            </p>
           </div>
-        </div>
-      )}
-    </>
+        )}
+      </OverlayMessage>
+    </div>
   );
 }

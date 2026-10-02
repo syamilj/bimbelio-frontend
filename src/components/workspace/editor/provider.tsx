@@ -7,14 +7,9 @@ import {
   processAllLatex,
 } from '@/components/ui/blocknote-editor/latex-helper';
 import {
-  BlockNoteEditor,
   BlockNoteSchema,
-  BlockSchemaFromSpecs,
   defaultBlockSpecs,
   defaultInlineContentSpecs,
-  defaultStyleSpecs,
-  InlineContentSchemaFromSpecs,
-  StyleSchemaFromSpecs,
 } from '@blocknote/core';
 import {
   DefaultReactSuggestionItem,
@@ -140,8 +135,8 @@ const inlineContentSpecs = {
 
 const blockSpecs = {
   ...defaultBlockSpecs,
-  alert: AlertBlock,
-  highlight: HighlighBlock,
+  alert: AlertBlock(),
+  highlight: HighlighBlock(),
 };
 
 export const schema = BlockNoteSchema.create({
@@ -149,11 +144,7 @@ export const schema = BlockNoteSchema.create({
   inlineContentSpecs,
 });
 
-export type BlocknoteEditorType = BlockNoteEditor<
-  BlockSchemaFromSpecs<typeof blockSpecs>,
-  InlineContentSchemaFromSpecs<typeof inlineContentSpecs>,
-  StyleSchemaFromSpecs<typeof defaultStyleSpecs>
->;
+export type BlocknoteEditorType = typeof schema.BlockNoteEditor;
 
 export const getSlashMenuItems = (
   editor: BlocknoteEditorType,
