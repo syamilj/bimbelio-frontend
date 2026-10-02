@@ -1,6 +1,6 @@
 'use client';
 
-import { useGuest } from '@/components/layout/layoutGuest';
+import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
@@ -46,7 +46,9 @@ type LiveLearningDataType = LiveClass & {
 };
 
 const LiveClassSection: React.FC = () => {
-  const { setShowAuth } = useGuest();
+  const {
+    useAuth: { setShowAuth },
+  } = useAppContext();
   const { websiteSubCategory, mainColor, secondaryColor } =
     useWebsiteSubCategory();
   const { data: session } = useSession();
@@ -80,27 +82,27 @@ const LiveClassSection: React.FC = () => {
     <section
       id="live-learning"
       className={cn(
-        'py-16 md:py-20 px-4 bg-white',
+        'bg-white px-4 py-16 md:py-20',
         !isLoading && (!liveClasses || liveClasses.length === 0) && 'hidden',
       )}
     >
-      <div className="max-w-5xl mx-auto">
+      <div className="mx-auto max-w-5xl">
         {/* Header */}
-        <div className="text-center mb-10">
+        <div className="mb-10 text-center">
           <span
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white mb-4"
+            className="mb-4 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-white"
             style={{ backgroundColor: mainColor }}
           >
-            <Video className="w-4 h-4" />
+            <Video className="h-4 w-4" />
             Live Class
           </span>
 
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
             Belajar Bareng{' '}
             <span style={{ color: mainColor }}>Tutor Alumni PTN</span>
           </h2>
 
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-gray-600">
             198+ sesi live class interaktif. Tanya langsung, diskusi real-time,
             bukan cuma nonton video.
           </p>
@@ -110,13 +112,13 @@ const LiveClassSection: React.FC = () => {
         {!isLoading && liveClassesFree.length > 0 && (
           <>
             <div className="mb-12">
-              <div className="flex items-center gap-3 mb-4">
+              <div className="mb-4 flex items-center gap-3">
                 <div
                   className="h-px flex-1"
                   style={{ backgroundColor: `${mainColor}30` }}
                 />
                 <span
-                  className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold text-white"
+                  className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold text-white"
                   style={{ backgroundColor: mainColor }}
                 >
                   BimLive Gratis
@@ -126,7 +128,7 @@ const LiveClassSection: React.FC = () => {
                   style={{ backgroundColor: `${mainColor}30` }}
                 />
               </div>
-              <div className="flex overflow-x-auto touch-pan-x md:grid md:grid-cols-3 gap-5 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
+              <div className="scrollbar-hide -mx-4 flex touch-pan-x snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-4 md:mx-0 md:grid md:grid-cols-3 md:px-0 md:pb-0">
                 {liveClassesFree?.slice(0, 6).map((liveClass) => {
                   const status = getStatusLabel(liveClass.status);
                   const accesType =
@@ -136,21 +138,21 @@ const LiveClassSection: React.FC = () => {
                   return (
                     <div
                       key={liveClass.id}
-                      className="group cursor-default min-w-[85%] sm:min-w-[350px] md:min-w-0 snap-center"
+                      className="group min-w-[85%] cursor-default snap-center sm:min-w-[350px] md:min-w-0"
                     >
-                      <Card className="overflow-hidden rounded-3xl border-2 border-gray-100 hover:border-gray-200 transition-all bg-white h-full shadow-sm">
+                      <Card className="h-full overflow-hidden rounded-3xl border-2 border-gray-100 bg-white shadow-sm transition-all hover:border-gray-200">
                         <CardContent className="p-0">
                           {/* Header with status */}
                           <div
                             className={cn(
-                              'h-24 relative flex items-center justify-center',
+                              'relative flex h-24 items-center justify-center',
                               liveClass.image && 'h-full',
                             )}
                             style={{ backgroundColor: `${mainColor}10` }}
                           >
                             {!liveClass.image && (
                               <PlayCircle
-                                className="w-12 h-12"
+                                className="h-12 w-12"
                                 style={{ color: mainColor }}
                               />
                             )}
@@ -165,7 +167,7 @@ const LiveClassSection: React.FC = () => {
                             <div className="absolute top-3 right-3 flex gap-2">
                               {status.label.length > 0 && (
                                 <span
-                                  className="px-3 py-1 rounded-full text-xs font-semibold text-white"
+                                  className="rounded-full px-3 py-1 text-xs font-semibold text-white"
                                   style={{ backgroundColor: status.color }}
                                 >
                                   {status.label}
@@ -176,34 +178,34 @@ const LiveClassSection: React.FC = () => {
 
                           {/* Content */}
                           <div className="p-4">
-                            <div className="flex justify-between w-full">
+                            <div className="flex w-full justify-between">
                               <p
-                                className="text-xs font-semibold mb-1"
+                                className="mb-1 text-xs font-semibold"
                                 style={{ color: mainColor }}
                               >
                                 {liveClass.Category?.name || 'Live Class'}
                               </p>
                               <span
                                 className={cn(
-                                  'px-2 py-1 rounded-full text-xs font-semibold text-white',
+                                  'rounded-full px-2 py-1 text-xs font-semibold text-white',
                                   liveClass.accessType === 'PREMIUM'
                                     ? 'bg-main'
                                     : 'bg-emerald-500',
                                 )}
                               >
                                 {liveClass.accessType === 'PREMIUM' && (
-                                  <Gem className="w-3.5 h-3.5 inline-block mr-1 -mt-0.5" />
+                                  <Gem className="-mt-0.5 mr-1 inline-block h-3.5 w-3.5" />
                                 )}
                                 {accesType}
                               </span>
                             </div>
-                            <h3 className="font-semibold text-base text-gray-900 line-clamp-2 mb-3 group-hover:opacity-80 transition-opacity">
+                            <h3 className="mb-3 line-clamp-2 text-base font-semibold text-gray-900 transition-opacity group-hover:opacity-80">
                               {liveClass.title}
                             </h3>
 
                             {/* Instructor */}
-                            <div className="flex items-center gap-2 mb-3">
-                              <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden">
+                            <div className="mb-3 flex items-center gap-2">
+                              <div className="h-8 w-8 overflow-hidden rounded-full bg-gray-200">
                                 {liveClass.Instructor?.image ? (
                                   <Image
                                     src={liveClass.Instructor.image}
@@ -214,7 +216,7 @@ const LiveClassSection: React.FC = () => {
                                   />
                                 ) : (
                                   <div
-                                    className="w-full h-full flex items-center justify-center text-white text-xs font-semibold"
+                                    className="flex h-full w-full items-center justify-center text-xs font-semibold text-white"
                                     style={{ backgroundColor: mainColor }}
                                   >
                                     {liveClass.Instructor?.name?.charAt(0) ||
@@ -234,9 +236,9 @@ const LiveClassSection: React.FC = () => {
                             </div>
 
                             {/* Meta */}
-                            <div className="flex items-center gap-4 text-xs text-gray-500 mb-3">
+                            <div className="mb-3 flex items-center gap-4 text-xs text-gray-500">
                               <div className="flex items-center gap-1">
-                                <Calendar className="w-3.5 h-3.5" />
+                                <Calendar className="h-3.5 w-3.5" />
                                 <span>
                                   {new Date(
                                     liveClass.startDate,
@@ -247,7 +249,7 @@ const LiveClassSection: React.FC = () => {
                                 </span>
                               </div>
                               <div className="flex items-center gap-1">
-                                <Clock className="w-3.5 h-3.5" />
+                                <Clock className="h-3.5 w-3.5" />
                                 <span>
                                   {new Date(
                                     liveClass.startDate,
@@ -261,7 +263,7 @@ const LiveClassSection: React.FC = () => {
 
                             {!session ? (
                               <Button
-                                className="w-full h-12 text-white font-semibold rounded-3xl shadow-md hover:shadow-lg transition-all duration-300 group cursor-pointer"
+                                className="group h-12 w-full cursor-pointer rounded-3xl font-semibold text-white shadow-md transition-all duration-300 hover:shadow-lg"
                                 style={{
                                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                                 }}
@@ -277,7 +279,7 @@ const LiveClassSection: React.FC = () => {
                             ) : (
                               <Link href={href}>
                                 <Button
-                                  className="w-full h-12 text-white font-semibold rounded-3xl shadow-md hover:shadow-lg transition-all duration-300 group cursor-pointer"
+                                  className="group h-12 w-full cursor-pointer rounded-3xl font-semibold text-white shadow-md transition-all duration-300 hover:shadow-lg"
                                   style={{
                                     background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                                   }}
@@ -299,17 +301,17 @@ const LiveClassSection: React.FC = () => {
 
         {/* All Live Class Cards Section */}
         {isLoading ? (
-          <div className="flex overflow-x-auto touch-pan-x md:grid md:grid-cols-3 gap-5 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
+          <div className="scrollbar-hide -mx-4 flex touch-pan-x snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-4 md:mx-0 md:grid md:grid-cols-3 md:px-0 md:pb-0">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <Card
                 key={i}
-                className="overflow-hidden rounded-3xl min-w-[85%] sm:min-w-[350px] md:min-w-0 snap-center"
+                className="min-w-[85%] snap-center overflow-hidden rounded-3xl sm:min-w-[350px] md:min-w-0"
               >
                 <CardContent className="p-0">
-                  <div className="h-32 bg-gray-200 animate-pulse" />
-                  <div className="p-4 space-y-3">
-                    <div className="h-4 bg-gray-200 rounded animate-pulse" />
-                    <div className="h-6 bg-gray-200 rounded animate-pulse" />
+                  <div className="h-32 animate-pulse bg-gray-200" />
+                  <div className="space-y-3 p-4">
+                    <div className="h-4 animate-pulse rounded bg-gray-200" />
+                    <div className="h-6 animate-pulse rounded bg-gray-200" />
                   </div>
                 </CardContent>
               </Card>
@@ -317,23 +319,23 @@ const LiveClassSection: React.FC = () => {
           </div>
         ) : (
           <>
-            <div className="flex items-center gap-3 mb-4">
+            <div className="mb-4 flex items-center gap-3">
               <div
                 className="h-px flex-1"
                 style={{ backgroundColor: `${mainColor}30` }}
               />
               <span
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold text-white"
+                className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold text-white"
                 style={{ backgroundColor: mainColor }}
               >
-                <Gem className="w-4 h-4" /> BimLive Premium
+                <Gem className="h-4 w-4" /> BimLive Premium
               </span>
               <div
                 className="h-px flex-1"
                 style={{ backgroundColor: `${mainColor}30` }}
               />
             </div>
-            <div className="flex overflow-x-auto touch-pan-x md:grid md:grid-cols-3 gap-5 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
+            <div className="scrollbar-hide -mx-4 flex touch-pan-x snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-4 md:mx-0 md:grid md:grid-cols-3 md:px-0 md:pb-0">
               {liveClasses?.slice(0, 6).map((liveClass) => {
                 const status = getStatusLabel(liveClass.status);
                 const accesType =
@@ -343,21 +345,21 @@ const LiveClassSection: React.FC = () => {
                 return (
                   <div
                     key={liveClass.id}
-                    className="group cursor-default min-w-[85%] sm:min-w-[350px] md:min-w-0 snap-center"
+                    className="group min-w-[85%] cursor-default snap-center sm:min-w-[350px] md:min-w-0"
                   >
-                    <Card className="overflow-hidden rounded-3xl border-2 border-gray-100 hover:border-gray-200 transition-all bg-white h-full shadow-sm">
+                    <Card className="h-full overflow-hidden rounded-3xl border-2 border-gray-100 bg-white shadow-sm transition-all hover:border-gray-200">
                       <CardContent className="p-0">
                         {/* Header with status */}
                         <div
                           className={cn(
-                            'h-24 relative flex items-center justify-center',
+                            'relative flex h-24 items-center justify-center',
                             liveClass.image && 'h-full',
                           )}
                           style={{ backgroundColor: `${mainColor}10` }}
                         >
                           {!liveClass.image && (
                             <PlayCircle
-                              className="w-12 h-12"
+                              className="h-12 w-12"
                               style={{ color: mainColor }}
                             />
                           )}
@@ -372,7 +374,7 @@ const LiveClassSection: React.FC = () => {
                           <div className="absolute top-3 right-3 flex gap-2">
                             {status.label.length > 0 && (
                               <span
-                                className="px-3 py-1 rounded-full text-xs font-semibold text-white"
+                                className="rounded-full px-3 py-1 text-xs font-semibold text-white"
                                 style={{ backgroundColor: status.color }}
                               >
                                 {status.label}
@@ -383,34 +385,34 @@ const LiveClassSection: React.FC = () => {
 
                         {/* Content */}
                         <div className="p-4">
-                          <div className="flex justify-between w-full">
+                          <div className="flex w-full justify-between">
                             <p
-                              className="text-xs font-semibold mb-1"
+                              className="mb-1 text-xs font-semibold"
                               style={{ color: mainColor }}
                             >
                               {liveClass.Category?.name || 'Live Class'}
                             </p>
                             <span
                               className={cn(
-                                'px-2 py-1 rounded-full text-xs font-semibold text-white',
+                                'rounded-full px-2 py-1 text-xs font-semibold text-white',
                                 liveClass.accessType === 'PREMIUM'
                                   ? 'bg-main'
                                   : 'bg-emerald-500',
                               )}
                             >
                               {liveClass.accessType === 'PREMIUM' && (
-                                <Gem className="w-3.5 h-3.5 inline-block mr-1 -mt-0.5" />
+                                <Gem className="-mt-0.5 mr-1 inline-block h-3.5 w-3.5" />
                               )}
                               {accesType}
                             </span>
                           </div>
-                          <h3 className="font-semibold text-base text-gray-900 line-clamp-2 mb-3 group-hover:opacity-80 transition-opacity">
+                          <h3 className="mb-3 line-clamp-2 text-base font-semibold text-gray-900 transition-opacity group-hover:opacity-80">
                             {liveClass.title}
                           </h3>
 
                           {/* Instructor */}
-                          <div className="flex items-center gap-2 mb-3">
-                            <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden">
+                          <div className="mb-3 flex items-center gap-2">
+                            <div className="h-8 w-8 overflow-hidden rounded-full bg-gray-200">
                               {liveClass.Instructor?.image ? (
                                 <Image
                                   src={liveClass.Instructor.image}
@@ -421,7 +423,7 @@ const LiveClassSection: React.FC = () => {
                                 />
                               ) : (
                                 <div
-                                  className="w-full h-full flex items-center justify-center text-white text-xs font-semibold"
+                                  className="flex h-full w-full items-center justify-center text-xs font-semibold text-white"
                                   style={{ backgroundColor: mainColor }}
                                 >
                                   {liveClass.Instructor?.name?.charAt(0) || 'T'}
@@ -440,9 +442,9 @@ const LiveClassSection: React.FC = () => {
                           </div>
 
                           {/* Meta */}
-                          <div className="flex items-center gap-4 text-xs text-gray-500 mb-3">
+                          <div className="mb-3 flex items-center gap-4 text-xs text-gray-500">
                             <div className="flex items-center gap-1">
-                              <Calendar className="w-3.5 h-3.5" />
+                              <Calendar className="h-3.5 w-3.5" />
                               <span>
                                 {new Date(
                                   liveClass.startDate,
@@ -453,7 +455,7 @@ const LiveClassSection: React.FC = () => {
                               </span>
                             </div>
                             <div className="flex items-center gap-1">
-                              <Clock className="w-3.5 h-3.5" />
+                              <Clock className="h-3.5 w-3.5" />
                               <span>
                                 {new Date(
                                   liveClass.startDate,
@@ -467,7 +469,7 @@ const LiveClassSection: React.FC = () => {
 
                           {!session ? (
                             <Button
-                              className="w-full h-12 text-white font-semibold rounded-3xl shadow-md hover:shadow-lg transition-all duration-300 group cursor-pointer"
+                              className="group h-12 w-full cursor-pointer rounded-3xl font-semibold text-white shadow-md transition-all duration-300 hover:shadow-lg"
                               style={{
                                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                               }}
@@ -483,7 +485,7 @@ const LiveClassSection: React.FC = () => {
                           ) : (
                             <Link href={href}>
                               <Button
-                                className="w-full h-12 text-white font-semibold rounded-3xl shadow-md hover:shadow-lg transition-all duration-300 group cursor-pointer"
+                                className="group h-12 w-full cursor-pointer rounded-3xl font-semibold text-white shadow-md transition-all duration-300 hover:shadow-lg"
                                 style={{
                                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                                 }}
@@ -503,14 +505,14 @@ const LiveClassSection: React.FC = () => {
         )}
 
         {/* View All Button */}
-        <div className="flex justify-center mt-8">
+        <div className="mt-8 flex justify-center">
           <Link
             href={`/${websiteSubCategory?.id || 'utbk'}/user/bimlive`}
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold text-sm text-white transition-transform active:scale-95 shadow-md hover:shadow-lg"
+            className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-white shadow-md transition-transform hover:shadow-lg active:scale-95"
             style={{ backgroundColor: mainColor }}
           >
             Lihat Semua Live Class
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>

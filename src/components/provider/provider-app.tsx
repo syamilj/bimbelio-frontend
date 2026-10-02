@@ -1,143 +1,165 @@
 'use client';
 
+import { appPath, useTrackId } from '@/lib/track';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import dynamic from 'next/dynamic';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   createContext,
   Dispatch,
   ReactNode,
   SetStateAction,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 import { BlocknoteEditorType } from '../workspace/editor/provider';
-// Dynamic import komponen berat yang jarang muncul awal
+
 const Login = dynamic(() => import('../_shared/auth/login'), { ssr: false });
 const AccountSetting = dynamic(() => import('../_shared/account/setting'), {
   ssr: false,
 });
 
+export type SettingsTab =
+  'account' | 'subscription' | 'history' | 'installment' | 'target';
+type AuthModal = { open: boolean; redirect: string | null };
+
+const SIDEBAR_KEY = 'bimbelio:sidebar-collapsed';
+
+/**
+ * State UI lintas halaman: modal masuk, pengaturan akun, sidebar, dan
+ * jembatan editor/chat. (Field lama yang tidak dipakai sudah dihapus.)
+ */
 export default function ProviderApp({ children }: { children: ReactNode }) {
-  const [showAuth, setShowAuth] = useState<{
-    open: boolean;
-    redirect: string | null;
-  }>({ open: false, redirect: null });
-  const [pagesSetting, setPagesSetting] = useState<
-    | 'account'
-    | 'subscription'
-    | 'history'
-    | 'installment'
-    | 'target'
-    | undefined
-  >();
+  const router = useRouter();
+  const pathname = usePathname();
+  const trackId = useTrackId();
 
-  const [minimizeSidebar, setMinimizeSidebar] = useState<boolean>(true);
-  const [showSidebar, setShowSidebar] = useState<boolean>(true);
+  const [showAuth, setShowAuth] = useState<AuthModal>({
+    open: false,
+    redirect: null,
+  });
+  const [pagesSetting, setPagesSetting] = useState<SettingsTab | undefined>();
 
-  const [vision, setVision] = useState<boolean>(false);
-  const [zoomValue, setZoomValue] = useState<string>('page-width');
-  const [normalSize, setNormalSize] = useState<string>('1.00');
-  const [transactionPopUp, setTransactionPopUp] = useState<boolean>(false);
-  const [search, setSearch] = useState<string>('');
+  const [minimizeSidebar, setMinimizeSidebarState] = useState(false);
+  const [sidebarMobile, setSidebarMobile] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(true);
 
-  // Change Note
-  const [change, setChange] = useState<boolean>(false);
-  const [mobileScreen, setMobileScreen] = useState<string>('minimize');
-  const [sidebarMobile, setSidebarMobile] = useState<boolean>(false);
-
-  // Search Data
-  const [docsSearchData, setDocsSearchData] = useState<any>([]);
-
-  // Chat
+  const [vision, setVision] = useState(false);
+  const [zoomValue, setZoomValue] = useState('page-width');
+  const [normalSize, setNormalSize] = useState('1.00');
+  const [change, setChange] = useState(false);
+  const [mobileScreen, setMobileScreen] = useState('minimize');
   const [sendMessage, setSendMessage] = useState<string | null>(null);
-
-  // Editor
   const [editor, setEditor] = useState<BlocknoteEditorType | null>(null);
 
-  // useEffect(() => {
-  //   if (isDekstop) setMinimizeSidebar(false);
-  // }, [isDekstop]);
+  // Status sidebar diingat antar kunjungan.
+  useEffect(() => {
+    try {
+      setMinimizeSidebarState(localStorage.getItem(SIDEBAR_KEY) === '1');
+    } catch {}
+  }, []);
 
-  // const [isMidtransScriptLoaded, setIsMidtransScriptLoaded] =
-  //   useState<boolean>(false);
+  const setMinimizeSidebar: Dispatch<SetStateAction<boolean>> = useCallback(
+    (value) => {
+      setMinimizeSidebarState((prev) => {
+        const next = typeof value === 'function' ? value(prev) : value;
+        try {
+          localStorage.setItem(SIDEBAR_KEY, next ? '1' : '0');
+        } catch {}
+        return next;
+      });
+    },
+    [],
+  );
 
-  // const LoadMidtransScript = () => {
-  //   const snapScriptUrl = `${env.NEXT_PUBLIC_MIDTRANS_SNAP_URL}`;
-  //   if (!snapScriptUrl) return;
-  //   const clientKey = env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
-  //   const id = 'midtrans-snap-script';
-  //   if (document.getElementById(id)) return; // sudah dimuat
-  //   const script = document.createElement('script');
-  //   script.id = id;
-  //   script.src = snapScriptUrl;
-  //   if (clientKey) script.setAttribute('data-client-key', clientKey);
-  //   script.async = true;
-  //   document.body.appendChild(script);
-  // };
+  // Tutup menu mobile setiap pindah halaman.
+  useEffect(() => setSidebarMobile(false), [pathname]);
 
-  // const LoadMidtransCss = () => {
-  //   const linkId = 'snap-assets-preconnect';
-  //   if (document.getElementById(linkId)) return; // Already added!
+  /**
+   * "Upgrade" di seluruh aplikasi membuka halaman Paket Belajar. Nama lama
+   * (`setTransactionPopUp(true)`) dipertahankan untuk pemanggil yang ada.
+   */
+  const openUpgrade = useCallback(() => {
+    try {
+      trackUnifiedEvent({
+        eventName: 'ViewContent',
+        customData: {
+          content_name: 'Payment Dialog',
+          content_type: 'pricing',
+          content_id: 'payment_modal',
+        },
+      });
+    } catch {}
+    const target = appPath(trackId, 'paket-belajar');
+    if (pathname !== target) router.push(target);
+  }, [pathname, router, trackId]);
 
-  //   const link = document.createElement('link');
-  //   link.id = linkId; // ✅ Add ID for tracking
-  //   link.rel = 'preconnect';
-  //   link.href = 'https://snap-assets.al-pc-id-p.cdn.gtflabs.io';
-  //   document.head.appendChild(link);
-  // };
+  const setTransactionPopUp: Dispatch<SetStateAction<boolean>> = useCallback(
+    (value) => {
+      const open = typeof value === 'function' ? value(false) : value;
+      if (open) openUpgrade();
+    },
+    [openUpgrade],
+  );
 
   useEffect(() => {
-    if (showAuth.open) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
+    document.body.style.overflow = showAuth.open ? 'hidden' : '';
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = '';
     };
-  }, [showAuth]);
+  }, [showAuth.open]);
 
-  const Context = {
-    minimizeSidebar,
-    setMinimizeSidebar,
-    showSidebar,
-    setShowSidebar,
-    normalSize,
-    setNormalSize,
-    zoomValue,
-    setZoomValue,
-    vision,
-    setVision,
-    transactionPopUp,
-    setTransactionPopUp,
-    change,
-    setChange,
-    mobileScreen,
-    setMobileScreen,
-    sidebarMobile,
-    setSidebarMobile,
-    docsSearchData,
-    setDocsSearchData,
-    pagesSetting,
-    setPagesSetting,
-    search,
-    setSearch,
-    useSendMessage: {
+  const value = useMemo<AppContextType>(
+    () => ({
+      minimizeSidebar,
+      setMinimizeSidebar,
+      showSidebar,
+      setShowSidebar,
+      normalSize,
+      setNormalSize,
+      zoomValue,
+      setZoomValue,
+      vision,
+      setVision,
+      transactionPopUp: false,
+      setTransactionPopUp,
+      openUpgrade,
+      change,
+      setChange,
+      mobileScreen,
+      setMobileScreen,
+      sidebarMobile,
+      setSidebarMobile,
+      pagesSetting,
+      setPagesSetting,
+      useSendMessage: { sendMessage, setSendMessage },
+      useEditor: { editor, setEditor },
+      useAuth: { showAuth, setShowAuth },
+    }),
+    [
+      minimizeSidebar,
+      setMinimizeSidebar,
+      showSidebar,
+      normalSize,
+      zoomValue,
+      vision,
+      setTransactionPopUp,
+      openUpgrade,
+      change,
+      mobileScreen,
+      sidebarMobile,
+      pagesSetting,
       sendMessage,
-      setSendMessage,
-    },
-    useEditor: {
       editor,
-      setEditor,
-    },
-    useAuth: {
       showAuth,
-      setShowAuth,
-    },
-  };
+    ],
+  );
 
   return (
-    <AppContext.Provider value={Context}>
+    <AppContext.Provider value={value}>
       {showAuth.open && <Login />}
       <AccountSetting />
       {children}
@@ -158,6 +180,7 @@ export const useAppContext = () => {
 interface AppContextType {
   minimizeSidebar: boolean;
   setMinimizeSidebar: Dispatch<SetStateAction<boolean>>;
+  /** @deprecated Nilainya tidak pernah dibaca; dipertahankan untuk pemanggil lama. */
   showSidebar: boolean;
   setShowSidebar: Dispatch<SetStateAction<boolean>>;
   normalSize: string;
@@ -166,35 +189,19 @@ interface AppContextType {
   setZoomValue: Dispatch<SetStateAction<string>>;
   vision: boolean;
   setVision: Dispatch<SetStateAction<boolean>>;
+  /** @deprecated Selalu false — upgrade kini membuka halaman Paket Belajar. */
   transactionPopUp: boolean;
+  /** @deprecated Pakai `openUpgrade()`. `true` membuka halaman Paket Belajar. */
   setTransactionPopUp: Dispatch<SetStateAction<boolean>>;
+  openUpgrade: () => void;
   change: boolean;
   setChange: Dispatch<SetStateAction<boolean>>;
   mobileScreen: string;
   setMobileScreen: Dispatch<SetStateAction<string>>;
   sidebarMobile: boolean;
   setSidebarMobile: Dispatch<SetStateAction<boolean>>;
-  docsSearchData: any;
-  setDocsSearchData: Dispatch<any>;
-  pagesSetting:
-    | 'account'
-    | 'subscription'
-    | 'history'
-    | 'installment'
-    | 'target'
-    | undefined;
-  setPagesSetting: Dispatch<
-    SetStateAction<
-      | 'account'
-      | 'subscription'
-      | 'history'
-      | 'installment'
-      | 'target'
-      | undefined
-    >
-  >;
-  search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
+  pagesSetting: SettingsTab | undefined;
+  setPagesSetting: Dispatch<SetStateAction<SettingsTab | undefined>>;
   useSendMessage: {
     sendMessage: string | null;
     setSendMessage: Dispatch<SetStateAction<string | null>>;
@@ -204,15 +211,7 @@ interface AppContextType {
     setEditor: Dispatch<SetStateAction<BlocknoteEditorType | null>>;
   };
   useAuth: {
-    showAuth: {
-      open: boolean;
-      redirect: string | null;
-    };
-    setShowAuth: Dispatch<
-      SetStateAction<{
-        open: boolean;
-        redirect: string | null;
-      }>
-    >;
+    showAuth: AuthModal;
+    setShowAuth: Dispatch<SetStateAction<AuthModal>>;
   };
 }

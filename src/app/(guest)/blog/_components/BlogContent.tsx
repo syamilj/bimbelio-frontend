@@ -1,7 +1,6 @@
 'use client';
 
 import AdminImage from '@/_assets/logo-minimize.png';
-import Navbar from '@/components/_shared/navbar';
 import ToC from '@/components/_shared/other/ToC';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Avatar } from '@/components/ui/avatar';
@@ -183,8 +182,6 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
 
   return (
     <Fragment>
-      <Navbar />
-
       {/* Hero Background with Parallax */}
       <motion.div
         style={{ y, opacity }}
@@ -205,14 +202,14 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="hidden lg:col-span-2 lg:block"
           >
-            <div className="sticky top-24 space-y-6 max-h-[calc(100vh-6rem)] overflow-y-auto">
+            <div className="sticky top-24 max-h-[calc(100vh-6rem)] space-y-6 overflow-y-auto">
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
                 <Button
                   variant="ghost"
-                  className="flex w-full items-center space-x-2 hover:shadow-md rounded-3xl transition-all duration-300 border-2 border-gray-100 hover:border-opacity-50"
+                  className="hover:border-opacity-50 flex w-full items-center space-x-2 rounded-3xl border-2 border-gray-100 transition-all duration-300 hover:shadow-md"
                   onClick={() => router.push('/blog')}
                   style={
                     {
@@ -235,7 +232,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
                 <Card
-                  className="bg-white shadow-sm border-2 overflow-hidden rounded-3xl hover:shadow-md transition-all"
+                  className="overflow-hidden rounded-3xl border-2 bg-white shadow-sm transition-all hover:shadow-md"
                   style={{ borderColor: `${mainColor}20` }}
                 >
                   {/* Top Accent Bar */}
@@ -250,10 +247,10 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                   <CardHeader className="pb-4">
                     <div className="flex items-center gap-3">
                       <div
-                        className="w-8 h-8 rounded-3xl flex items-center justify-center"
+                        className="flex h-8 w-8 items-center justify-center rounded-3xl"
                         style={{ backgroundColor: mainColor }}
                       >
-                        <BookOpen className="w-4 h-4 text-white" />
+                        <BookOpen className="h-4 w-4 text-white" />
                       </div>
                       <h3 className="text-lg font-black text-gray-900">
                         Artikel Terkait
@@ -261,7 +258,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                     </div>
                   </CardHeader>
 
-                  <CardContent className="p-4 space-y-2.5">
+                  <CardContent className="space-y-2.5 p-4">
                     {sortPosts(blogs ?? [], 'recent')
                       .filter((post) => post.slug !== blog.slug)
                       .slice(0, 5)
@@ -275,7 +272,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                         >
                           <Link href={`/blog/${post.slug}`}>
                             <div
-                              className="group flex items-start gap-2.5 p-3 rounded-3xl hover:shadow-md transition-all duration-300 border-2 border-transparent hover:border-opacity-40"
+                              className="group hover:border-opacity-40 flex items-start gap-2.5 rounded-3xl border-2 border-transparent p-3 transition-all duration-300 hover:shadow-md"
                               style={
                                 {
                                   '--hover-border': `${mainColor}30`,
@@ -284,15 +281,15 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                             >
                               {/* Ranking Badge */}
                               <span
-                                className="text-xs font-black px-2.5 py-1.5 rounded-3xl text-white shadow-sm flex-shrink-0"
+                                className="flex-shrink-0 rounded-3xl px-2.5 py-1.5 text-xs font-black text-white shadow-sm"
                                 style={{ backgroundColor: mainColor }}
                               >
                                 {index + 1}
                               </span>
 
                               {/* Content */}
-                              <div className="flex-1 min-w-0">
-                                <p className="line-clamp-2 text-sm font-bold text-gray-900 group-hover:text-opacity-70 transition-colors leading-snug">
+                              <div className="min-w-0 flex-1">
+                                <p className="group-hover:text-opacity-70 line-clamp-2 text-sm leading-snug font-bold text-gray-900 transition-colors">
                                   {post.title}
                                 </p>
                                 <div className="mt-2 flex items-center gap-2 text-xs text-gray-500">
@@ -331,14 +328,14 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="space-y-8 max-w-4xl mx-auto px-4"
+              className="mx-auto max-w-4xl space-y-8 px-4"
             >
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
-                <h1 className="mt-10 md:mt-2 text-3xl font-bold text-center leading-tight lg:text-4xl">
+                <h1 className="mt-10 text-center text-3xl leading-tight font-bold md:mt-2 lg:text-4xl">
                   {blog.title}
                 </h1>
               </motion.div>
@@ -347,7 +344,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="relative rounded-3xl bg-white shadow-lg border-2 overflow-hidden w-full"
+                className="relative w-full overflow-hidden rounded-3xl border-2 bg-white shadow-lg"
                 style={{ borderColor: `${mainColor}20` }}
               >
                 {/* Top Accent Bar */}
@@ -358,7 +355,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                   }}
                 />
 
-                <div className="p-6 space-y-5">
+                <div className="space-y-5 p-6">
                   {/* Author Section */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
@@ -380,12 +377,12 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                       </motion.div>
                       <div>
                         <span
-                          className="text-base font-black block"
+                          className="block text-base font-black"
                           style={{ color: mainColor }}
                         >
                           Bimbelio
                         </span>
-                        <span className="text-xs text-gray-500 font-medium">
+                        <span className="text-xs font-medium text-gray-500">
                           @admin
                         </span>
                       </div>
@@ -400,13 +397,13 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                     >
                       <Button
                         size="sm"
-                        className="rounded-3xl border-0 shadow-md font-bold hover:shadow-lg transition-all duration-300 text-white px-4 py-2"
+                        className="rounded-3xl border-0 px-4 py-2 font-bold text-white shadow-md transition-all duration-300 hover:shadow-lg"
                         onClick={handleShare}
                         style={{
                           background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                         }}
                       >
-                        <ShareIcon className="w-4 h-4 mr-2" />
+                        <ShareIcon className="mr-2 h-4 w-4" />
                         Bagikan
                       </Button>
                     </motion.div>
@@ -418,7 +415,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.6 }}
-                      className="p-4 rounded-3xl border-2 flex flex-col items-center justify-center text-center"
+                      className="flex flex-col items-center justify-center rounded-3xl border-2 p-4 text-center"
                       style={{
                         background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
                         borderColor: 'rgb(191 219 254)',
@@ -436,7 +433,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.7 }}
-                      className="p-4 rounded-3xl border-2 flex flex-col items-center justify-center text-center"
+                      className="flex flex-col items-center justify-center rounded-3xl border-2 p-4 text-center"
                       style={{
                         background: `linear-gradient(to bottom right, rgb(254 249 195), rgb(254 240 138))`,
                         borderColor: 'rgb(253 224 71)',
@@ -469,7 +466,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                     whileTap={{ scale: 0.95 }}
                   >
                     <Badge
-                      className="px-4 py-2 rounded-3xl shadow-md hover:shadow-lg transition-all duration-300 font-bold text-base border-2 cursor-pointer"
+                      className="cursor-pointer rounded-3xl border-2 px-4 py-2 text-base font-bold shadow-md transition-all duration-300 hover:shadow-lg"
                       style={{
                         backgroundColor: `${mainColor}15`,
                         color: mainColor,
@@ -487,7 +484,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.7 }}
                 whileHover={{ scale: 1.01 }}
-                className={cn('w-full rounded-3xl overflow-hidden shadow-2xl')}
+                className={cn('w-full overflow-hidden rounded-3xl shadow-2xl')}
               >
                 <Image
                   className="w-full transition-transform duration-700 hover:scale-105"
@@ -508,10 +505,10 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
               className="flex items-center gap-3 px-4"
             >
               <div
-                className="w-10 h-10 rounded-3xl flex items-center justify-center"
+                className="flex h-10 w-10 items-center justify-center rounded-3xl"
                 style={{ backgroundColor: mainColor }}
               >
-                <BookOpen className="w-5 h-5 text-white" />
+                <BookOpen className="h-5 w-5 text-white" />
               </div>
               <h2 className="text-2xl font-black text-gray-900">
                 Konten Artikel
@@ -523,7 +520,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="relative bg-white rounded-3xl shadow-md border-2 overflow-hidden hover:shadow-lg transition-all"
+              className="relative overflow-hidden rounded-3xl border-2 bg-white shadow-md transition-all hover:shadow-lg"
               style={{ borderColor: `${mainColor}20` }}
             >
               {/* Top Accent Bar */}
@@ -533,7 +530,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                   background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
                 }}
               />
-              <div className="p-8 md:p-10 prose prose-lg max-w-none">
+              <div className="prose prose-lg max-w-none p-8 md:p-10">
                 <ReactMarkdownBlog value={processedContent} />
               </div>
             </motion.div>
@@ -551,7 +548,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="bg-white rounded-3xl shadow-lg border-2 overflow-hidden"
+                className="overflow-hidden rounded-3xl border-2 bg-white shadow-lg"
                 style={{ borderColor: `${mainColor}20` }}
               >
                 {/* Top Accent Bar */}
@@ -577,14 +574,14 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          className="fixed bottom-8 right-8 z-50"
+          className="fixed right-8 bottom-8 z-50"
         >
           <motion.div
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
             <Button
-              className="rounded-full p-3 shadow-2xl border-0 bg-white/90 backdrop-blur-sm hover:shadow-3xl transition-all duration-300"
+              className="hover:shadow-3xl rounded-full border-0 bg-white/90 p-3 shadow-2xl backdrop-blur-sm transition-all duration-300"
               onClick={scrollToTop}
               aria-label="Back to top"
               style={

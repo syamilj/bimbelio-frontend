@@ -1,7 +1,6 @@
 'use client';
 
 import ConsultationDialog from '@/components/_shared/contact/consultation-dialog';
-import Navbar from '@/components/_shared/navbar';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Bimbelio } from '@/components/ui/bim-brand';
 import { Button } from '@/components/ui/button';
@@ -47,8 +46,6 @@ export default function CalendarPage() {
         />
       </Head>
 
-      <Navbar />
-
       <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white pt-32 pb-20">
         <div className="mx-auto max-w-6xl px-4 md:px-6">
           {/* Header */}
@@ -58,9 +55,9 @@ export default function CalendarPage() {
             transition={{ duration: 0.6 }}
             className="mb-12 text-center"
           >
-            <div className="mb-4 inline-flex items-center justify-center gap-3 rounded-3xl px-6 py-3 bg-white shadow-sm border border-gray-100">
+            <div className="mb-4 inline-flex items-center justify-center gap-3 rounded-3xl border border-gray-100 bg-white px-6 py-3 shadow-sm">
               <Calendar
-                className="w-5 h-5"
+                className="h-5 w-5"
                 style={{ color: mainColor }}
               />
               <span className="text-sm font-semibold text-gray-600">
@@ -68,7 +65,7 @@ export default function CalendarPage() {
               </span>
             </div>
 
-            <h1 className="mb-4 text-4xl md:text-5xl font-black text-gray-900">
+            <h1 className="mb-4 text-4xl font-black text-gray-900 md:text-5xl">
               Jadwal Event{' '}
               <Bimbelio
                 className="inline"
@@ -89,7 +86,7 @@ export default function CalendarPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mb-8"
           >
-            <Card className="border-2 overflow-hidden rounded-3xl">
+            <Card className="overflow-hidden rounded-3xl border-2">
               <div
                 className="h-1 w-full"
                 style={{
@@ -97,12 +94,12 @@ export default function CalendarPage() {
                 }}
               />
               <CardHeader>
-                <div className="flex items-center justify-between flex-col md:flex-row gap-4">
+                <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
                   <div>
                     <h2 className="text-xl font-bold text-gray-900">
                       Jadwal Event Lengkap
                     </h2>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="mt-1 text-sm text-gray-600">
                       Semua event Bimbelio terupdate secara real-time
                     </p>
                   </div>
@@ -112,10 +109,10 @@ export default function CalendarPage() {
                     rel="noopener noreferrer"
                   >
                     <Button
-                      className="rounded-3xl gap-2"
+                      className="gap-2 rounded-3xl"
                       style={{ backgroundColor: mainColor, color: 'white' }}
                     >
-                      <ExternalLink className="w-4 h-4" />
+                      <ExternalLink className="h-4 w-4" />
                       Buka di Google Calendar
                     </Button>
                   </a>
@@ -131,9 +128,9 @@ export default function CalendarPage() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mb-12"
           >
-            <Card className="border-2 rounded-3xl overflow-hidden">
+            <Card className="overflow-hidden rounded-3xl border-2">
               <CardContent className="p-0">
-                <div className="bg-white rounded-3xl overflow-hidden">
+                <div className="overflow-hidden rounded-3xl bg-white">
                   <iframe
                     src={GOOGLE_CALENDAR_EMBED_URL}
                     style={{
@@ -157,7 +154,7 @@ export default function CalendarPage() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mb-12"
           >
-            <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
+            <h2 className="mb-8 text-center text-2xl font-bold text-gray-900">
               Jenis Event Bimbelio
             </h2>
 
@@ -192,15 +189,15 @@ export default function CalendarPage() {
                     whileHover={{ y: -4 }}
                     className="group"
                   >
-                    <Card className="border-2 rounded-3xl h-full hover:shadow-lg transition-shadow overflow-hidden">
+                    <Card className="h-full overflow-hidden rounded-3xl border-2 transition-shadow hover:shadow-lg">
                       <div
                         className="h-2 w-full"
                         style={{ backgroundColor: event.color }}
                       />
                       <CardContent className="pt-4 sm:pt-6">
-                        <div className="flex flex-col items-center text-center space-y-2 sm:space-y-3">
+                        <div className="flex flex-col items-center space-y-2 text-center sm:space-y-3">
                           <div
-                            className="p-2 sm:p-3 rounded-3xl"
+                            className="rounded-3xl p-2 sm:p-3"
                             style={{
                               backgroundColor: event.bgColor.includes('blue')
                                 ? '#dbeafe'
@@ -210,14 +207,14 @@ export default function CalendarPage() {
                             }}
                           >
                             <EIcon
-                              className="w-6 h-6 sm:w-8 sm:h-8"
+                              className="h-6 w-6 sm:h-8 sm:w-8"
                               style={{ color: event.color }}
                             />
                           </div>
-                          <h4 className="font-bold text-gray-900 text-sm sm:text-base">
+                          <h4 className="text-sm font-bold text-gray-900 sm:text-base">
                             {event.title}
                           </h4>
-                          <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">
+                          <p className="line-clamp-2 text-xs text-gray-600 sm:text-sm">
                             {event.description}
                           </p>
                         </div>
@@ -228,8 +225,8 @@ export default function CalendarPage() {
               })}
             </div>
 
-            <div className="mt-8 pt-8 border-t border-gray-200">
-              <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">
+            <div className="mt-8 border-t border-gray-200 pt-8">
+              <h3 className="mb-6 text-center text-xl font-bold text-gray-900">
                 Kenapa Ikuti Event Bimbelio?
               </h3>
 
@@ -258,28 +255,28 @@ export default function CalendarPage() {
                       whileHover={{ y: -4 }}
                       className="group"
                     >
-                      <Card className="border-2 rounded-3xl h-full hover:shadow-lg transition-shadow overflow-hidden">
+                      <Card className="h-full overflow-hidden rounded-3xl border-2 transition-shadow hover:shadow-lg">
                         <div
                           className="h-2 w-full"
                           style={{ backgroundColor: mainColor }}
                         />
                         <CardContent className="pt-4 sm:pt-6">
-                          <div className="flex flex-col items-center text-center space-y-2 sm:space-y-3">
+                          <div className="flex flex-col items-center space-y-2 text-center sm:space-y-3">
                             <div
-                              className="p-2 sm:p-3 rounded-3xl"
+                              className="rounded-3xl p-2 sm:p-3"
                               style={{
                                 backgroundColor: mainColor + '15',
                               }}
                             >
                               <BIcon
-                                className="w-6 h-6 sm:w-8 sm:h-8"
+                                className="h-6 w-6 sm:h-8 sm:w-8"
                                 style={{ color: mainColor }}
                               />
                             </div>
-                            <h4 className="font-bold text-gray-900 text-sm sm:text-base">
+                            <h4 className="text-sm font-bold text-gray-900 sm:text-base">
                               {benefit.title}
                             </h4>
-                            <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">
+                            <p className="line-clamp-2 text-xs text-gray-600 sm:text-sm">
                               {benefit.description}
                             </p>
                           </div>
@@ -300,7 +297,7 @@ export default function CalendarPage() {
             className="text-center"
           >
             <Card
-              className="border-2 overflow-hidden rounded-3xl"
+              className="overflow-hidden rounded-3xl border-2"
               style={{
                 backgroundImage: `linear-gradient(135deg, rgba(${parseInt(mainColor.slice(1, 3), 16)}, ${parseInt(mainColor.slice(3, 5), 16)}, ${parseInt(mainColor.slice(5, 7), 16)}, 0.05), rgba(${parseInt(secondaryColor.slice(1, 3), 16)}, ${parseInt(secondaryColor.slice(3, 5), 16)}, ${parseInt(secondaryColor.slice(5, 7), 16)}, 0.05))`,
               }}
@@ -311,21 +308,21 @@ export default function CalendarPage() {
                   background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
                 }}
               />
-              <CardContent className="pt-10 pb-10 px-6 text-center">
-                <h2 className="text-3xl font-black text-gray-900 mb-3">
+              <CardContent className="px-6 pt-10 pb-10 text-center">
+                <h2 className="mb-3 text-3xl font-black text-gray-900">
                   Jangan Lewatkan Event Kami! 🚀
                 </h2>
-                <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
+                <p className="mx-auto mb-8 max-w-2xl text-gray-600">
                   Subscribe kalender Bimbelio untuk mendapatkan notifikasi
                   langsung setiap ada webinar, live class, atau ujian coba baru.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <div className="flex flex-col justify-center gap-3 sm:flex-row">
                   <Button
-                    className="text-white font-semibold rounded-3xl px-8 h-12 gap-2 w-full sm:w-auto"
+                    className="h-12 w-full gap-2 rounded-3xl px-8 font-semibold text-white sm:w-auto"
                     style={{ backgroundColor: mainColor }}
                     onClick={() => setIsConsultationOpen(true)}
                   >
-                    <MessageCircle className="w-4 h-4" />
+                    <MessageCircle className="h-4 w-4" />
                     Konsultasi Gratis
                   </Button>
                   <a
@@ -335,10 +332,10 @@ export default function CalendarPage() {
                   >
                     <Button
                       variant="outline"
-                      className="font-semibold rounded-3xl px-8 h-12 gap-2 w-full sm:w-auto border-2"
+                      className="h-12 w-full gap-2 rounded-3xl border-2 px-8 font-semibold sm:w-auto"
                       style={{ color: mainColor, borderColor: mainColor }}
                     >
-                      <Calendar className="w-4 h-4" />
+                      <Calendar className="h-4 w-4" />
                       Subscribe Kalender
                     </Button>
                   </a>
@@ -352,7 +349,7 @@ export default function CalendarPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.7 }}
-            className="mt-12 text-center text-sm text-gray-500 space-y-2"
+            className="mt-12 space-y-2 text-center text-sm text-gray-500"
           >
             <p>
               📱 Kalender ini di-update secara real-time. Semua event baru akan

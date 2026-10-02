@@ -4,7 +4,7 @@ import { test as base, expect, type Page } from '@playwright/test';
 import { MOCK_API } from './env';
 const ALLOWED_HOSTS = new Set(['127.0.0.1', 'localhost']);
 
-type Role = 'student' | 'premium' | 'admin' | 'superadmin';
+type Role = 'student' | 'premium' | 'admin' | 'superadmin' | 'finance';
 
 type Fixtures = {
   /** Masuk sebagai pengguna fiktif dengan menanam cookie token. */
@@ -52,7 +52,10 @@ export const test = base.extend<Fixtures>({
         (v) => v.impact === 'serious' || v.impact === 'critical',
       );
       expect(
-        serious.map((v) => `${v.id}: ${v.help} (${v.nodes.length} elemen)`),
+        serious.map(
+          (v) =>
+            `${v.id}: ${v.help} → ${v.nodes.map((n) => `${n.target.join(' ')} ${n.failureSummary?.split('\n').slice(1, 2).join('')}`).join(' | ')}`,
+        ),
       ).toEqual([]);
     });
   },

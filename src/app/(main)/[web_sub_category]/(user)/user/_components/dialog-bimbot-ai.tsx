@@ -56,7 +56,7 @@ export const DialogBimbotAI = () => {
     >
       <DialogTrigger asChild>
         <motion.div
-          className="fixed bottom-6 right-6 shadow-lg p-2 rounded-full z-30 cursor-pointer"
+          className="fixed right-4 bottom-20 z-30 cursor-pointer rounded-full p-2 shadow-overlay lg:right-6 lg:bottom-6"
           style={{
             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
           }}
@@ -66,19 +66,19 @@ export const DialogBimbotAI = () => {
         >
           {/* Icon */}
           <BotMessageSquare
-            className="text-white w-8 h-8 transform scale-x-[-1]"
+            className="h-8 w-8 scale-x-[-1] transform text-white"
             strokeWidth={2.1}
           />
 
           {/* Badge AI */}
-          <span className="absolute -top-1 left-[-4px] bg-red-500 rounded-full px-[0.35rem] py-1 text-white font-bold text-xs shadow-md">
+          <span className="absolute -top-1 left-[-4px] rounded-full bg-red-500 px-[0.35rem] py-1 text-xs font-bold text-white shadow-md">
             AI
           </span>
         </motion.div>
       </DialogTrigger>
       <DialogContent
         hideClose
-        className="overflow-hidden fixed md:left-[unset] md:right-[1rem] md:bottom-[1rem] md:top-[unset] p-0 md:translate-x-0 md:translate-y-0 flex flex-col gap-0 rounded-3xl md:max-w-2xl h-[85vh] max-h-[85vh] w-[95vw]"
+        className="fixed flex h-[85vh] max-h-[85vh] w-[95vw] flex-col gap-0 overflow-hidden rounded-3xl p-0 md:top-[unset] md:right-[1rem] md:bottom-[1rem] md:left-[unset] md:max-w-2xl md:translate-x-0 md:translate-y-0"
       >
         <VisuallyHidden>
           <DialogTitle>BimBot AI Chat</DialogTitle>
@@ -168,9 +168,9 @@ function ChatContent({ onRequestClose }: { onRequestClose: () => void }) {
 
   if (messageError) {
     return (
-      <div className="flex items-center justify-center flex-1 min-h-0 h-full">
+      <div className="flex h-full min-h-0 flex-1 items-center justify-center">
         <div className="text-center">
-          <p className="text-red-500 mb-2">Error loading messages</p>
+          <p className="mb-2 text-red-500">Error loading messages</p>
           <p className="text-sm text-muted-foreground">{messageError}</p>
         </div>
       </div>
@@ -178,7 +178,7 @@ function ChatContent({ onRequestClose }: { onRequestClose: () => void }) {
   }
 
   return (
-    <div className="flex flex-col flex-1 min-h-0">
+    <div className="flex min-h-0 flex-1 flex-col">
       <HeaderChat
         setHistoryId={setHistoryId}
         historyId={historyId}
@@ -201,8 +201,8 @@ function ChatContent({ onRequestClose }: { onRequestClose: () => void }) {
           onChatFinish={refreshHistory}
         />
       ) : (
-        <div className="flex flex-1 items-center justify-center min-h-0">
-          <Loader2 className="w-4 h-4 animate-spin" />
+        <div className="flex min-h-0 flex-1 items-center justify-center">
+          <Loader2 className="h-4 w-4 animate-spin" />
         </div>
       )}
     </div>
@@ -314,30 +314,30 @@ const HeaderChat = ({
   };
 
   return (
-    <div className="shrink-0 px-4 pt-4 pb-2 border-b border-gray-100">
+    <div className="shrink-0 border-b border-gray-100 px-4 pt-4 pb-2">
       <div className="flex items-center gap-2">
         {/* New chat button */}
         <button
-          className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-gray-100 transition-colors shrink-0 cursor-pointer disabled:opacity-40"
+          className="flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-gray-100 disabled:opacity-40"
           title="Chat baru"
           onClick={() => createNewChat()}
           disabled={loading}
         >
           {loading ? (
-            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
           ) : (
-            <Plus className="w-4 h-4" />
+            <Plus className="h-4 w-4" />
           )}
         </button>
 
         {/* Scrollable tabs */}
-        <ScrollWrapper className="flex items-center gap-1 flex-1 min-w-0 overflow-x-auto scrollbar-none">
+        <ScrollWrapper className="scrollbar-none flex min-w-0 flex-1 items-center gap-1 overflow-x-auto">
           {chatHistory.map((history) => {
             const isActive = historyId === history.id;
             return (
               <div
                 key={history.id}
-                className={`group relative flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap shrink-0 transition-all duration-200 ${
+                className={`group relative flex shrink-0 items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-all duration-200 ${
                   isActive
                     ? 'text-white shadow-sm'
                     : 'text-gray-500 hover:bg-gray-100'
@@ -358,14 +358,14 @@ const HeaderChat = ({
                     e.stopPropagation();
                     deleteChat(history.id);
                   }}
-                  className={`ml-0.5 w-4 h-4 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer ${
+                  className={`ml-0.5 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full opacity-0 transition-opacity group-hover:opacity-100 ${
                     isActive
-                      ? 'hover:bg-white/20 text-white/70 hover:text-white'
-                      : 'hover:bg-gray-200 text-gray-400 hover:text-gray-600'
+                      ? 'text-white/70 hover:bg-white/20 hover:text-white'
+                      : 'text-gray-400 hover:bg-gray-200 hover:text-gray-600'
                   }`}
                   title="Hapus chat"
                 >
-                  <X className="w-3 h-3" />
+                  <X className="h-3 w-3" />
                 </button>
               </div>
             );
@@ -375,11 +375,11 @@ const HeaderChat = ({
         <button
           type="button"
           onClick={onRequestClose}
-          className="md:hidden w-7 h-7 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors shrink-0"
+          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 md:hidden"
           title="Tutup chat"
           aria-label="Tutup chat"
         >
-          <X className="w-4 h-4" />
+          <X className="h-4 w-4" />
         </button>
       </div>
     </div>

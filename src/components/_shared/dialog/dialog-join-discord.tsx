@@ -15,11 +15,17 @@ import { ReactNode, useState } from 'react';
 export const DialogJoinDiscord = ({
   inviteLink,
   children,
+  open: controlledOpen,
+  onOpenChange,
 }: {
   inviteLink: string;
-  children: ReactNode;
+  children?: ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }) => {
-  const [open, setOpen] = useState(false);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
+  const open = controlledOpen ?? uncontrolledOpen;
+  const setOpen = onOpenChange ?? setUncontrolledOpen;
 
   //   const { data: userData } = useGet('/user/getUserById');
 
@@ -28,14 +34,14 @@ export const DialogJoinDiscord = ({
       open={open}
       onOpenChange={setOpen}
     >
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="rounded-3xl shadow-2xl border-0 mb:max-w-md overflow-hidden">
+      {children && <DialogTrigger asChild>{children}</DialogTrigger>}
+      <DialogContent className="overflow-hidden rounded-3xl border-0 shadow-2xl mb:max-w-md">
         {/* Discord-themed gradient header */}
-        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-br from-[#5865F2] via-[#4752C4] to-[#3c45a5]" />
+        <div className="absolute top-0 right-0 left-0 h-24 bg-gradient-to-br from-[#5865F2] via-[#4752C4] to-[#3c45a5]" />
 
         <DialogHeader className="relative z-10 pt-4">
-          <DialogTitle className="text-white text-xl font-bold flex items-center gap-3">
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+          <DialogTitle className="flex items-center gap-3 text-xl font-bold text-white">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white">
               <svg
                 width="24"
                 height="24"
@@ -49,10 +55,10 @@ export const DialogJoinDiscord = ({
           </DialogTitle>
         </DialogHeader>
 
-        <div className="relative z-10 pt-6 pb-2 space-y-4">
-          <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-3xl p-4">
+        <div className="relative z-10 space-y-4 pt-6 pb-2">
+          <div className="rounded-3xl border border-green-200 bg-gradient-to-br from-green-50 to-emerald-50 p-4">
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <div className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-green-500">
                 <svg
                   width="16"
                   height="16"
@@ -65,7 +71,7 @@ export const DialogJoinDiscord = ({
                 </svg>
               </div>
               <div>
-                <h4 className="font-semibold text-green-900 mb-1">
+                <h4 className="mb-1 font-semibold text-green-900">
                   Pembelian Berhasil!
                 </h4>
                 <p className="text-sm text-green-700">
@@ -75,35 +81,35 @@ export const DialogJoinDiscord = ({
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-3xl p-4">
-            <p className="text-sm text-gray-700 leading-relaxed">
+          <div className="rounded-3xl border border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
+            <p className="text-sm leading-relaxed text-gray-700">
               Bergabunglah dengan komunitas WhatsApp kami untuk:
             </p>
             <ul className="mt-3 space-y-2 text-sm text-gray-600">
               <li className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 bg-[#5865F2] rounded-full"></div>
+                <div className="h-1.5 w-1.5 rounded-full bg-[#5865F2]"></div>
                 Akses konten eksklusif premium
               </li>
               <li className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 bg-[#5865F2] rounded-full"></div>
+                <div className="h-1.5 w-1.5 rounded-full bg-[#5865F2]"></div>
                 Diskusi dengan member lainnya
               </li>
               <li className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 bg-[#5865F2] rounded-full"></div>
+                <div className="h-1.5 w-1.5 rounded-full bg-[#5865F2]"></div>
                 Update & pengumuman terbaru
               </li>
             </ul>
           </div>
         </div>
 
-        <DialogFooter className="flex flex-col gap-2 relative z-10">
+        <DialogFooter className="relative z-10 flex flex-col gap-2">
           <a
             href={inviteLink ?? '#'}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full"
           >
-            <Button className="w-full bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold rounded-3xl h-11 shadow-lg shadow-[#5865F2]/25 transition-all hover:shadow-xl hover:shadow-[#5865F2]/30">
+            <Button className="h-11 w-full rounded-3xl bg-[#5865F2] font-semibold text-white shadow-lg shadow-[#5865F2]/25 transition-all hover:bg-[#4752C4] hover:shadow-xl hover:shadow-[#5865F2]/30">
               <svg
                 width="20"
                 height="20"
@@ -119,7 +125,7 @@ export const DialogJoinDiscord = ({
 
           <Button
             variant="outline"
-            className="w-full border-2 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 rounded-3xl h-11 font-medium transition-all"
+            className="h-11 w-full rounded-3xl border-2 border-gray-300 font-medium text-gray-700 transition-all hover:border-gray-400 hover:bg-gray-50"
             onClick={() => {
               if (inviteLink) {
                 navigator.clipboard.writeText(inviteLink);

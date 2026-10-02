@@ -162,10 +162,13 @@ Setiap fase wajib lolos `bun run check`, `bun run test`, `bun run build`
 - [x] Satu root layout; sesi tidak memblokir SSR halaman publik; tier dihitung per track aktif
 - [x] Tema track via CSS var `--brand` (kelas `bg-main` lama otomatis ikut), 404 & error global baru
 
-### Fase 2 — Shell (`redesign/02-shell`)
-- [ ] SiteHeader + menu mobile (Sheet), SiteFooter server component, halaman legal
-- [ ] AppShell siswa (sidebar desktop + tab bar mobile), AdminShell
-- [ ] Provider langganan/limitasi/notifikasi/onboarding dipindah ke layout user & dirampingkan
+### Fase 2 — Shell (`redesign/02-shell`) ✅
+- [x] SiteHeader (Radix NavigationMenu, tautan nyata termasuk `/#anchor`), menu mobile (Sheet), SiteFooter server component, dialog kontak berbasis state (`useContact`)
+- [x] AppShell siswa: sidebar (ciut tersimpan), topbar (pencarian ⌘K, paket & koin, notifikasi, akun), tab bar mobile, mode shell dari URL (`bare`/`immersive`/`default`)
+- [x] AdminShell: satu konfigurasi menu + filter role, status aktif per segmen, breadcrumb
+- [x] 4 provider cek langganan → `SubscriptionChecks` (refresh sesi, bukan reload); cek pembayaran tanpa klik DOM; "upgrade" = navigasi ke Paket Belajar
+- [x] Pemilih track (TrackPicker) dengan bubble; BimBot dimuat lazy
+- [ ] Halaman legal (privasi, syarat) — **butuh isi dari pemilik**, footer tidak menautkan halaman kosong
 
 ### Fase 3 — Guest (`redesign/03-guest`)
 - [ ] Landing (server, `<h1>` nyata), about, beasiswa, blog, price, calendar, tryout, link, `/l/[code]`
@@ -209,6 +212,17 @@ Setiap fase wajib lolos `bun run check`, `bun run test`, `bun run build`
 - Hack `font-size: 85%` mobile dihapus → halaman lama tampil lebih besar di
   mobile sampai dimigrasi (navbar lama meluber — diganti di Fase 2).
 
+### Fase 2 — 2026-10-02
+- Spesifikasi fungsional shell lama disusun lebih dulu agar tidak ada fitur hilang.
+- Bug lama yang hilang bersama rewrite: link Kalender/WhatsApp ke halaman induk,
+  link dashboard `/null/...`, nomor WhatsApp footer tidak cocok, navbar ganda di
+  blog/kalender & footer ganda di /tryout, dua instance sidebar mobile, menu admin
+  "Dashboard" selalu aktif & `tryout` aktif di `tryout-coupon`, tombol admin mati,
+  `ProviderLimitation` memblokir SSR halaman publik.
+- Disederhanakan dengan sengaja: submenu mata pelajaran di sidebar (diganti
+  halaman BimCourse), fetch plan untuk dropdown navbar, komponen `payment.tsx`
+  (1.144 baris, hanya redirect).
+
 ## 8. Rekomendasi yang butuh keputusan pemilik
 
 1. **Optimasi gambar Next** (`images.unoptimized: true` saat ini) — menyalakannya
@@ -219,3 +233,5 @@ Setiap fase wajib lolos `bun run check`, `bun run test`, `bun run build`
    membatasi). Akan dirapikan di Fase 5 dengan satu konfigurasi role.
 4. **`/admin/login`** = masuk sebagai pengguna mana pun lewat email. Pastikan
    backend membatasi pemanggilnya.
+5. **Halaman legal** (Kebijakan Privasi, Syarat & Ketentuan) belum ada; footer
+   lama menautkannya ke `#`. Perlu teks resmi dari pemilik.

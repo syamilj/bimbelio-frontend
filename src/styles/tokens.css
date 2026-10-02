@@ -12,7 +12,7 @@
   --surface: #ffffff;
   --ink: #1b2230;
   --ink-muted: #5b6475;
-  --ink-subtle: #8a93a3;
+  --ink-subtle: #687182;
   --line: #e3e8ef;
   --line-strong: #cdd5df;
 
@@ -168,6 +168,17 @@
 
   html {
     -webkit-text-size-adjust: 100%;
+  }
+
+  /* Halaman tidak boleh bergeser ke samping karena satu elemen yang terlalu lebar. */
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  /* Anchor (/#timeline) tidak tertutup header yang menempel. */
+  [id] {
+    scroll-margin-top: 5rem;
   }
 
   body {

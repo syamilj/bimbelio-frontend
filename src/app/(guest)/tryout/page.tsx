@@ -1,6 +1,5 @@
 'use client';
 
-import Footer from '@/components/_shared/footer';
 import { lazy, Suspense } from 'react';
 
 const Tryout = lazy(
@@ -15,20 +14,18 @@ export default function TryoutPage() {
     >
       {/* Consistent background pattern seperti homepage */}
       <div className="absolute top-0 -z-10 h-full w-full">
-        <div className="absolute bottom-auto left-auto right-32 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(109,244,152,0.53)] opacity-60 blur-[80px]" />
+        <div className="absolute top-0 right-32 bottom-auto left-auto h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(109,244,152,0.53)] opacity-60 blur-[80px]" />
       </div>
 
       <div className="min-h-screen">
         <div className="flex w-full flex-col gap-20">
           <Suspense
             fallback={
-              <div className="w-full h-64 bg-gray-100 rounded-3xl animate-pulse" />
+              <div className="h-64 w-full animate-pulse rounded-3xl bg-gray-100" />
             }
           >
             <Tryout />
           </Suspense>
-
-          <Footer />
         </div>
       </div>
     </div>
