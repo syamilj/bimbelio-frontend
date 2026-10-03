@@ -39,7 +39,7 @@ export default function NotFound() {
           size="l"
           className="size-40 sm:size-48"
         />
-        <div className="flex max-w-md flex-col items-center gap-3">
+        <div className="flex max-w-2xl flex-col items-center gap-3">
           <MonoLabel>error 404</MonoLabel>
           <h1 className="font-display text-4xl leading-tight font-extrabold tracking-hero text-balance text-ink sm:text-5xl">
             Halaman tidak ditemukan

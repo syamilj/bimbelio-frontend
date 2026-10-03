@@ -24,6 +24,25 @@ test.describe('shell aplikasi siswa', () => {
       0,
     );
 
+    // Merek 2.1: item aktif = bubble Biru terisi + teks Tinta 600.
+    const active = nav.getByRole('link', { name: 'BimBoard' });
+    await expect(active).toHaveCSS('color', 'rgb(11, 23, 54)');
+    await expect(active).toHaveCSS('font-weight', '600');
+    await expect(active.locator('span[aria-hidden]').first()).toHaveCSS(
+      'background-color',
+      'rgb(0, 102, 255)',
+    );
+    await expect(
+      nav
+        .getByRole('link', { name: 'BimCourse' })
+        .locator('span[aria-hidden]')
+        .first(),
+    ).not.toHaveCSS('background-color', 'rgb(0, 102, 255)');
+    // Logo sidebar: titik i memakai warna program track.
+    await expect(
+      page.locator('aside [data-slot="logo"] path').nth(1),
+    ).toHaveAttribute('fill', 'var(--program)');
+
     await page.getByRole('button', { name: 'Ciutkan sidebar' }).click();
     await page.reload();
     await expect(
@@ -39,6 +58,12 @@ test.describe('shell aplikasi siswa', () => {
       'aria-current',
       'page',
     );
+    await expect(
+      tabs
+        .getByRole('link', { name: 'Beranda' })
+        .locator('span[aria-hidden]')
+        .first(),
+    ).toHaveCSS('background-color', 'rgb(0, 102, 255)');
     await tabs.getByRole('button', { name: 'Menu' }).click();
     await expect(
       page
@@ -97,6 +122,17 @@ test.describe('shell aplikasi siswa', () => {
     });
   });
 
+  test('shell siswa lolos axe (di luar isi halaman lama)', async ({
+    page,
+    expectAccessible,
+  }) => {
+    await page.goto('/utbk/user/bimboard');
+    await expect(
+      page.getByRole('button', { name: /Notifikasi/ }),
+    ).toBeVisible();
+    await expectAccessible(page, { exclude: ['main'] });
+  });
+
   test('halaman ujian tampil tanpa navigasi aplikasi', async ({ page }) => {
     await page.goto('/utbk/user/bimarena/try-out/tryout-uji');
     await expect(
@@ -131,6 +167,31 @@ test.describe('shell panel admin', () => {
     await expect(
       page.getByRole('navigation', { name: 'Breadcrumb' }),
     ).toContainText('Voucher');
+    // Admin "rendah suara": bubble aktif sama, tanpa Lio/coretan/stiker.
+    await expect(
+      nav
+        .getByRole('link', { name: 'Voucher' })
+        .locator('span[aria-hidden]')
+        .first(),
+    ).toHaveCSS('background-color', 'rgb(0, 102, 255)');
+    await expect(
+      page.locator(
+        'aside [data-slot="lio"], aside [data-slot="scribble"], aside [data-slot="sticker"], header [data-slot="lio"]',
+      ),
+    ).toHaveCount(0);
+  });
+
+  test('shell admin lolos axe (di luar isi halaman lama)', async ({
+    page,
+    loginAs,
+    expectAccessible,
+  }) => {
+    await loginAs('admin');
+    await page.goto('/utbk/admin/voucher');
+    await expect(
+      page.getByRole('navigation', { name: 'Breadcrumb' }),
+    ).toBeVisible();
+    await expectAccessible(page, { exclude: ['main'] });
   });
 
   test('finance hanya melihat menu transaksi', async ({

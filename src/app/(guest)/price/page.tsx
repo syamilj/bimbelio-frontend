@@ -35,7 +35,7 @@ export default async function PricePage() {
       </MarketingSection>
       <CoinExplainer />
       <MarketingSection
-        tone="ink"
+        tone="brand"
         eyebrow={
           <SeriesLabel
             icon={MessageCircle}

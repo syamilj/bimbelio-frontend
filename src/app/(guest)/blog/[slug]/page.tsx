@@ -136,7 +136,7 @@ export default async function BlogPostPage({ params }: Props) {
             <p className="max-w-[60ch] text-lg text-pretty text-ink-muted">
               {post.description}
             </p>
-            <div className="flex max-w-[70ch] flex-wrap items-center gap-x-4 gap-y-2 border-y border-line py-3 font-mono text-xs font-medium text-ink-muted">
+            <div className="flex max-w-[46rem] flex-wrap items-center gap-x-4 gap-y-2 border-y border-line py-3 font-mono text-xs font-medium text-ink-muted">
               <span>Tim Bimbelio</span>
               <time dateTime={published}>{formatPostDate(published)}</time>
               <span>{readingMinutes(post.value)} menit baca</span>
@@ -151,7 +151,7 @@ export default async function BlogPostPage({ params }: Props) {
           </header>
 
           {post.thumbnail && (
-            <div className="relative aspect-[1200/630] max-w-[70ch] overflow-hidden rounded-lg bg-brand-soft">
+            <div className="relative aspect-[1200/630] max-w-[46rem] overflow-hidden rounded-lg bg-brand-soft">
               <Image
                 src={post.thumbnail}
                 alt=""
@@ -164,7 +164,7 @@ export default async function BlogPostPage({ params }: Props) {
           )}
 
           {toc.length > 0 && (
-            <details className="max-w-[70ch] rounded-md border border-line bg-surface p-4 lg:hidden">
+            <details className="max-w-[46rem] rounded-md border border-line bg-surface p-4 lg:hidden">
               <summary className="cursor-pointer text-sm font-bold text-ink">
                 Daftar isi
               </summary>

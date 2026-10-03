@@ -207,7 +207,7 @@ export default function AboutPage() {
               Platform bimbel + AI yang bikin persiapan SNBT, SIMAK UI, UM-UGM,
               dan kedinasan jadi nggak ribet dan terstruktur.
             </p>
-            <dl className="grid max-w-xl grid-cols-3 gap-4">
+            <dl className="grid max-w-xl grid-cols-3 gap-x-6 gap-y-4">
               {STATS.map((s) => (
                 <div
                   key={s.label}
@@ -216,7 +216,7 @@ export default function AboutPage() {
                   <dt className="order-2 font-mono text-xs font-medium lowercase">
                     {s.label}
                   </dt>
-                  <dd className="order-1 font-display text-3xl font-extrabold tracking-score text-highlight tabular-nums sm:text-5xl">
+                  <dd className="order-1 font-display text-2xl font-extrabold tracking-hero text-highlight tabular-nums sm:text-4xl">
                     {s.value}
                   </dd>
                 </div>
@@ -354,7 +354,7 @@ export default function AboutPage() {
       </MarketingSection>
 
       <MarketingSection
-        tone="ink"
+        tone="brand"
         title={
           <>
             Udah kenal, kan?{' '}

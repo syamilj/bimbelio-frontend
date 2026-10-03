@@ -4,13 +4,21 @@
 
 const DAY = 86_400_000;
 
-/** Tanggal `days` hari dari hari ini, pukul `hour`:00 WIB. */
+/**
+ * Tanggal `days` hari dari hari ini, pukul `hour`:00 WIB. Bila jatuh ke bulan
+ * berikutnya (akhir bulan), dipindah ke hari-hari sebelumnya di bulan berjalan
+ * agar tes kalender selalu menemukan acaranya di bulan yang tampil pertama.
+ */
 const at = (days: number, hour: number) => {
   const now = new Date(Date.now() + 7 * 3_600_000); // geser ke WIB
-  const d = new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()) +
-      days * DAY,
+  const today = Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate(),
   );
+  let d = new Date(today + days * DAY);
+  if (d.getUTCMonth() !== now.getUTCMonth())
+    d = new Date(today - (7 - days) * DAY);
   d.setUTCHours(hour - 7);
   return d.toISOString();
 };

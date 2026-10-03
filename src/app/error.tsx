@@ -29,7 +29,7 @@ export default function GlobalRouteError({
         size="l"
         className="size-40 sm:size-48"
       />
-      <div className="flex max-w-md flex-col items-center gap-3">
+      <div className="flex max-w-2xl flex-col items-center gap-3">
         <MonoLabel>
           gagal memuat{error.digest ? ` · kode ${error.digest}` : ''}
         </MonoLabel>

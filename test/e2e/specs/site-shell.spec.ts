@@ -9,16 +9,29 @@ test.describe('shell situs publik', () => {
     await page.goto('/about');
     const nav = page
       .getByRole('navigation')
-      .filter({ has: page.getByRole('link', { name: /Program/ }) })
+      .filter({ has: page.getByRole('link', { name: /Paket belajar/ }) })
       .first();
-    await expect(nav.getByRole('link', { name: /Program/ })).toHaveAttribute(
-      'href',
-      '/price',
-    );
+    await expect(
+      nav.getByRole('link', { name: /Paket belajar/ }),
+    ).toHaveAttribute('href', '/price');
+    await expect(
+      page.getByRole('banner').getByRole('link', { name: 'Ikut tryout' }),
+    ).toHaveAttribute('href', '/tryout');
 
     await page.getByRole('button', { name: 'Fitur' }).hover();
-    await page.getByRole('link', { name: /Try out online/ }).click();
-    await expect(page).toHaveURL(/\/#tryout$/);
+    await page.getByRole('link', { name: /Contoh rapor TO/ }).click();
+    await expect(page).toHaveURL(/\/#rapor$/);
+  });
+
+  test('item navigasi aktif ditandai untuk halaman yang dibuka', async ({
+    page,
+    isMobile,
+  }) => {
+    test.skip(isMobile, 'navigasi desktop');
+    await page.goto('/blog');
+    const blog = page.getByRole('banner').getByRole('link', { name: 'Blog' });
+    await expect(blog).toHaveAttribute('data-active', '');
+    await expect(blog).toHaveCSS('color', 'rgb(11, 23, 54)');
   });
 
   test('menu mobile terbuka dan berisi tautan yang benar', async ({
@@ -88,6 +101,22 @@ test.describe('shell situs publik', () => {
     ).toHaveAttribute('href', /wa\.me\/6285128056771/);
     await expect(footer).toContainText(`© ${new Date().getFullYear()}`);
     await expect(footer.locator('a[href="#"]')).toHaveCount(0);
+  });
+
+  test('footer di permukaan Tinta: logo putih bertitik i lime + coretan Lio', async ({
+    page,
+  }) => {
+    await page.goto('/about');
+    const footer = page.getByRole('contentinfo');
+    await expect(footer).toHaveAttribute('data-surface', 'ink');
+    await expect(footer).toHaveCSS('background-color', 'rgb(11, 23, 54)');
+    await expect(footer.getByText('Lio liat. Lio selalu liat.')).toBeVisible();
+    const logo = footer.locator('[data-slot="logo"]');
+    await expect(logo).toHaveCSS('color', 'rgb(255, 255, 255)');
+    await expect(logo.locator('path').nth(1)).toHaveAttribute(
+      'fill',
+      'var(--accent)',
+    );
   });
 
   test('halaman publik di-render server dengan konten, bukan spinner', async ({

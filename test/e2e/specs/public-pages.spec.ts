@@ -5,12 +5,89 @@ test.describe('beranda', () => {
     request,
   }) => {
     const html = await (await request.get('/')).text();
-    expect(html).toMatch(
-      /<h1[^>]*>Bimbel AI untuk SNBT, Ujian Mandiri, dan Kedinasan<\/h1>/,
-    );
+    expect(html).toMatch(/<h1[^>]*>Selesai TO, langsung tahu jalan ke/);
     expect(html).toContain('id="timeline"');
     expect(html).toContain('"@type":"FAQPage"');
     expect(html).toContain('Blueprint UTBK');
+    // Klaim & data yang sudah dikonfirmasi pemilik tetap tampil (PLAN.md §8.6).
+    expect(html).toContain('Rp1.499.000');
+    expect(html).toContain('garansi 100% uang kembali dalam 7 hari');
+  });
+
+  test('sembilan seksi merek 2.1 berurutan, footer di permukaan Tinta', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const ids = await page
+      .locator('main > section[id]')
+      .evaluateAll((els) => els.map((el) => el.id));
+    expect(ids).toEqual([
+      'cara-kerja',
+      'rapor',
+      'bimbot',
+      'live-learning',
+      'statistics',
+      'pricing',
+      'about',
+      'faq',
+    ]);
+    // Hero Biru penuh dengan Lio, rapor Tinta, footer Tinta.
+    await expect(page.locator('main > section').first()).toHaveAttribute(
+      'data-surface',
+      'brand',
+    );
+    await expect(
+      page.locator('main > section').first().locator('[data-slot="lio"]'),
+    ).toHaveAttribute('data-expression', 'ambis');
+    await expect(page.locator('#rapor')).toHaveAttribute('data-surface', 'ink');
+    await expect(page.getByRole('contentinfo')).toHaveAttribute(
+      'data-surface',
+      'ink',
+    );
+  });
+
+  test('hero: CTA lime ke tryout dan contoh rapor berlabel data contoh + penafian', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const hero = page.locator('main > section').first();
+    await expect(hero.getByRole('link', { name: 'Ikut tryout' })).toHaveCSS(
+      'background-color',
+      'rgb(198, 244, 50)',
+    );
+    await hero.getByRole('link', { name: 'Lihat contoh rapor' }).click();
+    await expect(page).toHaveURL(/#rapor$/);
+    const rapor = page.locator('#rapor');
+    await expect(rapor.getByText('rapor TO #08 · data contoh')).toBeVisible();
+    await expect(
+      rapor.getByRole('img', { name: /Profil skor per subtes/ }),
+    ).toBeVisible();
+    await expect(
+      rapor.getByRole('img', { name: /Posisimu di antara peserta/ }),
+    ).toBeVisible();
+    await expect(rapor.getByText(/bukan jaminan hasil seleksi/)).toBeVisible();
+  });
+
+  test('tryout & kelas live terdekat tampil dari API, daftar meminta login', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const tryouts = page.locator('#tryout');
+    await expect(
+      tryouts.getByRole('heading', { name: 'Tryout UTBK #09' }),
+    ).toBeVisible();
+    await expect(
+      page
+        .locator('#live-learning')
+        .getByText('Bedah PK: perbandingan & persentase'),
+    ).toBeVisible();
+    await tryouts
+      .getByRole('button', { name: 'Daftar gratis' })
+      .first()
+      .click();
+    await expect(
+      page.getByRole('dialog', { name: 'Masuk ke Bimbelio' }),
+    ).toBeVisible();
   });
 
   test('FAQ bisa dibuka dengan keyboard dan halaman lolos axe', async ({
@@ -100,6 +177,32 @@ test.describe('paket & checkout', () => {
   });
 });
 
+test.describe('kalender bubble', () => {
+  test('tryout = bubble terisi, kelas live = cincin, agenda bulan ini', async ({
+    page,
+    expectAccessible,
+  }) => {
+    await page.goto('/calendar');
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Jadwal event Bimbelio' }),
+    ).toBeVisible();
+    const table = page.getByRole('table');
+    await expect(table).toBeVisible();
+    await expect(table.getByText(/Tryout: Tryout UTBK #09/)).toHaveCount(1);
+    await expect(table.getByText(/Kelas live: Bedah PK/)).toHaveCount(1);
+    await expect(
+      page
+        .getByRole('region', { name: 'Agenda bulan ini' })
+        .getByText('Tryout UTBK #09'),
+    ).toBeVisible();
+    // Bulan berikutnya bisa dibuka dan kembali.
+    await page.getByRole('button', { name: 'Bulan berikutnya' }).click();
+    await page.getByRole('button', { name: 'Bulan sebelumnya' }).click();
+    await expect(table.getByText(/Tryout: Tryout UTBK #09/)).toHaveCount(1);
+    await expectAccessible(page);
+  });
+});
+
 test.describe('blog', () => {
   test('artikel dirender server lengkap dengan daftar isi dan rumus', async ({
     request,
@@ -164,15 +267,15 @@ test.describe('halaman link', () => {
     page,
   }) => {
     await page.goto('/link/rahasia');
-    await page.getByPlaceholder('Masukkan Password').fill('salah');
-    await page.getByRole('button', { name: 'Buka Halaman' }).click();
+    await page.getByPlaceholder('Masukkan password').fill('salah');
+    await page.getByRole('button', { name: 'Buka halaman' }).click();
     await expect(
       page.getByRole('alert').filter({ hasText: 'Password salah' }),
     ).toBeVisible();
     await expect(page).toHaveURL('/link/rahasia?error=password');
 
-    await page.getByPlaceholder('Masukkan Password').fill('kunci123');
-    await page.getByRole('button', { name: 'Buka Halaman' }).click();
+    await page.getByPlaceholder('Masukkan password').fill('kunci123');
+    await page.getByRole('button', { name: 'Buka halaman' }).click();
     await expect(
       page.getByRole('heading', { name: 'Halaman Khusus Peserta' }),
     ).toBeVisible();
@@ -201,6 +304,49 @@ test.describe('halaman legal', () => {
       // Muat langsung: progress bar navigasi klien bukan bagian halaman.
       await page.goto(path);
       await expect(page.getByRole('heading', { level: 1 })).toHaveText(title);
+      await expectAccessible(page);
+    });
+  }
+});
+
+test.describe('OG dinamis', () => {
+  test('/api/og menghasilkan PNG 1200×630', async ({ request }) => {
+    const res = await request.get(
+      '/api/og?title=Blueprint%20UTBK&value=614&label=rapor&tone=ink',
+    );
+    expect(res.status()).toBe(200);
+    expect(res.headers()['content-type']).toBe('image/png');
+    const png = await res.body();
+    // Header IHDR: lebar & tinggi big-endian di byte 16–23.
+    expect(png.readUInt32BE(16)).toBe(1200);
+    expect(png.readUInt32BE(20)).toBe(630);
+  });
+
+  test('paket tanpa gambar memakai OG dinamis', async ({ request }) => {
+    const html = await (await request.get('/price/blueprint-utbk')).text();
+    expect(html).toMatch(
+      /property="og:image" content="[^"]*\/api\/og\?title=Blueprint/,
+    );
+  });
+});
+
+test.describe('aksesibilitas halaman publik (merek 2.1)', () => {
+  for (const path of [
+    '/',
+    '/price',
+    '/price/blueprint-utbk',
+    '/blog',
+    '/blog/strategi-penalaran-umum',
+    '/tryout',
+    '/about',
+    '/scholarship',
+    '/link/komunitas',
+    '/link/rahasia',
+    '/halaman-yang-tidak-ada',
+  ]) {
+    test(`${path} lolos axe`, async ({ page, expectAccessible }) => {
+      await page.goto(path);
+      await expect(page.locator('h1').first()).toBeVisible();
       await expectAccessible(page);
     });
   }
