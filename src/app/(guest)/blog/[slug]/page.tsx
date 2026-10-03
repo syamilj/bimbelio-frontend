@@ -5,9 +5,13 @@ import {
   TableOfContents,
   ViewCounter,
 } from '@/features/blog/article-client';
+import { BlogCategory } from '@/features/blog/category';
 import { formatPostDate, formatViews } from '@/features/blog/format';
 import { PostCard } from '@/features/blog/post-card';
 import { readingMinutes, renderArticle } from '@/features/blog/render';
+import { PROSE_CLASS } from '@/features/marketing/prose';
+import { SITE_CONTAINER } from '@/features/marketing/section';
+import { cn } from '@/lib/utils';
 import 'katex/dist/katex.min.css';
 import { ArrowLeft } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -41,9 +45,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: post.publishedAt ?? post.createdAt,
       modifiedTime: post.updatedAt,
       tags: post.tags,
-      images: post.thumbnail
-        ? [{ url: post.thumbnail, width: 1200, height: 630, alt: post.title }]
-        : undefined,
+      images: [
+        {
+          url:
+            post.thumbnail ||
+            `/api/og?${new URLSearchParams({ title: post.title, label: 'blog · bimbelio.com', tone: 'ink' })}`,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
@@ -84,7 +95,7 @@ export default async function BlogPostPage({ params }: Props) {
   };
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-16 px-4 py-10 sm:px-6 lg:py-14">
+    <div className={cn(SITE_CONTAINER, 'flex flex-col gap-16 py-10 lg:py-16')}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -93,12 +104,12 @@ export default async function BlogPostPage({ params }: Props) {
       />
       <ViewCounter postId={post.id} />
 
-      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_16rem]">
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-16">
         <article className="flex min-w-0 flex-col gap-8">
           <header className="flex flex-col gap-5">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-muted hover:text-ink"
+              className="inline-flex w-fit items-center gap-1.5 rounded-xs text-sm font-semibold text-ink-muted hover:text-ink focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none"
             >
               <ArrowLeft
                 className="size-4"
@@ -107,19 +118,25 @@ export default async function BlogPostPage({ params }: Props) {
               Semua artikel
             </Link>
             {post.tags?.length > 0 && (
-              <p className="flex flex-wrap gap-x-3 text-sm font-semibold text-brand-strong">
-                {post.tags.map((t) => (
-                  <span key={t}>#{t}</span>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <BlogCategory tag={post.tags[0]} />
+                {post.tags.slice(1).map((t) => (
+                  <span
+                    key={t}
+                    className="font-mono text-xs font-medium text-ink-muted"
+                  >
+                    #{t}
+                  </span>
                 ))}
-              </p>
+              </div>
             )}
-            <h1 className="max-w-3xl text-3xl leading-tight font-extrabold tracking-tight text-balance text-ink sm:text-4xl">
+            <h1 className="max-w-[22ch] font-display text-4xl leading-[1.05] font-extrabold tracking-hero text-balance text-ink sm:text-5xl">
               {post.title}
             </h1>
-            <p className="max-w-2xl text-lg text-pretty text-ink-muted">
+            <p className="max-w-[60ch] text-lg text-pretty text-ink-muted">
               {post.description}
             </p>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-ink-muted">
+            <div className="flex max-w-[70ch] flex-wrap items-center gap-x-4 gap-y-2 border-y border-line py-3 font-mono text-xs font-medium text-ink-muted">
               <span>Tim Bimbelio</span>
               <time dateTime={published}>{formatPostDate(published)}</time>
               <span>{readingMinutes(post.value)} menit baca</span>
@@ -134,7 +151,7 @@ export default async function BlogPostPage({ params }: Props) {
           </header>
 
           {post.thumbnail && (
-            <div className="relative aspect-[1200/630] overflow-hidden rounded-lg border border-line bg-paper">
+            <div className="relative aspect-[1200/630] max-w-[70ch] overflow-hidden rounded-lg bg-brand-soft">
               <Image
                 src={post.thumbnail}
                 alt=""
@@ -147,7 +164,7 @@ export default async function BlogPostPage({ params }: Props) {
           )}
 
           {toc.length > 0 && (
-            <details className="rounded-md border border-line bg-surface p-4 lg:hidden">
+            <details className="max-w-[70ch] rounded-md border border-line bg-surface p-4 lg:hidden">
               <summary className="cursor-pointer text-sm font-bold text-ink">
                 Daftar isi
               </summary>
@@ -170,7 +187,7 @@ export default async function BlogPostPage({ params }: Props) {
           )}
 
           <div
-            className="prose prose-lg max-w-none prose-slate prose-headings:font-extrabold prose-headings:tracking-tight prose-a:text-brand-strong prose-img:rounded-md"
+            className={cn(PROSE_CLASS, 'prose-lg max-w-[70ch]')}
             dangerouslySetInnerHTML={{ __html: html }}
           />
         </article>
@@ -191,7 +208,7 @@ export default async function BlogPostPage({ params }: Props) {
         >
           <h2
             id="terkait"
-            className="text-2xl font-extrabold tracking-tight text-ink"
+            className="font-display text-3xl font-bold tracking-display text-ink"
           >
             Baca juga
           </h2>

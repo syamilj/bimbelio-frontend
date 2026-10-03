@@ -1,3 +1,4 @@
+import { SeriesLabel } from '@/components/brand/series-label';
 import { ContactButton } from '@/components/layout/site/contact';
 import { EmptyState } from '@/components/patterns/empty-state';
 import { Button } from '@/components/ui/button';
@@ -34,12 +35,13 @@ export default function BeasiswaPage() {
     <>
       <MarketingSection
         headingLevel={1}
+        eyebrow={<SeriesLabel icon={GraduationCap}>Beasiswa</SeriesLabel>}
         title="Program beasiswa"
         description="Kami bermitra dengan berbagai institusi pendidikan dan organisasi untuk menyediakan beasiswa bagi siswa berprestasi."
         className="pt-10 sm:pt-14"
       >
         <EmptyState
-          icon={GraduationCap}
+          lio="netral"
           title="Belum ada program beasiswa yang dibuka"
           description="Program beasiswa dari mitra kami sedang disiapkan. Gabung grup belajar untuk dapat kabar pertama saat pendaftaran dibuka."
           action={
@@ -57,6 +59,7 @@ export default function BeasiswaPage() {
       </MarketingSection>
       <MarketingSection
         tone="surface"
+        accent="pink"
         title="Cara mendapatkan beasiswa"
       >
         <ol className="grid gap-6 md:grid-cols-3">
@@ -65,10 +68,15 @@ export default function BeasiswaPage() {
               key={step.title}
               className="flex flex-col gap-3"
             >
-              <span className="flex size-9 items-center justify-center rounded-full bg-brand-soft font-bold text-brand-strong tabular-nums">
-                {i + 1}
+              <span
+                aria-hidden
+                className="flex size-11 items-center justify-center rounded-full bg-brand font-mono text-base font-medium text-brand-ink"
+              >
+                {String.fromCharCode(65 + i)}
               </span>
-              <h3 className="text-lg font-bold text-ink">{step.title}</h3>
+              <h3 className="font-display text-xl font-bold tracking-display text-ink">
+                {step.title}
+              </h3>
               <p className="text-ink-muted">{step.body}</p>
             </li>
           ))}

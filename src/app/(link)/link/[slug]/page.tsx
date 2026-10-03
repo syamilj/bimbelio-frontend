@@ -3,6 +3,9 @@ import { cookies } from 'next/headers';
 import { passwordCookieName } from './_components/password-cookie';
 import { unlockLinkPage } from './actions';
 
+import { Lio } from '@/components/brand/lio';
+import { Logo } from '@/components/brand/logo';
+import { Supergraphic } from '@/components/brand/supergraphic';
 import {
   Facebook,
   Instagram,
@@ -10,7 +13,8 @@ import {
   Twitter,
   Youtube,
 } from '@/components/icons/brand-icons';
-import { ExternalLink, Globe, Lock, MessageCircle, Music4 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { CircleAlert, Globe, Lock, MessageCircle, Music4 } from 'lucide-react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -171,108 +175,107 @@ const socialIconMap: Record<string, ComponentType<{ className?: string }>> = {
   tiktok: Music4,
 };
 
-const backgroundStyle = (data?: LinkPageData) => {
-  if (!data) {
-    return { backgroundColor: '#0140ed' };
-  }
+// Warna latar lama (#0140ed) adalah default admin sebelum merek 2.1 → Biru 2.1.
+const LEGACY_DEFAULT = /^#0140ed$/i;
+const brandColor = (color?: string | null) =>
+  !color || LEGACY_DEFAULT.test(color) ? 'var(--brand)' : color;
 
-  // Halftone Pattern Effect (Refined: Smaller dots, subtler opacity)
-  const halftonePattern = `
-    radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px)
-  `;
-  const halftoneSize = '16px 16px'; // More breathing room between dots
-
-  const baseStyle: React.CSSProperties = {
-    backgroundImage: halftonePattern,
-    backgroundSize: halftoneSize,
-    backgroundColor: data.backgroundColor || '#0140ed', // Default Primary Blue
-  };
-
-  switch (data.backgroundType) {
-    case 'COLOR':
-      return {
-        ...baseStyle,
-        backgroundColor: data.backgroundColor || '#0140ed',
-      };
-    case 'IMAGE':
-      return data.backgroundImage
-        ? {
-            backgroundImage: `linear-gradient(0deg, rgba(1,64,237,0.85), rgba(1,64,237,0.85)), url(${data.backgroundImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }
-        : baseStyle;
-    case 'GRADIENT':
-    default:
-      // Fallback to Primary Blue with Halftone if gradient not specified
-      return baseStyle;
-  }
+/** Latar dari pengaturan halaman (data pengguna, bukan token): warna atau foto + lapisan warna. */
+const backgroundStyle = (data?: LinkPageData): React.CSSProperties => {
+  const color = brandColor(data?.backgroundColor);
+  if (data?.backgroundType === 'IMAGE' && data.backgroundImage)
+    return {
+      backgroundColor: color,
+      backgroundImage: `linear-gradient(0deg, color-mix(in oklab, ${color} 85%, transparent), color-mix(in oklab, ${color} 85%, transparent)), url(${data.backgroundImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    };
+  return { backgroundColor: color };
 };
 
 const PasswordGate = ({ slug, wrong }: { slug: string; wrong?: boolean }) => (
-  <div className="flex min-h-screen items-center justify-center bg-slate-950 p-4">
-    <div className="w-full max-w-sm overflow-hidden rounded-3xl border border-white/10 bg-slate-900 p-8 text-center shadow-lg">
-      <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/20">
-        <Lock className="h-6 w-6 text-white/80" />
-      </div>
-      <h1 className="text-xl font-medium text-white">Halaman Terkunci</h1>
-      <p className="mt-2 text-sm text-white/60">
+  <div
+    data-surface="ink"
+    className="relative isolate flex min-h-dvh items-center justify-center overflow-hidden p-5"
+  >
+    <Supergraphic className="-z-10 text-white/5" />
+    <div className="w-full max-w-sm rounded-lg border border-on-dark-line bg-white/5 p-8 text-center">
+      <span className="mx-auto mb-6 flex size-14 items-center justify-center rounded-full border-2 border-on-dark-line">
+        <Lock
+          className="size-6"
+          aria-hidden
+        />
+      </span>
+      <h1 className="font-display text-2xl font-bold tracking-display">
+        Halaman terkunci
+      </h1>
+      <p className="mt-2 text-sm text-on-dark-muted">
         Masukkan password untuk membuka halaman ini.
       </p>
       {wrong && (
         <p
           role="alert"
-          className="mt-4 rounded-md bg-red-500/10 px-3 py-2 text-sm text-red-300"
+          className="mt-4 flex items-center justify-center gap-2 rounded-sm bg-white px-3 py-2 text-sm font-semibold text-danger"
         >
+          <CircleAlert
+            className="size-4"
+            aria-hidden
+          />
           Password salah. Coba lagi.
         </p>
       )}
       <form
         action={unlockLinkPage.bind(null, slug)}
-        className="mt-8 space-y-4 text-left"
+        className="mt-8 flex flex-col gap-3 text-left"
       >
-        <div>
-          <label
-            htmlFor="password"
-            className="sr-only"
-          >
-            Password
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            className="w-full rounded-3xl border border-white/10 bg-black/20 px-4 py-3 text-center text-white transition-colors placeholder:text-white/30 focus:border-white/30 focus:ring-1 focus:ring-white/30 focus:outline-none"
-            placeholder="Masukkan Password"
-            required
-            autoFocus
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full rounded-3xl bg-white px-4 py-3 font-medium text-black transition-transform active:scale-[0.98]"
+        <label
+          htmlFor="password"
+          className="sr-only"
         >
-          Buka Halaman
-        </button>
+          Password
+        </label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          className="h-12 w-full rounded-full border-[1.5px] border-on-dark-line bg-transparent px-5 text-center text-white transition-colors placeholder:text-on-dark-muted focus-visible:border-white focus-visible:ring-2 focus-visible:ring-highlight focus-visible:outline-none"
+          placeholder="Masukkan password"
+          required
+          autoFocus
+        />
+        <Button
+          type="submit"
+          variant="accent"
+          size="lg"
+        >
+          Buka halaman
+        </Button>
       </form>
     </div>
   </div>
 );
 
 const ErrorState = ({ message }: { message: string }) => (
-  <div className="flex min-h-screen items-center justify-center bg-slate-950 p-4">
-    <div className="w-full max-w-sm rounded-3xl border border-white/10 bg-slate-900 p-8 text-center">
-      <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-red-500/10">
-        <ExternalLink className="h-6 w-6 text-red-400" />
-      </div>
-      <h1 className="text-lg font-medium text-white">Terjadi Kesalahan</h1>
-      <p className="mt-2 text-sm text-white/60">{message}</p>
-      <Link
-        href="/"
-        className="mt-6 inline-block rounded-full bg-white/10 px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-white/20"
+  <div
+    data-surface="ink"
+    className="flex min-h-dvh items-center justify-center p-5"
+  >
+    <div className="flex w-full max-w-sm flex-col items-center gap-4 rounded-lg border border-on-dark-line bg-white/5 p-8 text-center">
+      <Lio
+        expression="ko"
+        tone="white"
+        size="m"
+      />
+      <h1 className="font-display text-2xl font-bold tracking-display">
+        Halaman gagal dimuat
+      </h1>
+      <p className="text-sm text-on-dark-muted">{message}</p>
+      <Button
+        asChild
+        variant="outline-light"
       >
-        Kembali ke Beranda
-      </Link>
+        <Link href="/">Kembali ke beranda</Link>
+      </Button>
     </div>
   </div>
 );
@@ -324,7 +327,7 @@ export default async function PublicLinkPage({
 
   if (!result.data) {
     return (
-      <ErrorState message="Gagal memuat halaman link. Silakan coba lagi." />
+      <ErrorState message="Halaman link belum bisa dimuat. Coba lagi beberapa saat lagi." />
     );
   }
 
@@ -337,8 +340,8 @@ export default async function PublicLinkPage({
   const primaryCtaLink =
     whatsappLink || page.buttons[0]?.url || socialEntries[0]?.[1] || '#';
   const primaryCtaLabel = whatsappLink
-    ? 'Chat via WhatsApp'
-    : 'Kunjungi Tautan Utama';
+    ? 'Chat lewat WhatsApp'
+    : 'Kunjungi tautan utama';
   const buttonSections = buildButtonSections(page.buttons);
   const hasButtons = buttonSections.some(
     (section) => section.buttons.length > 0,
@@ -359,14 +362,11 @@ export default async function PublicLinkPage({
 
   return (
     <div
-      className={`relative min-h-screen w-full overflow-x-hidden font-sans transition-colors duration-700`}
+      data-surface="brand"
+      className="relative isolate min-h-dvh w-full overflow-x-hidden"
       style={backgroundStyle(page)}
     >
-      {/* Halftone Overlay for depth if needed, but handled in backgroundStyle now */}
-
-      {/* Gradient Overlay for depth */}
-      <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-black/0 via-black/5 to-black/20" />
-
+      <Supergraphic className="-right-[35%] -bottom-[10%] -z-10 h-[70%] text-white/10" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -374,105 +374,107 @@ export default async function PublicLinkPage({
         }}
       />
 
-      <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-md flex-col items-center px-4 py-16 sm:py-20">
-        {/* Profile Section - Clean & Open */}
+      <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col items-center px-5 py-16 sm:py-20">
         <div className="mb-10 flex flex-col items-center text-center">
           {page.profileImage && (
-            <div className="group relative mb-5 h-28 w-28 overflow-hidden rounded-full shadow-2xl ring-4 ring-white/20">
+            <div className="relative mb-5 size-28 overflow-hidden rounded-full ring-4 ring-white/30">
               <Image
                 src={page.profileImage}
                 alt={page.title}
                 fill
                 className="object-cover"
                 priority
-                sizes="(max-width: 768px) 112px, 112px"
+                sizes="112px"
                 unoptimized={true}
               />
             </div>
           )}
-          <h1 className="font-serif text-xl font-bold tracking-tight text-white drop-shadow-md sm:text-2xl">
+          <h1 className="font-display text-2xl font-bold tracking-display text-balance sm:text-3xl">
             {page.title}
           </h1>
           {page.description && (
-            <p className="mt-2 max-w-xs text-base leading-relaxed font-medium text-white/90 drop-shadow-sm">
+            <p className="mt-2 max-w-xs text-base leading-relaxed">
               {page.description}
             </p>
-          )}{' '}
-          {/* Social Icons - Floating Row */}
+          )}
           {socialEntries.length > 0 && (
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <ul className="mt-6 flex flex-wrap justify-center gap-3">
               {socialEntries.map(([platform, url]) => {
                 if (!url) return null;
                 const Icon = socialIconMap[platform.toLowerCase()];
                 if (!Icon) return null;
                 return (
-                  <a
-                    key={platform}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex h-10 w-10 items-center justify-center rounded-full bg-black/20 text-white transition-transform hover:bg-white hover:text-black active:scale-95"
-                    aria-label={platform}
-                  >
-                    <Icon className="h-5 w-5" />
-                  </a>
+                  <li key={platform}>
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex size-11 items-center justify-center rounded-full border-[1.5px] border-white/60 text-white transition-colors hover:bg-white hover:text-ink focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink focus-visible:outline-none"
+                      aria-label={platform}
+                    >
+                      <Icon className="size-5" />
+                    </a>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
           )}
         </div>
 
-        {/* Buttons Section */}
-        <div className="w-full space-y-8">
+        <div className="flex w-full flex-col gap-8">
           {!hasButtons ? (
-            <div className="rounded-3xl border border-dashed border-white/20 bg-black/10 px-6 py-12 text-center">
-              <p className="text-white/60">Belum ada tautan yang aktif.</p>
+            <div className="rounded-lg border-2 border-dashed border-white/40 px-6 py-12 text-center">
+              <p>Belum ada tautan yang aktif.</p>
             </div>
           ) : (
             buttonSections.map((section) => (
               <div
                 key={section.key}
-                className="space-y-3"
+                className="flex flex-col gap-3"
               >
                 {section.label && (
-                  <div className="px-1 pb-1 text-center">
-                    <h2 className="text-sm font-bold tracking-[0.2em] text-white/60 uppercase drop-shadow-sm">
-                      {section.label}
-                    </h2>
-                  </div>
+                  <h2 className="px-1 text-center font-mono text-xs font-medium lowercase">
+                    {section.label}
+                  </h2>
                 )}
-                <div className="space-y-3">
-                  {section.buttons.map((button) => {
-                    return (
-                      <ButtonLinkPage
-                        key={button.id}
-                        button={button}
-                      />
-                    );
-                  })}
-                </div>
+                {section.buttons.map((button) => (
+                  <ButtonLinkPage
+                    key={button.id}
+                    button={button}
+                  />
+                ))}
               </div>
             ))
           )}
         </div>
 
-        {/* Footer */}
-        <footer className="mt-16 flex flex-col items-center gap-4 text-center">
-          <div className="h-px w-12 bg-white/20" />
-          <div className="text-sm font-medium text-white/50">
-            <p>
-              © {new Date().getFullYear()} {page.title}
-            </p>
-            <a
-              href={primaryCtaLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 transition-colors hover:bg-white/10 hover:text-white"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
-              {primaryCtaLabel}
-            </a>
-          </div>
+        <footer className="mt-auto flex flex-col items-center gap-4 pt-16 text-center text-sm">
+          <a
+            href={primaryCtaLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 font-semibold text-white transition-colors hover:bg-brand-deep focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none"
+          >
+            <span
+              aria-hidden
+              className="size-2 rounded-full bg-lime"
+            />
+            {primaryCtaLabel}
+          </a>
+          <Link
+            href="/"
+            aria-label="Bimbelio — beranda"
+            className="rounded-sm focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none"
+          >
+            <Logo
+              tone="white"
+              title=""
+              className="h-6"
+            />
+          </Link>
+          <p>
+            © {new Date().getFullYear()} {page.title}
+          </p>
         </footer>
       </main>
     </div>

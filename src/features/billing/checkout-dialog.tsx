@@ -199,7 +199,7 @@ export function CheckoutDialog({
         >
           {canInstall && (
             <fieldset className="flex flex-col gap-2">
-              <legend className="mb-2 text-sm font-semibold text-ink">
+              <legend className="mb-2 font-mono text-xs font-medium text-ink-muted lowercase">
                 Cara bayar
               </legend>
               <RadioGroup
@@ -283,6 +283,7 @@ export function CheckoutDialog({
                 value={voucher ? voucher.code : voucherInput}
                 disabled={!!voucher}
                 autoCapitalize="characters"
+                className="font-mono"
                 placeholder="Contoh: HEMAT50"
                 onChange={(e) => {
                   setVoucherInput(e.target.value.toUpperCase());
@@ -344,7 +345,7 @@ export function CheckoutDialog({
                 </s>
               )}
             </div>
-            <span className="text-2xl font-extrabold text-ink tabular-nums">
+            <span className="font-display text-3xl font-extrabold tracking-hero text-ink tabular-nums">
               {formatIDR(total)}
             </span>
           </div>
@@ -388,7 +389,7 @@ function MethodOption({
       className={cn(
         'flex cursor-pointer items-center gap-3 rounded-md border p-3 transition-colors',
         checked
-          ? 'border-brand-strong bg-brand-soft'
+          ? 'border-brand bg-brand-soft'
           : 'border-line hover:border-line-strong',
       )}
     >
@@ -397,7 +398,9 @@ function MethodOption({
         <span className="text-sm font-semibold text-ink">{title}</span>
         <span className="text-xs text-ink-muted">{detail}</span>
       </span>
-      <span className="text-sm font-bold text-ink tabular-nums">{amount}</span>
+      <span className="font-mono text-sm font-medium text-ink tabular-nums">
+        {amount}
+      </span>
     </label>
   );
 }

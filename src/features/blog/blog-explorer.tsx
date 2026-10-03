@@ -1,7 +1,6 @@
 'use client';
 
 import { EmptyState } from '@/components/patterns/empty-state';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -116,21 +115,21 @@ export function BlogExplorer({ posts }: { posts: BlogSummary[] }) {
               type="button"
               aria-pressed={tag === t}
               onClick={() => setTag(tag === t ? null : t)}
-              className="rounded-sm focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none"
+              className={cn(
+                'inline-flex h-9 items-center rounded-full border-[1.5px] px-3.5 font-mono text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:outline-none',
+                tag === t
+                  ? 'border-ink bg-ink text-white'
+                  : 'border-line-strong bg-surface text-ink hover:border-ink',
+              )}
             >
-              <Badge
-                variant={tag === t ? 'solid' : 'secondary'}
-                className={cn('px-2.5 py-1 text-sm')}
-              >
-                #{t}
-              </Badge>
+              #{t}
             </button>
           ))}
         </div>
       )}
 
       <p
-        className="text-sm text-ink-muted"
+        className="font-mono text-xs font-medium text-ink-muted"
         aria-live="polite"
       >
         {visible.length} artikel

@@ -18,6 +18,8 @@ const DESIGN_SYSTEM_DIRS = [
   'src/components/layout/**',
   'src/features/**',
   'src/app/(guest)/**',
+  'src/app/(link)/**',
+  'src/app/api/og/**',
   'src/app/sitemap.ts',
   'src/app/robots.ts',
   'src/lib/api/**',

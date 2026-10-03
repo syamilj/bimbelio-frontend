@@ -1,7 +1,9 @@
 'use client';
 
+import { cn } from '@/lib/utils';
 import { utm } from '@/lib/utm/_core';
 import { getLinkPageSlug } from '@/lib/utm/url';
+import { Link2 } from 'lucide-react';
 import Image from 'next/image';
 
 interface LinkButton {
@@ -20,99 +22,69 @@ interface LinkButton {
   thumbnail?: string | null;
 }
 
+/**
+ * Tombol halaman link. Warna & radius dari pengaturan admin (data, bukan token)
+ * tetap dihormati; tanpa pengaturan, tombol memakai gaya merek: pil putih + Tinta.
+ */
 export const ButtonLinkPage = ({ button }: { button: LinkButton }) => {
   const type = button.type || 'PRIMARY';
-  const baseColor = button.color || '#ffffff';
-  const baseTextColor = button.textColor || '#000000';
-  const radius = button.borderRadius || '99999px'; // Slightly tighter radius
-
-  let finalBg = baseColor;
-  let finalTxt = baseTextColor;
-  let borderStyle = 'none';
-  let shadow = '0 2px 4px rgba(0,0,0,0.1)';
-
-  if (type === 'OUTLINE') {
-    finalBg = 'transparent';
-    finalTxt = baseColor; // Use the main color for text/border
-    borderStyle = `2px solid ${baseColor}`;
-    shadow = 'none';
-  } else if (type === 'SECONDARY') {
-    // Secondary usually implies a different style, but here we just use the color
-    // If color is not provided, maybe fallback to glass
-    if (!button.color) {
-      finalBg = 'rgba(255, 255, 255, 0.15)';
-      finalTxt = '#ffffff';
-      borderStyle = '1px solid rgba(255, 255, 255, 0.2)';
-    }
-  } else if (type === 'TEXT') {
-    finalBg = 'transparent';
-    finalTxt = baseTextColor || '#ffffff';
-    shadow = 'none';
+  const custom: React.CSSProperties = {};
+  if (button.borderRadius) custom.borderRadius = button.borderRadius;
+  if (button.color) {
+    if (type === 'OUTLINE') {
+      custom.color = button.color;
+      custom.borderColor = button.color;
+    } else if (type !== 'TEXT') custom.backgroundColor = button.color;
   }
+  if (button.textColor && type !== 'OUTLINE') custom.color = button.textColor;
 
-  // Fallback for glass effect if no color set on PRIMARY
-  if (type === 'PRIMARY' && !button.color) {
-    finalBg = 'rgba(255, 255, 255, 0.95)';
-    finalTxt = '#000000';
-  }
   return (
     <a
-      key={button.id}
       href={button.url}
       target="_blank"
       rel="noopener noreferrer"
       data-link-button
       data-button-id={button.id}
       data-button-title={button.title}
-      className="group relative flex w-full items-center justify-center overflow-hidden px-6 py-4 transition-transform active:scale-[0.98]"
-      style={{
-        backgroundColor: finalBg,
-        color: finalTxt,
-        borderRadius: radius,
-        border: borderStyle,
-        boxShadow: shadow,
-      }}
+      className={cn(
+        'relative flex min-h-14 w-full items-center justify-center rounded-full px-14 py-3 text-center transition-transform focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink focus-visible:outline-none active:scale-[0.98]',
+        type === 'PRIMARY' && 'bg-white text-ink shadow-float',
+        type === 'THUMBNAIL' && 'bg-white text-ink shadow-float',
+        type === 'SECONDARY' && 'bg-ink text-white',
+        type === 'OUTLINE' && 'border-2 border-white text-white',
+        type === 'TEXT' && 'text-white underline-offset-4 hover:underline',
+      )}
+      style={custom}
       onClick={() => {
         const slug = getLinkPageSlug();
-        if (slug) {
-          console.log('📄 Link Page SLUG:', slug);
-
-          utm.trackButtonClick(slug, button.id);
-        }
+        if (slug) utm.trackButtonClick(slug, button.id);
       }}
     >
-      <div className="relative flex w-full items-center justify-center">
-        {/* Thumbnail/Icon Left */}
-        {(button.thumbnail || button.icon) && (
-          <div className="absolute left-0 flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-black/5 object-cover">
-            {button.thumbnail ? (
-              <Image
-                src={button.thumbnail}
-                alt=""
-                width={32}
-                height={32}
-                sizes="32px"
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <span className="text-lg">
-                {/* Icon logic here if needed */}⭐️
-              </span>
-            )}
-          </div>
-        )}
-
-        <div className="flex flex-col items-center text-center">
-          <span className="text-base font-semibold tracking-wide sm:text-lg">
-            {button.title}
-          </span>
-          {button.subtitle && (
-            <span className="mt-0.5 text-sm opacity-80 font-medium">
-              {button.subtitle}
-            </span>
+      {(button.thumbnail || button.icon) && (
+        <span className="absolute left-3 flex size-9 items-center justify-center overflow-hidden rounded-full bg-paper text-brand">
+          {button.thumbnail ? (
+            <Image
+              src={button.thumbnail}
+              alt=""
+              width={36}
+              height={36}
+              sizes="36px"
+              className="size-full object-cover"
+            />
+          ) : (
+            <Link2
+              className="size-4"
+              aria-hidden
+            />
           )}
-        </div>
-      </div>
+        </span>
+      )}
+      <span className="flex flex-col items-center">
+        <span className="text-base font-semibold">{button.title}</span>
+        {button.subtitle && (
+          <span className="mt-0.5 text-sm opacity-80">{button.subtitle}</span>
+        )}
+      </span>
     </a>
   );
 };

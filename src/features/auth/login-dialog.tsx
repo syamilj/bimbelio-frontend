@@ -1,5 +1,6 @@
 'use client';
 
+import { Lio } from '@/components/brand/lio';
 import { Logo } from '@/components/brand/logo';
 import { BubbleLoader } from '@/components/patterns/bubble-loader';
 import { useAppContext } from '@/components/provider/provider-app';
@@ -12,6 +13,7 @@ import {
 import { env } from '@/env.mjs';
 import { toApiError } from '@/lib/api/client';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { useGoogleLogin } from './login-flow';
@@ -32,9 +34,18 @@ export function LoginDialog() {
       onOpenChange={(open) => !open && !pending && close()}
     >
       <DialogContent className="justify-items-center gap-6 px-8 py-10 text-center sm:max-w-sm">
-        <Logo />
+        <Lio
+          expression="senang"
+          size="m"
+        />
         <div className="flex flex-col gap-2">
-          <DialogTitle className="text-xl">Masuk ke Bimbelio</DialogTitle>
+          <Logo
+            title=""
+            className="mx-auto h-6"
+          />
+          <DialogTitle className="font-display text-2xl tracking-display">
+            Masuk ke Bimbelio
+          </DialogTitle>
           <DialogDescription>
             Pakai akun Google-mu. Akun baru otomatis dibuat saat pertama kali
             masuk.
@@ -85,7 +96,22 @@ export function LoginDialog() {
         </div>
 
         <p className="text-xs text-ink-muted">
-          Dengan masuk, kamu menyetujui Ketentuan Layanan dan Kebijakan Privasi
+          Dengan masuk, kamu menyetujui{' '}
+          <Link
+            href="/terms"
+            onClick={close}
+            className="font-semibold text-brand-strong underline-offset-2 hover:underline"
+          >
+            Syarat dan Ketentuan
+          </Link>{' '}
+          serta{' '}
+          <Link
+            href="/privacy"
+            onClick={close}
+            className="font-semibold text-brand-strong underline-offset-2 hover:underline"
+          >
+            Kebijakan Privasi
+          </Link>{' '}
           Bimbelio.
         </p>
       </DialogContent>

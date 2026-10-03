@@ -1,7 +1,12 @@
+import { BubbleLoader } from '@/components/patterns/bubble-loader';
+
 export default function Loading() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-950">
-      <div className="h-8 w-8 animate-spin rounded-full border-4 border-white/20 border-t-white" />
+    <div
+      data-surface="ink"
+      className="flex min-h-dvh items-center justify-center"
+    >
+      <BubbleLoader label="Memuat halaman…" />
     </div>
   );
 }

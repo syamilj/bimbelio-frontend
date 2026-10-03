@@ -1,10 +1,22 @@
+import { Highlight } from '@/components/brand/highlight';
+import { Lio } from '@/components/brand/lio';
+import { MonoLabel } from '@/components/brand/mono-label';
+import { SeriesLabel } from '@/components/brand/series-label';
+import { Supergraphic } from '@/components/brand/supergraphic';
 import { ContactButton } from '@/components/layout/site/contact';
 import { Button } from '@/components/ui/button';
-import { MarketingSection } from '@/features/marketing/section';
+import {
+  MarketingSection,
+  SITE_CONTAINER,
+  sectionTitleClass,
+} from '@/features/marketing/section';
+import { cn } from '@/lib/utils';
 import {
   Award,
   Brain,
   CheckCircle,
+  Compass,
+  Heart,
   Lightbulb,
   Rocket,
   Shield,
@@ -30,8 +42,8 @@ type Item = { icon: LucideIcon; title: string; body: string };
 const PROOF: Item[] = [
   {
     icon: Zap,
-    title: 'Update terus menerus',
-    body: 'Aku selalu tambahin fitur baru biar kamu makin dimudahin.',
+    title: 'Update terus-menerus',
+    body: 'Kami terus menambah fitur baru supaya belajarmu makin mudah.',
   },
   {
     icon: Users,
@@ -41,7 +53,7 @@ const PROOF: Item[] = [
   {
     icon: Award,
     title: 'Bukti nyata',
-    body: 'Ribuan alumni aku udah lolos ke PTN dan kedinasan impian.',
+    body: 'Ribuan alumni kami sudah lolos ke PTN dan kedinasan impian.',
   },
 ];
 
@@ -49,22 +61,22 @@ const WHY: Item[] = [
   {
     icon: Brain,
     title: 'AI yang ngerti kamu',
-    body: 'Bukan AI biasa — ini AI yang belajar dari progress kamu dan kasih rekomendasi materi yang pas banget.',
+    body: 'AI yang belajar dari progresmu dan memberi rekomendasi materi yang pas.',
   },
   {
     icon: Target,
-    title: 'Fokus ke target kamu',
-    body: 'Mau SNBT, SIMAK UI, UM-UGM, atau Kedinasan? Semua materi udah aku sesuaikan sama pola soal terbaru.',
+    title: 'Fokus ke targetmu',
+    body: 'SNBT, SIMAK UI, UM-UGM, atau kedinasan? Semua materi sudah disesuaikan dengan pola soal terbaru.',
   },
   {
     icon: Award,
     title: 'Mentor berpengalaman',
-    body: 'Bukan sembarang tutor — mereka udah ngebimbing ratusan siswa lolos PTN dan kedinasan favorit.',
+    body: 'Mentor kami sudah membimbing ratusan siswa lolos PTN dan kedinasan favorit.',
   },
   {
     icon: TrendingUp,
-    title: 'Hasil yang keliatan',
-    body: 'Ribuan alumni aku udah lolos. Kamu bisa cek sendiri testimoni dan data passing rate yang transparan.',
+    title: 'Hasil yang kelihatan',
+    body: 'Ribuan alumni sudah lolos. Kamu bisa cek sendiri testimoni dan data passing rate yang transparan.',
   },
 ];
 
@@ -73,28 +85,28 @@ const EXAMS = [
     name: 'SNBT',
     full: 'Seleksi Nasional Berdasarkan Tes',
     logo: '/hero/LOGO_SNBT.webp',
-    body: 'Jalur utama masuk PTN — aku kasih kamu ribuan soal latihan yang mirip banget sama aslinya.',
+    body: 'Jalur utama masuk PTN. Ribuan soal latihan yang mirip dengan aslinya.',
     stats: ['5.000+ soal latihan', '200+ video pembahasan'],
   },
   {
     name: 'SIMAK UI',
     full: 'SIMAK Universitas Indonesia',
     logo: '/hero/LOGO_PTN_UI.webp',
-    body: 'Mau masuk UI lewat jalur mandiri? Soal-soal spesifik UI udah aku siapin lengkap.',
-    stats: ['3.500+ soal spesifik UI', '50+ paket try out'],
+    body: 'Mau masuk UI lewat jalur mandiri? Soal-soal khusus UI sudah lengkap.',
+    stats: ['3.500+ soal spesifik UI', '50+ paket tryout'],
   },
   {
     name: 'UM-UGM',
     full: 'Ujian Mandiri Universitas Gadjah Mada',
     logo: '/hero/LOGO_PTN_UGM.webp',
-    body: 'Target UGM? Aku punya bank soal UM-UGM dari tahun-tahun sebelumnya buat kamu pelajari.',
+    body: 'Target UGM? Bank soal UM-UGM dari tahun-tahun sebelumnya siap dipelajari.',
     stats: ['2.800+ soal tahun lalu', 'Pembahasan video & teks'],
   },
   {
     name: 'Kedinasan',
     full: 'IPDN, STAN, STIS & lainnya',
     logo: '/hero/LOGO_KEDINASAN_STAN.webp',
-    body: 'IPDN, STAN, STIS? Semua pola soal kedinasan udah aku cover di sini.',
+    body: 'IPDN, STAN, STIS? Semua pola soal kedinasan sudah tercakup.',
     stats: ['4.200+ soal multi instansi', '150+ topik materi'],
   },
 ];
@@ -103,22 +115,22 @@ const VALUES: Item[] = [
   {
     icon: Lightbulb,
     title: 'Terus berinovasi',
-    body: 'Aku selalu cari cara terbaru biar kamu belajar lebih efektif — makanya aku pakai AI dan teknologi canggih.',
+    body: 'Kami selalu mencari cara belajar yang lebih efektif, termasuk lewat AI dan teknologi.',
   },
   {
     icon: Shield,
     title: 'All-in buat kamu',
-    body: 'Aku komit bantu kamu sampe beneran lolos. Sukses kamu adalah bukti kesuksesan aku juga.',
+    body: 'Kami berkomitmen menemanimu sampai lolos. Suksesmu adalah bukti kerja kami.',
   },
   {
     icon: CheckCircle,
-    title: 'Kualitas nomor 1',
-    body: 'Aku gak mau asal-asalan — dari materi, soal, sampai mentor, semua aku pastikan berkualitas tinggi.',
+    title: 'Kualitas nomor satu',
+    body: 'Materi, soal, sampai mentor, semuanya kami pastikan berkualitas.',
   },
   {
     icon: Rocket,
-    title: 'Percepat progres kamu',
-    body: 'Aku bikin sistem yang ngebuat kamu belajar lebih cepet dan efisien daripada belajar sendiri.',
+    title: 'Percepat progresmu',
+    body: 'Sistem yang membuatmu belajar lebih cepat dan efisien daripada belajar sendiri.',
   },
 ];
 
@@ -141,20 +153,22 @@ function IconList({
     4: 'md:grid-cols-2 lg:grid-cols-4',
   }[columns];
   return (
-    <ul className={`grid gap-6 ${cols}`}>
+    <ul className={`grid gap-4 ${cols}`}>
       {items.map(({ icon: Icon, title, body }) => (
         <li
           key={title}
-          className="flex flex-col gap-3"
+          className="flex flex-col gap-3 rounded-md border border-line bg-surface p-5"
         >
-          <span className="flex size-11 items-center justify-center rounded-full bg-brand-soft text-brand-strong">
+          <span className="flex size-10 items-center justify-center rounded-full border-[1.5px] border-brand text-brand">
             <Icon
               className="size-5"
               aria-hidden
             />
           </span>
-          <h3 className="text-lg font-bold text-ink">{title}</h3>
-          <p className="text-ink-muted">{body}</p>
+          <h3 className="font-display text-lg font-bold tracking-display text-ink">
+            {title}
+          </h3>
+          <p className="text-sm text-ink-muted">{body}</p>
         </li>
       ))}
     </ul>
@@ -164,63 +178,102 @@ function IconList({
 export default function AboutPage() {
   return (
     <>
-      <MarketingSection
-        headingLevel={1}
-        title="Kenalan sama Bimbelio"
-        description="Aku Bimbelio — platform bimbel + AI yang bikin persiapan SNBT, SIMAK UI, UM-UGM, sama Kedinasan jadi gak ribet dan super terstruktur."
-        className="pt-10 sm:pt-14"
+      <section
+        data-surface="brand"
+        aria-labelledby="about-judul"
+        className="relative isolate overflow-hidden"
       >
-        <dl className="grid grid-cols-3 gap-4 sm:max-w-xl">
-          {STATS.map((s) => (
-            <div
-              key={s.label}
-              className="flex flex-col"
+        <Supergraphic className="-right-[30%] -bottom-[40%] -z-10 h-[120%] text-white/10 lg:-right-[8%]" />
+        <div
+          className={cn(
+            SITE_CONTAINER,
+            'grid items-center gap-10 py-14 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,0.6fr)] lg:py-20',
+          )}
+        >
+          <div className="flex flex-col gap-6">
+            <SeriesLabel
+              icon={Heart}
+              tone="light"
             >
-              <dt className="order-2 text-sm text-ink-muted">{s.label}</dt>
-              <dd className="order-1 text-3xl font-extrabold text-ink tabular-nums">
-                {s.value}
-              </dd>
+              Tentang kami
+            </SeriesLabel>
+            <h1
+              id="about-judul"
+              className="font-display text-[clamp(2.5rem,5.5vw,4.5rem)] leading-[1.02] font-extrabold tracking-hero text-balance"
+            >
+              Kenalan sama <Highlight tone="text">Bimbelio.</Highlight>
+            </h1>
+            <p className="max-w-[52ch] text-lg text-on-dark-muted">
+              Platform bimbel + AI yang bikin persiapan SNBT, SIMAK UI, UM-UGM,
+              dan kedinasan jadi nggak ribet dan terstruktur.
+            </p>
+            <dl className="grid max-w-xl grid-cols-3 gap-4">
+              {STATS.map((s) => (
+                <div
+                  key={s.label}
+                  className="flex flex-col"
+                >
+                  <dt className="order-2 font-mono text-xs font-medium lowercase">
+                    {s.label}
+                  </dt>
+                  <dd className="order-1 font-display text-3xl font-extrabold tracking-score text-highlight tabular-nums sm:text-5xl">
+                    {s.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Button
+                asChild
+                size="lg"
+                variant="accent"
+              >
+                <Link href="/price">Mulai belajar</Link>
+              </Button>
+              <ContactButton
+                size="lg"
+                variant="outline-light"
+              >
+                Hubungi kami
+              </ContactButton>
             </div>
-          ))}
-        </dl>
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <Button
-            asChild
-            size="lg"
-          >
-            <Link href="/price">Mulai belajar</Link>
-          </Button>
-          <ContactButton
-            size="lg"
-            variant="outline"
-          >
-            Hubungi kami
-          </ContactButton>
+          </div>
+          <div className="hidden justify-center lg:flex">
+            <Lio
+              expression="senang"
+              tone="white"
+              size="l"
+              className="size-72"
+            />
+          </div>
         </div>
-      </MarketingSection>
+      </section>
 
-      <MarketingSection tone="surface">
+      <MarketingSection
+        tone="surface"
+        accent="pink"
+      >
         <div className="grid gap-10 lg:grid-cols-2">
           <div className="flex flex-col gap-3">
-            <h2 className="text-2xl font-extrabold tracking-tight text-ink">
-              Kenapa aku ada?
+            <MonoLabel>kenapa kami ada</MonoLabel>
+            <h2 className={cn(sectionTitleClass, 'text-ink')}>
+              Belajar sendiri tanpa arah itu <Highlight>melelahkan.</Highlight>
             </h2>
             <p className="text-lg text-ink-muted">
-              Aku tau banget gimana rasanya belajar sendiri tanpa arah jelas.
-              Makanya aku ada — buat kasih kamu sistem belajar yang terstruktur,
-              didukung AI canggih dan mentor berpengalaman. Target kamu lolos
-              ujian? Aku bantu maksimalin peluang kamu.
+              Kami tahu rasanya. Makanya Bimbelio memberi sistem belajar yang
+              terstruktur, didukung AI dan mentor berpengalaman. Target kamu
+              lolos ujian? Kami bantu memaksimalkan peluangmu.
             </p>
           </div>
           <div className="flex flex-col gap-3">
-            <h2 className="text-2xl font-extrabold tracking-tight text-ink">
-              Mau jadi apa aku?
+            <MonoLabel>mau jadi apa kami</MonoLabel>
+            <h2 className={cn(sectionTitleClass, 'text-ink')}>
+              Bimbel yang benar-benar ngerti perjuanganmu.
             </h2>
             <p className="text-lg text-ink-muted">
-              Aku pengen jadi platform bimbel #1 di Indonesia yang ngebantu
-              ribuan — bahkan jutaan siswa lolos ke universitas impian mereka.
-              Bukan cuma soal lulus, tapi soal ngasih pengalaman belajar yang
-              bener-bener ngerti struggle kamu.
+              Kami ingin jadi platform bimbel nomor satu di Indonesia yang
+              membantu jutaan siswa lolos ke kampus impian. Bukan cuma soal
+              lulus, tapi soal pengalaman belajar yang paham perjuanganmu.
             </p>
           </div>
         </div>
@@ -231,8 +284,13 @@ export default function AboutPage() {
       </MarketingSection>
 
       <MarketingSection
-        title="Kenapa harus pilih aku?"
-        description="Aku gabungin yang terbaik dari dua dunia: mentor expert yang ngerti struggle kamu + AI canggih yang personalize belajar kamu 24/7."
+        eyebrow={<SeriesLabel icon={Compass}>Kenapa Bimbelio</SeriesLabel>}
+        title={
+          <>
+            Mentor yang paham, <Highlight>AI yang personal.</Highlight>
+          </>
+        }
+        description="Kami menggabungkan yang terbaik dari dua dunia: mentor yang paham perjuanganmu dan AI yang menyesuaikan belajarmu 24 jam."
       >
         <IconList
           items={WHY}
@@ -242,31 +300,41 @@ export default function AboutPage() {
 
       <MarketingSection
         tone="surface"
-        title="Ujian yang aku cover"
-        description="Aku fokus ke 4 ujian besar yang paling banyak kamu butuhin — semua udah ada materinya lengkap dan update terus."
+        accent="pink"
+        title="Ujian yang kami cakup"
+        description="Empat ujian besar yang paling banyak kamu butuhkan, lengkap dengan materi yang terus diperbarui."
       >
         <ul className="grid gap-4 md:grid-cols-2">
           {EXAMS.map((exam) => (
             <li
               key={exam.name}
-              className="flex gap-4 rounded-lg border border-line p-5"
+              className="flex gap-4 rounded-md border border-line bg-paper p-5"
             >
-              <Image
-                src={exam.logo}
-                alt=""
-                width={48}
-                height={48}
-                className="size-12 shrink-0 object-contain"
-              />
+              <span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-surface">
+                <Image
+                  src={exam.logo}
+                  alt=""
+                  width={40}
+                  height={40}
+                  className="size-10 object-contain"
+                />
+              </span>
               <div className="flex flex-col gap-2">
                 <div>
-                  <h3 className="text-lg font-bold text-ink">{exam.name}</h3>
+                  <h3 className="font-display text-xl font-bold tracking-display text-ink">
+                    {exam.name}
+                  </h3>
                   <p className="text-sm text-ink-muted">{exam.full}</p>
                 </div>
                 <p className="text-ink">{exam.body}</p>
-                <ul className="flex flex-wrap gap-x-4 gap-y-1 text-sm font-medium text-ink-muted">
+                <ul className="flex flex-wrap gap-2">
                   {exam.stats.map((s) => (
-                    <li key={s}>{s}</li>
+                    <li
+                      key={s}
+                      className="rounded-full bg-surface px-3 py-1 font-mono text-xs font-medium text-ink-muted"
+                    >
+                      {s}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -276,8 +344,8 @@ export default function AboutPage() {
       </MarketingSection>
 
       <MarketingSection
-        title="Prinsip aku dalam ngajarin kamu"
-        description="Ini nilai-nilai yang aku pegang teguh setiap kali bikin fitur atau konten buat kamu."
+        title="Prinsip kami saat mengajarimu"
+        description="Nilai yang kami pegang setiap kali membuat fitur atau konten untukmu."
       >
         <IconList
           items={VALUES}
@@ -285,17 +353,16 @@ export default function AboutPage() {
         />
       </MarketingSection>
 
-      <section className="bg-brand-strong text-brand-ink">
-        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex max-w-2xl flex-col gap-3">
-            <h2 className="text-3xl font-extrabold tracking-tight">
-              Udah kenal kan? Sekarang action!
-            </h2>
-            <p className="text-lg">
-              Ribuan siswa udah percaya sama aku dan berhasil lolos
-              PTN/kedinasan impian mereka. Sekarang giliran kamu.
-            </p>
-          </div>
+      <MarketingSection
+        tone="ink"
+        title={
+          <>
+            Udah kenal, kan?{' '}
+            <Highlight tone="text">Sekarang giliranmu.</Highlight>
+          </>
+        }
+        description="Ribuan siswa sudah percaya dan berhasil lolos PTN atau kedinasan impian mereka."
+        headerAction={
           <div className="flex flex-col gap-3 sm:flex-row">
             <Button
               asChild
@@ -306,12 +373,11 @@ export default function AboutPage() {
             </Button>
             <ContactButton
               size="lg"
-              variant="outline"
-              className="border-brand-ink/40 bg-transparent text-brand-ink hover:bg-brand-ink/10"
+              variant="outline-light"
             />
           </div>
-        </div>
-      </section>
+        }
+      />
     </>
   );
 }

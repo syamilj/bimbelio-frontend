@@ -1,8 +1,11 @@
+import { Highlight } from '@/components/brand/highlight';
+import { SeriesLabel } from '@/components/brand/series-label';
 import { ContactButton } from '@/components/layout/site/contact';
 import { getPlans } from '@/features/billing/api';
 import { CoinExplainer } from '@/features/billing/coin-explainer';
 import { PlanBrowser } from '@/features/billing/plan-browser';
 import { MarketingSection } from '@/features/marketing/section';
+import { MessageCircle, Package } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -23,6 +26,7 @@ export default async function PricePage() {
     <>
       <MarketingSection
         headingLevel={1}
+        eyebrow={<SeriesLabel icon={Package}>Paket belajar</SeriesLabel>}
         title="Paket belajar"
         description="Pilih paket sesuai jalur ujianmu. Semua program sudah termasuk try out, live class, dan BimBot AI sesuai isi paketnya."
         className="pt-10 sm:pt-14"
@@ -31,9 +35,27 @@ export default async function PricePage() {
       </MarketingSection>
       <CoinExplainer />
       <MarketingSection
-        title="Masih bingung pilih paket?"
+        tone="ink"
+        eyebrow={
+          <SeriesLabel
+            icon={MessageCircle}
+            tone="light"
+          >
+            Konsultasi
+          </SeriesLabel>
+        }
+        title={
+          <>
+            Masih bingung <Highlight tone="text">pilih paket?</Highlight>
+          </>
+        }
         description="Ceritakan target dan jadwalmu. Tim kami bantu pilihkan paket yang paling pas, gratis."
-        headerAction={<ContactButton size="lg" />}
+        headerAction={
+          <ContactButton
+            size="lg"
+            variant="accent"
+          />
+        }
       />
     </>
   );

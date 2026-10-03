@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 import Link from 'next/link';
+import { BlogCategory } from './category';
 import { formatPostDate } from './format';
 import type { BlogSummary } from './types';
 
@@ -12,8 +13,8 @@ export function PostCard({
   priority?: boolean;
 }) {
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-lg border border-line bg-surface">
-      <div className="relative aspect-[1200/630] bg-paper">
+    <article className="group relative flex flex-col overflow-hidden rounded-md border border-line bg-surface transition-colors focus-within:border-brand hover:border-brand">
+      <div className="relative aspect-[1200/630] bg-brand-soft">
         {post.thumbnail && (
           <Image
             src={post.thumbnail}
@@ -35,14 +36,15 @@ export function PostCard({
       </div>
       <div className="flex flex-1 flex-col gap-2 p-5">
         {post.tags[0] && (
-          <p className="text-sm font-semibold text-brand-strong">
-            #{post.tags[0]}
-          </p>
+          <BlogCategory
+            tag={post.tags[0]}
+            className="mb-1"
+          />
         )}
-        <h3 className="line-clamp-2 text-lg leading-snug font-bold text-ink">
+        <h3 className="line-clamp-2 font-display text-lg leading-snug font-bold tracking-display text-ink">
           <Link
             href={`/blog/${post.slug}`}
-            className="after:absolute after:inset-0 focus-visible:outline-none"
+            className="after:absolute after:inset-0 after:rounded-md focus-visible:outline-none"
           >
             {post.title}
           </Link>
@@ -50,7 +52,7 @@ export function PostCard({
         <p className="line-clamp-3 text-sm text-ink-muted">
           {post.description}
         </p>
-        <p className="mt-auto pt-2 text-xs text-ink-muted">
+        <p className="mt-auto pt-2 font-mono text-xs font-medium text-ink-muted">
           <time dateTime={post.publishedAt ?? post.createdAt}>
             {formatPostDate(post.publishedAt ?? post.createdAt)}
           </time>

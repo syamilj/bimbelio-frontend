@@ -13,6 +13,7 @@ import {
   type PlanDataType,
 } from '@/features/billing/plan';
 import { PlanDetailActions } from '@/features/billing/plan-detail-actions';
+import { SITE_CONTAINER } from '@/features/marketing/section';
 import { cn } from '@/lib/utils';
 import { formatIDR } from '@/lib/utils/currency';
 import { format } from 'date-fns';
@@ -64,7 +65,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: plan.name,
       description,
       url: `${siteConfig.url}/price/${plan.slug}`,
-      images: [{ url: plan.image || siteConfig.ogImage, alt: plan.name }],
+      images: [
+        {
+          url:
+            plan.image ||
+            `/api/og?${new URLSearchParams({ title: plan.name, description, label: 'paket belajar · bimbelio.com' })}`,
+          alt: plan.name,
+        },
+      ],
     },
     twitter: { card: 'summary_large_image', title: plan.name, description },
   };
@@ -108,7 +116,7 @@ export default async function PlanDetailPage({ params }: Props) {
   };
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-14 px-4 py-10 sm:px-6 lg:py-14">
+    <div className={cn(SITE_CONTAINER, 'flex flex-col gap-14 py-10 lg:py-16')}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -116,15 +124,15 @@ export default async function PlanDetailPage({ params }: Props) {
 
       <nav
         aria-label="Breadcrumb"
-        className="text-sm text-ink-muted"
+        className="font-mono text-xs font-medium text-ink-muted lowercase"
       >
         <Link
           href="/price"
-          className="hover:text-ink"
+          className="rounded-xs hover:text-ink focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none"
         >
           Paket belajar
         </Link>
-        <span aria-hidden> / </span>
+        <span aria-hidden> · </span>
         <span
           className="text-ink"
           aria-current="page"
@@ -142,7 +150,7 @@ export default async function PlanDetailPage({ params }: Props) {
         )}
       >
         {plan.image && (
-          <div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-line bg-paper">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-brand-soft">
             <Image
               src={plan.image}
               alt=""
@@ -172,7 +180,7 @@ export default async function PlanDetailPage({ params }: Props) {
                 </Badge>
               ))}
             </div>
-            <h1 className="text-3xl leading-tight font-extrabold tracking-tight text-balance text-ink sm:text-4xl">
+            <h1 className="font-display text-4xl leading-[1.05] font-extrabold tracking-hero text-balance text-ink sm:text-5xl">
               {plan.name}
             </h1>
             {plan.description && (
@@ -182,10 +190,10 @@ export default async function PlanDetailPage({ params }: Props) {
             )}
           </div>
 
-          <div className="flex flex-col gap-4 rounded-lg border border-line bg-surface p-5">
+          <div className="flex flex-col gap-5 rounded-md border border-line bg-surface p-6">
             <div className="flex flex-col gap-1">
               <div className="flex flex-wrap items-baseline gap-x-3">
-                <span className="text-4xl font-extrabold text-ink tabular-nums">
+                <span className="font-display text-5xl font-extrabold tracking-hero text-ink tabular-nums">
                   {formatIDR(price)}
                 </span>
                 {percent > 0 && (
@@ -201,7 +209,7 @@ export default async function PlanDetailPage({ params }: Props) {
             </div>
 
             {schedule.length > 1 && (
-              <div className="flex flex-col gap-2 rounded-md bg-paper p-4">
+              <div className="flex flex-col gap-2 rounded-sm bg-paper p-4">
                 <p className="text-sm font-semibold text-ink">
                   Bisa dicicil {schedule.length}×, total{' '}
                   {formatIDR(installmentTotal(plan))}
@@ -218,7 +226,7 @@ export default async function PlanDetailPage({ params }: Props) {
                           ? ' (saat membeli)'
                           : ` (hari ke-${item.daysAfterFirstPayment})`}
                       </span>
-                      <span className="font-semibold text-ink">
+                      <span className="font-mono font-medium text-ink">
                         {formatIDR(item.amount)}
                       </span>
                     </li>
@@ -250,7 +258,7 @@ export default async function PlanDetailPage({ params }: Props) {
             >
               <h2
                 id="keunggulan"
-                className="text-lg font-bold text-ink"
+                className="font-display text-xl font-bold tracking-display text-ink"
               >
                 Yang kamu dapat
               </h2>
@@ -260,10 +268,15 @@ export default async function PlanDetailPage({ params }: Props) {
                     key={b.id}
                     className="flex gap-3"
                   >
-                    <Check
-                      className="mt-0.5 size-5 shrink-0 text-success"
+                    <span
                       aria-hidden
-                    />
+                      className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-brand text-brand-ink"
+                    >
+                      <Check
+                        className="size-3.5"
+                        strokeWidth={3}
+                      />
+                    </span>
                     <div className="flex flex-col">
                       <span className="font-semibold text-ink">{b.title}</span>
                       {b.description && (
@@ -287,16 +300,16 @@ export default async function PlanDetailPage({ params }: Props) {
         >
           <h2
             id="isi-paket"
-            className="text-2xl font-extrabold tracking-tight text-ink"
+            className="font-display text-3xl font-bold tracking-display text-ink"
           >
             Isi paket
           </h2>
           <div className="grid gap-5 md:grid-cols-2">
             {features.length > 0 && (
-              <div className="flex flex-col gap-4 rounded-lg border border-line bg-surface p-5">
-                <h3 className="flex items-center gap-2 font-bold text-ink">
+              <div className="flex flex-col gap-5 rounded-md border border-line bg-surface p-6">
+                <h3 className="flex items-center gap-2 font-display text-lg font-bold tracking-display text-ink">
                   <BookOpen
-                    className="size-5 text-brand-strong"
+                    className="size-5 text-brand"
                     aria-hidden
                   />
                   Fitur
@@ -334,10 +347,10 @@ export default async function PlanDetailPage({ params }: Props) {
             )}
 
             {coins.length > 0 && (
-              <div className="flex flex-col gap-4 rounded-lg border border-line bg-surface p-5">
-                <h3 className="flex items-center gap-2 font-bold text-ink">
+              <div className="flex flex-col gap-5 rounded-md border border-line bg-surface p-6">
+                <h3 className="flex items-center gap-2 font-display text-lg font-bold tracking-display text-ink">
                   <Coins
-                    className="size-5 text-brand-strong"
+                    className="size-5 text-brand"
                     aria-hidden
                   />
                   Koin
@@ -348,8 +361,10 @@ export default async function PlanDetailPage({ params }: Props) {
                       key={c.key}
                       className="rounded-sm bg-paper px-3 py-2"
                     >
-                      <dt className="text-xs text-ink-muted">{c.label}</dt>
-                      <dd className="text-lg font-bold text-ink tabular-nums">
+                      <dt className="font-mono text-xs font-medium text-ink-muted">
+                        {c.label}
+                      </dt>
+                      <dd className="font-display text-xl font-bold text-ink tabular-nums">
                         {c.value.toLocaleString('id-ID')}
                       </dd>
                     </div>
@@ -359,10 +374,10 @@ export default async function PlanDetailPage({ params }: Props) {
             )}
 
             {liveClasses.length > 0 && (
-              <div className="flex flex-col gap-4 rounded-lg border border-line bg-surface p-5 md:col-span-2">
-                <h3 className="flex items-center gap-2 font-bold text-ink">
+              <div className="flex flex-col gap-4 rounded-md border border-line bg-surface p-6 md:col-span-2">
+                <h3 className="flex items-center gap-2 font-display text-lg font-bold tracking-display text-ink">
                   <Video
-                    className="size-5 text-brand-strong"
+                    className="size-5 text-brand"
                     aria-hidden
                   />
                   Live class termasuk ({liveClasses.length})

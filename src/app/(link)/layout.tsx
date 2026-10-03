@@ -6,7 +6,7 @@ export default function LinkLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-dvh bg-slate-950">
+    <div className="min-h-dvh bg-ink">
       <ProviderUtm>{children}</ProviderUtm>
     </div>
   );

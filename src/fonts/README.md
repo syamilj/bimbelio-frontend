@@ -9,3 +9,8 @@ Huruf merek Bimbelio 2.1 (lihat `docs/redesign/BRAND-2.1.md` §3.2), semua SIL O
 
 Subset dibuat dengan `fonttools` (`varLib.instancer` + `pyftsubset --flavor=woff2`).
 Teks lisensi ada di `licenses/`. Dipakai lewat `src/lib/fonts.ts` (next/font/local).
+
+Gambar OG (`src/app/api/og/route.tsx`) memakai TTF statis di `og/` karena Satori
+tidak membaca woff2 maupun font variable: `parkinsans-800.ttf` (wght 800),
+`jakarta-500.ttf` (wght 500), `dm-mono-500.ttf`, semuanya subset Latin
+(`varLib.instancer` + `pyftsubset`, tanpa `--flavor`).

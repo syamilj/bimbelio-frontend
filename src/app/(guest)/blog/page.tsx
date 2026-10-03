@@ -1,6 +1,8 @@
+import { SeriesLabel } from '@/components/brand/series-label';
 import { getPosts } from '@/features/blog/api';
 import { BlogExplorer } from '@/features/blog/blog-explorer';
 import { MarketingSection } from '@/features/marketing/section';
+import { Newspaper } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -17,6 +19,7 @@ export default async function BlogPage() {
   return (
     <MarketingSection
       headingLevel={1}
+      eyebrow={<SeriesLabel icon={Newspaper}>Blog</SeriesLabel>}
       title="Blog Bimbelio"
       description="Tips dan strategi lolos PTN dan kedinasan, ditulis oleh tim yang pernah ada di posisimu."
       className="pt-10 sm:pt-14"

@@ -1,6 +1,8 @@
+import { SeriesLabel } from '@/components/brand/series-label';
 import { MarketingSection } from '@/features/marketing/section';
 import {
   BookOpen,
+  Coins,
   Eye,
   FileText,
   MessageSquare,
@@ -42,6 +44,8 @@ export function CoinExplainer() {
     <MarketingSection
       id="koin"
       tone="surface"
+      accent="pink"
+      eyebrow={<SeriesLabel icon={Coins}>Koin</SeriesLabel>}
       title="Cara kerja koin"
       description="Fitur AI dan try out memakai koin: satu koin untuk satu kali pakai. Paket belajar sudah termasuk koin, dan kamu bisa menambah koin kapan saja."
     >
@@ -49,19 +53,21 @@ export function CoinExplainer() {
         {COINS.map(({ icon: Icon, title, body }) => (
           <li
             key={title}
-            className="flex flex-col gap-3 rounded-md border border-line p-4"
+            className="flex flex-col gap-3 rounded-md border border-line p-5"
           >
-            <Icon
-              className="size-5 text-brand-strong"
-              aria-hidden
-            />
+            <span className="flex size-10 items-center justify-center rounded-full border-[1.5px] border-brand text-brand">
+              <Icon
+                className="size-5"
+                aria-hidden
+              />
+            </span>
             <div className="flex flex-col gap-1">
-              <h3 className="text-base font-bold text-ink">
+              <h3 className="font-display text-lg font-bold tracking-display text-ink">
                 Koin {title.toLowerCase()}
               </h3>
               <p className="text-sm text-ink-muted">{body}</p>
             </div>
-            <p className="mt-auto text-sm font-semibold text-ink">
+            <p className="mt-auto font-mono text-xs font-medium text-ink-muted">
               1 koin per penggunaan
             </p>
           </li>
