@@ -1,7 +1,3 @@
-// export default function ProviderUtm(){
-
-// }
-
 'use client';
 
 import { trackUnifiedEvent } from '@/lib/tracking/track';
@@ -41,8 +37,6 @@ export default function ProviderUtmLinkPage({
 }: {
   children: React.ReactNode;
 }) {
-  // const { data: session } = useSession();
-
   useEffect(() => {
     const utmParams = getUTMParams();
 
@@ -61,9 +55,7 @@ export default function ProviderUtmLinkPage({
 
     // TikTok page helper
     try {
-      if (typeof window !== 'undefined' && (window as any).ttq?.page) {
-        (window as any).ttq.page();
-      }
+      (window as Window & { ttq?: { page?: () => void } }).ttq?.page?.();
     } catch {
       // ignore
     }
