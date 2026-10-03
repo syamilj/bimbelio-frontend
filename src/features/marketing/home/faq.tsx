@@ -1,6 +1,11 @@
+import { Highlight } from '@/components/brand/highlight';
+import { SeriesLabel } from '@/components/brand/series-label';
 import { ContactButton } from '@/components/layout/site/contact';
-import { Plus } from 'lucide-react';
-import { MarketingSection } from '../section';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { MessageCircleQuestion, Plus } from 'lucide-react';
+import Link from 'next/link';
+import { SITE_CONTAINER, sectionTitleClass } from '../section';
 
 // Teks FAQ dari materi resmi Bimbelio (verbatim). Klaim garansi, durasi akses,
 // dan cicilan perlu dijaga sama dengan paket aktif — lihat PLAN.md §8.
@@ -11,7 +16,7 @@ export const FAQ = [
   },
   {
     q: 'Apakah ada garansi uang kembali?',
-    a: 'Ya! Kami memberikan garansi 100% uang kembali dalam 7 hari pertama jika kamu merasa program kami tidak sesuai ekspektasi. Tanpa pertanyaan yang ribet.',
+    a: 'Ya. Kami memberikan garansi 100% uang kembali dalam 7 hari pertama jika kamu merasa program kami tidak sesuai ekspektasi. Tanpa pertanyaan yang ribet.',
   },
   {
     q: 'Berapa lama akses program berlaku?',
@@ -19,11 +24,11 @@ export const FAQ = [
   },
   {
     q: 'Apakah bisa konsultasi dulu sebelum daftar?',
-    a: 'Tentu! Kamu bisa klik tombol "Konsultasi gratis" untuk chat dengan tim kami. Kami akan bantu kamu pilih program yang paling cocok sesuai target dan budget.',
+    a: 'Tentu. Kamu bisa klik tombol "Konsultasi gratis" untuk chat dengan tim kami. Kami akan bantu kamu pilih program yang paling cocok sesuai target dan budget.',
   },
   {
-    q: 'Bagaimana sistem Try Out IRT bekerja?',
-    a: 'Try Out kami menggunakan metode IRT (Item Response Theory) yang adaptif - soal akan menyesuaikan tingkat kesulitan berdasarkan kemampuan kamu. Hasil skor lebih akurat dan mirip dengan sistem UTBK asli.',
+    q: 'Bagaimana sistem tryout IRT bekerja?',
+    a: 'Tryout kami menggunakan metode IRT (Item Response Theory) yang adaptif: soal akan menyesuaikan tingkat kesulitan berdasarkan kemampuan kamu. Hasil skor lebih akurat dan mirip dengan sistem UTBK asli.',
   },
   {
     q: 'Apakah materi sudah sesuai kurikulum terbaru?',
@@ -31,11 +36,11 @@ export const FAQ = [
   },
   {
     q: 'Bisa cicil pembayaran nggak?',
-    a: 'Bisa banget! Kami bekerja sama dengan beberapa payment gateway yang menyediakan opsi cicilan 0%. Kamu bisa pilih cicilan 3, 6, atau 12 bulan sesuai kemampuan.',
+    a: 'Bisa banget. Kami bekerja sama dengan beberapa payment gateway yang menyediakan opsi cicilan 0%. Kamu bisa pilih cicilan 3, 6, atau 12 bulan sesuai kemampuan.',
   },
   {
     q: 'Gimana kalau stuck atau nggak paham materi?',
-    a: 'Tenang! Kamu bisa langsung chat AI Assistant untuk penjelasan instant, atau booking sesi 1-on-1 dengan Mentor. Ada juga forum diskusi dengan tutor yang dijawab maksimal 24 jam.',
+    a: 'Tenang, kamu bisa langsung chat AI Assistant untuk penjelasan instant, atau booking sesi 1-on-1 dengan Mentor. Ada juga forum diskusi dengan tutor yang dijawab maksimal 24 jam.',
   },
 ];
 
@@ -52,35 +57,67 @@ export function FaqSection() {
   };
 
   return (
-    <MarketingSection
+    <section
       id="faq"
-      tone="surface"
-      title="Pertanyaan yang sering muncul"
-      description="Masih ragu? Cek jawabannya di sini, atau tanya langsung ke tim kami."
-      headerAction={<ContactButton variant="outline" />}
+      aria-labelledby="faq-judul"
+      className="py-16 sm:py-24"
     >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="divide-y divide-line rounded-lg border border-line">
-        {FAQ.map((item, i) => (
-          <details
-            key={item.q}
-            className="group"
-            open={i === 0}
+      <div
+        className={cn(
+          SITE_CONTAINER,
+          'grid gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16',
+        )}
+      >
+        <div className="flex flex-col gap-5 lg:sticky lg:top-28 lg:self-start">
+          <SeriesLabel icon={MessageCircleQuestion}>FAQ</SeriesLabel>
+          <h2
+            id="faq-judul"
+            className={cn(sectionTitleClass, 'text-ink')}
           >
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-semibold text-ink [&::-webkit-details-marker]:hidden">
-              {item.q}
-              <Plus
-                className="size-5 shrink-0 text-ink-muted transition-transform duration-150 group-open:rotate-45"
-                aria-hidden
-              />
-            </summary>
-            <p className="px-5 pb-5 text-ink-muted">{item.a}</p>
-          </details>
-        ))}
+            Pertanyaan yang <Highlight>sering muncul.</Highlight>
+          </h2>
+          <p className="text-lg text-ink-muted">
+            Masih ragu? Cek jawabannya di sini, atau tanya langsung ke tim kami.
+            Konsultasinya gratis.
+          </p>
+          <div className="flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
+            <Button
+              asChild
+              size="lg"
+            >
+              <Link href="/price">Lihat paket belajar</Link>
+            </Button>
+            <ContactButton
+              size="lg"
+              variant="outline"
+            />
+          </div>
+        </div>
+        <div className="flex flex-col gap-3">
+          {FAQ.map((item, i) => (
+            <details
+              key={item.q}
+              className="group rounded-md border border-line bg-surface open:border-brand"
+              open={i === 0}
+            >
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-md px-5 py-4 font-semibold text-ink focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none [&::-webkit-details-marker]:hidden">
+                {item.q}
+                <span
+                  aria-hidden
+                  className="flex size-8 shrink-0 items-center justify-center rounded-full border-[1.5px] border-line-strong text-ink transition-colors group-open:border-brand group-open:bg-brand group-open:text-brand-ink"
+                >
+                  <Plus className="size-4 transition-transform duration-150 group-open:rotate-45" />
+                </span>
+              </summary>
+              <p className="max-w-[65ch] px-5 pb-5 text-ink-muted">{item.a}</p>
+            </details>
+          ))}
+        </div>
       </div>
-    </MarketingSection>
+    </section>
   );
 }

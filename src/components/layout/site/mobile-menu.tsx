@@ -13,6 +13,7 @@ import {
 import { signOut } from '@/lib/auth-helper';
 import { adminPath, appPath } from '@/lib/track';
 import {
+  ArrowUpRight,
   LayoutDashboard,
   LogOut,
   MessageCircle,
@@ -30,6 +31,9 @@ type Props = {
   session: ReturnType<typeof useSession>['data'];
   trackId: string | null;
 };
+
+const bigLink =
+  'flex items-center gap-2 rounded-sm px-2 py-2 font-display text-xl font-bold tracking-display text-ink hover:bg-paper focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none';
 
 /** Menu navigasi untuk layar kecil (di bawah lg). */
 export function MobileMenu({
@@ -52,14 +56,16 @@ export function MobileMenu({
         className="gap-6"
       >
         <SheetHeader>
-          <SheetTitle>Menu</SheetTitle>
+          <SheetTitle className="font-mono text-xs font-medium text-ink-muted lowercase">
+            Menu
+          </SheetTitle>
           <SheetDescription className="sr-only">
             Navigasi situs Bimbelio
           </SheetDescription>
         </SheetHeader>
 
         {session && (
-          <div className="flex items-center gap-3 rounded-md border border-line p-3">
+          <div className="flex items-center gap-3 rounded-md bg-paper p-3">
             <UserAvatar
               user={session.user}
               className="size-10"
@@ -77,24 +83,26 @@ export function MobileMenu({
 
         <nav
           aria-label="Navigasi utama"
-          className="flex flex-col gap-5"
+          className="flex flex-col gap-4"
         >
           {SITE_NAV.map((group) => (
             <div
               key={group.label}
-              className="flex flex-col gap-1"
+              className="flex flex-col gap-0.5"
             >
               {group.href ? (
                 <Link
                   href={group.href}
                   onClick={close}
-                  className="flex items-center gap-2 rounded-sm px-2 py-2 text-base font-bold text-ink hover:bg-paper"
+                  className={bigLink}
                 >
                   {group.label}
-                  {group.badge && <Badge variant="highlight">{group.badge}</Badge>}
+                  {group.badge && (
+                    <Badge variant="highlight">{group.badge}</Badge>
+                  )}
                 </Link>
               ) : (
-                <p className="px-2 py-2 text-base font-bold text-ink">
+                <p className="px-2 pt-1 pb-1 font-mono text-xs font-medium text-ink-muted lowercase">
                   {group.label}
                 </p>
               )}
@@ -106,7 +114,7 @@ export function MobileMenu({
                       key={link.href}
                       href={link.href}
                       onClick={close}
-                      className="rounded-sm px-2 py-1.5 text-sm font-medium text-ink-muted hover:bg-paper hover:text-ink"
+                      className="rounded-sm px-2 py-1.5 text-base font-semibold text-ink hover:bg-paper focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none"
                     >
                       {link.label}
                     </Link>
@@ -120,10 +128,10 @@ export function MobileMenu({
               close();
               openContact();
             }}
-            className="flex items-center gap-2 rounded-sm px-2 py-2 text-left text-base font-bold text-ink hover:bg-paper"
+            className={bigLink}
           >
             <MessageCircle
-              className="size-4"
+              className="size-5"
               aria-hidden
             />
             Konsultasi gratis
@@ -167,23 +175,26 @@ export function MobileMenu({
           ) : (
             <>
               <Button
+                asChild
+                size="lg"
+              >
+                <Link
+                  href="/tryout"
+                  onClick={close}
+                >
+                  Ikut tryout
+                  <ArrowUpRight />
+                </Link>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
                 onClick={() => {
                   close();
                   onLogin();
                 }}
               >
                 Masuk dengan Google
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-              >
-                <Link
-                  href="/price"
-                  onClick={close}
-                >
-                  Lihat program
-                </Link>
               </Button>
             </>
           )}

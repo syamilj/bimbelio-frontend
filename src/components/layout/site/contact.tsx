@@ -38,7 +38,7 @@ type ContactDialogProps = {
 };
 
 const optionClassName =
-  'group border-line hover:border-brand hover:bg-brand-soft focus-visible:ring-brand flex items-center gap-3 rounded-md border p-3 text-left transition-colors focus-visible:ring-2 focus-visible:outline-none';
+  'group flex items-center gap-3 rounded-md border border-line p-3 text-left transition-colors hover:border-brand hover:bg-brand-soft focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none';
 
 export function ContactDialog({
   open,
@@ -141,7 +141,7 @@ export function ContactDialog({
 
 function OptionIcon({ icon: Icon }: { icon: typeof Phone }) {
   return (
-    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-paper text-brand-strong transition-colors group-hover:bg-surface">
+    <span className="flex size-11 shrink-0 items-center justify-center rounded-full border-[1.5px] border-line-strong text-brand-strong transition-colors group-hover:border-brand group-hover:bg-brand group-hover:text-brand-ink">
       <Icon
         className="size-5"
         aria-hidden
@@ -207,7 +207,7 @@ export function FloatingContactButton({ className }: { className?: string }) {
       onClick={openContact}
       aria-label="Buka menu konsultasi"
       className={cn(
-        'fixed right-4 bottom-4 z-40 inline-flex h-12 items-center gap-2 rounded-full bg-brand-strong pr-5 pl-4 text-sm font-semibold text-brand-ink shadow-overlay transition-colors hover:bg-brand-strong/90 focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:outline-none sm:right-6 sm:bottom-6',
+        'fixed right-4 bottom-4 z-40 inline-flex h-12 items-center gap-2 rounded-full bg-ink pr-5 pl-4 text-sm font-semibold text-white shadow-float ring-1 ring-white/25 transition-colors hover:bg-brand-deep focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:outline-none sm:right-6 sm:bottom-6',
         className,
       )}
     >

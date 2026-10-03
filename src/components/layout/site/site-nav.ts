@@ -1,5 +1,5 @@
 // Navigasi situs publik. Satu sumber untuk header desktop & menu mobile.
-// Anchor beranda ditulis lengkap (`/#timeline`) agar berfungsi dari halaman mana pun.
+// Anchor beranda ditulis lengkap (`/#rapor`) agar berfungsi dari halaman mana pun.
 
 export type SiteNavLink = {
   label: string;
@@ -23,19 +23,25 @@ export const SITE_NAV: SiteNavGroup[] = [
         title: 'Cara belajar',
         links: [
           {
-            label: 'Jadwal 8 bulan',
-            href: '/#timeline',
-            description: 'Intensitas naik bertahap dari Januari sampai Agustus',
+            label: 'Cara kerja',
+            href: '/#cara-kerja',
+            description:
+              'Kerjakan TO, lihat posisimu, lalu kejar topik yang paling menaikkan skor',
           },
           {
-            label: 'Ekosistem belajar',
-            href: '/#ecosystem',
-            description: 'Kelas, materi, try out, dan AI dalam satu tempat',
+            label: 'Contoh rapor TO',
+            href: '/#rapor',
+            description: 'Skor IRT per subtes dan posisimu di antara peserta',
           },
           {
-            label: 'Tutor, mentor & BimBot',
-            href: '/#3-layer',
-            description: 'Tiga lapis pendampingan, termasuk AI 24 jam',
+            label: 'BimBot',
+            href: '/#bimbot',
+            description: 'Tanya soal yang bikin buntu, kapan saja',
+          },
+          {
+            label: 'Kelas live & mentor',
+            href: '/#live-learning',
+            description: 'Tutor alumni PTN, mentor, dan jadwal 8 bulan',
           },
         ],
       },
@@ -43,20 +49,20 @@ export const SITE_NAV: SiteNavGroup[] = [
         title: 'Coba gratis',
         links: [
           {
-            label: 'Try out online',
-            href: '/#tryout',
-            description: 'Simulasi ujian dengan waktu sungguhan',
+            label: 'Tryout gratis',
+            href: '/tryout',
+            description: 'Simulasi ujian dengan waktu sungguhan dan skor IRT',
           },
           {
-            label: 'Live learning',
-            href: '/#live-learning',
-            description: 'Kelas langsung bersama tutor',
+            label: 'Jadwal 8 bulan',
+            href: '/#timeline',
+            description: 'Intensitas naik bertahap dari Januari sampai Agustus',
           },
         ],
       },
     ],
   },
-  { label: 'Program', href: '/price', badge: 'Promo' },
+  { label: 'Paket belajar', href: '/price', badge: 'Promo' },
   { label: 'Kalender', href: '/calendar' },
   { label: 'Blog', href: '/blog' },
   { label: 'Beasiswa', href: '/scholarship' },

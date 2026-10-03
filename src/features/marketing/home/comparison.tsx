@@ -1,5 +1,5 @@
+import { cn } from '@/lib/utils';
 import { Check, Minus } from 'lucide-react';
-import { MarketingSection } from '../section';
 
 type Cell = string | boolean;
 
@@ -22,7 +22,7 @@ const PROGRAMS: { aspect: string; liveclass: Cell; livestream: Cell }[] = [
     livestream: 'Grup diskusi',
   },
   {
-    aspect: 'Try out',
+    aspect: 'Tryout',
     liveclass: 'IRT + analisis personal',
     livestream: 'IRT standar',
   },
@@ -64,7 +64,8 @@ function CellValue({ value }: { value: Cell }) {
   if (value === true)
     return (
       <Check
-        className="mx-auto size-5 text-success"
+        className="mx-auto size-5 text-brand"
+        strokeWidth={2.5}
         aria-label="Ya"
       />
     );
@@ -75,7 +76,7 @@ function CellValue({ value }: { value: Cell }) {
         aria-label="Tidak"
       />
     );
-  return <span>{value}</span>;
+  return <span className="tabular-nums">{value}</span>;
 }
 
 function CompareTable({
@@ -92,10 +93,10 @@ function CompareTable({
       role="region"
       aria-label={caption}
       tabIndex={0}
-      className="overflow-x-auto rounded-lg border border-line bg-surface focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none"
+      className="overflow-x-auto rounded-md border border-line bg-surface focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none"
     >
       <table className="w-full min-w-[32rem] text-sm">
-        <caption className="px-5 pt-5 pb-3 text-left text-lg font-bold text-ink">
+        <caption className="px-5 pt-5 pb-3 text-left font-display text-lg font-bold tracking-display text-ink">
           {caption}
         </caption>
         <thead>
@@ -104,7 +105,11 @@ function CompareTable({
               <th
                 key={h}
                 scope="col"
-                className={`px-5 py-3 font-semibold ${i === 0 ? 'text-left text-ink-muted' : 'text-center text-ink'} ${i === 1 ? 'bg-brand-soft' : ''}`}
+                className={cn(
+                  'px-5 py-3 font-mono text-xs font-medium lowercase',
+                  i === 0 ? 'text-left text-ink-muted' : 'text-center text-ink',
+                  i === 1 && 'bg-brand text-brand-ink',
+                )}
               >
                 {h}
               </th>
@@ -126,7 +131,10 @@ function CompareTable({
               {row.cells.map((cell, i) => (
                 <td
                   key={i}
-                  className={`px-5 py-3 text-center text-ink ${i === 0 ? 'bg-brand-soft font-semibold' : ''}`}
+                  className={cn(
+                    'px-5 py-3 text-center text-ink',
+                    i === 0 && 'bg-brand-soft font-semibold',
+                  )}
                 >
                   <CellValue value={cell} />
                 </td>
@@ -139,14 +147,22 @@ function CompareTable({
   );
 }
 
-/** Perbandingan program & alternatif belajar. */
-export function ComparisonSection() {
+/** Perbandingan program & alternatif belajar (tabel, header mono). */
+export function ComparisonTables() {
   return (
-    <MarketingSection
+    <div
       id="comparison"
-      title="Bandingkan dulu, baru putuskan"
-      description="Kami tidak memaksa. Lihat sendiri perbedaannya supaya kamu yakin dengan pilihanmu."
+      className="flex flex-col gap-6"
     >
+      <div className="flex flex-col gap-1">
+        <h3 className="font-display text-2xl font-bold tracking-display text-ink">
+          Bandingkan dulu, baru putuskan
+        </h3>
+        <p className="text-ink-muted">
+          Kami tidak memaksa. Lihat sendiri perbedaannya supaya kamu yakin
+          dengan pilihanmu.
+        </p>
+      </div>
       <div className="grid gap-5 lg:grid-cols-2">
         <CompareTable
           caption="Live class atau livestream"
@@ -165,6 +181,6 @@ export function ComparisonSection() {
           }))}
         />
       </div>
-    </MarketingSection>
+    </div>
   );
 }

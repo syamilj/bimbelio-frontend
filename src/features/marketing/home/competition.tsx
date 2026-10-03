@@ -1,10 +1,14 @@
-import { AnswerBubble } from '@/components/patterns/answer-bubble';
+import { Highlight } from '@/components/brand/highlight';
+import { MonoLabel } from '@/components/brand/mono-label';
+import { SeriesLabel } from '@/components/brand/series-label';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { Landmark } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { MarketingSection } from '../section';
 
-// Data pendaftar & daya tampung dari materi Bimbelio sebelumnya.
+// Data pendaftar & daya tampung dari materi Bimbelio sebelumnya (PLAN.md §8.6).
 const EXAMS = [
   {
     name: 'SNBT',
@@ -45,7 +49,14 @@ export function CompetitionSection() {
   return (
     <MarketingSection
       id="statistics"
-      title="Kursinya sedikit, pesaingnya ratusan ribu"
+      tone="surface"
+      accent="pink"
+      eyebrow={<SeriesLabel icon={Landmark}>Persaingan kampus</SeriesLabel>}
+      title={
+        <>
+          Kursinya sedikit, <Highlight>pesaingnya ratusan ribu.</Highlight>
+        </>
+      }
       description="Tiap baris di bawah mewakili 20 pendaftar. Bubble terisi adalah yang diterima. Persiapan yang tepat membuatmu jadi salah satunya."
       headerAction={
         <Button
@@ -63,38 +74,45 @@ export function CompetitionSection() {
           return (
             <li
               key={exam.name}
-              className="flex flex-col gap-4 rounded-lg border border-line bg-surface p-5"
+              className="flex flex-col gap-5 rounded-md border border-line bg-paper p-5 sm:p-6"
             >
               <div className="flex items-center gap-3">
-                <Image
-                  src={exam.logo}
-                  alt=""
-                  width={40}
-                  height={40}
-                  className="size-10 object-contain"
-                />
-                <div className="flex min-w-0 flex-1 flex-col">
-                  <h3 className="font-bold text-ink">{exam.name}</h3>
-                  <p className="text-sm text-ink-muted tabular-nums">
-                    {fmt(exam.applicants)} pendaftar, {fmt(exam.accepted)}{' '}
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-surface">
+                  <Image
+                    src={exam.logo}
+                    alt=""
+                    width={36}
+                    height={36}
+                    className="size-9 object-contain"
+                  />
+                </span>
+                <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                  <h3 className="font-display text-lg font-bold tracking-display text-ink">
+                    {exam.name}
+                  </h3>
+                  <MonoLabel className="tabular-nums">
+                    {fmt(exam.applicants)} pendaftar · {fmt(exam.accepted)}{' '}
                     diterima
-                  </p>
+                  </MonoLabel>
                 </div>
-                <p className="text-3xl font-extrabold text-ink tabular-nums">
+                <p className="font-display text-3xl font-extrabold tracking-score text-brand tabular-nums sm:text-4xl">
                   {pct(ratio)}
                 </p>
               </div>
               <div
                 role="img"
                 aria-label={`${filled} dari ${SLOTS} pendaftar diterima`}
-                className="grid grid-cols-10 gap-1.5"
+                className="grid grid-cols-10 gap-1.5 sm:gap-2"
               >
                 {Array.from({ length: SLOTS }, (_, i) => (
-                  <AnswerBubble
+                  <span
                     key={i}
-                    size="xs"
-                    state={i < filled ? 'filled' : 'empty'}
-                    className="size-4"
+                    className={cn(
+                      'aspect-square w-full max-w-7 rounded-full border-[1.5px]',
+                      i < filled
+                        ? 'border-brand bg-brand'
+                        : 'border-line-strong bg-surface',
+                    )}
                   />
                 ))}
               </div>

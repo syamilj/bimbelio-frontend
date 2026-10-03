@@ -1,5 +1,14 @@
-import { Bot, Compass, GraduationCap, type LucideIcon } from 'lucide-react';
+import { Highlight } from '@/components/brand/highlight';
+import { SeriesLabel } from '@/components/brand/series-label';
+import {
+  Bot,
+  Compass,
+  GraduationCap,
+  MonitorPlay,
+  type LucideIcon,
+} from 'lucide-react';
 import { MarketingSection } from '../section';
+import { LiveClassPreview } from './liveclass-preview';
 
 const LAYERS: {
   icon: LucideIcon;
@@ -40,45 +49,52 @@ const LAYERS: {
   },
 ];
 
-const REASONS = [
-  {
-    title: 'Dulu kami juga begitu',
-    body: 'Tim kami dari UI, UGM, ITB, STAN, dan kampus top lain. Kami pernah bingung memilih SNBT, mandiri, atau kedinasan, jadi kami tahu apa yang kamu butuhkan.',
-  },
-  {
-    title: 'Satu akun, semua jalur',
-    body: 'Tidak perlu daftar banyak bimbel. Satu akun Bimbelio mencakup SNBT, ujian mandiri (UI, UGM, ITB, dan lainnya), sampai SKD kedinasan (STAN, STIS, IPDN).',
-  },
-];
-
-/** Kenapa Bimbelio + tiga lapis pendampingan. */
-export function ApproachSection({ children }: { children?: React.ReactNode }) {
+/** Kelas live & mentor: tiga lapis pendamping, tutor asli, dan jadwal kelas terdekat. */
+export function LiveMentorSection({
+  tutors,
+  children,
+}: {
+  tutors?: React.ReactNode;
+  children?: React.ReactNode;
+}) {
   return (
     <MarketingSection
-      id="3-layer"
-      tone="surface"
-      title="Tiga tim yang menemanimu sampai hari ujian"
-      description="SNBT, mandiri, atau kedinasan: tutor mengajarkan strategi tiap ujian, mentor menjaga progres, dan AI siaga 24 jam."
+      id="live-learning"
+      eyebrow={
+        <SeriesLabel icon={MonitorPlay}>Kelas live & mentor</SeriesLabel>
+      }
+      title={
+        <>
+          Belajar langsung bareng <Highlight>tutor alumni PTN.</Highlight>
+        </>
+      }
+      description="SNBT, mandiri, atau kedinasan: tutor mengajarkan strategi tiap ujian, mentor menjaga progres, dan BimBot siaga 24 jam."
     >
-      <ol className="grid gap-4 lg:grid-cols-3">
+      <ol
+        id="3-layer"
+        aria-label="Tiga lapis pendamping"
+        className="grid gap-4 lg:grid-cols-3"
+      >
         {LAYERS.map(({ icon: Icon, name, role, points }, i) => (
           <li
             key={name}
-            className="flex flex-col gap-4 rounded-lg border border-line p-6"
+            className="flex flex-col gap-4 rounded-md border border-line bg-surface p-6"
           >
             <div className="flex items-center justify-between">
-              <span className="flex size-11 items-center justify-center rounded-full bg-brand-soft text-brand-strong">
+              <span className="flex size-11 items-center justify-center rounded-full bg-brand text-brand-ink">
                 <Icon
                   className="size-5"
                   aria-hidden
                 />
               </span>
-              <span className="text-sm font-semibold text-ink-subtle tabular-nums">
-                Lapis {i + 1}
+              <span className="font-mono text-xs font-medium text-ink-muted">
+                lapis {i + 1}
               </span>
             </div>
             <div className="flex flex-col gap-1">
-              <h3 className="text-xl font-extrabold text-ink">{name}</h3>
+              <h3 className="font-display text-xl font-bold tracking-display text-ink">
+                {name}
+              </h3>
               <p className="text-ink-muted">{role}</p>
             </div>
             <ul className="flex flex-col gap-2 text-sm text-ink">
@@ -89,7 +105,7 @@ export function ApproachSection({ children }: { children?: React.ReactNode }) {
                 >
                   <span
                     aria-hidden
-                    className="mt-1.5 size-1.5 shrink-0 rounded-full bg-brand"
+                    className="mt-1.5 size-2 shrink-0 rounded-full border-[1.5px] border-brand"
                   />
                   {p}
                 </li>
@@ -98,21 +114,8 @@ export function ApproachSection({ children }: { children?: React.ReactNode }) {
           </li>
         ))}
       </ol>
-
-      <div
-        id="about"
-        className="grid gap-6 md:grid-cols-2"
-      >
-        {REASONS.map((r) => (
-          <div
-            key={r.title}
-            className="flex flex-col gap-2"
-          >
-            <h3 className="text-lg font-bold text-ink">{r.title}</h3>
-            <p className="text-ink-muted">{r.body}</p>
-          </div>
-        ))}
-      </div>
+      {tutors}
+      <LiveClassPreview />
       {children}
     </MarketingSection>
   );

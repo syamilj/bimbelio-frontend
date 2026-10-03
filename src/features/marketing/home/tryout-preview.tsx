@@ -1,107 +1,101 @@
 'use client';
 
+import { InfoPill } from '@/components/brand/info-pill';
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { env } from '@/env.mjs';
-import { api } from '@/lib/api/client';
 import { appPath } from '@/lib/track';
-import { useQuery } from '@tanstack/react-query';
-import { Clock, FileQuestion, Layers, Trophy } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { CalendarDays, Trophy } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-
-type UpcomingTryout = {
-  id: string;
-  title: string;
-  image?: string | null;
-  startDate: string;
-  isDone?: boolean;
-  isRegistered?: boolean;
-  isJoin?: boolean;
-  isCouponOnly?: boolean;
-  WebsiteSubCategory: { id: string; name: string };
-  TryoutSession: {
-    duration: number;
-    TryoutCategory?: { name: string };
-    _count?: { TryoutQuestion: number };
-  }[];
-};
+import { useUpcomingTryouts, type UpcomingTryout } from '../events';
 
 const shortDate = (iso: string) =>
-  new Date(iso).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
-
-/** Try out gratis yang akan datang. Seksi tidak tampil bila kosong. */
-export function TryoutPreview() {
-  const { data: session, status } = useSession();
-  const userId = session?.user.id;
-  const query = useQuery({
-    queryKey: ['tryout', 'upcoming-public', userId ?? 'guest'],
-    queryFn: () =>
-      api.get<UpcomingTryout[]>('/tryout/getTryOutCardUpcoming2', {
-        params: { take: 5, userId },
-      }),
-    enabled: status !== 'loading',
-    staleTime: 60_000,
+  new Date(iso).toLocaleDateString('id-ID', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
   });
+
+/**
+ * Tryout gratis yang akan datang. Tidak tampil sama sekali bila kosong/gagal,
+ * jadi aman disisipkan di seksi lain.
+ */
+export function TryoutPreview({
+  title = 'Tryout gratis terdekat',
+  description = 'Tryout berbasis IRT dengan format resmi UTBK. Gratis untuk semua member, lengkap dengan peringkat nasional.',
+  headingLevel = 3,
+  className,
+}: {
+  title?: string;
+  description?: string;
+  headingLevel?: 2 | 3;
+  className?: string;
+}) {
+  const { data: session } = useSession();
+  const query = useUpcomingTryouts();
 
   if (query.isError || (query.isSuccess && query.data.length === 0))
     return null;
 
+  const Heading = headingLevel === 2 ? 'h2' : 'h3';
+
   return (
-    <section
+    <div
       id="tryout"
-      aria-labelledby="tryout-judul"
-      className="py-16 sm:py-20"
+      className={cn('flex flex-col gap-6', className)}
     >
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:px-6">
-        <header className="flex max-w-2xl flex-col gap-3">
-          <h2
-            id="tryout-judul"
-            className="text-2xl leading-tight font-extrabold tracking-tight text-ink sm:text-3xl"
-          >
-            Latihan dulu sebelum hari H
-          </h2>
-          <p className="text-lg text-ink-muted">
-            Try out berbasis IRT dengan format resmi UTBK. Gratis untuk semua
-            member, lengkap dengan peringkat nasional.
-          </p>
-        </header>
-        <ul
-          tabIndex={0}
-          aria-label="Daftar try out"
-          className="-mx-4 scrollbar-none flex snap-x gap-4 overflow-x-auto px-4 pb-2 focus-visible:ring-brand sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3"
+      <header className="flex max-w-2xl flex-col gap-2">
+        <Heading
+          id="tryout-judul"
+          className={cn(
+            'font-display leading-tight font-bold tracking-display text-ink',
+            headingLevel === 2 ? 'text-3xl sm:text-4xl' : 'text-2xl',
+          )}
         >
-          {query.isPending
-            ? Array.from({ length: 3 }, (_, i) => (
-                <li
-                  key={i}
-                  className="w-72 shrink-0 sm:w-auto"
-                >
-                  <Skeleton className="h-96 rounded-lg" />
-                </li>
-              ))
-            : query.data.map((tryout) => (
-                <TryoutCard
-                  key={tryout.id}
-                  tryout={tryout}
-                  signedIn={!!session}
-                />
-              ))}
-        </ul>
-      </div>
-    </section>
+          {title}
+        </Heading>
+        <p className="text-ink-muted">{description}</p>
+      </header>
+      <ul
+        tabIndex={0}
+        aria-labelledby="tryout-judul"
+        className="-mx-5 scrollbar-none flex snap-x gap-4 overflow-x-auto px-5 pb-2 focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3"
+      >
+        {query.isPending
+          ? Array.from({ length: 3 }, (_, i) => (
+              <li
+                key={i}
+                className="w-72 shrink-0 sm:w-auto"
+              >
+                <Skeleton className="h-96 rounded-md" />
+              </li>
+            ))
+          : query.data.map((tryout) => (
+              <TryoutCard
+                key={tryout.id}
+                tryout={tryout}
+                signedIn={!!session}
+                titleAs={headingLevel === 2 ? 'h3' : 'h4'}
+              />
+            ))}
+      </ul>
+    </div>
   );
 }
 
 function TryoutCard({
   tryout,
   signedIn,
+  titleAs: Title,
 }: {
   tryout: UpcomingTryout;
   signedIn: boolean;
+  titleAs: 'h3' | 'h4';
 }) {
   const {
     useAuth: { setShowAuth },
@@ -117,18 +111,12 @@ function TryoutCard({
     tryout.isRegistered && tryout.isJoin && tryout.isDone
       ? 'Lihat hasil & pembahasan'
       : tryout.isRegistered
-        ? 'Mulai try out'
+        ? 'Mulai tryout'
         : 'Daftar gratis';
 
-  const stats = [
-    { icon: Clock, label: `${minutes} menit` },
-    { icon: FileQuestion, label: `${questions} soal` },
-    { icon: Layers, label: `${sessions.length} subtes` },
-  ];
-
   return (
-    <li className="flex w-72 shrink-0 snap-start flex-col overflow-hidden rounded-lg border border-line bg-surface sm:w-auto">
-      <div className="relative aspect-[4/3] bg-paper">
+    <li className="flex w-72 shrink-0 snap-start flex-col overflow-hidden rounded-md border border-line bg-surface sm:w-auto">
+      <div className="relative aspect-[4/3] bg-brand-soft">
         {tryout.image ? (
           <Image
             src={`${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/tryout/${tryout.image}`}
@@ -139,50 +127,61 @@ function TryoutCard({
           />
         ) : (
           <Trophy
-            className="absolute inset-0 m-auto size-10 text-ink-subtle"
+            className="absolute inset-0 m-auto size-10 text-brand"
             aria-hidden
           />
         )}
         <Badge
-          variant={tryout.isCouponOnly ? 'highlight' : 'success'}
+          variant={tryout.isCouponOnly ? 'ink' : 'solid'}
           className="absolute top-3 left-3"
         >
           {tryout.isCouponOnly ? 'BimPartner' : 'Gratis'}
         </Badge>
         {tryout.isRegistered && (
           <Badge
-            variant="solid"
+            variant="highlight"
             className="absolute top-3 right-3"
           >
             Terdaftar
           </Badge>
         )}
       </div>
-      <div className="flex flex-1 flex-col gap-3 p-5">
-        <div className="flex flex-col gap-1">
-          <p className="text-sm text-ink-muted">
-            {tryout.WebsiteSubCategory.name}, mulai{' '}
-            {shortDate(tryout.startDate)}
+      <div className="flex flex-1 flex-col gap-4 p-5">
+        <div className="flex flex-col gap-2">
+          <p className="font-mono text-xs font-medium text-ink-muted lowercase">
+            {tryout.WebsiteSubCategory.name}
           </p>
-          <h3 className="line-clamp-2 text-lg font-bold text-ink">
+          <Title className="line-clamp-2 font-display text-lg leading-snug font-bold tracking-display text-ink">
             {tryout.title}
-          </h3>
+          </Title>
+          <InfoPill
+            size="sm"
+            variant="soft"
+          >
+            <CalendarDays aria-hidden />
+            Mulai {shortDate(tryout.startDate)}
+          </InfoPill>
         </div>
-        <ul className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-ink-muted">
-          {stats.map(({ icon: Icon, label: text }) => (
-            <li
-              key={text}
-              className="flex items-center gap-1.5 tabular-nums"
+        <dl className="grid grid-cols-3 gap-2 border-y border-line py-3 text-center">
+          {[
+            [minutes, 'menit'],
+            [questions, 'soal'],
+            [sessions.length, 'subtes'],
+          ].map(([value, unit]) => (
+            <div
+              key={unit}
+              className="flex flex-col"
             >
-              <Icon
-                className="size-4"
-                aria-hidden
-              />
-              {text}
-            </li>
+              <dt className="order-2 font-mono text-xs font-medium text-ink-muted">
+                {unit}
+              </dt>
+              <dd className="order-1 font-display text-lg font-bold text-ink tabular-nums">
+                {value}
+              </dd>
+            </div>
           ))}
-        </ul>
-        <div className="mt-auto pt-2">
+        </dl>
+        <div className="mt-auto">
           {signedIn ? (
             <Button
               asChild

@@ -65,13 +65,16 @@ export function PlanCard({ plan, onBuy, viewOnly, className }: PlanCardProps) {
     ...benefits.map((b) => b.title),
   ];
 
+  // Paket rekomendasi disorot Biru (BRAND-2.1 §6.1: satu kartu disorot).
+  const featured = plan.recommended;
+  const check = featured ? 'text-highlight' : 'text-brand';
+
   return (
     <article
+      data-surface={featured ? 'brand' : undefined}
       className={cn(
-        'flex flex-col overflow-hidden rounded-lg border bg-surface',
-        plan.recommended
-          ? 'border-brand-strong ring-4 ring-brand/20'
-          : 'border-line',
+        'flex flex-col overflow-hidden rounded-md',
+        featured ? 'shadow-float' : 'border border-line bg-surface',
         className,
       )}
     >
@@ -87,48 +90,79 @@ export function PlanCard({ plan, onBuy, viewOnly, className }: PlanCardProps) {
         </div>
       )}
 
-      <div className="flex flex-1 flex-col gap-5 p-5">
+      <div className="flex flex-1 flex-col gap-5 p-6">
         <header className="flex flex-col gap-2">
           <div className="flex flex-wrap items-center gap-1.5">
             {plan.recommended && <Badge variant="highlight">Rekomendasi</Badge>}
-            <Badge variant="secondary">
+            <Badge variant={featured ? 'ink' : 'secondary'}>
               {plan.PlanSubscription?.tier ?? KIND_LABEL[planKind(plan)]}
             </Badge>
             {tracks.slice(0, 3).map((track) => (
               <Badge
                 key={track}
                 variant="outline"
+                className={cn(featured && 'border-white/70 text-white')}
               >
                 {track}
               </Badge>
             ))}
             {tracks.length > 3 && (
-              <Badge variant="outline">+{tracks.length - 3}</Badge>
+              <Badge
+                variant="outline"
+                className={cn(featured && 'border-white/70 text-white')}
+              >
+                +{tracks.length - 3}
+              </Badge>
             )}
           </div>
-          <h3 className="text-lg leading-snug font-bold text-ink">
+          <h3
+            className={cn(
+              'font-display text-xl leading-snug font-bold tracking-display',
+              !featured && 'text-ink',
+            )}
+          >
             {plan.name}
           </h3>
           {plan.description && (
-            <p className="line-clamp-3 text-sm text-ink-muted">
+            <p
+              className={cn(
+                'line-clamp-3 text-sm',
+                featured ? 'text-on-dark-muted' : 'text-ink-muted',
+              )}
+            >
               {plan.description}
             </p>
           )}
         </header>
 
         <div className="flex flex-col gap-1">
-          <div className="flex flex-wrap items-baseline gap-x-2">
-            <span className="text-3xl font-extrabold text-ink tabular-nums">
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+            <span
+              className={cn(
+                'font-display text-4xl font-extrabold tracking-hero tabular-nums',
+                !featured && 'text-ink',
+              )}
+            >
               {formatIDR(price)}
             </span>
             {struck > price && (
-              <s className="text-sm text-ink-subtle tabular-nums">
+              <s
+                className={cn(
+                  'text-sm tabular-nums',
+                  featured ? 'text-on-dark-muted' : 'text-ink-subtle',
+                )}
+              >
                 {formatIDR(struck)}
               </s>
             )}
             {percent > 0 && <Badge variant="success">Hemat {percent}%</Badge>}
           </div>
-          <p className="text-sm text-ink-muted">
+          <p
+            className={cn(
+              'text-sm',
+              featured ? 'text-on-dark-muted' : 'text-ink-muted',
+            )}
+          >
             {schedule.length > 1
               ? `Bisa dicicil ${schedule.length}×, mulai ${formatIDR(schedule[0].amount)}`
               : perDay
@@ -138,30 +172,42 @@ export function PlanCard({ plan, onBuy, viewOnly, className }: PlanCardProps) {
         </div>
 
         {(highlights.length > 0 || coins.length > 0) && (
-          <ul className="flex flex-col gap-2 text-sm">
+          <ul
+            className={cn(
+              'flex flex-col gap-2 border-t pt-4 text-sm',
+              featured ? 'border-on-dark-line' : 'border-line text-ink',
+            )}
+          >
             {highlights.slice(0, 5).map((text, i) => (
               <li
                 key={i}
-                className="flex gap-2 text-ink"
+                className="flex gap-2"
               >
                 <Check
-                  className="mt-0.5 size-4 shrink-0 text-success"
+                  className={cn('mt-0.5 size-4 shrink-0', check)}
+                  strokeWidth={2.5}
                   aria-hidden
                 />
                 {text}
               </li>
             ))}
             {coins.length > 0 && (
-              <li className="flex gap-2 text-ink">
+              <li className="flex gap-2">
                 <Check
-                  className="mt-0.5 size-4 shrink-0 text-success"
+                  className={cn('mt-0.5 size-4 shrink-0', check)}
+                  strokeWidth={2.5}
                   aria-hidden
                 />
                 Koin: {coins.map((c) => `${c.value} ${c.label}`).join(', ')}
               </li>
             )}
             {highlights.length > 5 && (
-              <li className="pl-6 text-ink-muted">
+              <li
+                className={cn(
+                  'pl-6',
+                  featured ? 'text-on-dark-muted' : 'text-ink-muted',
+                )}
+              >
                 +{highlights.length - 5} keunggulan lain
               </li>
             )}
@@ -169,12 +215,18 @@ export function PlanCard({ plan, onBuy, viewOnly, className }: PlanCardProps) {
         )}
 
         {(plan.maxUsers || plan.timeline) && (
-          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-ink-muted">
+          <div
+            className={cn(
+              'flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs font-medium',
+              featured ? 'text-on-dark-muted' : 'text-ink-muted',
+            )}
+          >
             {plan.maxUsers && (
               <span
                 className={cn(
                   'inline-flex items-center gap-1',
-                  isAlmostFull(plan) && 'font-semibold text-danger',
+                  isAlmostFull(plan) &&
+                    (featured ? 'font-bold text-white' : 'text-danger'),
                 )}
               >
                 <Users
@@ -194,13 +246,14 @@ export function PlanCard({ plan, onBuy, viewOnly, className }: PlanCardProps) {
           <div className="mt-auto flex flex-col gap-2 pt-1">
             <Button
               size="lg"
+              variant={featured ? 'accent' : 'default'}
               disabled={soldOut}
               onClick={() => onBuy(plan)}
             >
               {soldOut ? 'Kuota penuh' : 'Beli paket'}
             </Button>
             <Button
-              variant="ghost"
+              variant={featured ? 'outline-light' : 'ghost'}
               asChild
               onClick={() => {
                 try {

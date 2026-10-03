@@ -1,49 +1,24 @@
 'use client';
 
+import { InfoPill } from '@/components/brand/info-pill';
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { api } from '@/lib/api/client';
 import { appPath } from '@/lib/track';
-import { cn } from '@/lib/utils';
-import { useQuery } from '@tanstack/react-query';
-import { CalendarDays, PlayCircle } from 'lucide-react';
+import { CalendarDays, Radio, UserRound } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import {
+  eventWhen,
+  useLandingLiveClasses,
+  type LandingLiveClass,
+} from '../events';
 
-type LandingLiveClass = {
-  id: string;
-  title: string;
-  image: string | null;
-  startDate: string;
-  status?: string;
-  accessType: 'FREE' | 'PREMIUM' | string;
-  websiteSubCategoryId: string;
-  Category?: { name: string } | null;
-  Instructor?: {
-    name: string;
-    lastEducation?: string | null;
-    image?: string | null;
-  } | null;
-};
-
-const when = (iso: string) => {
-  const d = new Date(iso);
-  return `${d.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short' })}, ${d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIB`;
-};
-
-/** Live class terdekat; gratis dan berbayar dipisah (tidak lagi ganda). */
+/** Kelas live terdekat; gratis dan khusus peserta dipisah. Kosong/gagal → tidak tampil. */
 export function LiveClassPreview() {
-  const query = useQuery({
-    queryKey: ['liveclass', 'landing'],
-    queryFn: () =>
-      api.get<LandingLiveClass[]>('/liveClass/getAllLiveClassForLandingPage', {
-        params: { take: 6, page: 1 },
-      }),
-    staleTime: 60_000,
-  });
+  const query = useLandingLiveClasses();
 
   if (query.isError || (query.isSuccess && query.data.length === 0))
     return null;
@@ -52,51 +27,36 @@ export function LiveClassPreview() {
   const premium = query.data?.filter((c) => c.accessType === 'PREMIUM') ?? [];
 
   return (
-    <section
-      id="live-learning"
-      aria-labelledby="live-judul"
-      className="border-y border-line bg-surface py-16 sm:py-20"
-    >
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:px-6">
-        <header className="flex max-w-2xl flex-col gap-3">
-          <h2
-            id="live-judul"
-            className="text-2xl leading-tight font-extrabold tracking-tight text-ink sm:text-3xl"
-          >
-            Belajar langsung bersama tutor alumni PTN
-          </h2>
-          <p className="text-lg text-ink-muted">
-            Lebih dari 198 sesi live class interaktif. Tanya langsung dan
-            diskusi real-time, bukan sekadar menonton video.
-          </p>
-        </header>
-        {query.isPending ? (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 3 }, (_, i) => (
-              <Skeleton
-                key={i}
-                className="h-72 rounded-lg"
-              />
-            ))}
-          </div>
-        ) : (
-          <>
-            {free.length > 0 && (
-              <LiveGroup
-                title="Gratis untuk semua"
-                items={free}
-              />
-            )}
-            {premium.length > 0 && (
-              <LiveGroup
-                title="Khusus peserta program"
-                items={premium}
-              />
-            )}
-          </>
-        )}
-      </div>
-    </section>
+    <div className="flex flex-col gap-8">
+      <h3 className="font-display text-2xl font-bold tracking-display text-ink">
+        Jadwal kelas live terdekat
+      </h3>
+      {query.isPending ? (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 3 }, (_, i) => (
+            <Skeleton
+              key={i}
+              className="h-72 rounded-md"
+            />
+          ))}
+        </div>
+      ) : (
+        <>
+          {free.length > 0 && (
+            <LiveGroup
+              title="gratis untuk semua"
+              items={free}
+            />
+          )}
+          {premium.length > 0 && (
+            <LiveGroup
+              title="khusus peserta program"
+              items={premium}
+            />
+          )}
+        </>
+      )}
+    </div>
   );
 }
 
@@ -108,8 +68,10 @@ function LiveGroup({
   items: LandingLiveClass[];
 }) {
   return (
-    <div className="flex flex-col gap-4">
-      <h3 className="text-lg font-bold text-ink">{title}</h3>
+    <div className="flex flex-col gap-3">
+      <h4 className="font-mono text-xs font-medium text-ink-muted lowercase">
+        {title}
+      </h4>
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => (
           <LiveCard
@@ -131,8 +93,8 @@ function LiveCard({ item }: { item: LandingLiveClass }) {
   const isLive = item.status === 'Sedang Berlangsung';
 
   return (
-    <li className="flex flex-col overflow-hidden rounded-lg border border-line">
-      <div className="relative aspect-[5/2] bg-paper">
+    <li className="flex flex-col overflow-hidden rounded-md border border-line bg-surface">
+      <div className="relative aspect-[5/2] bg-brand-soft">
         {item.image ? (
           <Image
             src={item.image}
@@ -142,43 +104,48 @@ function LiveCard({ item }: { item: LandingLiveClass }) {
             className="object-cover"
           />
         ) : (
-          <PlayCircle
-            className="absolute inset-0 m-auto size-8 text-ink-subtle"
+          <Radio
+            className="absolute inset-0 m-auto size-8 text-brand"
             aria-hidden
           />
         )}
         {isLive && (
           <Badge
-            variant="destructive"
-            className="absolute top-3 left-3"
+            variant="ink"
+            className="absolute top-3 left-3 gap-1.5"
           >
+            <span
+              aria-hidden
+              className="size-2 animate-pulse rounded-full bg-highlight"
+            />
             Sedang live
           </Badge>
         )}
       </div>
       <div className="flex flex-1 flex-col gap-3 p-5">
-        <p className="text-sm text-ink-muted">
-          {item.Category?.name ?? 'Live class'}
+        <p className="font-mono text-xs font-medium text-ink-muted lowercase">
+          {item.Category?.name ?? 'Kelas live'}
         </p>
-        <h4 className="line-clamp-2 font-bold text-ink">{item.title}</h4>
-        <p className="text-sm text-ink-muted">
+        <p className="line-clamp-2 font-display text-lg leading-snug font-bold tracking-display text-ink">
+          {item.title}
+        </p>
+        <p className="flex items-center gap-1.5 text-sm text-ink-muted">
+          <UserRound
+            className="size-4 shrink-0"
+            aria-hidden
+          />
           {item.Instructor?.name ?? 'Tutor'}
           {item.Instructor?.lastEducation
             ? `, ${item.Instructor.lastEducation}`
             : ''}
         </p>
-        <p
-          className={cn(
-            'flex items-center gap-1.5 text-sm font-semibold',
-            isLive ? 'text-danger' : 'text-ink',
-          )}
+        <InfoPill
+          size="sm"
+          variant={isLive ? 'solid' : 'outline'}
         >
-          <CalendarDays
-            className="size-4"
-            aria-hidden
-          />
-          {when(item.startDate)}
-        </p>
+          <CalendarDays aria-hidden />
+          {eventWhen(item.startDate)}
+        </InfoPill>
         <div className="mt-auto pt-2">
           {session ? (
             <Button

@@ -15,6 +15,7 @@ import {
   TRACKS,
   USERS,
 } from './fixtures';
+import { LANDING_LIVE_CLASSES, UPCOMING_TRYOUTS } from './guest-fixtures';
 
 type Handler = (req: Request, url: URL) => Response | Promise<Response>;
 
@@ -83,8 +84,9 @@ const routes: Record<string, Handler> = {
   },
   'POST /blog/incrementViews': () => ok(null),
   'GET /instructor/getAllInstructor': () => ok(INSTRUCTORS),
-  'GET /liveClass/getAllLiveClassForLandingPage': () => ok([]),
-  'GET /tryout/getTryOutCardUpcoming2': () => ok([]),
+  'GET /liveClass/getAllLiveClassForLandingPage': () =>
+    ok(LANDING_LIVE_CLASSES),
+  'GET /tryout/getTryOutCardUpcoming2': () => ok(UPCOMING_TRYOUTS),
   'GET /link/public/sitemap-slugs': () =>
     ok([{ slug: 'komunitas', updatedAt: '2026-09-01T00:00:00.000Z' }]),
   'GET /notification/getNotification': () =>

@@ -1,4 +1,6 @@
 import { Logo } from '@/components/brand/logo';
+import { Scribble } from '@/components/brand/scribble';
+import { Supergraphic } from '@/components/brand/supergraphic';
 import { Instagram, Tiktok, Youtube } from '@/components/icons/brand-icons';
 import { CONTACT_CONFIG, whatsappUrl } from '@/config/contact';
 import Link from 'next/link';
@@ -8,7 +10,7 @@ const COLUMNS = [
     title: 'Program',
     links: [
       { label: 'Paket belajar', href: '/price' },
-      { label: 'Try out gratis', href: '/tryout' },
+      { label: 'Tryout gratis', href: '/tryout' },
       { label: 'Kalender event', href: '/calendar' },
       { label: 'Beasiswa', href: '/scholarship' },
     ],
@@ -50,16 +52,28 @@ const PAYMENT_LOGOS: [file: string, label: string][] = [
   ['indomaret', 'Indomaret'],
 ];
 
+const linkClass =
+  'rounded-xs text-sm text-on-dark-muted transition-colors hover:text-white focus-visible:ring-2 focus-visible:ring-highlight focus-visible:outline-none';
+
+/** Footer situs di permukaan Tinta: logo putih, titik i lime, coretan Lio. */
 export function SiteFooter() {
   return (
-    <footer className="border-t border-line bg-surface">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
-        <div className="flex flex-col gap-4">
-          <Logo />
-          <p className="max-w-xs text-sm text-ink-muted">
-            Bimbel dengan tutor, mentor, dan AI untuk persiapan UTBK-SNBT, ujian
+    <footer
+      data-surface="ink"
+      className="relative overflow-hidden"
+    >
+      <Supergraphic className="max-lg:hidden -right-[6%] -bottom-[40%] h-[90%] text-white/5" />
+      <div className="relative mx-auto grid w-full max-w-[75rem] gap-12 px-5 pt-16 pb-10 sm:px-8 lg:grid-cols-[1.5fr_1fr_1fr_1.3fr] lg:pt-20">
+        <div className="flex flex-col gap-6">
+          <Logo
+            tone="white"
+            className="h-9 self-start"
+          />
+          <p className="max-w-xs text-sm text-on-dark-muted">
+            Tryout, rapor, dan pendamping belajar untuk UTBK-SNBT, ujian
             mandiri, dan sekolah kedinasan.
           </p>
+          <Scribble arrow="down">Lio liat. Lio selalu liat.</Scribble>
           <ul className="flex gap-2">
             {SOCIALS.map(({ label, href, icon: Icon }) => (
               <li key={label}>
@@ -68,10 +82,10 @@ export function SiteFooter() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Bimbelio di ${label}`}
-                  className="flex size-9 items-center justify-center rounded-full border border-line text-ink-muted transition-colors hover:border-line-strong hover:text-ink"
+                  className="flex size-10 items-center justify-center rounded-full border border-on-dark-line text-white transition-colors hover:border-white hover:bg-white hover:text-ink focus-visible:ring-2 focus-visible:ring-highlight focus-visible:outline-none"
                 >
                   <Icon
-                    size={16}
+                    size={18}
                     aria-hidden
                   />
                 </a>
@@ -84,15 +98,17 @@ export function SiteFooter() {
           <nav
             key={column.title}
             aria-label={column.title}
-            className="flex flex-col gap-3"
+            className="flex flex-col gap-4"
           >
-            <p className="text-sm font-bold text-ink">{column.title}</p>
-            <ul className="flex flex-col gap-2">
+            <p className="font-mono text-xs font-medium text-on-dark-muted lowercase">
+              {column.title}
+            </p>
+            <ul className="flex flex-col gap-3">
               {column.links.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-ink-muted hover:text-ink"
+                    className={linkClass}
                   >
                     {link.label}
                   </Link>
@@ -102,20 +118,22 @@ export function SiteFooter() {
           </nav>
         ))}
 
-        <div className="flex flex-col gap-3">
-          <p className="text-sm font-bold text-ink">Kontak</p>
-          <address className="flex flex-col gap-2 text-sm text-ink-muted not-italic">
+        <div className="flex flex-col gap-4">
+          <p className="font-mono text-xs font-medium text-on-dark-muted lowercase">
+            Kontak
+          </p>
+          <address className="flex flex-col gap-3 text-sm text-on-dark-muted not-italic">
             <a
               href={whatsappUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-ink"
+              className={linkClass}
             >
               WhatsApp {CONTACT_CONFIG.whatsapp.display}
             </a>
             <a
               href={`mailto:${CONTACT_CONFIG.email}`}
-              className="break-all hover:text-ink"
+              className={`${linkClass} break-all`}
             >
               {CONTACT_CONFIG.email}
             </a>
@@ -133,40 +151,43 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="border-t border-line">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 sm:px-6">
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-semibold text-ink-muted">
+      <div className="relative border-t border-on-dark-line">
+        <div className="mx-auto flex w-full max-w-[75rem] flex-col gap-6 px-5 py-8 sm:px-8">
+          <div className="flex flex-col gap-3">
+            <p className="font-mono text-xs font-medium text-on-dark-muted lowercase">
               Metode pembayaran
             </p>
-            <ul className="flex flex-wrap items-center gap-x-5 gap-y-3">
+            <ul className="flex flex-wrap items-center gap-2">
               {PAYMENT_LOGOS.map(([file, label]) => (
-                <li key={file}>
+                <li
+                  key={file}
+                  className="flex h-8 items-center rounded-xs bg-white px-2.5"
+                >
                   <img
                     src={`/hero/${file}-logo.svg`}
                     alt={label}
                     loading="lazy"
-                    className="h-5 w-auto opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0"
+                    className="h-4 w-auto max-w-16 object-contain"
                   />
                 </li>
               ))}
             </ul>
           </div>
-          <div className="flex flex-col gap-2 text-xs text-ink-subtle sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 text-xs text-on-dark-muted sm:flex-row sm:items-center sm:justify-between">
             <p>© {new Date().getFullYear()} PT Bimbelio Edukasi Teknologi</p>
             <nav
               aria-label="Legal"
-              className="flex gap-4"
+              className="flex gap-5"
             >
               <Link
                 href="/privacy"
-                className="hover:text-ink"
+                className={linkClass}
               >
                 Kebijakan privasi
               </Link>
               <Link
                 href="/terms"
-                className="hover:text-ink"
+                className={linkClass}
               >
                 Syarat dan ketentuan
               </Link>

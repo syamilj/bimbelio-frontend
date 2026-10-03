@@ -21,7 +21,7 @@ const isActive = (pathname: string, href?: string) =>
   !href.includes('#') &&
   (pathname === href || pathname.startsWith(`${href}/`));
 
-/** Header situs publik: logo, navigasi, dan aksi akun. */
+/** Header situs publik: logo, navigasi, dan aksi akun (brand book hlm. 103). */
 export function SiteHeader() {
   const pathname = usePathname();
   const trackId = useTrackId();
@@ -33,21 +33,24 @@ export function SiteHeader() {
     useAuth.setShowAuth({ open: true, redirect: appPath(trackId, 'bimboard') });
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-surface/90 backdrop-blur supports-[backdrop-filter]:bg-surface/75">
-      <div className="mx-auto flex h-16 max-w-6xl items-center gap-8 px-4 sm:px-6">
+    <header className="sticky top-0 z-40 border-b border-line bg-surface/90 backdrop-blur supports-[backdrop-filter]:bg-surface/80">
+      <div className="mx-auto flex h-16 w-full max-w-[75rem] items-center gap-6 px-5 sm:px-8 lg:h-[4.5rem] lg:gap-10">
         <Link
           href="/"
           aria-label="Bimbelio — beranda"
-          className="rounded-sm focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none"
+          className="shrink-0 rounded-sm focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4 focus-visible:outline-none"
         >
-          <Logo />
+          <Logo
+            title=""
+            className="h-7 lg:h-8"
+          />
         </Link>
 
         <NavPrimitive.Root
           className="relative hidden lg:block"
           delayDuration={100}
         >
-          <NavPrimitive.List className="flex items-center gap-1">
+          <NavPrimitive.List className="flex items-center gap-0.5">
             {SITE_NAV.map((group) => (
               <NavPrimitive.Item key={group.label}>
                 {group.sections ? (
@@ -68,7 +71,7 @@ export function SiteHeader() {
                       {group.badge && (
                         <Badge
                           variant="highlight"
-                          className="px-1.5"
+                          className="px-2"
                         >
                           {group.badge}
                         </Badge>
@@ -79,15 +82,15 @@ export function SiteHeader() {
               </NavPrimitive.Item>
             ))}
           </NavPrimitive.List>
-          <div className="absolute top-full left-0 pt-2">
-            <NavPrimitive.Viewport className="h-(--radix-navigation-menu-viewport-height) w-(--radix-navigation-menu-viewport-width) overflow-hidden rounded-md border border-line bg-surface shadow-overlay transition-[width,height] duration-150 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0" />
+          <div className="absolute top-full left-0 pt-3">
+            <NavPrimitive.Viewport className="h-(--radix-navigation-menu-viewport-height) w-(--radix-navigation-menu-viewport-width) overflow-hidden rounded-lg border border-line bg-surface shadow-float transition-[width,height] duration-150 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0" />
           </div>
         </NavPrimitive.Root>
 
         <div className="ml-auto flex items-center gap-2">
           {status === 'loading' ? (
             <div
-              className="h-10 w-36"
+              className="h-11 w-40"
               aria-hidden
             />
           ) : session ? (
@@ -106,7 +109,9 @@ export function SiteHeader() {
           ) : (
             <>
               <Button
-                variant="ghost"
+                variant="outline"
+                size="sm"
+                className="sm:h-11 sm:px-5"
                 onClick={openLogin}
               >
                 Masuk
@@ -115,19 +120,19 @@ export function SiteHeader() {
                 asChild
                 className="hidden sm:inline-flex"
               >
-                <Link href="/price">Lihat program</Link>
+                <Link href="/tryout">Ikut tryout</Link>
               </Button>
             </>
           )}
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden"
+            className="-mr-2 lg:hidden"
             aria-label="Buka menu navigasi"
             aria-expanded={mobileOpen}
             onClick={() => setMobileOpen(true)}
           >
-            <Menu className="size-5" />
+            <Menu className="size-6" />
           </Button>
         </div>
       </div>
@@ -143,8 +148,9 @@ export function SiteHeader() {
   );
 }
 
+// Item aktif = teks Tinta + bubble terisi kecil di bawahnya (bubble = "dipilih").
 const navItemClassName =
-  'text-ink-muted hover:text-ink data-[active]:text-ink focus-visible:ring-brand inline-flex h-9 items-center gap-1.5 rounded-sm px-3 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:outline-none data-[state=open]:text-ink';
+  'relative inline-flex h-10 items-center gap-1.5 rounded-full px-3.5 text-sm font-semibold text-ink-muted transition-colors hover:bg-ink/5 hover:text-ink focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none data-[active]:text-ink data-[state=open]:bg-ink/5 data-[state=open]:text-ink after:absolute after:bottom-0 after:left-1/2 after:size-1.5 after:-translate-x-1/2 after:rounded-full after:bg-brand after:opacity-0 data-[active]:after:opacity-100';
 
 function NavDropdown({
   group,
@@ -169,7 +175,7 @@ function NavDropdown({
       <NavPrimitive.Content
         className={cn(
           'grid gap-6 p-5',
-          wide ? 'w-[34rem] grid-cols-2' : 'w-64 grid-cols-1',
+          wide ? 'w-[36rem] grid-cols-2' : 'w-72 grid-cols-1',
         )}
       >
         {group.sections!.map((section) => (
@@ -177,7 +183,7 @@ function NavDropdown({
             key={section.title}
             className="flex flex-col gap-1"
           >
-            <p className="px-2 pb-1 text-xs font-semibold text-ink-muted">
+            <p className="px-3 pb-1 font-mono text-xs font-medium text-ink-muted lowercase">
               {section.title}
             </p>
             {section.links.map((link) => (
@@ -187,7 +193,7 @@ function NavDropdown({
               >
                 <Link
                   href={link.href}
-                  className="flex flex-col gap-0.5 rounded-sm px-2 py-2 hover:bg-paper focus-visible:bg-paper focus-visible:outline-none"
+                  className="flex flex-col gap-0.5 rounded-sm px-3 py-2 hover:bg-paper focus-visible:bg-paper focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none"
                 >
                   <span className="text-sm font-semibold text-ink">
                     {link.label}
