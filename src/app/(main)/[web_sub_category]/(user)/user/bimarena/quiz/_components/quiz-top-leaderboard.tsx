@@ -34,7 +34,7 @@ const getPlayerColor = (iconType: string) => {
 
 export function QuizTopLeaderboard() {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
   const {
     useUserStatistic: { UserStatistic },
   } = useQuizProvider();

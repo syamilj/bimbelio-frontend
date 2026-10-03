@@ -45,7 +45,7 @@ export default function ShortUrlsPage() {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const router = useRouter();
 
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   const [shortUrls, setShortUrls] = useState<ShortUrl[]>([]);
   const [loading, setLoading] = useState(true);

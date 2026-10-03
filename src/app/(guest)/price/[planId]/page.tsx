@@ -157,7 +157,9 @@ export default async function PlanDetailPage({ params }: Props) {
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">
             <div className="flex flex-wrap gap-1.5">
-              {plan.recommended && <Badge variant="marker">Rekomendasi</Badge>}
+              {plan.recommended && (
+                <Badge variant="highlight">Rekomendasi</Badge>
+              )}
               {plan.PlanSubscription?.tier && (
                 <Badge variant="secondary">{plan.PlanSubscription.tier}</Badge>
               )}

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 const badgeVariants = cva(
-  "inline-flex w-fit shrink-0 items-center gap-1 rounded-sm px-2 py-0.5 text-xs font-semibold whitespace-nowrap [&_svg:not([class*='size-'])]:size-3",
+  "inline-flex w-fit shrink-0 items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap [&_svg:not([class*='size-'])]:size-3",
   {
     variants: {
       variant: {
@@ -13,8 +13,12 @@ const badgeVariants = cva(
         outline: 'border border-line-strong text-ink',
         success: 'bg-success-soft text-success',
         destructive: 'bg-danger-soft text-danger',
-        marker: 'bg-marker-soft text-marker-ink',
-        solid: 'bg-brand-strong text-brand-ink',
+        /** Sorotan aksen di balik teks Tinta. */
+        highlight: 'bg-highlight text-highlight-ink',
+        ink: 'bg-ink text-white',
+        /** Kode data: subtes, voucher, nomor. */
+        mono: 'bg-paper font-mono font-medium tracking-normal text-ink-muted',
+        solid: 'bg-brand text-brand-ink',
       },
     },
     defaultVariants: {

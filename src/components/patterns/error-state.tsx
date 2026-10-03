@@ -37,7 +37,9 @@ export function ErrorState({
         aria-hidden
       />
       <div className="flex max-w-sm flex-col gap-1">
-        <p className="text-base font-bold text-ink">{title}</p>
+        <p className="font-display text-lg font-bold tracking-display text-ink">
+          {title}
+        </p>
         <p className="text-sm text-ink-muted">{apiError.message}</p>
       </div>
       {onRetry && (

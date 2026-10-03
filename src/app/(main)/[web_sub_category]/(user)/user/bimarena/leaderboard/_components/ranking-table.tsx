@@ -101,7 +101,7 @@ export function RankingTable() {
   console.log({ RankingTryout });
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
   const websiteSubCategoryId = websiteSubCategory?.id;
   const isKedinasanWebsub = (websiteSubCategoryId ?? '')
     .toLowerCase()

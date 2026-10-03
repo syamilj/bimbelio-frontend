@@ -36,7 +36,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 
 const ColorList = [
-  '#0091FF',
+  '#0066FF',
   '#22c55e',
   '#eab308',
   '#ef4444',

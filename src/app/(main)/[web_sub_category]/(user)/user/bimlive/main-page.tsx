@@ -93,8 +93,8 @@ export default function LiveLearningDashboard({
 }) {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
   const webSubCategoryId =
     website_sub_category_id ?? website_sub_category_id_params;
 

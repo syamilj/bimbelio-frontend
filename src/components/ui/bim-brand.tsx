@@ -20,20 +20,23 @@ interface BimBrandProps {
 /**
  * BimBrand Component
  *
- * Renders branded text like "BimArena", "BimBoard" with Playfair Display font
- * "Bimbelio" uses default Inter font
+ * Nama produk ("BimArena", "BimBoard") dalam Parkinsans (merek 2.1).
+ * "Bimbelio" sebagai teks biasa — untuk logo pakai <Logo>.
  *
  * @example
- * <BimBrand suffix="Arena" />      // BimArena - Playfair Display
- * <BimBrand suffix="Board" />      // BimBoard - Playfair Display
- * <BimBrand suffix="belio" />      // Bimbelio - Inter (default)
+ * <BimBrand suffix="Arena" />      // BimArena - Parkinsans
+ * <BimBrand suffix="belio" />      // Bimbelio - huruf UI
  */
 export function BimBrand({ suffix, className, style }: BimBrandProps) {
   const isBimbelio = suffix.toLowerCase() === 'belio';
 
   return (
     <span
-      className={cn('font-semibold', !isBimbelio && 'font-playfair', className)}
+      className={cn(
+        'font-semibold',
+        !isBimbelio && 'font-display font-bold tracking-display',
+        className,
+      )}
       style={style}
     >
       Bim{suffix}

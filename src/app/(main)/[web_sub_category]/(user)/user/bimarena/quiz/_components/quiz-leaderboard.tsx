@@ -44,7 +44,7 @@ export function QuizLeaderboard() {
     useLeaderboard: { TopThreeUsers, UserRankingList, SubCategoryLeaderboards },
   } = useQuizProvider();
 
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
   const [activeLeaderboardTab, setActiveLeaderboardTab] =
     useState<string>('overall');
 

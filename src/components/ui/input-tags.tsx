@@ -38,7 +38,7 @@ export const InputTags = forwardRef<HTMLInputElement, InputTagsProps>(
               //     addPendingDataPoint();
               //   }
             }}
-            className="rounded-r-none outline-0 ring-0 focus-visible:ring-offset-0 focus-visible:ring-0"
+            className="rounded-r-none ring-0 outline-0 focus-visible:ring-0 focus-visible:ring-offset-0"
             {...props}
             ref={ref}
           />
@@ -51,9 +51,9 @@ export const InputTags = forwardRef<HTMLInputElement, InputTagsProps>(
             Add
           </Button>
         </div>
-        <div className="border rounded-3xl min-h-[2.5rem] overflow-y-auto p-2 flex gap-2 flex-wrap items-center">
+        <div className="flex min-h-[2.5rem] flex-wrap items-center gap-2 overflow-y-auto rounded-sm border p-2">
           {value.length === 0 && (
-            <span className="text-muted-foreground text-xs flex w-full justify-center">
+            <span className="flex w-full justify-center text-xs text-muted-foreground">
               {emptyText}
             </span>
           )}
@@ -61,12 +61,12 @@ export const InputTags = forwardRef<HTMLInputElement, InputTagsProps>(
             <Badge
               key={idx}
               variant="secondary"
-              className="pb-1 flex items-center justify-between gap-1 border border-gray-200"
+              className="flex items-center justify-between gap-1 border border-gray-200 pb-1"
             >
               {item}
               <button
                 type="button"
-                className="w-4 h-4  cursor-pointer rounded-full hover:bg-gray-300 flex justify-center items-center"
+                className="flex h-4 w-4 cursor-pointer items-center justify-center rounded-full hover:bg-gray-300"
                 onClick={() => {
                   onChange(value.filter((i) => i !== item));
                 }}

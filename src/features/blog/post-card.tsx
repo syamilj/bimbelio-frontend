@@ -26,7 +26,7 @@ export function PostCard({
         )}
         {post.isEditorPick && (
           <Badge
-            variant="marker"
+            variant="highlight"
             className="absolute top-3 left-3"
           >
             Pilihan editor

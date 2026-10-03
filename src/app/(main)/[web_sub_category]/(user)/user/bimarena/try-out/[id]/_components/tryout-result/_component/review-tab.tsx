@@ -114,7 +114,7 @@ export function ReviewTab({
   const [activeView, setActiveView] = useState<'question' | 'grid'>('question');
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   // Safeguard: Pastikan userAnswerIndex dalam rentang yang valid
   const safeUserAnswerIndex =

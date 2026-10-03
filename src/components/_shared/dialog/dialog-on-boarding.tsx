@@ -40,8 +40,8 @@ export const DialogOnBoarding = ({
   const [step, setStep] = useState(0);
   const { websiteSubCategory, webCategoryData } = useWebsiteSubCategory();
 
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   // Get categories from webCategoryData[0].WebsiteSubCategory
   const categories = (webCategoryData?.[0]?.WebsiteSubCategory || []).map(

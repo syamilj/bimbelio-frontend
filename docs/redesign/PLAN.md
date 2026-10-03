@@ -41,6 +41,10 @@ Semua keputusan, aturan desain, urutan kerja, dan checklist progres ada di sini.
 
 ## 3. Sistem desain "Lembar Jawaban"
 
+> **Diganti oleh merek 2.1 (2026-10-03).** Nilai warna, huruf, radius, dan elemen
+> merek kini mengikuti [`BRAND-2.1.md`](./BRAND-2.1.md) (disetujui pemilik).
+> Bagian di bawah dipertahankan sebagai sejarah; gagasan bubble LJK tetap berlaku.
+
 **Gagasan.** Siswa Bimbelio hidup di antara lembar soal dan lembar jawaban. Elemen
 khasnya **bubble LJK** (lingkaran A–E yang diisi). Bubble dipakai di tempat yang
 memang bermakna "isian/progres": opsi jawaban, navigator soal, progres modul,
@@ -235,11 +239,29 @@ Setiap fase wajib lolos `bun run check`, `bun run test`, `bun run build`
 - [x] FINANCE hanya membuka Transaksi (proxy + menu dari satu aturan `lib/auth/access.ts`); prefetch tidak lagi lolos dengan JWT tanpa verifikasi
 - [x] CI: `typecheck` menjalankan `next typegen` dulu (deklarasi impor gambar)
 
+### Fase 3d — Merek 2.1: fondasi (`redesign/03d-brand-2.1`)
+
+- [x] Token 2.1 (Biru `#0066FF`, Tinta, Kertas, lime/pink satu per tampilan, `data-surface`), stabilo dihapus
+- [x] Huruf Parkinsans, Shantell Sans (subset 54 KB), DM Mono via `next/font/local`
+- [x] Logo 2.1 (4 versi, titik i = aksen/program), favicon, ikon aplikasi, manifest, OG 1200×630
+- [x] Warna track DB → `--program` (peta merek); `--brand` dan `mainColor` lama dikunci Biru
+- [x] Komponen merek: Lio, BimBotAvatar, Sticker, Highlight, Scribble, InfoPill, SeriesLabel, MonoLabel, Disclaimer, Supergraphic
+- [x] Chart bubble LJK: tangga, batang, sebaran, peta jam (+ tes geometri)
+- [x] Primitive & pattern di-re-skin (tombol pil, kartu 18, toast Tinta, ragu = bubble setengah)
+- [x] `/styleguide` (bukan produksi) + lint guard kelas merek lama
+
+### Fase 3e — Re-skin shell & halaman publik (`redesign/03e-brand-guest`)
+
+- [ ] SiteHeader/Footer (footer Tinta), AppShell/AdminShell
+- [ ] Beranda baru (hero Biru + Lio), price, checkout, blog, calendar, tryout, about, scholarship, legal, 404/error, OG dinamis
+- [ ] Snapshot visual + axe halaman publik
+
 ### Fase 4 — Siswa (`redesign/04-*`)
 
 - [ ] Mesin ujian tunggal (tryout, quiz, tryout course, quiz workspace) + hasil
 - [ ] Course study & workspace (StudyLayout bersama, panel berat via `dynamic`)
 - [ ] BimBot, BimBoard, BimInsight, BimLive, prediction, explore, leaderboard, langganan/pembayaran
+- [ ] Rapor TO 2.1 + kartu "Bagikan rapor" (story 1080×1920)
 
 ### Fase 5 — Admin (`redesign/05-*`)
 

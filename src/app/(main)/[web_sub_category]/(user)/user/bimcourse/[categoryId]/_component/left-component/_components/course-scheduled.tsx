@@ -25,7 +25,7 @@ export default function CourseScheduled({
   courseDescription,
 }: CourseScheduledProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,

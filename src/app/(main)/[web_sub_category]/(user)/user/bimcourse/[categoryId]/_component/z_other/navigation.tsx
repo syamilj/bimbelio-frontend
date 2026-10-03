@@ -20,8 +20,8 @@ const NavigationButtons = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   const pathname = usePathname();
   const searchParams = useSearchParams();

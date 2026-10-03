@@ -156,7 +156,7 @@ export function RankingStats() {
   const { RankingTryoutIsLoading, RankingTryout, selectedTryOut } =
     useLeaderboardContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   const tabs = [
     {
@@ -276,7 +276,7 @@ type InsightCard = {
 const Summary = () => {
   const { RankingTryout, RankingTryoutIsLoading } = useLeaderboardContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
   const rgb = hexToRgb(mainColor);
 
   const avg = RankingTryout?.averageScore ?? 0;
@@ -606,7 +606,7 @@ const Summary = () => {
 const Statistics = () => {
   const { RankingTryout, RankingTryoutIsLoading } = useLeaderboardContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   const distChartConfig = {
     count: { label: 'Peserta', color: mainColor },
@@ -969,7 +969,7 @@ const Statistics = () => {
 const AnalysisSubject = () => {
   const { RankingTryout, RankingTryoutIsLoading } = useLeaderboardContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
   const rgb = hexToRgb(mainColor);
   const isIRT = RankingTryout?.isIRT ?? false;
 

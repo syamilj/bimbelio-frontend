@@ -4,7 +4,7 @@ import axiosInstanceRaw from '@/lib/axios/axiosInstanceRaw';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { response } from '@/lib/response';
 import { trackIdFromPath } from '@/lib/surface';
-import { trackThemeCss } from '@/lib/theme/track-theme';
+import { BRAND, BRAND_2, trackThemeCss } from '@/lib/theme/track-theme';
 import { rememberTrack } from '@/lib/track';
 import {
   WebsiteCategory,
@@ -20,8 +20,8 @@ import { useSession } from './provider-session-auth';
 
 const initialValue: WebsiteSubCategory = {
   id: 'guest',
-  main_color: '#0091FF',
-  secondary_color: '#5aa4dd',
+  main_color: '#0066FF',
+  secondary_color: '#4C94FF',
   name: 'guest',
   createdAt: new Date(),
   updatedAt: new Date(),
@@ -118,8 +118,10 @@ export default function ProviderWebsiteCategory({
     }
   }, [web_sub_category, webCategoryData]);
 
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  // Merek 2.1: warna UI selalu Biru Bimbelio di semua track. Kode lama yang
+  // masih membaca mainColor/secondaryColor ikut tanpa perlu disentuh.
+  const mainColor = BRAND;
+  const secondaryColor = BRAND_2;
 
   const Context = {
     id: websiteSubCategory?.id,
@@ -180,12 +182,7 @@ export default function ProviderWebsiteCategory({
         speed={200}
         shadow={false}
       />
-      <style>
-        {trackThemeCss(
-          websiteSubCategory?.main_color,
-          websiteSubCategory?.secondary_color,
-        )}
-      </style>
+      <style>{trackThemeCss(websiteSubCategory?.id)}</style>
       {children}
     </WebsiteSubCategoryContext.Provider>
   );

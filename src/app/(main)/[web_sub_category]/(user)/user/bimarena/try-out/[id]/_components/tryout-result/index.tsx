@@ -153,8 +153,8 @@ export default function TryoutResult({
   const tab = searchParams?.get('tab') as TabsProps;
 
   // Get dynamic colors - mengikuti pattern dari tryout.tsx
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   const currentDate = new Date();
 
@@ -606,8 +606,8 @@ interface CoundowntShowResultProps {
 
 const CoundowntShowResult = ({ resultDate }: CoundowntShowResultProps) => {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   const pathname = usePathname();
   const router = useRouter();

@@ -34,8 +34,8 @@ const Card: React.FC<CardProps> = ({
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   const isShortAnswer = type === 'SHORT_ANSWER';
 

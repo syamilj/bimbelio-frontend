@@ -61,8 +61,8 @@ const getStatusColor = (status: string) => {
 
 export default function QuizVolumePage() {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   const [expandedVolumes, setExpandedVolumes] = useState<Set<string>>(
     new Set(),

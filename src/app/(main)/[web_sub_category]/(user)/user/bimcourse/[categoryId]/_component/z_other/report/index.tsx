@@ -13,7 +13,7 @@ import { CourseReportStats } from './course-report-stats';
 export default function CourseReport() {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   const params = useParams();
   const categoryId = Array.isArray(params?.categoryId)

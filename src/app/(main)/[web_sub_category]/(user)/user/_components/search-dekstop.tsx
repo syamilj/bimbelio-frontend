@@ -26,7 +26,7 @@ const SearchDeskstop = () => {
   const isMobile = useMedia({ maxWidth: '768px' });
 
   // Get dynamic colors from the selected category
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   const [categoryId, setCategoryId] = useState<string>('');
   const [searchValue, setSearchValue] = useState<string>('');

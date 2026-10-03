@@ -42,8 +42,8 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     !(!!featureQuiz && featureQuiz.includes(volumeId || ''));
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  // const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  // const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   const [tryoutData, setTryoutData] = useState<TryoutDataType>();
   const [isLoading, setIsLoading] = useState<boolean>(true);

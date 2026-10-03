@@ -48,7 +48,7 @@ export function BimRecommendedContent({
   documents,
 }: RecommendedContentProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
   const [activeTab, setActiveTab] = useState<
     'courses' | 'tryouts' | 'documents'
   >('courses');

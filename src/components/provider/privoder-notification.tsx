@@ -500,8 +500,8 @@ const FloatingNotificationAlert = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   // Dynamic colors from website sub category
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   // Detect browser
   const getBrowserName = ():

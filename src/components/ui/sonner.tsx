@@ -16,24 +16,22 @@ export function Toaster(props: ToasterProps) {
       position="top-center"
       gap={8}
       icons={{
-        success: <CircleCheck className="size-4 text-success" />,
-        error: <CircleX className="size-4 text-danger" />,
-        warning: <TriangleAlert className="size-4 text-marker-ink" />,
-        info: <Info className="size-4 text-brand-strong" />,
-        loading: (
-          <LoaderCircle className="size-4 animate-spin text-ink-muted" />
-        ),
+        success: <CircleCheck className="size-4 text-lime" />,
+        error: <CircleX className="size-4 text-pink" />,
+        warning: <TriangleAlert className="size-4 text-lime" />,
+        info: <Info className="size-4 text-brand-muted" />,
+        loading: <LoaderCircle className="size-4 animate-spin text-white/70" />,
       }}
       toastOptions={{
         classNames: {
           toast:
-            'bg-surface! text-ink! border-line! rounded-md! shadow-overlay! font-sans! gap-3! items-start!',
+            'bg-ink! text-white! border-ink! rounded-md! shadow-float! font-sans! gap-3! items-start!',
           title: 'text-sm! font-semibold!',
-          description: 'text-ink-muted! text-sm!',
+          description: 'text-white/75! text-sm!',
           icon: 'mt-0.5!',
-          actionButton: 'bg-brand-strong! text-brand-ink! rounded-sm!',
-          cancelButton: 'bg-paper! text-ink! rounded-sm!',
-          closeButton: 'bg-surface! border-line! text-ink-muted!',
+          actionButton: 'bg-lime! text-ink! rounded-full! font-semibold!',
+          cancelButton: 'bg-white/10! text-white! rounded-full!',
+          closeButton: 'bg-ink! border-white/20! text-white/80!',
         },
       }}
       {...props}

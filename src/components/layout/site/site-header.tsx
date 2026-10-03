@@ -67,7 +67,7 @@ export function SiteHeader() {
                       {group.label}
                       {group.badge && (
                         <Badge
-                          variant="marker"
+                          variant="highlight"
                           className="px-1.5"
                         >
                           {group.badge}

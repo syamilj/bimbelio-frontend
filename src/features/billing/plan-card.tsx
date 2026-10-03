@@ -90,7 +90,7 @@ export function PlanCard({ plan, onBuy, viewOnly, className }: PlanCardProps) {
       <div className="flex flex-1 flex-col gap-5 p-5">
         <header className="flex flex-col gap-2">
           <div className="flex flex-wrap items-center gap-1.5">
-            {plan.recommended && <Badge variant="marker">Rekomendasi</Badge>}
+            {plan.recommended && <Badge variant="highlight">Rekomendasi</Badge>}
             <Badge variant="secondary">
               {plan.PlanSubscription?.tier ?? KIND_LABEL[planKind(plan)]}
             </Badge>

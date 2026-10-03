@@ -20,7 +20,7 @@ export function FinalCta() {
           <Button
             asChild
             size="lg"
-            variant="marker"
+            variant="accent"
           >
             <Link href="/price">Lihat paket belajar</Link>
           </Button>

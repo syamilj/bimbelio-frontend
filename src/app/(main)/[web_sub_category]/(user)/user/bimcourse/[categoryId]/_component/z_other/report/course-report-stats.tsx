@@ -260,7 +260,7 @@ type CourseReportData = {
 
 export function CourseReportStats({ report }: { report: CourseReportData }) {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
   const isMobile = useMedia({ maxWidth: '768px' });
 
   const learningOverview = report.learningOverview;

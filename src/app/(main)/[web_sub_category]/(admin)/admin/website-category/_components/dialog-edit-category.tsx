@@ -32,7 +32,7 @@ export function DialogEditCategory({ children, category }: Props) {
 
   const [name, setName] = useState('');
   const [mainColor, setMainColor] = useState('#0062FA');
-  const [secondaryColor, setSecondaryColor] = useState('#0091FF');
+  const [secondaryColor, setSecondaryColor] = useState('#0066FF');
 
   useEffect(() => {
     if (category) {

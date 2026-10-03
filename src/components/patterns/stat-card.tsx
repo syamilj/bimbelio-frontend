@@ -19,7 +19,7 @@ export function StatCard({
   return (
     <div
       className={cn(
-        'flex flex-col gap-2 rounded-md border border-line bg-surface p-4',
+        'flex flex-col gap-2 rounded-md border border-line bg-surface p-5',
         className,
       )}
     >
@@ -27,7 +27,7 @@ export function StatCard({
         <span>{label}</span>
         {icon && <span className="[&_svg]:size-4">{icon}</span>}
       </div>
-      <div className="text-2xl font-extrabold text-ink tabular-nums">
+      <div className="font-display text-3xl font-extrabold tracking-display text-ink tabular-nums">
         {value}
       </div>
       {hint && <div className="text-xs text-ink-muted">{hint}</div>}

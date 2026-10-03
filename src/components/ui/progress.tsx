@@ -25,7 +25,7 @@ function Progress({
     >
       <ProgressPrimitive.Indicator
         className={cn(
-          'h-full w-full flex-1 bg-brand transition-transform',
+          'h-full w-full flex-1 rounded-full bg-brand transition-transform',
           classNameThumb,
         )}
         style={{ transform: `translateX(-${100 - (value || 0)}%)` }}

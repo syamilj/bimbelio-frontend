@@ -43,7 +43,7 @@ function Calendar({
         day_button:
           'hover:bg-paper focus-visible:ring-brand size-9 rounded-md font-medium tabular-nums transition-colors focus-visible:ring-2 focus-visible:outline-none',
         selected:
-          '[&>button]:bg-brand-strong [&>button]:text-brand-ink [&>button]:hover:bg-brand-strong',
+          '[&>button]:bg-brand [&>button]:text-brand-ink [&>button]:hover:bg-brand-strong',
         range_start: 'bg-brand-soft rounded-l-md',
         range_middle:
           'bg-brand-soft [&>button]:bg-transparent! [&>button]:text-ink! rounded-none',

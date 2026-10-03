@@ -1,12 +1,42 @@
-// Tema per track (web_sub_category): warna utama & sekunder dari database
-// dipasang sebagai CSS variable; semua turunan dihitung di tokens.css.
+// Tema per track (web_sub_category), merek Bimbelio 2.1.
+//
+// Warna UI selalu Biru Bimbelio (--brand, tokens.css). Track hanya memberi
+// warna PROGRAM: titik i logo & label nama program, satu program per tampilan
+// (brand book hlm. 31). Warna program diambil dari peta merek, bukan dari
+// main_color di database — nilai DB lama (Kedinasan hijau, SIMAK oranye, …)
+// bertentangan dengan pedoman merek. Lihat docs/redesign/BRAND-2.1.md §10.1.
 
-export const DEFAULT_BRAND = '#0091ff';
-export const DEFAULT_BRAND_2 = '#5aa4dd';
+export const BRAND = '#0066ff';
+/** Pengganti secondary_color lama untuk kode yang belum dimigrasi. */
+export const BRAND_2 = '#4c94ff';
+
+export const PROGRAM_COLORS = {
+  utbk: '#0066ff',
+  kedinasan: '#e0263b',
+  campus: '#0a8fd6',
+  language: '#0a9468',
+} as const;
+
+export type Program = keyof typeof PROGRAM_COLORS;
+
+/** Program merek untuk sebuah track. Track tak dikenal → UTBK (Biru). */
+export const trackProgram = (trackId: string | null | undefined): Program => {
+  const id = trackId?.toLowerCase() ?? '';
+  if (id.includes('kedinasan') || id.includes('stan') || id.includes('ipdn'))
+    return 'kedinasan';
+  if (id.includes('simak') || id.includes('ugm') || id.includes('mandiri'))
+    return 'campus';
+  if (id.includes('toefl') || id.includes('ielts') || id.includes('language'))
+    return 'language';
+  return 'utbk';
+};
+
+export const programColor = (trackId: string | null | undefined) =>
+  PROGRAM_COLORS[trackProgram(trackId)];
 
 const HEX = /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i;
 
-/** Nilai dari database hanya dipakai bila benar-benar hex (mencegah injeksi CSS). */
+/** Nilai dari luar hanya dipakai bila benar-benar hex (mencegah injeksi CSS). */
 export const safeHex = (value: string | null | undefined, fallback: string) =>
   value && HEX.test(value.trim()) ? value.trim().toLowerCase() : fallback;
 
@@ -28,21 +58,14 @@ export const luminance = (hex: string) => {
   );
 };
 
-/**
- * Warna teks di atas tombol brand. Tombol memakai --brand-strong (brand 80% +
- * hitam), jadi luminans dihitung dari versi yang lebih gelap itu.
- */
-export const brandInk = (hex: string) =>
-  luminance(hex) * 0.62 > 0.32 ? '#1b2230' : '#ffffff';
-
-export const trackThemeCss = (
-  main: string | null | undefined,
-  secondary: string | null | undefined,
-) => {
-  const brand = safeHex(main, DEFAULT_BRAND);
-  const brand2 = safeHex(secondary, DEFAULT_BRAND_2);
-  return `:root{--brand:${brand};--brand-2:${brand2};--brand-ink:${brandInk(brand)};}`;
+/** Rasio kontras WCAG antara dua warna hex. */
+export const contrast = (a: string, b: string) => {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
 };
+
+export const trackThemeCss = (trackId: string | null | undefined) =>
+  `:root{--program:${programColor(trackId)};}`;
 
 /** @deprecated Pakai token (`bg-brand/10`) — hanya untuk kode lama yang belum dimigrasi. */
 export const hexToRgba = (hex?: string, opacity = 1) => {

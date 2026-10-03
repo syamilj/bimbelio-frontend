@@ -45,7 +45,7 @@ export function InputImage({
 
   return (
     <div
-      className="relative cursor-pointer w-fit"
+      className="relative w-fit cursor-pointer"
       onMouseOver={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       onClick={() => {
@@ -74,20 +74,20 @@ export function InputImage({
       />
       <div
         className={cn(
-          'w-[200px] h-[120px] border rounded-3xl p-4 bg-gray-100 flex justify-center items-center relative overflow-hidden',
-          PreviewImg && 'w-fit h-fit max-w-[200px]',
+          'relative flex h-[120px] w-[200px] items-center justify-center overflow-hidden rounded-sm border bg-gray-100 p-4',
+          PreviewImg && 'h-fit w-fit max-w-[200px]',
         )}
       >
         {isHover && (
           <div
             className={cn(
-              'absolute top-0 left-0 w-full h-full flex justify-center items-center bg-white/80',
+              'absolute top-0 left-0 flex h-full w-full items-center justify-center bg-white/80',
               !PreviewImg && 'bg-gray-200',
             )}
           >
-            <div className="flex flex-col gap-[.5rem] items-center">
+            <div className="flex flex-col items-center gap-[.5rem]">
               <UploadIcon className="text-gray-400" />
-              <p className="text-gray-500/80 font-medium">
+              <p className="font-medium text-gray-500/80">
                 {placeholder ? placeholder : 'Upload Foto'}
               </p>
             </div>
@@ -99,9 +99,9 @@ export function InputImage({
             alt=""
           />
         ) : (
-          <div className="flex flex-col gap-[.5rem] items-center">
+          <div className="flex flex-col items-center gap-[.5rem]">
             <UploadIcon className="text-gray-400" />
-            <p className="text-gray-500/80 font-medium">
+            <p className="font-medium text-gray-500/80">
               {placeholder ? placeholder : 'Upload Foto'}
             </p>
           </div>

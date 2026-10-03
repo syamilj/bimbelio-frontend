@@ -28,8 +28,8 @@ export function TopWinners() {
   const isIrt = RankingTryout?.isIRT || false;
 
   // Get dynamic colors from the selected category
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   const [TryoutTop3, setTryoutTop3] = useState<TryoutTop3Type[]>([]);
   const [TryoutTop3IsLoading, setTryoutTop3IsLoading] = useState<boolean>(true);

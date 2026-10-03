@@ -30,8 +30,8 @@ export default function SubscriptionPage() {
   const { data: userSession } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const { setTransactionPopUp } = useAppContext();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
   const userTier = userSession?.user.tier;
 
   const getFeatureIcon = (type: string) => {

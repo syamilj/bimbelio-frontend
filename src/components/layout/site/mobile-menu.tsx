@@ -91,7 +91,7 @@ export function MobileMenu({
                   className="flex items-center gap-2 rounded-sm px-2 py-2 text-base font-bold text-ink hover:bg-paper"
                 >
                   {group.label}
-                  {group.badge && <Badge variant="marker">{group.badge}</Badge>}
+                  {group.badge && <Badge variant="highlight">{group.badge}</Badge>}
                 </Link>
               ) : (
                 <p className="px-2 py-2 text-base font-bold text-ink">

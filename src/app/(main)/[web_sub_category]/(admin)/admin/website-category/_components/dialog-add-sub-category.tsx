@@ -71,7 +71,7 @@ export function DialogAddSubCategory({
   const [categoryId, setCategoryId] = useState('');
   const [type, setType] = useState<WebsiteSubCategoryTypeEnum>('GENERAL');
   const [mainColor, setMainColor] = useState('#0062FA');
-  const [secondaryColor, setSecondaryColor] = useState('#0091FF');
+  const [secondaryColor, setSecondaryColor] = useState('#0066FF');
   const [sharingWebSubIds, setSharingWebSubIds] = useState<string[]>([]);
 
   const handleCategoryChange = (value: string) => {

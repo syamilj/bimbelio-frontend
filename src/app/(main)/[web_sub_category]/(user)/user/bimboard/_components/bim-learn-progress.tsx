@@ -76,7 +76,7 @@ export function BimLearnProgress({
   quizVolumes,
 }: BimLearnProgressProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   // Fixed order: Live → Try Out → Quiz → Courses; empty tabs go to the end
   const sortedOtherTabs = useMemo(() => {

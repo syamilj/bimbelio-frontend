@@ -21,7 +21,7 @@ import {
 
 export function QuizStats() {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
   const {
     useUserStatistic: { UserStatistic },
   } = useQuizProvider();

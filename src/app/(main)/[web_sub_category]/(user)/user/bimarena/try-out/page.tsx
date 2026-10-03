@@ -110,7 +110,7 @@ const Content = () => {
   }, [register_tryout, order_id, transaction_status]);
 
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   // --- Smart Tab Defaulting ---
   const [activeTab, setActiveTab] = useState<TabId>('berlangsung');

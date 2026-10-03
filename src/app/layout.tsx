@@ -55,15 +55,17 @@ export const metadata: Metadata = {
     creator: '@Bimbelio',
   },
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/logo.png',
+    icon: [
+      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
     apple: '/apple-touch-icon.png',
   },
   manifest: '/site.webmanifest',
 };
 
 export const viewport: Viewport = {
-  themeColor: '#f6f8fb',
+  themeColor: '#0066ff',
   width: 'device-width',
   initialScale: 1,
 };

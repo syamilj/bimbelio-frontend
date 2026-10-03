@@ -5,13 +5,18 @@
  * (docs/redesign/PLAN.md). Jangan menambah apa pun ke sini.
  */
 
+/* Warna sekunder lama (secondary_color track) → Biru 400 merek 2.1. */
+:root {
+  --brand-2: #4c94ff;
+}
+
 @theme inline {
   /* Pengganti kelas runtime dari styles/main-styles.ts (bg-main, text-main/40, ...) */
   --color-main: var(--brand);
   --color-main-default: var(--brand);
   --color-secondary-default: var(--brand-2);
   --color-main-hover: var(--brand-strong);
-  --color-main-yellow: var(--marker);
+  --color-main-yellow: var(--lime);
   --color-main-red: var(--danger);
   --color-main-red-hover: var(--danger-soft);
   --color-main-border: var(--line);
@@ -125,10 +130,10 @@
   background-color: var(--brand-strong);
 }
 .bg-yellow-upgrade {
-  background-color: var(--marker);
+  background-color: var(--lime);
 }
 .bg-yellow-upgrade-hover {
-  background-color: color-mix(in oklab, var(--marker) 88%, black);
+  background-color: color-mix(in oklab, var(--lime) 88%, black);
 }
 .bg-fade-materi {
   background-image: linear-gradient(to bottom, transparent, var(--paper));
@@ -182,8 +187,9 @@
 
 .font-playfair,
 .font-playfair-italic {
-  font-family: var(--font-sans);
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: var(--tracking-display);
 }
 
 .chat-ai-container {
@@ -248,7 +254,7 @@
 
 /* Blok sorotan BlockNote (catatan dari PDF) */
 .bn-container .h-full.w-2.rounded-full.bg-yellow-400 {
-  background-color: var(--marker);
+  background-color: var(--lime);
 }
 
 /* Grafik lama memutar label sumbu */
