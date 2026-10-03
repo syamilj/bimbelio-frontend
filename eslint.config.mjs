@@ -22,6 +22,8 @@ const DESIGN_SYSTEM_DIRS = [
   'src/app/robots.ts',
   'src/lib/api/**',
   'src/lib/theme/**',
+  'src/app/(main)/[[]web_sub_category]/(user)/user/bimarena/try-out/[[]id]/**',
+  'src/app/(main)/[[]web_sub_category]/(user)/user/bimarena/quiz/[[]volumeId]/**',
 ];
 
 // Berkas lama di dalam direktori di atas yang belum dimigrasi. Kosongkan
