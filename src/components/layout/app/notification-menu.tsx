@@ -122,7 +122,7 @@ export function NotificationMenu() {
         >
           <Bell className="size-5" />
           {unreadCount > 0 && (
-            <span className="absolute top-1.5 right-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-1 text-xs leading-none font-bold text-white tabular-nums ring-2 ring-surface">
+            <span className="absolute top-1 right-1 flex h-[1.125rem] min-w-[1.125rem] items-center justify-center rounded-full bg-brand px-1 font-mono text-xs leading-none font-medium text-brand-ink tabular-nums ring-2 ring-surface">
               {badge}
             </span>
           )}
@@ -133,7 +133,9 @@ export function NotificationMenu() {
         className="flex w-[min(24rem,calc(100vw-2rem))] flex-col p-0"
       >
         <div className="flex items-center justify-between gap-2 border-b border-line px-4 py-3">
-          <h2 className="text-sm font-bold text-ink">Notifikasi</h2>
+          <h2 className="font-display text-base font-bold tracking-display text-ink">
+            Notifikasi
+          </h2>
           {unreadCount > 0 && (
             <Button
               variant="link"
@@ -250,8 +252,8 @@ function NotificationItem({
       <span
         aria-hidden
         className={cn(
-          'mt-1.5 size-2 shrink-0 rounded-full',
-          item.isRead ? 'bg-transparent' : 'bg-brand',
+          'mt-1 size-3 shrink-0 rounded-full border-[1.5px]',
+          item.isRead ? 'border-line-strong' : 'border-brand bg-brand',
         )}
       />
       <div className="flex min-w-0 flex-1 flex-col gap-1">
@@ -266,6 +268,7 @@ function NotificationItem({
               item.isRead ? 'font-medium' : 'font-semibold',
             )}
           >
+            {!item.isRead && <span className="sr-only">Belum dibaca: </span>}
             {item.title}
           </span>
           <span className="line-clamp-3 text-sm text-ink-muted">

@@ -45,7 +45,7 @@ export function AppNavList({
               aria-hidden
             />
           ) : (
-            <p className="px-3 pb-1 text-xs font-semibold text-ink-subtle">
+            <p className="px-3 pb-1 font-mono text-xs font-medium text-ink-muted lowercase">
               {section.title}
             </p>
           )}
@@ -76,22 +76,22 @@ function NavLink({
   onNavigate?: () => void;
 }) {
   const Icon = item.icon;
+  // Item aktif = bubble Biru terisi + teks Tinta 600 (BRAND-2.1 §6.2).
   const link = (
     <Link
       href={item.href}
       onClick={onNavigate}
       aria-current={active ? 'page' : undefined}
       className={cn(
-        'flex items-center gap-3 rounded-md text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none',
-        collapsed ? 'mx-auto size-10 justify-center' : 'h-10 px-3',
-        active
-          ? 'bg-brand-soft text-brand-strong'
-          : 'text-ink-muted hover:bg-ink/5 hover:text-ink',
+        'group flex items-center gap-2.5 rounded-full text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none',
+        collapsed ? 'mx-auto size-11 justify-center' : 'h-11 pr-3 pl-1',
+        active ? 'text-ink' : 'text-ink-muted hover:text-ink',
+        !collapsed && !active && 'hover:bg-ink/5',
       )}
     >
-      <Icon
-        className="size-[1.125rem] shrink-0"
-        aria-hidden
+      <NavBubble
+        icon={Icon}
+        active={active}
       />
       {collapsed ? (
         <span className="sr-only">{item.label}</span>
@@ -100,7 +100,7 @@ function NavLink({
           <span className="flex-1 truncate">{item.label}</span>
           {item.tag && (
             <Badge
-              variant={item.tag === 'Baru' ? 'success' : 'secondary'}
+              variant={item.tag === 'Baru' ? 'success' : 'mono'}
               className="px-1.5"
             >
               {item.tag}
@@ -120,14 +120,42 @@ function NavLink({
   );
 }
 
+/** Ikon menu di dalam bubble LJK: terisi Biru saat halaman aktif ("dipilih"). */
+export function NavBubble({
+  icon: Icon,
+  active,
+  size = 'md',
+}: {
+  icon: AppNavItem['icon'];
+  active: boolean;
+  size?: 'sm' | 'md';
+}) {
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        'flex shrink-0 items-center justify-center rounded-full border-[1.5px] transition-colors',
+        size === 'md' ? 'size-9' : 'size-8',
+        active
+          ? 'border-brand bg-brand text-brand-ink'
+          : 'border-transparent group-hover:border-line-strong',
+      )}
+    >
+      <Icon className={size === 'md' ? 'size-[1.125rem]' : 'size-4'} />
+    </span>
+  );
+}
+
 /** Kartu ajakan berlangganan untuk akun gratis. */
 export function UpgradeCard({ onAction }: { onAction?: () => void }) {
   const { data: session } = useSession();
   const { openUpgrade } = useAppContext();
   if (!session || session.user.tier) return null;
   return (
-    <div className="flex flex-col gap-2 rounded-md bg-brand-soft p-3">
-      <p className="text-sm font-semibold text-ink">Akunmu masih gratis</p>
+    <div className="flex flex-col gap-2 rounded-md bg-brand-soft p-4">
+      <p className="font-display text-base font-bold tracking-display text-ink">
+        Akunmu masih gratis
+      </p>
       <p className="text-xs text-ink-muted">
         Pilih paket untuk membuka materi dan try out premium.
       </p>
@@ -170,7 +198,10 @@ export function AppSidebar() {
             aria-label="Bimbelio — BimBoard"
             className="mr-auto"
           >
-            <Logo />
+            <Logo
+              dot="program"
+              className="h-7"
+            />
           </Link>
         )}
         <Button
@@ -182,7 +213,7 @@ export function AppSidebar() {
           {collapsed ? (
             <BrandMark
               title=""
-              className="size-6 text-brand-strong"
+              className="size-6 text-brand"
             />
           ) : (
             <ToggleIcon />

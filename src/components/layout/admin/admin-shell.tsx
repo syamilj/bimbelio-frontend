@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { Fragment } from 'react';
+import { NavBubble } from '../app/app-sidebar';
 import { SubscriptionChecks } from '../app/subscription-checks';
 import { TrackSwitcher } from '../app/track-picker';
 import {
@@ -71,7 +72,7 @@ function AdminNavList({
               aria-hidden
             />
           ) : (
-            <p className="px-3 pb-1 text-xs font-semibold text-ink-subtle">
+            <p className="px-3 pb-1 font-mono text-xs font-medium text-ink-muted lowercase">
               {section.title}
             </p>
           )}
@@ -86,16 +87,18 @@ function AdminNavList({
                 onClick={onNavigate}
                 aria-current={active ? 'page' : undefined}
                 className={cn(
-                  'flex items-center gap-3 rounded-md text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none',
-                  collapsed ? 'mx-auto size-10 justify-center' : 'h-9 px-3',
-                  active
-                    ? 'bg-brand-soft text-brand-strong'
-                    : 'text-ink-muted hover:bg-ink/5 hover:text-ink',
+                  'group flex items-center gap-2 rounded-full text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none',
+                  collapsed
+                    ? 'mx-auto size-10 justify-center'
+                    : 'h-10 pr-3 pl-1',
+                  active ? 'text-ink' : 'text-ink-muted hover:text-ink',
+                  !collapsed && !active && 'hover:bg-ink/5',
                 )}
               >
-                <Icon
-                  className="size-4 shrink-0"
-                  aria-hidden
+                <NavBubble
+                  icon={Icon}
+                  active={active}
+                  size="sm"
                 />
                 {collapsed ? (
                   <span className="sr-only">{item.label}</span>
@@ -241,9 +244,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               href={adminPath(trackId)}
               className="mr-auto flex items-center gap-2"
             >
-              <Logo />
-              <span className="text-xs font-semibold text-ink-muted">
-                Admin
+              <Logo className="h-7" />
+              <span className="font-mono text-xs font-medium text-ink-muted lowercase">
+                admin
               </span>
             </Link>
           )}
@@ -256,7 +259,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             {collapsed ? (
               <BrandMark
                 title=""
-                className="size-6 text-brand-strong"
+                className="size-6 text-brand"
               />
             ) : (
               <ToggleIcon />

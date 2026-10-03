@@ -29,7 +29,7 @@ export function AppTopbar() {
         </Button>
         <Link
           href={appPath(trackId, 'bimboard')}
-          className="text-brand-strong lg:hidden"
+          className="rounded-sm text-brand focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none lg:hidden"
           aria-label="Bimbelio — BimBoard"
         >
           <BrandMark

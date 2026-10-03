@@ -58,9 +58,7 @@ export function PlanMenu() {
           size="sm"
           className="gap-1.5"
         >
-          <Crown
-            className={cn(isFree ? 'text-ink-muted' : 'text-brand-strong')}
-          />
+          <Crown className={cn(isFree ? 'text-ink-muted' : 'text-brand')} />
           {label}
           <ChevronDown className="size-3.5 opacity-70" />
         </Button>
@@ -70,7 +68,9 @@ export function PlanMenu() {
         className="flex max-h-[min(36rem,80dvh)] w-80 flex-col gap-4 overflow-y-auto p-4"
       >
         <section className="flex flex-col gap-2">
-          <h3 className="text-sm font-bold text-ink">Langganan</h3>
+          <h3 className="font-mono text-xs font-medium text-ink-muted lowercase">
+            Langganan
+          </h3>
           {subsList.length === 0 ? (
             <p className="text-sm text-ink-muted">
               Kamu memakai akun gratis. Buka semua materi, try out, dan BimBot
@@ -88,7 +88,7 @@ export function PlanMenu() {
                   className="flex flex-col gap-2 rounded-md border border-line p-3"
                 >
                   <div className="flex items-start justify-between gap-2">
-                    <p className="text-sm font-semibold text-ink">
+                    <p className="font-display text-base font-bold tracking-display text-ink">
                       {sub.planName}
                     </p>
                     <Badge>{sub.planTier}</Badge>
@@ -151,7 +151,9 @@ export function PlanMenu() {
 
         {subsPendingList.length > 0 && (
           <section className="flex flex-col gap-2">
-            <h3 className="text-sm font-bold text-ink">Menunggu aktif</h3>
+            <h3 className="font-mono text-xs font-medium text-ink-muted lowercase">
+              Menunggu aktif
+            </h3>
             {subsPendingList.map((pending) => (
               <article
                 key={pending.id}
@@ -196,7 +198,9 @@ export function PlanMenu() {
 
         {limitation && (
           <section className="flex flex-col gap-2">
-            <h3 className="text-sm font-bold text-ink">Sisa koin</h3>
+            <h3 className="font-mono text-xs font-medium text-ink-muted lowercase">
+              Sisa koin
+            </h3>
             <dl className="grid grid-cols-2 gap-2">
               {COIN_KEYS.map((key) => {
                 const left = remaining(
@@ -213,7 +217,7 @@ export function PlanMenu() {
                     </dt>
                     <dd
                       className={cn(
-                        'text-base font-bold tabular-nums',
+                        'font-display text-xl font-bold tabular-nums',
                         unlimited
                           ? 'text-ink'
                           : left === 0

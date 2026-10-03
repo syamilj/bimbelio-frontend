@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 import { Menu } from 'lucide-react';
 import Link from 'next/link';
 import { isNavActive, mobileTabs } from './app-nav';
-import { AppNavList, UpgradeCard } from './app-sidebar';
+import { AppNavList, NavBubble, UpgradeCard } from './app-sidebar';
 import { CourseSearch } from './course-search';
 import { PlanMenu } from './plan-menu';
 import { TrackSwitcher } from './track-picker';
@@ -33,14 +33,18 @@ export function MobileAppMenu() {
         className="gap-5 px-4"
       >
         <SheetHeader>
-          <SheetTitle>Menu</SheetTitle>
+          <SheetTitle className="font-mono text-xs font-medium text-ink-muted lowercase">
+            Menu
+          </SheetTitle>
           <SheetDescription className="sr-only">
             Navigasi aplikasi Bimbelio
           </SheetDescription>
         </SheetHeader>
         <TrackSwitcher />
         <div className="flex items-center justify-between gap-2">
-          <span className="text-sm text-ink-muted">Paket & koin</span>
+          <span className="font-mono text-xs font-medium text-ink-muted lowercase">
+            Paket & koin
+          </span>
           <PlanMenu />
         </div>
         <CourseSearch className="md:hidden" />
@@ -73,13 +77,14 @@ export function MobileTabBar() {
                 href={href}
                 aria-current={active ? 'page' : undefined}
                 className={cn(
-                  'flex h-full flex-col items-center justify-center gap-1 text-xs font-semibold',
-                  active ? 'text-brand-strong' : 'text-ink-muted',
+                  'group flex h-full flex-col items-center justify-center gap-0.5 text-xs font-semibold focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none focus-visible:ring-inset',
+                  active ? 'text-ink' : 'text-ink-muted',
                 )}
               >
-                <Icon
-                  className="size-5"
-                  aria-hidden
+                <NavBubble
+                  icon={Icon}
+                  active={active}
+                  size="sm"
                 />
                 {label}
               </Link>
@@ -90,11 +95,12 @@ export function MobileTabBar() {
           <button
             type="button"
             onClick={() => setSidebarMobile(true)}
-            className="flex h-full w-full flex-col items-center justify-center gap-1 text-xs font-semibold text-ink-muted"
+            className="group flex h-full w-full flex-col items-center justify-center gap-0.5 text-xs font-semibold text-ink-muted focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none focus-visible:ring-inset"
           >
-            <Menu
-              className="size-5"
-              aria-hidden
+            <NavBubble
+              icon={Menu}
+              active={false}
+              size="sm"
             />
             Menu
           </button>

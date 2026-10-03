@@ -69,7 +69,7 @@ export function TrackPickerDialog({
                 key={group.id}
                 className="flex flex-col gap-2"
               >
-                <h3 className="text-xs font-semibold text-ink-muted">
+                <h3 className="font-mono text-xs font-medium text-ink-muted lowercase">
                   {group.name}
                 </h3>
                 <div
@@ -89,7 +89,7 @@ export function TrackPickerDialog({
                         className={cn(
                           'flex items-center gap-3 rounded-md border p-3 text-left transition-colors focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none',
                           selected
-                            ? 'border-brand-strong bg-brand-soft'
+                            ? 'border-brand bg-brand-soft'
                             : 'border-line hover:border-line-strong hover:bg-paper',
                         )}
                       >
@@ -148,13 +148,15 @@ export function TrackSwitcher({ compact }: { compact?: boolean }) {
         )}
       >
         <span
-          className="size-2.5 shrink-0 rounded-full bg-brand"
+          className="size-3 shrink-0 rounded-full bg-program ring-2 ring-program/25"
           aria-hidden
         />
         {!compact && (
           <>
             <span className="flex min-w-0 flex-1 flex-col leading-tight">
-              <span className="text-xs text-ink-muted">Jalur ujian</span>
+              <span className="font-mono text-xs font-medium text-ink-muted lowercase">
+                Jalur ujian
+              </span>
               <span className="truncate text-sm font-semibold text-ink">
                 {name}
               </span>
