@@ -33,6 +33,7 @@ import {
   barsMax,
   focusSubtests,
   formatScore,
+  ladderPer,
   scoreLio,
   topShare,
   type ScoreTrend,
@@ -228,7 +229,7 @@ export function RaporTab({
                         <span className="font-mono text-xs text-ink-muted">
                           {r.code}
                         </span>{' '}
-                        {r.name}
+                        <span className="sr-only sm:not-sr-only">{r.name}</span>
                       </TableCell>
                       <TableCell className="text-right font-mono tabular-nums">
                         {formatScore(r.score)}
@@ -398,10 +399,17 @@ export function RaporTab({
             <CardTitle>Skormu dari TO ke TO</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
-            <BubbleLadder
-              scores={trend.scores}
-              labels={trend.labels}
-            />
+            {/* Lebar mengikuti jumlah TO agar 2–3 TO tidak jadi raksasa. */}
+            <div style={{ maxWidth: `${trend.scores.length * 4.5}rem` }}>
+              <BubbleLadder
+                scores={trend.scores}
+                labels={trend.labels}
+                per={ladderPer(trend.scores)}
+              />
+            </div>
+            <p className="font-mono text-xs text-ink-muted">
+              1 bubble = {ladderPer(trend.scores)} poin kenaikan dari TO pertama
+            </p>
             <Disclaimer />
           </CardContent>
         </Card>

@@ -15,6 +15,7 @@ import {
   TRACKS,
   USERS,
 } from './fixtures';
+import { EXAM_ROUTES } from './exam';
 
 type Handler = (req: Request, url: URL) => Response | Promise<Response>;
 
@@ -113,6 +114,8 @@ const routes: Record<string, Handler> = {
   'GET /category/getAllCategories': () => ok([]),
   // Pelacakan server-side (CAPI) — diterima tanpa diproses.
   'POST /tracking/event': () => ok(null),
+  // Mesin ujian & rapor (fase 04a).
+  ...EXAM_ROUTES,
 };
 
 // Seperti backend asli (cors + credentials): origin dipantulkan, bukan `*`,

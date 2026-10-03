@@ -190,8 +190,15 @@ export function reviewStats(items: ReviewAnswer[]) {
 export const formatScore = (n: number | null | undefined, digits = 0) =>
   (n ?? 0).toLocaleString('id-ID', {
     maximumFractionDigits: digits,
-    minimumFractionDigits: digits,
+    minimumFractionDigits: 0,
   });
+
+/** Poin per bubble di tangga skor: kelipatan 10, tangga maks. ±8 bubble. */
+export function ladderPer(scores: number[]) {
+  const base = scores[0] ?? 0;
+  const rise = Math.max(0, ...scores.map((s) => s - base));
+  return Math.max(10, Math.ceil(rise / 8 / 10) * 10);
+}
 
 /** Ekspresi Lio di rapor: naik → bintang, pertama kali → senang, turun/tetap → netral. */
 export function scoreLio(delta: number | null) {
