@@ -1,50 +1,83 @@
 /*
- * Sistem desain "Lembar Jawaban" — token tunggal untuk seluruh aplikasi.
- * Lihat docs/redesign/PLAN.md §3. Jangan menulis hex di komponen; pakai token.
+ * Sistem desain Bimbelio — merek 2.1 ("Lembar Jawaban").
+ * Sumber: docs/redesign/BRAND-2.1.md (dari brand book Bimbelio 2.1, Jutif).
+ * Jangan menulis hex di komponen; pakai token.
  *
- * --brand diganti per track (web_sub_category) oleh <TrackTheme>; turunannya
- * dihitung dengan color-mix sehingga ikut berubah otomatis.
+ * Warna UI selalu Biru Bimbelio. Warna track dari database hanya menjadi
+ * --program (titik i logo & label nama program), dipasang oleh <TrackTheme>.
  */
 
 :root {
-  /* Kertas & tinta */
-  --paper: #f6f8fb;
-  --surface: #ffffff;
-  --ink: #1b2230;
-  --ink-muted: #5b6475;
-  --ink-subtle: #687182;
-  --line: #e3e8ef;
-  --line-strong: #cdd5df;
+  /* Kertas & Tinta */
+  --paper: #f4f7fc; /* Kertas: latar aplikasi */
+  --surface: #ffffff; /* kartu, panel, input */
+  --ink: #0b1736; /* Tinta: teks utama & permukaan gelap */
+  --ink-muted: #485168; /* teks sekunder (7,4:1 di Kertas) */
+  --ink-subtle: #666d7e; /* teks tersier, placeholder (4,8:1 di Kertas). #797F90 merek gagal AA */
+  --line: #e2e3e7;
+  --line-strong: #c9ced8;
 
-  /* Warna track (tenant) */
-  --brand: #0091ff;
-  --brand-2: #5aa4dd;
+  /* Biru Bimbelio */
+  --brand: #0066ff;
+  --brand-strong: #0258db; /* hover, link teks kecil (6,1:1) */
+  --brand-deep: #063b92;
+  --brand-soft: #f0f6ff;
+  --brand-muted: #bdd7ff;
   --brand-ink: #ffffff;
-  --brand-strong: color-mix(in oklab, var(--brand) 80%, black);
-  --brand-soft: color-mix(in oklab, var(--brand) 10%, white);
-  --brand-muted: color-mix(in oklab, var(--brand) 22%, white);
 
-  /* Sinyal */
-  --marker: #fcb930;
-  --marker-soft: color-mix(in oklab, var(--marker) 22%, white);
-  --marker-ink: #7a5300;
+  /* Aksen: satu per tampilan. Wrapper memilih lewat data-accent="pink". */
+  --lime: #c6f432;
+  --pink: #ff5fa2;
+  --accent: var(--lime);
+  --accent-soft: color-mix(in oklab, var(--accent) 35%, white);
+  --accent-ink: var(--ink);
+
+  /* Status: hanya jawaban benar/salah & naik/turun, selalu dengan ikon/label */
   --success: #0b7038;
   --success-soft: color-mix(in oklab, var(--success) 9%, white);
   --danger: #c4234a;
   --danger-soft: color-mix(in oklab, var(--danger) 10%, white);
 
-  /* Grafik: urutan seri tetap */
-  --chart-1: var(--brand);
-  --chart-2: #12a150;
-  --chart-3: #fcb930;
-  --chart-4: #7c5cff;
-  --chart-5: #da2850;
-  --chart-6: #14b8c4;
+  /* Warna program (track): hanya titik i & label nama program */
+  --program: var(--brand);
 
-  --radius: 10px;
+  /* Chart: satu data disorot, sisanya netral */
+  --chart-focus: var(--brand);
+  --chart-base: var(--brand-muted);
+  --chart-empty: var(--line-strong);
+  --chart-1: var(--brand);
+  --chart-2: var(--ink);
+  --chart-3: #8cbaff;
+  --chart-4: #485168;
+  --chart-5: var(--success);
+  --chart-6: var(--danger);
+
+  --radius: 18px;
 }
 
-/* Pemetaan ke nama token shadcn agar primitive pihak ketiga ikut konsisten. */
+[data-accent='pink'] {
+  --accent: var(--pink);
+}
+
+/* Permukaan gelap: Tinta atau Biru. Teks putih; aksen boleh jadi teks besar. */
+[data-surface='ink'],
+[data-surface='brand'] {
+  --surface-fg: #ffffff;
+  --surface-fg-muted: rgb(255 255 255 / 0.74);
+  --surface-line: rgb(255 255 255 / 0.16);
+  color: var(--surface-fg);
+}
+[data-surface='ink'] {
+  background-color: var(--ink);
+}
+[data-surface='brand'] {
+  background-color: var(--brand);
+  /* Putih transparan di Biru gagal AA (3,3:1) — teks sekunder tetap putih. */
+  --surface-fg-muted: #ffffff;
+  /* Pink menempel Biru bergetar (1,7:1) — di Biru aksen selalu lime. */
+  --accent: var(--lime);
+}
+
 @theme inline {
   --color-paper: var(--paper);
   --color-surface: var(--surface);
@@ -55,26 +88,38 @@
   --color-line-strong: var(--line-strong);
 
   --color-brand: var(--brand);
-  --color-brand-2: var(--brand-2);
-  --color-brand-ink: var(--brand-ink);
   --color-brand-strong: var(--brand-strong);
+  --color-brand-deep: var(--brand-deep);
   --color-brand-soft: var(--brand-soft);
   --color-brand-muted: var(--brand-muted);
+  --color-brand-ink: var(--brand-ink);
 
-  --color-marker: var(--marker);
-  --color-marker-soft: var(--marker-soft);
-  --color-marker-ink: var(--marker-ink);
+  --color-lime: var(--lime);
+  --color-pink: var(--pink);
+  /* Aksen tampilan (lime/pink). `accent` milik shadcn = latar hover. */
+  --color-highlight: var(--accent);
+  --color-highlight-soft: var(--accent-soft);
+  --color-highlight-ink: var(--accent-ink);
+  --color-program: var(--program);
+
   --color-success: var(--success);
   --color-success-soft: var(--success-soft);
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
 
+  --color-chart-focus: var(--chart-focus);
+  --color-chart-base: var(--chart-base);
+  --color-chart-empty: var(--chart-empty);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
   --color-chart-6: var(--chart-6);
+
+  --color-on-dark: var(--surface-fg);
+  --color-on-dark-muted: var(--surface-fg-muted);
+  --color-on-dark-line: var(--surface-line);
 
   /* shadcn */
   --color-background: var(--paper);
@@ -83,10 +128,10 @@
   --color-card-foreground: var(--ink);
   --color-popover: var(--surface);
   --color-popover-foreground: var(--ink);
-  --color-primary: var(--brand-strong);
+  --color-primary: var(--brand);
   --color-primary-foreground: var(--brand-ink);
-  --color-secondary: var(--paper);
-  --color-secondary-foreground: var(--ink);
+  --color-secondary: var(--brand-soft);
+  --color-secondary-foreground: var(--brand-strong);
   --color-muted: var(--paper);
   --color-muted-foreground: var(--ink-muted);
   --color-accent: var(--brand-soft);
@@ -99,7 +144,7 @@
 
   --color-sidebar: var(--surface);
   --color-sidebar-foreground: var(--ink);
-  --color-sidebar-primary: var(--brand-strong);
+  --color-sidebar-primary: var(--brand);
   --color-sidebar-primary-foreground: var(--brand-ink);
   --color-sidebar-accent: var(--brand-soft);
   --color-sidebar-accent-foreground: var(--ink);
@@ -108,7 +153,13 @@
 }
 
 @theme {
+  /* Huruf: Jakarta (UI) · Parkinsans (judul & angka) · Shantell (coretan) · DM Mono (data ujian) */
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display:
+    var(--font-parkinsans), var(--font-jakarta), ui-sans-serif, system-ui,
+    sans-serif;
+  --font-hand: var(--font-shantell), ui-rounded, 'Comic Sans MS', cursive;
+  --font-mono: var(--font-dm-mono), ui-monospace, 'SFMono-Regular', monospace;
 
   /* Skala tipe (min 12px) */
   --text-xs: 0.75rem;
@@ -124,26 +175,37 @@
   --text-2xl: 1.75rem;
   --text-2xl--line-height: 2.125rem;
   --text-3xl: 2.25rem;
-  --text-3xl--line-height: 2.625rem;
+  --text-3xl--line-height: 2.5rem;
   --text-4xl: 3rem;
-  --text-4xl--line-height: 1.1;
+  --text-4xl--line-height: 1.05;
+  --text-5xl: 4rem;
+  --text-5xl--line-height: 1;
+  --text-6xl: 5rem;
+  --text-6xl--line-height: 1;
 
-  /* Radius: sm (input kecil, badge) · md (tombol, kartu) · lg (dialog) */
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 16px;
-  --radius-2xl: 16px;
-  --radius-3xl: 16px;
+  --tracking-display: -0.025em;
+  --tracking-hero: -0.04em;
+  --tracking-score: -0.065em;
 
-  /* Bayangan hanya untuk lapisan melayang */
+  /* Radius: xs badge kecil · sm input/chip · md kartu · lg dialog/foto · full tombol & bubble */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 22px;
+  --radius-xl: 22px;
+  --radius-2xl: 22px;
+  --radius-3xl: 22px;
+
+  /* Bayangan hanya untuk objek melayang */
   --shadow-overlay:
-    0 1px 2px rgb(27 34 48 / 0.06), 0 8px 24px -4px rgb(27 34 48 / 0.14);
+    0 1px 2px rgb(11 23 54 / 0.06), 0 8px 24px -4px rgb(11 23 54 / 0.14);
+  --shadow-float:
+    0 2px 4px rgb(11 23 54 / 0.06), 0 16px 40px -8px rgb(11 23 54 / 0.18);
 
   --ease-snap: cubic-bezier(0.2, 0.9, 0.3, 1.2);
 
   --animate-bubble-fill: bubble-fill 1.2s ease-in-out infinite;
+  --animate-pop: pop 260ms var(--ease-snap) both;
   @keyframes bubble-fill {
     0%,
     70%,
@@ -155,6 +217,16 @@
     45% {
       background-color: var(--brand);
       border-color: var(--brand);
+    }
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      scale: 0.85;
+    }
+    to {
+      opacity: 1;
+      scale: 1;
     }
   }
 }
@@ -190,10 +262,15 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Sorotan stabilo */
   ::selection {
-    background-color: var(--marker-soft);
+    background-color: var(--lime);
     color: var(--ink);
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
   }
 
   :focus-visible {

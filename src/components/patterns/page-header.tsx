@@ -26,7 +26,7 @@ export function PageHeader({
     >
       <div className="flex min-w-0 flex-col gap-1.5">
         {leading}
-        <h1 className="text-2xl font-extrabold tracking-tight text-balance text-ink">
+        <h1 className="font-display text-2xl font-bold tracking-display text-balance text-ink sm:text-3xl">
           {title}
         </h1>
         {description && (
@@ -51,7 +51,9 @@ export function SectionHeader({
   return (
     <div className={cn('flex items-end justify-between gap-4', className)}>
       <div className="flex min-w-0 flex-col gap-0.5">
-        <h2 className="text-lg font-bold text-ink">{title}</h2>
+        <h2 className="font-display text-lg font-bold tracking-display text-ink">
+          {title}
+        </h2>
         {description && <p className="text-sm text-ink-muted">{description}</p>}
       </div>
       {actions && <div className="flex shrink-0 gap-2">{actions}</div>}

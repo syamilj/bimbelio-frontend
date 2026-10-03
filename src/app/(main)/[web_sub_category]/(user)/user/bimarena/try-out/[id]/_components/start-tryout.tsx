@@ -44,8 +44,8 @@ const StartTryout = ({
     : 'quiz';
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   const [loading, setLoading] = useState(false);
   const [agreedToRules, setAgreedToRules] = useState(false);

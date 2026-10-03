@@ -106,7 +106,7 @@ export function PlanMenu() {
                         'flex flex-col gap-1 rounded-sm p-2 text-xs',
                         isOverdue(installment.dueDate)
                           ? 'bg-danger-soft'
-                          : 'bg-marker-soft',
+                          : 'bg-highlight-soft',
                       )}
                     >
                       <p className="font-semibold text-ink">
@@ -161,7 +161,7 @@ export function PlanMenu() {
                   <p className="text-sm font-semibold text-ink">
                     {pending.planName}
                   </p>
-                  <Badge variant="marker">
+                  <Badge variant="highlight">
                     {pending.planTier === 'Limitation'
                       ? 'Koin'
                       : pending.planTier}
@@ -233,7 +233,7 @@ export function PlanMenu() {
         <div className="flex flex-col gap-2 border-t border-line pt-3">
           {isFree && (
             <Button
-              variant="marker"
+              variant="default"
               onClick={() => {
                 close();
                 openUpgrade();

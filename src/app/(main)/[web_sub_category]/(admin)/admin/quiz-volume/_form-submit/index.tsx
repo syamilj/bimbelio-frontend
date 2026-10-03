@@ -75,8 +75,8 @@ type TryoutListType = Tryout & {
 export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
   const { id } = useParams<{ id: string }>();
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   // Form states
   const [formData, setFormData] = useState({
@@ -720,7 +720,7 @@ const TryoutItem = ({
   }) => TryoutListType[];
 }) => {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
   const tryouts = selectedTryouts
     .filter((tryout) => tryout.TryoutSubCategory.id === sub.id)
     .sort((a, b) => (a.quizOrder || 10000) - (b.quizOrder || 10000));

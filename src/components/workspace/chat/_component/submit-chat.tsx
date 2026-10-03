@@ -24,7 +24,7 @@ const SubmitChat = () => {
   const searchParams = useSearchParams();
   const newChat = searchParams.get('new');
 
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   const {
     useSendMessage: { sendMessage, setSendMessage },

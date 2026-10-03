@@ -35,7 +35,7 @@ const Feedback = ({
       {moreInfo && (
         <div className="rounded-3xl bg-[#E1F2FF] p-4">
           <h4 className="mb-2 flex items-center text-sm font-semibold text-[#2236D1]">
-            <IconInfo className="mr-2 text-[#0091FF]" />
+            <IconInfo className="mr-2 text-[#0066FF]" />
             More info
           </h4>
 

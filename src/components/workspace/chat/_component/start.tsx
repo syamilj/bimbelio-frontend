@@ -13,7 +13,7 @@ export default function Start({ isLoading, onClick }: Props) {
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   // Get dynamic colors from the selected category
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   return (
     <div className="flex h-full w-full items-center justify-center bg-gray-50">

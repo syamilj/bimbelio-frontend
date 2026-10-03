@@ -33,7 +33,7 @@ import {
 } from './_primitives';
 
 const ColorList = [
-  '#0091FF',
+  '#0066FF',
   '#22c55e',
   '#eab308',
   '#ef4444',

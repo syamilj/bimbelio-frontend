@@ -27,7 +27,7 @@ export function BimArenaQuizPageMain() {
     useUserStatistic: { UserStatistic },
   } = useQuizProvider();
   const userTarget = UserStatistic?.userTarget;
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   const [activeTab, setActiveTab] = useState('library');
 

@@ -74,7 +74,7 @@ function preprocessContent(content: string) {
 
 export default function Row({ message, index, isLast, isStreaming }: Props) {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   const {
     editMessage,

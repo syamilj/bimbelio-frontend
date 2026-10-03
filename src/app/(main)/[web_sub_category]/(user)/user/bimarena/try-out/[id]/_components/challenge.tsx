@@ -41,7 +41,7 @@ const Challenge = ({
   const [showHint, setShowHint] = useState(false);
 
   // Get dynamic colors
-  // const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  // const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   const handleSelect = (id: string, answer: string, index: number) => {
     if (sessionAnswer[index].answerId === id) {

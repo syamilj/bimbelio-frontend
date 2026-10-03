@@ -13,7 +13,7 @@ const QuestionBubble = ({ question, className = '' }: QuestionBubbleProps) => {
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   if (!question) {
     return (

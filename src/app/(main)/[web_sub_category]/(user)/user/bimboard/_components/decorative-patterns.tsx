@@ -3,7 +3,7 @@
 export const DecorativePatterns = {
   // Gradient Mesh Background
   GradientMesh: ({
-    colors = ['#0091FF', '#5aa4dd'],
+    colors = ['#0066FF', '#4C94FF'],
   }: {
     colors?: string[];
   }) => (
@@ -92,7 +92,7 @@ export const DecorativePatterns = {
   ),
 
   // Wave Pattern
-  WavePattern: ({ color = '#0091FF' }: { color?: string }) => (
+  WavePattern: ({ color = '#0066FF' }: { color?: string }) => (
     <div className="absolute bottom-0 left-0 right-0 opacity-5">
       <svg
         viewBox="0 0 1200 120"
@@ -108,7 +108,7 @@ export const DecorativePatterns = {
   ),
 
   // Floating Shapes
-  FloatingShapes: ({ color = '#0091FF' }: { color?: string }) => (
+  FloatingShapes: ({ color = '#0066FF' }: { color?: string }) => (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {/* Circle */}
       <div

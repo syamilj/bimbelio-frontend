@@ -31,7 +31,7 @@ export default function CourseSummary() {
     '/course/getCourseHeading',
   );
 
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   const overallProgress =
     headingData && headingData.totalSubChapters > 0

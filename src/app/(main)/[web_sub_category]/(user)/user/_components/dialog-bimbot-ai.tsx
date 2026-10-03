@@ -36,8 +36,8 @@ const blacklistPaths = [
 export const DialogBimbotAI = () => {
   const pathname = usePathname();
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
   const [isOpen, setIsOpen] = useState(false);
 
   const isBlocked = blacklistPaths.some((path) => {
@@ -229,7 +229,7 @@ const HeaderChat = ({
   const hasAutoCreated = useRef(false);
 
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
   const websiteSubCategoryId = websiteSubCategory?.id;
 
   // Select first chat when history loads and no chat is selected

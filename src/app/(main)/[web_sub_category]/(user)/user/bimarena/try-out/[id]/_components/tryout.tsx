@@ -60,8 +60,8 @@ const Tryout: React.FC<Props> = ({
   const [status] = useState<'none' | 'correct' | 'wrong' | 'complete'>('none');
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   const storageKey = `sessionAnswer-${sessionId}`;
 

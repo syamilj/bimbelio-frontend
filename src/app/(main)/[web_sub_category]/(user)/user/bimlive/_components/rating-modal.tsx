@@ -34,8 +34,8 @@ export function RatingModal({
   const [isOpen, setIsOpen] = useState(false);
   // === DESIGN SYSTEM FROM LEADERBOARD ===
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');

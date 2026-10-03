@@ -35,8 +35,8 @@ export default function ButtonUpgradeTryout({
   const [show, setShow] = useState<boolean>(false);
 
   // Get dynamic colors from the selected category
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   const tryoutId = id ? id : params?.id;
 

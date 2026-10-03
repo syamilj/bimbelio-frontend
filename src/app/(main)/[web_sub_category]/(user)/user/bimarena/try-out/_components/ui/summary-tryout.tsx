@@ -843,7 +843,7 @@ const SummaryTryout = () => {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
 
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
   const isSNBT =
     websiteSubCategory?.name?.toUpperCase().includes('SNBT') || false;
 

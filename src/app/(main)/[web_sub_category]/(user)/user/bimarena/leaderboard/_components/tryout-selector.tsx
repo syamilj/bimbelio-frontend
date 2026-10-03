@@ -27,7 +27,7 @@ export function TryOutSelector() {
   const { selectedTryOut, setSelectedTryOut } = useLeaderboardContext();
 
   // Get dynamic colors from the selected category
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   const [firstLoad, setFirstLoad] = useState<number>(0);
 

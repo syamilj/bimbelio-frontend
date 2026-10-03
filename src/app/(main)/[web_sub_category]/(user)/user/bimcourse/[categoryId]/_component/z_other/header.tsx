@@ -611,7 +611,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
   const chartConfig = {
     percent: {
       label: 'Percent',
-      color: '#0091FF',
+      color: '#0066FF',
     },
     track: {
       label: 'track',
@@ -1212,7 +1212,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //   const chartConfig = {
 //     percent: {
 //       label: 'Percent',
-//       color: '#0091FF',
+//       color: '#0066FF',
 //     },
 //     track: {
 //       label: 'track',

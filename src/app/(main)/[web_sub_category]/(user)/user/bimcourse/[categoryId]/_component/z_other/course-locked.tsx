@@ -10,8 +10,8 @@ export default function CourseLocked() {
   const router = useRouter();
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   return (
     <div className="flex h-full min-h-[500px] w-full flex-col items-center justify-center p-6">

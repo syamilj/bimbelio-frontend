@@ -95,8 +95,8 @@ const steps: StepConfig[] = [
 export default function BimInsightOnboarding() {
   const { userOnBoarding, handleAddUserOnBoarding } = useUserOnBoarding();
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   const [currentStep, setCurrentStep] = useState(0);
   const [direction, setDirection] = useState<'left' | 'right'>('right');

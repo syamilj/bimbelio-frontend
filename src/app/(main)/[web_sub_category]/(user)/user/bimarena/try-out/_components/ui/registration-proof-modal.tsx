@@ -105,8 +105,8 @@ export default function RegistrationProofModal({
   });
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   const [step, setStep] = useState<number>(1);
   const [showPayment, setShowPayment] = useState<boolean>(false);

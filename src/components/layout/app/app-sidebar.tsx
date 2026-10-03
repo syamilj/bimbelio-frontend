@@ -126,13 +126,13 @@ export function UpgradeCard({ onAction }: { onAction?: () => void }) {
   const { openUpgrade } = useAppContext();
   if (!session || session.user.tier) return null;
   return (
-    <div className="flex flex-col gap-2 rounded-md bg-marker-soft p-3">
+    <div className="flex flex-col gap-2 rounded-md bg-brand-soft p-3">
       <p className="text-sm font-semibold text-ink">Akunmu masih gratis</p>
       <p className="text-xs text-ink-muted">
         Pilih paket untuk membuka materi dan try out premium.
       </p>
       <Button
-        variant="marker"
+        variant="default"
         size="sm"
         onClick={() => {
           onAction?.();

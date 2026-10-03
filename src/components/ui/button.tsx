@@ -6,27 +6,32 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-semibold whitespace-nowrap transition-colors outline-none select-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:pointer-events-none disabled:opacity-50 aria-invalid:ring-2 aria-invalid:ring-danger/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "inline-flex shrink-0 items-center justify-center gap-2 rounded-full text-sm font-semibold whitespace-nowrap transition-colors outline-none select-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:pointer-events-none disabled:opacity-50 aria-invalid:ring-2 aria-invalid:ring-danger/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default: 'bg-brand-strong text-brand-ink hover:bg-brand-strong/90',
-        marker: 'bg-marker text-ink hover:bg-marker/85',
+        default: 'bg-brand text-brand-ink hover:bg-brand-strong',
+        /** Lime + teks Tinta. Hanya di permukaan Biru/Tinta (`data-surface`). */
+        accent: 'bg-highlight text-highlight-ink hover:bg-highlight/85',
         destructive: 'bg-danger text-white hover:bg-danger/90',
-        outline: 'border border-line-strong bg-surface text-ink hover:bg-paper',
-        secondary: 'bg-brand-soft text-brand-strong hover:bg-brand-muted',
+        outline:
+          'border-[1.5px] border-ink/80 bg-transparent text-ink hover:bg-ink/5',
+        /** Garis putih untuk permukaan Biru/Tinta. */
+        'outline-light':
+          'border-[1.5px] border-white/80 bg-transparent text-white hover:bg-white/10',
+        secondary: 'bg-brand-soft text-brand-strong hover:bg-brand-muted/60',
         ghost: 'text-ink hover:bg-ink/5',
         link: 'h-auto! px-0! text-brand-strong underline-offset-4 hover:underline',
       },
       size: {
-        default: 'h-10 px-4 has-[>svg]:px-3.5',
-        xs: "h-7 gap-1 rounded-sm px-2 text-xs [&_svg:not([class*='size-'])]:size-3.5",
-        sm: 'h-8 gap-1.5 rounded-sm px-3',
-        lg: 'h-12 px-6 text-base',
-        icon: 'size-10',
-        'icon-xs': "size-7 rounded-sm [&_svg:not([class*='size-'])]:size-3.5",
-        'icon-sm': 'size-8 rounded-sm',
-        'icon-lg': 'size-12',
+        default: 'h-11 px-5 has-[>svg]:px-4',
+        xs: "h-7 gap-1 px-2.5 text-xs [&_svg:not([class*='size-'])]:size-3.5",
+        sm: 'h-9 gap-1.5 px-3.5',
+        lg: 'h-13 px-7 text-base',
+        icon: 'size-11',
+        'icon-xs': "size-7 [&_svg:not([class*='size-'])]:size-3.5",
+        'icon-sm': 'size-9',
+        'icon-lg': 'size-13',
       },
     },
     defaultVariants: {

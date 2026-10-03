@@ -32,7 +32,7 @@ const CountDownTryout = ({
   const [lateSubmitFailed, setLateSubmitFailed] = useState(false);
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   const formatTime = (totalSeconds: number): string => {
     const hours = Math.floor(totalSeconds / 3600);

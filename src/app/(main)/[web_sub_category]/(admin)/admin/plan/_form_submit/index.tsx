@@ -1426,7 +1426,7 @@ const SectionFeature = () => {
   } = useProvider();
 
   const { webCategoryData, websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   const { data: Categories } = useGet<
     { categoryName: string; data: Category[] }[]

@@ -47,7 +47,7 @@ import { useQuizProvider } from '../_provider/_provider';
 
 export function QuizProgress() {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   const {
     useUserProgress: { UserProgress },

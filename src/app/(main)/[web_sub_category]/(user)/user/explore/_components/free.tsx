@@ -20,7 +20,7 @@ export default function Free() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   useEffect(() => {
     getGeneral('/document/getFreeDocument', {

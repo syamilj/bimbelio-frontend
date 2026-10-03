@@ -13,7 +13,7 @@ type TabId = 'modul' | 'lainnya';
 
 export default function BimCoursePage() {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
   const platformName = websiteSubCategory?.name || 'Modul Saya';
 
   const [activeTab, setActiveTab] = useState<TabId>('modul');

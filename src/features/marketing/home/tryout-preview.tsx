@@ -144,7 +144,7 @@ function TryoutCard({
           />
         )}
         <Badge
-          variant={tryout.isCouponOnly ? 'marker' : 'success'}
+          variant={tryout.isCouponOnly ? 'highlight' : 'success'}
           className="absolute top-3 left-3"
         >
           {tryout.isCouponOnly ? 'BimPartner' : 'Gratis'}

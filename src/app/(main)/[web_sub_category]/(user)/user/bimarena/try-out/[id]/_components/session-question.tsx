@@ -52,7 +52,7 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
   const answers = currentQuestionData?.TryoutAnswers || [];
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   useEffect(() => {
     if (!questions || questions.length === 0) {

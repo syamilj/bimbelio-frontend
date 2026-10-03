@@ -48,7 +48,7 @@ export function Countdown({
     <time
       aria-label={`Sisa waktu ${formatDuration(remaining)}`}
       className={cn(
-        'font-bold tabular-nums',
+        'font-mono font-medium tabular-nums',
         remaining <= warnBelowMs && 'text-danger',
         className,
       )}

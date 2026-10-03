@@ -22,7 +22,7 @@ export default function CourseUpcoming({
   courseDescription,
 }: CourseUpcomingProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
   const [notifyMe, setNotifyMe] = useState(false);
 
   const handleNotify = () => {

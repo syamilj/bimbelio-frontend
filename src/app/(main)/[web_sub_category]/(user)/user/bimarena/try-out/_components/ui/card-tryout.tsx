@@ -122,8 +122,8 @@ export default function CardTryOut({ data, refresh, reloadHref }: card) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   // useEffect(() => {
   //   if (showDetail) {

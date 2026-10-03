@@ -149,7 +149,7 @@ export function BimQuickStatsOverview({ stats }: BimQuickStatsOverviewProps) {
                     typeof stat.iconBg === 'string' &&
                     !stat.iconBg.startsWith('bg-')
                       ? stat.iconBg
-                      : '#0091FF',
+                      : '#0066FF',
                   filter: 'blur(20px)',
                 }}
               />

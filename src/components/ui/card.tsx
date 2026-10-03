@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-// Kartu = permukaan putih bergaris tipis. Tanpa bayangan (lihat PLAN §3).
+// Kartu = permukaan putih bergaris tipis, radius 18. Tanpa bayangan (BRAND-2.1 §3.3).
 function Card({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
@@ -30,7 +30,10 @@ function CardTitle({ className, ...props }: React.ComponentProps<'h3'>) {
   return (
     <h3
       data-slot="card-title"
-      className={cn('text-base leading-snug font-bold', className)}
+      className={cn(
+        'font-display text-lg leading-snug font-bold tracking-display',
+        className,
+      )}
       {...props}
     />
   );

@@ -11,6 +11,9 @@ const DESIGN_SYSTEM_DIRS = [
   'src/app/error.tsx',
   'src/components/ui/**',
   'src/components/patterns/**',
+  'src/components/brand/**',
+  'src/components/charts/**',
+  'src/app/styleguide/**',
   'src/components/providers/**',
   'src/components/layout/**',
   'src/features/**',
@@ -56,6 +59,12 @@ const designSystemRules = {
         'Literal[value=/(?:^|[\\s:])text-\\[\\d+(?:\\.\\d+)?(?:px|rem)\\]/]',
       message:
         'Ukuran font arbitrer dilarang. Pakai skala: text-xs (12px) … text-4xl.',
+    },
+    {
+      selector:
+        'Literal[value=/(?:^|[\\s:])(?:bg|text|border|ring)-marker|font-playfair|rounded-3xl/]',
+      message:
+        'Kelas merek lama (stabilo/marker, Playfair, rounded-3xl) sudah pensiun di merek 2.1. Pakai highlight, font-display, rounded-md/lg.',
     },
     {
       selector:

@@ -10,13 +10,15 @@ import { cn } from '@/lib/utils';
  * progres modul. Jangan dipakai sebagai dekorasi.
  */
 export const bubbleVariants = cva(
-  'inline-flex shrink-0 items-center justify-center rounded-full border-[1.5px] leading-none font-bold tabular-nums transition-[background-color,border-color,color,transform] duration-150 select-none',
+  'inline-flex shrink-0 items-center justify-center rounded-full border-[1.5px] font-mono leading-none font-medium tabular-nums transition-[background-color,border-color,color,transform] duration-150 select-none',
   {
     variants: {
       state: {
         empty: 'border-line-strong bg-surface text-ink-muted',
-        filled: 'border-brand-strong bg-brand-strong text-brand-ink',
-        flagged: 'border-marker bg-marker text-ink',
+        filled: 'border-brand bg-brand text-brand-ink',
+        /** Ragu-ragu = bubble setengah terisi (merek 2.1; stabilo pensiun). */
+        flagged:
+          'border-brand bg-[linear-gradient(to_top,var(--brand-muted)_50%,var(--surface)_50%)] text-ink',
         correct: 'border-success bg-success text-white',
         wrong: 'border-danger bg-danger text-white',
         missed: 'border-dashed border-success bg-success-soft text-success',

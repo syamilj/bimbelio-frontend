@@ -31,8 +31,8 @@ interface RingkasanTabProps {
 
 export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#4C94FF';
 
   const userScore = ResultData?.userScore || 0;
   const totalParticipants = ResultData?.totalParticipants || 0;

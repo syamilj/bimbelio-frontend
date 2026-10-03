@@ -21,7 +21,7 @@ const ChatTools = ({ messageIndex }: Props) => {
   const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
 
   // Get dynamic colors from the selected category
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const mainColor = websiteSubCategory?.main_color || '#0066FF';
 
   const {
     messageData,
